@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,6 +22,9 @@ package de.dante.extex.interpreter.primitives.register.toks;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
@@ -35,9 +38,9 @@ import de.dante.extex.interpreter.context.Context;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class ToksParameter extends ToksPrimitive {
+public class ToksParameter extends ToksPrimitive implements InitializableCode {
 
     /**
      * Return the key for a named toks register.
@@ -83,4 +86,18 @@ public class ToksParameter extends ToksPrimitive {
         }
     }
 
+    /**
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
+     */
+    public void init(final Context context, final String value)
+            throws GeneralException {
+
+        if (value != null && value.length() > 0) {
+            context.setToks(getKey((TokenSource) null, context), //
+                    new Tokens(context, value), true);
+
+        }
+    }
 }

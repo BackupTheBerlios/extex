@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.EofException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Csname extends AbstractCode
         implements
@@ -84,16 +84,16 @@ public class Csname extends AbstractCode
     public Token convertCs(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.getControlSequence(context);
+        Token cs = source.getControlSequence(context);
 
-        if ((t instanceof ControlSequenceToken)
-                && ((ControlSequenceToken) t).getName().equals("csname")) {
+        if ((cs instanceof ControlSequenceToken)
+                && ((ControlSequenceToken) cs).getName().equals("csname")) {
             Tokens toks = scanToEndCsname(context, source);
-            t = context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    toks.toString(), context.getNamespace());
+            cs = context.getTokenFactory().createToken(Catcode.ESCAPE,
+                    cs.getChar(), toks.toString(), context.getNamespace());
         }
 
-        return t;
+        return cs;
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -72,7 +72,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -161,13 +161,13 @@ public class Dump extends AbstractCode implements LogEnabled {
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);
         } catch (IOException e) {
-            throw new PanicException(e);
+            throw new GeneralException(e);
         } finally {
             if (stream != null) {
                 try {
                     stream.close();
-                } catch (IOException e1) {
-                    throw new PanicException(e1);
+                } catch (IOException e) {
+                    throw new GeneralException(e);
                 }
             }
         }
