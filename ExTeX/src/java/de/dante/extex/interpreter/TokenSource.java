@@ -21,6 +21,7 @@ package de.dante.extex.interpreter;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -43,7 +44,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public interface TokenSource {
 
@@ -119,7 +120,7 @@ public interface TokenSource {
      * @throws GeneralException in case that the token stream is at its end or
      *   that the token read is not a control sequence token
      */
-    Token getControlSequence() throws GeneralException;
+    CodeToken getControlSequence() throws GeneralException;
 
     /**
      * Parse the specification of a font.

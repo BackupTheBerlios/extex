@@ -68,7 +68,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public abstract class Moritz implements TokenSource, Configurable, Observable {
 
@@ -264,7 +264,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * @throws GeneralException
      *             in case of an error
      */
-    public Token getControlSequence() throws GeneralException {
+    public CodeToken getControlSequence() throws GeneralException {
 
         Token t = getToken();
 
@@ -286,7 +286,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
             throw new HelpingException("TTP.MissingCtrlSeq");
         }
 
-        return t;
+        return (CodeToken) t;
     }
 
     /**
