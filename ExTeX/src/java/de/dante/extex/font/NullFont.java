@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NullFont implements Font {
 
@@ -136,7 +136,7 @@ public class NullFont implements Font {
 	}
 
 	/**
-	 * @see de.dante.extex.interpreter.type.Font#getExternalID()
+	 * @see de.dante.extex.interpreter.type.Font#getExternalID(UnicodeChar)
 	 */
 	public String getExternalID(UnicodeChar c) {
 		// TODO Auto-generated method stub

@@ -30,7 +30,7 @@ import java.util.logging.LogManager;
  * Currently the Java 1.4 logger is wrapped.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LoggerImpl implements Logger {
     /** the wrapped logger */
@@ -42,7 +42,7 @@ public class LoggerImpl implements Logger {
      * @param name the name
      * @param resourceBundle the resource bundle
      */
-    public LoggerImpl(String name, String resourceBundle) {
+    private LoggerImpl(final String name, final String resourceBundle) {
         super();
         logger = java.util.logging.Logger.getLogger(name, resourceBundle);
     }
@@ -52,25 +52,26 @@ public class LoggerImpl implements Logger {
      *
      * @param name the name
      */
-    public LoggerImpl(String name) {
+    private LoggerImpl(final String name) {
         super();
         logger = java.util.logging.Logger.getLogger(name);
     }
 
     /**
      * ...
-     * 
-     * @param name
-     * @param logfile
-     * @param template
-     * 
-     * @return
+     *
+     * @param name ...
+     * @param logfile ...
+     * @param template ...
+     *
+     * @return ...
      */
-    public synchronized static Logger getLogger(String name, File logfile,
-            String template) throws SecurityException, IOException {
+    public synchronized static Logger getLogger(final String name,
+        final File logfile, final String template) throws SecurityException,
+        IOException {
 
         InputStream s = LoggerImpl.class.getClassLoader().getResourceAsStream(
-                template);
+            template);
         byte[] bb = new byte[8192];
         String cfg = "";
         int i;
@@ -78,8 +79,9 @@ public class LoggerImpl implements Logger {
         while ((i = s.read(bb)) >= 0) {
             cfg = cfg + new String(bb, 0, i);
         }
-        
-        String path = logfile.getPath().replaceAll("[\\\\]","\\\\\\\\\\\\\\\\");
+
+        String path = logfile.getPath()
+            .replaceAll("[\\\\]", "\\\\\\\\\\\\\\\\");
         cfg = cfg.replaceAll("\\$JOBNAME", path);
 
         LogManager logManager = LogManager.getLogManager();
@@ -92,97 +94,98 @@ public class LoggerImpl implements Logger {
     /**
      * ...
      *
-     * @param arg0 ...
+     * @param config ...
      */
-    public void config(String arg0) {
-        logger.config(arg0);
+    public void config(final String config) {
+        logger.config(config);
     }
 
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      * @param arg1
      */
-    public void entering(String arg0, String arg1) {
-        logger.entering(arg0, arg1);
+    public void entering(final String arg, final String arg1) {
+        logger.entering(arg, arg1);
     }
 
     /**
      * ...
-     *
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     */
-    public void entering(String arg0, String arg1, Object arg2) {
-        logger.entering(arg0, arg1, arg2);
-    }
-
-    /**
-     * ...
-     *
-     * @param arg0
+     * 
+     * @param arg
      * @param arg1
      * @param arg2
      */
-    public void entering(String arg0, String arg1, Object[] arg2) {
-        logger.entering(arg0, arg1, arg2);
+    public void entering(final String arg, final String arg1, final Object arg2) {
+        logger.entering(arg, arg1, arg2);
+    }
+
+    /**
+     * ...
+     * 
+     * @param arg
+     * @param arg1
+     * @param arg2
+     */
+    public void entering(final String arg, final String arg1,
+        final Object[] arg2) {
+        logger.entering(arg, arg1, arg2);
     }
 
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object arg0) {
-        return logger.equals(arg0);
+    public boolean equals(final Object arg) {
+        return logger.equals(arg);
     }
 
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      * @param arg1
      */
-    public void exiting(String arg0, String arg1) {
-        logger.exiting(arg0, arg1);
+    public void exiting(final String arg, final String arg1) {
+        logger.exiting(arg, arg1);
     }
 
     /**
      * ...
-     *
-     * @param arg0
+     * 
+     * @param arg
      * @param arg1
      * @param arg2
      */
-    public void exiting(String arg0, String arg1, Object arg2) {
-        logger.exiting(arg0, arg1, arg2);
+    public void exiting(final String arg, final String arg1, final Object arg2) {
+        logger.exiting(arg, arg1, arg2);
     }
 
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      */
-    public void fine(String arg0) {
-        logger.fine(arg0);
+    public void fine(final String arg) {
+        logger.fine(arg);
     }
 
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      */
-    public void finer(String arg0) {
-        logger.finer(arg0);
+    public void finer(final String arg) {
+        logger.finer(arg);
     }
 
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      */
-    public void finest(String arg0) {
-        logger.finest(arg0);
+    public void finest(final String arg) {
+        logger.finest(arg);
     }
 
     /**
@@ -195,73 +198,74 @@ public class LoggerImpl implements Logger {
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      */
-    public void info(String arg0) {
-        logger.info(arg0);
+    public void info(final String arg) {
+        logger.info(arg);
     }
 
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      * @param arg1
      */
-    public void log(Level arg0, String arg1) {
-        logger.log(arg0, arg1);
+    public void log(final Level arg, final String arg1) {
+        logger.log(arg, arg1);
     }
 
     /**
      * ...
      *
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     */
-    public void log(Level arg0, String arg1, Object arg2) {
-        logger.log(arg0, arg1, arg2);
-    }
-
-    /**
-     * ...
-     *
-     * @param arg0
+     * @param arg
      * @param arg1
      * @param arg2
      */
-    public void log(Level arg0, String arg1, Object[] arg2) {
-        logger.log(arg0, arg1, arg2);
+    public void log(final Level arg, final String arg1, final Object arg2) {
+        logger.log(arg, arg1, arg2);
     }
 
     /**
      * ...
-     *
-     * @param arg0
+     * 
+     * @param arg
      * @param arg1
      * @param arg2
      */
-    public void log(Level arg0, String arg1, Throwable arg2) {
-        logger.log(arg0, arg1, arg2);
+    public void log(final Level arg, final String arg1, final Object[] arg2) {
+        logger.log(arg, arg1, arg2);
     }
 
     /**
      * ...
      *
-     * @param arg0
-     */
-    public void severe(String arg0) {
-        logger.severe(arg0);
-    }
-
-    /**
-     * ...
-     *
-     * @param arg0
+     * @param arg
      * @param arg1
      * @param arg2
      */
-    public void throwing(String arg0, String arg1, Throwable arg2) {
-        logger.throwing(arg0, arg1, arg2);
+    public void log(final Level arg, final String arg1, final Throwable arg2) {
+        logger.log(arg, arg1, arg2);
+    }
+
+    /**
+     * ...
+     *
+     * @param arg
+     */
+    public void severe(final String arg) {
+        logger.severe(arg);
+    }
+
+    /**
+     * ...
+     * 
+     * @param arg
+     * @param arg1
+     * @param arg2
+     */
+    public void throwing(final String arg, final String arg1,
+        final Throwable arg2) {
+        logger.throwing(arg, arg1, arg2);
     }
 
     /**
@@ -274,9 +278,9 @@ public class LoggerImpl implements Logger {
     /**
      * ...
      *
-     * @param arg0
+     * @param arg
      */
-    public void warning(String arg0) {
-        logger.warning(arg0);
+    public void warning(final String arg) {
+        logger.warning(arg);
     }
 }

@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Vrule extends AbstractCode {
     /** ... */
@@ -58,7 +58,6 @@ public class Vrule extends AbstractCode {
         Dimen width = new Dimen(DEFAULT_RULE);
         Dimen height = new Dimen(0);
         Dimen depth = new Dimen(0);
-        boolean onceMore = true;
 
         for (; ; ) {
             if (source.scanKeyword("width")) {

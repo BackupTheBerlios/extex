@@ -26,7 +26,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DocumentWriterFactory {
     /** The configuration to use */
@@ -47,7 +47,7 @@ public class DocumentWriterFactory {
      *
      * @return the new instance
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error
      */
     public DocumentWriter newInstance() throws ConfigurationException {
         DocumentWriter docWriter;

@@ -33,7 +33,7 @@ import de.dante.util.file.FileFinder;
  * This class implements a default font.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DefaultFont implements Font {
 
@@ -42,17 +42,24 @@ public class DefaultFont implements Font {
 	 */
 	private String name;
 
-	/**
-	 * Creates a new object.
-	 */
-	public DefaultFont(String name, FileFinder fileFinder) throws GeneralException, ConfigurationException {
-		super();
-		// trim name !
-		if (name != null) {
-			this.name = name.trim();
-		}
-		loadFont(fileFinder);
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param name ...
+     * @param fileFinder ...
+     * 
+     * @throws GeneralException
+     * @throws ConfigurationException
+     */
+    public DefaultFont(String name, FileFinder fileFinder)
+        throws GeneralException, ConfigurationException {
+        super();
+        // trim name !
+        if (name != null) {
+            this.name = name.trim();
+        }
+        loadFont(fileFinder);
+    }
 
 	/**
 	 * load the Font

@@ -18,12 +18,8 @@
  */
 package de.dante.extex.i18n;
 
-import de.dante.extex.main.MainIOException;
-
 import java.io.PrintStream;
-
 import java.text.MessageFormat;
-
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -40,7 +36,7 @@ import java.util.ResourceBundle;
  * For ExTeX this the properties file has many similarities to TEX.POOL in TeX.
  * </p>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class Messages {
     /** the name of the resource bundle to use */
@@ -50,10 +46,11 @@ public final class Messages {
     private static ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
     /**
-     * Creates a new object. This constructor is provate to avoid that an
+     * Creates a new object. This constructor is private to avoid that an
      * instance is created by accident.
      */
     private Messages() {
+        super();
     }
 
     /**
@@ -169,11 +166,8 @@ public final class Messages {
      *
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for
-     *
-     * @throws MainIOException in case of an IO error
      */
-    public static void message(final PrintStream writer, final String fmt)
-                        throws MainIOException {
+    public static void message(final PrintStream writer, final String fmt) {
         writer.println(Messages.format(fmt));
     }
 
@@ -186,11 +180,9 @@ public final class Messages {
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
-     *
-     * @throws MainIOException in case of an IO error
      */
     public static void message(final PrintStream writer, final String fmt,
-            final Object a) throws MainIOException {
+            final Object a) {
         writer.println(MessageFormat.format(format(fmt), new Object[]{a}));
     }
 
@@ -204,11 +196,9 @@ public final class Messages {
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
      * @param b the Object used for the substring <tt>{1}</tt>
-     *
-     * @throws MainIOException in case of an IO error
      */
     public static void message(final PrintStream writer, final String fmt,
-            final Object a, final Object b) throws MainIOException {
+            final Object a, final Object b) {
         writer.println(MessageFormat.format(format(fmt), new Object[]{a, b}));
     }
 
@@ -223,12 +213,9 @@ public final class Messages {
      * @param a the Object used for the substring <tt>{0}</tt>
      * @param b the Object used for the substring <tt>{1}</tt>
      * @param c the Object used for the substring <tt>{2}</tt>
-     *
-     * @throws MainIOException in case of an IO error
      */
     public static void message(final PrintStream writer, final String fmt,
-            final Object a, final Object b, final Object c)
-            throws MainIOException {
+            final Object a, final Object b, final Object c) {
         writer
                 .println(MessageFormat.format(format(fmt),
                                               new Object[]{a, b, c}));

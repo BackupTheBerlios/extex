@@ -23,13 +23,12 @@ import java.io.Writer;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.util.GeneralException;
 
 /**
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
@@ -74,8 +73,7 @@ public class DumpDocumentWriter implements DocumentWriter {
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
      */
-    public void shipout(final NodeList nodes) throws GeneralException,
-        IOException {
+    public void shipout(final NodeList nodes) throws IOException {
         StringBuffer sb = new StringBuffer();
         nodes.toString(sb,"\n");
         out.write(sb.toString());
@@ -86,7 +84,8 @@ public class DumpDocumentWriter implements DocumentWriter {
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() throws GeneralException, IOException {
+    public void close() {
+        // nothing to do
     }
 
 }

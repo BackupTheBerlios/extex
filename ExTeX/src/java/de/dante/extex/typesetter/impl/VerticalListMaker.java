@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /** This value contains the previous depth for baseline calculations.
@@ -113,7 +113,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() throws GeneralException {
+    public void par() {
+        // nothing to do
     }
 
     /**

@@ -53,7 +53,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
@@ -351,7 +351,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     public Object visitComment(final Object arg1, final Object ignore)
             throws GeneralException {
-        return null;
+        throw new GeneralPanicException("this should never happen");
     }
 
     /**
@@ -360,9 +360,9 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     public Object visitCr(final Object oToken, final Object ignore)
             throws GeneralException {
-        Token token = (Token) oToken;
+        //Token token = (Token) oToken;
         //TODO unimplemented
-        return null;
+        throw new GeneralException("unimplemented");
     }
 
     /**
@@ -380,8 +380,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitIgnore(final Object oToken, final Object ignore)
-            throws GeneralException {
+    public Object visitIgnore(final Object oToken, final Object ignore) {
         return null;
     }
 
@@ -496,7 +495,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     public Object visitSubMark(final Object oToken, final Object ignore)
             throws GeneralException {
-        Token token = (Token) oToken;
+        //Token token = (Token) oToken;
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
@@ -508,7 +507,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     public Object visitSupMark(final Object oToken, final Object ignore)
             throws GeneralException {
-        Token token = (Token) oToken;
+        //Token token = (Token) oToken;
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
@@ -520,7 +519,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     public Object visitTabMark(final Object oToken, final Object ignore)
             throws GeneralException {
-        Token token = (Token) oToken;
+        //Token token = (Token) oToken;
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
@@ -537,7 +536,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     private void configure(final Configuration config)
             throws ConfigurationException, GeneralException {
-        long t = System.currentTimeMillis();
+        //long t = System.currentTimeMillis();
         if (config == null) {
             throw new ConfigurationMissingException("Interpreter");
         }

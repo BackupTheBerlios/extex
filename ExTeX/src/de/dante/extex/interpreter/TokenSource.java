@@ -42,7 +42,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface TokenSource {
     /**
@@ -68,6 +68,9 @@ public interface TokenSource {
      * returned.
      *
      * @return the next token or <code>null</code>
+     *
+     * @throws GeneralException in case of an IOException
+     *
      * @see "TeX -- The Program [332]"
      */
     Token getToken() throws GeneralException;
@@ -164,7 +167,6 @@ public interface TokenSource {
      * @throws GeneralException ...
      */
     Real scanReal() throws GeneralException;
-    
     
     /**
      * Scan the input stream for tokens making up an integer, this is a number

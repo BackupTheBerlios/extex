@@ -18,23 +18,24 @@
  */
 package de.dante.extex.main;
 
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.file.FileFinder;
-import de.dante.extex.i18n.Messages;
-import de.dante.extex.logging.Logger;
-
 import java.io.File;
 import java.io.IOException;
+
+import de.dante.extex.i18n.Messages;
+import de.dante.extex.logging.Logger;
+import de.dante.util.file.FileFinder;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FileFinderImpl implements FileFinder {
 
-    /** ... */
+    /**
+     * The field <tt>logger</tt> contains the ...
+     */
     private Logger logger;
 
     /**
@@ -48,8 +49,7 @@ public class FileFinderImpl implements FileFinder {
     /**
      * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
      */
-    public File findFile(String name, String type)
-                  throws ConfigurationException {
+    public File findFile(String name, String type) {
         File file = null;
 
         try {
@@ -63,6 +63,7 @@ public class FileFinderImpl implements FileFinder {
                 name = readLine();
 
                 if (name.equals("")) {
+                    //TODO ???
                 } else if (name.charAt(0) == '\\') {
                     //TODO make use of the line read
                     return null;
@@ -88,6 +89,7 @@ public class FileFinderImpl implements FileFinder {
         int c;
 
         while ((c = System.in.read()) >= 0 && c == ' ') {
+            // nothing to do
         }
 
         if (c >= 0 && c != '\n') {

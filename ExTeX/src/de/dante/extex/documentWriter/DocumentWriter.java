@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface DocumentWriter {
     /**
@@ -45,7 +45,7 @@ public interface DocumentWriter {
     /**
      * Setter for the output stream.
      *
-     * @param os the output stream
+     * @param writer the output stream
      */
     void setWriter(Writer writer);
 

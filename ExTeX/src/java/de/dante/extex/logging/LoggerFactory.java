@@ -22,12 +22,13 @@ import java.io.File;
 
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationMissingException;
 
 /*
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LoggerFactory {
 
@@ -41,31 +42,35 @@ public class LoggerFactory {
      * 
      * @param classname the configuration to use
      */
-    public LoggerFactory(String classname) throws ConfigurationException {
+    public LoggerFactory(final String classname) throws ConfigurationException {
         super();
         this.classname = classname;
+        if ( classname == null ) {
+            throw new ConfigurationMissingException("classname");//TODO i18n
+        }
     }
 
     /**
      * ...
      * 
-     * @param name
-     * @param logfile
-     * @param template
-     * @return @throws ConfigurationException
+     * @param name ...
+     * @param logfile ...
+     * @param template ...
+     * @return ...
+     * @throws ConfigurationException ...
      */
     /**
      * @return
      */
-    public Logger getInstance(String name, File logfile, String template)
-            throws ConfigurationException {
+    public Logger getInstance(final String name, final File logfile,
+        final String template) throws ConfigurationException {
         Logger logger;
 
         try {
             logger = (Logger) (Class.forName(classname).getDeclaredMethod(
-                    "getLogger",
-                    new Class[]{String.class, File.class, String.class})
-                    .invoke(null, new Object[]{name, logfile, template}));
+                "getLogger",
+                new Class[]{String.class, File.class, String.class})
+                .invoke(null, new Object[]{name, logfile, template}));
 
         } catch (Exception e) {
             throw new ConfigurationInstantiationException(e);

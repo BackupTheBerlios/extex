@@ -34,7 +34,7 @@ import de.dante.util.file.FileFinder;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
@@ -106,7 +106,7 @@ public interface Interpreter extends TokenSource,
      *
      * @param format the base name of the format file
      *
-     * @throws IOException ...
+     * @throws IOException in case of an IO error
      */
     void loadFormat(String format) throws IOException;
 

@@ -23,8 +23,10 @@ package de.dante.extex.hyphenation;
  * 
  * @see "TeX -- The Program [925]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface HyphenationList {
+    // to be completed
+    
 
 }

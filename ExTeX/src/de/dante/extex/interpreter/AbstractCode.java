@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class AbstractCode implements Code {
     /**
@@ -82,6 +82,7 @@ public class AbstractCode implements Code {
      */
     public void doAfterAssignment(final Context context,
             final TokenSource source) throws GeneralException {
+        // TODO: to be completed
     }
 
     /**
@@ -91,19 +92,20 @@ public class AbstractCode implements Code {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
         prefix.clear();
     }
 
     /**
      * In general this method is simply a noop. Classes which need this feature
      * can overwrite this method.
-     *
+     * 
      * @see de.dante.extex.interpreter.Code#set(java.lang.String)
      */
     public void set(final Context context, final String value)
-             throws GeneralException {
+        throws GeneralException {
+        // nothing to do
     }
 
 }

@@ -50,7 +50,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -424,6 +424,7 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = scanNonSpace();
 
         if (t == null) {
+            // TODO: to be completed
         } else if (t.equals(Catcode.OTHER, "-")) {
             neg = true;
             t = scanNonSpace();

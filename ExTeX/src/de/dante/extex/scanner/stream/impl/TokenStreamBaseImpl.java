@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ import java.util.Stack;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -64,12 +64,14 @@ public class TokenStreamBaseImpl implements TokenStream {
 		return false;
 	}
 
-	/**
-	 * @see de.dante.extex.token.TokenStream#get()
-	 */
-	public Token get(TokenFactory factory, Tokenizer tokenizer) throws GeneralException {
-		return (stack.size() == 0 ? getNext(factory, tokenizer) : (Token) stack.pop());
-	}
+    /**
+     * @see de.dante.extex.token.TokenStream#get()
+     */
+    public Token get(TokenFactory factory, Tokenizer tokenizer)
+        throws GeneralException {
+        return (stack.size() == 0 ? //
+            getNext(factory, tokenizer) : (Token) stack.pop());
+    }
 
 	/**
 	 * @see de.dante.extex.token.TokenStream#put(Token)
@@ -86,7 +88,8 @@ public class TokenStreamBaseImpl implements TokenStream {
 	 *
 	 * @return the next Token or <code>null</code>
 	 */
-	protected Token getNext(TokenFactory factory, Tokenizer tokenizer) throws GeneralException {
+    protected Token getNext(TokenFactory factory, Tokenizer tokenizer)
+        throws GeneralException {
 		return null;
 	}
 

@@ -20,17 +20,19 @@ package de.dante.util;
 
 
 /**
- * This is a bse class for exceptions which carry a return code.
+ * This is a base class for exceptions which carry a return code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GeneralException extends Exception {
-    /** the exit code attribute */
+    /**
+     * The field <tt>exitCode</tt> contains the exit code.
+     */
     private int exitCode = -1;
 
     /**
-     * Creates a new object.
+     * Creates a new object with the default exit code of -1.
      */
     public GeneralException() {
         super();
@@ -47,7 +49,7 @@ public class GeneralException extends Exception {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with the default exit code of -1.
      *
      * @param message the message
      */
@@ -56,7 +58,7 @@ public class GeneralException extends Exception {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with the default exit code of -1.
      *
      * @param message the message
      * @param cause the cause for a chained exception
@@ -66,7 +68,7 @@ public class GeneralException extends Exception {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with the default exit code of -1.
      *
      * @param cause the cause for a chained exception
      */

@@ -89,7 +89,7 @@ import de.dante.util.file.FileFinderList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -275,26 +275,25 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCatcode(char,
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode)
      */
-    public void setCatcode(final UnicodeChar c, final Catcode cc)
-            throws GeneralHelpingException {
+    public void setCatcode(final UnicodeChar c, final Catcode cc) {
         group.setCatcode(c, cc);
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCatcode(java.lang.String,
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode, boolean)
      */
     public void setCatcode(final UnicodeChar c, final Catcode cc,
-            final boolean global) throws GeneralHelpingException {
+            final boolean global) {
         group.setCatcode(c, cc, global);
     }
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-     *         Box)
+     *         de.dante.extex.interpreter.type.Box)
      */
     public void setBox(final String name, final Box value) {
         group.setBox(name, value);
@@ -302,7 +301,7 @@ public class ContextImpl implements Context, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-     *      Box, boolean)
+     *      de.dante.extex.interpreter.type.Box, boolean)
      */
     public void setBox(final String name, final Box value,
             final boolean global) {
@@ -416,8 +415,7 @@ public class ContextImpl implements Context, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#getHyphenation(int)
      */
-    public HyphenationTable getHyphenationTable(final int language)
-            throws GeneralException {
+    public HyphenationTable getHyphenationTable(final int language) {
         return hyphenationManager.getHyphenationTable(Integer
                 .toString(language));
     }
@@ -562,7 +560,7 @@ public class ContextImpl implements Context, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
      */
-    public void afterGroup(final Token t) throws GeneralException {
+    public void afterGroup(final Token t) {
         group.afterGroup(t);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedBox extends AbstractCode implements Code, Boxable,
         Serializable {
@@ -46,7 +46,7 @@ public class NamedBox extends AbstractCode implements Code, Boxable,
      * 
      * @param name the name of the box
      */
-    public NamedBox(String name) {
+    public NamedBox(final String name) {
         super(name);
     }
 
@@ -56,8 +56,9 @@ public class NamedBox extends AbstractCode implements Code, Boxable,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
         String key = getKey(source);
         source.scanOptionalEquals();
 
@@ -71,25 +72,35 @@ public class NamedBox extends AbstractCode implements Code, Boxable,
      * @see de.dante.extex.interpreter.Boxable#getBox(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Box getBox(Context context, TokenSource source)
-            throws GeneralException {
+    public Box getBox(final Context context, final TokenSource source)
+        throws GeneralException {
         String key = getKey(source);
         return context.getBox(key);
     }
 
     /**
      * Return the key (the name of the primitive) for the register.
-     * 
+     *
      * @param source ...
-     * 
+     *
      * @return ...
      */
-    protected String getKey(TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source) throws GeneralException {
         return getName();
     }
 
-    private Box scanBox(Context context, TokenSource source)
-            throws GeneralException {
+    /**
+     * ...
+     * 
+     * @param context the processor context
+     * @param source the source for new tokens
+     *
+     *  @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    private Box scanBox(final Context context, final TokenSource source)
+        throws GeneralException {
         Token t = source.getToken();
         if (t == null) {
             throw new GeneralException("expected box missing"); // TODO i18n

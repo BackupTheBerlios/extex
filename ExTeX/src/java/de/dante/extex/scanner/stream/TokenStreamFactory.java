@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ import de.dante.util.file.FileFinderConfigImpl;
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */
@@ -64,7 +64,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
      *
      * @param config the configuration to use
      */
-    public TokenStreamFactory(Configuration config)
+    public TokenStreamFactory(final Configuration config)
                        throws ConfigurationException {
         super();
         this.config    = config;
@@ -76,8 +76,10 @@ public class TokenStreamFactory implements FileFinder, Observable {
      * Provide a new instance of a token stream.
      *
      * @return the new instance
+     *
+     * @throws ConfigurationInstantiationException ...
      */
-    public TokenStream newInstance(String line, String encoding)
+    public TokenStream newInstance(final String line, final String encoding)
                             throws ConfigurationException {
         TokenStream stream;
 
@@ -103,19 +105,22 @@ public class TokenStreamFactory implements FileFinder, Observable {
      * Provide a new instance of a token stream.
      * 
      * @return the new instance
+     * 
+     * @throws ConfigurationInstantiationException ...
      */
-    public TokenStream newInstance(String file, String type, String encoding)
-            throws ConfigurationException, IOException, FileNotFoundException {
+    public TokenStream newInstance(final String file, final String type,
+        final String encoding) throws ConfigurationException, IOException,
+        FileNotFoundException {
         TokenStream stream;
-        File theFile = fileFinder.findFile(file,type);
-        if ( theFile ==  null) {
+        File theFile = fileFinder.findFile(file, type);
+        if (theFile == null) {
             throw new FileNotFoundException(file);
         }
-        
+
         try {
             stream = (TokenStream) Class.forName(classname).getConstructor(
-                    new Class[]{File.class, String.class}).newInstance(
-                    new Object[]{theFile, encoding});
+                new Class[]{File.class, String.class}).newInstance(
+                new Object[]{theFile, encoding});
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
 
@@ -138,25 +143,19 @@ public class TokenStreamFactory implements FileFinder, Observable {
 
     /**
      * Provide a new instance of a token stream.
-     *
+     * 
      * @return the new instance
+     * 
+     * @throws ConfigurationInstantiationException ...
      */
-    public TokenStream newInstance(InputStreamReader reader,
-                                   String encoding)
-                            throws ConfigurationException, 
-                                   IOException {
+    public TokenStream newInstance(final InputStreamReader reader,
+        final String encoding) throws ConfigurationException {
         TokenStream stream;
 
         try {
-            stream = (TokenStream) Class.forName(classname)
-                                        .getConstructor(new Class[] {
-                                                            Reader.class,// MGN change InputStreamReader to Reader
-                                                            String.class
-                                                        })
-                                        .newInstance(new Object[] {
-                                                         reader,
-                                                         encoding
-                                                     });
+            stream = (TokenStream) Class.forName(classname).getConstructor(
+                new Class[]{Reader.class, String.class}).newInstance(
+                new Object[]{reader, encoding});
         } catch (Exception e) {
             throw new ConfigurationInstantiationException(e);
         }
@@ -168,7 +167,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
     /**
      * @see de.dante.util.Observable#registerObserver(java.lang.String, de.dante.util.Observer)
      */
-    public void registerObserver(String name, Observer observer)
+    public void registerObserver(final String name, final Observer observer)
                           throws NotObservableException {
         if ("file".equals(name)) {
             openFileObservers.add(observer);
@@ -195,14 +194,14 @@ public class TokenStreamFactory implements FileFinder, Observable {
      * 
      * @param finder
      */
-    public void setFileFinder(FileFinder finder) {
+    public void setFileFinder(final FileFinder finder) {
         fileFinder = finder;
     }
     
     /**
      * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
      */
-    public File findFile(String name, String type)
+    public File findFile(final String name, final String type)
             throws ConfigurationException {
         openFileObservers.update(this,name);
         return fileFinder.findFile(name,type);

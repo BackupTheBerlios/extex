@@ -18,6 +18,7 @@
  */
 package de.dante.extex.typesetter.impl;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Glue;
@@ -28,7 +29,6 @@ import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -74,13 +74,18 @@ public class HorizontalListMaker extends AbstractListMaker
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
      */
     public void setSpacefactor(final Count f) throws GeneralException {
-        spacefactor = f.getValue();
+        long sf = f.getValue();
+        if (sf <= 0) {
+            throw new GeneralHelpingException("TTP.BadSpaceFactor", Long
+                .toString(sf));
+        }
+        spacefactor = sf;
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.node.CharNode)
      */
-    public void add(final Node c) throws GeneralException {
+    public void add(final Node c) {
         nodes.add(c);
         spacefactor = DEFAULT_SPACEFACTOR;
     }
@@ -91,7 +96,7 @@ public class HorizontalListMaker extends AbstractListMaker
 	 * @see "The TeXbook [p.76]"
 	 */
 	public void add(final TypesettingContext context,
-			final UnicodeChar symbol) throws GeneralException {
+			final UnicodeChar symbol) {
 		CharNode c = manager.getCharNodeFactory().newInstance(context, symbol);
 		nodes.add(c);
 
@@ -107,7 +112,7 @@ public class HorizontalListMaker extends AbstractListMaker
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
-    public void addGlue(final Glue g) throws GeneralException {
+    public void addGlue(final Glue g) {
         nodes.add(new GlueNode(g)); // TODO: use factory?
         spacefactor = DEFAULT_SPACEFACTOR;
     }
@@ -116,7 +121,7 @@ public class HorizontalListMaker extends AbstractListMaker
      * @see de.dante.extex.typesetter.ListMaker#addSpace()
      */
     public void addSpace(final TypesettingContext context,
-    		final Count sfCount) throws GeneralException {
+    		final Count sfCount) {
         long sf    = (sfCount != null ? sfCount.getValue() : spacefactor);
         Glue space = context.getFont()
                             .getSpace();

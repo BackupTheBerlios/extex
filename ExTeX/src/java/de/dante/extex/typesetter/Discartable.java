@@ -24,8 +24,8 @@ package de.dante.extex.typesetter;
  * @see "The TeXbook; Chapter 14, p. 95"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Discartable {
-
+    // nothing to do
 }

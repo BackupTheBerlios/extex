@@ -25,14 +25,13 @@ import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.file.FileFinder;
 
 /**
  * Factory for the Interpreter.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class InterpreterFactory {
 
@@ -45,21 +44,18 @@ public class InterpreterFactory {
     private Configuration config;
 
     /**
-     * The field <tt>classname</tt> ...
+     * The field <tt>classname</tt> contains the name of the class to
+     * instantiate.
      */
     private String classname;
 
     /**
-     * The field <tt>finder</tt> ...
-     */
-    private FileFinder finder = null;
-
-    /**
      * Creates a new object.
-     *
-     * @param configuration ...
-     *
-     *  @throws ConfigurationException ...
+     * 
+     * @param configuration the configuration object to use
+     * 
+     * @throws ConfigurationException in case that the attribute <tt>classname</tt>
+     *             is kissing
      */
     public InterpreterFactory(final Configuration configuration)
             throws ConfigurationException {
@@ -73,11 +69,12 @@ public class InterpreterFactory {
     }
 
     /**
-     * Get a instance for the interface Interpreter.
+     * Get a instance for the interface
+     * <tt>{@link de.dante.extex.interpreter.Interpreter Interpreter}</tt>.
      *
      * @return a new instance for the interface Interpreter
-     *
-     * @throws ConfigurationException ...
+     * 
+     * @throws ConfigurationException in case that the instantiation failes
      */
     public Interpreter newInstance() throws ConfigurationException {
         Interpreter interpreter;

@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NumberedToks extends NamedToks {
 
@@ -63,13 +63,14 @@ public class NumberedToks extends NamedToks {
 		super.expand(prefix, context, source, key);
 	}
 
-	/**
-	 * Return the register value as <code>Tokens</code> for <code>\the</code>.
-	 *
-	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
-	 */
-	public Tokens the(Context context, TokenSource source) throws GeneralException {
-		String key = getName() + "#" + Long.toString(source.scanNumber());
-		return context.getToks(key);
-	}
+    /**
+     * Return the register value as <code>Tokens</code> for <code>\the</code>.
+     * 
+     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
+     */
+    public Tokens the(Context context, TokenSource source)
+        throws GeneralException {
+        String key = getName() + "#" + Long.toString(source.scanNumber());
+        return context.getToks(key);
+    }
 }

@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 /**
  * This is a implementation of a token factory. This means that the factory
@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /** cache for active character tokens */
@@ -126,7 +126,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token newInstance(Catcode code, String value)
             throws CatcodeException {
         try {
-            return (Token) code.visit((CatcodeVisitor) this, value, null);
+            return (Token) code.visit(this, value, null);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -149,7 +149,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      */
     public Token newInstance(Catcode code, char c) throws CatcodeException {
         try {
-            return (Token) code.visit((CatcodeVisitor) this, null,
+            return (Token) code.visit(this, null,
                                       new UnicodeChar(c));
         } catch (CatcodeException e) {
             throw e;
@@ -167,7 +167,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             throws CatcodeException {
 
         try {
-            return (Token) code.visit((CatcodeVisitor) this, null, c);
+            return (Token) code.visit(this, null, c);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {

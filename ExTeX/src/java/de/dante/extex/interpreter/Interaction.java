@@ -26,20 +26,20 @@ import java.io.Serializable;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class Interaction implements Serializable {
     /** the constant for batch mode */
-    public static final Interaction BATCHMODE = new Interaction(0);
+    public static final Interaction BATCHMODE = new Interaction();
 
     /** the constant for non-stop mode */
-    public static final Interaction NONSTOPMODE = new Interaction(1);
+    public static final Interaction NONSTOPMODE = new Interaction();
 
     /** the constant for scroll mode*/
-    public static final Interaction SCROLLMODE = new Interaction(2);
+    public static final Interaction SCROLLMODE = new Interaction();
 
     /** the constant for error stop mode */
-    public static final Interaction ERRORSTOPMODE = new Interaction(3);
+    public static final Interaction ERRORSTOPMODE = new Interaction();
 
     /** the list for mapping integers to modes */
     private static final Interaction[] MODE_MAP = {BATCHMODE,
@@ -47,29 +47,26 @@ public final class Interaction implements Serializable {
                                                      SCROLLMODE,
                                                      ERRORSTOPMODE};
 
-    /** the encapsulated mode */
-    private int mode;
-
     /**
      * Creates a new object.
      * This constructor is private to avoid that other interaction modes than
      * the predefined ones are used.
-     *
-     * @param modeValue the internal value of the mode
      */
-    private Interaction(final int modeValue) {
+    private Interaction() {
         super();
-        this.mode = modeValue;
     }
 
     /**
-     * ...
-     *
+     * This is a factory method for interaction modes. It mapps numerical
+     * values to interaction mode instances. The instances are reused and may
+     * be compared with ==.
+     * 
      * @param mode the integer value for the interaction mode
-     *
+     * 
      * @return the appropriate interaction mode constant
-     *
-     * @throws MainUnknownInteractionException ...
+     * 
+     * @throws MainUnknownInteractionException in case that the numerical value
+     *             is out of range
      */
     public static Interaction get(final int mode)
             throws MainUnknownInteractionException {
@@ -81,7 +78,9 @@ public final class Interaction implements Serializable {
     }
 
     /**
-     * ...
+     * This is a factory method for interaction modes. It mapps numerical
+     * values to interaction mode instances. The instances are reused and may
+     * be compared with ==.
      *
      * Allowed values are the numbers 0 to 3 or the symbolic names
      * batchmode (0), nonstopmode (1), scrollmode (2), and errorstopmode (3).
@@ -111,4 +110,5 @@ public final class Interaction implements Serializable {
 
         throw new MainUnknownInteractionException(mode);
     }
+
 }
