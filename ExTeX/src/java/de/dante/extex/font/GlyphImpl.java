@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlyphImpl implements Glyph {
 
@@ -335,8 +335,10 @@ public class GlyphImpl implements Glyph {
             try {
                 Ligature lig = (Ligature) ligature.get(String.valueOf(uc
                         .getCodePoint()));
-                int i = Integer.parseInt(lig.getLigid());
-                liguc = new UnicodeChar(i);
+                if (lig != null) {
+                    int i = Integer.parseInt(lig.getLigid());
+                    liguc = new UnicodeChar(i);
+                }
             } catch (Exception e) {
                 // use default
                 liguc = null;
