@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.AbstractCode;
@@ -23,6 +24,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -32,7 +34,7 @@ import de.dante.util.GeneralException;
  * <code>\string</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class StringPrimitive extends AbstractCode {
 
@@ -58,7 +60,13 @@ public class StringPrimitive extends AbstractCode {
             throws GeneralException {
 
         Token t = source.getToken();
-        source.push(new Tokens(context, t.getValue()));
+        if (t instanceof ControlSequenceToken) {
+            char esc = (char) (context.getCount("escapechar").getValue());
+            source.push(new Tokens(context, Character.toString(esc)
+                                            + t.getValue()));
+        } else {
+            source.push(new Tokens(context, t.getValue()));
+        }
     }
 
 }

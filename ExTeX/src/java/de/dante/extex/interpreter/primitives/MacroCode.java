@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode {
 
@@ -114,7 +114,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
                 } else if (t instanceof MacroParamToken) {
                     toks.add(t);
                 } else if (t instanceof OtherToken && t.getChar().isDigit()) {
-                    no = t.getValue().charAt(0) - '0';
+                    no = t.getChar().getCodePoint() - '0';
                     if (args[no] == null) {
                         throw new GeneralException("internal error");
                         //TODO: error
@@ -196,24 +196,18 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
      *
      * @return ...
      *
-     * @throws GeneralHelpingException in case of an error
      * @throws GeneralException in case of an error
      */
     private int matchParameter(final Context context, final TokenSource source,
             final Tokens[] args, final int len, final int i)
-            throws GeneralHelpingException, GeneralException {
+            throws GeneralException {
 
-        int pi = i + 1;
-
-        if (pi >= len) {
+        if (i + 1 >= len) {
             throw new GeneralHelpingException("TTP.UseDoesntMatch",
                     printableControlSequence(context));
-            //TODO;
-            // maybe
-            // another
-            // error
-            // text?
+            //TODO; maybe another error text?
         }
+        int pi = i + 1;
         Token ti = pattern.get(pi);
         if (ti instanceof MacroParamToken) {
             Token t = source.getToken();
@@ -223,18 +217,18 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
             }
             return pi;
         } else if (ti instanceof OtherToken && ti.getChar().isDigit()) {
-            int no = ti.getValue().charAt(0) - '0';
+            int no = ti.getChar().getCodePoint() - '0';
             ++pi;
             if (pi >= len) {
-                args[no] = scanToken(context, source);
+                args[no] = getTokenOrBlock(context, source);
             } else if (pattern.get(pi) instanceof MacroParamToken
             //TODO #1##
             ) {
-                args[no] = scanToken(context, source);
+                args[no] = getTokenOrBlock(context, source);
             } else {
                 args[no] = scanTo(context, source, pattern.get(pi));
             }
-            return pi;
+            return pi - 1;
         }
 
         throw new GeneralHelpingException("TTP.UseDoesntMatch",
@@ -244,7 +238,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
 
     /**
      * ...
-     * 
+     *
      * @param context the processor context
      * @param source the source for new tokens
      *
@@ -252,7 +246,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
      *
      * @throws GeneralException in case of an error
      */
-    private Tokens scanToken(final Context context, final TokenSource source)
+    private Tokens getTokenOrBlock(final Context context, final TokenSource source)
             throws GeneralException {
 
         Token t = source.getToken();

@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.CountConvertable;
 import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
@@ -61,7 +63,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -101,6 +103,14 @@ public abstract class Moritz implements TokenSource, Observable {
      * file.
      */
     private ObserverList observersMessage = new ObserverList();
+
+    /**
+     * The field <tt>observersLogMessage</tt> contains the observer list is used
+     * for the observers which are registered to receive notifications when a
+     * log message is send from another component. This message shuld be made
+     * accessible to the user in some way, e.g. in the log file.
+     */
+    private ObserverList observersLogMessage = new ObserverList();
 
     /**
      * The field <tt>observersPop</tt> contains the observer list is used for
@@ -212,7 +222,7 @@ public abstract class Moritz implements TokenSource, Observable {
     public Tokens getTokens() throws GeneralException {
 
         Tokens toks = new Tokens();
-        Token token = getNonSpace();
+        Token token = getToken();
 
         if (token == null) {
             throw new GeneralHelpingException("EOF");
@@ -229,7 +239,7 @@ public abstract class Moritz implements TokenSource, Observable {
             if (token.isa(Catcode.LEFTBRACE)) {
                 ++balance;
             } else if (token instanceof RightBraceToken && --balance <= 0) {
-                break;
+                return toks;
             }
 
             toks.add(token);
@@ -456,6 +466,10 @@ public abstract class Moritz implements TokenSource, Observable {
      *   <td>message</td>
      *   <td>...</td>
      *  </tr>
+     *  <tr>
+     *   <td>log</td>
+     *   <td>...</td>
+     *  </tr>
      * </table>
      *
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
@@ -474,6 +488,8 @@ public abstract class Moritz implements TokenSource, Observable {
             observersCloseStream.add(observer);
         } else if ("message".equals(name)) {
             observersMessage.add(observer);
+        } else if ("log".equals(name)) {
+            observersLogMessage.add(observer);
         } else {
             throw new NotObservableException(name);
         }
@@ -513,11 +529,10 @@ public abstract class Moritz implements TokenSource, Observable {
             throw new GeneralHelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "-")) {
             return -scanNumber();
-        } else if (t.equals(Catcode.OTHER, "+")) {
-            return scanNumber();
+        } else if (!t.equals(Catcode.OTHER, "+")) {
+            stream.put(t);
         }
 
-        stream.put(t);
         return scanNumber();
     }
 
@@ -656,7 +671,7 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     public long scanNumber() throws GeneralException {
 
-        return scanNumber(scanNonSpace());
+        return scanNumber(getNonSpace());
     }
 
     /**
@@ -672,104 +687,124 @@ public abstract class Moritz implements TokenSource, Observable {
     public long scanNumber(final Token token) throws GeneralException {
 
         long n = 0;
-        Token t;
+        Token t = token;
 
-        if (token != null && token.isa(Catcode.OTHER)) {
-            int c = token.getChar().getCodePoint();
-            //System.err.println(token.toString());
-            switch (c) {
-                case '0' :
-                case '1' :
-                case '2' :
-                case '3' :
-                case '4' :
-                case '5' :
-                case '6' :
-                case '7' :
-                case '8' :
-                case '9' :
-                    n = c - '0';
+        while (t != null) {
 
-                    for (t = scanToken(); t != null && t.isa(Catcode.OTHER)
-                                          && t.getValue().matches("[0-9]"); t = scanToken()) {
-                        n = n * 10 + t.getValue().charAt(0) - '0';
-                    }
+            if (token.isa(Catcode.OTHER)) {
+                int c = token.getChar().getCodePoint();
+                //System.err.println(token.toString());
+                switch (c) {
+                    case '0' :
+                    case '1' :
+                    case '2' :
+                    case '3' :
+                    case '4' :
+                    case '5' :
+                    case '6' :
+                    case '7' :
+                    case '8' :
+                    case '9' :
+                        n = c - '0';
 
-                    if (t != null) {
-                        stream.put(t);
-                    }
-                    skipSpace();
-                    return n;
-
-                case '`' :
-                    t = getToken();
-
-                    if (t != null) {
-                        return t.getValue().charAt(0);
-                        //TODO: this might fail for empty cs
-                    }
-                    // fall through to error handling
-                    break;
-
-                case '\'' :
-                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                                         && t.getValue().matches("[0-7]"); //
-                    t = scanToken()) {
-                        n = n * 8 + t.getValue().charAt(0) - '0';
-                    }
-
-                    if (t != null) {
-                        stream.put(t);
-                    }
-                    skipSpace();
-                    return n;
-
-                case '"' :
-                    for (t = scanToken(); t != null
-                                          && t.isa(Catcode.OTHER)
-                                          && t.getValue()
-                                                  .matches("[0-9a-fA-F]"); //
-                    t = scanToken()) {
-                        switch (t.getValue().charAt(0)) {
-                            case '0' :
-                            case '1' :
-                            case '2' :
-                            case '3' :
-                            case '4' :
-                            case '5' :
-                            case '6' :
-                            case '7' :
-                            case '8' :
-                            case '9' :
-                                n = n * 16 + t.getValue().charAt(0) - '0';
-                                break;
-                            case 'a' :
-                            case 'b' :
-                            case 'c' :
-                            case 'd' :
-                            case 'e' :
-                            case 'f' :
-                                n = n * 16 + t.getValue().charAt(0) - 'a' + 10;
-                                break;
-                            case 'A' :
-                            case 'B' :
-                            case 'C' :
-                            case 'D' :
-                            case 'E' :
-                            case 'F' :
-                                n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
-                                break;
-                            default :
-                                throw new GeneralPanicException(
-                                        "TTP.Confusion");
+                        for (t = scanToken(); t != null && t.isa(Catcode.OTHER)
+                                              && t.getValue().matches("[0-9]"); t = scanToken()) {
+                            n = n * 10 + t.getValue().charAt(0) - '0';
                         }
-                    }
 
-                    if (t != null) {
-                        stream.put(t);
-                    }
-                    skipSpace();
-                    return n;
+                        if (t != null) {
+                            stream.put(t);
+                        }
+                        skipSpace();
+                        return n;
+
+                    case '`' :
+                        t = getToken();
+
+                        if (t != null) {
+                            return t.getValue().charAt(0);
+                            //TODO: this might fail for empty cs
+                        }
+                        // fall through to error handling
+                        break;
+
+                    case '\'' :
+                        for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                             && t.getValue().matches("[0-7]"); //
+                        t = scanToken()) {
+                            n = n * 8 + t.getValue().charAt(0) - '0';
+                        }
+
+                        if (t != null) {
+                            stream.put(t);
+                        }
+                        skipSpace();
+                        return n;
+
+                    case '"' :
+                        for (t = scanToken(); t != null
+                                              && t.isa(Catcode.OTHER)
+                                              && t.getValue()
+                                                      .matches("[0-9a-fA-F]"); //
+                        t = scanToken()) {
+                            switch (t.getValue().charAt(0)) {
+                                case '0' :
+                                case '1' :
+                                case '2' :
+                                case '3' :
+                                case '4' :
+                                case '5' :
+                                case '6' :
+                                case '7' :
+                                case '8' :
+                                case '9' :
+                                    n = n * 16 + t.getValue().charAt(0) - '0';
+                                    break;
+                                case 'a' :
+                                case 'b' :
+                                case 'c' :
+                                case 'd' :
+                                case 'e' :
+                                case 'f' :
+                                    n = n * 16 + t.getValue().charAt(0) - 'a'
+                                        + 10;
+                                    break;
+                                case 'A' :
+                                case 'B' :
+                                case 'C' :
+                                case 'D' :
+                                case 'E' :
+                                case 'F' :
+                                    n = n * 16 + t.getValue().charAt(0) - 'A'
+                                        + 10;
+                                    break;
+                                default :
+                                    throw new GeneralPanicException(
+                                            "TTP.Confusion");
+                            }
+                        }
+
+                        if (t != null) {
+                            stream.put(t);
+                        }
+                        skipSpace();
+                        return n;
+
+                    default:
+                        throw new GeneralHelpingException("TTP.MissingNumber");
+                }
+            } else if (t.isa(Catcode.ESCAPE) || t.isa(Catcode.ACTIVE)) {
+                Code code = context.getCode(t);
+                if (code == null) {
+                    throw new GeneralHelpingException("TTP.MissingNumber");
+                }
+                if (code instanceof CountConvertable) {
+                    return ((CountConvertable) code).convertCount(context, this);
+                }
+                if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, this, null);
+                    t = getToken();
+                }
             }
         }
 
@@ -805,14 +840,8 @@ public abstract class Moritz implements TokenSource, Observable {
                 case '9' :
                     n = token.getValue().charAt(0) - '0';
 
-                    for (t = getToken(); //
-                    t != null
-                                                                                && t
-                                                                                        .isa(Catcode.OTHER)
-                                                                                && t
-                                                                                        .getValue()
-                                                                                        .matches(
-                                                                                                 "[0-9]"); //
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-9]"); //
                     t = getToken()) {
                         n = n * 10 + t.getValue().charAt(0) - '0';
                     }
@@ -832,14 +861,8 @@ public abstract class Moritz implements TokenSource, Observable {
                 // fall through to error handling
 
                 case '\'' :
-                    for (t = getToken(); //
-                    t != null
-                                                                                && t
-                                                                                        .isa(Catcode.OTHER)
-                                                                                && t
-                                                                                        .getValue()
-                                                                                        .matches(
-                                                                                                 "[0-7]"); //
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-7]"); //
                     t = getToken()) {
                         n = n * 8 + t.getValue().charAt(0) - '0';
                     }
@@ -851,14 +874,8 @@ public abstract class Moritz implements TokenSource, Observable {
                     return n;
 
                 case '"' :
-                    for (t = getToken(); //
-                    t != null
-                                                                                && t
-                                                                                        .isa(Catcode.OTHER)
-                                                                                && t
-                                                                                        .getValue()
-                                                                                        .matches(
-                                                                                                 "[0-9a-fA-F]"); //
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-9a-fA-F]"); //
                     t = getToken()) {
                         switch (t.getValue().charAt(0)) {
                             case '0' :
@@ -930,10 +947,13 @@ public abstract class Moritz implements TokenSource, Observable {
      *      java.lang.String)
      */
     public void update(final String name, final String text)
-            throws GeneralException, NotObservableException {
+            throws GeneralException,
+                NotObservableException {
 
         if ("message".equals(name)) {
             observersMessage.update(this, text);
+        } else if ("log".equals(name)) {
+            observersLogMessage.update(this, text);
         } else {
             throw new NotObservableException(name);
         }
@@ -943,7 +963,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Tries to expand a token. If the given token is expandable then it is
-     * recursively expanded and the result is pushed.  The first not expandable
+     * recursively expanded and the result is pushed.  The first not-expandable
      * token is returned.
      *
      * @param token the Token to expand
