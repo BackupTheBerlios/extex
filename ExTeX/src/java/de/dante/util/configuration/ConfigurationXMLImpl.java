@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -219,14 +219,18 @@ public class ConfigurationXMLImpl implements Configuration {
      *
      * @return the sub-configuration
      *
-     * @throws ConfigurationNotFoundException in case that the given name does
-     * not correspond to one of the tags in the current configuration
-     * @throws ConfigurationException in case of another type of error
+     * @throws ConfigurationNotFoundException ...
+     * @throws ConfigurationIOException ...
+     * @throws ConfigurationSyntaxException ...
+     * @throws ConfigurationInvalidResourceException ...
      *
      * @see #findConfiguration(String)
      */
     public Configuration getConfiguration(final String name)
-            throws ConfigurationException {
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
 
         Configuration cfg = findConfiguration(name);
 
@@ -282,9 +286,9 @@ public class ConfigurationXMLImpl implements Configuration {
      */
     public Configuration findConfiguration(final String name)
             throws ConfigurationInvalidResourceException,
-            ConfigurationNotFoundException,
-            ConfigurationSyntaxException,
-            ConfigurationIOException {
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
 
         for (Node node = root.getFirstChild(); node != null; node = node
                 .getNextSibling()) {
