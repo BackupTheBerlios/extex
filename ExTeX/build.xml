@@ -6,8 +6,11 @@
         <echo>Usage: ant &lt;target&gt;
           The following targets are supported:
           compile
+              Compile all file except the tests	
           jar
+              Create the jar file
           javadoc
+              Create the javadoc documentation in target/javadoc. 
           checkstyle
           tests
           deploy
@@ -21,7 +24,7 @@
     <property name="src" location="src/java"/>
     <property name="src.tests" location="src/test"/>
     <property name="classes" location="target/classes"/>
-    <property name="javadoc" location="doc/javadoc"/>
+    <property name="javadoc" location="target/javadoc"/>
     <property name="javadocxml" location="doc/javadocxml"/>
     <property name="dbdoclet" location="doc/javadocdb"/>
     <property name="tmp" location="tmp"/>
@@ -215,7 +218,7 @@
             <packageset dir="${src}" defaultexcludes="yes"/>
         </javadoc>
         <copy todir="${javadoc}">
-            <fileset dir="src">
+            <fileset dir="src/java">
                 <include name="**/*.gif"/>
                 <include name="**/*.png"/>
             </fileset>
