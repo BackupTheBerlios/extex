@@ -41,6 +41,7 @@ import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.CountChangeObserver;
 import de.dante.extex.interpreter.context.Direction;
+import de.dante.extex.interpreter.context.HyphenationFactoryCarrier;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -74,6 +75,7 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingException;
+import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.observer.NotObservableException;
@@ -115,7 +117,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class ContextImpl
         implements
@@ -124,8 +126,10 @@ public class ContextImpl
             DocumentWriterOptions,
             TypesetterOptions,
             TokenStreamOptions,
+            HyphenationFactoryCarrier,
             Observable,
             Localizable,
+            Configurable,
             Serializable {
 
     /**
@@ -268,7 +272,7 @@ public class ContextImpl
      * Creates a new object.
      *
      */
-    protected ContextImpl() {
+    public ContextImpl() {
 
         super();
         init();
@@ -281,34 +285,15 @@ public class ContextImpl
      *
      * @throws ConfigurationException in case of an configuration error
      * @throws GeneralException in case of an execution error
+     *
+     * @deprecated Use the interface Configurable instead
      */
-    public ContextImpl(final Configuration configuration)
+    protected ContextImpl(final Configuration configuration)
             throws ConfigurationException,
                 GeneralException {
 
         this();
-        groupFactory = new GroupFactory(configuration
-                .getConfiguration(GROUP_TAG));
-        openGroup();
-
-        Configuration typesettingConfig = configuration
-                .getConfiguration(TYPESETTING_CONTEXT_TAG);
-
-        if (typesettingConfig == null) {
-            throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
-                    configuration.toString());
-        }
-
-        tcFactory = new TypesettingContextFactory(typesettingConfig);
-        TypesettingContext typesettingContext = tcFactory.newInstance();
-
-        typesettingContext.setFont(new NullFont());
-        //typesettingContext.setLanguage(config.getValue("Language"));
-        setTypesettingContext(typesettingContext);
-
-        magnificationMax = configuration.getValueAsInteger(
-                "maximalMagnification", (int) MAGNIFICATION_MAX);
-
+        configure(configuration);
     }
 
     /**
@@ -360,6 +345,36 @@ public class ContextImpl
             source.push(toks);
         }
 
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.configuration.Configuration)
+     */
+    public void configure(final Configuration configuration)
+            throws ConfigurationException {
+
+        groupFactory = new GroupFactory(configuration
+                .getConfiguration(GROUP_TAG));
+        openGroup();
+
+        Configuration typesettingConfig = configuration
+                .getConfiguration(TYPESETTING_CONTEXT_TAG);
+
+        if (typesettingConfig == null) {
+            throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
+                    configuration.toString());
+        }
+
+        tcFactory = new TypesettingContextFactory(typesettingConfig);
+        TypesettingContext typesettingContext = tcFactory.newInstance();
+
+        typesettingContext.setFont(new NullFont());
+        //typesettingContext.setLanguage(config.getValue("Language"));
+        setTypesettingContext(typesettingContext);
+
+        magnificationMax = configuration.getValueAsInteger(
+                "maximalMagnification", (int) MAGNIFICATION_MAX);
     }
 
     /**
@@ -719,20 +734,20 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getToksOrNull(java.lang.String)
-     */
-    public Tokens getToksOrNull(final String name) {
-
-        return group.getToksOrNull(name);
-    }
-
-    /**
      * @see de.dante.extex.scanner.stream.TokenStreamOptions#getToksOption(
      *      java.lang.String)
      */
     public FixedTokens getToksOption(final String name) {
 
         return group.getToks(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getToksOrNull(java.lang.String)
+     */
+    public Tokens getToksOrNull(final String name) {
+
+        return group.getToksOrNull(name);
     }
 
     /**
@@ -769,7 +784,7 @@ public class ContextImpl
 
         countChangeObservers = new HashMap();
         codeChangeObservers = new HashMap();
-        hyphenationManager = new HyphenationFactory();
+        hyphenationManager = new HyphenationFactory(); //TODO gene: make it configurable
         observersInteraction = new ObserverList();
     }
 
@@ -1008,6 +1023,16 @@ public class ContextImpl
             final boolean global) {
 
         group.setSkip(name, value, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.HyphenationFactoryCarrier#setHyphenationfactory(
+     *      de.dante.extex.hyphenation.HyphenationFactory)
+     */
+    public void setHyphenationfactory(
+            final HyphenationFactory hyphenationFactory) {
+
+        hyphenationManager = hyphenationFactory;
     }
 
     /**
