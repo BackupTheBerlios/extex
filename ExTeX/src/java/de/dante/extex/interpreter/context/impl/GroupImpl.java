@@ -57,7 +57,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -439,10 +439,22 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * Getter for a input file register.  In the case that the named
+     * descriptor doe not exist yet a new one is returned. Especially if the
+     * name is <code>null</code> then the default input stream is used.
+     *
+     * @param name the name or the number of the file register
+     *
+     * @return the input file descriptor
+     *
      * @see de.dante.extex.interpreter.context.impl.Group#getInFile(
      *      java.lang.String)
      */
     public InFile getInFile(final String name) {
+
+        if (name == null) {
+            return new InFile(standardTokenStream);
+        }
 
         InFile inFile = (InFile) (inFileMap.get(name));
 
