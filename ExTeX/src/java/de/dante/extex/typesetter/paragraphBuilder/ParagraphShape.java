@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ParagraphShape {
 
@@ -82,5 +82,15 @@ public class ParagraphShape {
 
         int i = points.size() / 2;
         return (Dimen) points.get((index > i ? i : index) * 2 + 1);
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public long getSize() {
+
+        return points.size();
     }
 }
