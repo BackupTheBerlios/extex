@@ -76,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -116,20 +116,29 @@ public class Hbox extends AbstractCode implements Boxable {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        //TODO afterassign
-        source.push(context.getToks("everyhbox"));
-
         Box box;
         try {
             if (source.getKeyword("to")) {
                 Dimen d = new Dimen(context, source);
+
+                //TODO afterassign
+                source.push(context.getToks("everyhbox"));
+
                 box = new Box(context, source, typesetter, true);
                 box.setWidth(d);
             } else if (source.getKeyword("spread")) {
                 Dimen d = new Dimen(context, source);
+
+                //TODO afterassign
+                source.push(context.getToks("everyhbox"));
+
                 box = new Box(context, source, typesetter, true);
                 box.spreadWidth(d);
             } else {
+
+                //TODO afterassign
+                source.push(context.getToks("everyhbox"));
+
                 box = new Box(context, source, typesetter, true);
             }
         } catch (EofHelpingException e) {
