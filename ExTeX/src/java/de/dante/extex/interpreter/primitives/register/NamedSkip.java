@@ -20,9 +20,11 @@ package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -37,9 +39,10 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class NamedSkip extends AbstractAssignment {
+public class NamedSkip extends AbstractAssignment implements Theable {
+
     /**
      * Creates a new object.
      *
@@ -51,11 +54,11 @@ public class NamedSkip extends AbstractAssignment {
 
     /**
      * Return the key (the name of the primitive) for the register.
-     * 
+     *
      * @param source the source for new tokens
-     * 
+     *
      * @return the key for the current register
-     * 
+     *
      * @throws GeneralException in case that a derived class need to throw an
      *             Exception this one is declared.
      */
@@ -95,4 +98,14 @@ public class NamedSkip extends AbstractAssignment {
 //                         (value.equals("") ? 0 : ...));
     }
 
+    /**
+     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Tokens the(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        String key = getKey(source);
+        return context.getGlue(key).toToks(context.getTokenFactory());
+    }
 }
