@@ -19,15 +19,17 @@
 
 package de.dante.extex.interpreter;
 
+import java.io.Serializable;
+
 import de.dante.util.Locator;
 
 /**
  * This class represents a Confitional for a normal \if \else \fi construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Conditional {
+public class Conditional implements Serializable {
 
     /**
      * The field <tt>locator</tt> contains the locator to the position of the
