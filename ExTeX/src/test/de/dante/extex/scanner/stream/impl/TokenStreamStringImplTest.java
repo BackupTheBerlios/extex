@@ -34,23 +34,158 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
     /**
-     * Creates a new object.
-     * @param name the name
+     * Mock configuration class.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.12 $
      */
-    public TokenStreamStringImplTest(final String name) {
+    private static class MockConfiguration implements Configuration {
 
-        super(name);
+        /**
+         * The field <tt>classname</tt> contains the name of the class to use.
+         */
+        private String classname = "de.dante.extex.interpreter.context.impl.ContextImpl";
+
+        /**
+         * Creates a new object.
+         */
+        public MockConfiguration() {
+
+            super();
+        }
+
+        /**
+         * Creates a new object.
+         * @param cn the class name
+         */
+        public MockConfiguration(final String cn) {
+
+            super();
+            classname = cn;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#findConfiguration(
+         *      java.lang.String)
+         */
+        public Configuration findConfiguration(final String key) {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#findConfiguration(
+         *      java.lang.String,
+         *      java.lang.String)
+         */
+        public Configuration findConfiguration(final String key,
+                final String attribute) throws ConfigurationException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getAttribute(
+         *      java.lang.String)
+         */
+        public String getAttribute(final String name) {
+
+            return classname;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getConfiguration(
+         *      java.lang.String)
+         */
+        public Configuration getConfiguration(final String key) {
+
+            return new MockConfiguration(
+                    "de.dante.extex.interpreter.context.impl.GroupImpl");
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getConfiguration(
+         *      java.lang.String,
+         *      java.lang.String)
+         */
+        public Configuration getConfiguration(final String key,
+                final String attribute) {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getValue()
+         */
+        public String getValue() {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getValue(
+         *      java.lang.String)
+         */
+        public String getValue(final String key) {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+         *      java.lang.String,
+         *      int)
+         */
+        public int getValueAsInteger(final String key, final int defaultValue) {
+
+            return 0;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#getValues(
+         *      java.lang.String)
+         */
+        public StringList getValues(final String key) {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.util.configuration.Configuration#iterator(
+         *      java.lang.String)
+         */
+        public Iterator iterator(final String key) {
+
+            return null;
+        }
     }
+
+    /**
+     * The field <tt>context</tt> contains the context to use.
+     */
+    private static Context context;
+
+    /**
+     * The field <tt>fac</tt> contains the token factory to use.
+     */
+    private static TokenFactory fac;
+
+    /**
+     * The field <tt>tokenizer</tt> contains the tokenizer to use for
+     * categorizing characters.
+     */
+    private static Tokenizer tokenizer;
 
     /**
      * Command line interface.
@@ -62,20 +197,26 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * The field <tt>fac</tt> contains the token factory to use.
+     * Creates a new object.
+     * @param name the name
      */
-    private static TokenFactory fac;
+    public TokenStreamStringImplTest(final String name) {
+
+        super(name);
+    }
 
     /**
-     * The field <tt>context</tt> contains the context to use.
+     * Create a stream of tokens fed from a string.
+     *
+     * @param line the input string
+     * @return the new token stream
+     * @throws IOException in case of an error
      */
-    private static Context context;
+    private TokenStream makeStream(final String line) throws IOException {
 
-    /**
-     * The field <tt>tokenizer</tt> contains the tokenizer to use for
-     * categorizing characters.
-     */
-    private static Tokenizer tokenizer;
+        return new TokenStreamImpl(null, null, new StringReader(line),
+                Boolean.FALSE, "#");
+    }
 
     /**
      * @see junit.framework.TestCase#setUp()
@@ -97,17 +238,7 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * The empty string does not contain any characters
-     * @throws Exception in case of an error
-     */
-    public void testEmpty() throws Exception {
-
-        TokenStream stream = makeStream("");
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
+     * The digit 1 is parsed as other character and nothing more.
      * @throws Exception in case of an error
      */
     public void test1() throws Exception {
@@ -118,7 +249,7 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * ...
+     * The digits 1 and 2 are parsed as other character and nothing more.
      * @throws Exception in case of an error
      */
     public void test12() throws Exception {
@@ -126,84 +257,6 @@ public class TokenStreamStringImplTest extends TestCase {
         TokenStream stream = makeStream("12");
         assertEquals("the character 1", stream.get(fac, tokenizer).toString());
         assertEquals("the character 2", stream.get(fac, tokenizer).toString());
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * A single space at the beginning of the processing is skipped
-     * @throws Exception in case of an error
-     */
-    public void testSpace() throws Exception {
-
-        TokenStream stream = makeStream(" ");
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
-     * @throws Exception in case of an error
-     */
-    public void testSpaces() throws Exception {
-
-        TokenStream stream = makeStream("  ");
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
-     * @throws Exception in case of an error
-     */
-    public void testSpace2() throws Exception {
-
-        TokenStream stream = makeStream(". ");
-        assertEquals("the character .", stream.get(fac, tokenizer).toString());
-        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
-     * @throws Exception in case of an error
-     */
-    public void testSpace3() throws Exception {
-
-        TokenStream stream = makeStream(". ");
-        assertEquals("the character .", stream.get(fac, tokenizer).toString());
-        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
-     * @throws Exception in case of an error
-     */
-    public void testIgnore() throws Exception {
-
-        TokenStream stream = makeStream("\0");
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
-     * @throws Exception in case of an error
-     */
-    public void testLetter() throws Exception {
-
-        TokenStream stream = makeStream("A");
-        assertEquals("the letter A", stream.get(fac, tokenizer).toString());
-        assertNull(stream.get(fac, tokenizer));
-    }
-
-    /**
-     * ...
-     * @throws Exception in case of an error
-     */
-    public void testCaretEnd() throws Exception {
-
-        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
-        TokenStream stream = makeStream("^");
-        assertEquals("superscript character ^", stream.get(fac, tokenizer)
-                .toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
@@ -262,14 +315,12 @@ public class TokenStreamStringImplTest extends TestCase {
      * ...
      * @throws Exception in case of an error
      */
-    public void testMixed() throws Exception {
+    public void testCaretEnd() throws Exception {
 
-        TokenStream stream = makeStream("12 34");
-        assertEquals("the character 1", stream.get(fac, tokenizer).toString());
-        assertEquals("the character 2", stream.get(fac, tokenizer).toString());
-        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
-        assertEquals("the character 3", stream.get(fac, tokenizer).toString());
-        assertEquals("the character 4", stream.get(fac, tokenizer).toString());
+        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK, true);
+        TokenStream stream = makeStream("^");
+        assertEquals("superscript character ^", stream.get(fac, tokenizer)
+                .toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
@@ -323,132 +374,95 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * ...
-     *
-     * @param line ...
-     * @return the new token stream
-     * @throws IOException in case of an error
+     * The empty string does not contain any characters
+     * @throws Exception in case of an error
      */
-    private TokenStream makeStream(final String line) throws IOException {
+    public void testEmpty() throws Exception {
 
-        return new TokenStreamImpl(null, null, new StringReader(line),
-                Boolean.FALSE, "#");
+        TokenStream stream = makeStream("");
+        assertNull(stream.get(fac, tokenizer));
     }
 
     /**
-     * Mock configuration class.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * ...
+     * @throws Exception in case of an error
      */
-    private static class MockConfiguration implements Configuration {
+    public void testIgnore() throws Exception {
 
-        /**
-         * The field <tt>classname</tt> contains the name of the class to use.
-         */
-        private String classname = "de.dante.extex.interpreter.context.impl.ContextImpl";
+        TokenStream stream = makeStream("\0");
+        assertNull(stream.get(fac, tokenizer));
+    }
 
-        /**
-         * Creates a new object.
-         */
-        public MockConfiguration() {
+    /**
+     * ...
+     * @throws Exception in case of an error
+     */
+    public void testLetter() throws Exception {
 
-            super();
-        }
+        TokenStream stream = makeStream("A");
+        assertEquals("the letter A", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
 
-        /**
-         * Creates a new object.
-         * @param cn the class name
-         */
-        public MockConfiguration(final String cn) {
+    /**
+     * ...
+     * @throws Exception in case of an error
+     */
+    public void testMixed() throws Exception {
 
-            super();
-            classname = cn;
-        }
+        TokenStream stream = makeStream("12 34");
+        assertEquals("the character 1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 2", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 3", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 4", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
 
-        /**
-         * @see de.dante.util.configuration.Configuration#getAttribute(
-         *      java.lang.String)
-         */
-        public String getAttribute(final String name) {
+    /**
+     * A single space at the beginning of the processing is skipped
+     * @throws Exception in case of an error
+     */
+    public void testSpace() throws Exception {
 
-            return classname;
-        }
+        TokenStream stream = makeStream(" ");
+        assertNull(stream.get(fac, tokenizer));
+    }
 
-        /**
-         * @see de.dante.util.configuration.Configuration#getConfiguration(
-         *      java.lang.String,
-         *      java.lang.String)
-         */
-        public Configuration getConfiguration(final String key,
-                final String attribute) {
+    /**
+     * The character period and space in sequence are parsed into appropriate
+     * tokens.
+     * @throws Exception in case of an error
+     */
+    public void testSpace2() throws Exception {
 
-            return null;
-        }
+        TokenStream stream = makeStream(". ");
+        assertEquals("the character .", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
 
-        /**
-         * @see de.dante.util.configuration.Configuration#findConfiguration(
-         *      java.lang.String)
-         */
-        public Configuration findConfiguration(final String key) {
+    /**
+     * The character period and two spaces in sequence are parsed into
+     * appropriate tokens. The two spaces are collapsed into one.
+     * @throws Exception in case of an error
+     */
+    public void testSpace3() throws Exception {
 
-            return null;
-        }
+        TokenStream stream = makeStream(".  ");
+        assertEquals("the character .", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
 
-        /**
-         * @see de.dante.util.configuration.Configuration#getConfiguration(
-         *      java.lang.String)
-         */
-        public Configuration getConfiguration(final String key) {
+    /**
+     * Two spaces at the beginning are ignored.
+     * @throws Exception in case of an error
+     */
+    public void testSpaces() throws Exception {
 
-            return new MockConfiguration(
-                    "de.dante.extex.interpreter.context.impl.GroupImpl");
-        }
-
-        /**
-         * @see de.dante.util.configuration.Configuration#getValue()
-         */
-        public String getValue() {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.util.configuration.Configuration#getValue(
-         *      java.lang.String)
-         */
-        public String getValue(final String key) {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.util.configuration.Configuration#getValueAsInteger(
-         *      java.lang.String,
-         *      int)
-         */
-        public int getValueAsInteger(final String key, final int defaultValue) {
-
-            return 0;
-        }
-
-        /**
-         * @see de.dante.util.configuration.Configuration#getValues(
-         *      java.lang.String)
-         */
-        public StringList getValues(final String key) {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.util.configuration.Configuration#iterator(
-         *      java.lang.String)
-         */
-        public Iterator iterator(final String key) {
-
-            return null;
-        }
+        TokenStream stream = makeStream("  ");
+        assertNull(stream.get(fac, tokenizer));
     }
 
 }

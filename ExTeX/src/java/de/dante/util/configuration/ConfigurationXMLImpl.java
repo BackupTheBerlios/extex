@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -234,7 +234,8 @@ public class ConfigurationXMLImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
+     * @see de.dante.util.configuration.Configuration#getAttribute(
+     *      java.lang.String)
      */
     public String getAttribute(final String name) {
 
@@ -414,13 +415,68 @@ public class ConfigurationXMLImpl implements Configuration {
         for (Node node = root.getFirstChild(); node != null; node = node
                 .getNextSibling()) {
             if (key.equals(node.getNodeName())
-                    && attribute.equals(((Element) node).getAttribute("name"))) {
+                    && attribute.equals(((Element) node)
+                            .getAttribute(attribute))) {
                 return new ConfigurationXMLImpl((Element) node, base, resource);
             }
         }
 
         throw new ConfigurationNotFoundException(null, //
                 key + "[" + attribute + "]");
+    }
+
+    /**
+     * Extract a sub-configuration with a given name and a given attribute.
+     * <p>
+     * Consider the following example with the configuration currently rooted
+     * at cfg:
+     * </p>
+     * <pre>
+     *   &lt;cfg&gt;
+     *     . . .
+     *     &lt;abc name="one"&gt;
+     *     . . .
+     *     &lt;/abc&gt;
+     *     &lt;abc name="two"&gt;
+     *     . . .
+     *     &lt;/abc&gt;
+     *     . . .
+     *   &lt;/cfg&gt;
+     * </pre>
+     * <p>
+     * Then <tt>getConfig("abc","two")</tt> returns a new XMLConfig rooted at
+     * the abc with the name attribute "two".
+     * </p>
+     * <p>
+     * If there are more than one tags with the same name then the first one is
+     * used.
+     * </p>
+     * <p>
+     * If there are no tags with the given name then <code>null</code> is
+     * returned.
+     * </p>
+     *
+     * @param key the tag name of the sub-configuration
+     * @param attribute the value of the attribute name
+     *
+     * @return the sub-configuration
+     *
+     * @throws ConfigurationException in case of other errors.
+     */
+    public Configuration findConfiguration(final String key,
+            final String attribute)
+            throws ConfigurationException {
+
+        for (Node node = root.getFirstChild(); node != null; node = node
+                .getNextSibling()) {
+            if (key.equals(node.getNodeName())
+                    && attribute.equals(((Element) node)
+                            .getAttribute(attribute))) {
+                return new ConfigurationXMLImpl((Element) node, base, resource);
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -534,12 +590,16 @@ public class ConfigurationXMLImpl implements Configuration {
     }
 
     /**
-     * ...
+     * Retrieve an iterator over all items of a sub-configuration.
      *
-     * @throws ConfigurationIOException ...
-     * @throws ConfigurationSyntaxException ...
-     * @throws ConfigurationNotFoundException ...
-     * @throws ConfigurationInvalidResourceException ...
+     * @param key the name of the sub-configuration
+     *
+     * @return the iterator
+     *
+     * @throws ConfigurationIOException in case that ...
+     * @throws ConfigurationSyntaxException in case that ...
+     * @throws ConfigurationNotFoundException in case that ...
+     * @throws ConfigurationInvalidResourceException in case that ...
      *
      * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
      */

@@ -31,7 +31,7 @@ import de.dante.util.StringList;
  * They can be treated as if they where contained in one configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MultiConfiguration implements Configuration {
 
@@ -123,16 +123,43 @@ public class MultiConfiguration implements Configuration {
         List v = new ArrayList();
 
         for (int i = 0; i < configs.length; i++) {
-            try {
-                v.add(configs[i].getConfiguration(key, attribute));
-            } catch (ConfigurationNotFoundException e) {
-                // ignored on purpose: it might be found somewhere else
+            Configuration cfg = configs[i].findConfiguration(key, attribute);
+            if (cfg != null) {
+                v.add(cfg);
             }
         }
 
         if (v.size() == 0) {
             throw new ConfigurationNotFoundException(null, key + "["
                     + attribute + "]");
+        }
+
+        if (v.size() == 1) {
+            return (Configuration) v.get(0);
+        }
+
+        return new MultiConfiguration((Configuration[]) v.toArray());
+    }
+
+    /**
+     * @see de.dante.util.configuration.Configuration#findConfiguration(
+     *      java.lang.String,
+     *      java.lang.String)
+     */
+    public Configuration findConfiguration(final String key,
+            final String attribute) throws ConfigurationException {
+
+        List v = new ArrayList();
+
+        for (int i = 0; i < configs.length; i++) {
+            Configuration cfg = configs[i].findConfiguration(key, attribute);
+            if (cfg != null) {
+                v.add(cfg);
+            }
+        }
+
+        if (v.size() == 0) {
+            return null;
         }
 
         if (v.size() == 1) {
@@ -192,7 +219,14 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
+     * ...
+     *
+     * @param key ...
+     *
+     * @return ...
+     *
      * @throws ConfigurationException ...
+     *
      * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
      */
     public Iterator iterator(final String key) throws ConfigurationException {
