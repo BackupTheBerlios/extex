@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,28 +27,28 @@ import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Box extends AbstractNodeList implements Serializable, NodeList {
 
     public static final Box VOID = new Box();
-    
+
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
-    public void toString(StringBuffer sb) {
+    public void toString(final StringBuffer sb, String prefix) {
         // TODO Auto-generated method stub
-
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-            throw new GeneralException("unimplemented"); //TODO incomplete
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
+        throw new GeneralException("unimplemented"); //TODO incomplete
     }
 
 }
