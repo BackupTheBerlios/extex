@@ -49,7 +49,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Write extends AbstractCode implements LogEnabled {
 
@@ -88,13 +88,13 @@ public class Write extends AbstractCode implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = AbstractFileCode.scanOutFileKey(source);
+        String key = AbstractFileCode.scanOutFileKey(context, source);
 
         if (prefix.isImmediate()) {
-            Tokens toks = source.scanTokens();
+            Tokens toks = source.scanTokens(context);
             writeImmediate(key, toks, context, source);
         } else {
-            Tokens toks = source.getTokens();
+            Tokens toks = source.getTokens(context);
             typesetter.add(new WhatsItWriteNode(key, toks));
         }
 

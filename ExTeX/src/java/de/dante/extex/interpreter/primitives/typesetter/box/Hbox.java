@@ -19,16 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.box;
 
-import de.dante.extex.i18n.EofHelpingException;
-import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
+import de.dante.extex.interpreter.exception.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -76,7 +75,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -118,7 +117,7 @@ public class Hbox extends AbstractCode implements Boxable {
 
         Box box;
         try {
-            if (source.getKeyword("to")) {
+            if (source.getKeyword(context, "to")) {
                 Dimen d = new Dimen(context, source);
 
                 //TODO gene: afterassign
@@ -126,7 +125,7 @@ public class Hbox extends AbstractCode implements Boxable {
 
                 box = new Box(context, source, typesetter, true);
                 box.setWidth(d);
-            } else if (source.getKeyword("spread")) {
+            } else if (source.getKeyword(context, "spread")) {
                 Dimen d = new Dimen(context, source);
 
                 //TODO gene: afterassign
@@ -141,10 +140,10 @@ public class Hbox extends AbstractCode implements Boxable {
 
                 box = new Box(context, source, typesetter, true);
             }
-        } catch (EofHelpingException e) {
-            throw new EofHelpingException(printableControlSequence(context));
-        } catch (MissingLeftBraceHelpingException e) {
-            throw new MissingLeftBraceHelpingException(
+        } catch (EofException e) {
+            throw new EofException(printableControlSequence(context));
+        } catch (MissingLeftBraceException e) {
+            throw new MissingLeftBraceException(
                     printableControlSequence(context));
         }
         return box;

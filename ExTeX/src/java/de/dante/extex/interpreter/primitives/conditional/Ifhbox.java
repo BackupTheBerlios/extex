@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -40,10 +41,10 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;ifhbox&rang;
  *      &rarr; <tt>\ifhbox</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\ifhbox</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
@@ -56,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Ifhbox extends AbstractIf {
 
@@ -80,23 +81,10 @@ public class Ifhbox extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source);
+        String key = AbstractBox.getKey(//
+                Long.toString(source.scanNumber(context)), context, source);
         Box box = context.getBox(key);
         return (box != null && box.isHbox());
-    }
-
-    /**
-     * Return the key (the number) for the box register.
-     *
-     * @param source the source for new tokens
-     *
-     * @return the key for the box register
-     *
-     * @throws GeneralException in case of an error
-     */
-    protected String getKey(final TokenSource source) throws GeneralException {
-
-        return "box#" + Long.toString(source.scanNumber());
     }
 
 }

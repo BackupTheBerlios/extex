@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * <pre class="syntax">
  *   &lang;javaload&rang;
  *       &rarr; <tt>\javadef</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *       &lang;control sequence&rang;} &lang;<i>tokens</i>&rang; </pre>
  * </p>
  * <p>
@@ -121,7 +121,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -146,8 +146,8 @@ public class JavaDef extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
-        Tokens name = source.getTokens();
+        CodeToken cs = source.getControlSequence(context);
+        Tokens name = source.getTokens(context);
         String classname = name.toText();
         if ("".equals(classname)) {
             throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",

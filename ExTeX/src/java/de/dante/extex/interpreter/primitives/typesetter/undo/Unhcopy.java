@@ -54,7 +54,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Unhcopy extends AbstractBox {
 
@@ -79,7 +79,7 @@ public class Unhcopy extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         Box b = context.getBox(key);
         if (b.isVoid()) {
             // nothing to do

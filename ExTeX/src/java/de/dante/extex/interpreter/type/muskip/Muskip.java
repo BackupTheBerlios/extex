@@ -21,10 +21,10 @@ package de.dante.extex.interpreter.type.muskip;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.scanner.Token;
@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Muskip implements Serializable {
 
@@ -53,12 +53,12 @@ public class Muskip implements Serializable {
     public static long scanMu(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.getToken();
+        Token t = source.getToken(context);
         if (t == null) {
-            throw new EofHelpingException("mu");
+            throw new EofException("mu");
         }
-        long value = GlueComponent.scanFloat(source, t);
-        if (!source.getKeyword("mu")) {
+        long value = GlueComponent.scanFloat(context, source, t);
+        if (!source.getKeyword(context, "mu")) {
             throw new HelpingException(//
                     LocalizerFactory.getLocalizer(Muskip.class.getName()),
                     "TTP.IllegalMu");
@@ -109,10 +109,10 @@ public class Muskip implements Serializable {
 
         super();
         this.length = new Dimen(scanMu(context, source));
-        if (source.getKeyword("plus")) {
+        if (source.getKeyword(context, "plus")) {
             this.stretch = new GlueComponent(scanMu(context, source));
         }
-        if (source.getKeyword("minus")) {
+        if (source.getKeyword(context, "minus")) {
             this.shrink = new GlueComponent(scanMu(context, source));
         }
     }

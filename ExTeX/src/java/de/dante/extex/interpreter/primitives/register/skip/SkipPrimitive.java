@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class SkipPrimitive extends AbstractSkip implements Theable {
 
@@ -65,7 +65,7 @@ public class SkipPrimitive extends AbstractSkip implements Theable {
             throws GeneralException {
 
         String key = getKey(source, context);
-        source.getOptionalEquals();
+        source.getOptionalEquals(context);
         Glue g = new Glue(source, context);
         context.setGlue(key, g, prefix.isGlobal());
     }

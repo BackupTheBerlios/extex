@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;gdef&rang;
  *       &rarr; &lang;prefix&rang; <tt>\gdef</tt> {@linkplain
- *         de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *         de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *         &lang;control sequence&rang;} &lang;parameter text&rang; <tt>{</tt> &lang;replacement text&rang; <tt>}</tt>
  *
  *    &lang;prefix&rang;
@@ -54,7 +54,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Gdef extends Def {
 

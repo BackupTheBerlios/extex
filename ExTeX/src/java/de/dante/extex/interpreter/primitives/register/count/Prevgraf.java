@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -61,10 +61,10 @@ public class Prevgraf extends CountPrimitive {
 
     /**
      * @see de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.interpreter.context.Context)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final TokenSource source, final Context context)
+    protected String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
         return getName();

@@ -21,10 +21,10 @@ package de.dante.extex.interpreter.type.dimen;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.util.GeneralException;
@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -170,7 +170,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     public void divide(final long denom) throws HelpingException {
 
         if (denom == 0) {
-            throw new ArithmeticOverflowHelpingException("");
+            throw new ArithmeticOverflowException("");
         }
         setValue(getValue() / denom);
     }

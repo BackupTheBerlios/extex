@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;closein&rang;
  *       &rarr; <tt>\closein</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#scanInteger()
+ *       de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *       &lang;number&rang;} </pre>
  * </p>
  * <p>
@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Closein extends AbstractCode {
 
@@ -82,7 +82,7 @@ public class Closein extends AbstractCode {
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
 
-        String key = AbstractFileCode.scanInFileKey(source);
+        String key = AbstractFileCode.scanInFileKey(context, source);
         InFile file = context.getInFile(key);
 
         if (file != null) {

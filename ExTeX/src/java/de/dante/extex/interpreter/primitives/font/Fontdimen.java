@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -66,7 +66,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -96,8 +96,8 @@ public class Fontdimen extends AbstractAssignment
 
         String key = getKey(context, source);
         source.skipSpace();
-        Font font = source.getFont();
-        source.getOptionalEquals();
+        Font font = source.getFont(context);
+        source.getOptionalEquals(context);
         Dimen size = new Dimen(context, source);
         font.setFontDimen(key, size);
     }
@@ -129,19 +129,19 @@ public class Fontdimen extends AbstractAssignment
     protected String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.getNonSpace();
+        Token t = source.getNonSpace(context);
         if (t == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
             source.push(t);
-            String key = source.scanTokensAsString();
+            String key = source.scanTokensAsString(context);
             if (key == null) {
-                throw new EofHelpingException(printableControlSequence(context));
+                throw new EofException(printableControlSequence(context));
             }
             return key;
         }
         source.push(t);
-        long idx = source.scanInteger();
+        long idx = source.scanInteger(context);
         return "#" + Long.toString(idx);
     }
 
@@ -155,7 +155,7 @@ public class Fontdimen extends AbstractAssignment
 
         String key = getKey(context, source);
         source.skipSpace();
-        Font font = source.getFont();
+        Font font = source.getFont(context);
         Dimen size = font.getFontDimen(key);
         if (null == size) {
             size = Dimen.ZERO_PT;

@@ -19,13 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
-import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
+import de.dante.extex.interpreter.exception.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;let&rang;
  *      &rarr; <tt>\let</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *        &lang;control sequence&rang;} {@linkplain
  *      de.dante.extex.interpreter.TokenSource#getOptionalEquals()
  *      &lang;equals&rang;} {@linkplain
@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -102,9 +102,9 @@ public class Let extends AbstractAssignment implements TokenVisitor {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
-        source.getOptionalEquals();
-        Token t = source.getNonSpace();
+        CodeToken cs = source.getControlSequence(context);
+        source.getOptionalEquals(context);
+        Token t = source.getNonSpace(context);
 
         let(prefix, context, cs, t);
     }
@@ -125,7 +125,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
             final CodeToken cs, final Token t) throws GeneralException {
 
         if (t == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         }
 
         Code code;
@@ -200,7 +200,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
         Code code = context.getCode(token);
 
         if (code == null) {
-            throw new UndefinedControlSequenceHelpingException(//
+            throw new UndefinedControlSequenceException(//
                     printable(context, token));
         }
 

@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -76,9 +76,9 @@ public class Discretionary extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens pre = source.getTokens();
-        Tokens post = source.getTokens();
-        Tokens nobreak = source.getTokens();
+        Tokens pre = source.getTokens(context);
+        Tokens post = source.getTokens(context);
+        Tokens nobreak = source.getTokens(context);
         typesetter.add(new DiscretionaryNode(pre, post, nobreak));
         return true;
     }

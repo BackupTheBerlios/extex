@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 
@@ -111,7 +111,7 @@ public class Parshape extends AbstractCode implements CountConvertible, Theable 
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long n = source.scanInteger();
+        long n = source.scanInteger(context);
         if (n <= 0) {
             context.setParshape(null);
         } else {

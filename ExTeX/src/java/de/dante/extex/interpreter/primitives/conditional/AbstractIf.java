@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -74,7 +74,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
         Code code;
         int n = 0;
 
-        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
 
             if (t instanceof CodeToken
                     && (code = context.getCode((CodeToken) t)) != null) {

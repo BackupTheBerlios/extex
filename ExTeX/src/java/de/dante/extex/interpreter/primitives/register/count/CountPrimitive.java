@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;}</pre>
  * </p>
  * <p>
@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -100,8 +100,8 @@ public class CountPrimitive extends AbstractCount
     public void advance(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        String key = getKey(source, context);
-        source.getKeyword("by");
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
         value += context.getCount(key).getValue();
@@ -120,8 +120,8 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source, context);
-        source.getOptionalEquals();
+        String key = getKey(context, source);
+        source.getOptionalEquals(context);
 
         long value = Count.scanCount(context, source, typesetter);
         context.setCount(key, value, prefix.isGlobal());
@@ -138,7 +138,7 @@ public class CountPrimitive extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         source.push(context.getCount(key).toToks(context));
     }
 
@@ -150,7 +150,7 @@ public class CountPrimitive extends AbstractCount
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         Count c = context.getCount(key);
         return (c != null ? c.getValue() : 0);
     }
@@ -164,13 +164,13 @@ public class CountPrimitive extends AbstractCount
     public void divide(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        String key = getKey(source, context);
-        source.getKeyword("by");
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new ArithmeticOverflowHelpingException(
+            throw new ArithmeticOverflowException(
                     printableControlSequence(context));
         }
 
@@ -187,8 +187,8 @@ public class CountPrimitive extends AbstractCount
     public void multiply(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        String key = getKey(source, context);
-        source.getKeyword("by");
+        String key = getKey(context, source);
+        source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
         value *= context.getCount(key).getValue();
@@ -203,7 +203,7 @@ public class CountPrimitive extends AbstractCount
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         return new Tokens(context, context.getCount(key).toString());
     }
 

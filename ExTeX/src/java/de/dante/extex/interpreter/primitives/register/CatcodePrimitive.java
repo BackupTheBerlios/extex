@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 
@@ -92,9 +92,9 @@ public class CatcodePrimitive extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        UnicodeChar charCode = source.scanCharacterCode();
-        source.getOptionalEquals();
-        long ccNumber = source.scanNumber();
+        UnicodeChar charCode = source.scanCharacterCode(context);
+        source.getOptionalEquals(context);
+        long ccNumber = source.scanNumber(context);
 
         try {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),

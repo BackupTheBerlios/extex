@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -111,15 +111,15 @@ public class FontPrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken fontId = source.getControlSequence();
-        source.getOptionalEquals();
+        CodeToken fontId = source.getControlSequence(context);
+        source.getOptionalEquals(context);
         String fontname = scanFontName(context, source);
         int size = getFontSize(fontname);
         Dimen fontSize = null;
 
         // optional parameters 'at' and 'scaled'
         // if 'at' not used, the fontname must have a size (e.g. cmr10)
-        if (source.getKeyword("at", true)) {
+        if (source.getKeyword(context, "at")) {
             // \font\myfont=cmr12 at 15pt
             // \font\second=cmr10 at 12truept
             source.skipSpace();
@@ -129,10 +129,10 @@ public class FontPrimitive extends AbstractAssignment
                         fontSize.toString());
             }
 
-        } else if (source.getKeyword("scaled", true)) {
+        } else if (source.getKeyword(context, "scaled")) {
             // \font\magnifiedfiverm=cmr5 scaled 2000
             source.skipSpace();
-            long scale = source.scanInteger();
+            long scale = source.scanInteger(context);
             if (scale <= 0) {
                 throw new HelpingException(getLocalizer(), "TTP.IllegalMag",
                         Long.toString(scale), "32768"); //TODO gene: max ok?
@@ -149,14 +149,14 @@ public class FontPrimitive extends AbstractAssignment
 
         for (boolean onceMore = true; onceMore;) {
 
-            if (source.getKeyword("letterspaced", true)) {
+            if (source.getKeyword(context, "letterspaced")) {
                 // \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
                 source.skipSpace();
                 letterspaced = new Glue(source, context);
-            } else if (source.getKeyword("noligatures", true)) {
+            } else if (source.getKeyword(context, "noligatures")) {
                 // \font\myfont=cmr12 at 15pt noligatures
                 ligatures = false;
-            } else if (source.getKeyword("nokerning", true)) {
+            } else if (source.getKeyword(context, "nokerning")) {
                 // \font\myfont=cmr12 at 15pt nokerning
                 kerning = false;
             } else {
@@ -230,7 +230,7 @@ public class FontPrimitive extends AbstractAssignment
     private String scanFontName(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.scanNonSpace();
+        Token t = source.scanNonSpace(context);
 
         if (t == null) {
             throw new HelpingException(getLocalizer(), "TTP.EOFinDef",
@@ -239,8 +239,8 @@ public class FontPrimitive extends AbstractAssignment
 
         StringBuffer sb = new StringBuffer((char) t.getChar().getCodePoint());
 
-        for (t = source.getToken(); t != null && !(t instanceof SpaceToken); //
-        t = source.getToken()) {
+        for (t = source.getToken(context); t != null
+                && !(t instanceof SpaceToken); t = source.getToken(context)) {
             if (t instanceof ControlSequenceToken) {
                 source.push(t);
                 break;

@@ -91,7 +91,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class JavaLoad extends AbstractCode {
 
@@ -116,7 +116,7 @@ public class JavaLoad extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens name = source.getTokens();
+        Tokens name = source.getTokens(context);
         String classname = name.toText();
         if ("".equals(classname)) {
             throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",

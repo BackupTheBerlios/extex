@@ -18,9 +18,9 @@
  */
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -58,7 +58,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class If extends AbstractIf {
 
@@ -81,11 +81,11 @@ public class If extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token t1 = source.scanToken();
-        Token t2 = source.scanToken();
+        Token t1 = source.scanToken(context);
+        Token t2 = source.scanToken(context);
 
         if (t1 == null || t2 == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         }
 
         return t1.getChar().equals(t2.getChar());

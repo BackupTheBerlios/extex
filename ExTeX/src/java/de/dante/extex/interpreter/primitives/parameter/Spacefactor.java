@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Spacefactor extends AbstractCode {
 
@@ -75,8 +75,8 @@ public class Spacefactor extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.getOptionalEquals();
-        long f = source.scanInteger();
+        source.getOptionalEquals(context);
+        long f = source.scanInteger(context);
 
         try {
             typesetter.setSpacefactor(new Count(f));

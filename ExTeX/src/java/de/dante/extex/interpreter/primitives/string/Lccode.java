@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Lccode extends AbstractAssignment
         implements
@@ -85,9 +85,9 @@ public class Lccode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        UnicodeChar ucCode = source.scanCharacterCode();
-        source.getOptionalEquals();
-        UnicodeChar lcCode = source.scanCharacterCode();
+        UnicodeChar ucCode = source.scanCharacterCode(context);
+        source.getOptionalEquals(context);
+        UnicodeChar lcCode = source.scanCharacterCode(context);
         context.setLccode(ucCode, lcCode);
     }
 
@@ -124,7 +124,7 @@ public class Lccode extends AbstractAssignment
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        UnicodeChar ucCode = source.scanCharacterCode();
+        UnicodeChar ucCode = source.scanCharacterCode(context);
         return context.getLccode(ucCode).getCodePoint();
     }
 

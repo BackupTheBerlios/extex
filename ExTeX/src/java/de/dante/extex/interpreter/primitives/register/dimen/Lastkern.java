@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Lastkern extends AbstractCode
         implements
@@ -108,7 +108,7 @@ public class Lastkern extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new CantUseHelpingException(printableControlSequence(context),
+        throw new CantUseInException(printableControlSequence(context),
                 typesetter.getMode().toString());
     }
 

@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Csname extends AbstractCode
         implements
@@ -84,7 +84,7 @@ public class Csname extends AbstractCode
     public Token convertCs(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.getControlSequence();
+        Token t = source.getControlSequence(context);
 
         if ((t instanceof ControlSequenceToken)
                 && ((ControlSequenceToken) t).getName().equals("csname")) {
@@ -144,14 +144,14 @@ public class Csname extends AbstractCode
             final TokenSource source) throws GeneralException {
 
         Tokens toks = new Tokens();
-        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
 
             if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
 
                 if (code == null) {
-                    throw new EofHelpingException(
-                            printableControlSequence(context));
+                    throw new EofException(printableControlSequence(context));
                 } else if (code instanceof Endcsname) {
                     return toks;
                 } else if (code instanceof ExpandableCode) {

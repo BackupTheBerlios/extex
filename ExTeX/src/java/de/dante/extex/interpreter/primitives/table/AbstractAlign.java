@@ -40,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for alinments.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AbstractAlign extends AbstractCode {
 
@@ -107,8 +107,8 @@ public class AbstractAlign extends AbstractCode {
         Tokens pre = new Tokens();
         Tokens post = new Tokens();
 
-        for (Token t = source.getToken(); t != null
-                && !t.isa(Catcode.MACROPARAM); t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null
+                && !t.isa(Catcode.MACROPARAM); t = source.getToken(context)) {
 
             if (t.isa(Catcode.TABMARK)) {
                 throw new HelpingException(getMyLocalizer(),
@@ -128,7 +128,8 @@ public class AbstractAlign extends AbstractCode {
             pre.add(t);
         }
 
-        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
 
             if (t.isa(Catcode.MACROPARAM)) {
                 throw new HelpingException(getMyLocalizer(),

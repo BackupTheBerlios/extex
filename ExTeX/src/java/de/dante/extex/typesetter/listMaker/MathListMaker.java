@@ -19,12 +19,12 @@
 
 package de.dante.extex.typesetter.listMaker;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.EofException;
+import de.dante.extex.interpreter.exception.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -224,7 +224,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public void par() throws GeneralException {
 
         getManager().endParagraph();
-        throw new MathHelpingException("\\par"); //TODO gene: other string?
+        throw new MissingMathException("\\par"); //TODO gene: other string?
     }
 
     /**
@@ -244,9 +244,9 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public Noad scanNoad(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.getToken();
+        Token t = source.getToken(context);
         if (t == null) {
-            throw new EofHelpingException(null);
+            throw new EofException(null);
         }
         getManager().push(new MathListMaker(getManager()));
         if (t.isa(Catcode.LEFTBRACE)) {

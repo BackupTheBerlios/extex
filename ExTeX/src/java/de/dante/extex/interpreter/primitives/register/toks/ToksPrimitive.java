@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ToksPrimitive extends AbstractToks implements Theable {
 
@@ -66,8 +66,8 @@ public class ToksPrimitive extends AbstractToks implements Theable {
             throws GeneralException {
 
         String key = getKey(source, context);
-        source.getOptionalEquals();
-        Tokens toks = source.getTokens();
+        source.getOptionalEquals(context);
+        Tokens toks = source.getTokens(context);
         context.setToks(key, toks, prefix.isGlobal());
     }
 
@@ -100,7 +100,7 @@ public class ToksPrimitive extends AbstractToks implements Theable {
     protected void expand(final Flags prefix, final Context context,
             final TokenSource source, final String key) throws GeneralException {
 
-        Tokens toks = source.getTokens();
+        Tokens toks = source.getTokens(context);
         context.setToks(key, toks, prefix.isGlobal());
         prefix.clear();
     }

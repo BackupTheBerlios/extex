@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Mathchardef extends AbstractAssignment {
 
@@ -76,8 +76,8 @@ public class Mathchardef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
-        source.getOptionalEquals();
+        CodeToken cs = source.getControlSequence(context);
+        source.getOptionalEquals(context);
         Count mathchar = new Count(context, source);
         context.setCode(cs, new MathcharCode(cs.toString(), mathchar),
                 prefix.isGlobal());

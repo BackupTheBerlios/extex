@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.primitives.table;
 
 import java.util.List;
 
-import de.dante.extex.i18n.EofHelpingException;
-import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
+import de.dante.extex.interpreter.exception.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -73,7 +73,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -135,8 +135,8 @@ public class Halign extends AbstractAlign implements Boxable {
      * @return the list of nodes gathered
      *
      * @throws GeneralException in case of an error
-     * @throws EofHelpingException in case that an enof of file has occurred
-     * @throws MissingLeftBraceHelpingException in case that the mandatory left
+     * @throws EofException in case that an enof of file has occurred
+     * @throws MissingLeftBraceException in case that the mandatory left
      *  brace was missing
      */
     private NodeList getNodes(final Context context, final TokenSource source,
@@ -145,21 +145,21 @@ public class Halign extends AbstractAlign implements Boxable {
         FixedDimen width = null;
         boolean spread = false;
 
-        if (source.getKeyword("to")) {
+        if (source.getKeyword(context, "to")) {
             width = new Dimen(context, source);
-        } else if (source.getKeyword("spread")) {
+        } else if (source.getKeyword(context, "spread")) {
             width = new Dimen(context, source);
             spread = true;
         }
-        Token t = source.getToken();
+        Token t = source.getToken(context);
         if (t == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
             List preamble = getPreamble(context, source);
             typesetter.push(new HAlignListMaker(typesetter.getManager(),
                     context, source, preamble, width, spread));
         } else {
-            throw new MissingLeftBraceHelpingException(
+            throw new MissingLeftBraceException(
                     printableControlSequence(context));
         }
 

@@ -32,9 +32,30 @@ import de.dante.util.GeneralException;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
+
+    /**
+     * Return the key (the number) for the box register.
+     *
+     * @param name the name (number) of the register
+     * @param context the interpreter context to use
+     * @param source the source for new tokens
+     *
+     * @return the key for the box register
+     *
+     * @throws GeneralException in case of an error
+     */
+    public static String getKey(final String name, final Context context,
+            final TokenSource source) throws GeneralException {
+
+        if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
+            return context.getNamespace() + "#box#" + name;
+        } else {
+            return "box#" + name;
+        }
+    }
 
     /**
      * Creates a new object.
@@ -49,17 +70,17 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
     /**
      * Return the key (the number) for the box register.
      *
-     * @param source the source for new tokens
      * @param context the interpreter context to use
+     * @param source the source for new tokens
      *
      * @return the key for the box register
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(final TokenSource source, final Context context)
+    public String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
-        String name = source.scanRegisterName();
+        String name = source.scanRegisterName(context);
 
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
             return context.getNamespace() + "#box#" + name;

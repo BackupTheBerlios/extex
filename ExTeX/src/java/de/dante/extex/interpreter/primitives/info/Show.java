@@ -21,10 +21,10 @@ package de.dante.extex.interpreter.primitives.info;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.Showable;
@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
@@ -99,9 +99,9 @@ public class Show extends AbstractCode implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token t = source.getToken();
+        Token t = source.getToken(context);
         if (t == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         }
         logger.info("\n> " + meaning(t, context).toText() + ".\n");
         return true;

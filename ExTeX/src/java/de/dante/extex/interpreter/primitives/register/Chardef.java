@@ -42,7 +42,7 @@ import de.dante.util.UnicodeChar;
  *  <pre class="syntax">
  *    &lang;chardef&rang;
  *      &rarr; <tt>\chardef</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *        &lang;control sequence&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
  *        &lang;equals&rang;} {@linkplain
@@ -60,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Chardef extends AbstractAssignment {
 
@@ -85,9 +85,9 @@ public class Chardef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
-        source.getOptionalEquals();
-        UnicodeChar uc = source.scanCharacterCode();
+        CodeToken cs = source.getControlSequence(context);
+        source.getOptionalEquals(context);
+        UnicodeChar uc = source.scanCharacterCode(context);
         context.setCode(cs, new CharCode("", uc), prefix.isGlobal());
     }
 

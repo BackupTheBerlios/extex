@@ -19,8 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
-import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.MissingMathException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * It tries to ensure that the primitive is invoked in math mode only.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractMathCode extends AbstractCode {
 
@@ -62,7 +62,7 @@ public abstract class AbstractMathCode extends AbstractCode {
 
         ListMaker lm = typesetter.getListMaker();
         if (!(lm instanceof NoadConsumer)) {
-            throw new MathHelpingException(printableControlSequence(context));
+            throw new MissingMathException(printableControlSequence(context));
         }
         return (NoadConsumer) lm;
     }

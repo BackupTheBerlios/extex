@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Mathcode extends AbstractAssignment {
 
@@ -75,9 +75,9 @@ public class Mathcode extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        UnicodeChar charCode = source.scanCharacterCode();
-        source.getOptionalEquals();
-        Count mathCode = new Count(source.scanNumber());
+        UnicodeChar charCode = source.scanCharacterCode(context);
+        source.getOptionalEquals(context);
+        Count mathCode = new Count(source.scanNumber(context));
         context.setMathcode(charCode, mathCode, prefix.isGlobal());
     }
 }

@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;def&rang;
  *       &rarr; &lang;prefix&rang; <tt>\def</tt> {@linkplain
- *       de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *       &lang;control sequence&rang;} &lang;parameter text&rang; <tt>{</tt> &lang;replacement text&rang; <tt>}</tt>
  *
  *    &lang;prefix&rang;
@@ -65,7 +65,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Def extends AbstractAssignment {
 
@@ -90,15 +90,14 @@ public class Def extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
+        CodeToken cs = source.getControlSequence(context);
         MacroPattern pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
                 ? expandedBody(context, source, typesetter)//
-                : source.getTokens());
+                : source.getTokens(context));
 
-        context.setCode(cs,
-                new MacroCode(cs.getName(), prefix, pattern, body), prefix
-                        .isGlobal());
+        context.setCode(cs, new MacroCode(cs.getName(), prefix, pattern, body),
+                prefix.isGlobal());
     }
 
     /**
@@ -116,7 +115,7 @@ public class Def extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens body = source.scanTokens();
+        Tokens body = source.scanTokens(context);
         //TODO gene: maybe the treatment of # is incorrect
         return body;
     }
@@ -138,7 +137,8 @@ public class Def extends AbstractAssignment {
         int no = 1;
         boolean afterHash = false;
 
-        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
 
             if (t instanceof LeftBraceToken) {
                 source.push(t);

@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.primitives.namespace.Namespace
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Import extends Let {
 
@@ -82,7 +82,7 @@ public class Import extends Let {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String ns = source.getTokens().toText();
+        String ns = source.getTokens(context).toText();
         Tokens export = context.getToks(ns + "\bexport");
         String namespace = context.getNamespace();
         int length = export.length();

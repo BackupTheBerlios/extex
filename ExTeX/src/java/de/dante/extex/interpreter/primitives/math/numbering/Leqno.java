@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.math.numbering;
 
-import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.CantUseInException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Leqno extends AbstractMathCode {
 
@@ -79,7 +79,7 @@ public class Leqno extends AbstractMathCode {
 
         ListMaker lm = typesetter.getListMaker();
         if (!(lm instanceof EqConsumer)) {
-            throw new CantUseHelpingException(
+            throw new CantUseInException(
                     printableControlSequence(context), //
                     typesetter.getMode().toString());
         }
@@ -88,8 +88,8 @@ public class Leqno extends AbstractMathCode {
 
             ((EqConsumer) lm).switchToNumber(true);
 
-        } catch (CantUseHelpingException e) {
-            throw new CantUseHelpingException(
+        } catch (CantUseInException e) {
+            throw new CantUseInException(
                     printableControlSequence(context), //
                     typesetter.getMode().toString());
         }

@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Prevdepth extends AbstractCode {
     /**
@@ -72,7 +72,7 @@ public class Prevdepth extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.getOptionalEquals();
+        source.getOptionalEquals(context);
         Dimen pd = new Dimen(context, source);
         try {
             typesetter.setPrevDepth(pd);

@@ -16,12 +16,12 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.toks;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
@@ -35,9 +35,26 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ToksParameter extends ToksPrimitive {
+
+    /**
+     * Return the key for a named toks register.
+     *
+     * @param name the name of the register
+     * @param context the interpreter context to use
+     *
+     * @return the key for the toks register
+     */
+    public static String getKey(final String name, final Context context) {
+
+        if (Namespace.SUPPORT_NAMESPACE_TOKS) {
+            return context.getNamespace() + "\b" + name;
+        } else {
+            return name;
+        }
+    }
 
     /**
      * Creates a new object.
@@ -56,11 +73,8 @@ public class ToksParameter extends ToksPrimitive {
      * @param context the interpreter context to use
      *
      * @return the key for the toks register
-     *
-     * @throws GeneralException in case oif an error
      */
-    protected String getKey(final TokenSource source, final Context context)
-            throws GeneralException {
+    protected String getKey(final TokenSource source, final Context context) {
 
         if (Namespace.SUPPORT_NAMESPACE_TOKS) {
             return context.getNamespace() + "\b" + getName();

@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -118,10 +118,10 @@ public class Glue implements Serializable, FixedGlue {
 
         super();
         this.length = new GlueComponent(context, source, false);
-        if (source.getKeyword("plus")) {
+        if (source.getKeyword(context, "plus")) {
             this.stretch = new GlueComponent(context, source, true);
         }
-        if (source.getKeyword("minus")) {
+        if (source.getKeyword(context, "minus")) {
             this.shrink = new GlueComponent(context, source, true);
         }
     }

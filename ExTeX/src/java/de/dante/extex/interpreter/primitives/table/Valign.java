@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.primitives.table;
 
 import java.util.List;
 
-import de.dante.extex.i18n.EofHelpingException;
-import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
+import de.dante.extex.interpreter.exception.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -54,7 +54,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Valign extends AbstractAlign {
 
@@ -101,17 +101,17 @@ public class Valign extends AbstractAlign {
 
         Dimen height = null;
 
-        if (source.getKeyword("to")) {
+        if (source.getKeyword(context, "to")) {
             height = new Dimen(context, source);
         }
-        Token t = source.getToken();
+        Token t = source.getToken(context);
         if (t == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
             List preamble = getPreamble(context, source);
             applyPreamble(preamble, height, context, source, typesetter);
         } else {
-            throw new MissingLeftBraceHelpingException(
+            throw new MissingLeftBraceException(
                     printableControlSequence(context));
         }
 

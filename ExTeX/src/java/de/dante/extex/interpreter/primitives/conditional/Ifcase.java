@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -86,7 +86,7 @@ public class Ifcase extends AbstractIf {
             throws GeneralException {
 
         prefix.clear();
-        long val = source.scanInteger();
+        long val = source.scanInteger(context);
         if (val < 0) {
             if (skipToElseOrFi(context, source)) {
                 context.pushConditional(source.getLocator(), true);
@@ -147,7 +147,8 @@ public class Ifcase extends AbstractIf {
         Code code;
         int n = 0;
 
-        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
             if (t instanceof CodeToken
                     && (code = context.getCode((CodeToken) t)) != null) {
                 if (code instanceof Fi) {
@@ -189,7 +190,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     protected static final class Tag {
 

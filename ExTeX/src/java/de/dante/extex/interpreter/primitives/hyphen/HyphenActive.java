@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class HyphenActive extends AbstractCode implements Theable {
 
@@ -77,7 +77,7 @@ public class HyphenActive extends AbstractCode implements Theable {
 
         source.getOptionalEquals();
         boolean active = true;
-        if (source.scanInteger() != 0) {
+        if (source.scanInteger(context) != 0) {
             active = false;
         }
         ht.setHyphenActive(active);

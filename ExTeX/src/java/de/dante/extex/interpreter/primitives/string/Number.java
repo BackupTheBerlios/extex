@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Number extends AbstractCode implements ExpandableCode {
 
@@ -77,7 +77,7 @@ public class Number extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long n = source.scanInteger();
+        long n = source.scanInteger(context);
         source.push(new Tokens(context, Long.toString(n)));
         return true;
     }
@@ -93,7 +93,7 @@ public class Number extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long n = source.scanInteger();
+        long n = source.scanInteger(context);
         source.push(new Tokens(context, Long.toString(n)));
     }
 }

@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.extex.i18n.CantUseAfterHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.CantUseAfterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
@@ -73,7 +73,7 @@ public class The extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getToken();
+        Token cs = source.getToken(context);
 
         if (cs instanceof CodeToken) {
 
@@ -86,7 +86,7 @@ public class The extends AbstractCode implements ExpandableCode {
             }
         }
 
-        throw new CantUseAfterHelpingException(cs.toString(),
+        throw new CantUseAfterException(cs.toString(),
                 printableControlSequence(context));
 
     }

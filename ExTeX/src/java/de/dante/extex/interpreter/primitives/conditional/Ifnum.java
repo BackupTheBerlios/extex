@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -41,14 +41,14 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;ifnum&rang;
  *      &rarr; <tt>\ifnum</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;} &lang;op&rang; {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
  *      | <tt>\ifodd</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;} &lang;op&rang; {@linkplain
- *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt>
  *
  *    &lang;op&rang;
@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Ifnum extends AbstractIf {
 
@@ -88,19 +88,19 @@ public class Ifnum extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long value = source.scanInteger();
-        Token rel = source.getToken();
+        long value = source.scanInteger(context);
+        Token rel = source.getToken(context);
         if (rel == null) {
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
         }
         if (rel.getCatcode() == Catcode.OTHER) {
             switch (rel.getChar().getCodePoint()) {
                 case '<':
-                    return (value < source.scanInteger());
+                    return (value < source.scanInteger(context));
                 case '=':
-                    return (value == source.scanInteger());
+                    return (value == source.scanInteger(context));
                 case '>':
-                    return (value > source.scanInteger());
+                    return (value > source.scanInteger(context));
                 default:
             // fall-through
             }

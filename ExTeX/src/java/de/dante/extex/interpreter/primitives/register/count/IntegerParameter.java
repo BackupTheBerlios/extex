@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -58,10 +58,10 @@ public class IntegerParameter extends CountPrimitive
 
     /**
      * @see de.dante.extex.interpreter.primitives.register.box.AbstractBox#getKey(
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.interpreter.context.Context)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final TokenSource source, final Context context)
+    protected String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
         return getName();
@@ -84,7 +84,7 @@ public class IntegerParameter extends CountPrimitive
         if (!value.equals("")) {
             try {
                 long val = Long.parseLong(value);
-                context.setCount(getKey(null, context), val, true);
+                context.setCount(getKey(context, null), val, true);
             } catch (NumberFormatException e) {
                 throw new HelpingException(getLocalizer(),
                         "NumberFormatException",

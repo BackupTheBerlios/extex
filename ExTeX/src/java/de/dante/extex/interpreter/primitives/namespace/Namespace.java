@@ -56,7 +56,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Namespace extends AbstractAssignment
         implements
@@ -84,7 +84,7 @@ public class Namespace extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens toks = source.getTokens();
+        Tokens toks = source.getTokens(context);
         context.setNamespace(toks.toText(), prefix.isGlobal());
     }
 

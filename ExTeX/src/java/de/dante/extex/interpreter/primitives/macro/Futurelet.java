@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;futurelet&rang;
  *      &rarr; <tt>\futurelet</tt> {@linkplain
- *        de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *        &lang;control sequence&rang;} {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken()
  *       &lang;token&rang;} ...  </pre>
@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Futurelet extends Let {
 
@@ -80,11 +80,11 @@ public class Futurelet extends Let {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
-        Token t1 = source.getToken();
-        Token t2 = source.getToken();
+        CodeToken cs = source.getControlSequence(context);
+        Token t1 = source.getToken(context);
+        Token t2 = source.getToken(context);
         let(prefix, context, cs, t2);
-        source.push(source.scanToken());
+        source.push(source.scanToken(context));
         source.push(t1);
     }
 

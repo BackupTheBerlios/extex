@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Skewchar extends AbstractAssignment
         implements
@@ -96,16 +96,16 @@ public class Skewchar extends AbstractAssignment
             throws GeneralException {
 
         try {
-            Font font = source.getFont();
-            source.getOptionalEquals();
-            long c = source.scanInteger();
+            Font font = source.getFont(context);
+            source.getOptionalEquals(context);
+            long c = source.scanInteger(context);
             if (c < 0) {
                 font.setSkewChar(null);
             } else {
                 font.setSkewChar(new UnicodeChar((int) c));
             }
-        } catch (EofHelpingException e) {
-            throw new EofHelpingException(printableControlSequence(context));
+        } catch (EofException e) {
+            throw new EofException(printableControlSequence(context));
         }
     }
 
@@ -119,15 +119,15 @@ public class Skewchar extends AbstractAssignment
             final Typesetter typesetter) throws GeneralException {
 
         try {
-            Font font = source.getFont();
+            Font font = source.getFont(context);
             UnicodeChar uc = font.getSkewChar();
             if (uc == null) {
                 return -1;
             } else {
                 return uc.getCodePoint();
             }
-        } catch (EofHelpingException e) {
-            throw new EofHelpingException(printableControlSequence(context));
+        } catch (EofException e) {
+            throw new EofException(printableControlSequence(context));
         }
     }
 
@@ -155,7 +155,7 @@ public class Skewchar extends AbstractAssignment
             final Typesetter typesetter) throws GeneralException {
 
         try {
-            Font font = source.getFont();
+            Font font = source.getFont(context);
             UnicodeChar uc = font.getSkewChar();
             if (uc == null) {
                 return new Tokens(context, "-1");
@@ -163,8 +163,8 @@ public class Skewchar extends AbstractAssignment
                 return new Tokens(context, //
                         Integer.toString(uc.getCodePoint()));
             }
-        } catch (EofHelpingException e) {
-            throw new EofHelpingException(printableControlSequence(context));
+        } catch (EofException e) {
+            throw new EofException(printableControlSequence(context));
         }
     }
 

@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class End extends AbstractCode {
 
@@ -77,7 +77,7 @@ public class End extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.closeAllStreams();
+        source.closeAllStreams(context);
         return true;
     }
 }

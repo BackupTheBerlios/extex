@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Radical extends AbstractMathCode {
 
@@ -77,7 +77,7 @@ public class Radical extends AbstractMathCode {
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        MathDelimiter delcode = new MathDelimiter(source);
+        MathDelimiter delcode = new MathDelimiter(context, source);
         Noad noad = nc.scanNoad(context, source);
         nc.add(new RadicalNoad(delcode, noad));
         return true;

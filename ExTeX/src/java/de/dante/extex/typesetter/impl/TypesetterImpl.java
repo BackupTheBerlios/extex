@@ -23,11 +23,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -63,7 +63,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class TypesetterImpl
         implements
@@ -150,7 +150,7 @@ public class TypesetterImpl
         if (listMaker instanceof NoadConsumer) {
             ((NoadConsumer) listMaker).add(mclass, mg);
         } else {
-            throw new MathHelpingException("???");
+            throw new MissingMathException("???");
         }
     }
 
@@ -163,7 +163,7 @@ public class TypesetterImpl
         if (listMaker instanceof NoadConsumer) {
             ((NoadConsumer) listMaker).add(glue);
         } else {
-            throw new MathHelpingException("???");
+            throw new MissingMathException("???");
         }
     }
 
@@ -176,7 +176,7 @@ public class TypesetterImpl
         if (listMaker instanceof NoadConsumer) {
             ((NoadConsumer) listMaker).add(noad);
         } else {
-            throw new MathHelpingException("???");
+            throw new MissingMathException("???");
         }
     }
 
@@ -440,7 +440,7 @@ public class TypesetterImpl
         if (listMaker instanceof NoadConsumer) {
             return ((NoadConsumer) listMaker).scanNoad(context, source);
         } else {
-            throw new MathHelpingException("???");
+            throw new MissingMathException("???");
         }
     }
 

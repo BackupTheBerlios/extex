@@ -31,7 +31,8 @@ import de.dante.util.GeneralException;
  *
  * <p>
  * All features are inherited from
- * {@link de.dante.extex.interpreter.primitives.register.muskip.MuskipParameter MuskipParameter}.
+ * {@link de.dante.extex.interpreter.primitives.register.muskip.MuskipParameter
+ *  MuskipParameter}.
  * Just the key has to be provided under which this Muskip has to be stored.
  * This key is constructed from the name, a hash mark and the running number.
  * </p>
@@ -42,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 
@@ -58,18 +59,17 @@ public class MuskipPrimitive extends MuskipParameter {
 
     /**
      * Return the key (the number) for the muskip register.
-     *
-     * @param source the source for the next tokens -- if required
      * @param context the interpreter context to use
+     * @param source the source for the next tokens -- if required
      *
      * @return the key for the muskip register
      *
      * @throws GeneralException in case oif an error
      */
-    protected String getKey(final TokenSource source, final Context context)
+    protected String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
-        String number = Long.toString(source.scanNumber());
+        String number = Long.toString(source.scanNumber(context));
 
         if (Namespace.SUPPORT_NAMESPACE_MUSKIP) {
             return context.getNamespace() + "\b" + getName() + "#" + number;

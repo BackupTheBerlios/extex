@@ -56,7 +56,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -122,6 +122,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * Parses a token stream for a float and returns it as fixed point number.
      *
+     * @param context the interpreter context
      * @param source the source for new tokens
      * @param start the initial token to start with
      *
@@ -130,7 +131,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @throws GeneralException in case of an error
      */
-    public static long scanFloat(final TokenSource source, final Token start)
+    public static long scanFloat(final Context context,
+            final TokenSource source, final Token start)
             throws GeneralException {
 
         boolean neg = false;
@@ -141,14 +143,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             return 0;
         } else if (t.equals(Catcode.OTHER, "-")) {
             neg = true;
-            t = source.getNonSpace();
+            t = source.getNonSpace(context);
         } else if (t.equals(Catcode.OTHER, "+")) {
-            t = source.getNonSpace();
+            t = source.getNonSpace(context);
         }
         if (t != null && !t.equals(Catcode.OTHER, ".")
                 && !t.equals(Catcode.OTHER, ",")) {
-            val = source.scanNumber(t);
-            t = source.getToken();
+            val = source.scanNumber(context, t);
+            t = source.getToken(context);
         }
         if (t != null
                 && (t.equals(Catcode.OTHER, ".") || t
@@ -156,8 +158,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             // @see "TeX -- The Program [102]"
             int[] dig = new int[FLOAT_DIGITS];
             int k = 0;
-            for (t = source.getToken(); t instanceof OtherToken
-                    && t.getChar().isDigit(); t = source.getToken()) {
+            for (t = source.getToken(context); t instanceof OtherToken
+                    && t.getChar().isDigit(); t = source.getToken(context)) {
                 if (k < FLOAT_DIGITS) {
                     dig[k++] = t.getChar().getCodePoint() - '0';
                 }
@@ -450,58 +452,58 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         Typesetter typesetter = null;
 
-        Token t = source.scanNonSpace();
+        Token t = source.scanNonSpace(context);
         if (t == null) {
             throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
         }
 
-        value = scanFloat(source, t);
+        value = scanFloat(context, source, t);
 
-        t = source.getNonSpace();
+        t = source.getNonSpace(context);
         if (t == null) {
             throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
         }
 
         source.push(t);
         long mag = 1000;
-        if (source.getKeyword("true")) { // cf. TTP[453], TTP[457]
+        if (source.getKeyword(context, "true")) { // cf. TTP[453], TTP[457]
             mag = context.getMagnification();
-            source.push(source.scanNonSpace());
+            source.push(source.scanNonSpace(context));
         }
         // cf. TTP[458]
-        if (source.getKeyword("pt")) {
+        if (source.getKeyword(context, "pt")) {
             // nothing to do
-        } else if (source.getKeyword("sp")) {
+        } else if (source.getKeyword(context, "sp")) {
             value = value / ONE;
-        } else if (source.getKeyword("mm")) {
+        } else if (source.getKeyword(context, "mm")) {
             value = value * POINT_PER_100_IN / (CM100_PER_IN * 10);
-        } else if (source.getKeyword("cm")) {
+        } else if (source.getKeyword(context, "cm")) {
             value = value * POINT_PER_100_IN / CM100_PER_IN;
-        } else if (source.getKeyword("in")) {
+        } else if (source.getKeyword(context, "in")) {
             value = value * POINT_PER_100_IN / 100;
-        } else if (source.getKeyword("pc")) {
+        } else if (source.getKeyword(context, "pc")) {
             value = value * PT_PER_PC;
-        } else if (source.getKeyword("bp")) {
+        } else if (source.getKeyword(context, "bp")) {
             value = value * POINT_PER_100_IN / BP100_PER_IN;
-        } else if (source.getKeyword("dd")) {
+        } else if (source.getKeyword(context, "dd")) {
             value = value * 1238 / 1157;
-        } else if (source.getKeyword("cc")) {
+        } else if (source.getKeyword(context, "cc")) {
             value = value * 14856 / 1157;
-        } else if (source.getKeyword("ex")) {
+        } else if (source.getKeyword(context, "ex")) {
             Dimen ex = context.getTypesettingContext().getFont().getEm();
             value = value * ex.getValue() / ONE;
-        } else if (source.getKeyword("em")) {
+        } else if (source.getKeyword(context, "em")) {
             Dimen em = context.getTypesettingContext().getFont().getEm();
             value = value * em.getValue() / ONE;
-        } else if (fixed && source.getKeyword("fil")) {
+        } else if (fixed && source.getKeyword(context, "fil")) {
             order = 1;
-            for (t = source.getToken(); //
+            for (t = source.getToken(context); //
             (t != null && (t.equals('l') || t.equals('L'))); //
-            t = source.getToken()) {
+            t = source.getToken(context)) {
                 order++;
             }
             source.push(t);
-        } else if ((t = source.getToken()) != null) {
+        } else if ((t = source.getToken(context)) != null) {
             if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
                 if (code instanceof DimenConvertible) {

@@ -20,11 +20,11 @@
 package de.dante.extex.interpreter.primitives.typesetter;
 
 import de.dante.extex.font.Glyph;
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Accent extends AbstractCode {
 
@@ -107,8 +107,8 @@ public class Accent extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        UnicodeChar accent = source.scanCharacterCode();
-        Token token = source.getToken();
+        UnicodeChar accent = source.scanCharacterCode(context);
+        Token token = source.getToken(context);
         TypesettingContext tc = context.getTypesettingContext();
         Font currentFont = tc.getFont();
         long a = -1;
@@ -121,7 +121,7 @@ public class Accent extends AbstractCode {
 
         if (token == null) {
 
-            throw new EofHelpingException(printableControlSequence(context));
+            throw new EofException(printableControlSequence(context));
 
         } else if (token.isa(Catcode.LETTER) || token.isa(Catcode.OTHER)) {
             UnicodeChar c = token.getChar();

@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Errmessage extends AbstractCode {
 
@@ -74,7 +74,7 @@ public class Errmessage extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String message = source.scanTokens().toText();
+        String message = source.scanTokens(context).toText();
         String help = context.getToks("errhelp").toText();
         prefix.clear();
         throw new FixedHelpingException(message, help);

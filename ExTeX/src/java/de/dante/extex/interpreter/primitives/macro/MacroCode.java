@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -175,14 +175,14 @@ public class MacroCode extends AbstractCode
     private Tokens getTokenOrBlock(final Context context,
             final TokenSource source) throws GeneralException {
 
-        Token t = source.getToken();
+        Token t = source.getToken(context);
 
         if (t == null) {
             throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                     printableControlSequence(context));
         } else if (t instanceof LeftBraceToken) {
             source.push(t);
-            Tokens toks = source.getTokens();
+            Tokens toks = source.getTokens(context);
             if (toks == null) {
                 throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                         printableControlSequence(context));
@@ -235,7 +235,7 @@ public class MacroCode extends AbstractCode
         int pi = i + 1;
         Token ti = pattern.get(pi);
         if (ti instanceof MacroParamToken) {
-            Token t = source.getToken();
+            Token t = source.getToken(context);
             if (!ti.equals(t)) {
                 throw new HelpingException(getLocalizer(),
                         "TTP.UseDoesntMatch", printableControlSequence(context));
@@ -291,7 +291,7 @@ public class MacroCode extends AbstractCode
                 throw new HelpingException(getLocalizer(), "TTP.RunawayArg",
                         printableControlSequence(context));
             } else {
-                t = source.getToken();
+                t = source.getToken(context);
                 if (!t.equals(ti)) {
                     throw new HelpingException(getLocalizer(),
                             "TTP.UseDoesntMatch",
@@ -319,7 +319,8 @@ public class MacroCode extends AbstractCode
 
         Tokens toks = new Tokens();
 
-        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+        for (Token t = source.getToken(context); t != null; t = source
+                .getToken(context)) {
             if (t.equals(to)) {
                 return toks;
             }

@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * number in the context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NumberedFont extends NamedFont {
 
@@ -85,19 +85,19 @@ public class NumberedFont extends NamedFont {
     /**
      * Return the key (the name of the primitive) for the numbered font
      * register.
-     *
-     * @param source the source for new tokens
      * @param context the interpreter context to use
+     * @param source the source for new tokens
      *
      * @return the key for the current register
      *
      * @throws GeneralException in case that a derived class need to throw an
      *  Exception this one is declared.
      */
-    protected String getKey(final TokenSource source, final Context context)
+    protected String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
-        return key(context, getName(), Long.toString(source.scanNumber()));
+        return key(context, getName(), //
+                Long.toString(source.scanNumber(context)));
     }
 
 }

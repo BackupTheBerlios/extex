@@ -69,7 +69,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Wd extends Setbox
         implements
@@ -100,8 +100,8 @@ public class Wd extends Setbox
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Box box = context.getBox(getKey(source, context));
-        source.getOptionalEquals();
+        Box box = context.getBox(getKey(context, source));
+        source.getOptionalEquals(context);
         Dimen d = new Dimen(context, source);
 
         if (box != null) {
@@ -133,7 +133,7 @@ public class Wd extends Setbox
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        Box box = context.getBox(getKey(source, context));
+        Box box = context.getBox(getKey(context, source));
         FixedDimen d = (box == null ? Dimen.ZERO_PT : box.getWidth());
         return d.toToks(context.getTokenFactory());
     }
@@ -157,7 +157,7 @@ public class Wd extends Setbox
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        Box b = context.getBox(getKey(source, context));
+        Box b = context.getBox(getKey(context, source));
         return (b == null ? 0 : b.getWidth().getValue());
     }
 

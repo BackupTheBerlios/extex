@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.extex.i18n.BadFileNumberHelpingException;
-import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.BadFileNumberException;
+import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.SpaceToken;
@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -59,20 +59,21 @@ public abstract class AbstractFileCode extends AbstractCode
      * Scan the input source for some tokens making up the key for an infile
      * register. Currently only numbers in a certain range are allowed.
      *
+     * @param context the interpreter context
      * @param source the token source to read from
      *
      * @return the key read in the form of a String
      *
      * @throws GeneralException in case of a failure
      */
-    public static String scanInFileKey(final TokenSource source)
-            throws GeneralException {
+    public static String scanInFileKey(final Context context,
+            final TokenSource source) throws GeneralException {
 
-        long no = source.scanInteger();
+        long no = source.scanInteger(context);
         String key = Long.toString(no);
 
         if (no < 0 || no > MAX_IN_FILE_NO) {
-            throw new BadFileNumberHelpingException(key, //
+            throw new BadFileNumberException(key, //
                     "0", Integer.toString(MAX_IN_FILE_NO));
         }
 
@@ -85,23 +86,24 @@ public abstract class AbstractFileCode extends AbstractCode
      * Neagtive numbers are treated special. An empty string is returned
      * in this case.
      *
+     * @param context the interpreter context
      * @param source the token source to read from
      *
      * @return the key read in the form of a String
      *
      * @throws GeneralException in case of a failure
      */
-    public static String scanOutFileKey(final TokenSource source)
-            throws GeneralException {
+    public static String scanOutFileKey(final Context context,
+            final TokenSource source) throws GeneralException {
 
-        long no = source.scanInteger();
+        long no = source.scanInteger(context);
         if (no < 0) {
             return "";
         }
         String key = Long.toString(no);
 
         if (no < 0 || no > MAX_OUT_FILE_NO) {
-            throw new BadFileNumberHelpingException(key, //
+            throw new BadFileNumberException(key, //
                     "0", Integer.toString(MAX_OUT_FILE_NO));
         }
 
@@ -197,13 +199,13 @@ public abstract class AbstractFileCode extends AbstractCode
     protected String scanFileName(final Context context,
             final TokenSource source) throws GeneralException {
 
-        Token t = source.scanNonSpace();
+        Token t = source.scanNonSpace(context);
 
         if (t == null) {
             // Fall through to error
         } else if (strictTeX && t.isa(Catcode.LEFTBRACE)) {
             source.push(t);
-            String name = source.scanTokensAsString();
+            String name = source.scanTokensAsString(context);
             if (name != null) {
                 return name;
             }
@@ -211,16 +213,16 @@ public abstract class AbstractFileCode extends AbstractCode
         } else {
             StringBuffer sb = new StringBuffer(t.toText());
 
-            for (t = source.getToken(); //
+            for (t = source.getToken(context); //
             t != null && !(t instanceof SpaceToken); //
-            t = source.getToken()) {
+            t = source.getToken(context)) {
                 sb.append(t.toText());
             }
 
             return sb.toString();
         }
 
-        throw new EofHelpingException(printableControlSequence(context));
+        throw new EofException(printableControlSequence(context));
     }
 
 }

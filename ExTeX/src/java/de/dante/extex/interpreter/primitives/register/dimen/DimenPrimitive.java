@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -79,7 +79,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source) throws GeneralException {
 
         String key = getKey(source, context);
-        source.getKeyword("by");
+        source.getKeyword(context, "by");
 
         Dimen d = new Dimen(context, source);
         d.add(context.getDimen(key));
@@ -116,7 +116,7 @@ public class DimenPrimitive extends AbstractDimen
             throws GeneralException {
 
         String key = getKey(source, context);
-        source.getOptionalEquals();
+        source.getOptionalEquals(context);
 
         Dimen dimen = new Dimen(context, source);
         context.setDimen(key, dimen, prefix.isGlobal());
@@ -156,7 +156,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source) throws GeneralException {
 
         String key = getKey(source, context);
-        source.getKeyword("by");
+        source.getKeyword(context, "by");
         long value = Count.scanCount(context, source, null);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
         context.setDimen(key, d, prefix.isGlobal());
@@ -174,11 +174,11 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source) throws GeneralException {
 
         String key = getKey(source, context);
-        source.getKeyword("by");
+        source.getKeyword(context, "by");
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new ArithmeticOverflowHelpingException(
+            throw new ArithmeticOverflowException(
                     printableControlSequence(context));
         }
 

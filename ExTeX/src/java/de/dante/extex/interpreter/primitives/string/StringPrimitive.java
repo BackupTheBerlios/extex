@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 
@@ -100,7 +100,7 @@ public class StringPrimitive extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token t = source.getToken();
+        Token t = source.getToken(context);
         if (t instanceof ControlSequenceToken) {
             char esc = (char) (context.getCount("escapechar").getValue());
             source.push(new Tokens(context, t.toText(esc)));

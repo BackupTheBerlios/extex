@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Mathaccent extends AbstractMathCode {
 
@@ -85,7 +85,7 @@ public class Mathaccent extends AbstractMathCode {
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-        long accent = source.scanNumber();
+        long accent = source.scanNumber(context);
         if (accent > CHARCODE_MAX) {
             throw new HelpingException(getLocalizer(), "TTP.BadMathCharCode",
                     Long.toHexString(accent));

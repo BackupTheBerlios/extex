@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Fontvalue extends AbstractAssignment implements Theable {
 
@@ -72,13 +72,14 @@ public class Fontvalue extends AbstractAssignment implements Theable {
 
         // \fontvalue\ff{key}=5pt
         source.skipSpace();
-        Font font = source.getFont();
-        String key = source.scanTokensAsString();
+        Font font = source.getFont(context);
+        String key = source.scanTokensAsString(context);
         if (key == null || key.trim().length() == 0) {
-            throw new HelpingException("FONT.fontkeynotfound");
+            throw new HelpingException(getLocalizer(), "FONT.fontkeynotfound");
+            //TODO gene: i18n
         }
 
-        source.getOptionalEquals();
+        source.getOptionalEquals(context);
         Dimen size = new Dimen(context, source);
         font.setFontDimen(key, size);
         prefix.clear();
@@ -93,10 +94,11 @@ public class Fontvalue extends AbstractAssignment implements Theable {
             final Typesetter typesetter) throws GeneralException {
 
         source.skipSpace();
-        Font font = source.getFont();
-        String key = source.scanTokensAsString();
+        Font font = source.getFont(context);
+        String key = source.scanTokensAsString(context);
         if (key == null || key.trim().length() == 0) {
-            throw new HelpingException("FONT.fontkeynotfound");
+            throw new HelpingException(getLocalizer(), "FONT.fontkeynotfound");
+            //TODO gene: i18n
         }
         Dimen size = font.getFontDimen(key);
 

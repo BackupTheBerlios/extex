@@ -21,9 +21,9 @@ package de.dante.extex.typesetter.type;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
-import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -31,10 +31,13 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathDelimiter {
 
+    /**
+     * The constant <tt>CHAR_MASK</tt> contains the character mask.
+     */
     private static final int CHAR_MASK = 0xff;
 
     /**
@@ -94,13 +97,15 @@ public class MathDelimiter {
     /**
      * Creates a new object.
      *
+     * @param context the interpreter context
      * @param source the token source to read from
      *
      * @throws GeneralException in case of an error
      */
-    public MathDelimiter(final TokenSource source) throws GeneralException {
+    public MathDelimiter(final Context context, final TokenSource source)
+            throws GeneralException {
 
-        this(source.scanNumber());
+        this(source.scanNumber(context));
     }
 
     /**

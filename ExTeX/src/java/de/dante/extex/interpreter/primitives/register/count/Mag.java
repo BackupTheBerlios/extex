@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Mag extends AbstractCount
         implements
@@ -93,7 +93,7 @@ public class Mag extends AbstractCount
     public void advance(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        source.getKeyword("by");
+        source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
         value += context.getMagnification();
@@ -112,7 +112,7 @@ public class Mag extends AbstractCount
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.getOptionalEquals();
+        source.getOptionalEquals(context);
 
         long value = Count.scanCount(context, source, typesetter);
         context.setMagnification(value);
@@ -153,12 +153,12 @@ public class Mag extends AbstractCount
     public void divide(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        source.getKeyword("by");
+        source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new ArithmeticOverflowHelpingException(
+            throw new ArithmeticOverflowException(
                     printableControlSequence(context));
         }
 
@@ -175,7 +175,7 @@ public class Mag extends AbstractCount
     public void multiply(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        source.getKeyword("by");
+        source.getKeyword(context, "by");
 
         long value = Count.scanCount(context, source, null);
         value *= context.getMagnification();

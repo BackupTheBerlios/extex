@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\toksdef</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *    &lang;control sequence&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
  *    &lang;equals&rang;} {@linkplain
@@ -68,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "toks#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Toksdef extends AbstractToks {
 
@@ -93,8 +93,8 @@ public class Toksdef extends AbstractToks {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        CodeToken cs = source.getControlSequence();
-        source.getOptionalEquals();
+        CodeToken cs = source.getControlSequence(context);
+        source.getOptionalEquals(context);
         String key = getKey(source, context);
         context.setCode(cs, new ToksParameter(key), prefix.isGlobal());
     }

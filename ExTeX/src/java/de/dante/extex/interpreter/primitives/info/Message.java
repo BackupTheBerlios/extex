@@ -42,7 +42,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 
@@ -85,7 +85,7 @@ public class Message extends AbstractCode implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        logger.severe("\n" + source.scanTokens().toText() + "\n");
+        logger.severe("\n" + source.scanTokens(context).toText() + "\n");
         return true;
     }
 }

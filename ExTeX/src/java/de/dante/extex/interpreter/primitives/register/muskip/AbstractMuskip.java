@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * numbered muskip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractMuskip extends AbstractAssignment {
 
@@ -59,7 +59,7 @@ public abstract class AbstractMuskip extends AbstractAssignment {
     protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        String name = source.scanRegisterName();
+        String name = source.scanRegisterName(context);
 
         if (Namespace.SUPPORT_NAMESPACE_SKIP) {
             return context.getNamespace() + "muskip#" + name;

@@ -54,7 +54,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 
@@ -93,7 +93,7 @@ public class Showbox extends AbstractBox implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source, context);
+        String key = getKey(context, source);
         Box b = context.getBox(key);
 
         if (b == null) {

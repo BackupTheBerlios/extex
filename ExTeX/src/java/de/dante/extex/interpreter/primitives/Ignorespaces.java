@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ignorespaces extends AbstractCode {
 
@@ -75,10 +75,7 @@ public class Ignorespaces extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token t = source.getNonSpace();
-        if (t != null) {
-            source.push(t);
-        }
+        source.skipSpace();
         return true;
     }
 

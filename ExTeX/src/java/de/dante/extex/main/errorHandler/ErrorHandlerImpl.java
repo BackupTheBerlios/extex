@@ -48,7 +48,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ErrorHandlerImpl
         implements
@@ -244,7 +244,7 @@ public class ErrorHandlerImpl
                                 count = count * 10 + line.charAt(1) - '0';
                             }
                             while (count-- > 0) {
-                                source.getToken();
+                                source.getToken(context);
                             }
                             firstHelp = false;
                             break;

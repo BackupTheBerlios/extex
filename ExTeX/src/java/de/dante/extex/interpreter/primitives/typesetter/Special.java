@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;special&rang;
  *        &rarr; <tt>\special</tt> {@linkplain
- *           de.dante.extex.interpreter.TokenSource#scanTokens()
+ *           de.dante.extex.interpreter.TokenSource#scanTokens(Context)
  *           &lang;general text&rang;}  </pre>
  * </p>
  * <p>
@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Special extends AbstractCode {
 
@@ -89,7 +89,7 @@ public class Special extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String text = source.scanTokens().toText();
+        String text = source.scanTokens(context).toText();
         typesetter.add(new SpecialNode(text));
         return true;
     }

@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -59,10 +59,10 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source, context);
-        source.getOptionalEquals();
+        String key = getKey(context, source);
+        source.getOptionalEquals(context);
 
-        Font font = source.getFont();
+        Font font = source.getFont(context);
         context.setFont(key, font, prefix.isGlobal());
     }
 
@@ -74,20 +74,19 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
     public Font convertFont(final Context context, final TokenSource source)
             throws GeneralException {
 
-        return context.getFont(getKey(source, context));
+        return context.getFont(getKey(context, source));
     }
 
     /**
      * Return the key (the number) for the font register.
-     *
-     * @param source the source for the next tokens -- if required
      * @param context the interpreter context to use
+     * @param source the source for the next tokens -- if required
      *
      * @return the key for the font register
      *
      * @throws GeneralException in case oif an error
      */
-    protected String getKey(final TokenSource source, final Context context)
+    protected String getKey(final Context context, final TokenSource source)
             throws GeneralException {
 
         if (Namespace.SUPPORT_NAMESPACE_FONT) {

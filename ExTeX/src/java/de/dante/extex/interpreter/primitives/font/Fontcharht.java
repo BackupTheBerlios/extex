@@ -20,10 +20,10 @@
 package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.font.Glyph;
-import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -58,7 +58,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Fontcharht extends AbstractCode
         implements
@@ -85,8 +85,8 @@ public class Fontcharht extends AbstractCode
     public long convertDimen(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        Font fnt = source.getFont();
-        UnicodeChar uc = source.scanCharacterCode();
+        Font fnt = source.getFont(context);
+        UnicodeChar uc = source.scanCharacterCode(context);
         Glyph glyph = fnt.getGlyph(uc);
         if (glyph == null) {
             return 0;
@@ -110,7 +110,7 @@ public class Fontcharht extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new CantUseHelpingException(printableControlSequence(context),
+        throw new CantUseInException(printableControlSequence(context),
                 typesetter.getMode().toString());
     }
 

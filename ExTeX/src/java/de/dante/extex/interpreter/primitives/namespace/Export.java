@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Export extends AbstractAssignment {
 
@@ -82,7 +82,7 @@ public class Export extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens export = source.getTokens();
+        Tokens export = source.getTokens(context);
         context.setToks(context.getNamespace() + "\bexport", export, true);
     }
 

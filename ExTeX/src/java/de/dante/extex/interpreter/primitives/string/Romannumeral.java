@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *  <pre class="syntax">
  *    &lang;romannumeral&rang;
  *        &rarr; <tt>\romannumeral</tt> {@linkplain
- *           de.dante.extex.interpreter.TokenSource#scanInteger()
+ *           de.dante.extex.interpreter.TokenSource#scanInteger(Context)
  *           &lang;number&rang;} </pre>
  * </p>
  * <p>
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
@@ -101,7 +101,7 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long n = source.scanInteger();
+        long n = source.scanInteger(context);
         Tokens toks = new Tokens();
         TokenFactory factory = context.getTokenFactory();
         char[] magic = {'m', '2', 'd', '5', 'c', '2', 'l', '5', 'x', '2', 'v',
