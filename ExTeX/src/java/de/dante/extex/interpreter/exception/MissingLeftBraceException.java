@@ -17,33 +17,33 @@
  *
  */
 
-package de.dante.extex.i18n;
+package de.dante.extex.interpreter.exception;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a macro is encouterend in a mode for which it
- * is not meant.
+ * This exception is raised when an arithmetic overflow has been encoutered.
  * <p>
- * The localization format is taken from the resource bundle of the parent
- * class under the key <tt>TTP.CantUseAfter</tt>.
+ *  The localization format is taken from the Localizer under the key
+ *  <tt>TTP.ArithmeticOverflow</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class CantUseHelpingException extends HelpingException {
+public class MissingLeftBraceException extends HelpingException {
 
     /**
      * Creates a new object.
      *
      * @param macro the name of the macro in which the eof has been encoutered
-     * @param mode the current mode
      */
-    public CantUseHelpingException(final String macro, final String mode) {
+    public MissingLeftBraceException(final String macro) {
 
-        super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
-                "TTP.CantUseIn", macro, mode);
+        super(LocalizerFactory.getLocalizer(//
+                MissingLeftBraceException.class.getName()),
+                "TTP.MissingLeftBrace");
     }
 
 }

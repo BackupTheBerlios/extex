@@ -17,30 +17,29 @@
  *
  */
 
-package de.dante.extex.i18n;
+package de.dante.extex.interpreter.exception;
 
-import de.dante.util.UnicodeChar;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when an unexpected end of file is encountered.
- * <p>
- * The localization format is taken from the resource bundle of the parent
- * class under the key <tt>UnexpectedEofIn</tt>.
- * </p>
+ * This exception signals that an undefined control sequence has been
+ * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class InvalidCharacterException extends HelpingException {
+public class UndefinedControlSequenceException extends HelpingException {
 
     /**
      * Creates a new object.
+     *
+     * @param macro the name of the macro in which the eof has been encoutered
      */
-    public InvalidCharacterException(final UnicodeChar uc) {
+    public UndefinedControlSequenceException(final String macro) {
 
         super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
-                "TTP.InvalidChar", uc.toString());
+                "TTP.UndefinedToken", macro);
     }
 
 }

@@ -17,32 +17,37 @@
  *
  */
 
-package de.dante.extex.i18n;
+package de.dante.extex.interpreter.exception;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a math macro is encountered outside a math
- * mode.
+ * This exception is raised when a situation is detected where the continuation
+ * is illegal.
  * <p>
- * The localization format is taken from the resource bundle of the parent
- * class under the key <tt>TTP.MissingDollar</tt>.
+ *  The localization format is taken from the Localizer under the key
+ *  <tt>TTP.CantUseAfter</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MathHelpingException extends HelpingException {
+public class CantUseAfterException extends HelpingException {
 
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encoutered
+     * @param cause the name of the macro in which the condition has been
+     *  encoutered
+     * @param predecessor the preceeding token
      */
-    public MathHelpingException(final String macro) {
+    public CantUseAfterException(final String cause,
+            final String predecessor) {
 
-        super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
-                "TTP.MissingDollar", macro);
+        super(LocalizerFactory.getLocalizer(//
+                CantUseAfterException.class.getName()),
+                "TTP.CantUseAfter", cause, predecessor);
     }
 
 }
