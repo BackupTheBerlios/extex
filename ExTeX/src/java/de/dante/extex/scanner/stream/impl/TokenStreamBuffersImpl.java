@@ -29,52 +29,49 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
         TokenStream {
 
-	/**
-	 * the line
-	 */
-	private String line;
-	
+    /**
+     * the line
+     */
+    private String line;
 
-	/**
-	 * Creates a new object.
-	 * @param	line	the line for the tokenizer 
-	 */
-	public TokenStreamBuffersImpl(final String line) {
-		super();
-		if (line != null) {
-			this.line = line;
-		} else {
-			this.line="";
-		}
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param theLine the line for the tokenizer
+     */
+    public TokenStreamBuffersImpl(final String theLine) {
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
-	 */
-	protected int bufferLength() {
-		return line.length();
-	}
+        super();
+        this.line = (theLine != null ? theLine : "");
+    }
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
-	 */
-	protected UnicodeChar getSingleChar() {
-		return new UnicodeChar(line,pointer);
-	}
+    /**
+     * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
+     */
+    protected int bufferLength() {
+        return line.length();
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return line;
-	}
-	
-	
+    /**
+     * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
+     */
+    protected UnicodeChar getSingleChar() {
+
+        return new UnicodeChar(line, pointer);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return line;
+    }
+
     /**
      * The field <tt>nextLine</tt> ...
      */
@@ -86,15 +83,10 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
     private String[] lines = null;
 
     /**
-     * The field <tt>encoding</tt> contains the ...
-     */
-    // private String encoding; mgn: changed
-
-    /**
      * Creates a new object.
      *
      * @param lines the array of lines to consider
-     * @throws CharacterCodingException in cas of an error
+     * @throws CharacterCodingException in case of an error
      */
     public TokenStreamBuffersImpl(final String[] lines)
             throws CharacterCodingException {
@@ -106,7 +98,7 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
      */
     protected boolean refill() throws IOException {
-    	super.refill();
+        super.refill();
         if (lines == null || nextLine >= lines.length) {
             return false;
         }

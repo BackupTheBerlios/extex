@@ -25,10 +25,11 @@ import de.dante.extex.i18n.Messages;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationMissingAttributeException extends
-    ConfigurationException {
+        ConfigurationException {
+
     /**
      * Create a new object.
      *
@@ -37,6 +38,7 @@ public class ConfigurationMissingAttributeException extends
      */
     public ConfigurationMissingAttributeException(final String message,
         final String location) {
+
         super(message, location);
     }
 
@@ -48,6 +50,7 @@ public class ConfigurationMissingAttributeException extends
      */
     public ConfigurationMissingAttributeException(final String message,
         final Configuration origin) {
+
         super(message, origin.toString());
     }
 
@@ -59,6 +62,7 @@ public class ConfigurationMissingAttributeException extends
      */
     public ConfigurationMissingAttributeException(final String message,
         final Throwable cause) {
+
         super(message, cause);
     }
 
@@ -71,8 +75,9 @@ public class ConfigurationMissingAttributeException extends
      *
      * @return the text
      */
-    public String getMessage() {
-        return Messages.format("ConfigurationMissingAttributeException.Text",
-                               super.getMessage());
+    public String getText() {
+
+        return Messages.format("ConfigurationMissingAttributeException.Text");
     }
+
 }

@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -66,17 +66,30 @@ public class Dimen extends GlueComponent implements Serializable {
       * The length stored in it is initialized to 0pt.
       */
      public Dimen() {
-          super();
+
+         super();
      }
 
      /**
       * Creates a new object.
-     * This method makes a new instance of the class with the given value.
+      * This method makes a new instance of the class with the given value.
       *
       * @param value the value to set
       */
      public Dimen(final long value) {
-          super(value);
+
+         super(value);
+     }
+
+     /**
+      * Creates a new object.
+      * This method makes a new instance of the class with the given value.
+      *
+      * @param value the value to set
+      */
+     public Dimen(final int value) {
+
+         super((long) value);
      }
 
     /**
@@ -87,6 +100,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * @param value the value to imitate
      */
     public Dimen(final Dimen value) {
+
         super(value == null ? 0 : value.getValue());
     }
 
@@ -100,6 +114,7 @@ public class Dimen extends GlueComponent implements Serializable {
      */
     public Dimen(final Context context, final TokenSource source)
         throws GeneralException {
+
         super(source, context, false);
     }
 
@@ -109,14 +124,19 @@ public class Dimen extends GlueComponent implements Serializable {
      */
     public void set(final Context context, final TokenSource source)
         throws GeneralException {
-        set(source, context, false);
+
+        set(context, source, false);
     }
 
     /**
      * Add the value of the argument to the current value.
-     * This modifies this instance.
+     * This operation modifies the instance.
      *
-     * @param d the Dimen to add to
+     * <p>
+     * |<i>this</i>| := |<i>this</i>| + |<i>d</i>|
+     * </p>
+     *
+     * @param d the Dimen to add
      */
     public void add(final Dimen d) {
 
@@ -125,9 +145,13 @@ public class Dimen extends GlueComponent implements Serializable {
 
     /**
      * Subtract the value of the argument from the current value.
-     * This modifies this instance.
+     * This operation modifies the instance.
      *
-     * @param d the Dimen to add to
+     * <p>
+     * |<i>this</i>| := |<i>this</i>| - |<i>d</i>|
+     * </p>
+     *
+     * @param d the Dimen to subtract
      */
     public void subtract(final Dimen d) {
 
@@ -136,9 +160,13 @@ public class Dimen extends GlueComponent implements Serializable {
 
     /**
      * Multiply the current value with a given number.
-     * This modifies this instance.
+     * This operation modifies this instance.
      *
-     * @param factor ...
+     * <p>
+     * |<i>this</i>| := |<i>this</i>| * <i>factor</i>
+     * </p>
+     *
+     * @param factor the factor to multiply with
      */
     public void multiply(final long factor) {
 
@@ -147,11 +175,16 @@ public class Dimen extends GlueComponent implements Serializable {
 
     /**
      * Divide the current value with a given number.
-     * This modifies this instance.
+     * This operation modifies this instance.
      *
-     * @param denom ...
+     * <p>
+     * |<i>this</i>| := |<i>this</i>| / <i>denom</i>
+     * </p>
      *
-     * @throws GeneralHelpingException in case of an division by 0
+     * @param denom denominator to divide by
+     *
+     * @throws GeneralHelpingException in case of a division by 0, i.e. if
+     * denom is 0.
      */
     public void divide(final long denom) throws GeneralHelpingException {
 
@@ -162,43 +195,58 @@ public class Dimen extends GlueComponent implements Serializable {
     }
 
     /**
-     * ...
+     * Compares the current instance with another Dimen for equality of the
+     * values.
      *
      * @param d the other dimen to compare to
      *
      * @return <code>true</code> iff <i>|this| == |d|</i>
+     *
+     * @throws NullPointerException in case that the argument is
+     * <code>null</code>.
      */
     public boolean eq(final Dimen d) {
         return (getValue() == d.getValue());
     }
 
     /**
-     * ...
+     * Compares the current instance with another Dimen.
      *
      * @param d the other dimen to compare to
      *
      * @return <code>true</code> iff <i>|this| &lt; |d|</i>
+     *
+     * @throws NullPointerException in case that the argument is
+     * <code>null</code>.
      */
     public boolean lt(final Dimen d) {
         return (getValue() < d.getValue());
     }
 
     /**
-     * ...
+     * Compares the current instance with another Dimen.
      *
      * @param d the other dimen to compare to
      *
      * @return <code>true</code> iff <i>|this| &lt;= |d|</i>
+     *
+     * @throws NullPointerException in case that the argument is
+     * <code>null</code>.
      */
     public boolean le(final Dimen d) {
         return (getValue() <= d.getValue());
     }
 
     /**
-     * ...
+     * Sets the value of the dimen to the maximum of the value already stored
+     * and a given argument.
+     *
      * <i>|this| = max(|this|, |d|)</i>
      *
-     * @param d ...
+     * @param d the other dimen
+     *
+     * @throws NullPointerException in case that the argument is
+     * <code>null</code>.
      */
     public void max(final Dimen d) {
 
@@ -208,74 +256,93 @@ public class Dimen extends GlueComponent implements Serializable {
         }
     }
 
-     /**
-      * ...
-      *
-      * @return ...
-      */
-     public String toString() {
-         StringBuffer sb = new StringBuffer();
-         toString(sb);
-         return sb.toString();
-     }
+    /**
+     * Determine the printable representation of the object.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the Dimen. This means the result is expressed in pt and
+     * properly rounded to be read back in again without loss of information.
+     *
+     * @return the printable representation
+     *
+     * @see #toString(StringBuffer)
+     * @see #toToks(TokenFactory)
+     */
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        toString(sb);
+        return sb.toString();
+    }
 
-     /**
-      * ...
-      *
-      * @param sb the output string buffer
-      */
-     public void toString(final StringBuffer sb) {
-         long val = getValue();
+    /**
+     * Determine the printable representation of the object and append it to
+     * the given StringBuffer.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the Dimen. This means the result is expressed in pt and
+     * properly rounded to be read back in again without loss of information.
+     *
+     * @param sb the output string buffer
+     *
+     * @see #toString()
+     * @see #toToks(TokenFactory)
+     */
+    public void toString(final StringBuffer sb) {
+        long val = getValue();
+        
+        if (val < 0) {
+            sb.append('-');
+            val = -val;
+        }
 
-         if (val < 0) {
-             sb.append('-');
-             val = -val;
-         }
+        long v = val / ONE;
+        if (v == 0) {
+            sb.append('0');
+        } else {
+            long m = 1;
+            while (m <= v) {
+                m *= 10;
+            }
+            m /= 10;
+            while (m > 0) {
+                sb.append((char) ('0' + (v / m)));
+                v = v % m;
+                m /= 10;
+            }
+        }
 
-         long v = val / ONE;
-         if (v == 0) {
-             sb.append('0');
-         } else {
-             long m = 1;
-             while (m <= v) {
-                 m *= 10;
-             }
-             m /= 10;
-             while (m > 0) {
-                 sb.append((char) ('0' + (v / m)));
-                 v = v % m;
-                 m /= 10;
-             }
-         }
+        sb.append('.');
 
-         sb.append('.');
+        val = 10 * (val % ONE) + 5;
+        long delta = 10;
+        do {
+            if (delta > ONE) {
+                val = val + 0100000 - 50000; // round the last digit
+            }
+            int i = (int) (val / ONE);
+            sb.append((char) ('0' + i));
+            val = 10 * (val % ONE);
+            delta *= 10;
+        } while (val > delta);
 
-         val = 10 * (val % ONE) + 5;
-         long delta = 10;
-         do {
-             if (delta > ONE) {
-                 val = val + 0100000 - 50000; // round the last digit
-             }
-             int i = (int) (val / ONE);
-             sb.append((char) ('0' + i));
-             val = 10 * (val % ONE);
-             delta *= 10;
-         } while (val > delta);
+        sb.append('p');
+        sb.append('t');
+    }
 
-         sb.append('p');
-         sb.append('t');
-     }
-
-     /**
-     * ...
+    /**
+     * Determine the printable representation of the object and return it as a
+     * löist of Tokens.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the Dimen. This means the result is expressed in pt and
+     * properly rounded to be read back in again without loss of information.
      *
      * @param factory the token factory to get the required tokens from
      *
-     * @return ...
+     * @return the printable representation
      *
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [103]"
+     * @see #toString()
+     * @see #toString(StringBuffer)
      */
     public Tokens toToks(final TokenFactory factory) throws GeneralException {
 
@@ -339,7 +406,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * Return the <code>Dimen</code>-value in bp
      *
      * @return the value in bp
-     * @deprecated dimen arithmetic instead of incorrect rounding to a double
+     * @deprecated use dimen arithmetic instead of incorrect rounding to a double
      */
     public double toBP() {
         return ((double) getValue() * 7200) / (7227 * ONE);

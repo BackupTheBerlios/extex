@@ -25,7 +25,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractToken implements Token {
 
@@ -119,7 +119,7 @@ public abstract class AbstractToken implements Token {
     }
 
     /**
-     * @see de.dante.extex.scanner.Token#equals(Catcode,String)
+     * @see de.dante.extex.scanner.Token#equals(de.dante.extex.scanner.Catcode, java.lang.String)
      */
     public boolean equals(final Catcode cc, final String s) {
 
@@ -145,7 +145,7 @@ public abstract class AbstractToken implements Token {
     }
 
     /**
-     * @see de.dante.extex.scanner.Token#isa(Catcode)
+     * @see de.dante.extex.scanner.Token#isa(de.dante.extex.scanner.Catcode)
      */
     public boolean isa(final Catcode cc) {
 
