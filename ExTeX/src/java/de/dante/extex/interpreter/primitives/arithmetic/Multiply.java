@@ -16,15 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.arithmetic;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Multiplyable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
 public class Multiply extends AbstractAssignment {
     /**
