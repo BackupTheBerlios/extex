@@ -530,6 +530,12 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Command line:
  *    <a href="#-texinputs"><tt>-texinputs &lang;path&rang;</tt></a> </dd>
  *
+ *   <dt><a name="extex.token.stream"/><tt>extex.token.stream</tt></dt>
+ *   <dd>
+ *    This string parameter contains the logical name of the configuration to
+ *    use for the token stream.
+ *   </dd>
+ *
  *   <dt><a name="extex.trace.input.files"/><tt>extex.trace.input.files</tt></dt>
  *   <dd>
  *    This boolean parameter contains the indicator whether or not to trace the
@@ -618,7 +624,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public class ExTeX {
 
@@ -772,6 +778,12 @@ public class ExTeX {
      * property for the additional texinputs specification of directories.
      */
     private static final String PROP_TEXINPUTS = "extex.texinputs";
+
+    /**
+     * The field <tt>PROP_TOKEN_STREAM</tt> contains the name of the property
+     * for the token stream class to use.
+     */
+    private static final String PROP_TOKEN_STREAM = "extex.token.stream";
 
     /**
      * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
@@ -993,6 +1005,7 @@ public class ExTeX {
         propertyDefault(PROP_POOL, "config.extexMessage");
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
+        propertyDefault(PROP_TOKEN_STREAM, "base");
         propertyDefault(PROP_TRACE_INPUT_FILES, "");
         propertyDefault(PROP_TRACE_FONT_FILES, "");
         propertyDefault(PROP_TRACE_MACROS, "");
@@ -1082,7 +1095,8 @@ public class ExTeX {
                 Locale.setDefault(new Locale(m.group(1), m.group(2)));
             } else if ((m = Pattern.compile("^(..)[_-](..)[_-](..)$").matcher(
                     lang)).matches()) {
-                Locale.setDefault(new Locale(m.group(1), m.group(2), m
+                Locale
+                        .setDefault(new Locale(m.group(1), m.group(2), m
                                 .group(3)));
             }
         }
@@ -1414,6 +1428,7 @@ public class ExTeX {
                 .getProperty(PROP_ERROR_HANDLER));
         interpreter.setErrorHandler(errorHandler);
         interpreter.setFileFinder(finder);
+        factory.setOptions((TokenStreamOptions) interpreter.getContext());
         interpreter.setTokenStreamFactory(factory);
         interpreter.setFontFactory(fontFactory);
         interpreter.setInteraction(Interaction.get(properties
@@ -1428,8 +1443,6 @@ public class ExTeX {
                 makeDefaultFont(fontConfiguration, fontFactory));
 
         initializeStreams(interpreter);
-
-        factory.setOptions((TokenStreamOptions) interpreter.getContext());
 
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
@@ -1476,10 +1489,8 @@ public class ExTeX {
 
     /**
      * Create a TokenStreamFactory.
-     *
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
-     * @param options the options for the token stream
      *
      * @return the token stream factory
      *
@@ -1489,12 +1500,11 @@ public class ExTeX {
      * events could not be registered
      */
     private TokenStreamFactory makeTokenStreamFactory(
-            final Configuration config, final ResourceFinder finder,
-            final TokenStreamOptions options)
+            final Configuration config, final ResourceFinder finder)
             throws ConfigurationException,
                 NotObservableException {
 
-        TokenStreamFactory factory = new TokenStreamFactory(config, options);
+        TokenStreamFactory factory = new TokenStreamFactory(config, properties.getProperty(PROP_TOKEN_STREAM));
 
         factory.enableLogging(logger);
         factory.setResourceFinder(finder);
@@ -1576,7 +1586,7 @@ public class ExTeX {
             }
             TokenStreamFactory tokenStreamFactory //
             = makeTokenStreamFactory(config.getConfiguration("Scanner"),
-                    finder, null);
+                    finder);
 
             FontFactory fontFactory = makeFontFactory(config
                     .getConfiguration("Fonts"));

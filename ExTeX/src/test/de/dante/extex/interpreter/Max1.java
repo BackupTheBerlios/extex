@@ -41,7 +41,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Max1 extends TestCase {
 
@@ -283,7 +283,7 @@ public class Max1 extends TestCase {
         Interpreter interpreter = new InterpreterFactory(config
                 .getConfiguration("Interpreter")).newInstance();
         TokenStreamFactory factory = new TokenStreamFactory(config
-                .getConfiguration("Reader"), null);
+                .getConfiguration("Reader"), "base");
         interpreter.setTokenStreamFactory(factory);
 
         TestTypesetter typesetter = new TestTypesetter();
