@@ -19,6 +19,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -34,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface ListMaker {
 
@@ -151,13 +152,13 @@ public interface ListMaker {
 
     /**
      * ...
-     *
-     * @param context ...
+     * @param context TODO
+     * @param source TODO
      * @param t ...
      *
      * @throws GeneralException in case of an error
      */
-    void treatTabMark(TypesettingContext context, Token t) throws GeneralException;
+    void tab(Context context, TokenSource source, Token t) throws GeneralException;
 
     /**
      * ...

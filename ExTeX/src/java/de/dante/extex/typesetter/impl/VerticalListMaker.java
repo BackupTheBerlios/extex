@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter.impl;
 
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -37,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -176,14 +178,13 @@ public class VerticalListMaker extends AbstractListMaker {
 
     /**
      * ...
-     *
-     * @param context
      * @param t
+     *
      * @throws GeneralException
      *
-     * @see de.dante.extex.typesetter.ListMaker#treatTabMark(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
+     * @see de.dante.extex.typesetter.ListMaker#tab(Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void treatTabMark(TypesettingContext context, Token t)
+    public void tab(final Context context, final TokenSource source, Token t)
             throws GeneralException {
 
         // TODO unimplemented
