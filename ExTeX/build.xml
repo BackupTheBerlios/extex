@@ -248,5 +248,14 @@
 			<jvmarg value="-Xloggc:gc.log"/> 
 		</java>
 	</target> -->
+	
+    <target name="extex32" description="Create a extex32.xml config-file">
+		<java fork="true" classname="de.dante.extex.plugin.CreateConfig">
+			<arg value="src/config/extex.xml"/>
+			<arg value="src/config/extex-ext.xml"/>
+			<arg value="src/config/extex32.xml"/>
+		</java>
+	</target>
+		
 
 </project>
