@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,21 +16,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.font;
 
 import org.jdom.Element;
 
 /**
- * This interface get the EFM-<code>Element</code> from some other fontsmetric-classes. 
- * 
+ * This interface get the EFM-<code>Element</code>
+ * from some other fontsmetric-classes.
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface FontMetric {
-	
-	/**
-	 * Return the FontMetrix-Element for this font.
-	 * @return	the fontmetrix as XML-Element
-	 */
-	public Element getFontMetric();  
+
+    /**
+     * Return the FontMetrix-Element for this font.
+     * @return the fontmetrix as XML-Element
+     */
+    Element getFontMetric();
 }

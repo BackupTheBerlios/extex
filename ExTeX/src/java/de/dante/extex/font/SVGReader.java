@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.font;
 
 import java.io.IOException;
@@ -28,59 +29,70 @@ import org.jdom.input.SAXBuilder;
 
 /**
  * This class read a SVG-file.
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 // TODO incomplete
 public class SVGReader implements FontMetric {
 
-	private String efmname;
-	private String defaultsize;
+    /**
+     * efm-filename
+     */
+    private String efmname;
 
-	/**
-	 * init
-	 * @param svgin		Stream for Reading the afm-file
-	 * @param efmname	the name of the efmfile
-	 * @param defaultsize	the defaultsize of the font
-	 */
-	public SVGReader(InputStream svgin, String efmname, String defaultsize) throws SVGException, IOException, JDOMException{
+    /**
+     * defaultsize
+     */
+    private String defaultsize;
 
-		this.efmname = efmname;
-		this.defaultsize = defaultsize;
+    /**
+     * init
+     * @param svgin        Stream for Reading the afm-file
+     * @param efmname      the name of the efmfile
+     * @param defaultsize  the defaultsize of the font
+     * @throws IOException ...
+     * @throws JDOMException ...
+     */
+    public SVGReader(final InputStream svgin, final String efmname,
+            final String defaultsize) throws IOException, JDOMException {
 
-		readSVGFile(svgin);
-		svgin.close();
-	}
+        this.efmname = efmname;
+        this.defaultsize = defaultsize;
 
-	/**
-	 * reads the svg-file and create e efm-element
-	 */
-	private void readSVGFile(InputStream in) throws SVGException, IOException, JDOMException {
-	
-		
-		
-		// create a document with SAXBuilder (without validate)
-		SAXBuilder builder = new SAXBuilder(false);
-		Document doc = builder.build(in);
-		
-		efmelement = new Element("fontgroup");
+        readSVGFile(svgin);
+        svgin.close();
+    }
 
-		//SVGDocument svgdoc = (SVGDocument)doc;
-		// TODO incomplete
-		System.err.println(doc);
-		
-	}
-	
-	/**
-	 * The efm-element
-	 */
-	Element efmelement;
-	
-	/**
-	 * @see de.dante.util.font.FontMetric#getFontMetric()
-	 */
-	public Element getFontMetric() {
-		return efmelement;
-	}
+    /**
+     * reads the svg-file and create e efm-element
+     * @param in    the inputstream
+     * @throws IOException ...
+     */
+    private void readSVGFile(final InputStream in) throws IOException,
+            JDOMException {
+
+        // create a document with SAXBuilder (without validate)
+        SAXBuilder builder = new SAXBuilder(false);
+        Document doc = builder.build(in);
+
+        efmelement = new Element("fontgroup");
+
+        //SVGDocument svgdoc = (SVGDocument)doc;
+        // TODO incomplete
+        System.err.println(doc);
+
+    }
+
+    /**
+     * The efm-element
+     */
+    private Element efmelement;
+
+    /**
+     * @see de.dante.util.font.FontMetric#getFontMetric()
+     */
+    public Element getFontMetric() {
+        return efmelement;
+    }
 }

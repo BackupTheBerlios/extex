@@ -1,21 +1,22 @@
 /*
-* Copyright (C) 2004 The ExTeX Group
-*
-* This library is free software; you can redistribute it and/or
-* modify it under the terms of the GNU Lesser General Public
-* License as published by the Free Software Foundation; either
-* version 2.1 of the License, or (at your option) any later version.
-*
-* This library is distributed in the hope that it will be useful,
-* but WITHOUT ANY WARRANTY; without even the implied warranty of
-* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-* Lesser General Public License for more details.
-*
-* You should have received a copy of the GNU Lesser General Public
-* License along with this library; if not, write to the Free Software
-* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
-*
-*/
+ * Copyright (C) 2004 The ExTeX Group
+ *
+ * This library is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU Lesser General Public
+ * License as published by the Free Software Foundation; either
+ * version 2.1 of the License, or (at your option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ * Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public
+ * License along with this library; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ *
+ */
+
 package de.dante.extex.documentWriter.pdf;
 
 import java.awt.Color;
@@ -48,50 +49,57 @@ import de.dante.util.GeneralException;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
 public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
-   /**
-    * The field <tt>out</tt> ...
-    */
+    /**
+     * The field <tt>out</tt> ...
+     */
     private OutputStream out = null;
 
-   /**
-    * The field <tt>shippedPages</tt> ...
-    */
+    /**
+     * The field <tt>shippedPages</tt> ...
+     */
     private int shippedPages = 0;
 
-   /**
-    * Creates a new object.
-    */
+    /**
+     * Creates a new object.
+     * @param    cfg the configuration
+     */
     public PdfDocumentWriter(final Configuration cfg) {
         super();
     }
 
-   /**
-    * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
-    */
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     */
     public int getPages() {
         return shippedPages;
     }
 
-   /**
-    * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
-    */
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     */
     public String getExtension() {
         return "pdf";
     }
 
-   /**
-    * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
-    */
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
+     */
     public void setOutputStream(final OutputStream outStream) {
         this.out = outStream;
     }
 
+    /**
+     * shipout
+     * @param   nodes   the nodelist
+     * @throws IOException ...
+     * @throws GeneralException ...
+     */
     public void shipout(final NodeList nodes) throws IOException, GeneralException {
         newPage();
         shippedPages++;
@@ -99,80 +107,191 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         nodes.visit(this, nodes, null);
     }
 
-   /**
-    * @see de.dante.extex.documentWriter.DocumentWriter#close()
-    */
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     */
     public void close() throws IOException {
         FontSetup.addToResources(this.pdfDoc, fontInfo); // ??? //
         pdfDoc.outputTrailer(this.out);
     }
 
+    /**
+     * pdfdoc
+     */
     private PDFDocument pdfDoc = null;
+
+    /**
+     * pdfstream
+     */
     private PDFStream cs = null;
+
+    /**
+     * pdfresource
+     */
     private PDFResources pdfResources = null;
+
+    /**
+     * pdfanolist
+     */
     private PDFAnnotList currentAnnotList = null;
+
+    /**
+     * currentpage
+     */
     private PDFPage currentPage = null;
+
+    /**
+     * color
+     */
     private PDFColor currentColor = null;
+
+    /**
+     * page
+     */
     private Page page = null;
+
+    /**
+     * operators
+     */
     private PDFOperators op = null;
 
+    /**
+     * pageWD
+     */
     private int pageWD = 595; // "bp"
+
+    /**
+     * pageHT
+     */
     private int pageHT = 842; // "bp"  -- A4
+
     // TeX primitives should set the papersize in any way:
-    //   o \paperwidth   / \paperheight, 
-    //   o \pdfpagewidth / \pdfpageheight <-- pdfTeX
-    //   o \mediawidth   / \mediaheight   <-- VTeX
+    // o \paperwidth   / \paperheight, 
+    // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
+    // o \mediawidth   / \mediaheight   <-- VTeX
+    /**
+     * fontinfo
+     */
     private FontInfo fontInfo = null;
+
+    /**
+     * fontstate
+     */
     private FontState fontState = null;
 
+    /**
+     * x,y ...
+     */
     private float lastX, lastY, currentX, currentY;
-    float lastDP = 0.0f;
+
+    /**
+     * lastDP
+     */
+    private float lastDP = 0.0f;
+
+    /**
+     * onlyStroke
+     */
     private boolean onlyStroke;
 
-    public Object visitAdjust(Object value, Object value2) {
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-    public Object visitAfterMath(Object value, Object value2) {
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-    public Object visitAlignedLeaders(Object value, Object value2) {
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-    public Object visitBeforeMath(Object value, Object value2) {
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-    public Object visitCenteredLeaders(Object value, Object value2) {
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-    public Object visitDiscretionary(Object value, Object value2) {
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-    public Object visitExpandedLeaders(Object value, Object value2) {
+    /**
+     * adjust
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitAdjust(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
 
-    public Object visitGlue(Object value, Object value2) {
+    /**
+     * aftermath
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitAfterMath(final Object value, final Object value2) {
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * alignedleader
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitAlignedLeaders(final Object value, final Object value2) {
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * beforemath
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitBeforeMath(final Object value, final Object value2) {
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * centerleaders
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitCenteredLeaders(final Object value, final Object value2) {
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * discretionary
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitDiscretionary(final Object value, final Object value2) {
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * expandleaders
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitExpandedLeaders(final Object value, final Object value2) {
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * glue
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitGlue(final Object value, final Object value2) {
         Node node = (Node) value;
         StringBuffer operators = new StringBuffer(256);
         showNode(node, operators);
@@ -186,43 +305,91 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         return null;
     }
 
-    public Object visitInsertion(Object value, Object value2) {
+    /**
+     * insertion
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitInsertion(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
-    public Object visitKern(Object value, Object value2) {
+
+    /**
+     * kern
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitKern(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
-    public Object visitLigature(Object value, Object value2) {
+
+    /**
+     * ligature
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitLigature(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
-    public Object visitMark(Object value, Object value2) {
+
+    /**
+     * mark
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitMark(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
-    public Object visitPenalty(Object value, Object value2) {
+
+    /**
+     * penalty
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitPenalty(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
-    public Object visitRule(Object value, Object value2) {
+
+    /**
+     * rule
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitRule(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
-    public Object visitSpace(Object value, Object value2) {
+
+    /**
+     * space
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitSpace(final Object value, final Object value2) {
         Node node = (Node) value;
         StringBuffer operators = new StringBuffer(256);
         operators.append(op.fillColor(Color.YELLOW));
@@ -230,14 +397,27 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         setPosition(node);
         return null;
     }
-    public Object visitWhatsIt(Object value, Object value2) {
+
+    /**
+     * whatsit
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitWhatsIt(final Object value, final Object value2) {
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
         return null;
     }
 
-    public Object visitVerticalList(Object value, Object value2) {
+    /**
+     * verticallist
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitVerticalList(final Object value, final Object value2) {
         NodeList nodes = (NodeList) value;
         StringBuffer operators = new StringBuffer(256);
 
@@ -246,7 +426,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         // float wd = (float) nodes.getWidth().toBP();
         float ht = (float) nodes.getHeight().toBP();
         // float dp = (float) nodes.getDepth().toBP();        
-	// the upper left corner of the main vbox has an offset of 1in. 
+        // the upper left corner of the main vbox has an offset of 1in. 
         lastX = currentX = 72;
         lastY = currentY = 72 + ht;
         lastDP = 0.0f;
@@ -287,7 +467,13 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         return null;
     }
 
-    public Object visitHorizontalList(Object value, Object value2) {
+    /**
+     * horizontallist
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitHorizontalList(final Object value, final Object value2) {
 
         NodeList n = (HorizontalListNode) value;
         //StringBuffer operators = new StringBuffer(256);
@@ -305,7 +491,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         // operators.append(op.fillColor(Color.CYAN));
         // showNode(n, operators);
         debugNode(n);
-        
+
         NodeIterator it = n.iterator();
         while (it.hasNext()) {
             Node node = it.next();
@@ -322,7 +508,13 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         return null;
     }
 
-    public Object visitChar(Object value, Object value2) {
+    /**
+     * char
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitChar(final Object value, final Object value2) {
         Node node = (Node) value;
         StringBuffer operators = new StringBuffer(256);
         operators.append(op.fillColor(Color.GREEN));
@@ -334,9 +526,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     // -------------------------------------------------
 
-   /**
-    * NodeVisitor for debug.
-    */
+    /**
+     * NodeVisitor for debug.
+     */
     private class DebugVisitor implements NodeVisitor {
 
         public Object visitAdjust(Object value, Object value2) {
@@ -384,7 +576,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             Node node = (Node) value2;
             sb.append("Char");
             sb.append(metric(node));
-	    sb.append("\t" + node.toString());
+            sb.append("\t" + node.toString());
             return null;
         }
 
@@ -409,7 +601,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             GlueNode node = (GlueNode) value2;
             sb.append("Glue");
             sb.append(metric(node));
-	    //sb.append("  " + node.getWidth().toPT());
+            //sb.append("  " + node.getWidth().toPT());
             return null;
         }
 
@@ -499,9 +691,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     }
 
-   /**
-    * debug
-    */
+    /**
+     * debug
+     */
     private void debugNode(Node node) {
         StringBuffer sb = new StringBuffer(256);
         try {
@@ -560,7 +752,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             currentY += ht + dp;
         }
     }
-    
+
     private void markOrigin() {
         cs.add(op.gSave());
         cs.add(op.lineWidth(.6f));
@@ -620,22 +812,22 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     //        //      }
     //    }
 
-   /**
-    * Opens/setups the document
-    */
+    /**
+     * Opens/setups the document
+     */
     private void initDocument() throws IOException {
 
         pdfDoc = new PDFDocument();
 
         pdfDoc.setProducer("ExTeX-0.00"); // Where is this defined?
 
-      /*
+        /*
          How can we set the following?
-      
+         
          /Author, /Title, /Creator, /Keywords, /CreationDate 
          
          How can we switch off the compression?
-      */
+         */
 
         fontInfo = new FontInfo();
 
@@ -654,9 +846,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     }
 
-   /**
-    * Creates/setups a new page
-    */
+    /**
+     * Creates/setups a new page
+     */
     private void newPage() throws IOException {
 
         if (pdfDoc == null)
@@ -673,28 +865,29 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     // ---------------------------------------------------------------------------
-   /**
-    * State
-    */
+    /**
+     * State
+     */
     private static class State {
+
         public State() {
             super();
         }
     }
 
-   /**
-    * in vertical mode
-    */
+    /**
+     * in vertical mode
+     */
     private final static State VERTICAL = new State();
 
-   /**
-    * in horizontal mode
-    */
+    /**
+     * in horizontal mode
+     */
     private final static State HORIOZONTAL = new State();
 
-   /**
-    * the current mode
-    */
+    /**
+     * the current mode
+     */
     private State state = VERTICAL;
     // ---------------------------------------------------------------------------
 

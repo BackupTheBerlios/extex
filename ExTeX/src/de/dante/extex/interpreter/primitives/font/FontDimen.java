@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -39,21 +40,21 @@ import de.dante.util.GeneralException;
  * <p>
  * Example:
  * <pre>
- * 	\fontdimen13\ff=5pt
- *  \the\fontdimen13\ff
+ * \fontdimen13\ff=5pt
+ * \the\fontdimen13\ff
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontDimen extends AbstractCode implements Theable {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public FontDimen(String name) {
+    public FontDimen(final String name) {
         super(name);
     }
 
@@ -63,7 +64,9 @@ public class FontDimen extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         // \fontdimen13\ff=5pt
         int idx = (int) source.scanInteger();
@@ -90,7 +93,7 @@ public class FontDimen extends AbstractCode implements Theable {
         } else {
             throw new GeneralHelpingException("FONT.wrongtype");
         }
-        */
+*/
         prefix.clear();
     }
 
@@ -102,9 +105,11 @@ public class FontDimen extends AbstractCode implements Theable {
      * @param paramLabel    the name of the parametr
      * @throws GeneralException if a error occoured
      */
-    private void setDimenValue(Font font, int idx, Dimen size, final String[] paramLabel) throws GeneralException {
+    private void setDimenValue(Font font, int idx, Dimen size,
+            final String[] paramLabel) throws GeneralException {
         if (idx <= 0 && idx > paramLabel.length) {
-            throw new GeneralHelpingException("FONT.wrongdimennumber", String.valueOf(paramLabel.length - 1));
+            throw new GeneralHelpingException("FONT.wrongdimennumber", String
+                    .valueOf(paramLabel.length - 1));
         }
         font.setFontDimen(paramLabel[idx - 1], size);
     }
@@ -116,9 +121,11 @@ public class FontDimen extends AbstractCode implements Theable {
      * @param paramLabel    the name of the parametr
      * @throws GeneralException if a error occoured
      */
-    private Dimen getDimenValue(Font font, int idx, final String[] paramLabel) throws GeneralException {
+    private Dimen getDimenValue(Font font, int idx, final String[] paramLabel)
+            throws GeneralException {
         if (idx <= 0 && idx > paramLabel.length) {
-            throw new GeneralHelpingException("FONT.wrongdimennumber", String.valueOf(paramLabel.length - 1));
+            throw new GeneralHelpingException("FONT.wrongdimennumber", String
+                    .valueOf(paramLabel.length - 1));
         }
         return font.getFontDimen(paramLabel[idx - 1]);
     }
@@ -126,7 +133,8 @@ public class FontDimen extends AbstractCode implements Theable {
     /**
      * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(Context context, TokenSource source) throws GeneralException {
+    public Tokens the(Context context, TokenSource source)
+            throws GeneralException {
         // \the\fontdimen7\ff
         int idx = (int) source.scanInteger();
         Token tok = source.scanNonSpace();
@@ -142,70 +150,39 @@ public class FontDimen extends AbstractCode implements Theable {
         Dimen size = Dimen.ZERO_PT;
         //gene: this should be deduced from the font class (instanceof)
         /*
-        if (font.getFontType().equals("tfm-normal")) {
-            size = getDimenValue(font, idx, paramLabel_normal);
-        } else if (font.getFontType().equals("tfm-mathext")) {
-            size = getDimenValue(font, idx, paramLabel_mathext);
-        } else if (font.getFontType().equals("tfm-mathsyml")) {
-            size = getDimenValue(font, idx, paramLabel_mathsyml);
-        } else {
-            throw new GeneralHelpingException("FONT.wrongtype");
-        }
-        */
+         if (font.getFontType().equals("tfm-normal")) {
+         size = getDimenValue(font, idx, paramLabel_normal);
+         } else if (font.getFontType().equals("tfm-mathext")) {
+         size = getDimenValue(font, idx, paramLabel_mathext);
+         } else if (font.getFontType().equals("tfm-mathsyml")) {
+         size = getDimenValue(font, idx, paramLabel_mathsyml);
+         } else {
+         throw new GeneralHelpingException("FONT.wrongtype");
+         }
+         */
         return new Tokens(context, size.toString());
     }
 
     /**
      * normal paramter names
      */
-    private final static String[] paramLabel_normal = { "SLANT", "SPACE", "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE" };
+    private final static String[] paramLabel_normal = {"SLANT", "SPACE",
+            "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE"};
 
     /**
      * mathext parameter names
      */
-    private final static String[] paramLabel_mathext =
-        {
-            "SLANT",
-            "SPACE",
-            "STRETCH",
-            "SHRINK",
-            "XHEIGHT",
-            "QUAD",
-            "EXTRASPACE",
-            "DEFAULTRULETHICKNESS",
-            "BIGOPSPACING1",
-            "BIGOPSPACING2",
-            "BIGOPSPACING3",
-            "BIGOPSPACING4",
-            "BIGOPSPACING5",
-            };
+    private final static String[] paramLabel_mathext = {"SLANT", "SPACE",
+            "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE",
+            "DEFAULTRULETHICKNESS", "BIGOPSPACING1", "BIGOPSPACING2",
+            "BIGOPSPACING3", "BIGOPSPACING4", "BIGOPSPACING5",};
 
     /**
      * mathsyml-parameternames
      */
-    private final static String[] paramLabel_mathsyml =
-        {
-            "SLANT",
-            "SPACE",
-            "STRETCH",
-            "SHRINK",
-            "XHEIGHT",
-            "QUAD",
-            "EXTRASPACE",
-            "NUM1",
-            "NUM2",
-            "NUM3",
-            "DENOM1",
-            "DENOM2",
-            "SUP1",
-            "SUP2",
-            "SUP3",
-            "SUB1",
-            "SUB2",
-            "SUPDROP",
-            "SUBDROP",
-            "DELIM1",
-            "DELIM2",
-            "AXISHEIGHT" };
+    private final static String[] paramLabel_mathsyml = {"SLANT", "SPACE",
+            "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "NUM1",
+            "NUM2", "NUM3", "DENOM1", "DENOM2", "SUP1", "SUP2", "SUP3", "SUB1",
+            "SUB2", "SUPDROP", "SUBDROP", "DELIM1", "DELIM2", "AXISHEIGHT"};
 
 }

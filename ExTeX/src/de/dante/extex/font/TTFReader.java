@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.font;
 
 import java.io.File;
@@ -52,288 +53,318 @@ import org.jdom.Element;
  * <p>
  * For more information use <tt>TrueType 1.0 Font Files</tt>
  * Technical Specification, Revision 1.66, November 1995
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
-	/**
-	 * init
-	 * @param file		<code>File</code> for reading
-	 */
-	public TTFReader(File file) throws TTFException, IOException {
+    /**
+     * init
+     * @param file <code>File</code> for reading
+     * @throws IOException ...
+     */
+    public TTFReader(final File file) throws IOException {
 
-		fontid = file.getName().replaceAll(".ttf", "");
+        fontid = file.getName().replaceAll(".ttf", "");
 
-		in = new RandomAccessFile(file, "r");
-		readTTF();
-		in.close();
+        in = new RandomAccessFile(file, "r");
+        readTTF();
+        in.close();
 
-		createEfmElement();
-	}
+        createEfmElement();
+    }
 
-	/**
-	 * fontid
-	 */
-	private String fontid;
+    /**
+     * fontid
+     */
+    private String fontid;
 
-	/**
-	 * Create the efm-element
-	 */
-	private void createEfmElement() throws TTFException {
+    /**
+     * Create the efm-element
+     * @throws IOException ...
+     */
+    private void createEfmElement() throws IOException {
 
-		efmelement = new Element("fontgroup");
+        efmelement = new Element("fontgroup");
 
-		String fontFamily = name.getRecord(Table.nameFontFamilyName);
-		short unitsPerEm = head.getUnitsPerEm();
-		//String panose = os2.getPanose().toString();
-		//short ascent = hhea.getAscender();
-		//short descent = hhea.getDescender();
-		//int baseline = 0; // bit 0 of head.flags will indicate if this is true
+        String fontFamily = name.getRecord(Table.nameFontFamilyName);
+        short unitsPerEm = head.getUnitsPerEm();
+        //String panose = os2.getPanose().toString();
+        //short ascent = hhea.getAscender();
+        //short descent = hhea.getDescender();
+        //int baseline = 0; // bit 0 of head.flags will indicate if this is true
 
-		efmelement.setAttribute("name", fontFamily);
-		efmelement.setAttribute("id", fontid);
-		efmelement.setAttribute("default-size", "12");
-		efmelement.setAttribute("empr", "100");
-		efmelement.setAttribute("units-per-em", String.valueOf(unitsPerEm));
+        efmelement.setAttribute("name", fontFamily);
+        efmelement.setAttribute("id", fontid);
+        efmelement.setAttribute("default-size", "12");
+        efmelement.setAttribute("empr", "100");
+        efmelement.setAttribute("units-per-em", String.valueOf(unitsPerEm));
 
-		//		int horiz_advance_x = font.getOS2Table().getAvgCharWidth();
+        // int horiz_advance_x = font.getOS2Table().getAvgCharWidth();
 
-		Element font = new Element("font");
-		efmelement.addContent(font);
+        Element font = new Element("font");
+        efmelement.addContent(font);
 
-		font.setAttribute("font-name", fontid);
-		font.setAttribute("font-family", fontFamily);
-		font.setAttribute("type", "ttf");
+        font.setAttribute("font-name", fontid);
+        font.setAttribute("font-family", fontFamily);
+        font.setAttribute("type", "ttf");
 
-		// Decide upon a cmap table to use for our character to glyph look-up
-		CmapFormat cmapFmt = null;
-		// The default behaviour is to use the Unicode cmap encoding
-		cmapFmt = cmap.getCmapFormat(Table.platformMicrosoft, Table.encodingUGL);
-		if (cmapFmt == null) {
-			// This might be a symbol font, so we'll look for an "undefined" encoding
-			cmapFmt = cmap.getCmapFormat(Table.platformMicrosoft, Table.encodingUndefined);
-		}
-		if (cmapFmt == null) {
-			throw new TTFException("Cannot find a suitable cmap table");
-		}
+        // Decide upon a cmap table to use for our character to glyph look-up
+        CmapFormat cmapFmt = null;
+        // The default behaviour is to use the Unicode cmap encoding
+        cmapFmt = cmap
+                .getCmapFormat(Table.platformMicrosoft, Table.encodingUGL);
+        if (cmapFmt == null) {
+            // This might be a symbol font, so we'll look for an "undefined" encoding
+            cmapFmt = cmap.getCmapFormat(Table.platformMicrosoft,
+                    Table.encodingUndefined);
+        }
+        if (cmapFmt == null) {
+            throw new IOException("Cannot find a suitable cmap table");
+        }
 
-		// Output kerning pairs from the requested range
-		KernTable kern = (KernTable) getTable(Table.kern);
-		ArrayList kernlist = new ArrayList();
-		if (kern != null) {
-			KernSubtable kst = kern.getSubtable(0);
-			PostTable post = (PostTable) getTable(Table.post);
-			for (int i = 0; i < kst.getKerningPairCount(); i++) {
+        // Output kerning pairs from the requested range
+        KernTable kern = (KernTable) getTable(Table.kern);
+        ArrayList kernlist = new ArrayList();
+        if (kern != null) {
+            KernSubtable kst = kern.getSubtable(0);
+            PostTable post = (PostTable) getTable(Table.post);
+            for (int i = 0; i < kst.getKerningPairCount(); i++) {
 
-				KernPairs kp = new KernPairs();
-				kp.idpre = kst.getKerningPair(i).getLeft();
-				kp.charpre = post.getGlyphName(kst.getKerningPair(i).getLeft());
-				kp.idpost = kst.getKerningPair(i).getRight();
-				kp.charpost = post.getGlyphName(kst.getKerningPair(i).getRight());
-				// SVG kerning values are inverted from TrueType's.
-				kp.size = -kst.getKerningPair(i).getValue();
-				kernlist.add(kp);
-			}
-		}
+                KernPairs kp = new KernPairs();
+                kp.idpre = kst.getKerningPair(i).getLeft();
+                kp.charpre = post.getGlyphName(kst.getKerningPair(i).getLeft());
+                kp.idpost = kst.getKerningPair(i).getRight();
+                kp.charpost = post.getGlyphName(kst.getKerningPair(i)
+                        .getRight());
+                // SVG kerning values are inverted from TrueType's.
+                kp.size = -kst.getKerningPair(i).getValue();
+                kernlist.add(kp);
+            }
+        }
 
-		// hash   glyph-number <-> id
-		HashMap glyphnumber = new HashMap();
-		for (int i = 0; i <= 0xffff; i++) { // TODO range okay???
-			int glyphIndex = cmapFmt.mapCharCode(i);
-			if (glyphIndex > 0) {
-				if (!glyphnumber.containsKey(String.valueOf(glyphIndex))) {
-					glyphnumber.put(String.valueOf(glyphIndex), new Integer(i));
-				}
-			}
-		}
+        // hash   glyph-number <-> id
+        HashMap glyphnumber = new HashMap();
+        for (int i = 0; i <= 0xffff; i++) { // TODO range okay???
+            int glyphIndex = cmapFmt.mapCharCode(i);
+            if (glyphIndex > 0) {
+                if (!glyphnumber.containsKey(String.valueOf(glyphIndex))) {
+                    glyphnumber.put(String.valueOf(glyphIndex), new Integer(i));
+                }
+            }
+        }
 
-		// Include our requested range
-		for (int i = 0; i <= 0xffff; i++) { // TODO range okay???
-			int glyphIndex = cmapFmt.mapCharCode(i);
-			//        ps.println(String.valueOf(i) + " -> " + String.valueOf(glyphIndex));
-			//      if (font.getGlyphs()[glyphIndex] != null)
-			//        sb.append(font.getGlyphs()[glyphIndex].toString() + "\n");
+        // Include our requested range
+        for (int i = 0; i <= 0xffff; i++) { // TODO range okay???
+            int glyphIndex = cmapFmt.mapCharCode(i);
+            //        ps.println(String.valueOf(i) + " -> " + String.valueOf(glyphIndex));
+            //      if (font.getGlyphs()[glyphIndex] != null)
+            //        sb.append(font.getGlyphs()[glyphIndex].toString() + "\n");
 
-			if (glyphIndex > 0) {
+            if (glyphIndex > 0) {
 
-				Element glyph = new Element("glyph");
-				font.addContent(glyph);
+                Element glyph = new Element("glyph");
+                font.addContent(glyph);
 
-				glyph.setAttribute("ID", String.valueOf(i));
-				glyph.setAttribute("glyph-number", String.valueOf(glyphIndex));
-				glyph.setAttribute("glyph-name", post.getGlyphName(glyphIndex));
+                glyph.setAttribute("ID", String.valueOf(i));
+                glyph.setAttribute("glyph-number", String.valueOf(glyphIndex));
+                glyph.setAttribute("glyph-name", post.getGlyphName(glyphIndex));
 
-				GlyphDescription gd = glyf.getDescription(glyphIndex);
+                GlyphDescription gd = glyf.getDescription(glyphIndex);
 
-				if (gd != null) {
-					glyph.setAttribute("width", String.valueOf(gd.getXMinimum() + gd.getXMaximum()));
-					if (gd.getYMinimum() < 0) {
-						glyph.setAttribute("depth", String.valueOf(-gd.getYMinimum()));
-					} else {
-						glyph.setAttribute("depth", "0");
-					}
-					if (gd.getYMaximum() > 0) {
-						glyph.setAttribute("height", String.valueOf(gd.getYMaximum()));
-					} else {
-						glyph.setAttribute("height", "0");
-					}
-				}
+                if (gd != null) {
+                    glyph.setAttribute("width", String.valueOf(gd.getXMinimum()
+                            + gd.getXMaximum()));
+                    if (gd.getYMinimum() < 0) {
+                        glyph.setAttribute("depth", String.valueOf(-gd
+                                .getYMinimum()));
+                    } else {
+                        glyph.setAttribute("depth", "0");
+                    }
+                    if (gd.getYMaximum() > 0) {
+                        glyph.setAttribute("height", String.valueOf(gd
+                                .getYMaximum()));
+                    } else {
+                        glyph.setAttribute("height", "0");
+                    }
+                }
 
-				// kerning
-				for (int k = 0; k < kernlist.size(); k++) {
-					KernPairs kp = (KernPairs) kernlist.get(k);
-					if (kp.idpre == glyphIndex) {
-						Element kerning = new Element("kerning");
-						glyph.addContent(kerning);
-						int id = ((Integer) glyphnumber.get(String.valueOf(kp.idpost))).intValue();
-						kerning.setAttribute("glyph-id", String.valueOf(id));
-						//kerning.setAttribute("glyph-number", String.valueOf(kp.idpost));
-						kerning.setAttribute("glyph-name", kp.charpost);
-						kerning.setAttribute("size", String.valueOf(kp.size));
-					}
-				}
-			}
+                // kerning
+                for (int k = 0; k < kernlist.size(); k++) {
+                    KernPairs kp = (KernPairs) kernlist.get(k);
+                    if (kp.idpre == glyphIndex) {
+                        Element kerning = new Element("kerning");
+                        glyph.addContent(kerning);
+                        int id = ((Integer) glyphnumber.get(String
+                                .valueOf(kp.idpost))).intValue();
+                        kerning.setAttribute("glyph-id", String.valueOf(id));
+                        //kerning.setAttribute("glyph-number", String.valueOf(kp.idpost));
+                        kerning.setAttribute("glyph-name", kp.charpost);
+                        kerning.setAttribute("size", String.valueOf(kp.size));
+                    }
+                }
+            }
 
-		}
+        }
 
-	}
+    }
 
-	/**
-	 * container for KerningPair
-	 */
-	private class KernPairs {
-		int idpre;
-		String charpre;
-		int idpost;
-		String charpost;
-		int size;
-	}
+    /**
+     * container for KerningPair
+     */
+    private class KernPairs {
 
-	/**
-	 * RandomAccessFile for reading
-	 */
-	private RandomAccessFile in;
+        /**
+         * idpre
+         */
+        int idpre;
 
-	/**
-	 * all tables in the ttf-file
-	 */
-	private Table[] tables;
+        /**
+         * char pre
+         */
+        String charpre;
 
-	/**
-	 * TableDirectory
-	 */
-	private TableDirectory tableDirectory = null;
+        /**
+         * id post
+         */
+        int idpost;
 
-	/**
-	 * OS/2 and Windows specific metrics
-	 */
-	private Os2Table os2;
+        /**
+         * char post
+         */
+        String charpost;
 
-	/**
-	 * character tp glyph mapping
-	 */
-	private CmapTable cmap;
+        /**
+         * size
+         */
+        int size;
+    }
 
-	/**
-	 * glyph data
-	 */
-	private GlyfTable glyf;
+    /**
+     * RandomAccessFile for reading
+     */
+    private RandomAccessFile in;
 
-	/**
-	 * font header 
-	 */
-	private HeadTable head;
+    /**
+     * all tables in the ttf-file
+     */
+    private Table[] tables;
 
-	/**
-	 * horizontal header
-	 */
-	private HheaTable hhea;
+    /**
+     * TableDirectory
+     */
+    private TableDirectory tableDirectory = null;
 
-	/**
-	 * horizonzal metrics
-	 */
-	private HmtxTable hmtx;
+    /**
+     * OS/2 and Windows specific metrics
+     */
+    private Os2Table os2;
 
-	/**
-	 * index to location
-	 */
-	private LocaTable loca;
+    /**
+     * character tp glyph mapping
+     */
+    private CmapTable cmap;
 
-	/**
-	 * maximum profile
-	 */
-	private MaxpTable maxp;
+    /**
+     * glyph data
+     */
+    private GlyfTable glyf;
 
-	/**
-	 * naming table
-	 */
-	private NameTable name;
+    /**
+     * font header
+     */
+    private HeadTable head;
 
-	/**
-	 * PostScript information
-	 * <p>
-	 * The <code>PostTable</code> do not return the italicangle.
-	 */
-	private PostTable post;
+    /**
+     * horizontal header
+     */
+    private HheaTable hhea;
 
-	/**
-	 * read the ttf-file
-	 */
-	private void readTTF() throws TTFException, IOException {
+    /**
+     * horizonzal metrics
+     */
+    private HmtxTable hmtx;
 
-		tableDirectory = new TableDirectory(in);
-		tables = new Table[tableDirectory.getNumTables()];
+    /**
+     * index to location
+     */
+    private LocaTable loca;
 
-		// load each of the tables
-		for (int i = 0; i < tableDirectory.getNumTables(); i++) {
-			tables[i] = TableFactory.create(tableDirectory.getEntry(i), in);
-		}
+    /**
+     * maximum profile
+     */
+    private MaxpTable maxp;
 
-		// Get references to commonly used tables
-		os2 = (Os2Table) getTable(Table.OS_2);
-		cmap = (CmapTable) getTable(Table.cmap);
-		glyf = (GlyfTable) getTable(Table.glyf);
-		head = (HeadTable) getTable(Table.head);
-		hhea = (HheaTable) getTable(Table.hhea);
-		hmtx = (HmtxTable) getTable(Table.hmtx);
-		loca = (LocaTable) getTable(Table.loca);
-		maxp = (MaxpTable) getTable(Table.maxp);
-		name = (NameTable) getTable(Table.name);
-		post = (PostTable) getTable(Table.post);
+    /**
+     * naming table
+     */
+    private NameTable name;
 
-		
-		
-		
-		// Initialize the tables that require it
-		hmtx.init(hhea.getNumberOfHMetrics(), maxp.getNumGlyphs() - hhea.getNumberOfHMetrics());
-		loca.init(maxp.getNumGlyphs(), head.getIndexToLocFormat() == 0);
-		glyf.init(maxp.getNumGlyphs(), loca);
+    /**
+     * PostScript information
+     * <p>
+     * The <code>PostTable</code> do not return the italicangle.
+     */
+    private PostTable post;
 
-	}
+    /**
+     * read the ttf-file
+     * @throws IOException ...
+     */
+    private void readTTF() throws IOException {
 
-	/**
-	 * Return the table with the spezial tabletype
-	 */
-	private Table getTable(int tableType) {
-		for (int i = 0; i < tables.length; i++) {
-			if ((tables[i] != null) && (tables[i].getType() == tableType)) {
-				return tables[i];
-			}
-		}
-		return null;
-	}
+        tableDirectory = new TableDirectory(in);
+        tables = new Table[tableDirectory.getNumTables()];
 
-	/**
-	 * efm-element
-	 */
-	Element efmelement;
+        // load each of the tables
+        for (int i = 0; i < tableDirectory.getNumTables(); i++) {
+            tables[i] = TableFactory.create(tableDirectory.getEntry(i), in);
+        }
 
-	/**
-	 * @see de.dante.extex.font.FontMetric#getFontMetric()
-	 */
-	public Element getFontMetric() {
-		return efmelement;
-	}
+        // Get references to commonly used tables
+        os2 = (Os2Table) getTable(Table.OS_2);
+        cmap = (CmapTable) getTable(Table.cmap);
+        glyf = (GlyfTable) getTable(Table.glyf);
+        head = (HeadTable) getTable(Table.head);
+        hhea = (HheaTable) getTable(Table.hhea);
+        hmtx = (HmtxTable) getTable(Table.hmtx);
+        loca = (LocaTable) getTable(Table.loca);
+        maxp = (MaxpTable) getTable(Table.maxp);
+        name = (NameTable) getTable(Table.name);
+        post = (PostTable) getTable(Table.post);
+
+        // Initialize the tables that require it
+        hmtx.init(hhea.getNumberOfHMetrics(), maxp.getNumGlyphs()
+                - hhea.getNumberOfHMetrics());
+        loca.init(maxp.getNumGlyphs(), head.getIndexToLocFormat() == 0);
+        glyf.init(maxp.getNumGlyphs(), loca);
+
+    }
+
+    /**
+     * Return the table with the spezial tabletype
+     * @param tableType the tabletype
+     * @return the table
+     */
+    private Table getTable(final int tableType) {
+        for (int i = 0; i < tables.length; i++) {
+            if ((tables[i] != null) && (tables[i].getType() == tableType)) {
+                return tables[i];
+            }
+        }
+        return null;
+    }
+
+    /**
+     * efm-element
+     */
+    private Element efmelement;
+
+    /**
+     * @see de.dante.extex.font.FontMetric#getFontMetric()
+     */
+    public Element getFontMetric() {
+        return efmelement;
+    }
 }

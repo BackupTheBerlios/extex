@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.TokenSource;
@@ -24,41 +25,43 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for a defined <code>\real</code>-register
  * with <code>\realdef</code>.
- * 
+ *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DefinedReal extends NamedReal {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for debugging
-	 */
-	public DefinedReal(String name, String regname, long number) {
-		super(name);
-		this.number = number;
-		this.regname = regname;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name      the name for debugging
+     * @param regname   registername
+     * @param number    the number
+     */
+    public DefinedReal(final String name, final String regname, final long number) {
+        super(name);
+        this.number = number;
+        this.regname = regname;
+    }
 
-	/**
-	 * the number for the register
-	 */
-	private long number;
+    /**
+     * the number for the register
+     */
+    private long number;
 
-	/**
-	 * the name of the register
-	 */
-	private String regname;
+    /**
+     * the name of the register
+     */
+    private String regname;
 
-	/**
-	 * Return the key (the number) for the register.
-	 *
-	 * @param source 	the tokensource
-	 * @return Return the key for the register
-	 * @throws GeneralException, if a error ocoured
-	 */
-	protected String getKey(TokenSource source) throws GeneralException {
-		return regname + "#" + Long.toString(number);
-	}
+    /**
+     * Return the key (the number) for the register.
+     *
+     * @param source the tokensource
+     * @return Return the key for the register
+     * @throws GeneralException if a error ocoured
+     */
+    protected String getKey(final TokenSource source) throws GeneralException {
+        return regname + "#" + Long.toString(number);
+    }
 }

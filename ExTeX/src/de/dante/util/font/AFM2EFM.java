@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.font;
 
 import java.io.BufferedInputStream;
@@ -27,32 +28,39 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.AFMException;
 import de.dante.extex.font.AFMReader;
 
 /**
  * Convert a AFM-file to a EFM-file.
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AFM2EFM {
 
-	public static void main(String[] args) throws AFMException, IOException {
+    /**
+     * main
+     * @param args the commandlinearguments
+     * @throws IOException ...
+     */
+    public static void main(final String[] args) throws IOException {
 
-		if (args.length != 4) {
-			System.err.println("java de.dante.util.font.AFM2EFM <afm-file> <pfb-file> <efm-file> <default-size>");
-			System.exit(1);
-		}
+        if (args.length != 4) {
+            System.err
+                    .println("java de.dante.util.font.AFM2EFM <afm-file> <pfb-file> <efm-file> <default-size>");
+            System.exit(1);
+        }
 
-		BufferedInputStream in = new BufferedInputStream(new FileInputStream(args[0]), 0x8000);
-		AFMReader afmreader = new AFMReader(in, args[1], args[2], args[3]);
+        BufferedInputStream in = new BufferedInputStream(new FileInputStream(
+                args[0]), 0x8000);
+        AFMReader afmreader = new AFMReader(in, args[1], args[2], args[3]);
 
-		// write to efm-file
-		XMLOutputter xmlout = new XMLOutputter("   ", true);
-		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(args[2]), 0x8000);
-		Document doc = new Document(afmreader.getFontMetric());
-		xmlout.output(doc, out);
-		out.close();
-	}
+        // write to efm-file
+        XMLOutputter xmlout = new XMLOutputter("   ", true);
+        BufferedOutputStream out = new BufferedOutputStream(
+                new FileOutputStream(args[2]), 0x8000);
+        Document doc = new Document(afmreader.getFontMetric());
+        xmlout.output(doc, out);
+        out.close();
+    }
 }

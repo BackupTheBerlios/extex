@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.font;
 
 import java.io.File;
@@ -46,7 +47,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -72,8 +73,14 @@ public class EFMFont extends XMLFont implements Font {
 
     /**
      * Creates a new object.
+     * @param   name        the name of the font
+     * @param   emsize      the emsize of the font
+     * @param   fileFinder  the fileFinder-object
+     * @throws GeneralException ...
+     * @throws ConfigurationException ...
      */
-    public EFMFont(String name, Dimen emsize, FileFinder fileFinder) throws GeneralException, ConfigurationException {
+    public EFMFont(final String name, final Dimen emsize, final FileFinder fileFinder)
+        throws GeneralException, ConfigurationException {
         super();
         // trim name !
         if (name != null) {
@@ -91,9 +98,11 @@ public class EFMFont extends XMLFont implements Font {
 
     /**
      * load the Font
-     * @throws GeneralException, if a error is thrown.
+     * @param   finder  the fileFinder
+     * @throws GeneralException if a error is thrown.
+     * @throws ConfigurationException ...
      */
-    private void loadFont(FileFinder finder) throws GeneralException, ConfigurationException {
+    private void loadFont(final FileFinder finder) throws GeneralException, ConfigurationException {
         if (name != null) {
 
             fontfile = finder.findFile(name, "efm");
@@ -126,10 +135,10 @@ public class EFMFont extends XMLFont implements Font {
                     // calculate em
                     em = new Dimen((long) (emsize.getValue() * empr / 100));
 
-                    // get units_per_em
+                    // get unitsperem
                     attr = fontgroup.getAttribute("units-per-em");
                     if (attr != null) {
-                        units_per_em = attr.getIntValue();
+                        unitsperem = attr.getIntValue();
                     }
 
                     // get ex
@@ -160,8 +169,8 @@ public class EFMFont extends XMLFont implements Font {
                             String key = e.getAttributeValue("ID");
                             if (key != null) {
                                 GlyphValues gv = new GlyphValues();
-                                gv.glyph_number = e.getAttributeValue("glyph-number");
-                                gv.glyph_name = e.getAttributeValue("glyph-name");
+                                gv.glyphnumber = e.getAttributeValue("glyph-number");
+                                gv.glyphname = e.getAttributeValue("glyph-name");
                                 gv.width = e.getAttributeValue("width");
                                 gv.depth = e.getAttributeValue("depth");
                                 gv.height = e.getAttributeValue("height");
@@ -190,7 +199,7 @@ public class EFMFont extends XMLFont implements Font {
                                     gv.ligature.put(lv.letterid, lv);
                                 }
                                 glyph.put(key, gv);
-                                glyphname.put(gv.glyph_name, key);
+                                glyphname.put(gv.glyphname, key);
                             }
                         }
                     }
@@ -234,16 +243,39 @@ public class EFMFont extends XMLFont implements Font {
     private HashMap glyphname = new HashMap();
 
     /**
-     * Internal container for the glyph-values 
+     * Internal container for the glyph-values
      */
     private class GlyphValues {
-        String glyph_number;
-        String glyph_name;
+
+        /**
+         * glyph-number
+         */
+        String glyphnumber;
+
+        /**
+         * glyph-name
+         */
+        String glyphname;
+
+        /**
+         * glyph-with
+         */
         String width;
+
+        /**
+         * glyph-depth
+         */
         String depth;
+
+        /**
+         * glyph-height
+         */
         String height;
+
         String italic;
+
         HashMap kerning = new HashMap();
+
         HashMap ligature = new HashMap();
     }
 
@@ -251,8 +283,11 @@ public class EFMFont extends XMLFont implements Font {
      * container for kerning-values 
      */
     private class KerningValues {
+
         String name;
+
         String id;
+
         String size;
     }
 
@@ -260,9 +295,13 @@ public class EFMFont extends XMLFont implements Font {
      * container for ligature-values 
      */
     private class LigatureValues {
+
         String letter;
+
         String letterid;
+
         String lig;
+
         String ligid;
     }
 
@@ -314,13 +353,13 @@ public class EFMFont extends XMLFont implements Font {
     /**
      * units per em
      */
-    private int units_per_em = 1000;
+    private int unitsperem = 1000;
 
     /**
      * @see de.dante.extex.interpreter.type.Font#getEx()
      */
     public Dimen getEx() {
-        return new Dimen(ex * em.getValue() / units_per_em);
+        return new Dimen(ex * em.getValue() / unitsperem);
     }
 
     /**
@@ -336,10 +375,10 @@ public class EFMFont extends XMLFont implements Font {
      */
     public Dimen getFontDimen(String key) {
         String val = (String) fontdimen.get(key);
-        Dimen rt = Dimen.ZERO_PT;
+        Dimen rt = new Dimen(0);
         try {
             float f = Float.parseFloat(val);
-            rt = new Dimen((long) (f * em.getValue() / units_per_em));
+            rt = new Dimen((long) (f * em.getValue() / unitsperem));
         } catch (Exception e) {
             // do nothing, use default
         }
@@ -352,7 +391,7 @@ public class EFMFont extends XMLFont implements Font {
      * @see de.dante.extex.interpreter.type.Font#setFontDimen(String, Dimen)
      */
     public void setFontDimen(String key, Dimen value) {
-        double d = value.getValue() / (double) em.getValue() * units_per_em;
+        double d = value.getValue() / (double) em.getValue() * unitsperem;
         fontdimen.put(key, String.valueOf(d));
     }
 
@@ -364,25 +403,9 @@ public class EFMFont extends XMLFont implements Font {
     }
 
     public String toString() {
-        return "<fontname (EFM): "
-            + getFontName()
-            + " filename "
-            + fontfile
-            + (externalfile != null ? " (" + externalfile + ")" : "")
-            + " with size "
-            + emsize.toPT()
-            + " units_per_em = "
-            + units_per_em
-            + " ex = "
-            + ex
-            + " em = "
-            + em.toPT()
-            + " (with "
-            + empr
-            + "%)"
-            + " number of glyphs = "
-            + glyph.size()
-            + " >";
+        return "<fontname (EFM): " + getFontName() + " filename " + fontfile + (externalfile != null ? " (" + externalfile + ")" : "")
+                + " with size " + emsize.toPT() + " unitsperem = " + unitsperem + " ex = " + ex + " em = " + em.toPT() + " (with " + empr + "%)"
+                + " number of glyphs = " + glyph.size() + " >";
     }
 
     /**
@@ -396,19 +419,19 @@ public class EFMFont extends XMLFont implements Font {
         if (gv != null) {
             try {
                 float f = Float.parseFloat(gv.depth);
-                rglyph.setDepth(new Dimen((long) (f * em.getValue() / units_per_em)));
+                rglyph.setDepth(new Dimen((long) (f * em.getValue() / unitsperem)));
 
                 f = Float.parseFloat(gv.height);
-                rglyph.setHeight(new Dimen((long) (f * em.getValue() / units_per_em)));
+                rglyph.setHeight(new Dimen((long) (f * em.getValue() / unitsperem)));
 
                 f = Float.parseFloat(gv.width);
-                rglyph.setWidth(new Dimen((long) (f * em.getValue() / units_per_em)));
+                rglyph.setWidth(new Dimen((long) (f * em.getValue() / unitsperem)));
 
                 f = Float.parseFloat(gv.italic);
                 rglyph.setItalic(f);
 
             } catch (Exception e) {
-                // do nothing, return ZERO_PT
+                // do nothing, return ZEROPT
             }
         }
         //        System.err.println("glyph " + c.toString() + "  h:" + rglyph.getHeight() + " (" + rglyph.getHeight().toPT() + ") d:"  + rglyph.getDepth() + " (" + rglyph.getDepth().toPT() + ")   w:" + rglyph.getWidth() + " (" + rglyph.getWidth().toPT() + ")" );
@@ -427,15 +450,15 @@ public class EFMFont extends XMLFont implements Font {
      * Return the kerning between c1 and c2.
      * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      */
-    public Dimen kern(UnicodeChar c1, UnicodeChar c2) {
-        Dimen rt = Dimen.ZERO_PT;
+    public Dimen kern(final UnicodeChar c1, final UnicodeChar c2) {
+        Dimen rt = new Dimen(0);
 
         GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c1.getCodePoint()));
         if (gv != null) {
             KerningValues kv = (KerningValues) gv.kerning.get(String.valueOf(c2.getCodePoint()));
             try {
                 float size = Float.parseFloat(kv.size);
-                rt = new Dimen((long) (size * em.getValue() / units_per_em));
+                rt = new Dimen((long) (size * em.getValue() / unitsperem));
             } catch (Exception e) {
                 // do nothing, use default
             }
@@ -484,7 +507,7 @@ public class EFMFont extends XMLFont implements Font {
         if (externalfile != null) {
             GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
             if (gv != null) {
-                rt = gv.glyph_number;
+                rt = gv.glyphnumber;
             }
         }
         return rt;
@@ -503,7 +526,7 @@ public class EFMFont extends XMLFont implements Font {
     public void setHyphenChar(final UnicodeChar hyphen) {
 
         // TODO Auto-generated method stub
-        
+
     }
 
     /**
@@ -521,7 +544,7 @@ public class EFMFont extends XMLFont implements Font {
     public void setSkewChar(final UnicodeChar skew) {
 
         // TODO Auto-generated method stub
-        
+
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.font;
 
 import de.dante.extex.interpreter.type.Dimen;
@@ -28,22 +29,20 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface FontFactory {
 
     /**
-     * ...
+     * Factory for <code>Font</code>.
      *
      * @param name the filename of the font
      * @param size the size of the font.
-     *
      * @return the Font, or <code>null</code>, if the font are not aviable
-     *
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
-    Font getInstance(String name, Dimen size)
-            throws GeneralException, ConfigurationException;
+    Font getInstance(String name, Dimen size) throws GeneralException,
+            ConfigurationException;
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.font;
 
 import java.util.List;
@@ -27,16 +28,17 @@ import org.jdom.Element;
  * a xml-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class XMLFont {
 
     /**
      * Return the Element in the tree or <code>null</code>, if not found.
-     * @param e    the Element
-     * @return    the element or <code>null</code>, if not found
+     * @param e     the Element
+     * @param name  the elementname
+     * @return the element or <code>null</code>, if not found
      */
-    protected Element scanForElement(Element e, String name) {
+    protected Element scanForElement(final Element e, final String name) {
 
         if (e.getName().equals(name)) {
             return e;
@@ -58,5 +60,3 @@ public abstract class XMLFont {
     }
 
 }
-
-

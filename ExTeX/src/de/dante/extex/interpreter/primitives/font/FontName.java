@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.interpreter.AbstractCode;
@@ -34,45 +35,46 @@ import de.dante.util.GeneralException;
  * <p>
  * Example:
  * <pre>
- * 	\fontname\myfont
+ * \fontname\myfont
  * </pre>
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontName extends AbstractCode {
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param name the name for debugging
-	 */
-	public FontName(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for debugging
+     */
+    public FontName(final String name) {
+        super(name);
+    }
 
-	/**
-	 * Get the next <code>ControlSequenceToken</code> with the <code>FontCode</code>
-	 * and put the fontname on the stack.
-	 * 
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-	 *      de.dante.extex.interpreter.context.Context,
-	 *      de.dante.extex.interpreter.TokenSource,
-	 *      de.dante.extex.typesetter.Typesetter)
-	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    /**
+     * Get the next <code>ControlSequenceToken</code> with the <code>FontCode</code>
+     * and put the fontname on the stack.
+     *
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
-		Token tok = source.getNonSpace();
+        Token tok = source.getNonSpace();
 
-		if (tok == null || !(tok instanceof ControlSequenceToken)) {
-			throw new GeneralException("no fontprimitive found!"); // TODO change
-		}
-		Code code = context.getMacro(tok.getValue());
-		if (code == null || !(code instanceof FontCode)) {
-			throw new GeneralException("no fontprimitive found!"); // TODO change
-		}
-		source.push(new Tokens(context, ((FontCode) code).getFontname()));
+        if (tok == null || !(tok instanceof ControlSequenceToken)) {
+            throw new GeneralException("no fontprimitive found!"); // TODO change
+        }
+        Code code = context.getMacro(tok.getValue());
+        if (code == null || !(code instanceof FontCode)) {
+            throw new GeneralException("no fontprimitive found!"); // TODO change
+        }
+        source.push(new Tokens(context, ((FontCode) code).getFontname()));
 
-		prefix.clear();
-	}
+        prefix.clear();
+    }
 }

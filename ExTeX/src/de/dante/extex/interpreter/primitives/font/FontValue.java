@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,12 +39,12 @@ import de.dante.util.GeneralException;
  * <p>
  * Example:
  * <pre>
- * 	\fontvalue\ff{key}=5pt
- *  \the\fontvalue\ff{key}
+ * \fontvalue\ff{key}=5pt
+ * \the\fontvalue\ff{key}
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontValue extends AbstractCode implements Theable {
 
@@ -63,7 +63,7 @@ public class FontValue extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context, final TokenSource source, final Typesetter typesetter) throws GeneralException {
 
         // \fontvalue\ff{key}=5pt
         Token tok = source.scanNonSpace();
@@ -89,7 +89,7 @@ public class FontValue extends AbstractCode implements Theable {
     /**
      * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(Context context, TokenSource source) throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source) throws GeneralException {
         // \the\fontvalue\ff{key}
         Token tok = source.scanNonSpace();
         if (tok == null || !(tok instanceof ControlSequenceToken)) {

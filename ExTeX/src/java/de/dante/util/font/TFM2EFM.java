@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.font;
 
 import java.io.BufferedInputStream;
@@ -28,34 +29,41 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.TFMException;
 import de.dante.extex.font.TFMReader;
 
 /**
  * Convert a TFM-file to a EFM-file
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFM2EFM {
 
-	public static void main(String[] args) throws TFMException, IOException {
+    /**
+     * main
+     * @param args      the comandlinearguments
+     * @throws IOException ...
+     */
+    public static void main(final String[] args) throws IOException {
 
-		if (args.length != 2) {
-			System.err.println("java de.dante.util.font.TFM2EFM <tfm-file> <efm-file>");
-			System.exit(1);
-		}
-		
-		File tfmfile = new File(args[0]);
-		File efmfile = new File(args[1]);
+        if (args.length != 2) {
+            System.err
+                    .println("java de.dante.util.font.TFM2EFM <tfm-file> <efm-file>");
+            System.exit(1);
+        }
 
-		TFMReader tfmr = new TFMReader(new BufferedInputStream(new FileInputStream(tfmfile), 0x8000));
+        File tfmfile = new File(args[0]);
+        File efmfile = new File(args[1]);
 
-		// write to efm-file
-		XMLOutputter xmlout = new XMLOutputter("   ", true);
-		BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(efmfile), 0x8000);
-		Document doc = new Document(tfmr.getFontMetric());
-		xmlout.output(doc, out);
-		out.close();
-	}
+        TFMReader tfmr = new TFMReader(new BufferedInputStream(
+                new FileInputStream(tfmfile), 0x8000));
+
+        // write to efm-file
+        XMLOutputter xmlout = new XMLOutputter("   ", true);
+        BufferedOutputStream out = new BufferedOutputStream(
+                new FileOutputStream(efmfile), 0x8000);
+        Document doc = new Document(tfmr.getFontMetric());
+        xmlout.output(doc, out);
+        out.close();
+    }
 }
