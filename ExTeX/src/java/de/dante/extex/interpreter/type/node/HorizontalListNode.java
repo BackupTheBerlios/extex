@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
@@ -44,6 +44,17 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
     public HorizontalListNode() {
 
         super();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param node the initialnode to add
+     */
+    public HorizontalListNode(final Node node) {
+
+        super();
+        add(node);
     }
 
     /**
