@@ -51,7 +51,7 @@
         <extension></extension>
         <extension>.tex</extension>
         <path>.</path>
-        <path>test/data</path>
+        <path>src/test/data</path>
       </tex>
     </use>
     <use class="de.dante.util.resource.FileFinderImpl" provideLogger="true">
