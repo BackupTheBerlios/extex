@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NumberedFont extends NamedFont {
 
@@ -52,7 +52,7 @@ public class NumberedFont extends NamedFont {
      * @return the key for the current register
      *
      * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this on e is declared.
+     *  Exception this one is declared.
      */
     protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
@@ -62,7 +62,7 @@ public class NumberedFont extends NamedFont {
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
             return context.getNamespace() + "\b" + getName() + "#" + number;
         } else {
-            return "\b" + getName() + "#" + number;
+            return getName() + "#" + number;
         }
     }
 
