@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public final class Messages {
     //TODO: This class is a mess. Integrate the localized messages into the components.
@@ -193,7 +193,7 @@ public final class Messages {
      */
     public static void message(final PrintStream writer, final String fmt) {
 
-        writer.println(Messages.format(fmt));
+        writer.println(format(fmt));
     }
 
     /**
