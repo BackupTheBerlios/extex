@@ -1,7 +1,14 @@
    <div class="info">
+    CVS Browser
+    <div class="infoitems">
+    To browse the CVS repository online use
+    <a href="http://cvs.berlios.de/cgi-bin/viewcvs.cgi/extex/">ViewCVS</a>
+    </div>
+   </div>
+   <div class="info">
     Current State
     <div class="infoitems">
-    Currently the internal version 0.4 is in the CVS repository.
+    Currently the internal version 0.0 is in the CVS repository.
     </div>
    </div>
    <div class="info">

@@ -9,19 +9,34 @@
    <h1>Repository</h1> 
 
    <p>
-   The sources are currently available for developers only. For this
+   The sources are publicly available. For this
    purpose there is a CVS repository hosted by <a
-   href="http://www.dante.de">DANTE e.V.</a>:
+   href="http://www.belios.de">BerliOS</a>:
    </p>
 
    <table>
-    <tr><td>Host:</td><td>sun.dante.de</td></tr>
-    <tr><td>Location:</td><td>/export/ntsdevel/repository</td></tr>
-    <tr><td>Connection type:</td><td>ext</td></tr>
+    <tr><td>User:</td><td>anonymous</td></tr>
+    <tr><td>Host:</td><td>cvs.extex.berlios.de</td></tr>
+    <tr><td>Location:</td><td>/cvsroot/extex</td></tr>
+    <tr><td>Connection type:</td><td>pserver</td></tr>
+    <tr><td>Module:</td><td>ExTeX</td></tr>
    </table>
+   
+   <p>
+   If a password is requested send the empty string.
+   </p>
 
    <p>
-   <em>The access is restricted to members of the &ExTeX; team!</em>
+   The following sample shows how to check-out the complete sources of &ExTeX;
+   on a Unix box:
+   </p>
+   <pre>
+   % cvs -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex login
+   % cvs -z3 -d:pserver:anonymous@cvs.extex.berlios.de:/cvsroot/extex co ExTeX
+   </pre>
+
+   <p>
+   <em>The commiting is restricted to members of the &ExTeX; team!</em>
    </p>
    <p>
    If you are interested to become a member of the ExTeX team write to
