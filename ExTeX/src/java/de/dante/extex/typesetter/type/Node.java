@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Node extends Knot {
 
@@ -80,7 +80,8 @@ public interface Node extends Knot {
     /**
      * Compute the vertical size of a node.
      * The vertical size is the size of the box enclosing the bouding
-     * box and containing the base line.
+     * box and containing the base line (see figure).
+     * <img src="doc-files/verticalSize.png" alt="" align="right"/>
      * <ul>
      *  <li>
      *   The vertical size is normally the sum of height and depth.
