@@ -19,20 +19,24 @@
 
 package de.dante.tex;
 
+
+
+import de.dante.extex.ExTeX;
+import de.dante.extex.interpreter.Interpreter;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationFactory;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.Properties;
-
-import de.dante.extex.ExTeX;
-
 import junit.framework.Assert;
+import de.dante.extex.interpreter.InterpreterFactory;
 
 
 /**
  * Test for ExTeX.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class TestTeX {
 
@@ -74,5 +78,38 @@ public final class TestTeX {
         }
         intxt.close();
         intesttxt.close();
+    }
+
+
+    /**
+     * Make an <code>Interpreter</code>.
+     *
+     * @param configurationFile configuration file for ExTeX
+     * @return an <code>Interpreter</code>
+     * @exception Exception if an error occurs
+     */
+    public static Interpreter makeInterpreter(String configurationFile)
+        throws Exception {
+
+        Configuration config = new ConfigurationFactory()
+            .newInstance("config/"+configurationFile);
+        Configuration intcfg = config.getConfiguration("Interpreter");
+        InterpreterFactory intf = new InterpreterFactory();
+
+        intf.configure(intcfg);
+
+        return intf.newInstance();
+    }
+
+
+    /**
+     * Make an <code>Interpreter</code>.
+     *
+     * @return an <code>Interpreter</code>
+     * @exception Exception if an error occurs
+     */
+    public static Interpreter makeInterpreter() throws Exception {
+
+        return makeInterpreter("extex.xml");
     }
 }

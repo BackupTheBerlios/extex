@@ -19,13 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
-import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.type.pair.Pair;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.tex.TestTeX;
+import junit.framework.TestCase;
 
 /**
  * A test for the pair-regsiter.
@@ -35,7 +33,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PairRegisterTest extends TestCase {
 
@@ -57,17 +55,14 @@ public class PairRegisterTest extends TestCase {
         junit.textui.TestRunner.run(PairRegisterTest.class);
     }
 
+
     /**
      * ...
      * @throws Exception ...
      */
     public void testSp1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter source = intf.newInstance();
+        Interpreter source = TestTeX.makeInterpreter();
 
         source.addStream(new TokenStreamStringImpl("1234 5678  ende"));
         Pair val = new Pair(null, source);

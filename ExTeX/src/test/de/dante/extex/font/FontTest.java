@@ -19,7 +19,6 @@
 
 package de.dante.extex.font;
 
-import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
@@ -28,12 +27,18 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.resource.ResourceFinder;
+import de.dante.util.resource.ResourceFinderFactory;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.logging.Logger;
+import junit.framework.TestCase;
 
 /**
  * Test the font-system
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FontTest extends TestCase {
 
@@ -47,10 +52,53 @@ public class FontTest extends TestCase {
 
     }
 
+
     /**
      * Dimen 12 pt
      */
     private static final Dimen DIM12 = new Dimen(GlueComponent.ONE * 12);
+
+
+    /**
+     * Make a <code>FontFactory</code>.
+     *
+     * @return a <code>FontFactory</code>
+     * @exception Exception if an error occurs
+     */
+    private FontFactory makeFontFactory()
+        throws Exception {
+
+        FontFactory fontFactory;
+        ResourceFinder fontFinder;
+
+        Properties properties = System.getProperties();
+
+        Configuration config = new ConfigurationFactory()
+            .newInstance("config/extex.xml");
+
+        Configuration fontConfig = config.getConfiguration("Fonts");
+
+        String fontClass = fontConfig.getAttribute("class");
+
+        // load user properties
+        properties.load(new FileInputStream(".extex"));
+
+        // test configuration
+        assertNotNull(fontClass);
+        assertTrue(!fontClass.equals(""));
+
+        fontFinder = (new ResourceFinderFactory())
+            .createResourceFinder(fontConfig.getConfiguration("Resource"),
+                                  Logger.global, properties);
+
+        fontFactory = (FontFactory) (Class.forName(fontClass)
+            .getConstructor(
+                new Class[]{Configuration.class,
+                            ResourceFinder.class})
+                                .newInstance(new Object[]{fontConfig, fontFinder}));
+
+        return fontFactory;
+    }
 
     /**
      * test 01
@@ -58,18 +106,7 @@ public class FontTest extends TestCase {
      */
     public void test01() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-
-        Configuration configinterpreter = config
-                .getConfiguration("Interpreter");
-
-        Interpreter source = new InterpreterFactory(configinterpreter)
-                .newInstance();
-
-        Context context = source.getContext();
-
-        FontFactory factory = context.getFontFactory();
+        FontFactory factory = makeFontFactory();
 
         Font font = factory.getInstance("tfmcmr12", DIM12);
 

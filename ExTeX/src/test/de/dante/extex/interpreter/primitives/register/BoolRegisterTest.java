@@ -19,14 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
-import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.bool.Bool;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.tex.TestTeX;
+import junit.framework.TestCase;
 
 /**
  * A test for the bool-regsiter.
@@ -36,7 +34,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BoolRegisterTest extends TestCase {
 
@@ -58,17 +56,14 @@ public class BoolRegisterTest extends TestCase {
         junit.textui.TestRunner.run(BoolRegisterTest.class);
     }
 
+
     /**
      * ...
      * @throws Exception ...
      */
     public void testSp1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter interpreter = intf.newInstance();
+        Interpreter interpreter = TestTeX.makeInterpreter();
 
         interpreter.addStream(new TokenStreamStringImpl("true"));
         Bool b = new Bool(null, interpreter);
@@ -81,11 +76,7 @@ public class BoolRegisterTest extends TestCase {
      */
     public void testSp2() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter interpreter = intf.newInstance();
+        Interpreter interpreter = TestTeX.makeInterpreter();
 
         interpreter.addStream(new TokenStreamStringImpl("false"));
         Bool b = new Bool(null, interpreter);
@@ -98,11 +89,7 @@ public class BoolRegisterTest extends TestCase {
      */
     public void testSp3() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter interpreter = intf.newInstance();
+        Interpreter interpreter = TestTeX.makeInterpreter();
 
         interpreter.addStream(new TokenStreamStringImpl("on"));
         Bool b = new Bool(null, interpreter);
@@ -115,11 +102,7 @@ public class BoolRegisterTest extends TestCase {
      */
     public void testSp4() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter interpreter = intf.newInstance();
+        Interpreter interpreter = TestTeX.makeInterpreter();
 
         interpreter.addStream(new TokenStreamStringImpl("off"));
         Bool b = new Bool(null, interpreter);
@@ -132,11 +115,7 @@ public class BoolRegisterTest extends TestCase {
      */
     public void testSp5() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter interpreter = intf.newInstance();
+        Interpreter interpreter = TestTeX.makeInterpreter();
 
         Context context = interpreter.getContext();
 
@@ -151,11 +130,7 @@ public class BoolRegisterTest extends TestCase {
      */
     public void testSp6() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex32.xml");
-        Configuration intcfg = config.getConfiguration("Interpreter");
-        InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter interpreter = intf.newInstance();
+        Interpreter interpreter = TestTeX.makeInterpreter();
 
         Context context = interpreter.getContext();
 
