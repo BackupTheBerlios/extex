@@ -303,9 +303,9 @@
     <define name="jobname" class="de.dante.extex.interpreter.primitives.info.Jobname"/>
     <define name="kern" class="de.dante.extex.interpreter.primitives.box.Kern"/>
     <define name="language" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
-    <Define name="lastbox" class=""/>
+    <define name="lastbox" class="de.dante.extex.interpreter.primitives.box.Lastbox"/>
     <Define name="lastkern" class=""/>
-    <define name="lastpenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+    <define name="lastpenalty" class="de.dante.extex.interpreter.primitives.register.count.Lastpenalty"/>
     <define name="lastskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="lccode" class="de.dante.extex.interpreter.primitives.string.Lccode"/>
     <Define name="leaders" class=""/>
