@@ -24,6 +24,7 @@ import de.dante.extex.hyphenation.exception.DuplicateHyphenationException;
 import de.dante.extex.hyphenation.exception.HyphenationException;
 import de.dante.extex.hyphenation.exception.IllegalTokenHyphenationException;
 import de.dante.extex.hyphenation.exception.IllegalValueHyphenationException;
+import de.dante.extex.hyphenation.exception.ImmutableHyphenationException;
 import de.dante.extex.hyphenation.util.NodeTraverser;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.count.Count;
@@ -66,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -82,6 +83,13 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     private HyphenTree patterns = new HyphenTree(new char[0]);
 
     /**
+     * The field <tt>compressed</tt> contains the indicator that the
+     * hyphenation table has been compressed. A compressed table can not be
+     * modified any more.
+     */
+    private boolean compressed = false;
+
+    /**
      * Creates a new object.
      */
     public LiangsHyphenationTable() {
@@ -92,9 +100,15 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     /**
      * This methods allows the caller to add another pattern
      *
-     * @throws IllegalValueHyphenationException
-     * @throws IllegalTokenHyphenationException
-     * @throws DuplicateHyphenationException
+     * @param pattern a sequence of tokens alternatively of type other and
+     *  letter. The other tokens must be numbers.
+     *
+     * @throws IllegalValueHyphenationException in case that an other token
+     *  does not carry a digit
+     * @throws IllegalTokenHyphenationException in case that ...
+     * @throws DuplicateHyphenationException in case that a hyphenation pattern
+     *  is tried to be added a second time
+     * @throws ImmutableHyphenationException in case that ...
      *
      * @see de.dante.extex.hyphenation.HyphenationTable#addPattern(
      *      Tokens)
@@ -102,7 +116,12 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     public void addPattern(final Tokens pattern)
             throws IllegalValueHyphenationException,
                 IllegalTokenHyphenationException,
-                DuplicateHyphenationException {
+                DuplicateHyphenationException,
+                ImmutableHyphenationException {
+
+        if (compressed) {
+            throw new ImmutableHyphenationException(null);
+        }
 
         int length = pattern.length();
 
@@ -178,7 +197,7 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
 
         int leftHyphenMin = (int) getLeftHyphenmin();
         int rightHyphenMin = (int) getRightHyphenmin();
-        if (len <= leftHyphenMin + rightHyphenMin) { //TODO gene: check
+        if (len < leftHyphenMin + rightHyphenMin) {
             return nodelist;
         }
 
