@@ -343,7 +343,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  *
- * <a name="fileSearch"/><h3>Searching TeX Files</h3>
+ * <a name="fileSearch"/><h3>Searching Files</h3>
  *
  * ...
  *
@@ -624,7 +624,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public class ExTeX {
 
@@ -860,9 +860,9 @@ public class ExTeX {
         logger.severe(text);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter pw = new PrintWriter(os);
-        e.printStackTrace(pw);
-        pw.flush();
+        PrintWriter writer = new PrintWriter(os);
+        e.printStackTrace(writer);
+        writer.flush();
         logger.fine(os.toString());
     }
 
@@ -936,14 +936,6 @@ public class ExTeX {
     }
 
     /**
-     * The field <tt>calendar</tt> contains the time and date when ExTeX has
-     * been started. There is another instance in
-     * {@link de.dante.extex.interpreter.Max Max}. Those two instances might be
-     * different up to a few milliseconds. I guess I can live with that.
-     */
-    private Calendar calendar = Calendar.getInstance();
-
-    /**
      * The field <tt>interactionObserver</tt> contains the observer called
      * whenever the interaction mode is changed.
      */
@@ -1002,7 +994,7 @@ public class ExTeX {
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT_TYPE, "");
         propertyDefault(PROP_OUTPUTDIR, ".");
-        propertyDefault(PROP_POOL, "config.extexMessage");
+        propertyDefault(PROP_POOL, "config.de.dante.extex.message");
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
         propertyDefault(PROP_TOKEN_STREAM, "base");
@@ -1276,7 +1268,7 @@ public class ExTeX {
      * @return the default font
      *
      * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
+     *  been detected in the configuration
      * @throws GeneralException in case of an error of some other kind
      */
     private Font makeDefaultFont(final Configuration config,
@@ -1284,15 +1276,17 @@ public class ExTeX {
             throws ConfigurationException,
                 GeneralException {
 
-        String defaultFont = config.getAttribute("default");
+        final String attributeName = "name";
+        final String attributeSize = "size";
+        String defaultFont = config.getAttribute(attributeName);
 
         if (defaultFont == null || defaultFont.equals("")) {
-            throw new ConfigurationMissingAttributeException("default", config);
+            return fontFactory.getInstance();
         }
 
-        String size = config.getAttribute("size");
+        String size = config.getAttribute(attributeSize);
         if (size == null) {
-            throw new ConfigurationMissingAttributeException("size", config);
+            return fontFactory.getInstance(defaultFont);
         }
 
         Font font;
@@ -1301,7 +1295,8 @@ public class ExTeX {
             font = fontFactory.getInstance(defaultFont, new Dimen(
                     ((long) (Dimen.ONE * f))));
         } catch (NumberFormatException e) {
-            throw new ConfigurationSyntaxException("size", config.toString());
+            throw new ConfigurationSyntaxException(attributeSize, config
+                    .toString());
         }
 
         return font;
@@ -1313,7 +1308,7 @@ public class ExTeX {
      * @param config the configuration object for the document writer
      * @param jobname the jobname to use
      * @param outFactory the output factory
-     * @param options ...
+     * @param options the options tobe passed to the document writer
      *
      * @return the new document writer
      *
@@ -1670,7 +1665,7 @@ public class ExTeX {
                     } else if ("-configuration".startsWith(arg)) {
                         useArg(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
-                        int year = calendar.get(Calendar.YEAR);
+                        int year = Calendar.getInstance().get(Calendar.YEAR);
                         logger.info(Messages.format("ExTeX.Copyright",
                                 (year <= COPYRIGHT_YEAR ? Integer
                                         .toString(COPYRIGHT_YEAR) : Integer
