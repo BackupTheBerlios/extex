@@ -21,9 +21,9 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.MacroCode;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.primitives.MacroCode;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.LeftBraceToken;
 import de.dante.extex.scanner.MacroParamToken;
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\def</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Def extends AbstractCode {
     /**
