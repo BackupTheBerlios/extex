@@ -38,7 +38,7 @@ import java.util.ResourceBundle;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public final class Messages {
 
@@ -187,10 +187,24 @@ public final class Messages {
      * @param bundleName the name of the resource bundle to use
      * @param locale the preferred locale to use
      */
-    public static void 
-    configure(final String bundleName, final Locale locale) {
+    public static void configure(final String bundleName,
+            final Locale locale) {
 
         bundle = ResourceBundle.getBundle(bundleName, locale);
+    }
+
+    /**
+     * Initialize the messages with a given bundle name and the default
+     * language.
+     * This method should be
+     * called early in the application and not called again. Otherwise the
+     * change in the language might confuse the user.
+     *
+     * @param bundleName the name of the resource bundle to use
+     */
+    public static void configure(final String bundleName) {
+
+        bundle = ResourceBundle.getBundle(bundleName);
     }
 
     /**
