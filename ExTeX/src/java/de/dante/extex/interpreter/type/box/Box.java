@@ -21,10 +21,12 @@ package de.dante.extex.interpreter.type.box;
 
 import java.io.Serializable;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.scanner.Catcode;
@@ -44,7 +46,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Box implements Serializable {
 
@@ -78,9 +80,11 @@ public class Box implements Serializable {
 
         Token t = source.getToken();
 
-        if (!t.isa(Catcode.LEFTBRACE)) {
+        if (t == null) {
+            throw new EofHelpingException(null);
+        } else if (!t.isa(Catcode.LEFTBRACE)) {
             //TODO insert { and try to recover
-            throw new MissingLeftBraceHelpingException("???");
+            throw new MissingLeftBraceHelpingException(null);
         }
 
         if (isHorizontal) {
@@ -124,9 +128,9 @@ public class Box implements Serializable {
      *
      * @return the depth of this box or 0pt in case of a void box
      */
-    public Dimen getDepth() {
+    public FixedDimen getDepth() {
 
-        return (nodes == null ? new Dimen(0) : nodes.getDepth());
+        return (nodes == null ? Dimen.ZERO_PT : nodes.getDepth());
     }
 
     /**
@@ -134,9 +138,9 @@ public class Box implements Serializable {
      *
      * @return the height of this box or 0pt in case of a void box
      */
-    public Dimen getHeight() {
+    public FixedDimen getHeight() {
 
-        return (nodes == null ? new Dimen(0) : nodes.getHeight());
+        return (nodes == null ? Dimen.ZERO_PT : nodes.getHeight());
     }
 
     /**
@@ -157,7 +161,7 @@ public class Box implements Serializable {
      *
      * @return the move parameter
      */
-    public Dimen getMove() {
+    public FixedDimen getMove() {
 
         return this.nodes.getMove();
     }
@@ -179,7 +183,7 @@ public class Box implements Serializable {
      *
      * @return the shift parameter
      */
-    public Dimen getShift() {
+    public FixedDimen getShift() {
 
         return this.nodes.getShift();
     }
@@ -189,9 +193,9 @@ public class Box implements Serializable {
      *
      * @return the width of this box or 0pt in case of a void box
      */
-    public Dimen getWidth() {
+    public FixedDimen getWidth() {
 
-        return (nodes == null ? new Dimen(0) : nodes.getWidth());
+        return (nodes == null ? Dimen.ZERO_PT : nodes.getWidth());
     }
 
     /**
@@ -287,4 +291,31 @@ public class Box implements Serializable {
             nodes.setWidth(width);
         }
     }
+
+    /**
+     * ...
+     *
+     * @param spread the length to add to the height
+     */
+    public void spreadHeight(final FixedDimen spread) {
+
+        if (nodes != null) {
+            nodes.getHeight().add(spread);
+        }
+
+    }
+
+    /**
+     * ...
+     *
+     * @param spread the length to add to the width
+     */
+    public void spreadWidth(final FixedDimen spread) {
+
+        if (nodes != null) {
+            nodes.getWidth().add(spread);
+        }
+
+    }
+
 }
