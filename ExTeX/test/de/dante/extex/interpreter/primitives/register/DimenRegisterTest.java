@@ -8,14 +8,14 @@ import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.scanner.stream.impl.TokenStreamImpl;
+import de.dante.extex.scanner.stream.impl.TokenStreamStringImpl;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * 
  * @author gene
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DimenRegisterTest extends TestCase {
 
@@ -37,7 +37,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1234 sp","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1234 sp"));// mgn: changed
         assertEquals("1234sp",new Dimen(null,source).toString());
     }
 
@@ -45,7 +45,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.000pt","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.000pt"));// mgn: changed
         assertEquals("65536sp",new Dimen(null,source).toString());
     }
     
@@ -53,7 +53,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.5pt","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.5pt"));// mgn: changed
         assertEquals("98304sp",new Dimen(null,source).toString());
     }
 
@@ -61,7 +61,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.50pt","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.50pt"));// mgn: changed
         assertEquals("98304sp",new Dimen(null,source).toString());
     }
 
@@ -69,7 +69,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.33pt","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.33pt"));// mgn: changed
         assertEquals("87163sp",new Dimen(null,source).toString());
     }
    
@@ -77,7 +77,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.333pt","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.333pt"));
         assertEquals("87359sp",new Dimen(null,source).toString());
     }
     
@@ -85,14 +85,14 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1mm","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1mm"));
         assertEquals("186467sp",new Dimen(null,source).toString());
     }
     
     public void testMm2() throws Exception {
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.33mm","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.33mm"));
         assertEquals("248002sp",new Dimen(null,source).toString());
     }
     
@@ -100,7 +100,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1cm","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1cm"));
         assertEquals("1864679sp",new Dimen(null,source).toString());
     }
     
@@ -108,7 +108,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.33cm","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.33cm"));
         assertEquals("2480027sp",new Dimen(null,source).toString());
     }
     
@@ -116,7 +116,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1in","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1in"));
         assertEquals("4736286sp",new Dimen(null,source).toString());
     }
 
@@ -124,7 +124,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1dd","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1dd"));
         assertEquals("70124sp",new Dimen(null,source).toString());
     }
 
@@ -132,7 +132,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.25dd","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.25dd"));
         assertEquals("87655sp",new Dimen(null,source).toString());
     }
 
@@ -140,7 +140,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.25pc","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.25pc"));
         assertEquals("983040sp",new Dimen(null,source).toString());
     }
     
@@ -148,7 +148,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.7pc","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.7pc"));
         assertEquals("1336932sp",new Dimen(null,source).toString());
     }
 
@@ -156,7 +156,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("1.25bp","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("1.25bp"));
         assertEquals("82227sp",new Dimen(null,source).toString());
     }
 
@@ -164,7 +164,7 @@ public class DimenRegisterTest extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter source = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        source.addStream(new TokenStreamImpl("7,777cc","ISO-8859-1"));
+        source.addStream(new TokenStreamStringImpl("7,777cc"));
         assertEquals("6544254sp",new Dimen(null,source).toString());
     }
 

@@ -402,7 +402,11 @@
     <text class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
   </DocumentWriter>
 
-  <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"/>
+  <Reader>
+	<string class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl"/>
+	<file class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl"/>
+    <reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl"/>
+  </Reader>
 
   <File>
     <tex>

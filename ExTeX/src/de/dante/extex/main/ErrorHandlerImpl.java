@@ -44,7 +44,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     /**
@@ -146,8 +146,7 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                         case 'i' :
                         case 'I' :
                             source.addStream(source.getTokenStreamFactory()
-                                    .newInstance(line.substring(1),
-                                                 "ISO-8859-1"));
+                                    .newInstance(line.substring(1)));// mgn: changed
                             //TODO: better guess for the encoding?
                             break;
                         case 'h' :

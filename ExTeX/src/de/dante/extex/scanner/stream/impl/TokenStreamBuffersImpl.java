@@ -19,41 +19,62 @@
 package de.dante.extex.scanner.stream.impl;
 
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.util.UnicodeChar;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
+public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
         TokenStream {
 
-    /**
-     * Creates a new object.
-     */
-    protected TokenStreamBuffersImpl() {
-        super();
-    }
+	/**
+	 * the line
+	 */
+	private String line;
+	
 
-    /**
-     * Creates a new object.
-     *
-     * @param line
-     * @param encoding
-     * @throws CharacterCodingException
-     */
-    public TokenStreamBuffersImpl(String line, String encoding)
-            throws CharacterCodingException {
-        super(line, encoding);
-    }
+	/**
+	 * Creates a new object.
+	 * @param	line	the line for the tokenizer 
+	 */
+	public TokenStreamBuffersImpl(final String line) {
+		super();
+		if (line != null) {
+			this.line = line;
+		} else {
+			this.line="";
+		}
+	}
 
+	/**
+	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
+	 */
+	protected int bufferLength() {
+		return line.length();
+	}
+
+	/**
+	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
+	 */
+	protected UnicodeChar getSingleChar() {
+		return new UnicodeChar(line,pointer);
+	}
+
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return line;
+	}
+	
+	
     /**
      * The field <tt>nextLine</tt> ...
      */
@@ -67,7 +88,7 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
     /**
      * The field <tt>encoding</tt> contains the ...
      */
-    private String encoding;
+    // private String encoding; mgn: changed
 
     /**
      * Creates a new object.
@@ -75,22 +96,21 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
      * @param lines the array of lines to consider
      * @throws CharacterCodingException in cas of an error
      */
-    public TokenStreamBuffersImpl(final String[] lines, final String encoding)
+    public TokenStreamBuffersImpl(final String[] lines)
             throws CharacterCodingException {
-        super(lines[0], encoding);
+        line = lines[0];
         this.lines = lines;
-        this.encoding = encoding;
     }
 
     /**
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
      */
     protected boolean refill() throws IOException {
+    	super.refill();
         if (lines == null || nextLine >= lines.length) {
             return false;
         }
-        setBuffer(Charset.forName(encoding).newDecoder().decode(
-                ByteBuffer.wrap(lines[nextLine++].getBytes())));
+        line = lines[nextLine++];
         return true;
     }
 
