@@ -1,4 +1,4 @@
-<project name="ExTeX (gene)" default="help" basedir=".">
+<project name="ExTeX" default="help" basedir=".">
 
   <description>
     ExTeX - build file
@@ -159,5 +159,20 @@ Usage:
       </fileset>
     </copy>
   </target>
+
+	<target name="gcview" description="Show the logfile from the GC in the gcviewer">
+		<java fork="true" jar="lib.develop/gcviewer.jar">
+			<arg value="gc.log"/>
+		</java>
+	</target>
+
+	<!-- <target name="extex" description="Run ExTeX">
+		<java fork="true" classname="de.dante.extex.ExTeX">
+			<jvmarg value="-Xms64m"/> 
+			<jvmarg value="-Xmx128m"/> 
+			<jvmarg value="-Xloggc:gc.log"/> 
+		</java>
+	</target> -->
+
 
 </project>

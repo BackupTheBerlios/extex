@@ -36,7 +36,7 @@ import de.dante.extex.font.FontMetric;
  * This class read a AFM-file.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 // TODO incomplete
 public class AFMReader implements FontMetric {
@@ -50,6 +50,7 @@ public class AFMReader implements FontMetric {
 	 * @param afmin		Stream for Reading the afm-file
 	 * @param pfbname	the name of the pfbfile
 	 * @param efmname	the name of the efmfile
+	 * @param defaultsize	the defaultsize for the font
 	 */
 	public AFMReader(BufferedInputStream afmin, String pfbname, String efmname, String defaultsize) throws AFMException, IOException{
 
@@ -92,7 +93,7 @@ public class AFMReader implements FontMetric {
 	private float afmItalicAngle = 0.0f;
 
 	/**
-	 * \code{true} if all the characters have the same width.
+	 * <code>true</code> if all the characters have the same width.
 	 */
 	private boolean afmIsFixedPitch = false;
 
@@ -467,7 +468,7 @@ public class AFMReader implements FontMetric {
 	private char LF = '\n';
 
 	/**
-	 * The \code{String} for the class.
+	 * The <code>String</code> for the class.
 	 */
 	public String toString() {
 		StringBuffer buf = new StringBuffer(1024);

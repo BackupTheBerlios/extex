@@ -32,7 +32,7 @@ import de.dante.extex.font.FontMetric;
  * See for more information TFtoPL  
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMReader implements FontMetric {
 
@@ -622,7 +622,7 @@ public class TFMReader implements FontMetric {
 	 * @return		the positive value of the read byte.
 	 * @exception	TFMException if an I/O error occurs 
 	 */
-	protected short readByte() throws TFMException, IOException {
+	private short readByte() throws TFMException, IOException {
 		int i = in.read();
 		if (i < 0) {
 			throw new TFMException("The file has fewer bytes than it claims!");

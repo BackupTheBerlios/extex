@@ -23,7 +23,7 @@ import java.util.Stack;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationManager;
-import de.dante.extex.hyphenation.HyphenationManagerImpl;
+import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
@@ -89,7 +89,7 @@ import de.dante.util.file.FileFinderList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ContextImpl implements Context, Serializable {
 

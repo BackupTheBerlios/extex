@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004 Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,22 +16,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.hyphenation;
+package de.dante.extex.interpreter.type.node;
+
+import de.dante.extex.typesetter.Node;
 
 /**
- * ...
+ * Language-whatsis-node (set with <code>\setlanguge</code>
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public interface HyphenationFactory {
+public class LanguageNode extends WhatsItNode implements Node {
 
-    /**
-     * ...
-     *
-     * @param name ...
-     * @return ...
-     */
-    HyphenationManager getInstance(String name);
+	/**
+	 *	the language
+	 */
+	private int language;
 
+	/**
+	 * Creates a new object.
+	 */
+	public LanguageNode(final int language) {
+		super();
+		this.language = language;
+	}
+
+	/**
+	 * Getter for language
+	 */
+	public int getLanguage() {
+		return language;
+	}
 }

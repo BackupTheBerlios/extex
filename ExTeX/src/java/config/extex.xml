@@ -66,7 +66,7 @@
     <define name="day" class="de.dante.extex.interpreter.primitives.register.NamedCount">1</define>
     <define name="deadcycles" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="def" class="de.dante.extex.interpreter.primitives.macro.Def"/>
-    <define name="defaulthyphenchar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
+    <define name="defaulthyphenchar" class="de.dante.extex.interpreter.primitives.register.NamedCount">45</define>
     <define name="defaultskewchar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="delcode" class=""/>
     <Define name="delimiter" class=""/>
@@ -135,7 +135,7 @@
     <Define name="hskip" class=""/>
     <Define name="hss" class=""/>
     <Define name="ht" class=""/>
-    <Define name="hyphenation" class=""/>
+    <define name="hyphenation" class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
     <Define name="hyphenchar" class=""/>
     <Define name="hyphenpenalty" class=""/>
     <Define name="if" class=""/>
@@ -176,7 +176,8 @@
     <Define name="lccode" class=""/>
     <Define name="leaders" class=""/>
     <Define name="left" class=""/>
-    <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
+    <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.LeftHyphenmin"/>
+    <define name="hyphenactive" class="de.dante.extex.interpreter.primitives.hyphen.HyphenActive"/>
     <Define name="leftskip" class=""/>
     <Define name="leqno" class=""/>
     <define name="let" class="de.dante.extex.interpreter.primitives.macro.Let"/>
@@ -252,7 +253,7 @@
     <define name="parindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="parshape" class=""/>
     <Define name="parskip" class=""/>
-    <Define name="patterns" class=""/>
+    <define name="patterns" class="de.dante.extex.interpreter.primitives.hyphen.Patterns"/>
     <Define name="pausing" class=""/>
     <Define name="penalty" class=""/>
     <define name="postdisplaypenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -267,7 +268,7 @@
     <define name="relax" class="de.dante.extex.interpreter.primitives.Relax"/>
     <define name="relpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="right" class=""/>
-    <define name="righthyphenmin" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
+    <define name="righthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.RightHyphenmin"/>
     <Define name="rightskip" class=""/>
     <Define name="romannumeral" class=""/>
     <Define name="scriptfont" class=""/>
@@ -277,7 +278,7 @@
     <Define name="scriptstyle" class=""/>
     <define name="scrollmode" class="de.dante.extex.interpreter.primitives.interaction.Scrollmode"/>
     <Define name="setbox" class=""/>
-    <Define name="setlanguage" class=""/>
+    <define name="setlanguage" class="de.dante.extex.interpreter.primitives.hyphen.SetLanguage"/>
     <Define name="sfcode" class=""/>
     <Define name="shipout" class=""/>
     <Define name="show" class=""/>
@@ -319,8 +320,8 @@
     <define name="tracingparagraphs" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="tracingrestores" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="tracingstats" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="uccode" class=""/>
-    <Define name="uchyph" class=""/>
+    <define name="uccode" class=""/>
+    <Define name="uchyph" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="underline" class=""/>
     <Define name="unhbox" class=""/>
     <Define name="unhcopy" class=""/>
@@ -393,6 +394,7 @@
       <extension>.tex</extension>
       <path></path>
       <path>./</path>
+      <path>./testdata</path>
     </tex>
    </File>
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,19 +18,71 @@
  */
 package de.dante.extex.hyphenation;
 
+
 /**
- * ...
+ * Interface for the <code>HyphenationTable</code>.
+ * <p>
+ * In the table are stored the hyphenations-pattern (see <code>\patterns</code>
+ * and the user-hyphenations (see <code>\hyphenation</code>). 
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface HyphenationTable {
 
     /**
-     * ...
+     * Add a pattern
      * 
-     * @param word ...
+     * @param word 		the pattern-word
+     * @param pattern 	the pattern-word with numbers
      */
-    void add(String word);
+    void addPattern(final String word, final String pattern);
 
+    /**
+     * Add a user-hyphenation
+     * 
+     * @param word 		the word
+     * @param pattern 	the word with hyphenation-chars
+     */
+    void addHyphenation(final String word, final String hyphword);
+
+    /**
+     * Set hte value for lefthyphenmin
+     * @param left	the new value
+     */
+    void setLeftHyphenmin(final int left);
+
+    /**
+     * Return the value for lefthyphenmin
+     * @return	lefthyphenmin
+     */
+    int getLeftHyphenmin();
+
+    /**
+     * Set hte value for righthyphenmin
+     * @param right	the new value
+     */
+    void setRightHyphenmin(final int right);
+
+    /**
+     * Return the value for righthyphenmin
+     * @return	righthyphenmin
+     */
+    int getRightHyphenmin();
+ 
+    /**
+     * Set hte value for hyphenactive
+     * @param active	the new value
+     */
+    void setHyphenActive(final boolean active);
+
+    /**
+     * Return <code>true</code>, if hyphenation is active, 
+     * otherwise <code>false</code>;
+     * 
+     * @return	hyphenactive
+     */
+    boolean isHyphenActive();
+    
 }

@@ -19,13 +19,14 @@
 package de.dante.util;
 
 import com.ibm.icu.lang.UCharacter;
+import com.ibm.icu.text.UTF16;
 
 /**
  * UnicodeChar
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class UnicodeChar {
 
@@ -63,6 +64,15 @@ public class UnicodeChar {
         code = UCharacter.getCodePoint(char1, char2);
     }
 
+    /**
+     * Init with a cahr32 froma String at position idx.
+     * @param s		the <code>String</code>
+     * @param idx	the position in the string
+     */
+    public UnicodeChar(final String s, final int idx) {
+    	code = UTF16.charAt(s,idx);
+    }
+    
     /**
      * Init with a Unicode name.
      *
