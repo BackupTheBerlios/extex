@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FractionNoad extends AbstractNoad implements Noad {
 
@@ -67,15 +67,25 @@ public class FractionNoad extends AbstractNoad implements Noad {
 
     /**
      * Creates a new object.
-     *
      * @param denom the denominator
      * @param num the numerator
+     * @param leftDelimiter the delimiter for the left side or
+     *  <code>null</code> for none
+     * @param rightDelimiter the delimiter for the right side or
+     *  <code>null</code>  for none
+     * @param thickness the thickness of the rule or <code>null</code> for the
+     *  default thickness
      */
-    public FractionNoad(final MathList denom, final MathList num) {
+    public FractionNoad(final MathList denom, final MathList num,
+            final Delimiter leftDelimiter, final Delimiter rightDelimiter,
+            final Dimen thickness) {
 
         super();
-        denominator = denom;
-        numerator = num;
+        this.denominator = denom;
+        this.numerator = num;
+        this.leftDelimiter = leftDelimiter;
+        this.rightDelimiter = rightDelimiter;
+        this.thickness = thickness;
     }
 
     /**
@@ -100,17 +110,18 @@ public class FractionNoad extends AbstractNoad implements Noad {
         }
         if (false) {
             sb.append(", left delimiter ");
-            // TODO gene: unimplemented
+            leftDelimiter.toString(sb);
         }
         if (false) {
             sb.append(", right delimiter ");
-            // TODO gene: unimplemented
+            rightDelimiter.toString(sb);
         }
         // TODO gene: unimplemented
 
     }
 
     /**
+     * @see "TTP [704,743]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
