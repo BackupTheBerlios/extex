@@ -25,7 +25,7 @@ import com.ibm.icu.lang.UCharacter;
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class UnicodeChar {
 
@@ -147,10 +147,6 @@ public class UnicodeChar {
      * Returns the bidirection property of the character.
      *
      * @return the bidirection property
-     *             MGN das muss drinbleiben,
-     *             da es Zeichen gibt, die die Schreibrichtung umstellen.
-     *             Wird vom TypeSetter benötigt, wenn die die etex bzw.
-     *             Omega Funktionen einbauen.
      */
     public int getDirection() {
         return UCharacter.getDirection(code);
