@@ -72,7 +72,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Lower extends AbstractCode implements Boxable {
 
@@ -111,16 +111,7 @@ public class Lower extends AbstractCode implements Boxable {
             final Typesetter typesetter) throws GeneralException {
 
         Dimen amount = new Dimen(context, source);
-        Token t = source.getToken();
-        if (t == null || !(t instanceof CodeToken)) {
-            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
-        }
-        Code code = context.getCode((CodeToken) t);
-        if (code == null || !(code instanceof Boxable)) {
-            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
-        }
-        Box box = ((Boxable) code).getBox(context, source, typesetter);
-
+        Box box = source.getBox(typesetter);
         amount.add(box.getShift());
         box.setShift(amount);
         return box;
