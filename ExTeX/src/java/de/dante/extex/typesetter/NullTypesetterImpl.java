@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
@@ -46,10 +47,9 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class NullTypesetterImpl implements Typesetter {
-
     /**
      * Creates a new object.
      */
@@ -65,6 +65,14 @@ public class NullTypesetterImpl implements Typesetter {
      */
     public void add(final MathClass mclass, final MathGlyph mg)
             throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
+     *      de.dante.extex.interpreter.type.muskip.Mudimen)
+     */
+    public void add(final Mudimen skip) throws GeneralException {
 
     }
 

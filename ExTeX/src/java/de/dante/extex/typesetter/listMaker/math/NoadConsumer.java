@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.listMaker.math;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.type.MathClass;
@@ -35,7 +36,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface NoadConsumer extends ListMaker {
 
@@ -57,6 +58,15 @@ public interface NoadConsumer extends ListMaker {
      * @throws GeneralException in case of an error
      */
     void add(Muskip glue) throws GeneralException;
+
+    /**
+     * Add some math dimen Noad to the internal list.
+     *
+     * @param skip the length to add
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(Mudimen skip) throws GeneralException;
 
     /**
      * Add an arbitrary Noad to the internal list if it is prepared to hold one.

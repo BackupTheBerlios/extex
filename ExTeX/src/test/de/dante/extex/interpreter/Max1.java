@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
@@ -55,7 +56,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class Max1 extends TestCase {
 
@@ -75,6 +76,14 @@ public class Max1 extends TestCase {
          */
         public void add(final MathClass mclass, final MathGlyph mg)
                 throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
+         *      de.dante.extex.interpreter.type.muskip.Mudimen)
+         */
+        public void add(final Mudimen skip) throws GeneralException {
 
         }
 

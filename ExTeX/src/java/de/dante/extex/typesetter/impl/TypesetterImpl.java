@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
@@ -64,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class TypesetterImpl
         implements
@@ -150,6 +151,19 @@ public class TypesetterImpl
 
         if (listMaker instanceof NoadConsumer) {
             ((NoadConsumer) listMaker).add(mclass, mg);
+        } else {
+            throw new MissingMathException("???");
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
+     *      de.dante.extex.interpreter.type.muskip.Mudimen)
+     */
+    public void add(final Mudimen skip) throws GeneralException {
+
+        if (listMaker instanceof NoadConsumer) {
+            ((NoadConsumer) listMaker).add(skip);
         } else {
             throw new MissingMathException("???");
         }
@@ -481,8 +495,7 @@ public class TypesetterImpl
     }
 
     /**
-     * Notification method to deal the case that a right brace hs been
-     * encountered.
+     * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
     public void rightBrace() throws GeneralException {
 
