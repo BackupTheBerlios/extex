@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface TokenFactory {
 
@@ -43,7 +43,7 @@ public interface TokenFactory {
      *
      * @deprecated use newInstance(Catcode,String,String) instead.
      */
-    Token newInstance(Catcode code, String value) throws CatcodeException;
+    Token createToken(Catcode code, String value) throws CatcodeException;
 
     /**
      * Get an instance of a token with a given Catcode and value.
@@ -57,7 +57,7 @@ public interface TokenFactory {
      *
      * @throws CatcodeException in case of an error
      */
-    Token newInstance(Catcode code, String value, String namespace)
+    Token createToken(Catcode code, String value, String namespace)
             throws CatcodeException;
 
     /**
@@ -72,7 +72,7 @@ public interface TokenFactory {
      *
      * @throws CatcodeException in case of an error
      */
-    Token newInstance(Catcode code, char c, String namespace)
+    Token createToken(Catcode code, char c, String namespace)
         throws CatcodeException;
 
     /**
@@ -88,7 +88,7 @@ public interface TokenFactory {
      *
      * @deprecated use newInstance(Catcode,UnicodeChar,String) instead.
      */
-    Token newInstance(Catcode code, UnicodeChar c) throws CatcodeException;
+    Token createToken(Catcode code, UnicodeChar c) throws CatcodeException;
 
     /**
      * Get an instance of a token with a given Catcode and Unicode character
@@ -103,7 +103,7 @@ public interface TokenFactory {
      *
      * @throws CatcodeException in case of an error
      */
-    Token newInstance(Catcode code, UnicodeChar c, String namespace)
+    Token createToken(Catcode code, UnicodeChar c, String namespace)
             throws CatcodeException;
 
 }

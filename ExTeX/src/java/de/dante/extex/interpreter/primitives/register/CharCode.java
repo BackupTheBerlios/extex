@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CharCode extends AbstractCode implements ExpandableCode, CountConvertible {
 
@@ -82,7 +82,7 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
             throws GeneralException {
 
         Catcode cc = context.getTokenizer().getCatcode(character);
-        Token t = context.getTokenFactory().newInstance(cc, character,
+        Token t = context.getTokenFactory().createToken(cc, character,
                                                         context.getNamespace());
         source.push(t);
     }

@@ -34,6 +34,7 @@ import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.CodeChangeObserver;
@@ -58,7 +59,6 @@ import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.FixedTokens;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
@@ -112,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class ContextImpl
         implements
@@ -211,7 +211,7 @@ public class ContextImpl
     /**
      * The field <tt>namespace</tt> contains the current namespace.
      */
-    private String namespace = "";
+    private String namespace = Namespace.DEFAULT_NAMESPACE;
 
     /**
      * The field <tt>observersInteraction</tt> contains the observer list which

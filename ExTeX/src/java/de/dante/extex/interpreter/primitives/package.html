@@ -19,7 +19,7 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.7 $" />
+  <meta name="version" content="$Revision: 1.8 $" />
  </head>
  <body>
   This package contains classes for the primitives which are mapped to
@@ -64,10 +64,10 @@
    <pre class="JavaSample">
     <b>package</b> my.package;
 
-    <b>import</b> de.dante.extex.interpreter.AbstractCode;
     <b>import</b> de.dante.extex.interpreter.context.Context;
     <b>import</b> de.dante.extex.interpreter.Flags;
     <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.interpreter.type.AbstractCode;
     <b>import</b> de.dante.extex.typesetter.Typesetter;
     <b>import</b> de.dante.util.GeneralException;
  
@@ -78,13 +78,13 @@
         <i>// initialization code -- if required</i>
       }
 
-      <b>public void</b> execute(<b>final</b> Flags prefix,
-                          <b>final</b> Context context,
-                          <b>final</b> TokenSource source,
-                          <b>final</b> Typesetter typesetter
-                         ) <b>throws</b> GeneralException {
+      <b>public boolean</b> execute(<b>final</b> Flags prefix,
+                             <b>final</b> Context context,
+                             <b>final</b> TokenSource source,
+                             <b>final</b> Typesetter typesetter
+                            ) <b>throws</b> GeneralException {
         <i>// implement the execution behaviour here</i>
-        prefix.clear();
+        <b>return</b> <b>true</b>;
       }
     }</pre>
   </p>
@@ -107,13 +107,15 @@
     primitive yourself.
     </p>
    </dd>
-   <dt><tt><b>{@link de.dante.extex.interpreter.context.Context Context}</b> context</tt></dt>
+   <dt><tt><b>{@link de.dante.extex.interpreter.context.Context Context}</b>
+     context</tt></dt>
    <dd>The context provides reading and writing access to the data
     stored in the processor. This information is the memory. It is
     written to file when dumping a format. Refer to the documentation
     of the interface Context for details.
    </dd>
-   <dt><tt><b>{@link de.dante.extex.interpreter.TokenSource TokenSource}</b> source</tt></dt>
+   <dt><tt><b>{@link de.dante.extex.interpreter.TokenSource TokenSource}</b>
+     source</tt></dt>
    <dd>The source provides access to the token stream. It can be used
     to get the next tokens if required. For example when implementing
     a primitive like <tt>\def</tt> it is necessary to read the next
@@ -125,13 +127,21 @@
     implementing expandable primitives.
     </p>
    </dd>
-   <dt><tt><b>{@link de.dante.extex.typesetter.Typesetter Typesetter}</b> typesetter</tt></dt>
+   <dt><tt><b>{@link de.dante.extex.typesetter.Typesetter Typesetter}</b>
+     typesetter</tt></dt>
    <dd>
     The typesetter is the component which collects nodes and finally
     sends them to the document writer. With access to this component
     it is possible to produce some output to the paper.
    </dd>
   </dl>
+
+  <p>
+   The return value indicates how to deal with prefix flags. The usual
+   behaviour is to return <b>true</b>. This indicates that the flags should be
+   cleared afterwards. For those primitives which modify the prefix flags the
+   return value <b>false</b> must be used.
+  </p>
 
   <h4>Registering New Macros</h4>
   <p>
@@ -199,10 +209,10 @@
    <pre class="JavaSample">
     <b>package</b> my.package;
 
-    <b>import</b> de.dante.extex.interpreter.AbstractAssignment;
     <b>import</b> de.dante.extex.interpreter.contect.Context;
     <b>import</b> de.dante.extex.interpreter.Flags;
     <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.interpreter.type.AbstractAssignment;
     <b>import</b> de.dante.extex.typesetter.Typesetter;
     <b>import</b> de.dante.util.GeneralException;
  
@@ -213,11 +223,11 @@
         <i>// initialization code -- if required</i>
       }
 
-      <b>public void</b> execute(<b>final</b> Flags prefix,
-                          <b>final</b> Context context,
-                          <b>final</b> TokenSource source,
-                          <b>final</b> Typesetter typesetter
-                         ) <b>throws</b> GeneralException {
+      <b>public void</b> assign(<b>final</b> Flags prefix,
+                         <b>final</b> Context context,
+                         <b>final</b> TokenSource source,
+                         <b>final</b> Typesetter typesetter
+                        ) <b>throws</b> GeneralException {
         <i>// implement the assignment here</i>
       }
     }</pre>
@@ -225,8 +235,8 @@
   <p>
    The arguments of the method <tt>assign()</tt> are the same as the
    arguments of <tt>execute()</tt> described above. In contrast to the
-   remarks made there it is not necessary to clear the prefix. This is
-   done in the abstract class automatically.
+   remarks made there it is not necessary to return something. The clearing
+   of the flags is done in the abstract class automatically.
   </p>
 
   <h4>Expandable Code</h4>
@@ -244,11 +254,11 @@
    <pre class="JavaSample">
     <b>package</b> my.package;
 
-    <b>import</b> de.dante.extex.interpreter.AbstractCode;
     <b>import</b> de.dante.extex.interpreter.contect.Context;
-    <b>import</b> de.dante.extex.interpreter.ExpandableCode;
     <b>import</b> de.dante.extex.interpreter.Flags;
     <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.interpreter.type.AbstractCode;
+    <b>import</b> de.dante.extex.interpreter.type.ExpandableCode;
     <b>import</b> de.dante.extex.typesetter.Typesetter;
     <b>import</b> de.dante.util.GeneralException;
  
@@ -259,13 +269,13 @@
         <i>// initialization code -- if required</i>
       }
 
-      <b>public void</b> execute(<b>final</b> Flags prefix,
-                          <b>final</b> Context context,
-                          <b>final</b> TokenSource source,
-                          <b>final</b> Typesetter typesetter
-                         ) <b>throws</b> GeneralException {
+      <b>public boolean</b> execute(<b>final</b> Flags prefix,
+                             <b>final</b> Context context,
+                             <b>final</b> TokenSource source,
+                             <b>final</b> Typesetter typesetter
+                            ) <b>throws</b> GeneralException {
         <i>// implement the execution behaviour here</i>
-        prefix.clear();
+        <b>return</b> <b>true</b>;
       }
 
       <b>public void</b> evaluate(<b>final</b> Flags prefix,
@@ -354,7 +364,8 @@
   <table>
    <tr>
     <td><tt>\advance</tt></td>
-    <td>{@link de.dante.extex.interpreter.type.arithmetic.Advanceable Advanceable}</td>
+    <td>{@link de.dante.extex.interpreter.type.arithmetic.Advanceable
+      Advanceable}</td>
    </tr>
    <tr>
     <td><tt>\box</tt></td>
@@ -362,23 +373,28 @@
    </tr>
    <tr>
     <td><tt>\count</tt></td>
-    <td>{@link de.dante.extex.interpreter.type.count.CountConvertible CountConvertible}</td>
+    <td>{@link de.dante.extex.interpreter.type.count.CountConvertible
+      CountConvertible}</td>
    </tr>
    <tr>
     <td><tt>\dimen</tt></td>
-    <td>{@link de.dante.extex.interpreter.type.dimen.DimenConvertible DimenConvertible}</td>
+    <td>{@link de.dante.extex.interpreter.type.dimen.DimenConvertible
+      DimenConvertible}</td>
    </tr>
    <tr>
     <td><tt>\divide</tt></td>
-    <td>{@link de.dante.extex.interpreter.type.arithmetic.Divideable Dividable}</td>
+    <td>{@link de.dante.extex.interpreter.type.arithmetic.Divideable
+      Dividable}</td>
    </tr>
    <tr>
     <td><tt>\font</tt></td>
-    <td>{@link de.dante.extex.interpreter.type.font.FontConvertible FontConvertible}</td>
+    <td>{@link de.dante.extex.interpreter.type.font.FontConvertible
+      FontConvertible}</td>
    </tr>
    <tr>
     <td><tt>\multiply</tt></td>
-    <td>{@link de.dante.extex.interpreter.type.arithmetic.Multiplyable Multiplyable}</td>
+    <td>{@link de.dante.extex.interpreter.type.arithmetic.Multiplyable
+      Multiplyable}</td>
    </tr>
    <tr>
     <td><tt>\show</tt></td>

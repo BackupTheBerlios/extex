@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.ControlSequenceToken;
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -148,8 +149,9 @@ public class Tokens implements Serializable, FixedTokens {
 
             for (int i = 0; i < s.length(); i++) {
                 c = s.charAt(i);
-                tokens.add(factory.newInstance((c == ' ' ? Catcode.SPACE
-                        : Catcode.OTHER), c, ""));
+                tokens.add(factory.createToken((c == ' '
+                        ? Catcode.SPACE
+                        : Catcode.OTHER), c, Namespace.DEFAULT_NAMESPACE));
             }
         }
     }
@@ -222,14 +224,18 @@ public class Tokens implements Serializable, FixedTokens {
         for (int i = 0; i < tokens.size(); i++) {
             t = (Token) (tokens.get(i));
             if (t instanceof ControlSequenceToken) {
-                toks.add(factory.newInstance(Catcode.OTHER, (char) (context
-                        .getCount("escapechar").getValue()), ""));
+                toks.add(factory.createToken(Catcode.OTHER, (char) (context
+                        .getCount("escapechar").getValue()),
+                        Namespace.DEFAULT_NAMESPACE));
                 toks.add(factory, t.toString());
             } else if (t instanceof MacroParamToken) {
-                toks.add(factory.newInstance(Catcode.OTHER, '#', ""));
-                toks.add(factory.newInstance(Catcode.OTHER, t.getChar(), ""));
+                toks.add(factory.createToken(Catcode.OTHER, '#',
+                        Namespace.DEFAULT_NAMESPACE));
+                toks.add(factory.createToken(Catcode.OTHER, t.getChar(),
+                        Namespace.DEFAULT_NAMESPACE));
             } else {
-                toks.add(factory.newInstance(Catcode.OTHER, t.getChar(), ""));
+                toks.add(factory.createToken(Catcode.OTHER, t.getChar(),
+                        Namespace.DEFAULT_NAMESPACE));
             }
         }
     }

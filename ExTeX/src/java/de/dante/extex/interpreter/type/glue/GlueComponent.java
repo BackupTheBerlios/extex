@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
@@ -51,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -180,18 +181,18 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             t = source.getNonSpace();
         }
         if (t != null && !t.equals(Catcode.OTHER, ".")
-            && !t.equals(Catcode.OTHER, ",")) {
+                && !t.equals(Catcode.OTHER, ",")) {
             val = source.scanNumber(t);
             t = source.getToken();
         }
         if (t != null
-            && (t.equals(Catcode.OTHER, ".") || t.equals(Catcode.OTHER, ","))) {
+                && (t.equals(Catcode.OTHER, ".") || t
+                        .equals(Catcode.OTHER, ","))) {
             // @see "TeX -- The Program [102]"
             int[] dig = new int[FLOAT_DIGITS];
             int k = 0;
             for (t = source.getToken(); t != null && t.isa(Catcode.OTHER)
-                                        && t.getValue().matches("[0-9]"); t = source
-                    .getToken()) {
+                    && t.getValue().matches("[0-9]"); t = source.getToken()) {
                 if (k < FLOAT_DIGITS) {
                     dig[k++] = t.getValue().charAt(0) - '0';
                 }
@@ -514,13 +515,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         long val = getValue();
 
         if (val < 0) {
-            toks.add(factory.newInstance(Catcode.OTHER, '-', ""));
+            toks.add(factory.createToken(Catcode.OTHER, '-',
+                    Namespace.DEFAULT_NAMESPACE));
             val = -val;
         }
 
         long v = val / ONE;
         if (v == 0) {
-            toks.add(factory.newInstance(Catcode.OTHER, '0', ""));
+            toks.add(factory.createToken(Catcode.OTHER, '0', ""));
         } else {
             long m = 1;
             while (m <= v) {
@@ -528,14 +530,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             }
             m /= 10;
             while (m > 0) {
-                toks.add(factory.newInstance(Catcode.OTHER,
-                                             (char) ('0' + (v / m)), ""));
+                toks.add(factory.createToken(Catcode.OTHER,
+                        (char) ('0' + (v / m)), ""));
                 v = v % m;
                 m /= 10;
             }
         }
 
-        toks.add(factory.newInstance(Catcode.OTHER, '.', ""));
+        toks.add(factory.createToken(Catcode.OTHER, '.', ""));
 
         val = 10 * (val % ONE) + 5;
         long delta = 10;
@@ -544,19 +546,19 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 val = val + 0100000 - 50000; // round the last digit
             }
             int i = (int) (val / ONE);
-            toks.add(factory.newInstance(Catcode.OTHER, (char) ('0' + i), ""));
+            toks.add(factory.createToken(Catcode.OTHER, (char) ('0' + i), ""));
             val = 10 * (val % ONE);
             delta *= 10;
         } while (val > delta);
 
         if (order == 0) {
-            toks.add(factory.newInstance(Catcode.LETTER, 'p', ""));
-            toks.add(factory.newInstance(Catcode.LETTER, 't', ""));
+            toks.add(factory.createToken(Catcode.LETTER, 'p', ""));
+            toks.add(factory.createToken(Catcode.LETTER, 't', ""));
         } else if (order > 0) {
-            toks.add(factory.newInstance(Catcode.LETTER, 'f', ""));
-            toks.add(factory.newInstance(Catcode.LETTER, 'i', ""));
+            toks.add(factory.createToken(Catcode.LETTER, 'f', ""));
+            toks.add(factory.createToken(Catcode.LETTER, 'i', ""));
             for (int i = order; i > 0; i--) {
-                toks.add(factory.newInstance(Catcode.LETTER, 'l', ""));
+                toks.add(factory.createToken(Catcode.LETTER, 'l', ""));
             }
         } else {
             throw new PanicException("TTP.Confusion");
@@ -642,8 +644,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 if (code instanceof DimenConvertible) {
                     value = value
                             * ((DimenConvertible) code).convertDimen(context,
-                                                                     source)
-                            / ONE;
+                                    source) / ONE;
                 } else {
                     throw new HelpingException("TTP.IllegalUnit");
                 }

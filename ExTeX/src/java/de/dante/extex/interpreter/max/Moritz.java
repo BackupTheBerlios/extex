@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -264,7 +264,7 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = getToken();
 
         if (t == null) {
-            push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
+            push(context.getTokenFactory().createToken(Catcode.ESCAPE,
                     "inaccessible ", context.getNamespace()));
 
             throw new HelpingException("TTP.MissingCtrlSeq");
@@ -275,7 +275,7 @@ public abstract class Moritz implements TokenSource, Observable {
             }
 
         } else {
-            push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
+            push(context.getTokenFactory().createToken(Catcode.ESCAPE,
                     "inaccessible ", context.getNamespace()));
             push(t);
             throw new HelpingException("TTP.MissingCtrlSeq");

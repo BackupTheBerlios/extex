@@ -100,13 +100,13 @@ import de.dante.util.GeneralException;
  *       <i>// initialization code -- if required</i>
  *     }
  *
- *     <b>public void</b> execute(<b>final</b> Flags prefix,
- *                         <b>final</b> Context context,
- *                         <b>final</b> TokenSource source,
- *                         <b>final</b> Typesetter typesetter
- *                        ) {
+ *     <b>public boolean</b> execute(<b>final</b> Flags prefix,
+ *                            <b>final</b> Context context,
+ *                            <b>final</b> TokenSource source,
+ *                            <b>final</b> Typesetter typesetter
+ *                           ) {
  *       <i>// implement the execution behaviour here</i>
- *       prefix.clear();
+ *       <b>return</b> <b>true</b>;
  *     }
  *   } </pre>
  * </p>
@@ -118,7 +118,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class JavaDef extends AbstractCode {
 

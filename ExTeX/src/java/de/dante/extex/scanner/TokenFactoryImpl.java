@@ -22,6 +22,7 @@ package de.dante.extex.scanner;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.interpreter.Namespace;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -50,7 +51,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -60,7 +61,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private final class SSKey {
 
@@ -115,7 +116,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * character (U) and a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private final class USKey {
 
@@ -246,10 +247,10 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     * @see de.dante.extex.scanner.TokenFactory#createToken(
      *      de.dante.extex.scanner.Catcode, char, java.lang.String)
      */
-    public Token newInstance(final Catcode code, final char c,
+    public Token createToken(final Catcode code, final char c,
             final String namespace) throws CatcodeException {
 
         try {
@@ -277,12 +278,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      *
      * @deprecated use newInstance(Catcode,String,String) instead.
      */
-    public Token newInstance(final Catcode code, final String value)
+    public Token createToken(final Catcode code, final String value)
             throws CatcodeException {
 
-        String NAMESPACE = "";
         try {
-            return (Token) code.visit(this, value, null, NAMESPACE);
+            return (Token) code.visit(this, value, null,
+                    Namespace.DEFAULT_NAMESPACE);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -292,12 +293,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     * @see de.dante.extex.scanner.TokenFactory#createToken(
      *      de.dante.extex.scanner.Catcode,
      *      java.lang.String,
      *      java.lang.String)
      */
-    public Token newInstance(final Catcode code, final String value,
+    public Token createToken(final Catcode code, final String value,
             final String namespace) throws CatcodeException {
 
         try {
@@ -311,13 +312,13 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     * @see de.dante.extex.scanner.TokenFactory#createToken(
      *      de.dante.extex.scanner.Catcode,
      *      de.dante.util.UnicodeChar)
      *
      * @deprecated use newInstance(Catcode,UnicodeChar,String) instead.
      */
-    public Token newInstance(final Catcode code, final UnicodeChar c)
+    public Token createToken(final Catcode code, final UnicodeChar c)
             throws CatcodeException {
 
         String namespace = "";
@@ -332,12 +333,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     * @see de.dante.extex.scanner.TokenFactory#createToken(
      *      de.dante.extex.scanner.Catcode,
      *      de.dante.util.UnicodeChar,
      *      java.lang.String)
      */
-    public Token newInstance(final Catcode code, final UnicodeChar c,
+    public Token createToken(final Catcode code, final UnicodeChar c,
             final String namespace) throws CatcodeException {
 
         try {

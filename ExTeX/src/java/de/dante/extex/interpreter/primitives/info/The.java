@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
@@ -75,25 +75,20 @@ public class The extends AbstractCode implements ExpandableCode {
 
         Token cs = source.getToken();
 
-        if (!(cs instanceof ControlSequenceToken)) {
-            throw new HelpingException("TTP.CantUseAfter",
-                    cs.toString(), printableControlSequence(context));
+        if (cs instanceof CodeToken) {
+
+            Code code = context.getCode(cs);
+
+            if (code != null && code instanceof Theable) {
+                Tokens toks = ((Theable) code).the(context, source);
+                source.push(toks);
+                return true;
+            }
         }
 
-        Code code = context.getCode(cs);
+        throw new HelpingException("TTP.CantUseAfter", cs.toString(),
+                printableControlSequence(context));
 
-        if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", cs
-                    .toString());
-        } else if (code instanceof Theable) {
-            Tokens toks = ((Theable) code).the(context, source);
-            source.push(toks);
-        } else {
-            throw new HelpingException("TTP.CantUseAfter",
-                    cs.toString(), printableControlSequence(context));
-        }
-
-        return true;
     }
 
     /**

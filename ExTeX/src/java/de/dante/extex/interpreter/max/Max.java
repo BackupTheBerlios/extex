@@ -26,13 +26,14 @@ import java.util.Iterator;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.i18n.Messages;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
@@ -69,7 +70,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Max extends Moritz
         implements
@@ -90,11 +91,6 @@ public class Max extends Moritz
      * automatically terminated.
      */
     private static final int MAX_ERRORS_DEFAULT = 100;
-
-    /**
-     * The constant <tt>NAMESPACE</tt> contains the default namespace.
-     */
-    private static final String NAMESPACE = "";
 
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
@@ -690,8 +686,8 @@ public class Max extends Moritz
                 Code code = (Code) (Class.forName(classname).getConstructor(
                         new Class[]{String.class})
                         .newInstance(new Object[]{name}));
-                context.setCode(tokenFactory.newInstance(Catcode.ESCAPE, name,
-                        NAMESPACE), code, true);
+                context.setCode(tokenFactory.createToken(Catcode.ESCAPE, name,
+                        Namespace.DEFAULT_NAMESPACE), code, true);
             } catch (IllegalArgumentException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (SecurityException e) {

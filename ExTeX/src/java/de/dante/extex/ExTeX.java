@@ -54,8 +54,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.logging.LogFormatter;
-import de.dante.extex.main.ResourceFinderImpl;
 import de.dante.extex.main.ErrorHandlerFactory;
+import de.dante.extex.main.ResourceFinderImpl;
+import de.dante.extex.main.Version;
 import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
 import de.dante.extex.main.exception.MainException;
@@ -91,11 +92,11 @@ import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
 import de.dante.util.file.OutputFactory;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observer;
-import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.FileFinderConfigImpl;
 import de.dante.util.resource.FileFinderDirect;
 import de.dante.util.resource.FileFinderList;
 import de.dante.util.resource.FileFinderPathImpl;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This is the command line interface to ExTeX. It does all the horrible things
@@ -174,15 +175,6 @@ import de.dante.util.resource.FileFinderPathImpl;
  *    standard output stream and terminates the program afterwards.
  *   </dd>
  * 
- *   <dt><a name="-texmfoutputs"/><tt>-texmfoutputs &lang;dir&rang;</tt></dt>
- *   <dd>
- *    This parameter contains the name of the
- *    property for the fallback if the output directory fails to be writable.
- *   </dd>
- *   <dd>Property:
- *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
- *   </dd>
- * 
  *   <dt><tt>&amp;&lang;format&rang;</tt></dt>
  *   <dt><a name="-fmt"/><tt>-fmt &lang;format&rang;</tt></dt>
  *   <dd>
@@ -191,10 +183,42 @@ import de.dante.util.resource.FileFinderPathImpl;
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.fmt">extex.fmt</a></tt></dd>
  * 
+ *   <dt><a name="-debug"/><tt>-debug &lang;spec&rang;</tt></dt>
+ *   <dd>
+ *    This command line parameter can be used to instruct the program to produce
+ *    debugging output of several kinds. The specification &lang;spec&rang; is
+ *    interpreted left to right. Each character is interpreted according to the
+ *    following table:
+ *    <table>
+ *     <th>
+ *      <td>Spec</td>Description<td></td><td>See</td>
+ *     </th>
+ *     <tr>
+ *      <td><tt>M</tt></td>
+ *      <td>
+ *       This specifier contains the indicator whether or not to trace the
+ *       work of the tokenizer.
+ *      </td>
+ *      <td><tt><a href="#extex.trace.macros">extex.trace.macros</a></tt></td>
+ *     </tr>
+ *     <tr>
+ *      <td><tt>T</tt></td>
+ *      <td>
+ *       This specifier contains the indicator whether or not to trace the
+ *       execution of macros.
+ *      </td>
+ *      <td><tt><a href="#extex.trace.tokenizer">extex.trace.tokenizer</a></tt></td>
+ *     </tr>
+ *    <table>
+ *   </dd>
+ * 
  *   <dt><a name="-halt"/><tt>-halt-on-error</tt></dt>
  *   <dd>
- *    ...
+ *    This parameter contains the indicator whether the processing should
+ *    halt after the first error has been encountered.
  *   </dd>
+ *   <dd>Property:
+ *     <tt><a href="#extex.halt.on.error">extex.halt.on.error</a></tt></dd>
  * 
  *   <dt><a name="-help"/><tt>-help</tt></dt>
  *   <dd>
@@ -243,6 +267,15 @@ import de.dante.util.resource.FileFinderPathImpl;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.output">extex.output</a></tt></dd>
+ * 
+ *   <dt><a name="-texmfoutputs"/><tt>-texmfoutputs &lang;dir&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the
+ *    property for the fallback if the output directory fails to be writable.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
+ *   </dd>
  * 
  *   <dt><a name="-texoutputs"/><tt>-texoutputs &lang;dir&rang;</tt></dt>
  *   <dd>
@@ -350,6 +383,19 @@ import de.dante.util.resource.FileFinderPathImpl;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a> </dd>
+ * 
+ *   <dt><a name="extex.error.handler"/><tt>extex.error.handler</tt></dt>
+ *   <dd>
+ *    This parameter contains the logical name of the error handler.
+ *   </dd>
+ * 
+ *   <dt><a name="extex.halt.on.error"/><tt>extex.halt.on.error</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the property indicating whether the
+ *    processing should stop after the first error.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-halt"><tt>-halt-on-error</tt></a> </dd>
  * 
  *   <dt><a name="extex.file"/><tt>extex.file</tt></dt>
  *   <dd>
@@ -481,13 +527,18 @@ import de.dante.util.resource.FileFinderPathImpl;
  *  There is another level of properties which is considered between the
  *  compiled in defaults and the user's properties. Those are the system
  *  properties of the Java system. There system wide settings can be stored.
- *  Nevertheless, use this feature sparsely.
+ *  Nevertheless, you should use this feature sparsely.
  * </p>
  *
  *
- * <a name="configuration"/><h3>Configuration Files</h3>
+ * <a name="configuration"/><h3>Configuration Resources</h3>
  *
- *
+ * <p>
+ *  The configuration of ExTeX is controlled by several configuration resources.
+ *  The fallback for those configuration resources are contained in the ExTeX
+ *  jar file. In this section we will describe how to overwrite the settings in
+ *  the default configuration resource.
+ * </p>
  * ...
  *
  *
@@ -528,7 +579,7 @@ import de.dante.util.resource.FileFinderPathImpl;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public class ExTeX {
 
@@ -562,7 +613,7 @@ public class ExTeX {
      * The constant <tt>VERSION</tt> contains the manually incremented version
      * string.
      */
-    private static final String EXTEX_VERSION = "0.0";
+    private static final String EXTEX_VERSION = new Version().toString();
 
     /**
      * The field <tt>PROP_CODE</tt> contains the name of the
@@ -590,12 +641,6 @@ public class ExTeX {
     private static final String PROP_ERROR_HANDLER = "extex.error.handler";
 
     /**
-     * The field <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
-     * property for the fallback if the output directory fails to be writable.
-     */
-    private static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
-
-    /**
      * The field <tt>PROP_FILE</tt> contains the name of the property for the
      * input file to read.
      */
@@ -606,6 +651,13 @@ public class ExTeX {
      * name of the format file to use.
      */
     private static final String PROP_FMT = "extex.fmt";
+
+    
+    /**
+     * The field <tt>PROP_HALT_ON_ERROR</tt> contains the name of the property
+     * indicating whether the processing should stop at the first error.
+     */
+    private static final String PROP_HALT_ON_ERROR = "extex.halt.on.error";
 
     /**
      * The field <tt>PROP_INI</tt> contains the name of the property for the
@@ -660,6 +712,12 @@ public class ExTeX {
     private static final String PROP_OUTPUTDIR = "extex.outputdir";
 
     /**
+     * The field <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
+     * property for the fallback if the output directory fails to be writable.
+     */
+    private static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
+
+    /**
      * The field <tt>PROP_POOL</tt> contains the name of the property for the
      * messages resource.
      */
@@ -711,6 +769,42 @@ public class ExTeX {
      * configuration file which contains the specification for the font.
      */
     private static final String TAG_FONT = "Font";
+
+    /**
+     * This is the main method which is invoked to run the whole engine from
+     * the command line. It creates a new ExTeX object and invokes
+     * <tt>{@link #run(java.lang.String[]) run()}</tt> on it.
+     * <p>
+     * The return value is used as the exit status.
+     * </p>
+     * <p>
+     * The properties to be used are taken from the
+     * <tt>{@link java.lang.System#getProperties() System.properties}</tt> and
+     * the user's properties in the file <tt>.extex</tt>. The user properties
+     * are loaded both from the users home directory and the current directory.
+     * Finally the properties can be overwritten on the command line.
+     * </p>
+     *
+     * @param args the list of command line arguments
+     *
+     * @see #ExTeX(java.util.Properties,java.lang.String)
+     */
+    public static void main(final String[] args) {
+
+        int status;
+
+        try {
+            ExTeX extex = new ExTeX(System.getProperties(), DOT_EXTEX);
+            status = extex.run(args);
+        } catch (Throwable e) {
+            System.err.println(Messages.format("ExTeX.SevereError", //
+                    e.toString()));
+            e.printStackTrace();
+            status = EXIT_INTERNAL_ERROR;
+        }
+
+        System.exit(status);
+    }
 
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
@@ -834,290 +928,6 @@ public class ExTeX {
     }
 
     /**
-     * This is the main method which is invoked to run the whole engine from
-     * the command line. It creates a new ExTeX object and invokes
-     * <tt>{@link #run(java.lang.String[]) run()}</tt> on it.
-     * <p>
-     * The return value is used as the exit status.
-     * </p>
-     * <p>
-     * The properties to be used are taken from the
-     * <tt>{@link java.lang.System#getProperties() System.properties}</tt> and
-     * the user's properties in the file <tt>.extex</tt>. The user properties
-     * are loaded both from the users home directory and the current directory.
-     * Finally the properties can be overwritten on the command line.
-     * </p>
-     *
-     * @param args the list of command line arguments
-     *
-     * @see #ExTeX(java.util.Properties,java.lang.String)
-     */
-    public static void main(final String[] args) {
-
-        int status;
-
-        try {
-            ExTeX extex = new ExTeX(System.getProperties(), DOT_EXTEX);
-            status = extex.run(args);
-        } catch (Throwable e) {
-            System.err.println(Messages.format("ExTeX.SevereError", //
-                    e.toString()));
-            e.printStackTrace();
-            status = EXIT_INTERNAL_ERROR;
-        }
-
-        System.exit(status);
-    }
-
-    /**
-     * Getter for logger.
-     *
-     * @return the logger.
-     */
-    public Logger getLogger() {
-
-        return logger;
-    }
-
-    /**
-     * Getter for outStream.
-     *
-     * @return the outStream.
-     */
-    public OutputStream getOutStream() {
-
-        return this.outStream;
-    }
-
-    /**
-     * Run the program with the parameters already stored in the properties.
-     *
-     * @throws MainException in case of an error
-     */
-    public void run() throws MainException {
-
-        final String jobname = determineJobname();
-        final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
-                jobname + ".log").getPath();
-
-        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
-                .booleanValue();
-
-        Handler fileHandler = makeLogFileHandler(logFile);
-
-        try {
-            Configuration config = new ConfigurationFactory()
-                    .newInstance(properties.getProperty(PROP_CONFIG));
-
-            OutputFactory outFactory = new OutputFactory(config
-                    .getConfiguration("Output"), new String[]{
-                    properties.getProperty(PROP_OUTPUTDIR),
-                    properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
-
-            showBanner(config);
-            ResourceFinder finder = makeFileFinder(config
-                    .getConfiguration("File"));
-            TokenStreamFactory tokenStreamFactory //
-            = makeTokenStreamFactory(config.getConfiguration("Scanner"),
-                    finder, null);
-
-            FontFactory fontFactory = makeFontFactory(config
-                    .getConfiguration("Fonts"));
-
-            DocumentWriter docWriter = makeDocumentWriter(config
-                    .getConfiguration("DocumentWriter"), jobname, outFactory);
-
-            Interpreter interpreter = makeInterpreter(config
-                    .getConfiguration("Interpreter"), config
-                    .getConfiguration("Typesetter"), finder,
-                    tokenStreamFactory, docWriter, fontFactory);
-
-            loadFormat(interpreter, properties.getProperty(PROP_FMT), jobname);
-
-            interpreter.run();
-
-            outStream.close();
-
-            int pages = docWriter.getPages();
-            String outname = jobname + "." + docWriter.getExtension();
-            logger.info(Messages.format((pages == 0
-                    ? "ExTeX.NoPages"
-                    : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname,
-                    Integer.toString(pages)));
-        } catch (ConfigurationException e) {
-            logger.throwing(this.getClass().getName(), "run", e);
-            e.printStackTrace();
-            throw new MainConfigurationException(e);
-        } catch (CharacterCodingException e) {
-            logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainCodingException(e);
-        } catch (IOException e) {
-            logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainIOException(e);
-        } catch (GeneralException e) {
-            logger.throwing(this.getClass().getName(), "run", e);
-            throw new MainException(e);
-        } catch (Throwable e) {
-            logInternalError(e);
-        } finally {
-            if (fileHandler != null) {
-                fileHandler.close();
-                logger.removeHandler(fileHandler);
-                // see "TeX -- The Program [1333]"
-                logger.info(Messages.format("ExTeX.Logfile", logFile));
-            }
-        }
-    }
-
-    /**
-     * This class provides access to the whole functionality of ExTeX on the
-     * command line. The exception is that this method does not call
-     * <code>{@link System#exit(int) System.exit()}</code>
-     * but returns the exit status as result.
-     *
-     * @param args the list of command line arguments
-     *
-     * @return the exit status
-     */
-    public int run(final String[] args) {
-
-        boolean onceMore = true;
-        int returnCode = EXIT_OK;
-
-        try {
-
-            for (int i = 0; onceMore && i < args.length; i++) {
-                String arg = args[i];
-
-                if (arg.startsWith("-")) {
-                    if ("-".equals(arg)) {
-                        runWithFile(args, i + 1);
-                        onceMore = false;
-                    } else if ("-configuration".startsWith(arg)) {
-                        useArg(PROP_CONFIG, args, ++i);
-                    } else if ("-copyright".startsWith(arg)) {
-                        int year = calendar.get(Calendar.YEAR);
-                        logger.info(Messages.format("ExTeX.Copyright",
-                                (year <= COPYRIGHT_YEAR ? Integer
-                                        .toString(COPYRIGHT_YEAR) : Integer
-                                        .toString(COPYRIGHT_YEAR)
-                                        + "-" + Integer.toString(year))));
-                        onceMore = false;
-                    } else if ("-help".startsWith(arg)) {
-                        logger.info(Messages.format("ExTeX.Usage", "extex"));
-                        onceMore = false;
-                    } else if ("-fmt".startsWith(arg)) {
-                        useArg(PROP_FMT, args, ++i);
-                    } else if (arg.startsWith("-fmt=")) {
-                        properties.setProperty(PROP_FMT, arg.substring("-fmt="
-                                .length()));
-                    } else if ("-halt-on-error".startsWith(arg)) {
-                        properties.setProperty("halt-on-error", "true");
-                    } else if ("-interaction".startsWith(arg)) {
-                        useArg(PROP_INTERACTION, args, ++i);
-                        applyInteraction();
-                    } else if ("-ini".startsWith(arg)) {
-                        properties.setProperty(PROP_INI, "true");
-                    } else if (arg.startsWith("-interaction=")) {
-                        properties.setProperty(PROP_INTERACTION, arg
-                                .substring("-interaction=".length()));
-                        applyInteraction();
-                    } else if ("-job-name".startsWith(arg)) {
-                        useArg(PROP_JOBNAME_MASTER, args, ++i);
-                    } else if (arg.startsWith("-job-name=")) {
-                        properties.setProperty(PROP_JOBNAME_MASTER, arg
-                                .substring("-job-name=".length()));
-                    } else if ("-language".startsWith(arg)) {
-                        useArg(PROP_LANG, args, ++i);
-                        applyLanguage();
-                    } else if ("-progname".startsWith(arg)) {
-                        useArg(PROP_PROGNAME, args, ++i);
-                    } else if (arg.startsWith("-progname=")) {
-                        properties.setProperty(PROP_PROGNAME, arg
-                                .substring("-progname=".length()));
-                    } else if ("-version".startsWith(arg)) {
-                        logger.info(Messages.format("ExTeX.Version", properties
-                                .getProperty(PROP_PROGNAME), EXTEX_VERSION,
-                                properties.getProperty("java.version")));
-                        onceMore = false;
-                    } else if ("-output".startsWith(arg)) {
-                        useArg(PROP_OUTPUT_TYPE, args, ++i);
-                    } else if ("-texinputs".startsWith(arg) && arg.length() > 4) {
-                        useArg(PROP_TEXINPUTS, args, ++i);
-                    } else if ("-texoutputs".startsWith(arg)
-                            && arg.length() > 4) {
-                        useArg(PROP_OUTPUTDIR, args, ++i);
-                    } else if ("-texmfoutputs".startsWith(arg)
-                            && arg.length() > 4) {
-                        useArg("extex.fallbackOutputdir", args, ++i);
-                    } else if ("-debug".startsWith(arg)) {
-                        useDebug(args, ++i);
-                    } else if ("--".equals(arg)) {
-                        useArg(PROP_CONFIG, args, ++i);
-                    } else if (!loadArgumentFile(arg.substring(1))) {
-                        throw new MainUnknownOptionException(arg);
-                    }
-                } else if (arg.startsWith("&")) {
-                    properties.setProperty(PROP_FMT, arg.substring(1));
-                    runWithFile(args, i + 1);
-                    onceMore = false;
-                } else if (arg.startsWith("\\")) {
-                    runWithArgs(args, i);
-                    onceMore = false;
-                } else if (!arg.equals("")) {
-                    runWithFile(args, i);
-                    onceMore = false;
-                }
-            }
-
-            if (onceMore) {
-                run();
-            }
-        } catch (MainException e) {
-            try {
-                showBanner(null);
-            } catch (MainException e1) {
-                logException(e1.getMessage(), e1);
-            }
-            logException(e.getMessage(), e);
-            returnCode = e.getCode();
-        } catch (Throwable e) {
-            try {
-                showBanner(null);
-            } catch (MainException e1) {
-                logException(e1.getMessage(), e1);
-            }
-            logInternalError(e);
-            logger.info(Messages.format("ExTeX.Logfile", properties
-                    .getProperty(PROP_JOBNAME)));
-
-            returnCode = EXIT_INTERNAL_ERROR;
-        }
-
-        return returnCode;
-    }
-
-    /**
-     * Setter for logger.
-     *
-     * @param aLogger the logger to set.
-     */
-    public void setLogger(final Logger aLogger) {
-
-        this.logger = aLogger;
-    }
-
-    /**
-     * Setter for outStream.
-     *
-     * @param outputStream the outStream to set.
-     */
-    public void setOutStream(final OutputStream outputStream) {
-
-        this.outStream = outputStream;
-    }
-
-    /**
      * Propagate the settings for the interaction mode to the
      * <code>interactionObserver</code>.
      *
@@ -1179,6 +989,26 @@ public class ExTeX {
         }
         jobname = new File(jobname).getName();
         return jobname;
+    }
+
+    /**
+     * Getter for logger.
+     *
+     * @return the logger.
+     */
+    public Logger getLogger() {
+
+        return logger;
+    }
+
+    /**
+     * Getter for outStream.
+     *
+     * @return the outStream.
+     */
+    public OutputStream getOutStream() {
+
+        return this.outStream;
     }
 
     /**
@@ -1618,6 +1448,7 @@ public class ExTeX {
 
     /**
      * Create a TokenStreamFactory.
+     *
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
      * @param options the options for the token stream
@@ -1679,6 +1510,214 @@ public class ExTeX {
     }
 
     /**
+     * Run the program with the parameters already stored in the properties.
+     *
+     * @throws MainException in case of an error
+     */
+    public void run() throws MainException {
+
+        final String jobname = determineJobname();
+        final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
+                jobname + ".log").getPath();
+
+        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
+                .booleanValue();
+
+        Handler fileHandler = makeLogFileHandler(logFile);
+
+        try {
+            Configuration config = new ConfigurationFactory()
+                    .newInstance(properties.getProperty(PROP_CONFIG));
+
+            OutputFactory outFactory = new OutputFactory(config
+                    .getConfiguration("Output"), new String[]{
+                    properties.getProperty(PROP_OUTPUTDIR),
+                    properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
+
+            showBanner(config);
+            ResourceFinder finder = makeFileFinder(config
+                    .getConfiguration("File"));
+            TokenStreamFactory tokenStreamFactory //
+            = makeTokenStreamFactory(config.getConfiguration("Scanner"),
+                    finder, null);
+
+            FontFactory fontFactory = makeFontFactory(config
+                    .getConfiguration("Fonts"));
+
+            DocumentWriter docWriter = makeDocumentWriter(config
+                    .getConfiguration("DocumentWriter"), jobname, outFactory);
+
+            Interpreter interpreter = makeInterpreter(config
+                    .getConfiguration("Interpreter"), config
+                    .getConfiguration("Typesetter"), finder,
+                    tokenStreamFactory, docWriter, fontFactory);
+
+            loadFormat(interpreter, properties.getProperty(PROP_FMT), jobname);
+
+            interpreter.run();
+
+            outStream.close();
+
+            int pages = docWriter.getPages();
+            String outname = jobname + "." + docWriter.getExtension();
+            logger.info(Messages.format((pages == 0
+                    ? "ExTeX.NoPages"
+                    : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname,
+                    Integer.toString(pages)));
+        } catch (ConfigurationException e) {
+            logger.throwing(this.getClass().getName(), "run", e);
+            e.printStackTrace();
+            throw new MainConfigurationException(e);
+        } catch (CharacterCodingException e) {
+            logger.throwing(this.getClass().getName(), "run", e);
+            throw new MainCodingException(e);
+        } catch (IOException e) {
+            logger.throwing(this.getClass().getName(), "run", e);
+            throw new MainIOException(e);
+        } catch (GeneralException e) {
+            logger.throwing(this.getClass().getName(), "run", e);
+            throw new MainException(e);
+        } catch (Throwable e) {
+            logInternalError(e);
+        } finally {
+            if (fileHandler != null) {
+                fileHandler.close();
+                logger.removeHandler(fileHandler);
+                // see "TeX -- The Program [1333]"
+                logger.info(Messages.format("ExTeX.Logfile", logFile));
+            }
+        }
+    }
+
+    /**
+     * This class provides access to the whole functionality of ExTeX on the
+     * command line. The exception is that this method does not call
+     * <code>{@link System#exit(int) System.exit()}</code>
+     * but returns the exit status as result.
+     *
+     * @param args the list of command line arguments
+     *
+     * @return the exit status
+     */
+    public int run(final String[] args) {
+
+        boolean onceMore = true;
+        int returnCode = EXIT_OK;
+
+        try {
+
+            for (int i = 0; onceMore && i < args.length; i++) {
+                String arg = args[i];
+
+                if (arg.startsWith("-")) {
+                    if ("-".equals(arg)) {
+                        runWithFile(args, i + 1);
+                        onceMore = false;
+                    } else if ("-configuration".startsWith(arg)) {
+                        useArg(PROP_CONFIG, args, ++i);
+                    } else if ("-copyright".startsWith(arg)) {
+                        int year = calendar.get(Calendar.YEAR);
+                        logger.info(Messages.format("ExTeX.Copyright",
+                                (year <= COPYRIGHT_YEAR ? Integer
+                                        .toString(COPYRIGHT_YEAR) : Integer
+                                        .toString(COPYRIGHT_YEAR)
+                                        + "-" + Integer.toString(year))));
+                        onceMore = false;
+                    } else if ("-help".startsWith(arg)) {
+                        logger.info(Messages.format("ExTeX.Usage", "extex"));
+                        onceMore = false;
+                    } else if ("-fmt".startsWith(arg)) {
+                        useArg(PROP_FMT, args, ++i);
+                    } else if (arg.startsWith("-fmt=")) {
+                        properties.setProperty(PROP_FMT, arg.substring("-fmt="
+                                .length()));
+                    } else if ("-halt-on-error".startsWith(arg)) {
+                        properties.setProperty(PROP_HALT_ON_ERROR, "true");
+                    } else if ("-interaction".startsWith(arg)) {
+                        useArg(PROP_INTERACTION, args, ++i);
+                        applyInteraction();
+                    } else if ("-ini".startsWith(arg)) {
+                        properties.setProperty(PROP_INI, "true");
+                    } else if (arg.startsWith("-interaction=")) {
+                        properties.setProperty(PROP_INTERACTION, arg
+                                .substring("-interaction=".length()));
+                        applyInteraction();
+                    } else if ("-job-name".startsWith(arg)) {
+                        useArg(PROP_JOBNAME_MASTER, args, ++i);
+                    } else if (arg.startsWith("-job-name=")) {
+                        properties.setProperty(PROP_JOBNAME_MASTER, arg
+                                .substring("-job-name=".length()));
+                    } else if ("-language".startsWith(arg)) {
+                        useArg(PROP_LANG, args, ++i);
+                        applyLanguage();
+                    } else if ("-progname".startsWith(arg)) {
+                        useArg(PROP_PROGNAME, args, ++i);
+                    } else if (arg.startsWith("-progname=")) {
+                        properties.setProperty(PROP_PROGNAME, arg
+                                .substring("-progname=".length()));
+                    } else if ("-version".startsWith(arg)) {
+                        logger.info(Messages.format("ExTeX.Version", properties
+                                .getProperty(PROP_PROGNAME), EXTEX_VERSION,
+                                properties.getProperty("java.version")));
+                        onceMore = false;
+                    } else if ("-output".startsWith(arg)) {
+                        useArg(PROP_OUTPUT_TYPE, args, ++i);
+                    } else if ("-texinputs".startsWith(arg) && arg.length() > 4) {
+                        useArg(PROP_TEXINPUTS, args, ++i);
+                    } else if ("-texoutputs".startsWith(arg)
+                            && arg.length() > 4) {
+                        useArg(PROP_OUTPUTDIR, args, ++i);
+                    } else if ("-texmfoutputs".startsWith(arg)
+                            && arg.length() > 4) {
+                        useArg("extex.fallbackOutputdir", args, ++i);
+                    } else if ("-debug".startsWith(arg)) {
+                        useDebug(args, ++i);
+                    } else if ("--".equals(arg)) {
+                        useArg(PROP_CONFIG, args, ++i);
+                    } else if (!loadArgumentFile(arg.substring(1))) {
+                        throw new MainUnknownOptionException(arg);
+                    }
+                } else if (arg.startsWith("&")) {
+                    properties.setProperty(PROP_FMT, arg.substring(1));
+                    runWithFile(args, i + 1);
+                    onceMore = false;
+                } else if (arg.startsWith("\\")) {
+                    runWithArgs(args, i);
+                    onceMore = false;
+                } else if (!arg.equals("")) {
+                    runWithFile(args, i);
+                    onceMore = false;
+                }
+            }
+
+            if (onceMore) {
+                run();
+            }
+        } catch (MainException e) {
+            try {
+                showBanner(null);
+            } catch (MainException e1) {
+                logException(e1.getMessage(), e1);
+            }
+            logException(e.getMessage(), e);
+            returnCode = e.getCode();
+        } catch (Throwable e) {
+            try {
+                showBanner(null);
+            } catch (MainException e1) {
+                logException(e1.getMessage(), e1);
+            }
+            logInternalError(e);
+            logger.info(Messages.format("ExTeX.Logfile", properties
+                    .getProperty(PROP_JOBNAME)));
+
+            returnCode = EXIT_INTERNAL_ERROR;
+        }
+
+        return returnCode;
+    }
+
+    /**
      * The command line is processed starting at an argument which starts with
      * a backslash. This argument and any following argument are taken as input
      * to the tokenizer.
@@ -1730,6 +1769,26 @@ public class ExTeX {
         properties.setProperty(PROP_FILE, arg[idx]);
 
         runWithArgs(arg, idx + 1);
+    }
+
+    /**
+     * Setter for logger.
+     *
+     * @param aLogger the logger to set.
+     */
+    public void setLogger(final Logger aLogger) {
+
+        this.logger = aLogger;
+    }
+
+    /**
+     * Setter for outStream.
+     *
+     * @param outputStream the outStream to set.
+     */
+    public void setOutStream(final OutputStream outputStream) {
+
+        this.outStream = outputStream;
     }
 
     /**

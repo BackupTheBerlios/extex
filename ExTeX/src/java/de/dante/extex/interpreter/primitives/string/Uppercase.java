@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Uppercase extends AbstractCode {
 
@@ -113,7 +113,7 @@ public class Uppercase extends AbstractCode {
                 if (uc != null && //
                     uc.getCodePoint() != 0 && //
                     !uc.equals(t.getChar())) {
-                    t = factory.newInstance(t.getCatcode(), uc, namespace);
+                    t = factory.createToken(t.getCatcode(), uc, namespace);
                 }
             }
             result[i] = t;

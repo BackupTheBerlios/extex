@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Showthe extends The {
 
@@ -72,25 +72,19 @@ public class Showthe extends The {
 
         Token cs = source.getToken();
 
-        if (!(cs instanceof ControlSequenceToken)) {
-            throw new HelpingException("TTP.CantUseAfter",
-                    cs.toString(), printableControlSequence(context));
+        if (cs instanceof ControlSequenceToken) {
+
+            Code code = context.getCode(cs);
+
+            if (code != null && code instanceof Theable) {
+                Tokens toks = ((Theable) code).the(context, source);
+                source.update("message", toks.toText());
+                return true;
+            }
         }
 
-        Code code = context.getCode(cs);
-
-        if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", cs
-                    .toString());
-        } else if (code instanceof Theable) {
-            Tokens toks = ((Theable) code).the(context, source);
-            source.update("message", toks.toText());
-        } else {
-            throw new HelpingException("TTP.CantUseAfter",
-                    cs.toString(), printableControlSequence(context));
-        }
-
-        return true;
+        throw new HelpingException("TTP.CantUseAfter",
+                cs.toString(), printableControlSequence(context));
     }
 
 }

@@ -28,6 +28,7 @@ import java.io.Reader;
 import java.io.StringReader;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.Catcode;
@@ -51,7 +52,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -62,7 +63,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.22 $
+     * @version $Revision: 1.23 $
      */
     private static final class State {
 
@@ -122,7 +123,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     /**
      * The field <tt>namespace</tt> contains the currently used namespace.
      */
-    private String namespace = "";
+    private String namespace = Namespace.DEFAULT_NAMESPACE;
 
     /**
      * The index in the buffer for the next character to consider. This
@@ -274,7 +275,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        Token t = ((TokenFactory) oFactory).newInstance(Catcode.ACTIVE,
+        Token t = ((TokenFactory) oFactory).createToken(Catcode.ACTIVE,
                 (UnicodeChar) uc, namespace);
         return t;
     }
@@ -301,9 +302,9 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
         Token t = null;
 
         if (state == MID_LINE) {
-            t = factory.newInstance(Catcode.SPACE, ' ', "");
+            t = factory.createToken(Catcode.SPACE, ' ', namespace);
         } else if (state == NEW_LINE) {
-            t = factory.newInstance(Catcode.ESCAPE, "par", namespace);
+            t = factory.createToken(Catcode.ESCAPE, "par", namespace);
         }
 
         endLine();
@@ -322,13 +323,13 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         if (atEndOfLine()) {
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
-            return factory.newInstance(Catcode.ESCAPE, "", namespace);
+            return factory.createToken(Catcode.ESCAPE, "", namespace);
         }
 
         UnicodeChar uc = getChar(tokenizer);
 
         if (uc == null) {
-            return factory.newInstance(Catcode.ESCAPE, "", namespace);
+            return factory.createToken(Catcode.ESCAPE, "", namespace);
 
         } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
             StringBuffer sb = new StringBuffer();
@@ -339,7 +340,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             while (!atEndOfLine() && (uc = getChar(tokenizer)) != null) {
                 if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
                     pointer = savedPointer;
-                    return factory.newInstance(Catcode.ESCAPE, sb.toString(),
+                    return factory.createToken(Catcode.ESCAPE, sb.toString(),
                             namespace);
                 }
                 sb.append((char) (uc.getCodePoint()));
@@ -347,11 +348,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             }
 
             return factory
-                    .newInstance(Catcode.ESCAPE, sb.toString(), namespace);
+                    .createToken(Catcode.ESCAPE, sb.toString(), namespace);
 
         } else {
             state = MID_LINE;
-            return factory.newInstance(Catcode.ESCAPE, uc, namespace);
+            return factory.createToken(Catcode.ESCAPE, uc, namespace);
 
         }
     }
@@ -387,7 +388,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.LEFTBRACE,
+        return ((TokenFactory) oFactory).createToken(Catcode.LEFTBRACE,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -400,7 +401,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.LETTER,
+        return ((TokenFactory) oFactory).createToken(Catcode.LETTER,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -413,7 +414,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM,
+        return ((TokenFactory) oFactory).createToken(Catcode.MACROPARAM,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -426,7 +427,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MATHSHIFT,
+        return ((TokenFactory) oFactory).createToken(Catcode.MATHSHIFT,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -439,7 +440,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.OTHER,
+        return ((TokenFactory) oFactory).createToken(Catcode.OTHER,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -452,7 +453,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE,
+        return ((TokenFactory) oFactory).createToken(Catcode.RIGHTBRACE,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -468,7 +469,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         if (state == MID_LINE) {
             state = SKIP_BLANKS;
-            return factory.newInstance(Catcode.SPACE, ' ', "");
+            return factory.createToken(Catcode.SPACE, ' ',
+                    Namespace.DEFAULT_NAMESPACE);
         }
 
         return null;
@@ -483,7 +485,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.SUBMARK,
+        return ((TokenFactory) oFactory).createToken(Catcode.SUBMARK,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -496,7 +498,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.SUPMARK,
+        return ((TokenFactory) oFactory).createToken(Catcode.SUPMARK,
                 (UnicodeChar) uc, namespace);
     }
 
@@ -509,7 +511,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.TABMARK,
+        return ((TokenFactory) oFactory).createToken(Catcode.TABMARK,
                 (UnicodeChar) uc, namespace);
     }
 

@@ -31,14 +31,14 @@ import de.dante.extex.interpreter.Namespace;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
     /**
      * The field <tt>namespace</tt> contains the namespace for this token.
      */
-    private String namespace = null;
+    private String namespace;
 
     /**
      * Creates a new object.

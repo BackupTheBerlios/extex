@@ -44,7 +44,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -289,7 +289,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        Token t = ((TokenFactory) oFactory).newInstance(Catcode.ACTIVE,
+        Token t = ((TokenFactory) oFactory).createToken(Catcode.ACTIVE,
                 (UnicodeChar) uc);
         return t;
     }
@@ -316,9 +316,9 @@ public abstract class TokenStreamBaseImpl32
         Token t = null;
 
         if (state == MID_LINE) {
-            t = factory.newInstance(Catcode.SPACE, " ");
+            t = factory.createToken(Catcode.SPACE, " ");
         } else if (state == NEW_LINE) {
-            t = factory.newInstance(Catcode.ESCAPE, "par");
+            t = factory.createToken(Catcode.ESCAPE, "par");
         }
 
         endLine();
@@ -337,7 +337,7 @@ public abstract class TokenStreamBaseImpl32
 
         if (uc == null || tokenizer.getCatcode(uc) == Catcode.CR) {
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
-            return factory.newInstance(Catcode.ESCAPE, "");
+            return factory.createToken(Catcode.ESCAPE, "");
         } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
             StringBuffer sb = new StringBuffer();
             sb.append(uc.toString());
@@ -353,10 +353,10 @@ public abstract class TokenStreamBaseImpl32
                 pointer = position;
             }
             state = SKIP_BLANKS;
-            return factory.newInstance(Catcode.ESCAPE, sb.toString());
+            return factory.createToken(Catcode.ESCAPE, sb.toString());
         } else {
             state = MID_LINE;
-            return factory.newInstance(Catcode.ESCAPE, uc.toString());
+            return factory.createToken(Catcode.ESCAPE, uc.toString());
         }
     }
 
@@ -391,7 +391,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.LEFTBRACE,
+        return ((TokenFactory) oFactory).createToken(Catcode.LEFTBRACE,
                 (UnicodeChar) uc);
     }
 
@@ -403,7 +403,7 @@ public abstract class TokenStreamBaseImpl32
             final Object uc) throws GeneralException {
 
         state = MID_LINE;
-        return ((TokenFactory) oFactory).newInstance(Catcode.LETTER,
+        return ((TokenFactory) oFactory).createToken(Catcode.LETTER,
                 (UnicodeChar) uc);
     }
 
@@ -416,7 +416,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM,
+        return ((TokenFactory) oFactory).createToken(Catcode.MACROPARAM,
                 (UnicodeChar) uc);
     }
 
@@ -428,7 +428,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MATHSHIFT,
+        return ((TokenFactory) oFactory).createToken(Catcode.MATHSHIFT,
                 (UnicodeChar) uc);
     }
 
@@ -440,7 +440,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.OTHER,
+        return ((TokenFactory) oFactory).createToken(Catcode.OTHER,
                 getSingleChar());
     }
 
@@ -452,7 +452,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE,
+        return ((TokenFactory) oFactory).createToken(Catcode.RIGHTBRACE,
                 (UnicodeChar) uc);
     }
 
@@ -466,7 +466,7 @@ public abstract class TokenStreamBaseImpl32
 
         if (state == MID_LINE) {
             state = SKIP_BLANKS;
-            return factory.newInstance(Catcode.SPACE, " ");
+            return factory.createToken(Catcode.SPACE, " ");
         }
 
         return null;
@@ -480,7 +480,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.SUBMARK,
+        return ((TokenFactory) oFactory).createToken(Catcode.SUBMARK,
                 (UnicodeChar) uc);
     }
 
@@ -492,7 +492,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.SUPMARK,
+        return ((TokenFactory) oFactory).createToken(Catcode.SUPMARK,
                 (UnicodeChar) uc);
     }
 
@@ -504,7 +504,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.TABMARK,
+        return ((TokenFactory) oFactory).createToken(Catcode.TABMARK,
                 (UnicodeChar) uc);
     }
 

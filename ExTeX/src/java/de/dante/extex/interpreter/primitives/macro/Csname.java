@@ -58,7 +58,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Csname extends AbstractCode implements ExpandableCode,
         CsConvertible {
@@ -123,7 +123,7 @@ public class Csname extends AbstractCode implements ExpandableCode,
             if (t.getValue().equals("csname")) {
                 Tokens toks = scanToEndCsname(context, source);
                 t = context.getTokenFactory()
-                        .newInstance(Catcode.ESCAPE, toks.toString(),
+                        .createToken(Catcode.ESCAPE, toks.toString(),
                                      context.getNamespace());
             }
 
