@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<!--
+  -  Copyright (C) 2003-2004 The ExTeX Group
+  -
+  -  This library is free software; you can redistribute it and/or modify it
+  -  under the terms of the GNU Lesser General Public License as published by
+  -  the Free Software Foundation; either version 2.1 of the License, or (at
+  -  your option) any later version.
+  -
+  -  This library is distributed in the hope that it will be useful, but
+  -  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  -  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+  -  License for more details.
+  -
+  -  You should have received a copy of the GNU Lesser General Public License
+  -  along with this library; if not, write to the Free Software Foundation,
+  -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  -
+  -->
+<primitives>
+  <!-- The following definitions describe the primitives available
+    -  and their association to implementing Java classes.
+    -
+    -  NOTE: Only the tags "define" are used for initializing.
+    -    The tags "Define" are pure comments waiting to be activated!
+    -->
+  <Define name="TeXXeTstate" class=""/>
+  <Define name="beginL" class=""/>
+  <Define name="beginR" class=""/>
+  <Define name="botmarks" class=""/>
+  <Define name="currentgrouplevel" class=""/>
+  <Define name="currentgrouptype" class=""/>
+  <Define name="detokenize" class=""/>
+  <Define name="eTeXrevision" class=""/>
+  <Define name="eTeXversion" class=""/>
+  <Define name="endL" class=""/>
+  <Define name="endR" class=""/>
+  <Define name="everyeof" class=""/>
+  <Define name="firstmarks" class=""/>
+  <Define name="ifcsname" class=""/>
+  <Define name="ifDefined" class=""/>
+  <Define name="interactionmode" class=""/>
+  <Define name="lastnodetype" class=""/>
+  <Define name="marks" class=""/>
+  <Define name="middle" class=""/>
+  <Define name="predisplaydirection" class=""/>
+  <Define name="protected" class=""/>
+  <Define name="readline" class=""/>
+  <Define name="scantokens" class=""/>
+  <Define name="showgroups" class=""/>
+  <Define name="showtokens" class=""/>
+  <Define name="splitbotmarks" class=""/>
+  <Define name="splitfirstmarks" class=""/>
+  <Define name="topmarks" class=""/>
+  <Define name="tracingassigns" class=""/>
+  <Define name="tracingcommands" class=""/>
+  <Define name="tracinggroups" class=""/>
+  <Define name="tracingifs" class=""/>
+  <Define name="tracingscantokens" class=""/>
+  <Define name="unexpanded" class=""/>
+  <Define name="unless" class=""/>
+</primitives>

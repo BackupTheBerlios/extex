@@ -158,6 +158,7 @@
 	</ErrorHandler>
 
     <primitives src="primitives/tex.xml"/>
+    <primitives src="primitives/etex.xml"/>
 
   </Interpreter>
 
