@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 
 import de.dante.util.NotObservableException;
@@ -38,7 +39,7 @@ import de.dante.util.file.FileFinderConfigImpl;
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */
@@ -109,6 +110,10 @@ public class TokenStreamFactory implements FileFinder, Observable {
                                    FileNotFoundException {
         TokenStream stream;
 
+        // MGN String file wird übergeben, aber TokernStreamImpl will
+        // File!
+        File f = new File(file); 
+        
         try {
             stream = (TokenStream) Class.forName(classname)
                                         .getConstructor(new Class[] {
@@ -116,7 +121,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
                                                             String.class
                                                         })
                                         .newInstance(new Object[] {
-                                                         file,
+                                                         f,
                                                          encoding
                                                      });
         } catch (InvocationTargetException e) {
@@ -155,7 +160,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
         try {
             stream = (TokenStream) Class.forName(classname)
                                         .getConstructor(new Class[] {
-                                                            InputStreamReader.class,
+                                                            Reader.class,// MGN change InputStreamReader to Reader
                                                             String.class
                                                         })
                                         .newInstance(new Object[] {

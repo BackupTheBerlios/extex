@@ -33,7 +33,7 @@ import de.dante.util.file.FileFinder;
  * This class implements a default font.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DefaultFont implements Font {
 
@@ -159,4 +159,21 @@ public class DefaultFont implements Font {
 	public String ligature(UnicodeChar c1, UnicodeChar c2) {
 		return null;
 	}
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#externalFileName()
+	 */
+	public String externalFileName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#isExternalFont()
+	 */
+	public boolean isExternalFont() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
