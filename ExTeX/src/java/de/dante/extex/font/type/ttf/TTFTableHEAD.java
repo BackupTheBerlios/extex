@@ -23,6 +23,7 @@ import java.io.IOException;
 
 import org.jdom.Element;
 
+import de.dante.util.FixedPoint;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
@@ -96,7 +97,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableHEAD implements TTFTable, XMLConvertible {
 
@@ -108,7 +109,7 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
     /**
      * font revision
      */
-    private int fontRevision;
+    private FixedPoint fontRevision;
 
     /**
      * checksumadjustment
@@ -197,7 +198,7 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
 
         rar.seek(de.getOffset());
         version = rar.readInt();
-        fontRevision = rar.readInt();
+        fontRevision = new FixedPoint(rar.readInt());
         checkSumAdjustment = rar.readInt();
         magicNumber = rar.readInt();
         flags = rar.readShort();
@@ -255,7 +256,7 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
      * Returns the fontRevision.
      * @return Returns the fontRevision.
      */
-    public int getFontRevision() {
+    public FixedPoint getFontRevision() {
 
         return fontRevision;
     }
@@ -398,9 +399,12 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
         Element table = new Element("table");
         table.setAttribute("name", "head");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
-        table.setAttribute("version", String.valueOf((float)(version >> 0x10)));
-        table.setAttribute("fontrevision", String.valueOf(Float.intBitsToFloat(fontRevision)));
-        table.setAttribute("xxxfontrevision", String.valueOf("0x"+Integer.toHexString(fontRevision)));
+        table.setAttribute("version", String.valueOf(TTFFont
+                .convertVersion(version)));
+        table.setAttribute("fontrevision", String.valueOf(fontRevision
+                .getDoubleValue()));
+        table.setAttribute("xxxfontrevision", String.valueOf("0x"
+                + fontRevision.getFixedPoint()));
         table.setAttribute("checksumadjustment", String
                 .valueOf(checkSumAdjustment));
         table.setAttribute("magicnumber", String.valueOf(magicNumber));

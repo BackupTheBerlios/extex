@@ -38,7 +38,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFFont implements XMLConvertible {
 
@@ -806,21 +806,22 @@ public class TTFFont implements XMLConvertible {
     }
 
     /**
-     * Convert a Fixed value to a float value.
-     * <p>
-     * The Fixed point format consists of a signed,
-     * 2 s complement mantissa and an unsigned fraction.
-     * To compute the actual value, take the mantissa
-     * and add the fraction.
-     * </p>
+     * SHIFT 0x10
+     */
+    private static final int SHIFTX10 = 0x10;
+
+    /**
+     * Convert a Fixed value (Version)
+     *
      * @param value the fixed value
      * @return Returns the float-value
      */
-    //    float convertFixed(final int value) {
-    //        int v1 = value >>0x10;
-    //        int v2 = value & 0x0f;
-    //        return v2 == 0 ? v1 : (float)v1/v2;
-    //    }
+    static float convertVersion(final int value) {
+
+        int v1 = value >> SHIFTX10;
+        return v1;
+    }
+
     /**
      * Returns the info for this class
      * @return Returns the info for this class
