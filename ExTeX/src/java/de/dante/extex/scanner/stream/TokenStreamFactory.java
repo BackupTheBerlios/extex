@@ -39,7 +39,7 @@ import de.dante.util.file.FileFinderConfigImpl;
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */
@@ -101,39 +101,25 @@ public class TokenStreamFactory implements FileFinder, Observable {
 
     /**
      * Provide a new instance of a token stream.
-     *
+     * 
      * @return the new instance
      */
     public TokenStream newInstance(String file, String type, String encoding)
-                            throws ConfigurationException, 
-                                   IOException, 
-                                   FileNotFoundException {
+            throws ConfigurationException, IOException, FileNotFoundException {
         TokenStream stream;
 
-        // MGN String file wird übergeben, aber TokernStreamImpl will
-        // File!
-        File f = new File(file); 
-        
         try {
-            stream = (TokenStream) Class.forName(classname)
-                                        .getConstructor(new Class[] {
-                                                            File.class,
-                                                            String.class
-                                                        })
-                                        .newInstance(new Object[] {
-                                                         f,
-                                                         encoding
-                                                     });
+            stream = (TokenStream) Class.forName(classname).getConstructor(
+                    new Class[]{File.class, String.class}).newInstance(
+                    new Object[]{new File(file), encoding});
         } catch (InvocationTargetException e) {
             Throwable cause = e.getCause();
 
             if (cause == null) {
                 throw new ConfigurationInstantiationException(e);
-            }
-            else if (cause instanceof FileNotFoundException) {
+            } else if (cause instanceof FileNotFoundException) {
                 throw (FileNotFoundException) (e.getCause());
-            }
-            else if (cause instanceof IOException) {
+            } else if (cause instanceof IOException) {
                 throw (IOException) (e.getCause());
             }
 
