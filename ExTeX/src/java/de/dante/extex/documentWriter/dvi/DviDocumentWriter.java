@@ -62,7 +62,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class DviDocumentWriter
         implements
@@ -261,7 +261,8 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitDiscretionary(final DiscretionaryNode node, final Object value)
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                                         final Object value)
                 throws GeneralException {
 
             // TODO unimplemented
@@ -313,9 +314,7 @@ public class DviDocumentWriter
         public Object visitLigature(final LigatureNode node, final Object value)
                 throws GeneralException {
 
-            LigatureNode lnode = (LigatureNode) node;
-
-            visitChar(lnode, value);
+            visitChar(node, value);
 
             return null;
         }
@@ -335,7 +334,7 @@ public class DviDocumentWriter
         public Object visitRule(final RuleNode node, final Object value)
                 throws GeneralException {
 
-            dviWriter.writeNode((RuleNode) node);
+            dviWriter.writeNode(node);
 
             return null;
         }
@@ -364,7 +363,7 @@ public class DviDocumentWriter
         public Object visitWhatsIt(final WhatsItNode nde, final Object value)
                 throws GeneralException {
 
-            dviWriter.writeNode((WhatsItNode) nde);
+            dviWriter.writeNode(nde);
             return null;
         }
 
