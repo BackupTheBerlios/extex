@@ -23,7 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.GeneralException;
@@ -51,12 +54,30 @@ import de.dante.util.GeneralException;
  *  <pre class="TeXSample">
  *    \parshape 0 </pre>
  * </p>
+ *
+ * <h3>\parshape as special register</h3>
+ * <p>
+ * \parshape acts as special register which can be queried. It returns the
+ * size of the current parshape specification or 0 if none is present.
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Parshape extends AbstractCode {
+public class Parshape extends AbstractCode implements CountConvertible, Theable {
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Tokens the(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return new Tokens(context, Long.toString(context.getParshape()
+                .getSize()));
+    }
 
     /**
      * Creates a new object.
@@ -66,6 +87,17 @@ public class Parshape extends AbstractCode {
     public Parshape(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public long convertCount(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return context.getParshape().getSize();
     }
 
     /**
@@ -81,7 +113,7 @@ public class Parshape extends AbstractCode {
 
         long n = source.scanInteger();
         if (n <= 0) {
-            typesetter.setParshape(null);
+            context.setParshape(null);
         } else {
             ParagraphShape parshape = new ParagraphShape();
             while (n >= 0) {
@@ -89,7 +121,7 @@ public class Parshape extends AbstractCode {
                 Dimen right = new Dimen(context, source);
                 parshape.add(left, right);
             }
-            typesetter.setParshape(parshape);
+            context.setParshape(parshape);
         }
         return true;
     }
