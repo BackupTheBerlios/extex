@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -163,9 +163,6 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * <i>|this| = max(|this|, |d|)</i>
      *
      * @param d the other dimen
-     *
-     * @throws NullPointerException in case that the argument is
-     *  <code>null</code>.
      */
     public void max(final FixedDimen d) {
 
