@@ -39,6 +39,8 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -49,7 +51,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -89,6 +91,11 @@ public class TypesetterImpl implements Typesetter, Manager {
     private TypesetterOptions options;
 
     /**
+     * The field <tt>paragraphBuilder</tt> contains the ...
+     */
+    private ParagraphBuilder paragraphBuilder = null;
+
+    /**
      * The field <tt>saveStack</tt> contains the stack of list makers.
      */
     private ArrayList saveStack = new ArrayList();
@@ -106,6 +113,7 @@ public class TypesetterImpl implements Typesetter, Manager {
         this.options = theOptions;
         listMaker = new VerticalListMaker(this);
         ligatureBuilder = new LigatureBuilderImpl(config);//TODO: IoC
+        paragraphBuilder = new ParagraphBuilderImpl(config);//TODO: IoC
     }
 
     /**
@@ -205,6 +213,14 @@ public class TypesetterImpl implements Typesetter, Manager {
 
         return documentWriter;
     }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
+     */
+    public Node getLastNode() {
+
+        return this.listMaker.getLastNode();
+    }
     /**
      * @see de.dante.extex.typesetter.impl.Manager#getLigatureBuilder()
      */
@@ -227,6 +243,14 @@ public class TypesetterImpl implements Typesetter, Manager {
     public TypesetterOptions getOptions() {
 
         return options;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getParagraphBuilder()
+     */
+    public ParagraphBuilder getParagraphBuilder() {
+
+        return paragraphBuilder;
     }
 
     /**
@@ -336,15 +360,5 @@ public class TypesetterImpl implements Typesetter, Manager {
     public void toggleMath() throws GeneralException {
 
         listMaker.toggleMath();
-    }
-
-    /**
-     * ...
-     *
-     * @return ...
-     */
-    public Node getLastNode() {
-
-        return this.listMaker.getLastNode();
     }
 }
