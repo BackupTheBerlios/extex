@@ -37,6 +37,7 @@ import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -47,7 +48,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -64,9 +65,9 @@ public class TypesetterImpl implements Typesetter, Manager {
     private CharNodeFactory charNodeFactory = new CharNodeFactory();
 
     /**
-     * The field <tt>context</tt> contains the context for accessing parameters.
+     * The field <tt>options</tt> contains the context for accessing parameters.
      */
-    private Context context;
+    private TypesetterOptions options;
 
     /**
      * The field <tt>documentWriter</tt> contains the document writer for
@@ -90,12 +91,13 @@ public class TypesetterImpl implements Typesetter, Manager {
      * Creates a new object.
      *
      * @param config the configuration
-     * @param theContext the interpreter context
+     * @param theOptions the interpreter context
      */
-    public TypesetterImpl(final Configuration config, final Context theContext) {
+    public TypesetterImpl(final Configuration config,
+            final TypesetterOptions theOptions) {
 
         super();
-        this.context = theContext;
+        this.options = theOptions;
         listMaker = new VerticalListMaker(this);
     }
 
@@ -190,11 +192,11 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#getContext()
+     * @see de.dante.extex.typesetter.impl.Manager#getOptions()
      */
-    public Context getContext() {
+    public TypesetterOptions getOptions() {
 
-        return context;
+        return options;
     }
 
     /**

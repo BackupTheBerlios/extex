@@ -19,9 +19,9 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
@@ -29,6 +29,7 @@ import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -44,7 +45,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -61,12 +62,13 @@ public class HorizontalListMaker extends AbstractListMaker
     private static final int SPACEFACTOR_THRESHOLD = 2000;
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the node list encapsulated by this
+     * class.
      */
     private HorizontalListNode nodes = new HorizontalListNode();
 
     /**
-     * ...
+     * The field <tt>spacefactor</tt> contains the current space factor.
      *
      * @see "TeX -- The Program [212]"
      */
@@ -156,9 +158,9 @@ public class HorizontalListMaker extends AbstractListMaker
             if (sf == 0) {
                 return;
             } else if (sf >= SPACEFACTOR_THRESHOLD) {
-                Context co = getManager().getContext();
-                Glue xspaceskip = co.getGlue("xspaceskip");
-                Glue spaceskip = co.getGlue("spaceskip");
+                TypesetterOptions options = getManager().getOptions();
+                FixedGlue xspaceskip = options.getGlueOption("xspaceskip");
+                FixedGlue spaceskip = options.getGlueOption("spaceskip");
 
                 if (xspaceskip != null) {
                     space = xspaceskip.copy();

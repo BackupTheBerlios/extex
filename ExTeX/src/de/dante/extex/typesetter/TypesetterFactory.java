@@ -41,7 +41,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TypesetterFactory {
 
@@ -112,7 +112,7 @@ public class TypesetterFactory {
         try {
             Constructor constructor = Class.forName(className)
                     .getConstructor(new Class[]{Configuration.class,
-                                            Context.class});
+                                            TypesetterOptions.class});
             typesetter = (Typesetter) constructor
                     .newInstance(new Object[]{cfg, context});
         } catch (SecurityException e) {
@@ -123,7 +123,7 @@ public class TypesetterFactory {
                                                          + Configuration.class
                                                                  .getName()
                                                          + ", "
-                                                         + Context.class
+                                                         + TypesetterOptions.class
                                                          .getName()
                                                          + ")");
         } catch (ClassNotFoundException e) {

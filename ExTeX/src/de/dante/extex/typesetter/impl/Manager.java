@@ -19,9 +19,9 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.ListMaker;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
 
 /**
@@ -29,52 +29,52 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Manager {
 
     /**
-     * ...
+     * Discart to top of the stack of list makers.
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     void pop() throws GeneralException;
 
     /**
-     * ...
+     * Push a new element to the stack of list makers.
      *
-     * @param listMaker ...
+     * @param listMaker the new element to push
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     void push(ListMaker listMaker) throws GeneralException;
 
     /**
      * ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     void closeTopList() throws GeneralException;
 
     /**
-     * ...
+     * Getter for the char node factory.
      *
-     * @return ...
+     * @return the char node factory
      */
     CharNodeFactory getCharNodeFactory();
 
     /**
-     * ...
+     * Getter for the doument writer.
      *
-     * @return ...
+     * @return the document writer
      */
     DocumentWriter getDocumentWriter();
 
     /**
-     * Getter for the context.
+     * Getter for the options object.
      *
-     * @return ...
+     * @return the options
      */
-    Context getContext();
+    TypesetterOptions getOptions();
 
 }
