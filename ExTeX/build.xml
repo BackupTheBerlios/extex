@@ -6,13 +6,14 @@
         <echo>Usage: ant &lt;target&gt;
           The following targets are supported:
           compile
-              Compile all file except the tests	
+              Compile all file except the tests.	
           jar
-              Create the jar file
+              Create the jar file.
           javadoc
               Create the javadoc documentation in target/javadoc. 
           checkstyle
           tests
+              Perfom all tests.
           deploy
           clean
         </echo>
