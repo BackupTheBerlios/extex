@@ -38,15 +38,15 @@
     -  The following is experimental.
     -->
   <FileFinder>
-    <use class="de.dante.util.file.FileFinderDirectImpl">
+    <use class="de.dante.util.resource.FileFinderDirectImpl">
       <extension></extension>
       <extension>.tex</extension>
     </use>
-    <use class="de.dante.util.file.FileFinderPathImpl" property="texinputs">
+    <use class="de.dante.util.resource.FileFinderPathImpl" property="texinputs">
       <extension></extension>
       <extension>.tex</extension>
     </use>
-    <use class="de.dante.util.file.FileFinderConfigImpl">
+    <use class="de.dante.util.resource.FileFinderConfigImpl">
       <tex>
         <extension></extension>
         <extension>.tex</extension>
@@ -54,7 +54,7 @@
         <path>test/data</path>
       </tex>
     </use>
-    <use class="de.dante.util.file.FileFinderImpl" provideLogger="true">
+    <use class="de.dante.util.resource.FileFinderImpl" provideLogger="true">
       <extension></extension>
       <extension>.tex</extension>
     </use>
@@ -176,7 +176,7 @@
     <define name="closeout" class="de.dante.extex.interpreter.primitives.file.Closeout"/>
     <define name="clubpenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="copy" class="de.dante.extex.interpreter.primitives.register.box.Copy"/>
-    <define name="count" class="de.dante.extex.interpreter.primitives.register.count.NumberedCount"/>
+    <define name="count" class="de.dante.extex.interpreter.primitives.register.count.CountPrimitive"/>
     <define name="countdef" class="de.dante.extex.interpreter.primitives.register.count.Countdef"/>
     <Define name="cr" class=""/>
     <Define name="crcr" class=""/>
@@ -225,7 +225,7 @@
     <define name="everyvbox" class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
     <define name="exhyphenpenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="expandafter" class="de.dante.extex.interpreter.primitives.macro.Expandafter"/>
-    <define name="fam" class="de.dante.extex.interpreter.primitives.register.count.NumberedCount"/>
+    <define name="fam" class="de.dante.extex.interpreter.primitives.register.count.Fam"/>
     <define name="fi" class="de.dante.extex.interpreter.primitives.conditional.Fi"/>
     <define name="finalhyphendemerits" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="firstmark" class=""/>
