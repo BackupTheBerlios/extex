@@ -29,8 +29,10 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * material following it. This delmitier adjusts its height to the height of the
  * following material.
  *
+ * @see "TTP [687]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LeftNoad extends AbstractNoad {
 
@@ -52,6 +54,7 @@ public class LeftNoad extends AbstractNoad {
 
     /**
      *
+     * @see "TTP [762]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,
