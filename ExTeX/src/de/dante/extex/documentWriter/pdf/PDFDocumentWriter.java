@@ -20,25 +20,22 @@
 package de.dante.extex.documentWriter.pdf;
 
 // Java
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Writer;
-import java.io.FileOutputStream;
-import java.awt.Color;
 
-// FOP
-import org.apache.fop.pdf.PDFDocument;
-import org.apache.fop.pdf.PDFStream;
-import org.apache.fop.pdf.PDFResources;
-import org.apache.fop.pdf.PDFAnnotList;
-import org.apache.fop.pdf.PDFPage;
-import org.apache.fop.pdf.PDFColor;
-import org.apache.fop.render.pdf.FontSetup;
-import org.apache.fop.layout.Page;
+import org.apache.fop.apps.FOPException;
 import org.apache.fop.layout.FontInfo;
 import org.apache.fop.layout.FontState;
-import org.apache.fop.apps.FOPException;
+import org.apache.fop.layout.Page;
+import org.apache.fop.pdf.PDFAnnotList;
+import org.apache.fop.pdf.PDFColor;
+import org.apache.fop.pdf.PDFDocument;
+import org.apache.fop.pdf.PDFPage;
+import org.apache.fop.pdf.PDFResources;
+import org.apache.fop.pdf.PDFStream;
+import org.apache.fop.render.pdf.FontSetup;
 
-// ExTeX
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.NodeList;
 
@@ -46,7 +43,7 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */

@@ -3,18 +3,9 @@ package de.dante.extex.documentWriter.pdf;
 
 // FOP
 
-import org.apache.fop.pdf.PDFDocument;
-import org.apache.fop.pdf.PDFStream;
-import org.apache.fop.pdf.PDFResources;
-import org.apache.fop.pdf.PDFAnnotList;
-import org.apache.fop.pdf.PDFPage;
-import org.apache.fop.pdf.PDFColor;
-import org.apache.fop.layout.Page;
-
-// Java
-import java.io.IOException;
-import java.io.FileOutputStream;
 import java.awt.Color;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 // ExTeX
 
@@ -22,7 +13,7 @@ import java.awt.Color;
  * Testprogramm für `fop'.
  * 
  * @author Rolf Niepraschk
- * @version $Revision: 1.1 $ $Date: 2004/02/09 07:47:22 $
+ * @version $Revision: 1.2 $ $Date: 2004/02/11 07:49:18 $
  */
  
 class FopTest2 {
