@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\skewchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SkewcharTest extends ExTeXLauncher {
 
@@ -113,7 +113,7 @@ public class SkewcharTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "-1");
+                "-1\n");
     }
 
     /**
@@ -231,12 +231,12 @@ public class SkewcharTest extends ExTeXLauncher {
      *
      * @throws Exception in case of an error
      */
-    public void testHyphenchar3() throws Exception {
+    public void testSkewchar3() throws Exception {
 
         runCode(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\skewchar\\x =123 \\relax"
-                + "\\count1=\\skewchar\\nullfont"
+                + "\\count1=\\skewchar\\x"
                 + "\\the\\count 1"
                 + "\\end ",
                 //--- log message ---
