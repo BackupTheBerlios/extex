@@ -617,16 +617,10 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  *
- * <a name="installation"/><h3>Installation</h3>
- *
- *
- * ...
- *
- *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class ExTeX {
 
@@ -1459,6 +1453,8 @@ public class ExTeX {
 
         initializeStreams(interpreter);
 
+        //TODO: if weak references are used then the instances have to be kept in some variables:-(
+        
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
         interpreter.registerObserver("log", new LogMessageObserver(logger));
