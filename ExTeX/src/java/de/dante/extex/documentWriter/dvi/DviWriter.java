@@ -46,7 +46,7 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DviWriter {
 
@@ -767,17 +767,12 @@ public class DviWriter {
         Glyph glyph = node.getGlyph();
         int characterNumber;
 
-        // TODO: this is only a workaround (TE)
-        // TODO: perhaps the kerning should do the typesetter (TE)
-        try {
-            if (lastGlyph != null) {
-                FixedDimen kerning = lastGlyph.getKerning(unicodeChar);
-                if (!Dimen.ZERO_PT.eq(kerning)) {
-                    writeHorizontalSpace(kerning);
-                }
+        // TODO: the kerning should do the typesetter (TE)
+        if (lastGlyph != null) {
+            FixedDimen kerning = lastGlyph.getKerning(unicodeChar);
+            if (!Dimen.ZERO_PT.eq(kerning)) {
+                writeHorizontalSpace(kerning);
             }
-        } catch (NullPointerException e) {
-            // no kerning
         }
 
         /* get the chracterNumber */
