@@ -28,17 +28,24 @@ import de.dante.util.GeneralException;
 /**
  * ...
  *
+ * From The TeXbook
+ * <p>
+ *  A kern_node has a width field to specify a (normally negative) amount of
+ *  spacing. This spacing correction appears in horizontal lists between
+ *  letters like A and V when the font designer said that it looks better to
+ *  move them closer together or further apart. A kern node can also appear in
+ *  a vertical list, when its `width' denotes additional spacing in the
+ *  vertical direction.
+ * </p>
+ *
  * @see "TeX -- The Program [155]"
+ * @see de.dante.extex.interpreter.type.node.ImplicitKernNode
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
-
-    /**
-     * The field <tt>kern</tt> contains the width of the kern.
-     */
-    private Dimen theKern = new Dimen(); //TODO: eliminate in favour of width?
 
     /**
      * Creates a new object.
@@ -47,28 +54,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
      */
     public KernNode(final Dimen kern) {
 
-        super();
-        theKern.set(kern);
-        setWidth(theKern); // TODO: is this correct?
-    }
-
-    /**
-     * This method returns the printable representation of this node.
-     * This is meant to produce a short form only as it is used in error
-     * messages to the user.
-     *
-     * @param prefix the prefix string inserted at the beginning of each line
-     *
-     * @return the printable representation of this node
-     *
-     * @see de.dante.extex.interpreter.type.node.AbstractNode#toText(java.lang.String)
-     * @see "TeX -- The Program [191]"
-     */
-    public String toText(final String prefix) {
-
-        StringBuffer sb = new StringBuffer();
-        toText(sb, prefix);
-        return sb.toString();
+        super(kern);
     }
 
     /**
@@ -86,7 +72,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     public void toText(final StringBuffer sb, final String prefix) {
 
         sb.append("kern");
-        theKern.toString(sb);
+        getWidth().toString(sb);
     }
 
     /**
@@ -96,7 +82,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("\\kern ");
-        theKern.toString(sb);
+        getWidth().toString(sb);
     }
 
     /**
