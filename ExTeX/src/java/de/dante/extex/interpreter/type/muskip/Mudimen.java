@@ -26,7 +26,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -35,9 +37,15 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Mudimen implements Serializable {
+
+    /**
+     * The constant <tt>ONE</tt> contains the internal representation for 1mu.
+     * @see "TeX -- The Program [101]"
+     */
+    private static final long ONE = 1 << 16;
 
     /**
      * Scan a math unit.
@@ -55,6 +63,12 @@ public class Mudimen implements Serializable {
         Token t = source.getToken(context);
         if (t == null) {
             throw new EofException("mu");
+        } else if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof MudimenConvertible) {
+                return ((MudimenConvertible) code).convertMudimen(context,
+                        source, null);
+            }
         }
         long value = GlueComponent.scanFloat(context, source, t);
         if (!source.getKeyword(context, "mu")) {
@@ -68,7 +82,7 @@ public class Mudimen implements Serializable {
     /**
      * The field <tt>length</tt> contains the the natural length.
      */
-    private long length;
+    private long value;
 
     /**
      * Creates a new object.
@@ -77,6 +91,7 @@ public class Mudimen implements Serializable {
     public Mudimen() {
 
         super();
+        this.value = 0;
     }
 
     /**
@@ -91,7 +106,7 @@ public class Mudimen implements Serializable {
             throws InterpreterException {
 
         super();
-        this.length = scanMu(context, source);
+        this.value = scanMu(context, source);
     }
 
     /**
@@ -101,7 +116,7 @@ public class Mudimen implements Serializable {
      */
     public long getLength() {
 
-        return this.length;
+        return this.value;
     }
 
     /**
@@ -124,8 +139,60 @@ public class Mudimen implements Serializable {
      */
     public void toString(final StringBuffer sb) {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        toString(sb, 'm', 'u');
+    }
+
+    /**
+     * Determine the printable representation of the object and append it to
+     * the given StringBuffer.
+     *
+     * @param sb the output string buffer
+     * @param c1 the first character for the length of order 0
+     * @param c2 the second character for the length of order 0
+     *
+     * @see #toString(StringBuffer)
+     */
+    public void toString(final StringBuffer sb, final char c1, final char c2) {
+
+        long val = value;
+
+        if (val < 0) {
+            sb.append('-');
+            val = -val;
+        }
+
+        long v = val / ONE;
+        if (v == 0) {
+            sb.append('0');
+        } else {
+            long m = 1;
+            while (m <= v) {
+                m *= 10;
+            }
+            m /= 10;
+            while (m > 0) {
+                sb.append((char) ('0' + (v / m)));
+                v = v % m;
+                m /= 10;
+            }
+        }
+
+        sb.append('.');
+
+        val = 10 * (val % ONE) + 5;
+        long delta = 10;
+        do {
+            if (delta > ONE) {
+                val = val + 0100000 - 50000; // round the last digit
+            }
+            int i = (int) (val / ONE);
+            sb.append((char) ('0' + i));
+            val = 10 * (val % ONE);
+            delta *= 10;
+        } while (val > delta);
+
+        sb.append(c1);
+        sb.append(c2);
     }
 
 }

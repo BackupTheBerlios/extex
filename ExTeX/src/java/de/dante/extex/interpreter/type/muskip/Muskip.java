@@ -26,17 +26,19 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a skip value with a variable length of order 0.
- * The actual length is a multiple of math unints (mu).
+ * The actual length is a multiple of math units (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Muskip implements Serializable {
 
@@ -56,6 +58,15 @@ public class Muskip implements Serializable {
         Token t = source.getToken(context);
         if (t == null) {
             throw new EofException("mu");
+        /*
+        } else if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof MuskipConvertible) {
+                return ((MuskipConvertible) code).convertMuskip(context,
+                        source, null);
+            }
+        }
+        */
         }
         long value = GlueComponent.scanFloat(context, source, t);
         if (!source.getKeyword(context, "mu")) {
