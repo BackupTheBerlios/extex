@@ -1,7 +1,26 @@
 
-The following line should be placed in .Xdefaults to allow netscape to
-use the symbol fonts.
+texdoc is a small utility program to convert the output of making TeX into
+a set of HTML pages. In fact you get something like TeX--The Program in HTML.
 
-Netscape*documentFonts.charset*adobe-fontspecific: iso-8859-1
+Prerquisites:
+
+- tex.tex as produced by tangling or weaving of TeX
+- perl
 
 
+Usage:
+
+- invoke
+        perl texdoc -v <location of tex.tex>
+
+- or
+        make TEXTEX=<location of tex.tex>
+
+- or if you intend to do it more than once you can edit the Makefile and change
+  the definition of TEXTTEX there and invoke
+        make
+
+Result:
+
+You get a bunch of files named TeX_nnn.html. They contain the sections.
+The entry point is TeX.html. Open this file in your favorite Browser.
