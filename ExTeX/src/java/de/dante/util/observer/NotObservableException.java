@@ -16,16 +16,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.util;
+package de.dante.util.observer;
 
 import de.dante.extex.i18n.Messages;
+import de.dante.util.GeneralException;
 
 /**
  * This Exception is thrown when an Observer for a non-observable action is
  * requested to be registered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class NotObservableException extends GeneralException {
     /**
