@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.listMaker.math;
 
 import de.dante.extex.interpreter.TokenSource;
@@ -28,13 +29,12 @@ import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
-
 /**
  * This interface describes list makers which are able to consume a Noad.
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface NoadConsumer {
 
@@ -49,7 +49,7 @@ public interface NoadConsumer {
     void add(Noad noad) throws GeneralException;
 
     /**
-     * Add some math glue Noad to the internal lust.
+     * Add some math glue Noad to the internal list.
      *
      * @param glue the glue to add
      *
@@ -81,12 +81,29 @@ public interface NoadConsumer {
     void add(MathClass mclass, MathGlyph mg) throws GeneralException;
 
     /**
-     * TODO gene: missing JavaDoc
-     * @param leftDelimiter TODO
-     * @param rightDelimiter TODO
-     * @param ruleWidth TODO
+     * This method instructs the implementing class to use a fraction
+     * construction. The math list collected so far is integrated into the
+     * fraction noad.
+     *
+     * @param leftDelimiter the left delimiter or <code>null</code> if none
+     *  should be used.
+     * @param rightDelimiter the right delimiter or <code>null</code> if none
+     *  should be used.
+     * @param ruleWidth th width of the rule or <code>null</code> to indicate
+     *  that the default width should be used
      *
      * @throws GeneralException in case of an error
      */
-    void switchToFraction(MathDelimiter leftDelimiter, MathDelimiter rightDelimiter, Dimen ruleWidth) throws GeneralException;
+    void switchToFraction(MathDelimiter leftDelimiter,
+            MathDelimiter rightDelimiter, Dimen ruleWidth)
+            throws GeneralException;
+
+    /**
+     * Get access to the previous noad.
+     *
+     * @return the previous noad or <code>null</code> if there is none
+     *
+     * @throws GeneralException in case of an error
+     */
+    Noad getLastNoad() throws GeneralException;
 }

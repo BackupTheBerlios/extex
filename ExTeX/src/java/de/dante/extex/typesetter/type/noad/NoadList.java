@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import java.util.List;
  * This class provides a container for a list of Noads.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NoadList {
 
@@ -37,7 +37,7 @@ public class NoadList {
     private List list = new ArrayList();
 
     /**
-     * Creates a new object.
+     * Creates a new object containing no elements.
      *
      */
     public NoadList() {
@@ -77,6 +77,17 @@ public class NoadList {
     public Noad get(final int index) {
 
         return (Noad) list.get(index);
+    }
+
+    /**
+     * Getter for the last noad previously stored.
+     *
+     * @return the last noad or <code>null</code> if none is available
+     */
+    Noad getLastNoad() {
+
+        int i = list.size();
+        return (i > 0 ? (Noad) list.get(i - 1) : null);
     }
 
     /**
