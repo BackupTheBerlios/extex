@@ -52,7 +52,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSource, Observable {
 
@@ -293,6 +293,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 		//TODO TTP[1335]
 	}
 
+	
 	/**
 	 * Add a token stream and start processing it.
 	 * 

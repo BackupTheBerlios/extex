@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -50,7 +50,7 @@ import de.dante.util.configuration.Configuration;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Moritz implements TokenSource, Observable {
 
@@ -253,7 +253,7 @@ public class Moritz implements TokenSource, Observable {
 	 *                 the tokens to push
 	 */
 	public void push(Token[] tokens) {
-		for (int i = tokens.length-1; i >= 0; i--) {
+		for (int i = tokens.length - 1; i >= 0; i--) {
 			observersPush.update(this, tokens[i]);
 			stream.put(tokens[i]);
 		}
@@ -266,7 +266,7 @@ public class Moritz implements TokenSource, Observable {
 	 *                 the tokens to push
 	 */
 	public void push(Tokens tokens) {
-		for (int i = tokens.length()-1; i >= 0; i--) {
+		for (int i = tokens.length() - 1; i >= 0; i--) {
 			observersPush.update(this, tokens.get(i));
 			stream.put(tokens.get(i));
 		}
@@ -625,6 +625,13 @@ public class Moritz implements TokenSource, Observable {
 			}
 		}
 		return toks;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.TokenSource#scanNextTokensAsString()
+	 */
+	public String scanNextTokensAsString() throws GeneralException {
+		return scanNextTokens().toText();
 	}
 
 	/**

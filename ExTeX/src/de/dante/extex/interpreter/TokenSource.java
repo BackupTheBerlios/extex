@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface TokenSource {
 
@@ -69,7 +69,7 @@ public interface TokenSource {
 	 * @see "TeX -- The Program [332]"
 	 */
 	public abstract Token getNextToken() throws GeneralException;
-	
+
 	/**
 	 * Get the next tokens form the input streams between <code>{</code> and
 	 * <code>}</code>. If the current inputstream is at its end then the
@@ -99,6 +99,17 @@ public interface TokenSource {
 	 * @return the next tokens or <code>null</code>
 	 */
 	public abstract Tokens scanNextTokens() throws GeneralException;
+
+	/**
+	 * Get the next expanded token form the input streams between <code>{</code>
+	 * and <code>}</code> an convert it to a <code>String</code>. If the
+	 * current inputstream is at its end then the next one on the streamStack
+	 * is used until a token could be read. If all stream are at the end then
+	 * <code>null</code> is returned.
+	 * 
+	 * @return the next tokens as <code>String</code> or <code>null</code>
+	 */
+	public abstract String scanNextTokensAsString() throws GeneralException;
 
 	/**
 	 * Scan the input stream for tokens making up a number, this is a sequence

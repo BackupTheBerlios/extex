@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Michael Niedermair
+ * Copyright (C) 2004 Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,9 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.type.Tokens;
 import de.dante.util.GeneralException;
 
 /**
@@ -33,7 +31,7 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InputFile extends Input {
 
@@ -59,12 +57,6 @@ public class InputFile extends Input {
 	 *                 in case of an error
 	 */
 	protected String scanFileName(TokenSource source) throws GeneralException {
-
-		Tokens toks = source.scanNextTokens();
-		
-		if (toks.length() == 0l) {
-			throw new GeneralHelpingException("EOF"); //TODO
-		}
-		return toks.toText();
+		return source.scanNextTokensAsString();
 	}
 }

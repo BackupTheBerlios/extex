@@ -18,7 +18,6 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -28,19 +27,19 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
- * It sets the named toks register to the value given, and as a side effect all
- * prefixes are zeroed.
+ * It sets the numbered toks register to the value given, and as a side effect
+ * all prefixes are zeroed.
  * 
  * Example
  * 
  * <pre>
- *  \encoding{UTF-8}
+ *  \toks12{123}
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class NamedToks extends AbstractCode {
+public class NumberedToks extends NamedToks {
 
 	/**
 	 * Creates a new object.
@@ -48,7 +47,7 @@ public class NamedToks extends AbstractCode {
 	 * @param name
 	 *                 the name for debugging
 	 */
-	public NamedToks(String name) {
+	public NumberedToks(String name) {
 		super(name);
 	}
 
@@ -58,7 +57,8 @@ public class NamedToks extends AbstractCode {
 	 * @see de.dante.extex.interpreter.Code#getThe(de.dante.extex.interpreter.context.Context)
 	 */
 	public Tokens getThe(Context context, TokenSource source) throws GeneralException {
-		return context.getToks(getName());
+		String key = getName() + "#" + Long.toString(source.scanNumber());
+		return context.getToks(key);
 	}
 
 	/**
@@ -68,54 +68,7 @@ public class NamedToks extends AbstractCode {
 	 *         de.dante.extex.typesetter.Typesetter)
 	 */
 	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		expand(prefix, context, source, getName());
-	}
-
-	/**
-	 * Set the value for the register
-	 * 
-	 * @param context
-	 *                 the interpreter context
-	 * @param toks
-	 *                 the value for the tokens
-	 */
-	public void set(Context context, Tokens toks) {
-		context.setToks(getName(), toks);
-	}
-
-	/**
-	 * Set the value for the register...
-	 * 
-	 * @param context
-	 *                 the interpreter context
-	 * @param value
-	 *                 the value for the tokens
-	 */
-	public void set(Context context, String value) throws GeneralException {
-		context.setToks(getName(), new Tokens(context, value));
-	}
-
-	/**
-	 * Expand
-	 * <p>
-	 * Scan the tokens between <code>{</code> and <code>}</code> and store
-	 * it.
-	 * 
-	 * @param prefix
-	 *                 the prefix flags
-	 * @param context
-	 *                 the interpreter context
-	 * @param source
-	 *                 the tokensource
-	 * @param key
-	 *                 the key
-	 * 
-	 * @throws GeneralException
-	 *                 ...
-	 */
-	protected void expand(Flags prefix, Context context, TokenSource source, String key) throws GeneralException {
-		Tokens toks = source.getNextTokens();
-		context.setToks(key, toks, prefix.isGlobal());
-		prefix.clear();
+		String key = getName() + "#" + Long.toString(source.scanNumber());
+		super.expand(prefix, context, source, key);
 	}
 }

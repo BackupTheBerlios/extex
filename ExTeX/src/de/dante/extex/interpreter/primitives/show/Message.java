@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\message</code>.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Message extends AbstractCode {
 
@@ -56,7 +56,7 @@ public class Message extends AbstractCode {
 	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
 		
 		Tokens toks = source.scanNextTokens();
-		System.err.println("MESSAGE " + toks); 
+		System.err.println("\nMESSAGE " + toks.toText()); 
 		// TODO Ausgabe in LOG fehlt  noch und expand
 		prefix.clear();
 	}

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,33 +21,28 @@ package de.dante.extex.interpreter.primitives.file;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.SpaceToken;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * This class provides an implementation for the primitive <code>\input</code>.
- * It use the standardencoding (see <code>\inputencoding</code> and <code>extex.encoding</code>.
+ * This class provides an implementation for the primitive <code>\inputfileencoding</code>.
+ * The filename can have space in his name.
  * 
  * Example:
  * 
  * <pre>
- *  \input file.name
+ *  \inputfileencoding{encoding}{file.name}
  * </pre>
  * 
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class Input extends AbstractCode {
+public class InputFileEncoding extends InputFile {
 
 	/**
 	 * Creates a new object.
@@ -55,7 +50,7 @@ public class Input extends AbstractCode {
 	 * @param name
 	 *                 the name for debugging
 	 */
-	public Input(String name) {
+	public InputFileEncoding(String name) {
 		super(name);
 	}
 
@@ -66,9 +61,10 @@ public class Input extends AbstractCode {
 	 *         de.dante.extex.typesetter.Typesetter)
 	 */
 	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+
+		String encoding = source.scanNextTokensAsString();
 		String name = scanFileName(source);
 		TokenStreamFactory factory = source.getTokenStreamFactory();
-		String encoding = getEncoding(context);
 
 		try {
 			source.addStream(factory.newInstance(factory.findFile(name, "tex"), encoding));
@@ -80,56 +76,5 @@ public class Input extends AbstractCode {
 			throw new GeneralException(e);
 		}
 		prefix.clear();
-	}
-
-	/**
-	 * Return the encoding for the inputfile
-	 * <p>
-	 * First of all, <code>\inputencoding</code> is use, if there is no
-	 * value, then the property <code>extex.encoding</code> is use or <code>ISO8859-1</code>,
-	 * if no entry exists.
-	 * 
-	 * @param context
-	 *                 the context
-	 * @return the encoding for the inputfile
-	 */
-	protected String getEncoding(Context context) {
-		String encoding = context.getToks("inputencoding").toText().trim();
-		if (encoding.length() == 0) {
-			String enc = System.getProperty("extex.encoding");
-			if (enc != null) {
-				encoding = enc;
-			} else {
-				encoding = "ISO8859-1";
-			}
-		}
-		return encoding;
-	}
-
-	/**
-	 * scan the filename until a <code>SpaceToken</code>.
-	 * 
-	 * @param source
-	 *                 the source for new tokens
-	 * 
-	 * @return the file name as string
-	 * 
-	 * @throws GeneralException
-	 *                 in case of an error
-	 */
-	protected String scanFileName(TokenSource source) throws GeneralException {
-		Token t = source.scanNextNonSpace();
-
-		if (t == null) {
-			throw new GeneralHelpingException("EOF"); //TODO
-		}
-
-		StringBuffer sb = new StringBuffer(t.getValue());
-
-		for (t = source.scanNextToken(); t != null && !(t instanceof SpaceToken); t = source.scanNextToken()) {
-			sb.append(t.getValue());
-		}
-
-		return sb.toString();
 	}
 }

@@ -1,5 +1,5 @@
 %
-% @version $Revision: 1.2 $ $Date: 2004/01/02 08:23:54 $
+% @version $Revision: 1.3 $ $Date: 2004/01/02 09:27:54 $
 %
 % Test für input etc.
 %
@@ -10,39 +10,8 @@
 \inputencoding{UTF-8}
 \the\inputencoding
 
-%\endinput
-
 %\input testdata/testinputold
 
 %\inputfile{testdata/testinputnew}
-
-%\inputfile{test.reg.dot.tex}
-
-%\inputenc{UTF-8}
-%\inputenc{ISO-8859-1}
-
-%\message{xxxxxxxxxxxxxxxxxxxxxxxxxxxx}
-%\the\inputenc
-
-%%\inputfile{oho.tmp}% oho.tmp.tex wird geladen
-%% jetzt wird oho.tmp erzeugt!
-%%\inputfile{oho.tmp}% oho.tmp.tex wird geladen
-%% jetzt wird oho.tmp.tex gelöscht!
-%%\inputfile{oho.tmp}% oho.tmp wird geladen
-%%\inputfile{oho.tmp.tex}% Fehler wird geworfen
-
-%\endinput
-
-%\message{**************************************}
-%\input testreg
-
-%\message{**************************************}
-%\inputfile{testreg.tex}
-
-%\message{**** encoding ************************}
-%\inputfileencoding{testreg.tex}{ISO-8859-1}
-
-%\endinput \message{*** Text nach endinput ***}
-%\message{****** Diese Zeile dürfte nicht mehr kommen! *****************}
-
-
+\message{***********}
+\inputfileencoding{ISO8859-1}{testdata/testinputnew}

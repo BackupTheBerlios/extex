@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.main.MainIOException;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeVisitor;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -44,7 +45,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements TokenStream, CatcodeVisitor {
 
@@ -140,8 +141,11 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements TokenS
 
 			t = (Token) tokenizer.getCatcode(buffer.get(pointer)).visit(this, factory, tokenizer);
 			if (t != null) {
-				System.err.println("tok : " + t); // MGN wieder
-				// raus!!!
+				if (t instanceof ControlSequenceToken) {
+					System.err.println();
+				}
+				System.err.print(t); 
+				// MGN wieder raus!!!
 			}
 		} while (t == null);
 

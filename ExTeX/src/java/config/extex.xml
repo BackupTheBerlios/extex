@@ -158,6 +158,7 @@
     <Define name="indent" class=""/>
     <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
     <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>
+    <define name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding"/>
     <Define name="inputlineno" class=""/>
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>
@@ -301,7 +302,7 @@
     <Define name="thickmuskip" class=""/>
     <Define name="thinmuskip" class=""/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="toks" class=""/>
+    <define name="toks" class="de.dante.extex.interpreter.primitives.register.NumberedToks"/>
     <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks">ISO8859-1</define>
     <Define name="toksdef" class=""/>
     <define name="tolerance" class="de.dante.extex.interpreter.primitives.register.NamedCount">10000</define>

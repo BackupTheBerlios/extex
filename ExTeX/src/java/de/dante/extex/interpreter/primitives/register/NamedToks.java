@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Michael Niedermair
+ * Copyright (C) 2004 Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedToks extends AbstractCode {
 
