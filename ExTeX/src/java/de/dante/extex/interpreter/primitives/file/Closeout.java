@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Closeout extends AbstractCode {
 
@@ -84,9 +84,7 @@ public class Closeout extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long no = source.scanInteger();
-        String key = Long.toString(no);
-        FileKeyValidator.validateOutFile(no, key);
+        String key = AbstractFileCode.scanOutFileKey(source);
 
         if (prefix.isImmediate()) {
             OutFile file = context.getOutFile(key);

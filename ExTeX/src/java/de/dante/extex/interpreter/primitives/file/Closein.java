@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Closein extends AbstractCode {
 
@@ -82,11 +82,9 @@ public class Closein extends AbstractCode {
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
 
-        long no = source.scanInteger();
-        String key = Long.toString(no);
-        FileKeyValidator.validateInFile(no, key);
-
+        String key = AbstractFileCode.scanInFileKey(source);
         InFile file = context.getInFile(key);
+
         if (file != null) {
             file.close();
         }

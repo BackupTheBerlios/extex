@@ -34,15 +34,9 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class InFile implements Serializable {
-
-    /**
-     * The constant <tt>MAX_FILE_NO</tt> contains the maximum number of input
-     * files.
-     */
-    public static final int MAX_FILE_NO = 15;
 
     /**
      * The field <tt>file</tt> contains name of the underlying file.

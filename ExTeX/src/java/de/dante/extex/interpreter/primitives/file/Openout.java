@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -71,9 +71,7 @@ public class Openout extends AbstractFileCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long no = source.scanInteger();
-        String key = Long.toString(no);
-        FileKeyValidator.validateOutFile(no, key);
+        String key = AbstractFileCode.scanOutFileKey(source);
 
         source.getOptionalEquals();
         String name = scanFileName(source, context);

@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Read extends AbstractCode {
 
@@ -74,9 +74,7 @@ public class Read extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long no = source.scanInteger();
-        String key = Long.toString(no);
-        FileKeyValidator.validateInFile(no, key);
+        String key = AbstractFileCode.scanInFileKey(source);
 
         if (!source.getKeyword("to")) {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForRead");

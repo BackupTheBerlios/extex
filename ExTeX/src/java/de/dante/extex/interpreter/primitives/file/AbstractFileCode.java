@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
+import de.dante.extex.i18n.BadFileNumberHelpingException;
 import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -36,11 +37,72 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
             Configurable {
+
+    /**
+     * The constant <tt>MAX_OUT_FILE_NO</tt> contains the maximum number of
+     * input files.
+     */
+    public static final int MAX_IN_FILE_NO = 15;
+
+    /**
+     * The constant <tt>MAX_OUT_FILE_NO</tt> contains the maximal number of
+     * output files.
+     */
+    public static final int MAX_OUT_FILE_NO = 15;
+
+    /**
+     * ...
+     *
+     * @param source the token source to read from
+     *
+     * @return the key read
+     *
+     * @throws GeneralException in case of a failure
+     */
+    public static String scanInFileKey(final TokenSource source)
+            throws GeneralException {
+
+        long no = source.scanInteger();
+        String key = Long.toString(no);
+
+        if (no < 0 || no > MAX_IN_FILE_NO) {
+            throw new BadFileNumberHelpingException(key, //
+                    "0", Integer.toString(MAX_IN_FILE_NO));
+        }
+
+        return key;
+    }
+
+    /**
+     * ...
+     *
+     * @param source the token source to read from
+     *
+     * @return the key read
+     *
+     * @throws GeneralException in case of a failure
+     */
+    public static String scanOutFileKey(final TokenSource source)
+            throws GeneralException {
+
+        long no = source.scanInteger();
+        if (no < 0) {
+            return "";
+        }
+        String key = Long.toString(no);
+
+        if (no < 0 || no > MAX_OUT_FILE_NO) {
+            throw new BadFileNumberHelpingException(key, //
+                    "0", Integer.toString(MAX_OUT_FILE_NO));
+        }
+
+        return key;
+    }
 
     /**
      * The field <tt>strictTeX</tt> contains the boolean indicating whether or

@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Write extends AbstractCode {
 
@@ -70,13 +70,11 @@ public class Write extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long no = source.scanInteger();
-        String key = Long.toString(no);
-        FileKeyValidator.validateOutFile(no, key);
+        String key = AbstractFileCode.scanOutFileKey(source);
 
         if (prefix.isImmediate()) {
             Tokens toks = source.scanTokens();
-            writeImmediate(no, toks, context, source);
+            writeImmediate(key, toks, context, source);
         } else {
             Tokens toks = source.getTokens();
             typesetter.add(new WhatsItWriteNode(key, toks));
@@ -88,23 +86,23 @@ public class Write extends AbstractCode {
     /**
      * Immediately write some tokens to a write register.
      *
-     * @param no the number of the write register
+     * @param key the number of the write register
      * @param toks the tokens to write
      * @param context the processing context
      * @param source the source for new tokens
      *
      * @throws GeneralException in case of an error
      */
-    private void writeImmediate(final long no, final Tokens toks,
+    private void writeImmediate(final String key, final Tokens toks,
             final Context context, final TokenSource source)
             throws GeneralException {
 
-        if (no < 0) {
+        if (key == null || key.equals("")) {
             source.update("message", toks.toText());
             return;
         }
 
-        OutFile file = context.getOutFile(Long.toString(no));
+        OutFile file = context.getOutFile(key);
 
         if (file == null || !file.isOpen()) {
             source.update("message", toks.toText());
