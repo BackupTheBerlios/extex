@@ -50,7 +50,7 @@ import de.dante.extex.interpreter.type.Code;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Ifdefined extends AbstractIf {
 
@@ -75,11 +75,11 @@ public class Ifdefined extends AbstractIf {
             throws GeneralException {
 
 
-        Token token = source.getToken();
+        Token token = source.getControlSequence(context);
         Code code = context.getCode(token);
 
         // TODO: is this correct? (TE)
-        return code == null;
+        return code != null;
     }
 
 }
