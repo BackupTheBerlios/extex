@@ -9,3 +9,4 @@ mgn
 *.log
 *.lck
 texput.out
+.xvpics

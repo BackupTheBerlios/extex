@@ -21,6 +21,7 @@ package de.dante.extex.interpreter;
 import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
@@ -42,7 +43,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Max1 extends TestCase {
 
@@ -115,7 +116,7 @@ public class Max1 extends TestCase {
 
         // TODO FileFinder 
         Interpreter interpreter = new InterpreterFactory(config
-                .getConfiguration("Interpreter")).newInstance();
+                .getConfiguration("Interpreter"),null).newInstance();
         TokenStreamFactory factory = new TokenStreamFactory(config
                 .getConfiguration("Reader"));
         interpreter.setTokenStreamFactory(factory);
@@ -250,6 +251,11 @@ public class Max1 extends TestCase {
         public void setPrevDepth(Dimen pd) throws GeneralException {
         }
 
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.NodeList)
+         */
+        public void shipout(Box nodes) throws GeneralException {
+        }
     }
 
 }

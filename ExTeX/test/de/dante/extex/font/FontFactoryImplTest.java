@@ -5,8 +5,6 @@
  */
 package de.dante.extex.font;
 
-import de.dante.extex.interpreter.type.Font;
-import de.dante.util.GeneralException;
 
 /**
  * Test for FontFactory
