@@ -33,7 +33,6 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.impl.Align;
 import de.dante.extex.typesetter.impl.HAlignListMaker;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
@@ -60,7 +59,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -122,12 +121,12 @@ public class Halign extends AbstractAlign implements Boxable {
      * @return the list of nodes gathered
      *
      * @throws GeneralException in case of an error
-     * @throws EofHelpingException ...
-     * @throws MissingLeftBraceHelpingException ...
+     * @throws EofHelpingException in case that an enof of file has occurred
+     * @throws MissingLeftBraceHelpingException in case that the mandatory left
+     *  brace was missing
      */
     private NodeList getNodes(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws GeneralException {
+            final Typesetter typesetter) throws GeneralException {
 
         Dimen width = null;
 
@@ -140,7 +139,7 @@ public class Halign extends AbstractAlign implements Boxable {
         } else if (t.isa(Catcode.LEFTBRACE)) {
             List preamble = getPreamble(context, source);
             typesetter.push(new HAlignListMaker(typesetter.getManager(),
-                    new Align(preamble, width)));
+                    preamble, width));
         } else {
             throw new MissingLeftBraceHelpingException(
                     printableControlSequence(context));
