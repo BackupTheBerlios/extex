@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * <code>\aftergroup</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Aftergroup extends AbstractCode {
 
@@ -46,7 +46,10 @@ public class Aftergroup extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *       de.dante.extex.interpreter.context.Context,
+     *       de.dante.extex.interpreter.TokenSource,
+     *       de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -166,7 +166,7 @@ public class Dimen extends GlueComponent implements Serializable {
      *
      * @param d ...
      *
-     * @return ...
+     * @return <code>true</code> iff <i>|this| &lt; |d|</i>
      */
     public boolean lt(final Dimen d) {
         return (getValue() < d.getValue());
@@ -177,7 +177,7 @@ public class Dimen extends GlueComponent implements Serializable {
      *
      * @param d ...
      *
-     * @return ...
+     * @return <code>true</code> iff <i>|this| &lt;= |d|</i>
      */
     public boolean le(final Dimen d) {
         return (getValue() <= d.getValue());
@@ -185,10 +185,9 @@ public class Dimen extends GlueComponent implements Serializable {
 
     /**
      * ...
+     * <i>|this| = max(|this|, |d|)</i>
      *
      * @param d ...
-     *
-     * @return ...
      */
     public void max(final Dimen d) {
 
@@ -261,7 +260,7 @@ public class Dimen extends GlueComponent implements Serializable {
         long delta = 10;
         do {
             if (delta > ONE) {
-                val = val + 100000 - 50000; // round the last digit
+                val = val + 0100000 - 50000; // round the last digit
             }
             int i = (int) (val / ONE);
             toks.add(factory.newInstance(Catcode.OTHER, (char) ('0' + i)));

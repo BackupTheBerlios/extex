@@ -24,7 +24,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RelaxTest extends ExTeXLauncher {
 
@@ -39,6 +39,7 @@ public class RelaxTest extends ExTeXLauncher {
 
     /**
      * Test case checking that a pure \relax has no effect.
+     * @throws Exception in case of an error
      */
     public void test1() throws Exception {
         runCode("\\relax",
@@ -48,6 +49,7 @@ public class RelaxTest extends ExTeXLauncher {
 
     /**
      * Test case checking that a whitespace after a \relax is ignored.
+     * @throws Exception in case of an error
      */
     public void test2() throws Exception {
         runCode("\\relax ",
@@ -57,6 +59,7 @@ public class RelaxTest extends ExTeXLauncher {
 
     /**
      * Test case checking that more whitespace after a \relax is ignored.
+     * @throws Exception in case of an error
      */
     public void test4() throws Exception {
         runCode("\\relax         ",
@@ -66,6 +69,7 @@ public class RelaxTest extends ExTeXLauncher {
 
     /**
      * Test case checking that a comment after a \relax is ignored.
+     * @throws Exception in case of an error
      */
     public void test5() throws Exception {
         runCode("\\relax %1234 ",
@@ -76,6 +80,7 @@ public class RelaxTest extends ExTeXLauncher {
     /**
      * Test case checking that a pure \relax has no effect in the
      * middle of a word.
+     * @throws Exception in case of an error
      */
     public void test10() throws Exception {
         runCode("abc\\relax def",
