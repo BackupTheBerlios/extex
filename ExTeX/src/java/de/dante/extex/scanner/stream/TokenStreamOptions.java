@@ -18,43 +18,35 @@
  */
 package de.dante.extex.scanner.stream;
 
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.extex.i18n.Messages;
+import de.dante.extex.interpreter.type.count.FixedCount;
+import de.dante.extex.interpreter.type.tokens.FixedTokens;
+
 
 /**
- * This Exception is thrown when no file finder has been provided before it is
- * needed.
+ * This interface describes the possibilities of a token stream to access its
+ * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MissingFileFinderException extends ConfigurationException {
+public interface TokenStreamOptions {
 
     /**
-     * The field <tt>message</tt> contains the message of this exception.
-     */
-    private String message;
-
-    /**
-     * Create a new object.
+     * Getter for a count register.
      *
-     * @param aMessage the message string
+     * @param name the name of the register
+     *
+     * @return the content of the count register
      */
-    public MissingFileFinderException(final String aMessage) {
-        super(aMessage, (String) null);
-        this.message = aMessage;
-    }
+    FixedCount getCountOption(String name);
 
     /**
-     * Getter for the text prefix of this ConfigException.
+     * Getter for a toks register.
      *
-     * @return the text
+     * @param name the name of the register
+     *
+     * @return the content of the toks register
      */
-    public String getMessage() {
-
-        return Messages
-                .format("ConfigurationMissingFileFinderException.Text",
-                        message);
-    }
+    FixedTokens getToksOption(String name);
 
 }

@@ -19,8 +19,8 @@
 
 package de.dante.extex.scanner.stream;
 
-import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -33,11 +33,11 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.configuration.ConfigurationWrapperException;
-import de.dante.util.file.FileFinder;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This is the factory to provide an instance of a
@@ -119,7 +119,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TokenStreamFactory implements Observable {
 
@@ -128,6 +128,13 @@ public class TokenStreamFactory implements Observable {
      * attribute used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
+
+    /**
+     * The field <tt>bufferSize</tt> contains the desired size for the input
+     * buffer. Negative values mean that the default size should be used. If the
+     * vakue is zero then nol buffer at all should be used.
+     */
+    private int bufferSize = -1;
 
     /**
      * The field <tt>configuration</tt> contains the configuration for this
@@ -154,10 +161,9 @@ public class TokenStreamFactory implements Observable {
     private ObserverList openStringObservers = new ObserverList();
 
     /**
-     * The field <tt>fileConstructor</tt> contains the constructor for the
-     * file variant.
+     * The field <tt>options</tt> contains the ...
      */
-    private Constructor fileConstructor;
+    private TokenStreamOptions options;
 
     /**
      * The field <tt>readerConstructor</tt> contains the constructor for the
@@ -166,79 +172,113 @@ public class TokenStreamFactory implements Observable {
     private Constructor readerConstructor;
 
     /**
+     * The field <tt>resourceFinder</tt> contains the file finder used when trying
+     * to read from a file.
+     */
+    private ResourceFinder resourceFinder = null;
+
+    /**
+     * The field <tt>streamConstructor</tt> contains the constructor for the
+     * file variant.
+     */
+    private Constructor streamConstructor;
+
+    /**
      * The field <tt>stringConstructor</tt> contains the constructor for the
      * string variant.
      */
     private Constructor stringConstructor;
 
     /**
-     * The field <tt>bufferSize</tt> contains the desired size for the input
-     * buffer. Negative values mean that the default size should be used. If the
-     * vakue is zero then nol buffer at all should be used.
-     */
-    private int bufferSize = -1;
-
-    /**
-     * The field <tt>fileFinder</tt> contains the file finder used when trying
-     * to read from a file.
-     */
-    private FileFinder fileFinder = null;
-
-    /**
      * Creates a new object.
-     *
-     * @param config the configuration to use
+     * @param theConfiguration the configuration to use
+     * @param theOptions TODO
      *
      * @throws ConfigurationException in case of an error in the configuration
      */
-    public TokenStreamFactory(final Configuration config)
-            throws ConfigurationException {
+    public TokenStreamFactory(final Configuration theConfiguration,
+            final TokenStreamOptions theOptions) throws ConfigurationException {
 
         super();
-        configuration = config;
-        String classname = config.getAttribute(CLASS_ATTRIBUTE);
+        this.configuration = theConfiguration;
+        this.options = theOptions;
+        String classname = theConfiguration.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
             throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    config);
+                    theConfiguration);
         }
         try {
-            readerConstructor = Class.forName(classname)
-                    .getConstructor(
-                                    new Class[]{Configuration.class,
-                                            Reader.class, Boolean.class,
-                                            String.class});
+            readerConstructor = Class.forName(classname).getConstructor(
+                    new Class[]{Configuration.class, TokenStreamOptions.class,
+                            Reader.class, Boolean.class, String.class});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname, config);
+            throw new ConfigurationClassNotFoundException(classname,
+                    theConfiguration);
         }
 
         try {
-            stringConstructor = Class.forName(classname)
-                    .getConstructor(
-                                    new Class[]{Configuration.class,
-                                            String.class, String.class});
+            stringConstructor = Class.forName(classname).getConstructor(
+                    new Class[]{Configuration.class, TokenStreamOptions.class,
+                            String.class, String.class});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname, config);
+            throw new ConfigurationClassNotFoundException(classname,
+                    theConfiguration);
         }
 
         try {
-            fileConstructor = Class.forName(classname)
-                    .getConstructor(new Class[]{Configuration.class,
-                                            File.class, String.class});
+            streamConstructor = Class.forName(classname).getConstructor(
+                    new Class[]{Configuration.class, TokenStreamOptions.class,
+                            InputStream.class, String.class, String.class});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname, config);
+            throw new ConfigurationClassNotFoundException(classname,
+                    theConfiguration);
         }
+    }
+
+    /**
+     * Provide a new instance of a token stream.
+     *
+     * @param reader the reader to get new characters from
+     *
+     * @return the new instance
+     *
+     * @throws ConfigurationException in case of an error in the configuration
+     */
+    public TokenStream newInstance(final Reader reader)
+            throws ConfigurationException {
+
+        TokenStream stream;
+        try {
+
+            stream = (TokenStream) readerConstructor.newInstance(new Object[]{
+                    configuration, options, reader, Boolean.FALSE, "*"});
+
+            openReaderObservers.update(this, reader);
+
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
+        }
+        return stream;
     }
 
     /**
@@ -257,7 +297,7 @@ public class TokenStreamFactory implements Observable {
         try {
 
             stream = (TokenStream) stringConstructor.newInstance(new Object[]{
-                    configuration, line, "#"});
+                    configuration, options, line, "#"});
 
             openStringObservers.update(this, line);
 
@@ -292,19 +332,19 @@ public class TokenStreamFactory implements Observable {
             throws ConfigurationException,
                 FileNotFoundException {
 
-        if (fileFinder == null) {
-            throw new MissingFileFinderException("");
+        if (resourceFinder == null) {
+            throw new MissingResourceFinderException("");
         }
-        File file = fileFinder.findFile(fileName, fileType);
+        InputStream stream = resourceFinder.findResource(fileName, fileType);
 
-        if (file == null) {
+        if (stream == null) {
             throw new FileNotFoundException(fileName);
         }
 
-        TokenStream stream;
+        TokenStream tStream;
         try {
-            stream = (TokenStream) fileConstructor.newInstance(new Object[]{
-                    configuration, file, encoding});
+            tStream = (TokenStream) streamConstructor.newInstance(new Object[]{
+                    configuration, options, stream, fileName, encoding});
 
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
@@ -321,41 +361,7 @@ public class TokenStreamFactory implements Observable {
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
-        return stream;
-    }
-
-    /**
-     * Provide a new instance of a token stream.
-     *
-     * @param reader the reader to get new characters from
-     *
-     * @return the new instance
-     *
-     * @throws ConfigurationException in case of an error in the configuration
-     */
-    public TokenStream newInstance(final Reader reader)
-            throws ConfigurationException {
-
-        TokenStream stream;
-        try {
-
-            stream = (TokenStream) readerConstructor.newInstance(new Object[]{
-                    configuration, reader, Boolean.FALSE, "*"});
-
-            openReaderObservers.update(this, reader);
-
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
-        }
-        return stream;
+        return tStream;
     }
 
     /**
@@ -377,13 +383,22 @@ public class TokenStreamFactory implements Observable {
     }
 
     /**
+     * Setter for options.
+     *
+     * @param options the options to set.
+     */
+    public void setOptions(TokenStreamOptions options) {
+
+        this.options = options;
+    }
+
+    /**
      * Setter for the file finder.
      *
      * @param finder the new file finder
      */
-    public void setFileFinder(final FileFinder finder) {
+    public void setResourceFinder(final ResourceFinder finder) {
 
-        this.fileFinder = finder;
+        this.resourceFinder = finder;
     }
-
 }
