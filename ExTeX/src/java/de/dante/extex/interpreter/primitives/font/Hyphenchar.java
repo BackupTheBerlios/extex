@@ -40,7 +40,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="hyphenchar">
  * <h3>The Primitive <tt>\hyphenchar</tt></h3>
  * <p>
- *  TODO documentation missing
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Hyphenchar extends AbstractAssignment
         implements
