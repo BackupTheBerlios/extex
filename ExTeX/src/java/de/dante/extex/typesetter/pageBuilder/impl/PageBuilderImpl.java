@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -80,10 +80,12 @@ public class PageBuilderImpl implements PageBuilder {
      */
     public void flush(final NodeList nodes) throws GeneralException {
 
-        try {
-            this.documentWriter.shipout(nodes);
-        } catch (IOException e) {
-            throw new GeneralException(e);
+        if (nodes.size() > 0) {
+            try {
+                this.documentWriter.shipout(nodes);
+            } catch (IOException e) {
+                throw new GeneralException(e);
+            }
         }
     }
 
@@ -100,7 +102,8 @@ public class PageBuilderImpl implements PageBuilder {
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#inspectAndBuild(
      *      VerticalNodeList)
      */
-    public void inspectAndBuild(final VerticalListNode nodes) throws GeneralException {
+    public void inspectAndBuild(final VerticalListNode nodes)
+            throws GeneralException {
 
         Dimen d = nodes.getVerticalSize();
         if (d.ge(options.getDimenOption("vsize"))) {
