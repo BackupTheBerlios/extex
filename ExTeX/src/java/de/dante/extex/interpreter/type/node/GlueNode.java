@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
@@ -81,31 +81,33 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
     /**
      * ...
      *
-     * @param nom ...
-     * @param denom ...
+     * @param width ...
      * @param sum ...
      *
-     * @see de.dante.extex.typesetter.Node#spread(long, long, FixedDimen)
+     * @see de.dante.extex.typesetter.Node#spread(FixedDimen, FixedGlueComponent)
      */
-    public void spread(final long nom, final long denom, final FixedDimen sum) {
+    public void spread(final FixedDimen width, final FixedGlueComponent sum) {
 
-        if (nom > denom) {
-            FixedGlueComponent s = this.size.getStretch();
-            if (s.getOrder() == 0) {
-                getWidth().add(
-                        Math.min(s.getValue(), sum.getValue() * nom / denom));
-            } else {
-                getWidth().add(sum.getValue() * nom / denom);
-            }
-        } else if (nom < denom) {
+        long w = width.getValue();
+        FixedGlueComponent s = (w > 0 ? this.size.getStretch() : this.size
+                .getShrink());
 
-            FixedGlueComponent s = this.size.getShrink();
-            if (s.getOrder() == 0) {
-                getWidth().add(Math.max(0, sum.getValue() * nom / denom));
-            } else {
-                getWidth().add(sum.getValue() * nom / denom);
+        int order = s.getOrder();
+        long value = sum.getValue();
+        if (order < sum.getOrder() || value == 0) {
+            return;
+        }
+
+        long sValue = s.getValue();
+        long adjust = sValue * w / value;
+        if (order == 0) {
+            if (adjust > sValue) {
+                adjust = sValue;
+            } else if (adjust < -sValue) {
+                adjust = -sValue;
             }
         }
+        getWidth().add(adjust);
     }
 
     /**
