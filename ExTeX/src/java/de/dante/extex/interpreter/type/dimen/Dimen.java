@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -251,6 +251,8 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * @param context the interpreter context
      * @param source the source for next tokens
+     *
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.type.glue.GlueComponent#set(
      *      de.dante.extex.interpreter.context.Context,
