@@ -15,7 +15,7 @@
           tests
               Perfom all tests.
           deploy
-          install -dinstalldir=...
+          install -Dinstalldir=...
               Install the relevant files in the given directory.
           clean
         </echo>
@@ -256,7 +256,6 @@
              nodeprecatedlist="false"
              nodeprecated="false">
             <classpath refid="main.class.path"/>
-            <packageset dir="${src}" defaultexcludes="yes"/>
             <packageset dir="${src}" defaultexcludes="yes" excludes="de/dante/tools/**/*" />
         </javadoc>
         <copy todir="${javadoc}">
