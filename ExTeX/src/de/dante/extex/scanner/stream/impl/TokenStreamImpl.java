@@ -51,7 +51,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -62,7 +62,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.20 $
+     * @version $Revision: 1.21 $
      */
     private static final class State {
 
@@ -301,7 +301,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
         Token t = null;
 
         if (state == MID_LINE) {
-            t = factory.newInstance(Catcode.SPACE, ' ');
+            t = factory.newInstance(Catcode.SPACE, ' ', "");
         } else if (state == NEW_LINE) {
             t = factory.newInstance(Catcode.ESCAPE, "par", namespace);
         }
@@ -468,7 +468,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         if (state == MID_LINE) {
             state = SKIP_BLANKS;
-            return factory.newInstance(Catcode.SPACE, ' ');
+            return factory.newInstance(Catcode.SPACE, ' ', "");
         }
 
         return null;

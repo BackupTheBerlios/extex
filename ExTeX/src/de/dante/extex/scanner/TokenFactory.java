@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 package de.dante.extex.scanner;
@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface TokenFactory {
 
@@ -61,16 +61,19 @@ public interface TokenFactory {
             throws CatcodeException;
 
     /**
-     * Get an instance of a token with a given Catcode and character value.
-     *
-     * @param code the catcode
+     * Create a new {@link de.dante.extex.scanner.Token Token} of the
+     * appropriate kind. Tokens are immutable (no setters) thus the factory
+     * pattern can be applied.
+     * @param code the category code
      * @param c the character value
+     * @param namespace the namespace to use
      *
-     * @return the appropriate token
+     * @return the new token
      *
      * @throws CatcodeException in case of an error
      */
-    Token newInstance(Catcode code, char c) throws CatcodeException;
+    Token newInstance(Catcode code, char c, String namespace)
+        throws CatcodeException;
 
     /**
      * Get an instance of a token with a given Catcode and Unicode character

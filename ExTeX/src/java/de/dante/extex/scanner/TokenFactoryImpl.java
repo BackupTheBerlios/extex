@@ -1,21 +1,22 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner;
 
 import java.util.HashMap;
@@ -49,86 +50,39 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
     /**
-     * ...
+     * This inner class is used as key for caching controls sequences.
+     * The equality is determined from a name string (S) and
+     * a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
-     */
-    private final class USKey {
-
-        /**
-         * The field <tt>namespace</tt> contains the ...
-         */
-        private String namespace;
-
-        /**
-         * The field <tt>uc</tt> contains the ...
-         */
-        private UnicodeChar uc;
-
-        /**
-         * Creates a new object.
-         *
-         * @param theNamespace ...
-         * @param theChar ...
-         */
-        public USKey (final String theNamespace, final UnicodeChar theChar) {
-            this.namespace = theNamespace;
-            this.uc = theChar;
-        }
-
-        /**
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        public boolean equals(final Object other) {
-
-            if (other == null || !(other instanceof USKey)) {
-                return false;
-            }
-            USKey otherkey = (USKey) other;
-            return (uc.equals(otherkey.uc) && namespace
-                    .equals(otherkey.namespace));
-        }
-
-        /**
-         * @see java.lang.Object#hashCode()
-         */
-        public int hashCode() {
-
-            return uc.hashCode() + 17*namespace.hashCode();
-        }
-    }
-
-    /**
-     * ...
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private final class SSKey {
 
         /**
-         * The field <tt>namespace</tt> contains the ...
-         */
-        private String namespace;
-
-        /**
-         * The field <tt>uc</tt> contains the ...
+         * The field <tt>uc</tt> contains the name of the control sequence.
          */
         private String name;
 
         /**
+         * The field <tt>namespace</tt> contains the namespace of the control
+         * sequence.
+         */
+        private String namespace;
+
+        /**
          * Creates a new object.
          *
-         * @param theNamespace ...
-         * @param theName ...
+         * @param theNamespace the initial namespace
+         * @param theName the name of the control sequence
          */
-        public SSKey (final String theNamespace, final String theName) {
+        public SSKey(final String theNamespace, final String theName) {
+
             this.namespace = theNamespace;
             this.name = theName;
         }
@@ -152,6 +106,61 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
         public int hashCode() {
 
             return name.hashCode() + 17 * namespace.hashCode();
+        }
+    }
+
+    /**
+     * This inner class is used as key for caching active characters.
+     * The equality is determined from a Unicode
+     * character (U) and a namespace string (S).
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.14 $
+     */
+    private final class USKey {
+
+        /**
+         * The field <tt>namespace</tt> contains the namespace of the active
+         * character.
+         */
+        private String namespace;
+
+        /**
+         * The field <tt>uc</tt> contains the Unicode character.
+         */
+        private UnicodeChar uc;
+
+        /**
+         * Creates a new object.
+         *
+         * @param theNamespace the initial namespace
+         * @param theChar the initial Unicode character
+         */
+        public USKey(final String theNamespace, final UnicodeChar theChar) {
+
+            this.namespace = theNamespace;
+            this.uc = theChar;
+        }
+
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        public boolean equals(final Object other) {
+
+            if (other == null || !(other instanceof USKey)) {
+                return false;
+            }
+            USKey otherkey = (USKey) other;
+            return (uc.equals(otherkey.uc) && namespace
+                    .equals(otherkey.namespace));
+        }
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        public int hashCode() {
+
+            return uc.hashCode() + 17 * namespace.hashCode();
         }
     }
 
@@ -232,28 +241,20 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * Creates a new object.
      */
     public TokenFactoryImpl() {
+
         super();
     }
 
     /**
-     * Create a new {@link de.dante.extex.scanner.Token Token} of the
-     * appropriate kind. Tokens are immutable (no setters) thus the factory
-     * pattern can be applied.
-     *
-     * @param code the category code
-     * @param c the character value
-     *
-     * @return the new token
-     *
-     * @throws CatcodeException in case of an error
+     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     *      de.dante.extex.scanner.Catcode, char, java.lang.String)
      */
-    public Token newInstance(final Catcode code, final char c)
-            throws CatcodeException {
+    public Token newInstance(final Catcode code, final char c,
+            final String namespace) throws CatcodeException {
 
-        String NAMESPACE = "";
         try {
             return (Token) code
-                    .visit(this, null, new UnicodeChar(c), NAMESPACE);
+                    .visit(this, null, new UnicodeChar(c), namespace);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
