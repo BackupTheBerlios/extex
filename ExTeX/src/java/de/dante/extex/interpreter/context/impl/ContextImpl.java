@@ -112,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class ContextImpl
         implements
@@ -839,15 +839,13 @@ public class ContextImpl
     public void setMagnification(final long mag) throws HelpingException {
 
         if (magnificationLock && this.magnification != mag) {
-            throw new HelpingException("TTP.IncompatMag", Long
-                    .toString(mag));
+            throw new HelpingException("TTP.IncompatMag", Long.toString(mag));
         }
 
         magnificationLock = true;
 
         if (mag < 1 || mag > magnificationMax) {
-            throw new HelpingException("TTP.IllegalMag", Long
-                    .toString(mag));
+            throw new HelpingException("TTP.IllegalMag", Long.toString(mag));
         }
 
         magnification = mag;
@@ -933,7 +931,8 @@ public class ContextImpl
     public void setTypesettingContext(final Color color)
             throws ConfigurationException {
 
-        tcFactory.newInstance(group.getTypesettingContext(), color);
+        group.setTypesettingContext(tcFactory.newInstance(group
+                .getTypesettingContext(), color));
     }
 
     /**
@@ -943,7 +942,8 @@ public class ContextImpl
     public void setTypesettingContext(final Direction direction)
             throws ConfigurationException {
 
-        tcFactory.newInstance(group.getTypesettingContext(), direction);
+        group.setTypesettingContext(tcFactory.newInstance(group
+                .getTypesettingContext(), direction));
     }
 
     /**
@@ -953,7 +953,8 @@ public class ContextImpl
     public void setTypesettingContext(final Font font)
             throws ConfigurationException {
 
-        tcFactory.newInstance(group.getTypesettingContext(), font);
+        group.setTypesettingContext(tcFactory.newInstance(group
+                .getTypesettingContext(), font));
     }
 
     /**

@@ -250,20 +250,20 @@
     <define name="global" class="de.dante.extex.interpreter.primitives.prefix.Global"/>
     <define name="globaldefs" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="halign" class=""/>
-    <Define name="hangafter" class=""/>
+    <define name="hangafter" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="hangindent" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="hbadness" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="hbox" class="de.dante.extex.interpreter.primitives.box.Hbox"/>
-    <Define name="hfil" class=""/>
-    <Define name="hfill" class=""/>
-    <Define name="hfilneg" class=""/>
+    <define name="hfil" class="de.dante.extex.interpreter.primitives.typesetter.Hfil"/>
+    <define name="hfill" class="de.dante.extex.interpreter.primitives.typesetter.Hfill"/>
+    <define name="hfilneg" class="de.dante.extex.interpreter.primitives.typesetter.Hfilneg"/>
     <define name="hfuzz" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="hoffset" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <Define name="holdinginserts" class=""/>
     <define name="hrule" class="de.dante.extex.interpreter.primitives.box.Hrule"/>
     <define name="hsize" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
-    <Define name="hskip" class=""/>
-    <Define name="hss" class=""/>
+    <define name="hskip" class="de.dante.extex.interpreter.primitives.typesetter.Hskip"/>
+    <define name="hss" class="de.dante.extex.interpreter.primitives.typesetter.Hss"/>
     <define name="ht" class="de.dante.extex.interpreter.primitives.register.box.Ht"/>
     <define name="hyphenation" class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
     <define name="hyphenchar" class="de.dante.extex.interpreter.primitives.font.Hyphenchar"/>
@@ -377,7 +377,7 @@
     <define name="par" class="de.dante.extex.interpreter.primitives.box.Par"/>
     <define name="parfillskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="parindent" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
-    <Define name="parshape" class=""/>
+    <define name="parshape" class="de.dante.extex.interpreter.primitives.box.Parshape"/>
     <define name="parskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="patterns" class="de.dante.extex.interpreter.primitives.hyphen.Patterns"/>
     <define name="pausing" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
@@ -462,16 +462,16 @@
     <define name="vbadness" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="vbox" class="de.dante.extex.interpreter.primitives.box.Vbox"/>
     <Define name="vcenter" class=""/>
-    <Define name="vfil" class=""/>
-    <Define name="vfill" class=""/>
-    <Define name="vfilneg" class=""/>
+    <define name="vfil" class="de.dante.extex.interpreter.primitives.typesetter.Vfil"/>
+    <define name="vfill" class="de.dante.extex.interpreter.primitives.typesetter.Vfill"/>
+    <define name="vfilneg" class="de.dante.extex.interpreter.primitives.typesetter.Vfilneg"/>
     <define name="vfuzz" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="voffset" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
     <define name="vrule" class="de.dante.extex.interpreter.primitives.box.Vrule"/>
     <define name="vsize" class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
-    <Define name="vskip" class=""/>
+    <define name="vskip" class="de.dante.extex.interpreter.primitives.typesetter.Vskip"/>
     <Define name="vsplit" class=""/>
-    <Define name="vss" class=""/>
+    <define name="vss" class="de.dante.extex.interpreter.primitives.typesetter.Vss"/>
     <Define name="vtop" class=""/>
     <define name="wd" class="de.dante.extex.interpreter.primitives.register.box.Wd"/>
     <define name="widowpenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
