@@ -399,6 +399,7 @@
     <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
     <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <text class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
   </DocumentWriter>
 
   <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"/>
