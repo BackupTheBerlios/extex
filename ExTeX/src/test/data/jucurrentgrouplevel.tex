@@ -1,0 +1,18 @@
+%
+% \author{Sebastian Waschik}
+% @version $Revision: 1.1 $
+%
+% Test for primitive \currentgrouplevel
+%
+\the\currentgrouplevel\par
+\begingroup
+  \the\currentgrouplevel\par
+  \begingroup
+    \begingroup
+      \the\currentgrouplevel\par
+    \endgroup
+    \the\currentgrouplevel\par
+  \endgroup
+\endgroup
+\the\currentgrouplevel\par
+\end

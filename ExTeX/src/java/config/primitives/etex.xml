@@ -28,7 +28,7 @@
   <Define name="beginL" class=""/>
   <Define name="beginR" class=""/>
   <Define name="botmarks" class=""/>
-  <Define name="currentgrouplevel" class=""/>
+  <define name="currentgrouplevel" class="de.dante.extex.interpreter.primitives.group.Currentgrouplevel"/>
   <Define name="currentgrouptype" class=""/>
   <Define name="detokenize" class=""/>
   <Define name="eTeXrevision" class=""/>
@@ -58,5 +58,5 @@
   <Define name="tracingifs" class=""/>
   <Define name="tracingscantokens" class=""/>
   <Define name="unexpanded" class=""/>
-  <Define name="unless" class=""/>
+  <define name="unless" class="de.dante.extex.interpreter.primitives.conditional.Unless"/>
 </primitives>
