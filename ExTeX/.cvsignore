@@ -12,4 +12,5 @@ target
 tmp
 work
 deploy
+*.settings
 *.fmt
