@@ -55,6 +55,7 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.type.tokens.FixedTokens;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeException;
@@ -63,6 +64,7 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
@@ -110,9 +112,15 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
-public class ContextImpl implements Context, TypesetterOptions, Observable, Serializable {
+public class ContextImpl
+        implements
+            Context,
+            TypesetterOptions,
+            TokenStreamOptions,
+            Observable,
+            Serializable {
 
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
@@ -154,7 +162,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
      * The field <tt>countChangeObservers</tt> contains the list of observers
      * registered for change event on the count registers.
      */
-    Map countChangeObservers = new HashMap(); 
+    Map countChangeObservers = new HashMap();
 
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
@@ -261,9 +269,8 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
 
-        magnificationMax = configuration
-                .getValueAsInteger("maximalMagnification",
-                                   (int) MAGNIFICATION_MAX);
+        magnificationMax = configuration.getValueAsInteger(
+                "maximalMagnification", (int) MAGNIFICATION_MAX);
 
     }
 
@@ -320,9 +327,8 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     public Code getActive(final String name) {
 
         try {
-            return group
-                    .getCode(getTokenFactory().newInstance(Catcode.ACTIVE,
-                                                           name, namespace));
+            return group.getCode(getTokenFactory().newInstance(Catcode.ACTIVE,
+                    name, namespace));
         } catch (CatcodeException e) {
             e.printStackTrace();
             return null;
@@ -430,6 +436,16 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     }
 
     /**
+     * Getter for group.
+     *
+     * @return the group.
+     */
+    protected Group getGroup() {
+
+        return group;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
      */
     public HyphenationTable getHyphenationTable(final int language) {
@@ -472,7 +488,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
 
         try {
             return getCode(tokenFactory.newInstance(Catcode.ESCAPE, name,
-                                                    namespace));
+                    namespace));
         } catch (CatcodeException e) {
             e.printStackTrace();
         } catch (GeneralException e) {
@@ -562,6 +578,14 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     }
 
     /**
+     * @see de.dante.extex.scanner.stream.TokenStreamOptions#getToksOption(java.lang.String)
+     */
+    public FixedTokens getToksOption(String name) {
+
+        return group.getToks(name);
+    }
+
+    /**
      * Getter for the typesetting context.
      *
      * @return the typesetting context
@@ -616,7 +640,8 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     public void pushConditional(final Locator locator,
             final boolean isIfThenElse) {
 
-        conditionalStack.add(isIfThenElse ? new Conditional(locator)
+        conditionalStack.add(isIfThenElse
+                ? new Conditional(locator)
                 : new ConditionalSwitch(locator));
     }
 
@@ -657,7 +682,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
 
         try {
             group.setCode(tokenFactory.newInstance(Catcode.ACTIVE, name), code,
-                          global);
+                    global);
         } catch (CatcodeException e) {
             e.printStackTrace();
         }
@@ -686,8 +711,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
      * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
      *      de.dante.extex.interpreter.type.box.Box, boolean)
      */
-    public void setBox(final String name, final Box value,
-            final boolean global) {
+    public void setBox(final String name, final Box value, final boolean global) {
 
         group.setBox(name, value, global);
     }
@@ -720,13 +744,13 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
         if (null != observerList) {
             int len = observerList.size();
             for (int i = 0; i < len; i++) {
-                ((CodeChangeObserver) observerList.get(i))
-                        .receiveCodeChange(t, code);
+                ((CodeChangeObserver) observerList.get(i)).receiveCodeChange(t,
+                        code);
             }
         }
 
     }
-    
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setCount(
      *      java.lang.String,
@@ -742,8 +766,8 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
         if (null != observerList) {
             int len = observerList.size();
             for (int i = 0; i < len; i++) {
-                ((CountChangeObserver) observerList.get(i))
-                        .receiveCountChange(name, count);
+                ((CountChangeObserver) observerList.get(i)).receiveCountChange(
+                        name, count);
             }
         }
 
@@ -930,7 +954,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
      *
      * @param standardTokenStream the standardTokenStream to set.
      */
-    public void setStandardTokenStream(TokenStream standardTokenStream) {
+    public void setStandardTokenStream(final TokenStream standardTokenStream) {
 
         this.standardTokenStream = standardTokenStream;
         group.setStandardTokenStream(standardTokenStream);
@@ -977,15 +1001,6 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(int)
-     */
-    public void setTypesettingContext(final int angle)
-            throws ConfigurationException {
-
-        tcFactory.newInstance(group.getTypesettingContext(), angle);
-    }
-
-    /**
      * Setter for the typesetting context in the current group.
      *
      * @param context the new context to use
@@ -1029,15 +1044,5 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
             return;
         }
         observerList.remove(observer);
-    }
-
-    /**
-     * Getter for group.
-     *
-     * @return the group.
-     */
-    protected Group getGroup() {
-
-        return group;
     }
 }
