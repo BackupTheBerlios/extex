@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * This esception is used when the loader detects some exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LoaderException extends InterpreterException {
 
@@ -55,17 +55,6 @@ public class LoaderException extends InterpreterException {
     public LoaderException(final Throwable arg0) {
 
         super(arg0);
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param arg0 the message
-     * @param arg1 the cause
-     */
-    public LoaderException(final String arg0, final Throwable arg1) {
-
-        super(arg0, arg1);
     }
 
 }

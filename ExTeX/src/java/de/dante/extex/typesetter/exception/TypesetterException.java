@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.exception.InterpreterException;
  * This is the base class for all exceptions thrown by the typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TypesetterException extends InterpreterException {
 
@@ -46,17 +46,6 @@ public class TypesetterException extends InterpreterException {
     public TypesetterException(final String message) {
 
         super(message);
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param message the textual representation
-     * @param cause the root of all evil
-     */
-    public TypesetterException(final String message, final Throwable cause) {
-
-        super(message, cause);
     }
 
     /**

@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
@@ -152,10 +152,8 @@ public class AbstractCode implements Code, Localizable, Serializable {
     protected String printable(final Context context, final Token token) {
 
         if (token instanceof ControlSequenceToken) {
-            char esc = (char) (context.getCount("escapechar").getValue());
-            return Character.toString(esc)
+            return context.esc("")
                     + ((ControlSequenceToken) token).getChar().getCodePoint();
-                    //TODO gene: check whether cs can arrive here
         }
         return token.getChar().toString();
     }

@@ -60,7 +60,7 @@ import de.dante.extex.typesetter.Typesetter;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 
@@ -100,12 +100,6 @@ public class StringPrimitive extends AbstractCode implements ExpandableCode {
             throws InterpreterException {
 
         Token t = source.getToken(context);
-        if (t instanceof ControlSequenceToken) {
-            long esc = context.getCount("escapechar").getValue();
-            source.push(new Tokens(context, //
-                    t.toText((esc < 0 ? '\\' : (char) esc))));
-        } else {
-            source.push(new Tokens(context, t.getChar().getCodePoint()));
-        }
+        source.push(new Tokens(context, context.esc(t)));
     }
 }
