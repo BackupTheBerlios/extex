@@ -31,6 +31,9 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.InsertionNode;
+import de.dante.extex.interpreter.type.node.PenaltyNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
@@ -57,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class TypesetterImpl
         implements
@@ -140,6 +143,14 @@ public class TypesetterImpl
     public void add(final Node node) throws GeneralException {
 
         listMaker.add(node);
+
+        if (saveStack == null
+                && (node instanceof PenaltyNode
+                        || node instanceof InsertionNode
+                        || node instanceof HorizontalListNode || node instanceof VerticalListNode)) {
+
+            pageBuilder.inspectAndBuild(listMaker.close(options));
+        }
     }
 
     /**
