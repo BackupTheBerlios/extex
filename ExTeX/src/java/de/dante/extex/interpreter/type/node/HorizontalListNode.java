@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
@@ -59,23 +59,13 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.NodeList#addSkip(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     *      FixedGlue)
      */
-    public void addSkip(final Glue glue) {
+    public void addSkip(final FixedGlue glue) {
 
         Node gNode = new GlueNode(glue); // TODO: use factory?
         gNode.setWidth(glue.getLength());
         add(gNode);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-
-        sb.append("(hlist ");
-        super.toText(sb, prefix);
     }
 
     /**
@@ -89,14 +79,24 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
+    public void toText(final StringBuffer sb, final String prefix) {
 
-        return visitor.visitHorizontalList(value, value2);
+        sb.append("(hlist ");
+        super.toText(sb, prefix);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.node.AbstractNodeList#updateDimensions(
+     *      de.dante.extex.typesetter.Node)
+     */
+    protected void updateDimensions(final Node node) {
+
+        getWidth().add(node.getWidth());
+        getHeight().max(node.getHeight());
+        getDepth().max(node.getDepth());
     }
 
     /**
@@ -111,14 +111,14 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.node.AbstractNodeList#updateDimensions(
-     *      de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
      */
-    protected void updateDimensions(final Node node) {
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
 
-        getWidth().add(node.getWidth());
-        getHeight().max(node.getHeight());
-        getDepth().max(node.getDepth());
+        return visitor.visitHorizontalList(value, value2);
     }
 
 }

@@ -19,7 +19,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.node.CharNode;
 
 /**
@@ -39,7 +39,7 @@ import de.dante.extex.interpreter.type.node.CharNode;
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface NodeList extends Node {
 
@@ -73,7 +73,7 @@ public interface NodeList extends Node {
      *
      * @param glue the glue to add
      */
-    void addSkip(Glue glue);
+    void addSkip(FixedGlue glue);
 
     /**
      * Getter for a node at a given posotion.

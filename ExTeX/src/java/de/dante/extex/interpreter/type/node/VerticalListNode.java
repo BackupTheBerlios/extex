@@ -19,7 +19,8 @@
 
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -31,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [137]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -47,13 +48,26 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * @see de.dante.extex.typesetter.NodeList#addSkip(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     *      FixedGlue)
      */
-    public void addSkip(final Glue glue) {
+    public void addSkip(final FixedGlue glue) {
 
         Node gNode = new GlueNode(glue); // TODO: use factory?
         gNode.setHeight(glue.getLength());
         add(gNode);
+    }
+
+    /**
+     * ...
+     *
+     * @param size ...
+     *
+     * @see de.dante.extex.typesetter.NodeList#spread(de.dante.extex.interpreter.type.dimen.FixedDimen)
+     */
+    public void spread(final FixedDimen size) {
+
+        // TODO unimplemented
+
     }
 
     /**
