@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\message</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Message extends AbstractCode {
     /**
@@ -43,12 +43,12 @@ public class Message extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
      */
-    public void expand(Flags prefix, Context context,
+    public void execute(Flags prefix, Context context,
                        TokenSource source, Typesetter typesetter)
                 throws GeneralException {
-        Tokens toks = source.scanGroup();
+        Tokens toks = source.scanTokens();
         String msg = toks.toString();
         source.update("message",msg); 
         prefix.clear();

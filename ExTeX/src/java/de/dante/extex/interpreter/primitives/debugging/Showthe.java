@@ -18,27 +18,26 @@
  */
 package de.dante.extex.interpreter.primitives.debugging;
 
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\message</code>.
+ * This class provides an implementation for the primitive <code>\showthe</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class Message extends AbstractCode {
+public class Showthe extends The {
     /**
      * Creates a new object.
      *
      * @param name the name for tracing and debugging
      */
-    public Message(String name) {
+    public Showthe(String name) {
         super(name);
     }
 
@@ -48,9 +47,9 @@ public class Message extends AbstractCode {
     public void execute(Flags prefix, Context context,
                        TokenSource source, Typesetter typesetter)
                 throws GeneralException {
-        Tokens toks = source.scanTokens();
-        String msg = toks.toString();
-        source.update("message",msg); 
+        super.execute(prefix,context,source,typesetter);
+        Token token = source.getToken();
+        source.update("message",token.toText());
         prefix.clear();
     }
 }
