@@ -23,8 +23,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.nio.charset.CharacterCodingException;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -83,7 +83,7 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class ExTeX {
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
@@ -484,9 +484,9 @@ public class ExTeX {
             DocumentWriter docWriter = new DocumentWriterFactory(config
                 .getConfiguration("DocumentWriter")).newInstance();
 
-            Writer writer = outFactory.newInstance(properties
-                .getProperty(PROP_JOBNAME), docWriter.getExtension(), null);
-            docWriter.setWriter(writer);
+            OutputStream stream = outFactory.createOutputStream(properties
+                .getProperty(PROP_JOBNAME), docWriter.getExtension());
+            docWriter.setOutputStream(stream);
             typesetter.setDocumentWriter(docWriter);
 
             interpreter.setTypesetter(typesetter);
@@ -495,7 +495,7 @@ public class ExTeX {
 
             interpreter.run();
 
-            writer.close();
+            stream.close();
 
             int pages = docWriter.getPages(); // todo: this might change
             String outname = properties.getProperty(PROP_JOBNAME) + "."

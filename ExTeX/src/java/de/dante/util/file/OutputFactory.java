@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,12 +18,14 @@
  */
 package de.dante.util.file;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.Iterator;
@@ -37,7 +39,7 @@ import de.dante.util.configuration.ConfigurationMissingException;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OutputFactory {
 
@@ -80,7 +82,7 @@ public class OutputFactory {
                 ENCODING_ATTRIBUTE, config);
         }
     }
-    
+
     /**
      * ...
      * 
@@ -92,9 +94,9 @@ public class OutputFactory {
      * @throws FileNotFoundException in case that the output file coud not be
      *             opened
      */
-    public Writer newInstance(final String name, final String type)
+    public Writer createWriter(final String name, final String type)
         throws FileNotFoundException, ConfigurationException {
-        return newInstance(name, type, config.getAttribute(ENCODING_ATTRIBUTE));
+        return createWriter(name, type, config.getAttribute(ENCODING_ATTRIBUTE));
     }
 
     /**
@@ -103,15 +105,15 @@ public class OutputFactory {
      * @param name ...
      * @param type ...
      * @param encoding the name of the encoding to use. This overrules the
-     *            default encoding in the configuration. A value of
-     *            <code>null</code> signals that no encoding is requested.
+     *            default encoding in the configuration. A value of <code>null</code>
+     *            signals that no encoding is requested.
      * @return ...
-     *
+     * 
      * @throws FileNotFoundException ...
      * @throws UnsupportedEncodingException ...
      * @throws ConfigurationException ...
      */
-    public Writer newInstance(final String name, final String type,
+    public Writer createWriter(final String name, final String type,
         final String encoding) throws FileNotFoundException,
         ConfigurationException {
 
@@ -148,6 +150,50 @@ public class OutputFactory {
     /**
      * ...
      * 
+     * @param name
+     * @param type
+     * 
+     * @return ...
+     *
+     * @throws FileNotFoundException
+     * @throws ConfigurationException
+     */
+    public OutputStream createOutputStream(final String name, final String type)
+        throws FileNotFoundException, ConfigurationException {
+
+        String filename = name + "." + type;
+        String dir;
+
+        if (outputDirectories != null) {
+            for (int i = 0; i < outputDirectories.length; i++) {
+                dir = outputDirectories[i];
+                if (dir != null) {
+                    OutputStream os = openFile(new File(dir, filename));
+                    if (os != null) {
+                        return os;
+                    }
+                }
+            }
+        }
+
+        Configuration cfg = config.getConfiguration(type);
+        Iterator iter = cfg.iterator(PATH_TAG);
+        while (iter.hasNext()) {
+            dir = (String) (iter.next());
+            if (dir != null) {
+                OutputStream os = openFile(new File(dir, filename));
+                if (os != null) {
+                    return os;
+                }
+            }
+        }
+
+        throw new FileNotFoundException(name);
+    }
+
+    /**
+     * ...
+     * 
      * @param file ...
      * @param enc the encoding to use
      * 
@@ -167,6 +213,26 @@ public class OutputFactory {
         } catch (FileNotFoundException e) {
             // ignored on purpose
         } catch (IOException e) {
+            // ignored on purpose
+        }
+
+        return os;
+    }
+
+    /**
+     * ...
+     * 
+     * @param file ...
+     *
+     * @return ...
+     */
+    private OutputStream openFile(final File file) {
+
+        OutputStream os = null;
+
+        try {
+            os = new BufferedOutputStream(new FileOutputStream(file));
+        } catch (FileNotFoundException e) {
             // ignored on purpose
         }
 

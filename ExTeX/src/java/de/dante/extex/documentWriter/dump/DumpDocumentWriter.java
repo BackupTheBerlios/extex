@@ -19,7 +19,7 @@
 package de.dante.extex.documentWriter.dump;
 
 import java.io.IOException;
-import java.io.Writer;
+import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.NodeList;
@@ -28,14 +28,14 @@ import de.dante.extex.typesetter.NodeList;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
     /**
      * The field <tt>out</tt> ...
      */
-    private Writer out = null;
+    private OutputStream out = null;
 
     /**
      * The field <tt>shippedPages</tt> ...
@@ -64,9 +64,9 @@ public class DumpDocumentWriter implements DocumentWriter {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setWriter(java.io.Writer)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
      */
-    public void setWriter(final Writer outStream) {
+    public void setOutputStream(final OutputStream outStream) {
         out = outStream;
     }
 
@@ -76,7 +76,7 @@ public class DumpDocumentWriter implements DocumentWriter {
     public void shipout(final NodeList nodes) throws IOException {
         StringBuffer sb = new StringBuffer();
         nodes.toString(sb,"\n");
-        out.write(sb.toString());
+        out.write(sb.toString().getBytes());
         out.write('\n');
         shippedPages++;
     }
