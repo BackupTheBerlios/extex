@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.typesetter;
+package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
@@ -28,6 +28,10 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.ListMaker;
+import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -44,7 +48,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.1 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
