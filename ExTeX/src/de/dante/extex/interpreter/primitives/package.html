@@ -1,9 +1,7 @@
 <html>
  <head>
   <title>primitives: The Built-in Code</title>
-  <meta name="author">Gerd Neugebauer</meta>
-  <meta name="version">$Revision: 1.4 $</meta>
-  <meta name="copyright">
+  <meta name="copyright" content="
    Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
 
    This library is free software; you can redistribute it and/or modify it
@@ -19,18 +17,386 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-   </meta>
+  " />
+  <meta name="author" content="Gerd Neugebauer" />
+  <meta name="version" content="$Revision: 1.5 $" />
  </head>
  <body>
-  This package contains classes for the primitives which are mapped to Java code.
-  Those primitives are implemented directly opposed to the implementation as macros.
+  This package contains classes for the primitives which are mapped to
+  Java code. Those primitives are implemented directly opposed to the
+  implementation as macros.
   <p>
-  The binding to the appropriate names is performed during initialization of
-  the interpreter. The information may come from a configuration file or a format file.
+  The binding to the appropriate names is performed during
+  initialization of the interpreter. The information may come from a
+  configuration file or a format file.
+  </p>
+
+  <doc>
+  <h3>Writing New Primitives</h3>
+  <p>
+   The core primitives of ExTeX are written in Java and bound to
+   control sequences or active characters. In this section we will
+   explain how to write new primitives in Java.
+  </p>
+
+  <h4>Executable Code</h4>
+  <p>
+   Executable primitives are those primitives which can be invoked in
+   a left-hand-side context of the expansion. This is the case
+   whenever the next top-level macro is treated. You can consider for
+   example the treatment of the macro <tt>\def</tt> as such a case:
+   <pre style="background:#eeffff;border-width:1pt;border-style:solid;border-color:#666666">
+     \def\abc{123}</pre>
+   In this example <tt>\def</tt> is an executable primitive.
+  </p>
+  <p>
+   Executable code has to implement the interface {@link
+   de.dante.extex.interpreter.Code Code}. Doing this directly is nor
+   hard. Nevertheless the abstract base class {@link
+   de.dante.extex.interpreter.AbstractCode AbstractCode} is provided
+   which contains default implementations for all methods already.
+   Thus only the interesting methods have to be overwritten.
+  </p>
+  <p>
+   In the simplest case only a constructor with one String argument and
+   the method <tt>execute()</tt> has to be defined. Such an empty
+   frame can be seen in the following example:
+  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+    <b>package</b> my.package;
+
+    <b>import</b> de.dante.extex.interpreter.AbstractCode;
+    <b>import</b> de.dante.extex.interpreter.context.Context;
+    <b>import</b> de.dante.extex.interpreter.Flags;
+    <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.typesetter.Typesetter;
+    <b>import</b> de.dante.util.GeneralException;
+ 
+    <b>class</b> MyPrimitive <b>extends</b> AbstractCode {
+
+      <b>public</b> MyPrimitive(<b>final</b> String name) {
+        super(name);
+        <i>// initialization code -- if required</i>
+      }
+
+      <b>public void</b> execute(<b>final</b> Flags prefix,
+                          <b>final</b> Context context,
+                          <b>final</b> TokenSource source,
+                          <b>final</b> Typesetter typesetter
+                         ) <b>throws</b> GeneralException {
+        <i>// implement the execution behaviour here</i>
+        prefix.clear();
+      }
+    }</pre>
+  </p>
+  <p>
+   In the <tt>execute</tt> method you have access to other components.
+   This can be utilized to implement the desired functionality. The
+   following parameters are provided:
+  </p>
+  <dl>
+   <dt><tt><b>{@link de.dante.extex.interpreter.Flags Flags}</b> prefix</tt></dt>
+   <dd>This parameter gives access to prefix arguments like
+    <tt>\global</tt> or <tt>\immediate</tt>. Fot this purpose the
+    class Flags provides appropriate getters.
+    <p>
+    You can even modify the flags passed to the method. Usually you
+    should invoke <tt>prefix.clear()</tt> somewhere in your
+    implementation when the prefix is not needed any more. If this
+    method is omitted then the prefix is passed on to the next
+    execution. This can be desirable if you want to implement a prefix
+    primitive yourself.
+    </p>
+   </dd>
+   <dt><tt><b>{@link de.dante.extex.interpreter.contect.Context Context}</b> context</tt></dt>
+   <dd>The context provides reading and writing access to the data
+    stored in the processor. This information is the memory. It is
+    written to file when dumping a format. Refer to the documentation
+    of the interface Context for details.
+   </dd>
+   <dt><tt><b>{@link de.dante.extex.interpreter.TokenSource TokenSource}</b> source</tt></dt>
+   <dd>The source provides access to the token stream. It can be used
+    to get the next tokens if required. For example when implementing
+    a primitive like <tt>\def</tt> it is necessary to read the next
+    tokens as arguments: the macro name, the parameter pattern, and
+    the expansion text.
+    <p>
+    The token source can also be used to push tokens to the input
+    stream to be read back in later. This feature is used when
+    implementing expandable primitives.
+    </p>
+   </dd>
+   <dt><tt><b>{@link de.dante.extex.typesetter.Typesetter Typesetter}</b> typesetter</tt></dt>
+   <dd>
+    The typesetter is the component which collects nodes and finally
+    sends them to the document writer. With access to this component
+    it is possible to produce some output to the paper.
+   </dd>
+  </dl>
+
+  <h4>Registering New Macros</h4>
+  <p>
+   The primary way to register new macros is in the configuration file
+   used by ExTeX. For example the default file is located in the
+   package <tt>config</tt> and named <tt>extex.xml</tt>. There you can
+   find lines like the following one:
+   <pre style="background:#eeeeff;border-width:1pt;border-style:solid;border-color:#666666">
+     <b>&lt;define</b> name="def" class="de.dante.extex.interpreter.primitives.macro.Def"<b>/&gt;</b></pre>
+  </p>
+  <p>
+   To add another primitive to ExTeX you should make a copy of this
+   configuration file under a different name and add a line like the
+   one shown above:
+   <pre style="background:#eeeeff;border-width:1pt;border-style:solid;border-color:#666666">
+     <b>&lt;define</b> name="myPrim" class="my.package.MyPrimitive"<b>/&gt;</b></pre>
+   Now you can invoke ExTeX on the command line with the parameter
+   <tt>-configuration</tt> or add a line <tt>extex.config</tt> to your
+   <tt>.extex</tt> file pointing ExTeX to your new configuration file:
+   <pre style="background:#eeffee;border-width:1pt;border-style:solid;border-color:#666666">
+     extex -configuration config/myExTeX.xml</pre>
+   This is enough. In the instance of ExTeX with these settings the
+   new macro <tt>\myPrim</tt> is defined and points to your code for
+   execution.
+  </p>
+
+  <h4>Registering New Macros Dynamically</h4>
+  <p>
+   One extension provided with ExTeX contains a dynamic definition of
+   new macros. Those macros are defined at runtime. The assignment of
+   the Java code to the macro name can be controlled with the help of
+   a primitive. Check out whether the macro {@link
+   de.dante.extex.interpreter.primitives.dynamic.java.JavaDef
+   \javadef} is defined in one of the configuration files provided and
+   consult the documentation.
+  </p>
+
+  <h4>Exceptions</h4>
+  <p>
+   The implementing Java code for new primitives can signal abnormal
+   situations with the help of exceptions. The exceptions used should
+   be derived from {@link de.dante.util.GeneralException
+   GeneralException}. <tt>RuntimeException</tt>s and <tt>Error</tt>s
+   or derived classes should not be used.
+  </p>
+  <p>
+   ExTeX provides means for externalzing strings. Thus it should be
+   made easy to translate the messages to other languages. For this
+   purpose the class {@link
+   de.dante.extex.i18n.GeneralHelpingException
+   GeneralHelpingException} is provided. See the documentation of this
+   class for details.
+  </p>
+
+  <h4>Assignments</h4>
+  <p>
+   Assignments are a special kind of executable code. TeX defines that
+   the parameter <tt>\globaldef</tt> is evaluated and the macro
+   <tt>\afterassignment</tt> has some effect. To ease the development
+   of assignments the abstract base class {@link
+   de.dante.extex.interpreter.AbstractAssignment AbstractAssignment} is
+   provided. This class defines the method <tt>execute()</tt>
+   appropriately. The only task left is to overwrite the method
+   <tt>assign()</tt> to perform the assignment.
+  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+    <b>package</b> my.package;
+
+    <b>import</b> de.dante.extex.interpreter.AbstractAssignment;
+    <b>import</b> de.dante.extex.interpreter.contect.Context;
+    <b>import</b> de.dante.extex.interpreter.Flags;
+    <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.typesetter.Typesetter;
+    <b>import</b> de.dante.util.GeneralException;
+ 
+    <b>class</b> MyAssign <b>extends</b> AbstractAssignment {
+
+      <b>public</b> MyAssign(<b>final</b> String name) {
+        super(name);
+        <i>// initialization code -- if required</i>
+      }
+
+      <b>public void</b> execute(<b>final</b> Flags prefix,
+                          <b>final</b> Context context,
+                          <b>final</b> TokenSource source,
+                          <b>final</b> Typesetter typesetter
+                         ) <b>throws</b> GeneralException {
+        <i>// implement the assignment here</i>
+      }
+    }</pre>
+  </p>
+  <p>
+   The arguments of the method <tt>assign()</tt> are the same as the
+   arguments of <tt>execute()</tt> described above. In contrast to the
+   remarks made there it is not necessary to clear the prefix. This is
+   done in the abstract class automatically.
+  </p>
+
+  <h4>Expandable Code</h4>
+  <p>
+   Some macros are expandable. This means that they can be used on the
+   right-hand-side of an invocation as well. This feature is expressed
+   by the interface {@link de.dante.extex.interpreter.ExpandableCode
+   ExpandableCode}. Since Java does not allow multiple inheritance
+   no abstract base class is provided.
+  </p>
+  <p>
+   To implement an expandable primitive it is sufficient to declare
+   the interface for the class and implement the method
+   <tt>expand()</tt>. This is sketched in the following example:
+  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+    <b>package</b> my.package;
+
+    <b>import</b> de.dante.extex.interpreter.AbstractCode;
+    <b>import</b> de.dante.extex.interpreter.contect.Context;
+    <b>import</b> de.dante.extex.interpreter.ExpandableCode;
+    <b>import</b> de.dante.extex.interpreter.Flags;
+    <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.typesetter.Typesetter;
+    <b>import</b> de.dante.util.GeneralException;
+ 
+    <b>class</b> MyExpandable <b>extends</b> AbstractCode <b>implements</b> ExpandableCode {
+
+      <b>public</b> MyExpandable(<b>final</b> String name) {
+        super(name);
+        <i>// initialization code -- if required</i>
+      }
+
+      <b>public void</b> execute(<b>final</b> Flags prefix,
+                          <b>final</b> Context context,
+                          <b>final</b> TokenSource source,
+                          <b>final</b> Typesetter typesetter
+                         ) <b>throws</b> GeneralException {
+        <i>// implement the execution behaviour here</i>
+        prefix.clear();
+      }
+
+      <b>public void</b> evaluate(<b>final</b> Flags prefix,
+                           <b>final</b> Context context,
+                           <b>final</b> TokenSource source,
+                           <b>final</b> Typesetter typesetter
+                          ) <b>throws</b> GeneralException {
+        <i>// implement the evaluation behaviour here</i>
+      }
+    }</pre>
+   The parameters of <tt>evaluate()</tt> are ikdentical to those of
+   <tt>execute()</tt>. But note, that the expected behaviour of
+   <tt>evaluate()</tt> is that it does <emph>not</emph> modify the
+   context or the typesetter but exclusively modifies the token
+   source. Usually it reads some tokens and piuts back its result to
+   the token stream.
+  </p>
+
+  <h4>Conditional -- Also Calles Ifs</h4>
+  <p>
+   Conditionals are special because they modify the flow of control.
+   In the macro programming language of TeX this may lead to a mode
+   where tokens are absorbed at high speed. In this mode is necessary
+   to identify conitionals to honor matching pairs of start and end
+   tokens. 
+  </p>
+  <p>
+   All neccesary actions are performed by the abstract base class
+   {@link de.dante.extex.interpreter.primitives.conditional.AbstractIf
+   AbstractIf}. The only thing to do is to implement the method
+   <tt>conditional()</tt> which computes whether the then or the else
+   branch should be considered relevant. This is shown in the
+   following example:
+  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+    <b>package</b> my.package;
+
+    <b>import</b> de.dante.extex.interpreter.primitives.conditional.AbstractIf;
+    <b>import</b> de.dante.extex.interpreter.contect.Context;
+    <b>import</b> de.dante.extex.interpreter.Flags;
+    <b>import</b> de.dante.extex.interpreter.TokenSource;
+    <b>import</b> de.dante.extex.typesetter.Typesetter;
+    <b>import</b> de.dante.util.GeneralException;
+ 
+    <b>class</b> MyIf <b>extends</b> AbstractIf {
+
+      <b>public</b> MyIf(<b>final</b> String name) {
+        super(name);
+        <i>// initialization code -- if required</i>
+      }
+
+      <b>public boolean</b> conditional(<b>final</b> Flags prefix,
+                                 <b>final</b> Context context,
+                                 <b>final</b> TokenSource source,
+                                 <b>final</b> Typesetter typesetter
+                                ) <b>throws</b> GeneralException {
+        <i>// implement the evaluation of the conditional here</i>
+	<b>return</b> <i>result</i>;
+      }
+    }</pre>
+   The parameters are the same as the parameters for
+   <tt>execute()</tt> described above.
+  </p>
+  <p>
+   Note that any conditional is expandable automatically. Thus it
+   should not modify the context or the typesetter.
   </p>
   
-  
-  @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- </bodY>
+  <h4>Interaction With Other Macros</h4>
+  <p>
+   Several primitives of ExTeX are implemented generically. Let us
+   consider for example the macro <tt>\the</tt>. This primitive simply
+   gathers the next token and delegates the task of providing an
+   appropriate definition for <tt>\the</tt> to the definition of this
+   token. 
+  </p>
+  <p>
+   The ability to be usable after <tt>\the</tt> is expressed with the
+   help of the interface {@link de.dante.extex.interpreter.Theable
+   Theable}. Thus it is enough for a primitive to implemnt this
+   interface if it needs to be usable after <tt>\the</tt>.
+  </p>
+  <p>
+   The following list contains some macros of TeX and the related
+   interfaces: 
+  </p>
+  <table>
+   <tr>
+    <td><tt>\advance</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.arithmetic.Advanceable Advanceable}</td>
+   </tr>
+   <tr>
+    <td><tt>\box</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.box.Boxable Boxable}</td>
+   </tr>
+   <tr>
+    <td><tt>\count</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.count.CountConvertible CountConvertible}</td>
+   </tr>
+   <tr>
+    <td><tt>\dimen</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.dimen.DimenConvertible DimenConvertible}</td>
+   </tr>
+   <tr>
+    <td><tt>\divide</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.arithmetic.Divideable Dividable}</td>
+   </tr>
+   <tr>
+    <td><tt>\font</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.font.FontConvertible FontConvertible}</td>
+   </tr>
+   <tr>
+    <td><tt>\multiply</tt></td>
+    <td>{@link de.dante.extex.interpreter.type.arithmetic.Multiplyable Multiplyable}</td>
+   </tr>
+   <tr>
+    <td><tt>\show</tt></td>
+    <td>{@link de.dante.extex.interpreter.Showable Showable}</td>
+   </tr>
+   <tr>
+    <td><tt>\showthe</tt></td>
+    <td>{@link de.dante.extex.interpreter.Theable Theable}</td>
+   </tr>
+   <tr>
+    <td><tt>\the</tt></td>
+    <td>{@link de.dante.extex.interpreter.Theable Theable}</td>
+   </tr>
+  </table>
+
+  </doc>
+
+
+ </body>
 </html>
  
