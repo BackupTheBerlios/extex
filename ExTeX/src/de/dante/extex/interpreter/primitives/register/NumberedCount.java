@@ -22,6 +22,12 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
 /**
+ * ...
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.10 $
+ */
+/**
  * This class provides an implementation for the primitive <code>\count</code>.
  * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
@@ -40,7 +46,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NumberedCount extends NamedCount {
 
@@ -54,13 +60,7 @@ public class NumberedCount extends NamedCount {
     }
 
     /**
-     * Return the key (the number) for the register.
-     *
-     * @param source ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException ...
+     * @see de.dante.extex.interpreter.primitives.register.NamedCount#getKey(de.dante.extex.interpreter.TokenSource)
      */
     protected String getKey(final TokenSource source) throws GeneralException {
 
