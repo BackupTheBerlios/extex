@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Muskip implements Serializable {
 
@@ -124,6 +124,7 @@ public class Muskip implements Serializable {
 
         Token t = source.getToken();
         if (t == null) {
+            // TODO unimplemented
             throw new RuntimeException("unimplemented");
         }
         long value = GlueComponent.scanFloat(source, t);

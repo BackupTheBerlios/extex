@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -167,6 +167,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      */
     private int mlistToHlist(final HorizontalListNode hlist, final int index) {
 
+        // TODO unimplemented
         throw new RuntimeException("unimplemented");
     }
 

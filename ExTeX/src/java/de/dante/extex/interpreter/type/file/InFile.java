@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InFile implements Serializable {
 
@@ -128,8 +128,10 @@ public class InFile implements Serializable {
 
         if (stream == null) {
             if (file == null) {
+                // TODO unimplemented
                 throw new RuntimeException("unimplemented");
             } else if (!isOpen()) {
+                // TODO unimplemented
                 throw new RuntimeException("unimplemented");
             }
         }
