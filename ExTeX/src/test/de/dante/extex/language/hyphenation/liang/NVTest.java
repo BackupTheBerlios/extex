@@ -54,7 +54,7 @@ import de.dante.util.UnicodeChar;
  * This is the test class for NV.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NVTest extends TestCase {
 
@@ -62,7 +62,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a font.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockFont implements Font {
 
@@ -244,7 +244,7 @@ public class NVTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockGlyph implements Glyph {
 
@@ -504,7 +504,7 @@ public class NVTest extends TestCase {
     /**
      * The field <tt>hyphen</tt> contains the token for the hyphen char.
      */
-    private static Token hyphen;
+    private static UnicodeChar hyphen;
 
     /**
      * The field <tt>tf</tt> contains the token factory.
@@ -557,8 +557,7 @@ public class NVTest extends TestCase {
         tf = new TokenFactoryImpl();
         f = tf.createToken(Catcode.LETTER, 'f', Namespace.DEFAULT_NAMESPACE);
         l = tf.createToken(Catcode.LETTER, 'l', Namespace.DEFAULT_NAMESPACE);
-        hyphen = tf.createToken(Catcode.OTHER, font.getHyphenChar(), //
-                Namespace.DEFAULT_NAMESPACE);
+        hyphen = font.getHyphenChar();
         tc = new TypesettingContextImpl(font);
         ModifiableLanguage lang = new BaseHyphenationTable();
         lang.setLigatureBuilder(new LigatureBuilderImpl());

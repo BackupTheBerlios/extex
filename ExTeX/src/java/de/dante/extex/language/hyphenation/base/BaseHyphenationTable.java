@@ -45,7 +45,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -92,8 +92,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      *      de.dante.extex.interpreter.type.tokens.Tokens,
      *      TypesetterOptions)
      */
-    public void addHyphenation(final Tokens word, final TypesetterOptions context)
-            throws HyphenationException {
+    public void addHyphenation(final Tokens word,
+            final TypesetterOptions context) throws HyphenationException {
 
         try {
             exceptionMap.put(createHyphenation(word, context), word);
@@ -169,10 +169,10 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     /**
      * @see de.dante.extex.language.Language#hyphenate(
      *      de.dante.extex.interpreter.type.node.HorizontalListNode,
-     *      de.dante.extex.interpreter.context.Context, Token)
+     *      de.dante.extex.interpreter.context.Context, UnicodeChar)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final TypesetterOptions context, final Token hyphen)
+            final TypesetterOptions context, final UnicodeChar hyphen)
             throws HyphenationException {
 
         if (!hyphenactive || nodelist.size() == 0) {
@@ -230,8 +230,9 @@ public class BaseHyphenationTable implements ModifiableLanguage {
             Token t = word.get(j);
             if (t.equals(Catcode.OTHER, '-')) {
                 nodes.add(new DiscretionaryNode(null, new HorizontalListNode(
-                        cnf.newInstance(context.getTypesettingContext(), hyphen
-                                .getChar())), null));
+                        cnf
+                                .newInstance(context.getTypesettingContext(),
+                                        hyphen)), null));
             } else {
                 nodes.add(nodelist.get(i++));
             }
