@@ -48,7 +48,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -174,6 +174,16 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
+     * Getter for nodes.
+     *
+     * @return the nodes.
+     */
+    protected HorizontalListNode getNodes() {
+
+        return this.nodes;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
@@ -187,6 +197,16 @@ public class HorizontalListMaker extends AbstractListMaker {
     public void removeLastNode() {
 
         nodes.remove(nodes.size() - 1);
+    }
+
+    /**
+     * Setter for nodes.
+     *
+     * @param nodes the nodes to set.
+     */
+    protected void setNodes(final HorizontalListNode nodes) {
+
+        this.nodes = nodes;
     }
 
     /**
