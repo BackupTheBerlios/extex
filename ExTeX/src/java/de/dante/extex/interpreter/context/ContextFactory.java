@@ -26,7 +26,7 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ContextFactory implements Configurable {
     /** the configuration for this factory */
@@ -58,13 +58,13 @@ public class ContextFactory implements Configurable {
         Context context;
 
         try {
-            context = (Context) Class.forName(config.getAttribute("class"))
-                                         .newInstance();
+            context = (Context) (Class.forName(config.getAttribute("class"))
+                    .getConstructor(new Class[]{Configuration.class})
+                    .newInstance(new Object[]{config}));
+            
         } catch (Exception e) {
             throw new ConfigurationException("ContextFactory", e);
         }
-
-        context.configure(config);
 
         return context;
     }
