@@ -24,10 +24,11 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.Node;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class provides an extension mechanism for nodes. With this class it is
+ * possible to insert arbitrary nodes into the typesetter tree.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
@@ -92,9 +93,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
      */
     public void setWidth(final FixedDimen width) {
 
-        // TODO gene: incomplete
-        throw new RuntimeException("incomplete");
-        //this.extension.setWidth(width);
+        this.extension.setWidth(width);
     }
 
     /**
