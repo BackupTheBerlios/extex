@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public final class Messages {
     //TODO: This class is a mess. Integrate the localized messages into the components.
@@ -51,7 +51,7 @@ public final class Messages {
      * The constant <tt>BUNDLE_NAME</tt> contains the name of the resource
      * bundle to use.
      */
-    private static final String BUNDLE_NAME = "config.extexMessage";
+    private static final String BUNDLE_NAME = "config.de.dante.extex.message";
 
     /**
      * The constant <tt>bundle</tt> contains the resource bundle for further
