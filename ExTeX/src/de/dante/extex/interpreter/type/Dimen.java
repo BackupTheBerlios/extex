@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -389,40 +389,6 @@ public class Dimen extends GlueComponent implements Serializable {
         toks.add(factory.newInstance(Catcode.LETTER, "t"));
 
         return toks;
-    }
-
-
-    /**
-     * Return a String with the Dimen value in pt
-     *
-     * @return a String with the Dimen value in pt
-     * @deprecated this method produces incorrectly rounded values; use toString() instead
-     */
-    public String toPT() {
-         return String.valueOf(round((double)getValue() / ONE)) + "pt";
-    }
-
-    /**
-     * Return the <code>Dimen</code>-value in bp
-     *
-     * @return the value in bp
-     * @deprecated use dimen arithmetic instead of incorrect rounding to a double
-     */
-    public double toBP() {
-        return ((double) getValue() * 7200) / (7227 * ONE);
-    }
-
-    /**
-     * Rounds a floating-point number to nearest whole number.
-     * It uses exactly the same algorithm as web2c implementation of TeX.
-     *
-     * @param d number to be rounded
-     *
-     * @return rounded value
-     */
-    private long round(final double d) {
-
-        return (long) ((d >= 0.0) ? d + 0.5 : d - 0.5);
     }
 
 }
