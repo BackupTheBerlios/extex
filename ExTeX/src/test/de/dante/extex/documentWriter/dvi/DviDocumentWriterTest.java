@@ -20,6 +20,10 @@
 // created: 2004-09-31
 package de.dante.extex.documentWriter.dvi;
 
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+
+import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
@@ -29,26 +33,22 @@ import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.node.ExplicitKernNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.InsertionNode;
-import de.dante.extex.interpreter.type.node.KernNode;
 import de.dante.extex.interpreter.type.node.MarkNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
-import de.dante.extex.interpreter.type.node.WhatsItNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
-import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
-import junit.framework.TestCase;
 
 /**
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -186,7 +186,7 @@ public class DviDocumentWriterTest extends TestCase {
      */
     public void testValidNodes() throws Exception {
         // TODO: nodeList.add(new CharNode()); (TE)
-        nodeList.add(new KernNode(new Dimen(12346)));
+        nodeList.add(new ExplicitKernNode(new Dimen(12346)));
         nodeList.add(new GlueNode(new Glue(1234)));
         // TODO: nodeList.add(new LigatureNode()); (TE)
         // TODO: nodeList.add(new SpecialNode("Test")); (TE)
