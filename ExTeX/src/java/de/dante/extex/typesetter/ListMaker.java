@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.TokenSource;
@@ -35,7 +36,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface ListMaker {
 
@@ -49,17 +50,6 @@ public interface ListMaker {
      * @throws GeneralException in case of an error
      */
     void add(Node node) throws GeneralException;
-
-    /**
-     * Add an arbitrary Noad to the internal list if it is prepared to hold one.
-     * This is usually the case in math modes. In other modes an exception
-     * should be thrown.
-     *
-     * @param noad the noad to add
-     *
-     * @throws GeneralException in case of an error
-     */
-    void add(Noad noad) throws GeneralException;
 
     /**
      * Add a glue node to the list.
@@ -81,7 +71,7 @@ public interface ListMaker {
      * @throws GeneralException in case of an error
      */
     void addSpace(TypesettingContext typesettingContext, Count spacefactor)
-        throws GeneralException;
+            throws GeneralException;
 
     /**
      * Close the node list.
@@ -141,53 +131,61 @@ public interface ListMaker {
     void setSpacefactor(Count sf) throws GeneralException;
 
     /**
-     * ...
+     * Treat a alignment tab character.
      *
-     * @param context ...
-     * @param uc ...
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param t the actual tab token
      *
      * @throws GeneralException in case of an error
      */
-    void treatLetter(TypesettingContext context, UnicodeChar uc) throws GeneralException;
+    void tab(Context context, TokenSource source, Token t)
+            throws GeneralException;
 
     /**
-     * ...
+     * Add a letter to the current list or treat it in some other appropriate
+     * way.
+     *
+     * @param context the typesetting context
+     * @param uc the character
+     *
+     * @throws GeneralException in case of an error
+     */
+    void treatLetter(TypesettingContext context, UnicodeChar uc)
+            throws GeneralException;
+
+    /**
+     * Treat a math shift character.
+     * Usually this leads to entering or leaving math mode -- maybe after
+     * inspection of a following token.
      * @param context TODO
-     * @param source TODO
-     * @param t ...
+     * @param source the source for new tokens
+     * @param t the actual math shift character token
      *
      * @throws GeneralException in case of an error
      */
-    void tab(Context context, TokenSource source, Token t) throws GeneralException;
+    void mathShift(Context context, TokenSource source, Token t) throws GeneralException;
 
     /**
-     * ...
+     * Treat a subscript mark. This might be meaningful in math mode only.
      *
-     * @param context ...
-     * @param t ...
+     * @param context the typesetting context
+     * @param t the actual sub mark token
      *
      * @throws GeneralException in case of an error
      */
-    void treatSubMark(TypesettingContext context, Token t) throws GeneralException;
+    void subscriptMark(TypesettingContext context, Token t)
+            throws GeneralException;
 
     /**
-     * ...
+     * Treat a superscript mark. This might be meaningful in math mode only.
      *
-     * @param context ...
-     * @param t ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    void treatSupMark(TypesettingContext context, Token t) throws GeneralException;
-
-    /**
-     * ...
-     *
-     * @param t ...
-     * @param source ...
+     * @param context the typesetting context
+     * @param t the actual super mark token
      *
      * @throws GeneralException in case of an error
      */
-    void treatMathShift(Token t, TokenSource source) throws GeneralException;
+    void superscriptMark(TypesettingContext context, Token t)
+            throws GeneralException;
 
 }
