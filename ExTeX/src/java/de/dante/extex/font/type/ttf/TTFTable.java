@@ -23,7 +23,7 @@ package de.dante.extex.font.type.ttf;
  * Interace for all TTFTables.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface TTFTable {
 
@@ -32,4 +32,22 @@ public interface TTFTable {
      * @return Returns the table-type.
      */
     int getType();
+
+    /**
+     * Returns a order number to sort the tables for the init process.
+     * @return Returns the order number.
+     */
+    int getInitOrder();
+
+    /**
+     * Returns the table map with all tables.
+     * @return Returns the table map with all tables.
+     */
+    TableMap getTableMap();
+
+    /**
+     * Init the table.
+     */
+    void init();
+
 }

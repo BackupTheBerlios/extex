@@ -51,9 +51,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableGLYF implements TTFTable, XMLConvertible {
+public class TTFTableGLYF extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * buf
@@ -68,13 +71,15 @@ public class TTFTableGLYF implements TTFTable, XMLConvertible {
     /**
      * Create a new object.
      *
-     * @param de    directory entry
-     * @param rar   the RandomAccessInput
+     * @param tablemap  the tablemap
+     * @param de        directory entry
+     * @param rar       the RandomAccessInput
      * @throws IOException if an error occured
      */
-    TTFTableGLYF(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableGLYF(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
         buf = new byte[de.getLength()];
         rar.readFully(buf); // mgn rar.read(buf)
@@ -82,15 +87,29 @@ public class TTFTableGLYF implements TTFTable, XMLConvertible {
     }
 
     /**
-     * init
-     * @param numGlyphs number of glyphs
-     * @param loca      loca table
+     * @see de.dante.extex.font.type.ttf.TTFTable#getInitOrder()
      */
-    public void init(final int numGlyphs, final TTFTableLOCA loca) {
+    public int getInitOrder() {
+
+        return 2;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.ttf.TTFTable#init()
+     */
+    public void init() {
+
+        TTFTableLOCA loca = (TTFTableLOCA) getTableMap().get(TTFFont.LOCA);
+        TTFTableMAXP maxp = (TTFTableMAXP) getTableMap().get(TTFFont.MAXP);
+        if (loca == null || maxp == null) {
+            return;
+        }
+        int numGlyphs = maxp.getNumGlyphs();
 
         if (buf == null) {
             return;
         }
+
         descript = new Descript[numGlyphs];
         ByteArrayInputStream bais = new ByteArrayInputStream(buf);
         for (int i = 0; i < numGlyphs; i++) {

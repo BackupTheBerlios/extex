@@ -53,9 +53,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableHMTX implements TTFTable, XMLConvertible {
+public class TTFTableHMTX extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * buffer
@@ -74,13 +77,16 @@ public class TTFTableHMTX implements TTFTable, XMLConvertible {
 
     /**
      * Create a new object
+     *
+     * @param tablemap  the tablemap
      * @param de        entray
      * @param rar       input
      * @throws IOException if an IO-error occurs
      */
-    TTFTableHMTX(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableHMTX(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
         buf = new byte[de.getLength()];
         rar.readFully(buf); // mgn rar.read(buf)
@@ -99,15 +105,31 @@ public class TTFTableHMTX implements TTFTable, XMLConvertible {
     private int lsblength;
 
     /**
-     * init
-     * @param numberOfHMetrics  number of horizontal metrics
-     * @param lsbCount  lsb count
+     * @see de.dante.extex.font.type.ttf.TTFTable#getInitOrder()
      */
-    public void init(final int numberOfHMetrics, final int lsbCount) {
+    public int getInitOrder() {
+
+        return 1;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.ttf.TTFTable#init()
+     */
+    public void init() {
+
+        TTFTableHHEA hhea = (TTFTableHHEA) getTableMap().get(TTFFont.HHEA);
+        TTFTableMAXP maxp = (TTFTableMAXP) getTableMap().get(TTFFont.MAXP);
+        if (hhea == null || maxp == null) {
+            return;
+        }
+
+        int numberOfHMetrics = hhea.getNumberOfHMetrics();
+        int lsbCount = maxp.getNumGlyphs() - hhea.getNumberOfHMetrics();
 
         if (buf == null) {
             return;
         }
+
         hMetricslength = numberOfHMetrics;
         lsblength = lsbCount;
 

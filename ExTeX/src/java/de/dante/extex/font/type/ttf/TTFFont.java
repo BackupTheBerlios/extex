@@ -24,11 +24,15 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
+import de.dante.extex.font.type.ttf.TableDirectory.Entry;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessInputFile;
 import de.dante.util.file.random.RandomAccessInputStream;
@@ -38,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFFont implements XMLConvertible {
 
@@ -631,10 +635,34 @@ public class TTFFont implements XMLConvertible {
         post = (TTFTablePOST) getTable(POST);
 
         // Initialize the tables that require it
-        hmtx.init(hhea.getNumberOfHMetrics(), maxp.getNumGlyphs()
-                - hhea.getNumberOfHMetrics());
-        loca.init(maxp.getNumGlyphs(), head.getIndexToLocFormat() == 0);
-        glyf.init(maxp.getNumGlyphs(), loca);
+        //        hmtx.init(hhea.getNumberOfHMetrics(), maxp.getNumGlyphs()
+        //                - hhea.getNumberOfHMetrics());
+        //        loca.init(maxp.getNumGlyphs(), head.getIndexToLocFormat() == 0);
+        //        glyf.init(maxp.getNumGlyphs(), loca);
+
+        // sort tables for init
+        TTFTable[] tabs = tablemap.getTables();
+
+        Arrays.sort(tabs, new Comparator() {
+
+            /**
+             * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+             */
+            public int compare(final Object arg0, final Object arg1) {
+
+                TTFTable t0 = (TTFTable) arg0;
+                TTFTable t1 = (TTFTable) arg1;
+                if (t0.getInitOrder() > t1.getInitOrder()) {
+                    return 1;
+                }
+                return 0;
+            }
+        });
+
+        // init tables
+        for (int i = 0; i < tabs.length; i++) {
+            tabs[i].init();
+        }
     }
 
     /**
@@ -650,154 +678,154 @@ public class TTFFont implements XMLConvertible {
         TTFTable t = null;
         switch (de.getTag()) {
             case GPOS :
-                t = new TTFTableGPOS(de, rar);
+                t = new TTFTableGPOS(tablemap, de, rar);
                 break;
             case GSUB :
-                t = new TTFTableGSUB(de, rar);
+                t = new TTFTableGSUB(tablemap, de, rar);
                 break;
             case OS_2 :
-                t = new TTFTableOS2(de, rar);
+                t = new TTFTableOS2(tablemap, de, rar);
                 break;
             case CMAP :
-                t = new TTFTableCMAP(de, rar);
+                t = new TTFTableCMAP(tablemap, de, rar);
                 break;
             case CVT :
-                t = new TTFTableCVT(de, rar);
+                t = new TTFTableCVT(tablemap, de, rar);
                 break;
             case FPGM :
-                t = new TTFTableFPGM(de, rar);
+                t = new TTFTableFPGM(tablemap, de, rar);
                 break;
             case GLYF :
-                t = new TTFTableGLYF(de, rar);
+                t = new TTFTableGLYF(tablemap, de, rar);
                 break;
             case HEAD :
-                t = new TTFTableHEAD(de, rar);
+                t = new TTFTableHEAD(tablemap, de, rar);
                 break;
             case HHEA :
-                t = new TTFTableHHEA(de, rar);
+                t = new TTFTableHHEA(tablemap, de, rar);
                 break;
             case HMTX :
-                t = new TTFTableHMTX(de, rar);
+                t = new TTFTableHMTX(tablemap, de, rar);
                 break;
             case KERN :
-                t = new TTFTableKERN(de, rar);
+                t = new TTFTableKERN(tablemap, de, rar);
                 break;
             case LOCA :
-                t = new TTFTableLOCA(de, rar);
+                t = new TTFTableLOCA(tablemap, de, rar);
                 break;
             case MAXP :
-                t = new TTFTableMAXP(de, rar);
+                t = new TTFTableMAXP(tablemap, de, rar);
                 break;
             case NAME :
-                t = new TTFTableNAME(de, rar);
+                t = new TTFTableNAME(tablemap, de, rar);
                 break;
             case PREP :
-                t = new TTFTablePREP(de, rar);
+                t = new TTFTablePREP(tablemap, de, rar);
                 break;
             case POST :
-                t = new TTFTablePOST(de, rar);
+                t = new TTFTablePOST(tablemap, de, rar);
                 break;
             case HDMX :
-                t = new TTFTableHDMX(de, rar);
+                t = new TTFTableHDMX(tablemap, de, rar);
                 break;
             case GASP :
-                t = new TTFTableGASP(de, rar);
+                t = new TTFTableGASP(tablemap, de, rar);
                 break;
             case VDMX :
-                t = new TTFTableVDMX(de, rar);
+                t = new TTFTableVDMX(tablemap, de, rar);
                 break;
             case VMTX :
-                t = new TTFTableVMTX(de, rar);
+                t = new TTFTableVMTX(tablemap, de, rar);
                 break;
             case VHEA :
-                t = new TTFTableVHEA(de, rar);
+                t = new TTFTableVHEA(tablemap, de, rar);
                 break;
             case TYP1 :
-                t = new TTFTableTYP1(de, rar);
+                t = new TTFTableTYP1(tablemap, de, rar);
                 break;
             case BSLN :
-                t = new TTFTableBSLN(de, rar);
+                t = new TTFTableBSLN(tablemap, de, rar);
                 break;
             case DSIG :
-                t = new TTFTableDSIG(de, rar);
+                t = new TTFTableDSIG(tablemap, de, rar);
                 break;
             case FVAR :
-                t = new TTFTableFVAR(de, rar);
+                t = new TTFTableFVAR(tablemap, de, rar);
                 break;
             case GVAR :
-                t = new TTFTableGVAR(de, rar);
+                t = new TTFTableGVAR(tablemap, de, rar);
                 break;
             case CFF :
-                t = new TTFTableCFF(de, rar);
+                t = new TTFTableCFF(tablemap, de, rar);
                 break;
             case MMSD :
-                t = new TTFTableMMSD(de, rar);
+                t = new TTFTableMMSD(tablemap, de, rar);
                 break;
             case MMFX :
-                t = new TTFTableMMFX(de, rar);
+                t = new TTFTableMMFX(tablemap, de, rar);
                 break;
             case GDEF :
-                t = new TTFTableGDEF(de, rar);
+                t = new TTFTableGDEF(tablemap, de, rar);
                 break;
             case JSTF :
-                t = new TTFTableJSTF(de, rar);
+                t = new TTFTableJSTF(tablemap, de, rar);
                 break;
             case EBDT :
-                t = new TTFTableEBDT(de, rar);
+                t = new TTFTableEBDT(tablemap, de, rar);
                 break;
             case EBLC :
-                t = new TTFTableEBLC(de, rar);
+                t = new TTFTableEBLC(tablemap, de, rar);
                 break;
             case EBSC :
-                t = new TTFTableEBSC(de, rar);
+                t = new TTFTableEBSC(tablemap, de, rar);
                 break;
             case LTSH :
-                t = new TTFTableLTSH(de, rar);
+                t = new TTFTableLTSH(tablemap, de, rar);
                 break;
             case PCLT :
-                t = new TTFTablePCLT(de, rar);
+                t = new TTFTablePCLT(tablemap, de, rar);
                 break;
             case ACNT :
-                t = new TTFTableACNT(de, rar);
+                t = new TTFTableACNT(tablemap, de, rar);
                 break;
             case AVAR :
-                t = new TTFTableAVAR(de, rar);
+                t = new TTFTableAVAR(tablemap, de, rar);
                 break;
             case BDAT :
-                t = new TTFTableBDAT(de, rar);
+                t = new TTFTableBDAT(tablemap, de, rar);
                 break;
             case BLOC :
-                t = new TTFTableBLOC(de, rar);
+                t = new TTFTableBLOC(tablemap, de, rar);
                 break;
             case CVAR :
-                t = new TTFTableCVAR(de, rar);
+                t = new TTFTableCVAR(tablemap, de, rar);
                 break;
             case FEAT :
-                t = new TTFTableFEAT(de, rar);
+                t = new TTFTableFEAT(tablemap, de, rar);
                 break;
             case FDSC :
-                t = new TTFTableFDSC(de, rar);
+                t = new TTFTableFDSC(tablemap, de, rar);
                 break;
             case FMTX :
-                t = new TTFTableFMTX(de, rar);
+                t = new TTFTableFMTX(tablemap, de, rar);
                 break;
             case JUST :
-                t = new TTFTableJUST(de, rar);
+                t = new TTFTableJUST(tablemap, de, rar);
                 break;
             case LCAR :
-                t = new TTFTableLCAR(de, rar);
+                t = new TTFTableLCAR(tablemap, de, rar);
                 break;
             case MORT :
-                t = new TTFTableMORT(de, rar);
+                t = new TTFTableMORT(tablemap, de, rar);
                 break;
             //            case OPBD :
             //                t = new TTFTableOPBD(de, rar);
             //                break;
             case PROP :
-                t = new TTFTablePROP(de, rar);
+                t = new TTFTablePROP(tablemap, de, rar);
                 break;
             case TRAK :
-                t = new TTFTableTRAK(de, rar);
+                t = new TTFTableTRAK(tablemap, de, rar);
                 break;
             default :
                 t = null;
@@ -820,6 +848,38 @@ public class TTFFont implements XMLConvertible {
 
         int v1 = value >> SHIFTX10;
         return v1;
+    }
+
+    /**
+     * Convert the internal long date format to a Date.
+     * <p>
+     * Calculate the difference between the original Mac epoch (1904)
+     * to the epoch on this machine.
+     * </p>
+     * @param value the long format (mac)
+     * @return Returns the calculate Date
+     */
+    static Date convertDate(final long value) {
+
+        // TODO wrong!!!
+        return new Date(value);
+    }
+
+    /**
+     * seconds from 1904 to 1971
+     */
+    private static final long SECONDS1904TO1971 = 60 * 60 * 24 * (365 * (1971 - 1904) + 17);
+
+    /**
+     * Convert a int value in a binary string
+     * @param value the int value
+     * @return Returns the binary string
+     */
+    static String convertIntToBinaryString(final int value) {
+
+        StringBuffer buf = new StringBuffer("00000000000000000000000000000000");
+        buf.append(Integer.toBinaryString(value));
+        return buf.substring(buf.length() - 32).toString();
     }
 
     /**

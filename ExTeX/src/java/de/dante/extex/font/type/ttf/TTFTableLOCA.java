@@ -70,9 +70,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableLOCA implements TTFTable, XMLConvertible {
+public class TTFTableLOCA extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * buffer
@@ -94,28 +97,45 @@ public class TTFTableLOCA implements TTFTable, XMLConvertible {
     /**
      * Create a new object
      *
+     * @param tablemap  the tablemap
      * @param de        entry
      * @param rar       input
      * @throws IOException if an IO-error occurs
      */
-    TTFTableLOCA(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableLOCA(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
         buf = new byte[de.getLength()];
         rar.readFully(buf); // mgn rar.read(buf)
     }
 
     /**
-     * init
-     * @param numGlyphs     number of glyphs
-     * @param shortEntries  short entries
+     * @see de.dante.extex.font.type.ttf.TTFTable#getInitOrder()
      */
-    public void init(final int numGlyphs, final boolean shortEntries) {
+    public int getInitOrder() {
+
+        return 1;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.ttf.TTFTable#init()
+     */
+    public void init() {
+
+        TTFTableHEAD head = (TTFTableHEAD) getTableMap().get(TTFFont.HEAD);
+        TTFTableMAXP maxp = (TTFTableMAXP) getTableMap().get(TTFFont.MAXP);
+        if (head == null || maxp == null) {
+            return;
+        }
+        int numGlyphs = maxp.getNumGlyphs();
+        boolean shortEntries = head.getIndexToLocFormat() == 0;
 
         if (buf == null) {
             return;
         }
+
         offsets = new int[numGlyphs + 1];
         ByteArrayInputStream bais = new ByteArrayInputStream(buf);
         if (shortEntries) {

@@ -100,9 +100,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableOS2 implements TTFTable {
+public class TTFTableOS2 extends AbstractTTFTable implements TTFTable {
 
     /**
      * version
@@ -267,13 +267,15 @@ public class TTFTableOS2 implements TTFTable {
     /**
      * Create a new object.
      *
-     * @param de    directory entry
-     * @param rar   the RandomAccessInput
+     * @param tablemap  the tablemap
+     * @param de        directory entry
+     * @param rar       the RandomAccessInput
      * @throws IOException if an error occured
      */
-    TTFTableOS2(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableOS2(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
         version = rar.readUnsignedShort();
         xAvgCharWidth = rar.readShort();

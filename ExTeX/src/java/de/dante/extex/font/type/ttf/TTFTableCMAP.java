@@ -38,9 +38,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableCMAP implements TTFTable, XMLConvertible {
+public class TTFTableCMAP extends AbstractTTFTable implements TTFTable, XMLConvertible {
 
     // -------------------------------------------------------
     // -------------------------------------------------------
@@ -697,13 +697,15 @@ public class TTFTableCMAP implements TTFTable, XMLConvertible {
     /**
      * Create a new object.
      *
-     * @param de    directory entry
-     * @param rar   the RandomAccessInput
+     * @param tablemap  the tablemap
+     * @param de        directory entry
+     * @param rar       the RandomAccessInput
      * @throws IOException if an error occured
      */
-    TTFTableCMAP(final TableDirectory.Entry de, final RandomAccessR rar)
+    TTFTableCMAP(final TableMap tablemap,final TableDirectory.Entry de, final RandomAccessR rar)
             throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
 
         long fp = rar.getPointer();
@@ -843,7 +845,9 @@ public class TTFTableCMAP implements TTFTable, XMLConvertible {
         Element table = new Element("table");
         table.setAttribute("name", "cmap");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
- 
+        table.setAttribute("version", String.valueOf(TTFFont
+                .convertVersion(version)));
+        table.setAttribute("numberoftables", String.valueOf(numTables));
         // TODO incomplete
         return table;
     }

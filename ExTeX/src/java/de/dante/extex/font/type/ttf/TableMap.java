@@ -27,7 +27,7 @@ import java.util.Set;
  * Map for a TTF-table
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TableMap {
@@ -121,5 +121,19 @@ public class TableMap {
         }
 
         return keys;
+    }
+
+    /**
+     * Returns a TTFTable array from the map.
+     * @return Returns a TTFTable array from the map.
+     */
+    public TTFTable[] getTables() {
+
+        TTFTable[] tab = new TTFTable[data.size()];
+        int[] keys = getKeys();
+        for (int i = 0; i < keys.length; i++) {
+            tab[i] = get(keys[i]);
+        }
+        return tab;
     }
 }

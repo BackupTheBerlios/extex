@@ -30,20 +30,25 @@ import de.dante.util.file.random.RandomAccessR;
 /**
  * The 'MMFX
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableMMFX implements TTFTable, XMLConvertible {
+public class TTFTableMMFX extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * Create a new object
      *
+     * @param tablemap  the tablemap
      * @param de        entry
      * @param rar       input
      * @throws IOException if an IO-error occurs
      */
-    TTFTableMMFX(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableMMFX(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
 
         // incomplete

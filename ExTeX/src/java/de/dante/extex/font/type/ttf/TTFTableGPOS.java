@@ -27,9 +27,9 @@ import de.dante.util.file.random.RandomAccessR;
  * Table gpos.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableGPOS implements TTFTable {
+public class TTFTableGPOS extends AbstractTTFTable implements TTFTable {
 
     /**
      * Version.
@@ -54,13 +54,15 @@ public class TTFTableGPOS implements TTFTable {
     /**
      * Create a new object.
      *
+     * @param tablemap  the tablemap
      * @param de        directory entry
      * @param rar       input
      * @throws IOException if an IO-error occurs
      */
-    TTFTableGPOS(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableGPOS(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
 
         // GPOS Header

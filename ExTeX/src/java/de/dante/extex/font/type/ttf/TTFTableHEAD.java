@@ -20,6 +20,7 @@
 package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
+import java.text.DateFormat;
 
 import org.jdom.Element;
 
@@ -97,9 +98,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class TTFTableHEAD implements TTFTable, XMLConvertible {
+public class TTFTableHEAD extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * version
@@ -189,13 +193,15 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
     /**
      * Create a new object
      *
+     * @param tablemap  the tablemap
      * @param de        entry
      * @param rar       input
      * @throws IOException if an IO-error occurs
      */
-    TTFTableHEAD(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableHEAD(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
         version = rar.readInt();
         fontRevision = new FixedPoint(rar.readInt());
@@ -370,32 +376,11 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table head\n");
-        buf.append("   Version            : ").append(version).append('\n');
-        buf.append("   fontRevision       : ").append(fontRevision)
-                .append('\n');
-        buf.append("   checkSumAdjustment : ").append(checkSumAdjustment)
-                .append('\n');
-        buf.append("   magicNumber        : ").append(magicNumber).append('\n');
-        buf.append("   flags              : ").append(flags).append('\n');
-        buf.append("   unitsPerEm         : ").append(unitsPerEm).append('\n');
-        buf.append("   created            : ").append(created).append('\n');
-        buf.append("   modified           : ").append(modified).append('\n');
-        // ...
-        return buf.toString();
-    }
-
-    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
+        DateFormat dformat = DateFormat.getDateInstance();
         Element table = new Element("table");
         table.setAttribute("name", "head");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
@@ -403,20 +388,24 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
                 .convertVersion(version)));
         table.setAttribute("fontrevision", String.valueOf(fontRevision
                 .getDoubleValue()));
-        table.setAttribute("xxxfontrevision", String.valueOf("0x"
-                + fontRevision.getFixedPoint()));
-        table.setAttribute("checksumadjustment", String
-                .valueOf(checkSumAdjustment));
-        table.setAttribute("magicnumber", String.valueOf(magicNumber));
-        table.setAttribute("flags", String.valueOf(flags));
+        table.setAttribute("xxxfontrevision", "0x"
+                + fontRevision.getFixedPoint());
+        table.setAttribute("checksumadjustment", "0x"
+                + Integer.toHexString(checkSumAdjustment));
+        table.setAttribute("magicnumber", "0x"
+                + Integer.toHexString(magicNumber));
+        table.setAttribute("flags", TTFFont.convertIntToBinaryString(flags));
         table.setAttribute("unitsperem", String.valueOf(unitsPerEm));
-        table.setAttribute("created", String.valueOf(created));
-        table.setAttribute("modified", String.valueOf(modified));
+        table.setAttribute("created", dformat.format(TTFFont
+                .convertDate(created)));
+        table.setAttribute("modified", dformat.format(TTFFont
+                .convertDate(modified)));
         table.setAttribute("xmin", String.valueOf(xMin));
         table.setAttribute("ymin", String.valueOf(yMin));
         table.setAttribute("xmax", String.valueOf(xMax));
         table.setAttribute("ymax", String.valueOf(yMax));
-        table.setAttribute("macstyle", String.valueOf(macStyle));
+        table.setAttribute("macstyle", TTFFont
+                .convertIntToBinaryString(macStyle));
         table.setAttribute("lowestrecppem", String.valueOf(lowestRecPPEM));
         table.setAttribute("fontdiretionhint", String
                 .valueOf(fontDirectionHint));

@@ -45,7 +45,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TableDirectory implements XMLConvertible {
 
@@ -105,11 +105,11 @@ public class TableDirectory implements XMLConvertible {
             /**
              * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
              */
-            public int compare(Object arg0, Object arg1) {
+            public int compare(final Object arg0, final Object arg1) {
 
                 Entry e0 = (Entry) arg0;
                 Entry e1 = (Entry) arg1;
-                if (e0.getOffset() < e1.getOffset()) {
+                if (e0.getOffset() > e1.getOffset()) {
                     return 1;
                 }
                 return 0;
@@ -383,7 +383,8 @@ public class TableDirectory implements XMLConvertible {
     public Element toXML() {
 
         Element td = new Element(TAG_TABLE_DIRECTORY);
-        td.setAttribute("version", String.valueOf(TTFFont.convertVersion(version)));
+        td.setAttribute("version", String.valueOf(TTFFont
+                .convertVersion(version)));
         td.setAttribute("numberoftables", String.valueOf(numTables));
         td.setAttribute("searchrange", String.valueOf(searchRange));
         td.setAttribute("entryselector", String.valueOf(entrySelector));

@@ -49,9 +49,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableNAME implements TTFTable, XMLConvertible {
+public class TTFTableNAME extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * format
@@ -76,13 +79,15 @@ public class TTFTableNAME implements TTFTable, XMLConvertible {
     /**
      * Create a new object
      *
+     * @param tablemap  the tablemap
      * @param de        directory entry
      * @param rar       input
      * @throws IOException if an IO-error occurs
      */
-    TTFTableNAME(final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableNAME(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
+        super(tablemap);
         rar.seek(de.getOffset());
         format = rar.readShort();
         count = rar.readShort();
