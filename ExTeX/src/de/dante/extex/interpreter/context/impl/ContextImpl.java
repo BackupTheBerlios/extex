@@ -31,12 +31,15 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.Direction;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.InFile;
 import de.dante.extex.interpreter.type.Muskip;
@@ -101,7 +104,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -672,6 +675,34 @@ public class ContextImpl implements Context, Observable, Serializable {
         return (Tokenizer) group;
     }
 
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Color)
+     */
+    public void setTypesettingContext(Color color) throws ConfigurationException {
+
+        tcFactory.newInstance(group.getTypesettingContext(), color);
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Direction)
+     */
+    public void setTypesettingContext(Direction direction) throws ConfigurationException {
+
+        tcFactory.newInstance(group.getTypesettingContext(), direction);
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.type.Font)
+     */
+    public void setTypesettingContext(Font font) throws ConfigurationException {
+
+        tcFactory.newInstance(group.getTypesettingContext(), font);
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(int)
+     */
+    public void setTypesettingContext(int angle) throws ConfigurationException {
+
+        tcFactory.newInstance(group.getTypesettingContext(), angle);
+    }
     /**
      * Setter for the typesetting context in the current group.
      *

@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.InFile;
 import de.dante.extex.interpreter.type.Muskip;
@@ -51,16 +52,19 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface Context extends Serializable {
 
     /**
-     * ...
+     * Convenience method to get the code assigned to a Token.
+     * If the Token is a ControlSequenceToken then the macro is returned.
+     * If the Token is a ActiveCharacterToken then the active value is returned.
+     * Otherwise <code>null</code> is returned.
      *
-     * @param t ...
+     * @param t the Token to differentiate on
      *
-     * @return ...
+     * @return the code for the token
      *
      * @throws GeneralException in case of an error
      */
@@ -324,6 +328,34 @@ public interface Context extends Serializable {
      * @return ...
      */
     Glue getGlue(String name);
+
+    /**
+     * ...
+     *
+     * @param font ...
+     */
+    void setTypesettingContext(Font font) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param color ...
+     */
+    void setTypesettingContext(Color color) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param direction ...
+     */
+    void setTypesettingContext(Direction direction) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param angle ...
+     */
+    void setTypesettingContext(int angle) throws ConfigurationException;
 
     /**
      * ...

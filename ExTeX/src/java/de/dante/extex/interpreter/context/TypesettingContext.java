@@ -25,9 +25,16 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface TypesettingContext {
+
+    /**
+     * Setter for all components.
+     *
+     * @param context the context to clone
+     */
+    void set(TypesettingContext context);
 
     /**
      * Setter for the font component.

@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.context;
 
+import de.dante.extex.interpreter.type.Font;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
@@ -28,7 +29,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TypesettingContextFactory {
     /**
@@ -55,8 +56,8 @@ public class TypesettingContextFactory {
      * @param configuration the configuration for this factory
      *
      * @throws ConfigurationMissingAttributeException in case that the
-     *      attribute <tt>CLASS_ATTRIBUTE</tt>
-     *      is not set for the given configuration.
+     *      attribute <tt>CLASS_ATTRIBUTE</tt> is not set for the given
+     *      configuration.
      * @throws ConfigurationInstantiationException in case that the
      *      instantiation of the given class causes a SecurityException.
      * @throws ConfigurationClassNotFoundException in case that the named class
@@ -92,6 +93,7 @@ public class TypesettingContextFactory {
      */
     public TypesettingContext newInstance()
             throws ConfigurationInstantiationException {
+
         TypesettingContext context;
 
         try {
@@ -103,6 +105,118 @@ public class TypesettingContextFactory {
         }
 
         return context;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the class failed.
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final Font font)
+            throws ConfigurationInstantiationException {
+
+        TypesettingContext c;
+
+        try {
+            c = (TypesettingContext) (theClass.newInstance());
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        }
+        
+        c.set(context);
+        c.setFont(font);
+
+        return c;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the class failed.
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final Color color)
+            throws ConfigurationInstantiationException {
+
+        TypesettingContext c;
+
+        try {
+            c = (TypesettingContext) (theClass.newInstance());
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        }
+        
+        c.set(context);
+        c.setColor(color);
+
+        return c;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the class failed.
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final Direction direction)
+            throws ConfigurationInstantiationException {
+
+        TypesettingContext c;
+
+        try {
+            c = (TypesettingContext) (theClass.newInstance());
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        }
+        
+        c.set(context);
+        c.setDirection(direction);
+
+        return c;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the class failed.
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final int angle)
+            throws ConfigurationInstantiationException {
+
+        TypesettingContext c;
+
+        try {
+            c = (TypesettingContext) (theClass.newInstance());
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        }
+        
+        c.set(context);
+        c.setAngle(angle);
+
+        return c;
     }
 
 }
