@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.configuration;
 
 import de.dante.util.StringList;
@@ -51,7 +52,7 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface Configuration {
 
@@ -95,12 +96,13 @@ public interface Configuration {
      *
      * @return the sub-configuration
      *
-     * @throws ConfigurationNotFoundException in case that the given name does
+     * @throws ConfigurationException in case of other errors. Especially
+     *  <br />
+     *  ConfigurationNotFoundException in case that the given name does
      * not correspond to one of the tags in the current configuration
-     * @throws ConfigurationException in case of other errors
      */
     Configuration getConfiguration(String key)
-        throws ConfigurationNotFoundException, ConfigurationException;
+            throws ConfigurationException;
 
     /**
      * Extract a sub-configuration with a given name.
@@ -143,10 +145,10 @@ public interface Configuration {
      *  reading the resource
      */
     Configuration findConfiguration(String key)
-        throws ConfigurationInvalidResourceException,
-        ConfigurationNotFoundException,
-        ConfigurationSyntaxException,
-        ConfigurationIOException;
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException;
 
     /**
      * Extract a sub-configuration with a given name and a given attribute.
@@ -183,12 +185,13 @@ public interface Configuration {
      *
      * @return the sub-configuration
      *
-     * @throws ConfigurationNotFoundException in case that the given name does
+     * @throws ConfigurationException in case of other errors. Especially
+     * <br/>
+     * ConfigurationNotFoundException in case that the given name does
      * not correspond to one of the tags in the current configuration
-     * @throws ConfigurationException in case of other errors
      */
     Configuration getConfiguration(String key, String attribute)
-        throws ConfigurationNotFoundException, ConfigurationException;
+            throws ConfigurationException;
 
     /**
      * Retrieve a value from the configuration as <i>String</i>.
@@ -239,7 +242,7 @@ public interface Configuration {
      * @throws ConfigurationException in case that something went wrong
      */
     int getValueAsInteger(String key, int defaultValue)
-        throws ConfigurationException;
+            throws ConfigurationException;
 
     /**
      * Get the list of all values with the given tag name in the current
@@ -257,7 +260,9 @@ public interface Configuration {
      * @param key the name of the sub-configuration
      *
      * @return the iterator
+     *
+     * @throws ConfigurationException in case that something went wrong
      */
-    Iterator iterator(String key);
+    Iterator iterator(String key) throws ConfigurationException;
 
 }

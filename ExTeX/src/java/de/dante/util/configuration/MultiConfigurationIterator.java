@@ -24,7 +24,7 @@ import java.util.Iterator;
  * This class provides an Iterator over multiple Configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MultiConfigurationIterator implements Iterator {
 
@@ -55,9 +55,10 @@ public class MultiConfigurationIterator implements Iterator {
      *
      * @param theConfigs the array of configurations to combine
      * @param theKey ...
+     * @throws ConfigurationException ...
      */
     public MultiConfigurationIterator(final Configuration[] theConfigs,
-        final String theKey) {
+        final String theKey) throws ConfigurationException {
 
         super();
         this.configs = theConfigs;
@@ -82,7 +83,11 @@ public class MultiConfigurationIterator implements Iterator {
         }
 
         while (++ptr < configs.length) {
-            iter = configs[ptr].iterator(key);
+            try {
+                iter = configs[ptr].iterator(key);
+            } catch (ConfigurationException e) {
+                throw new RuntimeException(e);
+            }
 
             if (iter.hasNext()) {
                 return true;
@@ -107,7 +112,11 @@ public class MultiConfigurationIterator implements Iterator {
         }
 
         while (++ptr < configs.length) {
-            iter = configs[ptr].iterator(key);
+            try {
+                iter = configs[ptr].iterator(key);
+            } catch (ConfigurationException e) {
+                throw new RuntimeException(e);
+            }
 
             if (iter.hasNext()) {
                 return iter.next();

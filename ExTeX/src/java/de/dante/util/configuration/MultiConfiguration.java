@@ -31,7 +31,7 @@ import de.dante.util.StringList;
  * They can be treated as if they where contained in one configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MultiConfiguration implements Configuration {
 
@@ -192,9 +192,10 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
+     * @throws ConfigurationException ...
      * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
      */
-    public Iterator iterator(final String key) {
+    public Iterator iterator(final String key) throws ConfigurationException {
 
         return new MultiConfigurationIterator(configs, key);
     }
