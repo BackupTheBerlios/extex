@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Def extends AbstractAssignment {
 
@@ -88,37 +88,35 @@ public class Def extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getControlSequence();
+        CodeToken cs = source.getControlSequence();
         Tokens pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
                 ? expandedBody(context, source, typesetter)//
                 : source.getTokens());
 
-        if (cs instanceof CodeToken) {
-            String name = cs.getValue();
-            context.setCode(cs, new MacroCode(name, prefix, pattern, body),
-                    prefix.isGlobal());
-        } else if (cs == null) {
-            throw new HelpingException("TTP.MissingCtrlSeq");
-        } else {
-            throw new PanicException("TTP.Confusion");
-        }
+        String name = cs.getValue();
+        context.setCode(cs, new MacroCode(name, prefix, pattern, body), prefix
+                .isGlobal());
     }
 
     /**
-     * Parse the expanded body tokens according to the rules for \xdef.
+     * Parse the expanded body tokens according to the rules for <tt>\xdef</tt>.
      *
      * @param context the interpreter context
      * @param source the source to acquire tokens from
      * @param typesetter the typesetter to use as backend
      *
      * @return the tokens making up the body
+     *
+     * @throws GeneralException in case of an error
      */
     private Tokens expandedBody(final Context context,
-            final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
-        //TODO
-        throw new RuntimeException("unimplemented");
+        Tokens body = source.scanTokens();
+        //TODO maybe the treatment of # is incorrect
+        return body;
     }
 
     /**
