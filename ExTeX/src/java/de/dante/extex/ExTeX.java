@@ -82,7 +82,7 @@ import java.util.logging.LogManager;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ExTeX {
     /**
@@ -366,7 +366,6 @@ public class ExTeX {
             Configuration config = new ConfigurationFactory().newInstance(properties.getProperty("extex.config"));
 
             Interpreter interpreter = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-            interpreter.setLogger(logger);
             interpreter.setErrorHandler(new ErrorHandlerImpl(logger));
             interpreter.registerObserver("close",
                                          new FileCloseObserver(logger));

@@ -18,10 +18,8 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.extex.interpreter.context.*;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 
 /**
@@ -37,7 +35,7 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Code {
 
@@ -63,16 +61,6 @@ public interface Code {
 	 * @return the name
 	 */
 	public abstract String getName();
-
-	/**
-	 * ...
-	 * 
-	 * @return ...
-	 * 
-	 * @throws GeneralException
-	 *                 in case of an error
-	 */
-	public abstract Tokens getThe(Context context, TokenSource source) throws GeneralException;
 
 	/**
 	 * This method takes the first token and executes it. The result is placed
@@ -113,8 +101,6 @@ public interface Code {
 	 *                 the interpreter context
 	 * @param source
 	 *                 the token source
-	 * @param typesetter
-	 *                 the typesetter
 	 * 
 	 * @return the updated prefix
 	 * 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,10 +18,8 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.extex.interpreter.context.*;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 
 /**
@@ -31,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AbstractCode implements Code {
     /**
@@ -70,15 +68,6 @@ public class AbstractCode implements Code {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Code#getThe(de.dante.extex.interpreter.context.Context)
-     */
-    public Tokens getThe(Context context, TokenSource source)
-                  throws GeneralException {
-        // TODO unimplemented
-        return null;
     }
 
     /**

@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\spacefactor</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Spacefactor extends AbstractCode {
     /**
@@ -45,8 +45,7 @@ public class Spacefactor extends AbstractCode {
     /**
      * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
      */
-    public void expand(Flags prefix, Context context, TokenSource source,
-                      Typesetter typesetter) throws GeneralException {
+    public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
         source.scanOptionalEquals();
         long f = source.scanInteger();
         typesetter.setSpacefactor(new Count(f));

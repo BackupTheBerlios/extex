@@ -18,6 +18,9 @@
  */
 package de.dante.extex.interpreter;
 
+import java.util.Calendar;
+import java.util.Iterator;
+
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.FontFactoryImpl;
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -27,14 +30,12 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
-import de.dante.extex.logging.Logger;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 import de.dante.util.NotObservableException;
 import de.dante.util.Observable;
@@ -46,15 +47,12 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
 
-import java.util.Calendar;
-import java.util.Iterator;
-
 /**
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Max extends Moritz implements CatcodeVisitor,
                                            Interpreter,
@@ -86,11 +84,6 @@ public class Max extends Moritz implements CatcodeVisitor,
     /** ... */
     private FontFactory fontFactory = new FontFactoryImpl();
     //TODO configure and set in main
-
-    /**
-     * This is the logger for any kind of informative messages.
-     */
-    private Logger logger; //TODO eliminiate since not used
 
     /**
      * This observer list is used for the observers which are registered to
@@ -179,15 +172,6 @@ public class Max extends Moritz implements CatcodeVisitor,
      */
     public void setJobname(String jobname) {
         // TODO unimplemented
-    }
-
-    /**
-     * Setter for the logger.
-     *
-     * @param logger the new logger
-     */
-    public void setLogger(Logger logger) {
-        this.logger = logger;
     }
 
     /**
@@ -571,11 +555,9 @@ public class Max extends Moritz implements CatcodeVisitor,
     /**
      * ...
      *
-     * @param token
-     *                 the token which is about to be expended (for error reporting
+     * @param token the token which is about to be expanded (for error reporting
      *                 purposes)
-     * @param code
-     *                 the definition to expand
+     * @param code the definition to expand
      *
      * @return <code>null</code>
      */
@@ -586,8 +568,22 @@ public class Max extends Moritz implements CatcodeVisitor,
                                               token.toString());
         }
 
-        code.expand(prefix, context, this, typesetter);
+        code.execute(prefix, context, this, typesetter);
 
         return null;
     }
+    
+	/**
+	 * @see de.dante.extex.interpreter.Moritz#expand(de.dante.extex.scanner.Token)
+	 */
+	protected Token expand(Token token, Code code) throws GeneralException {
+        if (code == null) {
+            return token;
+        }
+
+        code.expand(prefix, context, this, typesetter);
+
+		return null;
+	}
+
 }

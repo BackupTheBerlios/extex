@@ -20,6 +20,7 @@ package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
@@ -38,9 +39,9 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class NamedToks extends AbstractCode {
+public class NamedToks extends AbstractCode implements Theable {
 
 	/**
 	 * Creates a new object.
@@ -53,11 +54,11 @@ public class NamedToks extends AbstractCode {
 	}
 
 	/**
-	 * Return the register-value as <code>Tokens</code> for <code>\the</code>.
+	 * Return the register value as <code>Tokens</code> for <code>\the</code>.
 	 * 
-	 * @see de.dante.extex.interpreter.Code#getThe(de.dante.extex.interpreter.context.Context)
+	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
 	 */
-	public Tokens getThe(Context context, TokenSource source) throws GeneralException {
+	public Tokens the(Context context, TokenSource source) throws GeneralException {
 		return context.getToks(getName());
 	}
 

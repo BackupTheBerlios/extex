@@ -22,6 +22,7 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -29,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\message</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Message extends AbstractCode {
     /**
@@ -47,9 +48,9 @@ public class Message extends AbstractCode {
     public void expand(Flags prefix, Context context,
                        TokenSource source, Typesetter typesetter)
                 throws GeneralException {
-                    
-                    
-
+        Tokens toks = source.scanGroup();
+        String msg = toks.toString();
+        source.update("message",msg); 
         prefix.clear();
     }
 }

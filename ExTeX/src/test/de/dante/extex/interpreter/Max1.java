@@ -40,7 +40,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 /**
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Max1 extends TestCase {
 
@@ -107,7 +107,6 @@ public class Max1 extends TestCase {
 
         Configuration config = new ConfigurationFactory().newInstance("config/extex.xml");
         Interpreter interpreter = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
-        interpreter.setLogger(noLogger);
         TestTypesetter typesetter = new TestTypesetter();
 
         interpreter.setTypesetter(typesetter);

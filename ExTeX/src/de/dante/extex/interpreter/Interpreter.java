@@ -20,7 +20,6 @@ package de.dante.extex.interpreter;
 
 import java.io.IOException;
 
-import de.dante.extex.logging.Logger;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -33,7 +32,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
@@ -75,13 +74,6 @@ public interface Interpreter extends TokenSource,
      * @param jobname ...
      */
     public abstract void setJobname(String jobname);
-
-    /**
-     * Setter for the logger to use.
-     *
-     * @param logger the new logger instance
-     */
-    public abstract void setLogger(Logger logger);
 
     /**
      * Setter for the token stream factory.
