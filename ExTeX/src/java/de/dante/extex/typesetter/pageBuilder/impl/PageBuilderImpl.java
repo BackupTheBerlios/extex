@@ -31,17 +31,18 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
     /**
-     * The field <tt>documentWriter</tt> contains the ...
+     * The field <tt>documentWriter</tt> contains the document writer to receive
+     * the pages.
      */
     private DocumentWriter documentWriter = null;
 
     /**
-     * The field <tt>vlist</tt> contains the ...
+     * The field <tt>vlist</tt> contains the accumulated material.
      */
     private NodeList vlist;
 
@@ -77,9 +78,13 @@ public class PageBuilderImpl implements PageBuilder {
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#flush()
      */
-    public void flush() throws GeneralException {
+    public void flush(final NodeList nodes) throws GeneralException {
 
-        // TODO unimplemented
+        try {
+            this.documentWriter.shipout(nodes);
+        } catch (IOException e) {
+            throw new PanicException(e);
+        }
     }
 
     /**
@@ -106,10 +111,10 @@ public class PageBuilderImpl implements PageBuilder {
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#shipout(
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#inspectAndBuild(
      *      de.dante.extex.typesetter.NodeList)
      */
-    public void shipout(final NodeList nodes) throws GeneralException {
+    public void inspectAndBuild(final NodeList nodes) throws GeneralException {
 
         try {
             this.documentWriter.shipout(nodes);
