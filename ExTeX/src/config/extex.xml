@@ -168,7 +168,7 @@
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>
     <define name="interlinepenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <define name="jobname" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
+    <define name="jobname" class="de.dante.extex.interpreter.primitives.info.Jobname"/>
     <define name="kern" class="de.dante.extex.interpreter.primitives.box.Kern"/>
     <define name="language" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lastbox" class=""/>
@@ -211,7 +211,7 @@
     <define name="maxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="meaning" class=""/>
     <define name="medmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
-    <define name="message" class="de.dante.extex.interpreter.primitives.debugging.Message"/>
+    <define name="message" class="de.dante.extex.interpreter.primitives.info.Message"/>
     <Define name="mkern" class=""/>
     <define name="month" class="de.dante.extex.interpreter.primitives.register.NamedCount">1</define>
     <Define name="moveleft" class=""/>
@@ -288,7 +288,7 @@
     <define name="showboxbreadth" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="showboxdepth" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="showlists" class=""/>
-    <define name="showthe" class="de.dante.extex.interpreter.primitives.debugging.Showthe"/>
+    <define name="showthe" class="de.dante.extex.interpreter.primitives.info.Showthe"/>
     <Define name="skewchar" class=""/>
     <define name="skip" class="de.dante.extex.interpreter.primitives.register.NumberedSkip"/>
     <define name="skipdef" class="de.dante.extex.interpreter.primitives.register.Skipdef"/>
@@ -304,9 +304,9 @@
     <define name="tabskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="textfont" class=""/>
     <Define name="textstyle" class=""/>
-    <define name="the" class="de.dante.extex.interpreter.primitives.debugging.The"/>
-    <TRASH name="tosp" class="de.dante.extex.interpreter.primitives.debugging.ToSP"/>
-    <TRASH name="printformat" class="de.dante.extex.interpreter.primitives.debugging.PrintFormat"/>
+    <define name="the" class="de.dante.extex.interpreter.primitives.info.The"/>
+    <TRASH name="tosp" class="de.dante.extex.interpreter.primitives.info.ToSP"/>
+    <TRASH name="printformat" class="de.dante.extex.interpreter.primitives.info.PrintFormat"/>
     <define name="thickmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
     <define name="thinmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
