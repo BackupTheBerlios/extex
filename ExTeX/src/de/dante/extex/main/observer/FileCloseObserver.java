@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,39 +16,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+package de.dante.extex.main.observer;
 
 import java.util.logging.Logger;
 
+import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 
 /**
- * This observer waits for an update event and writes the argument as info to
- * the Logger specified upon construction.
- * <p>
- * This observer is meant for writing the message of the primitive \message to
- * the appropriate output stream.
- * </p>
+ * This observer waits for update events when files are closed. According to the
+ * reference in TeX a closing parenthesis is written to the log file.
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
- *
- * @version $Revision: 1.5 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.1 $
  */
-public class MessageObserver implements Observer {
+public class FileCloseObserver implements Observer {
     /**
-     * The field <tt>logger</tt> contains the logger for output.
+     * The field <tt>logger</tt> contains the logger for output
      */
     private Logger logger;
 
     /**
      * Creates a new object.
      *
-     * @param logger the logger for potential output
+     * @param theLogger the logger for potential output
      */
-    public MessageObserver(final Logger logger) {
+    public FileCloseObserver(final Logger theLogger) {
         super();
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
@@ -56,7 +52,10 @@ public class MessageObserver implements Observer {
      *      java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
-        logger.info(item.toString() + " ");
-    }
+        TokenStream stream = (TokenStream) item;
 
+        if (stream.isFileStream()) {
+            logger.info(")");
+        }
+    }
 }

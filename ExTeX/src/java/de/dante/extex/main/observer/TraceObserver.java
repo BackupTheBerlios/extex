@@ -16,12 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
 
-import java.util.logging.Handler;
-import java.util.logging.Level;
+package de.dante.extex.main.observer;
 
-import de.dante.extex.interpreter.Interaction;
+import java.util.logging.Logger;
+
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 
@@ -31,32 +30,31 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class InteractionObserver implements Observer {
+public class TraceObserver implements Observer {
 
     /**
-     * The field <tt>handler</tt> contains the {@link java.util.logging.Handler
-     * Handler} at which the logging should be directed.
+     * The field <tt>logger</tt> contains the logger for output
      */
-    private Handler handler;
+    private Logger logger;
 
     /**
      * Creates a new object.
      *
-     * @param theHandler the target handler
+     * @param theLogger the logger for potential output
      */
-    public InteractionObserver(final Handler theHandler) {
+    public TraceObserver(final Logger theLogger) {
+
         super();
-        this.handler = theHandler;
+        this.logger = theLogger;
     }
 
     /**
      * @see de.dante.util.observer.Observer#update(de.dante.util.Observable,
-     *       java.lang.Object)
+     *      java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
 
-        handler.setLevel((Interaction) item == Interaction.BATCHMODE //
-                ? Level.SEVERE : Level.INFO);
+        logger.fine("> " + item.toString() + ".\n");
     }
 
 }

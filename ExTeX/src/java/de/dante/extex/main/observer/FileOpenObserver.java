@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+package de.dante.extex.main.observer;
 
 import java.util.logging.Logger;
 
@@ -29,28 +29,30 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class TokenPushObserver implements Observer {
+public class FileOpenObserver implements Observer {
+
     /**
-     * The field <tt>logger</tt> contains the logger for output
+     * The field <tt>logger</tt> contains the ...
      */
     private Logger logger;
 
     /**
      * Creates a new object.
      *
-     * @param logger the logger for potential output
+     * @param theLogger ...
      */
-    public TokenPushObserver(final Logger logger) {
+    public FileOpenObserver(final Logger theLogger) {
         super();
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
      * @see de.dante.util.observer.Observer#update(de.dante.util.Observable,
-     *      java.lang.Object)
+     *       java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
-        logger.fine(">>> " + item.toString() + "\n");
+
+        logger.info("(" + item.toString());
     }
 
 }

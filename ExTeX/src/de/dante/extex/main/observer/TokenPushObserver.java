@@ -16,7 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+
+package de.dante.extex.main.observer;
 
 import java.util.logging.Logger;
 
@@ -24,32 +25,27 @@ import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 
 /**
- * This observer waits for an update event and writes the argument as info to
- * the Logger specified upon construction.
- * <p>
- * This observer is meant for writing the message of the primitive \message to
- * the appropriate output stream.
- * </p>
+ * ...
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
- *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class LogMessageObserver implements Observer {
+public class TokenPushObserver implements Observer {
 
     /**
-     * The field <tt>logger</tt> contains the logger for output.
+     * The field <tt>logger</tt> contains the logger for output
      */
     private Logger logger;
 
     /**
      * Creates a new object.
      *
-     * @param aLogger the logger for potential output
+     * @param theLogger the logger for potential output
      */
-    public LogMessageObserver(final Logger aLogger) {
+    public TokenPushObserver(final Logger theLogger) {
+
         super();
-        this.logger = aLogger;
+        this.logger = theLogger;
     }
 
     /**
@@ -57,7 +53,8 @@ public class LogMessageObserver implements Observer {
      *      java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
-        logger.fine(item.toString() + " ");
+
+        logger.fine(">>> " + item.toString() + "\n");
     }
 
 }
