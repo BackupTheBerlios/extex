@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,28 +18,64 @@
  */
 package de.dante.extex.font;
 
+import java.io.File;
+
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.main.MainFontException;
+import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
 
 /**
- * This class implements a dummy font which does not contain any characters.
+ * This class implements a default font.
  * 
- * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public class DummyFont implements Font {
+public class DefaultFont implements Font {
+
+	/**
+	 * The fontname
+	 */
+	private String name;
 
 	/**
 	 * Creates a new object.
 	 */
-	public DummyFont(String name, FileFinder finder) {
+	public DefaultFont(String name, FileFinder fileFinder) throws GeneralException, ConfigurationException {
 		super();
+		// trim name !
+		if (name != null) {
+			this.name = name.trim();
+		}
+		loadFont(fileFinder);
 	}
 
+	/**
+	 * load the Font
+	 * @throws GeneralException, if a error is thrown.
+	 */
+	private void loadFont(FileFinder finder) throws GeneralException, ConfigurationException {
+		if (name != null) {
+
+			File fontfile = finder.findFile(name,"efm");
+			
+			System.err.println("load FONT " + fontfile);
+			
+			if (fontfile.exists()) {
+				
+				
+			} else {
+				throw new MainFontException("font not found");// TODO change
+			}
+		} else {
+			throw new MainFontException("fontname not valid");// TODO change
+		}
+	}
+	
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getSpace()
 	 */
@@ -72,9 +108,13 @@ public class DummyFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#getFontName()
 	 */
 	public String getFontName() {
-		return "dummy";
+		return name;
 	}
 
+	public String toString() {
+		return "<fontname: " + getFontName() + " >";
+	}
+	
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
 	 */

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,26 +18,29 @@
  */
 package de.dante.extex.interpreter.type;
 
+import de.dante.util.UnicodeChar;
+
 /**
- * ...
+ * Font-Interface
  * 
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Font {
-    
-    public abstract Dimen getWidth(String c);// TODO change to UnicodeChar
-    public abstract Dimen getHeight(String c);// TODO change to UnicodeChar
-    public abstract Dimen getDepth(String c);// TODO change to UnicodeChar
 
-    public abstract boolean isDefined(String c);// TODO change to UnicodeChar
+	public abstract Dimen getWidth(UnicodeChar c);
+	public abstract Dimen getHeight(UnicodeChar c);
+	public abstract Dimen getDepth(UnicodeChar c);
 
-    public abstract Dimen kern(String c1, String c2);// TODO change to UnicodeChar
-    public abstract String ligature(String c1, String c2);// TODO change to UnicodeChar
+	public abstract boolean isDefined(UnicodeChar c);
 
-    public abstract Glue getSpace();
-    public abstract Dimen getEm();
-    public abstract Dimen getEx();
+	public abstract Dimen kern(UnicodeChar c1, UnicodeChar c2);
+	public abstract String ligature(UnicodeChar c1, UnicodeChar c2);
+
+	public abstract Glue getSpace();
+	public abstract Dimen getEm();
+	public abstract Dimen getEx();
 
 	public abstract Dimen getFontDimen(long index);
 

@@ -27,8 +27,8 @@ import de.dante.util.GeneralException;
 /**
  * Real (with a double value)
  *
- * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.3 $
  */
 public class Real implements Serializable {
 

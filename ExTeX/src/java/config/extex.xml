@@ -358,7 +358,10 @@
       <Group class="de.dante.extex.interpreter.context.impl.GroupExTeXImpl"/>
     </Context>
 
-    <Font></Font>
+	<Font class="de.dante.extex.font.FontFactoryImpl">
+		CMR12
+	</Font>
+	
     <Language></Language>
   </Interpreter>
 
@@ -374,5 +377,19 @@
       <path>./</path>
     </tex>
   </Reader>
+
+  <File>
+    <tex>
+      <extension></extension>
+      <extension>.tex</extension>
+      <path></path>
+      <path>./</path>
+    </tex>
+    <efm>
+      <extension>.efm</extension>
+      <path>./font</path>
+   	</efm>
+  </File>
+
  
 </ExTeX>

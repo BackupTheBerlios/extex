@@ -21,12 +21,12 @@ package de.dante.extex.main;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the main program use a ExTeX-extension witch is not avaiable.
+ * This exception is thrown when are fonterror is thrown.
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MainExTeXExtensionException extends MainException {
+public class MainFontException extends MainException {
 
 	// TODO check
 	
@@ -35,14 +35,14 @@ public class MainExTeXExtensionException extends MainException {
 	 *
 	 * @param message the name of the unknown option
 	 */
-	public MainExTeXExtensionException() {
-		super(-16, "ExTeXExtensionException");
+	public MainFontException(String message) {
+		super(-18, message);
 	}
 
 	/**
 	 * @see java.lang.Throwable#getMessage()
 	 */
 	public String getMessage() {
-		return Messages.format("MainExTeXExtensionException.Message", super.getMessage());
+		return Messages.format("MainFontException.Message", super.getMessage());
 	}
 }

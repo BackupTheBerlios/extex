@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<font name="myfont">
+   <fontsegment typ="type1" filename="CMR12.pfb" fontname="CMR12" fullname="CMR12" familyname="Computer Modern" characterset="" weight="Medium" italicangle="0.0" isfixedpitch="false" llx="-34" lly="-251" urx="988" ury="750" underlineposition="0" underlinethickness="0" encodingscheme="FontSpecific" capheight="683" xheight="431" ascender="694" descender="-194" stdhw="0" stdvw="80">
+      <charmetric ID="0" c="0" n="Gamma" bllx="41" blly="0" burx="570" bury="681" />
+      <charmetric ID="1" c="1" n="Delta" bllx="46" blly="0" burx="769" bury="714" />
+      <charmetric ID="2" c="2" n="Theta" bllx="54" blly="-21" burx="707" bury="704" />
+      <charmetric ID="3" c="3" n="Lambda" bllx="31" blly="0" burx="648" bury="714" />
+      <charmetric ID="4" c="4" n="Xi" bllx="41" blly="0" burx="611" bury="678" />
+      <charmetric ID="5" c="5" n="Pi" bllx="41" blly="0" burx="692" bury="681" />
+      <charmetric ID="6" c="6" n="Sigma" bllx="54" blly="0" burx="652" bury="683" />
+      <charmetric ID="7" c="7" n="Upsilon" bllx="54" blly="0" burx="707" bury="704" />
+      <charmetric ID="8" c="8" n="Phi" bllx="54" blly="0" burx="652" bury="683" />
+      <charmetric ID="9" c="9" n="Psi" bllx="55" blly="0" burx="707" bury="683" />
+      <charmetric ID="10" c="10" n="Omega" bllx="44" blly="0" burx="662" bury="704" />
+      <charmetric ID="11" c="11" n="ff" bllx="26" blly="0" burx="609" bury="704">
+         <l letter="i" lig="ffi" />
+         <l letter="l" lig="ffl" />
+      </charmetric>
+      <charmetric ID="12" c="12" n="fi" bllx="26" blly="0" burx="515" bury="704" />
+      <charmetric ID="13" c="13" n="fl" bllx="26" blly="0" burx="515" bury="704" />
+      <charmetric ID="14" c="14" n="ffi" bllx="26" blly="0" burx="787" bury="704" />
+      <charmetric ID="15" c="15" n="ffl" bllx="26" blly="0" burx="787" bury="704" />
+      <charmetric ID="16" c="16" n="dotlessi" bllx="33" blly="0" burx="241" bury="441" />
+      <charmetric ID="17" c="17" n="dotlessj" bllx="-34" blly="-204" burx="203" bury="441" />
+      <charmetric ID="18" c="18" n="grave" bllx="106" blly="511" burx="287" bury="697" />
+      <charmetric ID="19" c="19" n="acute" bllx="202" blly="511" burx="383" bury="697" />
+      <charmetric ID="20" c="20" n="caron" bllx="116" blly="518" burx="373" bury="637" />
+      <charmetric ID="21" c="21" n="breve" bllx="99" blly="522" burx="390" bury="694" />
+      <charmetric ID="22" c="22" n="macron" bllx="68" blly="557" burx="421" bury="586" />
+      <charmetric ID="23" c="23" n="ring" bllx="274" blly="540" burx="459" bury="715" />
+      <charmetric ID="24" c="24" n="cedilla" bllx="130" blly="-201" burx="358" bury="-21" />
+      <charmetric ID="25" c="25" n="germandbls" bllx="28" blly="-10" burx="462" bury="704" />
+      <charmetric ID="26" c="26" n="ae" bllx="46" blly="-10" burx="679" bury="446" />
+      <charmetric ID="27" c="27" n="oe" bllx="30" blly="-10" burx="734" bury="446" />
+      <charmetric ID="28" c="28" n="oslash" bllx="35" blly="-102" burx="454" bury="533" />
+      <charmetric ID="29" c="29" n="AE" bllx="31" blly="0" burx="856" bury="683" />
+      <charmetric ID="30" c="30" n="OE" bllx="67" blly="-21" burx="965" bury="704" />
+      <charmetric ID="31" c="31" n="Oslash" bllx="54" blly="-55" burx="707" bury="738" />
+      <charmetric ID="32" c="32" n="suppress" bllx="26" blly="281" burx="255" bury="392" />
+      <charmetric ID="33" c="33" n="exclam" bllx="86" blly="0" burx="184" bury="715" />
+      <charmetric ID="34" c="34" n="quotedblright" bllx="33" blly="404" burx="334" bury="694" />
+      <charmetric ID="35" c="35" n="numbersign" bllx="54" blly="-194" burx="761" bury="694" />
+      <charmetric ID="36" c="36" n="dollar" bllx="54" blly="-56" burx="435" bury="750" />
+      <charmetric ID="37" c="37" n="percent" bllx="54" blly="-56" burx="761" bury="750" />
+      <charmetric ID="38" c="38" n="ampersand" bllx="41" blly="-21" burx="712" bury="715" />
+      <charmetric ID="39" c="39" n="quoteright" bllx="87" blly="404" burx="198" bury="694" />
+      <charmetric ID="40" c="40" n="parenleft" bllx="98" blly="-251" burx="325" bury="750" />
+      <charmetric ID="41" c="41" n="parenright" bllx="55" blly="-251" burx="282" bury="750" />
+      <charmetric ID="42" c="42" n="asterisk" bllx="64" blly="319" burx="425" bury="750" />
+      <charmetric ID="43" c="43" n="plus" bllx="54" blly="-77" burx="707" bury="576" />
+      <charmetric ID="44" c="44" n="comma" bllx="87" blly="-193" burx="195" bury="97" />
+      <charmetric ID="45" c="45" n="hyphen" bllx="11" blly="189" burx="271" bury="243" />
+      <charmetric ID="46" c="46" n="period" bllx="87" blly="0" burx="184" bury="97" />
+      <charmetric ID="47" c="47" n="slash" bllx="54" blly="-250" burx="435" bury="750" />
+      <charmetric ID="48" c="48" n="zero" bllx="41" blly="-21" burx="448" bury="665" />
+      <charmetric ID="49" c="49" n="one" bllx="91" blly="0" burx="410" bury="665" />
+      <charmetric ID="50" c="50" n="two" bllx="49" blly="0" burx="440" bury="665" />
+      <charmetric ID="51" c="51" n="three" bllx="41" blly="-21" burx="448" bury="665" />
+      <charmetric ID="52" c="52" n="four" bllx="27" blly="0" burx="462" bury="675" />
+      <charmetric ID="53" c="53" n="five" bllx="49" blly="-21" burx="440" bury="664" />
+      <charmetric ID="54" c="54" n="six" bllx="41" blly="-21" burx="448" bury="665" />
+      <charmetric ID="55" c="55" n="seven" bllx="54" blly="-21" burx="475" bury="676" />
+      <charmetric ID="56" c="56" n="eight" bllx="41" blly="-21" burx="448" bury="665" />
+      <charmetric ID="57" c="57" n="nine" bllx="41" blly="-21" burx="448" bury="665" />
+      <charmetric ID="58" c="58" n="colon" bllx="87" blly="0" burx="184" bury="431" />
+      <charmetric ID="59" c="59" n="semicolon" bllx="87" blly="-193" burx="187" bury="431" />
+      <charmetric ID="60" c="60" n="exclamdown" bllx="87" blly="-215" burx="185" bury="500" />
+      <charmetric ID="61" c="61" n="equal" bllx="54" blly="138" burx="707" bury="361" />
+      <charmetric ID="62" c="62" n="questiondown" bllx="54" blly="-204" burx="407" bury="500" />
+      <charmetric ID="63" c="63" n="question" bllx="54" blly="0" burx="407" bury="704" />
+      <charmetric ID="64" c="64" n="at" bllx="54" blly="-10" burx="707" bury="704" />
+      <charmetric ID="65" c="65" n="A" bllx="31" blly="0" burx="702" bury="714" />
+      <charmetric ID="66" c="66" n="B" bllx="43" blly="0" burx="638" bury="683" />
+      <charmetric ID="67" c="67" n="C" bllx="54" blly="-21" burx="652" bury="704" />
+      <charmetric ID="68" c="68" n="D" bllx="42" blly="0" burx="693" bury="683" />
+      <charmetric ID="69" c="69" n="E" bllx="41" blly="0" burx="638" bury="681" />
+      <charmetric ID="70" c="70" n="F" bllx="41" blly="0" burx="597" bury="681" />
+      <charmetric ID="71" c="71" n="G" bllx="54" blly="-21" burx="719" bury="704" />
+      <charmetric ID="72" c="72" n="H" bllx="41" blly="0" burx="692" bury="683" />
+      <charmetric ID="73" c="73" n="I" bllx="36" blly="0" burx="317" bury="683" />
+      <charmetric ID="74" c="74" n="J" bllx="51" blly="-21" burx="451" bury="683" />
+      <charmetric ID="75" c="75" n="K" bllx="41" blly="0" burx="719" bury="683" />
+      <charmetric ID="76" c="76" n="L" bllx="41" blly="0" burx="570" bury="683" />
+      <charmetric ID="77" c="77" n="M" bllx="44" blly="0" burx="852" bury="683" />
+      <charmetric ID="78" c="78" n="N" bllx="41" blly="0" burx="692" bury="683" />
+      <charmetric ID="79" c="79" n="O" bllx="54" blly="-21" burx="707" bury="704" />
+      <charmetric ID="80" c="80" n="P" bllx="42" blly="0" burx="611" bury="683" />
+      <charmetric ID="81" c="81" n="Q" bllx="54" blly="-194" burx="712" bury="704" />
+      <charmetric ID="82" c="82" n="R" bllx="42" blly="-21" burx="717" bury="683" />
+      <charmetric ID="83" c="83" n="S" bllx="54" blly="-21" burx="489" bury="704" />
+      <charmetric ID="84" c="84" n="T" bllx="35" blly="0" burx="671" bury="678" />
+      <charmetric ID="85" c="85" n="U" bllx="41" blly="-21" burx="692" bury="683" />
+      <charmetric ID="86" c="86" n="V" bllx="18" blly="-21" burx="715" bury="683" />
+      <charmetric ID="87" c="87" n="W" bllx="17" blly="-21" burx="988" bury="683" />
+      <charmetric ID="88" c="88" n="X" bllx="22" blly="0" burx="711" bury="683" />
+      <charmetric ID="89" c="89" n="Y" bllx="10" blly="0" burx="723" bury="683" />
+      <charmetric ID="90" c="90" n="Z" bllx="54" blly="0" burx="548" bury="683" />
+      <charmetric ID="91" c="91" n="bracketleft" bllx="116" blly="-250" burx="250" bury="750" />
+      <charmetric ID="92" c="92" n="quotedblleft" bllx="155" blly="403" burx="456" bury="693" />
+      <charmetric ID="93" c="93" n="bracketright" bllx="21" blly="-250" burx="155" bury="750" />
+      <charmetric ID="94" c="94" n="circumflex" bllx="114" blly="543" burx="375" bury="694" />
+      <charmetric ID="95" c="95" n="dotaccent" bllx="87" blly="568" burx="184" bury="665" />
+      <charmetric ID="96" c="96" n="quoteleft" bllx="73" blly="403" burx="184" bury="693" />
+      <charmetric ID="97" c="97" n="a" bllx="44" blly="-10" burx="484" bury="446" />
+      <charmetric ID="98" c="98" n="b" bllx="28" blly="-10" burx="508" bury="694" />
+      <charmetric ID="99" c="99" n="c" bllx="35" blly="-10" burx="406" bury="446" />
+      <charmetric ID="100" c="100" n="d" bllx="35" blly="-10" burx="515" bury="694" />
+      <charmetric ID="101" c="101" n="e" bllx="30" blly="-10" burx="407" bury="446" />
+      <charmetric ID="102" c="102" n="f" bllx="31" blly="0" burx="342" bury="704">
+         <l letter="i" lig="fi" />
+         <l letter="l" lig="fl" />
+         <l letter="f" lig="ff" />
+      </charmetric>
+      <charmetric ID="103" c="103" n="g" bllx="27" blly="-205" burx="475" bury="452" />
+      <charmetric ID="104" c="104" n="h" bllx="32" blly="0" burx="521" bury="694" />
+      <charmetric ID="105" c="105" n="i" bllx="33" blly="0" burx="241" bury="665" />
+      <charmetric ID="106" c="106" n="j" bllx="-34" blly="-204" burx="203" bury="665" />
+      <charmetric ID="107" c="107" n="k" bllx="28" blly="0" burx="500" bury="694" />
+      <charmetric ID="108" c="108" n="l" bllx="33" blly="0" burx="248" bury="694" />
+      <charmetric ID="109" c="109" n="m" bllx="32" blly="0" burx="793" bury="441" />
+      <charmetric ID="110" c="110" n="n" bllx="32" blly="0" burx="521" bury="441" />
+      <charmetric ID="111" c="111" n="o" bllx="30" blly="-10" burx="459" bury="446" />
+      <charmetric ID="112" c="112" n="p" bllx="28" blly="-194" burx="508" bury="441" />
+      <charmetric ID="113" c="113" n="q" bllx="35" blly="-194" burx="515" bury="441" />
+      <charmetric ID="114" c="114" n="r" bllx="28" blly="0" burx="353" bury="441" />
+      <charmetric ID="115" c="115" n="s" bllx="33" blly="-10" burx="352" bury="446" />
+      <charmetric ID="116" c="116" n="t" bllx="18" blly="-10" burx="326" bury="615" />
+      <charmetric ID="117" c="117" n="u" bllx="32" blly="-10" burx="521" bury="441" />
+      <charmetric ID="118" c="118" n="v" bllx="18" blly="-10" burx="498" bury="431" />
+      <charmetric ID="119" c="119" n="w" bllx="18" blly="-10" burx="688" bury="431" />
+      <charmetric ID="120" c="120" n="x" bllx="10" blly="0" burx="506" bury="431" />
+      <charmetric ID="121" c="121" n="y" bllx="18" blly="-204" burx="498" bury="431" />
+      <charmetric ID="122" c="122" n="z" bllx="27" blly="0" burx="393" bury="431" />
+      <charmetric ID="123" c="123" n="endash" bllx="0" blly="256" burx="489" bury="276" />
+      <charmetric ID="124" c="124" n="emdash" bllx="0" blly="256" burx="978" bury="276" />
+      <charmetric ID="125" c="125" n="hungarumlaut" bllx="127" blly="514" burx="410" bury="699" />
+      <charmetric ID="126" c="126" n="tilde" bllx="82" blly="573" burx="407" bury="664" />
+      <charmetric ID="127" c="127" n="dieresis" bllx="104" blly="573" burx="385" bury="665" />
+      <charmetric ID="128" c="128" n="suppress" bllx="26" blly="281" burx="255" bury="392" />
+      <charmetric ID="160" c="160" n="space" bllx="0" blly="0" burx="0" bury="0" />
+      <charmetric ID="161" c="161" n="Gamma" bllx="41" blly="0" burx="570" bury="681" />
+      <charmetric ID="162" c="162" n="Delta" bllx="46" blly="0" burx="769" bury="714" />
+      <charmetric ID="163" c="163" n="Theta" bllx="54" blly="-21" burx="707" bury="704" />
+      <charmetric ID="164" c="164" n="Lambda" bllx="31" blly="0" burx="648" bury="714" />
+      <charmetric ID="165" c="165" n="Xi" bllx="41" blly="0" burx="611" bury="678" />
+      <charmetric ID="166" c="166" n="Pi" bllx="41" blly="0" burx="692" bury="681" />
+      <charmetric ID="167" c="167" n="Sigma" bllx="54" blly="0" burx="652" bury="683" />
+      <charmetric ID="168" c="168" n="Upsilon" bllx="54" blly="0" burx="707" bury="704" />
+      <charmetric ID="169" c="169" n="Phi" bllx="54" blly="0" burx="652" bury="683" />
+      <charmetric ID="170" c="170" n="Psi" bllx="55" blly="0" burx="707" bury="683" />
+      <charmetric ID="173" c="173" n="Omega" bllx="44" blly="0" burx="662" bury="704" />
+      <charmetric ID="174" c="174" n="ff" bllx="26" blly="0" burx="609" bury="704">
+         <l letter="i" lig="ffi" />
+         <l letter="l" lig="ffl" />
+      </charmetric>
+      <charmetric ID="175" c="175" n="fi" bllx="26" blly="0" burx="515" bury="704" />
+      <charmetric ID="176" c="176" n="fl" bllx="26" blly="0" burx="515" bury="704" />
+      <charmetric ID="177" c="177" n="ffi" bllx="26" blly="0" burx="787" bury="704" />
+      <charmetric ID="178" c="178" n="ffl" bllx="26" blly="0" burx="787" bury="704" />
+      <charmetric ID="179" c="179" n="dotlessi" bllx="33" blly="0" burx="241" bury="441" />
+      <charmetric ID="180" c="180" n="dotlessj" bllx="-34" blly="-204" burx="203" bury="441" />
+      <charmetric ID="181" c="181" n="grave" bllx="106" blly="511" burx="287" bury="697" />
+      <charmetric ID="182" c="182" n="acute" bllx="202" blly="511" burx="383" bury="697" />
+      <charmetric ID="183" c="183" n="caron" bllx="116" blly="518" burx="373" bury="637" />
+      <charmetric ID="184" c="184" n="breve" bllx="99" blly="522" burx="390" bury="694" />
+      <charmetric ID="185" c="185" n="macron" bllx="68" blly="557" burx="421" bury="586" />
+      <charmetric ID="186" c="186" n="ring" bllx="274" blly="540" burx="459" bury="715" />
+      <charmetric ID="187" c="187" n="cedilla" bllx="130" blly="-201" burx="358" bury="-21" />
+      <charmetric ID="188" c="188" n="germandbls" bllx="28" blly="-10" burx="462" bury="704" />
+      <charmetric ID="189" c="189" n="ae" bllx="46" blly="-10" burx="679" bury="446" />
+      <charmetric ID="190" c="190" n="oe" bllx="30" blly="-10" burx="734" bury="446" />
+      <charmetric ID="191" c="191" n="oslash" bllx="35" blly="-102" burx="454" bury="533" />
+      <charmetric ID="192" c="192" n="AE" bllx="31" blly="0" burx="856" bury="683" />
+      <charmetric ID="193" c="193" n="OE" bllx="67" blly="-21" burx="965" bury="704" />
+      <charmetric ID="194" c="194" n="Oslash" bllx="54" blly="-55" burx="707" bury="738" />
+      <charmetric ID="195" c="195" n="suppress" bllx="26" blly="281" burx="255" bury="392" />
+      <charmetric ID="196" c="196" n="dieresis" bllx="104" blly="573" burx="385" bury="665" />
+   </fontsegment>
+</font>
+

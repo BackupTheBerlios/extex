@@ -42,7 +42,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Max1 extends TestCase {
 
@@ -112,6 +112,8 @@ public class Max1 extends TestCase {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
+
+        // TODO FileFinder 
         Interpreter interpreter = new InterpreterFactory(config
                 .getConfiguration("Interpreter")).newInstance();
         TokenStreamFactory factory = new TokenStreamFactory(config

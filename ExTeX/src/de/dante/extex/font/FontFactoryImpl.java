@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,34 +22,47 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.dante.extex.interpreter.type.Font;
+import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.file.FileFinder;
 
 /**
- * ...
+ * Factory to load a font.
  * 
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontFactoryImpl implements FontFactory {
 
-    private Map fontmap = new HashMap();
+	/**
+	 * Fontmap
+	 */
+	private Map fontmap = new HashMap();
 
-    /**
-     * Creates a new object.
-     */
-    public FontFactoryImpl() {
-        super();
-    }
+	/**
+	 * the filefinder
+	 */
+	private FileFinder finder;
+	
+	/**
+	 * Creates a new object.
+	 */
+	public FontFactoryImpl(FileFinder fileFinder) {
+		super();
+		finder = fileFinder;
+	}
 
-    /**
-     * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
-     */
-    public Font getInstance(String name) {
-        Font font = (Font)(fontmap.get(name));
-        if ( font == null ) {
-            // TODO incomplete
-            font = new DummyFont(name);
-        }
-        return font;
-    }
-
+	/**
+	 * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
+	 */
+	// TODO the name ist not only the key for the font!
+	public Font getInstance(String name) throws GeneralException, ConfigurationException {
+		Font font = (Font) (fontmap.get(name));
+		if (font == null) {
+			// TODO incomplete
+			font = new DefaultFont(name,finder);
+		}
+		return font;
+	}
 }

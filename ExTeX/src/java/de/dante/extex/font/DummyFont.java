@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,84 +21,45 @@ package de.dante.extex.font;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.util.UnicodeChar;
+import de.dante.util.file.FileFinder;
 
 /**
  * This class implements a dummy font which does not contain any characters.
  * 
+ * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DummyFont implements Font {
 
-    /**
-     * Creates a new object.
-     */
-    public DummyFont(String name) {
-        super();
-    }
+	/**
+	 * Creates a new object.
+	 */
+	public DummyFont(String name, FileFinder finder) {
+		super();
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getWidth(java.lang.String)
-     */
-    public Dimen getWidth(String c) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getSpace()
+	 */
+	public Glue getSpace() {
+		return new Glue(12 * Dimen.ONE);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getHeight(java.lang.String)
-     */
-    public Dimen getHeight(String c) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getEm()
+	 */
+	public Dimen getEm() {
+		return new Dimen(12 * Dimen.ONE);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getDepth(java.lang.String)
-     */
-    public Dimen getDepth(String c) {
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#isDefined(java.lang.String)
-     */
-    public boolean isDefined(String c) {
-        return false;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#kern(java.lang.String, java.lang.String)
-     */
-    public Dimen kern(String c1, String c2) {
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#ligature(java.lang.String, java.lang.String)
-     */
-    public String ligature(String c1, String c2) {
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getSpace()
-     */
-    public Glue getSpace() {
-        return new Glue(12*Dimen.ONE);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getEm()
-     */
-    public Dimen getEm() {
-        return new Dimen(12*Dimen.ONE);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getEx()
-     */
-    public Dimen getEx() {
-        return new Dimen(6*Dimen.ONE);
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getEx()
+	 */
+	public Dimen getEx() {
+		return new Dimen(6 * Dimen.ONE);
+	}
 
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
@@ -114,4 +75,45 @@ public class DummyFont implements Font {
 		return "dummy";
 	}
 
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getDepth(UnicodeChar c) {
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getHeight(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getHeight(UnicodeChar c) {
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getWidth(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getWidth(UnicodeChar c) {
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
+	 */
+	public boolean isDefined(UnicodeChar c) {
+		return false;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+	 */
+	public Dimen kern(UnicodeChar c1, UnicodeChar c2) {
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+	 */
+	public String ligature(UnicodeChar c1, UnicodeChar c2) {
+		return null;
+	}
 }

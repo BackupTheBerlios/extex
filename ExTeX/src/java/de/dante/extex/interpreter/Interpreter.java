@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,16 +26,25 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Observable;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.file.FileFinder;
 
 /**
  * ...
  *
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
+	
+	/**
+	 * Setter for the file finder.
+	 * @param fileFinder	the new filefinder
+	 */
+	public abstract void setFileFinder(FileFinder fileFinder);
+	
     /**
      * Setter for the error handler.
      * The value of <code>null</code> can be used to delete the error handler
@@ -85,6 +94,7 @@ public interface Interpreter extends TokenSource,
      */
     public abstract void setTokenStreamFactory(TokenStreamFactory factory);
 
+   
     /**
      * Setter for the typesetter.
      *

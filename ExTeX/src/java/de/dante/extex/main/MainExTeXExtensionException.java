@@ -24,10 +24,12 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when the main program use a ExTeX-extension witch is not avaiable.
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MainExTeXExtensionException extends MainException {
 
+	// TODO check
+	
 	/**
 	 * Creates a new object.
 	 *
