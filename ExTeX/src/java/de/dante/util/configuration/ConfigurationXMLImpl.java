@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.configuration;
 
 import java.io.IOException;
@@ -36,12 +37,11 @@ import org.xml.sax.SAXException;
 
 import de.dante.util.StringList;
 
-
 /**
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -119,6 +119,7 @@ public class ConfigurationXMLImpl implements Configuration {
      */
     public ConfigurationXMLImpl(final String aResource)
             throws ConfigurationException {
+
         super();
 
         if (aResource == null || aResource.equals("")) {
@@ -130,7 +131,7 @@ public class ConfigurationXMLImpl implements Configuration {
         int i = aResource.lastIndexOf("/");
 
         if (i >= 0) {
-             this.base = aResource.substring(0, i + 1);
+            this.base = aResource.substring(0, i + 1);
         }
 
         InputStream stream = findConfig(aResource);
@@ -141,7 +142,7 @@ public class ConfigurationXMLImpl implements Configuration {
 
         try {
             DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder();
+                    .newDocumentBuilder();
             root = builder.parse(stream).getDocumentElement();
         } catch (IOException e) {
             throw new ConfigurationIOException(null, e);
@@ -163,7 +164,8 @@ public class ConfigurationXMLImpl implements Configuration {
      * @param aResource the name of the resource
      */
     private ConfigurationXMLImpl(final Element aRoot, final String aBase,
-        final String aResource) {
+            final String aResource) {
+
         super();
         this.root = aRoot;
         this.base = aBase;
@@ -174,6 +176,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
      */
     public String getAttribute(final String name) {
+
         return this.root.getAttribute(name);
     }
 
@@ -273,7 +276,7 @@ public class ConfigurationXMLImpl implements Configuration {
                 String src = ((Element) node).getAttribute("src");
 
                 return (src != null && !src.equals("") //
-                        ? new ConfigurationXMLImpl(base + src)
+                ? new ConfigurationXMLImpl(base + src)
                         : new ConfigurationXMLImpl((Element) node, base,
                                 resource));
             }
@@ -324,11 +327,12 @@ public class ConfigurationXMLImpl implements Configuration {
      * @throws ConfigurationException in case of some other kind of error
      */
     public Configuration getConfiguration(final String key,
-        final String attribute) throws ConfigurationNotFoundException,
-        ConfigurationException {
+            final String attribute)
+            throws ConfigurationNotFoundException,
+                ConfigurationException {
 
         for (Node node = root.getFirstChild(); node != null; node = node
-            .getNextSibling()) {
+                .getNextSibling()) {
             if (key.equals(node.getNodeName())
                 && attribute.equals(((Element) node).getAttribute("name"))) {
                 return new ConfigurationXMLImpl((Element) node, base, resource);
@@ -336,7 +340,7 @@ public class ConfigurationXMLImpl implements Configuration {
         }
 
         throw new ConfigurationNotFoundException(null, //
-                                                 key + "[" + attribute + "]");
+                key + "[" + attribute + "]");
     }
 
     /**
@@ -365,8 +369,9 @@ public class ConfigurationXMLImpl implements Configuration {
      * @return the value of the tag in element or the empty string
      */
     public String getValue(final Element element, final String tag) {
-        for (Node node = element.getFirstChild(); node != null;
-                 node = node.getNextSibling()) {
+
+        for (Node node = element.getFirstChild(); node != null; node = node
+                .getNextSibling()) {
             if (tag.equals(node.getNodeName())) {
                 return getNodeValue(node);
             }
@@ -399,8 +404,9 @@ public class ConfigurationXMLImpl implements Configuration {
      * @return the value of the tag or the empty string
      */
     public String getValue(final String tag) {
-        for (Node node = root.getFirstChild(); node != null;
-                 node = node.getNextSibling()) {
+
+        for (Node node = root.getFirstChild(); node != null; node = node
+                .getNextSibling()) {
             if (tag.equals(node.getNodeName())) {
                 return getNodeValue(node);
             }
@@ -414,7 +420,8 @@ public class ConfigurationXMLImpl implements Configuration {
      *      java.lang.String, int)
      */
     public int getValueAsInteger(final String key, final int defaultValue)
-                          throws ConfigurationException {
+            throws ConfigurationException {
+
         String s = getValue(key);
 
         if (s != null && s.matches("[0-9]+")) {
@@ -433,10 +440,11 @@ public class ConfigurationXMLImpl implements Configuration {
      * @return the list of values
      */
     public StringList getValues(final String tag) {
+
         StringList result = new StringList();
 
-        for (Node node = root.getFirstChild(); node != null;
-                 node = node.getNextSibling()) {
+        for (Node node = root.getFirstChild(); node != null; node = node
+                .getNextSibling()) {
             if (tag.equals(node.getNodeName())) {
                 result.add(getNodeValue(node));
             }
@@ -449,6 +457,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
      */
     public Iterator iterator(final String key) {
+
         List list = new ArrayList();
 
         for (Node node = root.getFirstChild(); node != null; node = node
@@ -466,10 +475,10 @@ public class ConfigurationXMLImpl implements Configuration {
      * @see de.dante.util.configuration.Configuration#getNodeValue(Node)
      */
     private String getNodeValue(final Node node) {
+
         StringBuffer sb = new StringBuffer();
 
-        for (Node n = node.getFirstChild(); n != null;
-                 n = n.getNextSibling()) {
+        for (Node n = node.getFirstChild(); n != null; n = n.getNextSibling()) {
             if (n.getNodeType() == Node.TEXT_NODE) {
                 sb.append(n.getNodeValue());
             }
@@ -488,13 +497,13 @@ public class ConfigurationXMLImpl implements Configuration {
      * <code>null</code> if none could be opened.
      */
     private InputStream findConfig(final String name) {
+
         ClassLoader classLoader = getClass().getClassLoader();
 
         for (int pi = 0; pi < PATHS.length; pi++) {
             for (int ei = 0; ei < EXTENSIONS.length; ei++) {
-                InputStream stream = classLoader.getResourceAsStream(PATHS[pi]
-                                                                     + name
-                                                                     + EXTENSIONS[ei]);
+                InputStream stream = classLoader
+                        .getResourceAsStream(PATHS[pi] + name + EXTENSIONS[ei]);
 
                 if (stream != null) {
                     return stream;
@@ -508,6 +517,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * @see de.dante.util.configuration.Configuration#getValue()
      */
     public String getValue() throws ConfigurationException {
+
         return getNodeValue(root);
     }
 
@@ -515,6 +525,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * @see java.lang.Object#toString()
      */
     public String toString() {
+
         StringBuffer sb = new StringBuffer();
         if (resource != null) {
             sb.append("document(\"");
@@ -526,12 +537,13 @@ public class ConfigurationXMLImpl implements Configuration {
     }
 
     /**
-     * ...
+     * Recursively collect the Xpath from the root to the given node.
      *
      * @param sb the output string buffer
-     * @param node ....
+     * @param node the node to start with
      */
-    private void toString(final StringBuffer sb, final Node node) {
+    private static void toString(final StringBuffer sb, final Node node) {
+
         Node p = node.getParentNode();
         if (p != null && !(p instanceof Document)) {
             toString(sb, p);

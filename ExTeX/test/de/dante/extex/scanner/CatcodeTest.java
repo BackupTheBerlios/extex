@@ -22,96 +22,112 @@ package de.dante.extex.scanner;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for Catcodes
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CatcodeTest extends TestCase implements CatcodeVisitor {
 
     /**
-     * The field <tt>CAT_INVALID</tt> contains the ...
+     * The field <tt>CAT_INVALID</tt> contains the numerical value for invalid
+     * characters.
      */
     private static final int CAT_INVALID = 15;
 
     /**
-     * The field <tt>CAT_COMMENT</tt> contains the ...
+     * The field <tt>CAT_COMMENT</tt> contains the numerical value for comment
+     * characters.
      */
     private static final int CAT_COMMENT = 14;
 
     /**
-     * The field <tt>CAT_ACTIVE</tt> contains the ...
+     * The field <tt>CAT_ACTIVE</tt> contains the numerical value for active
+     * characters.
      */
     private static final int CAT_ACTIVE = 13;
 
     /**
-     * The field <tt>CAT_OTHER</tt> contains the ...
+     * The field <tt>CAT_OTHER</tt> contains the numerical value for other
+     * characters.
      */
     private static final int CAT_OTHER = 12;
 
     /**
-     * The field <tt>CAT_LETTER</tt> contains the ...
+     * The field <tt>CAT_LETTER</tt> contains the numerical value for letter
+     * characters.
      */
     private static final int CAT_LETTER = 11;
 
     /**
-     * The field <tt>CAT_SPACE</tt> contains the ...
+     * The field <tt>CAT_SPACE</tt> contains the numerical value for space
+     * characters.
      */
     private static final int CAT_SPACE = 10;
 
     /**
-     * The field <tt>CAT_IGNORE</tt> contains the ...
+     * The field <tt>CAT_IGNORE</tt> contains the numerical value for ignored
+     * characters.
      */
     private static final int CAT_IGNORE = 9;
 
     /**
-     * The field <tt>CAT_SUB</tt> contains the ...
+     * The field <tt>CAT_SUB</tt> contains the numerical value for subscript
+     * mark characters.
      */
     private static final int CAT_SUB = 8;
 
     /**
-     * The field <tt>CAT_SUP</tt> contains the ...
+     * The field <tt>CAT_SUP</tt> contains the numerical value for superscript
+     * mark characters.
      */
     private static final int CAT_SUP = 7;
 
     /**
-     * The field <tt>CAT_HASH</tt> contains the ...
+     * The field <tt>CAT_HASH</tt> contains the numerical value for hash
+     * mark characters -- used for macro parameters.
      */
     private static final int CAT_HASH = 6;
 
     /**
-     * The field <tt>CAT_CR</tt> contains the ...
+     * The field <tt>CAT_CR</tt> contains the numerical value for carridge
+     * return characters.
      */
     private static final int CAT_CR = 5;
 
     /**
-     * The field <tt>CAT_TAB</tt> contains the ...
+     * The field <tt>CAT_TAB</tt> contains the numerical value for TAB
+     * mark characters.
      */
     private static final int CAT_TAB = 4;
 
     /**
-     * The field <tt>CAT_MATH</tt> contains the ...
+     * The field <tt>CAT_MATH</tt> contains the numerical value for math shift
+     * characters.
      */
     private static final int CAT_MATH = 3;
 
     /**
-     * The field <tt>CAT_RIGHT</tt> contains the ...
+     * The field <tt>CAT_RIGHT</tt> contains the numerical value for right brace
+     * characters.
      */
     private static final int CAT_RIGHT = 2;
 
     /**
-     * The field <tt>CAT_LEFT</tt> contains the ...
+     * The field <tt>CAT_LEFT</tt> contains the numerical value for left brace
+     * characters.
      */
     private static final int CAT_LEFT = 1;
 
     /**
-     * The field <tt>CAT_ESC</tt> contains the ...
+     * The field <tt>CAT_ESC</tt> contains the numerical value for escape
+     * characters.
      */
     private static final int CAT_ESC = 0;
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
 
@@ -119,8 +135,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that escape tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode0() throws Exception {
 
@@ -131,8 +149,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that left brace tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode1() throws Exception {
 
@@ -143,8 +163,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that right brace tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode2() throws Exception {
 
@@ -155,8 +177,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that math shift tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode3() throws Exception {
 
@@ -167,8 +191,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that tab mark tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode4() throws Exception {
 
@@ -179,8 +205,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that CR tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode5() throws Exception {
 
@@ -191,8 +219,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that macro parameter tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode6() throws Exception {
 
@@ -203,8 +233,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that superscript mark tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode7() throws Exception {
 
@@ -215,8 +247,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that subscript mark tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode8() throws Exception {
 
@@ -227,8 +261,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that ignore tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode9() throws Exception {
 
@@ -239,8 +275,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that space tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode10() throws Exception {
 
@@ -251,8 +289,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that letter tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode11() throws Exception {
 
@@ -263,8 +303,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that other tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode12() throws Exception {
 
@@ -275,8 +317,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that active tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode13() throws Exception {
 
@@ -287,8 +331,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that comment tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode14() throws Exception {
 
@@ -299,8 +345,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that invalid tokens have correct code, name, and string
+     * representation.
+     *
+     * @throws Exception in case of an error
      */
     public void testCatcode15() throws Exception {
 
@@ -311,13 +359,15 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the static method toCatcode() throws an exception when invoked
+     * with a negative number.
+     *
+     * @throws Exception in case of an error
      */
     public void testToCatcodeFail1() throws Exception {
 
         try {
-            Catcode.toCatcode(-CAT_LEFT);
+            Catcode.toCatcode(-1);
             assertFalse("Test succeeded unexpectedly", true);
         } catch (CatcodeException e) {
             assertTrue(true);
@@ -325,8 +375,10 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the static method toCatcode() throws an exception when invoked
+     * with a to large number.
+     *
+     * @throws Exception in case of an error
      */
     public void testToCatcodeFail2() throws Exception {
 
@@ -339,13 +391,15 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * The field <tt>visited</tt> contains the ...
+     * The field <tt>visited</tt> contains the indicator that a visitor has been
+     * invoked. It will be set by the visit* methods to the catcode encountered.
      */
-    private static int visited = -CAT_LEFT;
+    private static int visited = -1;
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for escape tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit0() throws Exception {
 
@@ -354,8 +408,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for left brace tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit1() throws Exception {
 
@@ -364,8 +419,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for right brace tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit2() throws Exception {
 
@@ -374,8 +430,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for math shift tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit3() throws Exception {
 
@@ -384,8 +441,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for tab mark tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit4() throws Exception {
 
@@ -394,8 +452,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for CR tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit5() throws Exception {
 
@@ -404,8 +463,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for macro parameter tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit6() throws Exception {
 
@@ -414,8 +474,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for superscript mark tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit7() throws Exception {
 
@@ -424,8 +485,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for subscript mark tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit8() throws Exception {
 
@@ -434,8 +496,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for ignore tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit9() throws Exception {
 
@@ -444,8 +507,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for space tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit10() throws Exception {
 
@@ -454,8 +518,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for letter tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit11() throws Exception {
 
@@ -464,8 +529,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for other tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit12() throws Exception {
 
@@ -474,8 +540,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for active tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit13() throws Exception {
 
@@ -484,8 +551,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for comment tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit14() throws Exception {
 
@@ -494,8 +562,9 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     }
 
     /**
-     * ...
-     * @throws Exception ...
+     * Test that the catcode visitor works for invalid tokens.
+     *
+     * @throws Exception in case of an error
      */
     public void testVisit15() throws Exception {
 

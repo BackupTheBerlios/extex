@@ -29,7 +29,7 @@ import de.dante.util.file.FileFinder;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FileFinderImpl implements FileFinder {
 
@@ -41,7 +41,7 @@ public class FileFinderImpl implements FileFinder {
     /**
      * Creates a new object.
      *
-     * @param aLogger ...
+     * @param aLogger the logger to use
      */
     public FileFinderImpl(final Logger aLogger) {
         super();

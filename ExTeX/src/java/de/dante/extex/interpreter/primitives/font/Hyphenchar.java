@@ -36,9 +36,14 @@ import de.dante.util.UnicodeChar;
  * <code>\hyphenchar</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Hyphenchar extends AbstractCode implements ExpandableCode {
+
+    /**
+     * The field <tt>NAMESPACE</tt> contains the ...
+     */
+    private static final String NAMESPACE = "";
 
     /**
      * Creates a new object.
@@ -81,8 +86,7 @@ public class Hyphenchar extends AbstractCode implements ExpandableCode {
 
         Font font = source.getFont();
         Token t = context.getTokenFactory().newInstance(Catcode.OTHER,
-                                                        font.getHyphenChar());
+                                                        font.getHyphenChar(), NAMESPACE);
         source.push(t);
     }
-
 }

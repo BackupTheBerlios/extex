@@ -28,22 +28,24 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
     /**
      * Creates a new object.
-     *
      */
     public MarkNode() {
         super();
     }
 
     /**
-     * ...
+     * This method returns the printable representation.
+     * This is meant to produce a exaustive form as it is used in tracing
+     * output to the log file.
      *
-     * @return ...
+     * @return the printable representation
+     *
      * @see "TeX -- The Program [196]"
      */
     public String toString() {

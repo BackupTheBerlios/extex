@@ -22,13 +22,13 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This Exception is thrown when ...
+ * This Exception is thrown when no file finder has been provided before it is
+ * needed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class MissingFileFinderException
-    extends ConfigurationException {
+public class MissingFileFinderException extends ConfigurationException {
 
     /**
      * The field <tt>message</tt> contains the message of this exception.

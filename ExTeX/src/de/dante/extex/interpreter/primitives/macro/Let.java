@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Let extends AbstractAssignment implements CatcodeVisitor {
 
@@ -71,10 +71,11 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     /**
      * ...
      *
-     * @param prefix ...
-     * @param context ...
-     * @param cs ...
-     * @param t ...
+     * @param prefix the flags to consider
+     * @param context the processor context
+     * @param cs the control sequence token to bind
+     * @param t the new meaning of the control sequence token. If this
+     *  parameter is <code>null</code> then an exception is thrown.
      *
      * @throws GeneralException in case of an error
      */
@@ -88,7 +89,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
 
         Code code;
         try {
-            code = (Code) (t.getCatcode().visit(this, t.getValue(), context,
+            code = (Code) (t.getCatcode().visit(this, t, context,
                                                 null));
         } catch (Exception e) {
             throw new GeneralException(e);
@@ -105,15 +106,15 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,
      *       java.lang.Object, java.lang.Object)
      */
-    public Object visitActive(final Object oName, final Object oContext,
+    public Object visitActive(final Object oToken, final Object oContext,
             final Object ignore) throws GeneralException {
 
         Context context = (Context) oContext;
-        Code code = context.getActive((String) oName);
+        Code code = context.getCode((Token) oToken);
 
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken",
-                    (String) oName);
+                    ((Token) oToken).toString());
         }
 
         return code;
@@ -136,23 +137,22 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitCr(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
-    public final Object visitEscape(final Object oName, final Object oContext,
+    public final Object visitEscape(final Object oToken, final Object oContext,
             final Object ignore) throws GeneralException {
 
         Context context = (Context) oContext;
-        Code code = context.getMacro((String) oName);
+        Code code = context.getCode((Token) oToken);
 
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken",
-                    (String) oName);
+                    ((Token) oToken).toString());
         }
 
         return code;
@@ -185,8 +185,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitLeftBrace(final Object oName,
             final Object oContext, final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -196,8 +195,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitLetter(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -207,8 +205,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitMacroParam(final Object oName,
             final Object oContext, final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -218,8 +215,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitMathShift(final Object oName,
             final Object oContext, final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -229,8 +225,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitOther(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -240,8 +235,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitRightBrace(final Object oName,
             final Object oContext, final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -251,8 +245,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitSpace(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -262,8 +255,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitSubMark(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -273,8 +265,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitSupMark(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -284,8 +275,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitTabMark(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        throw new RuntimeException("unimplemented");
     }
 
 }

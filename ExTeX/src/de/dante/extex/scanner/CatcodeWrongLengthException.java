@@ -26,7 +26,7 @@ import de.dante.extex.i18n.Messages;
  * number of characters in it.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CatcodeWrongLengthException extends CatcodeException {
 
@@ -40,9 +40,7 @@ public class CatcodeWrongLengthException extends CatcodeException {
     }
 
     /**
-     * ...
-     *
-     * @return ...
+     * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
 

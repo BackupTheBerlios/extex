@@ -41,7 +41,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ErrorHandlerFactory {
 
@@ -75,9 +75,13 @@ public class ErrorHandlerFactory {
 
     /**
      * Get an instance of a typesetter.
+     * This method selects one of the entries in the configuration. The
+     * selection is done with the help of a type String. If the type is
+     * <code>null</code> or the empty string then the default from the
+     * configuration is used.
      *
-     * @param type ...
-     * @param logger ...
+     * @param type the type to use
+     * @param logger the logger to pass to the rror handler
      *
      * @return a new typesetter
      *

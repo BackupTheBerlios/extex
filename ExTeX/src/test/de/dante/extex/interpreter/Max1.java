@@ -38,22 +38,22 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Max1 extends TestCase {
 
     /**
      * Constructor for Max1.
      *
-     * @param arg0 ...
+     * @param arg0 the name
      */
     public Max1(final String arg0) {
         super(arg0);
     }
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(Max1.class);

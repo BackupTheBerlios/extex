@@ -31,14 +31,14 @@ import de.dante.util.GeneralException;
  * to produce an exception. Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
     /**
      * Creates a new object.
      *
-     * @param value ...
+     * @param value the value to be stored
      */
     public ImmutableDimen(final long value) {
 
@@ -48,7 +48,7 @@ public class ImmutableDimen extends Dimen implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param value ...
+     * @param value the value to be stored
      */
     public ImmutableDimen(final Dimen value) {
 

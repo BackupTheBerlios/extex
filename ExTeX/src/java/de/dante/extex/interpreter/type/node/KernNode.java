@@ -30,13 +30,13 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [155]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.8 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
     /**
-     * The field <tt>kern</tt> ...
+     * The field <tt>kern</tt> contains the width of the kern.
      */
     private Dimen theKern;
 
@@ -52,11 +52,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     }
 
     /**
-     * ...
-     *
-     * @param prefix ...
-     *
-     * @return ...
+     * @see de.dante.extex.interpreter.type.node.AbstractNode#toText(java.lang.String)
      * @see "TeX -- The Program [191]"
      */
     public String toText(final String prefix) {

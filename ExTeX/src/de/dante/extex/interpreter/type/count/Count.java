@@ -34,15 +34,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Count implements Serializable {
-
-    /**
-     * The constant <tt>ZERO</tt> contains the count register with the value 0.
-     * This count register is in fact immutable.
-     */
-    public static final Count ZERO = new ImmutableCount(0);
+public class Count implements Serializable, FixedCount {
 
     /**
      * The constant <tt>ONE</tt> contains the count register with the value 1.
@@ -51,20 +45,15 @@ public class Count implements Serializable {
     public static final Count ONE = new ImmutableCount(1);
 
     /**
+     * The constant <tt>ZERO</tt> contains the count register with the value 0.
+     * This count register is in fact immutable.
+     */
+    public static final Count ZERO = new ImmutableCount(0);
+
+    /**
      * The field <tt>value</tt> contains the value of the count register.
      */
     private long value = 0;
-
-    /**
-     * Creates a new object.
-     *
-     * @param aValue the value
-     */
-    public Count(final long aValue) {
-
-        super();
-        this.value = aValue;
-    }
 
     /**
      * Creates a new object.
@@ -79,6 +68,28 @@ public class Count implements Serializable {
 
         super();
         value = scanCount(context, source);
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param count the reference to be copied
+     */
+    public Count(final FixedCount count) {
+
+        super();
+        this.value = count.getValue();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param aValue the value
+     */
+    public Count(final long aValue) {
+
+        super();
+        this.value = aValue;
     }
 
     /**
@@ -112,37 +123,6 @@ public class Count implements Serializable {
     }
 
     /**
-     * Setter for the value.
-     *
-     * @param l the new value
-     *
-     * @see #set(long)
-     */
-    public void setValue(final long l) {
-        value = l;
-    }
-
-    /**
-     * Getter for the value
-     *
-     * @return the value
-     */
-    public long getValue() {
-        return value;
-    }
-
-    /**
-     * Setter for the value.
-     *
-     * @param l the new value
-     *
-     * @see #setValue(long)
-     */
-    public void set(final long l) {
-        value = l;
-    }
-
-    /**
      * Add a long to the value.
      * This operation modifies the value.
      *
@@ -170,6 +150,15 @@ public class Count implements Serializable {
     }
 
     /**
+     * Getter for the value
+     *
+     * @return the value
+     */
+    public long getValue() {
+        return value;
+    }
+
+    /**
      * Multiply the value with a factor.
      * This operation modifies the value.
      *
@@ -178,6 +167,28 @@ public class Count implements Serializable {
     public void multiply(final long factor) {
 
         value *= factor;
+    }
+
+    /**
+     * Setter for the value.
+     *
+     * @param l the new value
+     *
+     * @see #setValue(long)
+     */
+    public void set(final long l) {
+        value = l;
+    }
+
+    /**
+     * Setter for the value.
+     *
+     * @param l the new value
+     *
+     * @see #set(long)
+     */
+    public void setValue(final long l) {
+        value = l;
     }
 
     /**
@@ -215,7 +226,7 @@ public class Count implements Serializable {
      *
      * @param context the interpreter context
      *
-     * @return ...
+     * @return the Tokens representing this instance
      *
      * @throws GeneralException in case of an error
      */

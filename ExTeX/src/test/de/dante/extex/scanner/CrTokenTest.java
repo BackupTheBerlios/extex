@@ -21,23 +21,23 @@ package de.dante.extex.scanner;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for CR tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CrTokenTest extends TestCase {
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the argiuments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(CrTokenTest.class);
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
     private static Token t = new CrToken("x");
 

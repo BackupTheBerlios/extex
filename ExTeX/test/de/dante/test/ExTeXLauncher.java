@@ -33,29 +33,29 @@ import de.dante.extex.logging.LogFormatter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ExTeXLauncher extends TestCase {
 
     /**
      * Creates a new object.
      *
-     * @param arg ...
+     * @param arg the name
      */
     public ExTeXLauncher(final String arg) {
         super(arg);
     }
 
     /**
-     * ...
+     * Run  some code through ExTeX.
      *
-     * @param code ...
-     * @param log ...
-     * @param out ...
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     * @param expect the expected output on the output stream
      *
      * @throws Exception in case of an error
      */
-    public void runCode(final String code, final String log, final String out)
+    public void runCode(final String code, final String log, final String expect)
             throws Exception {
 
         Properties properties = System.getProperties();
@@ -83,13 +83,13 @@ public class ExTeXLauncher extends TestCase {
         if (log != null) {
             assertEquals(log, bytes.toString());
         }
-        if (out != null) {
-            assertEquals(out, stream.toString());
+        if (expect != null) {
+            assertEquals(expect, stream.toString());
         }
     }
 
     /**
-     * ...
+     * Run ExTeX on a file.
      *
      * @param file the name of the file to read from
      *

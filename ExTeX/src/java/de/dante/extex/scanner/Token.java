@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Token {
 
@@ -65,7 +65,7 @@ public interface Token {
      *
      * @return <code>true</code> iff the tokens are equal
      */
-    boolean equals(Token t);
+    boolean equals(Object t);
 
     /**
      * Compare the current token with a pair of catcode and String value. This

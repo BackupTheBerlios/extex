@@ -32,9 +32,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Glue implements Serializable {
+public class Glue implements Serializable, FixedGlue {
 
     /**
      * The field <tt>length</tt> contains the natural length of the glue.
@@ -42,19 +42,19 @@ public class Glue implements Serializable {
     private GlueComponent length = new GlueComponent(0);
 
     /**
-     * The field <tt>shrink</tt> contains the ...
+     * The field <tt>shrink</tt> contains the shrink specification.
      */
     private GlueComponent shrink = new GlueComponent(0);
 
     /**
-     * The field <tt>stretch</tt> contains the ...
+     * The field <tt>stretch</tt> contains the stretch specification.
      */
     private GlueComponent stretch = new GlueComponent(0);
 
     /**
      * Creates a new object.
      *
-     * @param theLength ...
+     * @param theLength the naturallength in scaled point
      */
     public Glue(final long theLength) {
 
@@ -65,9 +65,9 @@ public class Glue implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param theLength ...
-     * @param theStretch ...
-     * @param theShrink ...
+     * @param theLength the natural length
+     * @param theStretch the stretch specification
+     * @param theShrink the shrink specification
      */
     public Glue(final GlueComponent theLength, final GlueComponent theStretch,
             final GlueComponent theShrink) {
@@ -81,7 +81,7 @@ public class Glue implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param theLength ...
+     * @param theLength the natural length
      */
     public Glue(final Dimen theLength) {
 
@@ -92,8 +92,9 @@ public class Glue implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param source ...
-     * @param context ...
+     * @param source the source to read new tokens from
+     * @param context the processing context
+     *
      * @throws GeneralException in case of an error
      */
     public Glue(final TokenSource source, final Context context)
@@ -171,12 +172,10 @@ public class Glue implements Serializable {
      *
      * @param nom nominator
      * @param denom denominator
-     *
-     * @return this
      */
-    public Glue multiply(final long nom, final long denom) {
-        //TODO incomplete
-        return this;
+    public void multiply(final long nom, final long denom) {
+
+        throw new RuntimeException("incomplete");
     }
 
     /**
@@ -184,12 +183,10 @@ public class Glue implements Serializable {
      *
      * @param nom nominator
      * @param denom denominator
-     *
-     * @return this
      */
-    public Glue multiplyStretch(final long nom, final long denom) {
+    public void multiplyStretch(final long nom, final long denom) {
+
         //TODO incomplete
-        return this;
     }
 
     /**
@@ -197,16 +194,16 @@ public class Glue implements Serializable {
      *
      * @param nom nominator
      * @param denom denominator
-     *
-     * @return this
      */
-    public Glue multiplyShrink(final long nom, final long denom) {
+    public void multiplyShrink(final long nom, final long denom) {
+
         //TODO incomplete
-        return this;
     }
 
     /**
-     * ...
+     * Determine the printable representation of the object.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the skip register.
      *
      * @return the string representation of this glue
      * @see "TeX -- The Program [178,177]"
@@ -226,9 +223,11 @@ public class Glue implements Serializable {
     }
 
     /**
-     * ...
+     * Determine the printable representation of the object.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the skip register.
      *
-     * @param factory ...
+     * @param factory the factory to get the tokens from
      *
      * @return the string representation of this glue
      *

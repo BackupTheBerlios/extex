@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.file;
 
 import java.io.File;
@@ -25,31 +26,32 @@ import de.dante.util.StringListIterator;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * ...
+ * This file finder searches for the file in different directories and with
+ * several extensions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileFinderPathImpl implements FileFinder {
 
     /**
-     * The field <tt>path</tt> ...
+     * The field <tt>path</tt> contains the list of directories to consider.
      */
     private StringList pathList;
 
     /**
-     * The field <tt>ext</tt> ...
+     * The field <tt>ext</tt> the list of extensions to consider.
      */
     private StringList extensionList;
 
     /**
      * Creates a new object.
      *
-     * @param path ...
-     * @param extensions ...
+     * @param path list of directories to consider
+     * @param extensions list of extensions to consider
      */
-    public FileFinderPathImpl(final StringList path,
-            final StringList extensions) {
+    public FileFinderPathImpl(final StringList path, final StringList extensions) {
+
         super();
         this.pathList = path;
         this.extensionList = extensions;
@@ -63,6 +65,7 @@ public class FileFinderPathImpl implements FileFinder {
      * @param extensions the extensions to set.
      */
     public void setExtension(final String extensions) {
+
         this.extensionList = new StringList(extensions, ":");
     }
 
@@ -77,6 +80,7 @@ public class FileFinderPathImpl implements FileFinder {
      * @param path the path to set.
      */
     public void setPath(final String path) {
+
         this.pathList = new StringList(path, System
                 .getProperty("path.separator", ":"));
     }
@@ -87,6 +91,7 @@ public class FileFinderPathImpl implements FileFinder {
      */
     public File findFile(final String name, final String type)
             throws ConfigurationException {
+
         File file;
 
         StringListIterator pathIt = pathList.getIterator();

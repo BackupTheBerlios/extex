@@ -46,7 +46,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
 
@@ -67,7 +67,8 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     /**
      * Creates a new object.
      *
-     * @param configuration ...
+     * @param configuration the configuration to consider.
+     * This argument is ignored currently
      * @param theLogger the logger for the interaction logging
      */
     public ErrorHandlerImpl(final Configuration configuration,

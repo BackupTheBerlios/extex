@@ -22,25 +22,25 @@ import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test class for ActiveCharacterToken.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ActiveCharacterTokenTest extends TestCase {
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(ActiveCharacterTokenTest.class);
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token
      */
-    private static Token t = new ActiveCharacterToken(new UnicodeChar('x'));
+    private static Token t = new ActiveCharacterToken(new UnicodeChar('x'), "");
 
     /**
      */
@@ -75,7 +75,7 @@ public class ActiveCharacterTokenTest extends TestCase {
     /**
      */
     public void testEqualsToken1() {
-        Token t1 = new ActiveCharacterToken(new UnicodeChar(' '));
+        Token t1 = new ActiveCharacterToken(new UnicodeChar(' '), "");
         Token t2 = new OtherToken(new UnicodeChar(' '));
         assertFalse(t1.equals(t2));
     }

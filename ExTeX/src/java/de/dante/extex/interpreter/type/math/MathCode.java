@@ -25,41 +25,43 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathCode {
 
     /**
-     * The constant <tt>FAMILY_MASK</tt> contains the ...
+     * The constant <tt>FAMILY_MASK</tt> contains the mask for filtering the
+     * family from an integer.
      */
     private static final int FAMILY_MASK = 4;
 
     /**
-     * The constant <tt>BYTE_MASK</tt> contains the ...
+     * The constant <tt>CHAR_MASK</tt> contains the mask for filtering a
+     * character code from an inetger.
      */
     private static final int CHAR_MASK = 0xff;
 
     /**
-     * The field <tt>mathClass</tt> contains the ...
+     * The field <tt>mathClass</tt> contains the class.
      */
     private int mathClass;
 
     /**
-     * The field <tt>mathFamily</tt> contains the ...
+     * The field <tt>mathFamily</tt> contains the family.
      */
     private int mathFamily;
 
     /**
-     * The field <tt>uc</tt> contains the ...
+     * The field <tt>uc</tt> contains the character.
      */
     private UnicodeChar mathChar;
 
     /**
      * Creates a new object.
      *
-     * @param aClass ...
-     * @param aFamily ...
-     * @param aChar ...
+     * @param aClass the class
+     * @param aFamily the family
+     * @param aChar the character
      */
     public MathCode(final int aClass, final int aFamily, final UnicodeChar aChar) {
 
@@ -72,7 +74,7 @@ public class MathCode {
     /**
      * Creates a new object.
      *
-     * @param code ...
+     * @param code the integer to analyze for the desired field values
      */
     public MathCode(final long code) {
 

@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\def</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Def extends AbstractAssignment {
 
@@ -80,20 +80,20 @@ public class Def extends AbstractAssignment {
     }
 
     /**
-     * ...
+     * Parse the expanded body tokens according to the rules for \xdef.
      *
-     * @param source ...
-     * @return ...
+     * @param source the source to acquire tokens from
+     *
+     * @return the tokens making up the body
      */
     private Tokens expandedBody(final TokenSource source) {
 
         //TODO
-        //return null;
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * ...
+     * Parse the pattern.
      *
      * @param context the processor context
      * @param source the source for new tokens

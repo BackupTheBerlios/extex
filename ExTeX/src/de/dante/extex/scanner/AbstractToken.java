@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner;
 
 import de.dante.util.UnicodeChar;
@@ -25,7 +26,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractToken implements Token {
 
@@ -38,7 +39,8 @@ public abstract class AbstractToken implements Token {
     private String value = null;
 
     /**
-     * The field <tt>uniCode</tt> ...
+     * The field <tt>uniCode</tt> contains the Unicode character assigned to
+     * this token. Note that <code>null</code> is a legal value.
      */
     private UnicodeChar uniCode = null;
 
@@ -48,8 +50,11 @@ public abstract class AbstractToken implements Token {
      * @param aValue the value of the token
      */
     protected AbstractToken(final String aValue) {
+
         super();
         this.value = aValue;
+        this.uniCode = new UnicodeChar(aValue.length() > 0 ? aValue.charAt(0)
+                : ' ');
     }
 
     /**
@@ -58,6 +63,7 @@ public abstract class AbstractToken implements Token {
      * @param uc the value of the token
      */
     protected AbstractToken(final UnicodeChar uc) {
+
         super();
         this.uniCode = uc;
     }
@@ -109,13 +115,14 @@ public abstract class AbstractToken implements Token {
     }
 
     /**
-     * @see de.dante.extex.scanner.Token#equals(de.dante.extex.scanner.Token)
+     * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(final Token t) {
+    public boolean equals(final Object t) {
 
         return this == t
-               || (getCatcode() == t.getCatcode() && getValue()
-                       .equals(t.getValue()));
+               || (t instanceof Token
+                   && getCatcode() == ((Token) t).getCatcode()
+                   && getValue().equals(((Token) t).getValue()));
     }
 
     /**
@@ -153,4 +160,11 @@ public abstract class AbstractToken implements Token {
         return getCatcode() == cc;
     }
 
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+
+        return getCatcode().hashCode() + 17 * uniCode.hashCode();
+    }
 }

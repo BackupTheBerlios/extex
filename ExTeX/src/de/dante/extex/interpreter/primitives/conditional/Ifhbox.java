@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ifhbox</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Ifhbox extends AbstractIf {
 
@@ -59,11 +59,11 @@ public class Ifhbox extends AbstractIf {
     }
 
     /**
-     * Return the key (the number) for the register.
+     * Return the key (the number) for the box register.
      *
      * @param source the source for new tokens
      *
-     * @return ...
+     * @return the key for the box register
      *
      * @throws GeneralException in case of an error
      */

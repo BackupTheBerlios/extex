@@ -28,12 +28,12 @@ import java.util.Map;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CharNodeFactory {
 
     /**
-     * The field <tt>cache</tt> contains the ...
+     * The field <tt>cache</tt> contains the cache for previously created nodes.
      */
     private Map cache = new HashMap();
 
@@ -45,23 +45,24 @@ public class CharNodeFactory {
     }
 
     /**
-     * ...
+     * Create a new instance for the character node.
      *
-     * @param typesettingContext ...
-     * @param c ...
+     * @param typesettingContext the typogrphic context for the node
+     * @param uc the Unicode character
      *
-     * @return ...
+     * @return the new character node
      */
     public CharNode newInstance(final TypesettingContext typesettingContext,
-            final UnicodeChar c) {
-        CharNode n = (CharNode) cache.get(c);
+            final UnicodeChar uc) {
 
-        if (n == null) {
-            n = new CharNode(typesettingContext, c);
-            cache.put(c, n);
+        CharNode node = null; //(CharNode) cache.get(uc);
+
+        if (node == null) {
+            node = new CharNode(typesettingContext, uc);
+//            cache.put(uc, node);
         }
 
-        return n;
+        return node;
     }
 
 }

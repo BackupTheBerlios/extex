@@ -16,10 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner;
 
 import de.dante.extex.i18n.Messages;
-
 
 /**
  * This class represents a control sequence token.
@@ -30,25 +30,63 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
+
+    /**
+     * The field <tt>namespace</tt> contains the namespace for this token.
+     */
+    private String namespace = null;
 
     /**
      * Creates a new object.
      *
      * @param value the name of the control sequence -- without the leading
      * escape character token
+     * @param theNamespace the namespace
      */
-    protected ControlSequenceToken(final String value) {
+    protected ControlSequenceToken(final String value, final String theNamespace) {
+
         super(value);
+        namespace = theNamespace;
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(final Object other) {
+
+        if (other == null || !(other instanceof ControlSequenceToken)) {
+            return false;
+        }
+        ControlSequenceToken othertoken = (ControlSequenceToken) other;
+        return (super.equals(other) && namespace
+                .equals(othertoken.namespace));
     }
 
     /**
      * @see de.dante.extex.scanner.Token#getCatcode()
      */
     public Catcode getCatcode() {
+
         return Catcode.ESCAPE;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.CodeToken#getNamespace()
+     */
+    public String getNamespace() {
+
+        return namespace;
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+
+        return super.hashCode() + 17 * namespace.hashCode();
     }
 
     /**
@@ -57,6 +95,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      * @return the string representation
      */
     public String toString() {
+
         return Messages.format("ControlSequenceToken.Text", getValue());
     }
 

@@ -49,42 +49,111 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
-    /** cache for active character tokens */
-    private Map activeCache = new HashMap();
+    /**
+     * ...
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.12 $
+     */
+    private final class USKey {
 
-    /** cache for control sequence tokens */
-    private Map csCache = new HashMap();
+        /**
+         * The field <tt>namespace</tt> contains the ...
+         */
+        private String namespace;
 
-    /** cache for left brace tokens */
-    private Map leftBraceCache = new HashMap();
+        /**
+         * The field <tt>uc</tt> contains the ...
+         */
+        private UnicodeChar uc;
 
-    /** cache for letter tokens */
-    private Map letterCache = new HashMap();
+        /**
+         * Creates a new object.
+         *
+         * @param namespace ...
+         * @param uc ...
+         */
+        public USKey (final String namespace, final UnicodeChar uc) {
+            this.namespace = namespace;
+            this.uc = uc;
+        }
 
-    /** cache for macro parameter tokens */
-    private Map macroParamCache = new HashMap();
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        public boolean equals(final Object other) {
 
-    /** cache for math shift tokens */
-    private Map mathShiftCache = new HashMap();
+            if (other == null || !(other instanceof USKey)) {
+                return false;
+            }
+            USKey otherkey = (USKey) other;
+            return (uc.equals(otherkey.uc) && namespace
+                    .equals(otherkey.namespace));
+        }
 
-    /** cache for other tokens */
-    private Map otherCache = new HashMap();
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        public int hashCode() {
 
-    /** cache for right brace tokens */
-    private Map rightBraceCache = new HashMap();
+            return uc.hashCode() + 17*namespace.hashCode();
+        }
+    }
 
-    /** cache for sub mark tokens */
-    private Map subMarkCache = new HashMap();
+    /**
+     * ...
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.12 $
+     */
+    private final class SSKey {
 
-    /** cache for super mark tokens */
-    private Map supMarkCache = new HashMap();
+        /**
+         * The field <tt>namespace</tt> contains the ...
+         */
+        private String namespace;
 
-    /** cache for tab mark tokens */
-    private Map tabMarkCache = new HashMap();
+        /**
+         * The field <tt>uc</tt> contains the ...
+         */
+        private String name;
+
+        /**
+         * Creates a new object.
+         *
+         * @param namespace ...
+         * @param name ...
+         */
+        public SSKey (final String namespace, final String name) {
+            this.namespace = namespace;
+            this.name = name;
+        }
+
+        /**
+         * @see java.lang.Object#equals(java.lang.Object)
+         */
+        public boolean equals(final Object other) {
+
+            if (other == null || !(other instanceof SSKey)) {
+                return false;
+            }
+            SSKey otherkey = (SSKey) other;
+            return (name.equals(otherkey.name) && namespace
+                    .equals(otherkey.namespace));
+        }
+
+        /**
+         * @see java.lang.Object#hashCode()
+         */
+        public int hashCode() {
+
+            return name.hashCode() + 17 * namespace.hashCode();
+        }
+    }
 
     /**
      * The field <tt>crToken</tt> contains the one and only cr token in the
@@ -99,6 +168,67 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     private static final Token SPACE_TOKEN = new SpaceToken(" ");
 
     /**
+     * The field <tt>activeCache</tt> contains the cache for active character
+     * tokens.
+     */
+    private Map activeCache = new HashMap();
+
+    /**
+     * The field <tt>csCache</tt> contains the cache for control sequence
+     * tokens.
+     */
+    private Map csCache = new HashMap();
+
+    /**
+     * The field <tt>leftBraceCache</tt> contains the cache for left brace
+     * tokens.
+     */
+    private Map leftBraceCache = new HashMap();
+
+    /**
+     * The field <tt>letterCache</tt> contains the cache for letter tokens.
+     */
+    private Map letterCache = new HashMap();
+
+    /**
+     * The field <tt>macroParamCache</tt> contains the cache for macro parameter
+     * tokens.
+     */
+    private Map macroParamCache = new HashMap();
+
+    /**
+     * The field <tt>mathShiftCache</tt> contains the cache for math shift
+     * tokens.
+     */
+    private Map mathShiftCache = new HashMap();
+
+    /**
+     * The field <tt>otherCache</tt> contains the cache for other tokens.
+     */
+    private Map otherCache = new HashMap();
+
+    /**
+     * The field <tt>rightBraceCache</tt> contains the cache for right brace
+     * tokens.
+     */
+    private Map rightBraceCache = new HashMap();
+
+    /**
+     * The field <tt>subMarkCache</tt> contains the cache for sub mark tokens.
+     */
+    private Map subMarkCache = new HashMap();
+
+    /**
+     * The field <tt>supMarkCache</tt> contains the cache for super mark tokens.
+     */
+    private Map supMarkCache = new HashMap();
+
+    /**
+     * The field <tt>tabMarkCache</tt> contains the cache for tab mark tokens.
+     */
+    private Map tabMarkCache = new HashMap();
+
+    /**
      * Creates a new object.
      */
     public TokenFactoryImpl() {
@@ -107,31 +237,6 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
     /**
      * Create a new {@link de.dante.extex.scanner.Token Token} of the
-     * appropriate kind. Tokens are immutable (no setters) thus the factory
-     * pattern can be applied.
-     *
-     * @param code the category code
-     * @param value the value
-     *
-     * @return the new token
-     *
-     * @throws CatcodeException in case of an error
-     */
-    public Token newInstance(final Catcode code, final String value)
-            throws CatcodeException {
-
-        try {
-            return (Token) code.visit(this, value, null, null);
-        } catch (CatcodeException e) {
-            throw e;
-        } catch (Exception e) {
-            // this should not happen
-            throw new CatcodeException(e);
-        }
-    }
-
-    /**
-     * Create a new {@link de.dante.extex.scanner.Token Token}of the
      * appropriate kind. Tokens are immutable (no setters) thus the factory
      * pattern can be applied.
      *
@@ -145,8 +250,57 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token newInstance(final Catcode code, final char c)
             throws CatcodeException {
 
+        String NAMESPACE = "";
         try {
-            return (Token) code.visit(this, null, new UnicodeChar(c), null);
+            return (Token) code
+                    .visit(this, null, new UnicodeChar(c), NAMESPACE);
+        } catch (CatcodeException e) {
+            throw e;
+        } catch (Exception e) {
+            // this should not happen
+            throw new CatcodeException(e);
+        }
+    }
+
+    /**
+     * Create a new {@link de.dante.extex.scanner.Token Token} of the
+     * appropriate kind. Tokens are immutable (no setters) thus the factory
+     * pattern can be applied.
+     *
+     * @param code the category code
+     * @param value the value
+     *
+     * @return the new token
+     *
+     * @throws CatcodeException in case of an error
+     *
+     * @deprecated use newInstance(Catcode,String,String) instead.
+     */
+    public Token newInstance(final Catcode code, final String value)
+            throws CatcodeException {
+
+        String NAMESPACE = "";
+        try {
+            return (Token) code.visit(this, value, null, NAMESPACE);
+        } catch (CatcodeException e) {
+            throw e;
+        } catch (Exception e) {
+            // this should not happen
+            throw new CatcodeException(e);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     *      de.dante.extex.scanner.Catcode,
+     *      java.lang.String,
+     *      java.lang.String)
+     */
+    public Token newInstance(final Catcode code, final String value,
+            final String namespace) throws CatcodeException {
+
+        try {
+            return (Token) code.visit(this, value, null, namespace);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -159,12 +313,34 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * @see de.dante.extex.scanner.TokenFactory#newInstance(
      *      de.dante.extex.scanner.Catcode,
      *      de.dante.util.UnicodeChar)
+     *
+     * @deprecated use newInstance(Catcode,UnicodeChar,String) instead.
      */
     public Token newInstance(final Catcode code, final UnicodeChar c)
             throws CatcodeException {
 
+        String namespace = "";
         try {
-            return (Token) code.visit(this, null, c, null);
+            return (Token) code.visit(this, null, c, namespace);
+        } catch (CatcodeException e) {
+            throw e;
+        } catch (Exception e) {
+            // this should not happen
+            throw new CatcodeException(e);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     *      de.dante.extex.scanner.Catcode,
+     *      de.dante.util.UnicodeChar,
+     *      java.lang.String)
+     */
+    public Token newInstance(final Catcode code, final UnicodeChar c,
+            final String namespace) throws CatcodeException {
+
+        try {
+            return (Token) code.visit(this, null, c, namespace);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -181,7 +357,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitActive(final Object oValue, final Object oChar,
-            final Object ignore) throws CatcodeException {
+            final Object oNamespace) throws CatcodeException {
 
         UnicodeChar uc;
         if (oChar != null) {
@@ -196,11 +372,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             throw new CatcodeVisitorException();
         }
 
-        Object token = activeCache.get(uc);
+        USKey key = new USKey((String) oNamespace, uc);
+        Object token = activeCache.get(key);
 
         if (token == null) {
-            token = new ActiveCharacterToken(uc);
-            activeCache.put(uc, token);
+            token = new ActiveCharacterToken(uc, (String) oNamespace);
+            activeCache.put(key, token);
         }
 
         return token;
@@ -235,7 +412,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitEscape(final Object oValue, final Object oChar,
-            final Object ignore) throws CatcodeException {
+            final Object oNamespace) throws CatcodeException {
 
         String value;
         if (oValue != null) {
@@ -246,11 +423,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             throw new CatcodeVisitorException();
         }
 
-        Object token = csCache.get(value);
+        SSKey key = new SSKey((String) oNamespace, value);
+        Object token = csCache.get(key);
 
         if (token == null) {
-            token = new ControlSequenceToken(value);
-            csCache.put(value, token);
+            token = new ControlSequenceToken(value, (String) oNamespace);
+            csCache.put(key, token);
         }
 
         return token;

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Node;
@@ -29,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class WhatsItNode extends AbstractNode implements Node {
 
@@ -37,7 +38,22 @@ public class WhatsItNode extends AbstractNode implements Node {
      * Creates a new object.
      */
     public WhatsItNode() {
+
         super();
+    }
+
+    /**
+     * This method returns the printable representation.
+     * This is meant to produce a exaustive form as it is used in tracing
+     * output to the log file.
+     *
+     * @return the printable representation
+     *
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return "whatsit";
     }
 
     /**
@@ -45,6 +61,7 @@ public class WhatsItNode extends AbstractNode implements Node {
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
+
         sb.append("whatsit");
     }
 

@@ -29,7 +29,7 @@ import de.dante.util.configuration.Configuration;
  * in a compatible way.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ErrorHandlerTeXImpl extends ErrorHandlerImpl {
 
@@ -41,8 +41,8 @@ public class ErrorHandlerTeXImpl extends ErrorHandlerImpl {
 
     /**
      * Creates a new object.
-     * 
-     * @param configuration ...
+     *
+     * @param configuration the configuration
      * @param theLogger the logger for the interaction logging
      */
     public ErrorHandlerTeXImpl(final Configuration configuration,

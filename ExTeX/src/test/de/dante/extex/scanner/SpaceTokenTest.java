@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SpaceTokenTest extends TestCase {
 
@@ -75,7 +75,7 @@ public class SpaceTokenTest extends TestCase {
     /**
      */
     public void testEqualsToken1() {
-        Token t2 = new ActiveCharacterToken(new UnicodeChar(' '));
+        Token t2 = new ActiveCharacterToken(new UnicodeChar(' '), "");
         assertFalse(t.equals(t2));
     }
 

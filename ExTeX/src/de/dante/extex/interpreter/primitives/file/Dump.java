@@ -43,12 +43,13 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Dump extends AbstractCode {
 
     /**
-     * The constant <tt>FORMAT_VERSION</tt> contains the ...
+     * The constant <tt>FORMAT_VERSION</tt> contains the version number of the
+     * format file.
      */
     private static final String FORMAT_VERSION = "1.0";
 
@@ -58,7 +59,8 @@ public class Dump extends AbstractCode {
     private static final String FORMAT_MAGIC_NUMBER = "#!extex";
 
     /**
-     * The constant <tt>FORMAT_EXTENSION</tt> contains the ...
+     * The constant <tt>FORMAT_EXTENSION</tt> contains the extension for the
+     * format file.
      */
     private static final String FORMAT_EXTENSION = ".fmt";
 

@@ -22,14 +22,15 @@ import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for math shift tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathShiftTokenTest extends TestCase {
 
     /**
+     * Command line interface.
      * @param args the arguments
      */
     public static void main(final String[] args) {

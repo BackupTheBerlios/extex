@@ -34,12 +34,12 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CharCode extends AbstractCode implements ExpandableCode, CountConvertible {
 
     /**
-     * The field <tt>character</tt> contains the ...
+     * The field <tt>character</tt> contains the encapsulated Unicode character.
      */
     private UnicodeChar character;
 
@@ -47,7 +47,7 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
      * Creates a new object.
      *
      * @param name the name for tracing and debugging
-     * @param uc ...
+     * @param uc the Unicode character to encapsulate
      */
     public CharCode(final String name, final UnicodeChar uc) {
 
@@ -81,7 +81,8 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
             throws GeneralException {
 
         Catcode cc = context.getTokenizer().getCatcode(character);
-        Token t = context.getTokenFactory().newInstance(cc, character);
+        Token t = context.getTokenFactory().newInstance(cc, character,
+                                                        context.getNamespace());
         source.push(t);
     }
 

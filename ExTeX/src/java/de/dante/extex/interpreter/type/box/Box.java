@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Box implements Serializable {
 
@@ -93,6 +93,46 @@ public class Box implements Serializable {
         nodes = typesetter.close();
     }
 
+     /**
+      * Clear the contents of the box. Afterwards the box is void.
+      */
+     public void clear() {
+         nodes = null;
+     }
+
+    /**
+     * Getter for the depth of this box.
+     *
+     * @return the depth of this box or 0pt in case of a void box
+     */
+    public Dimen getDepth() {
+
+        return (nodes == null ? new Dimen(0) : nodes.getDepth());
+    }
+
+    /**
+     * Getter for the height of this box.
+     *
+     * @return the height of this box or 0pt in case of a void box
+     */
+    public Dimen getHeight() {
+
+        return (nodes == null ? new Dimen(0) : nodes.getHeight());
+    }
+
+    /**
+     * Getter for the move parameter.
+     * The move parameter describes hpw far from its original position the box
+     * is moved leftwards or rightwards. Positive values indicate a move
+     * rightwards.
+     *
+     * @return the move parameter
+     */
+    public Dimen getMove() {
+
+        return this.nodes.getMove();
+    }
+
     /**
      * Getter for nodes.
      *
@@ -103,21 +143,27 @@ public class Box implements Serializable {
         return nodes;
     }
 
-     /**
-      * Clear the contents of the box. Afterwards the box is void.
-      */
-     public void clear() {
-         nodes = null;
-     }
+    /**
+     * Getter for the shift parameter.
+     * The shift parameter describes hpw far from its original position the box
+     * is shifted up or down. Positive values indicate a move upwards.
+     *
+     * @return the shift parameter
+     */
+    public Dimen getShift() {
 
-     /**
-      * Checks whether the box is void.
-      *
-      * @return <tt>true</tt> iff the box is void.
-      */
-     public boolean isVoid() {
-         return nodes == null;
-     }
+        return this.nodes.getShift();
+    }
+
+    /**
+     * Getter for the width of this box.
+     *
+     * @return the width of this box or 0pt in case of a void box
+     */
+    public Dimen getWidth() {
+
+        return (nodes == null ? new Dimen(0) : nodes.getWidth());
+    }
 
      /**
       * Checks whether the box is a hbox.
@@ -137,37 +183,26 @@ public class Box implements Serializable {
          return (nodes != null && nodes instanceof VerticalListNode);
      }
 
-    /**
-     * Getter for the width of this box.
-     *
-     * @return the width of this box or 0pt in case of a void box
-     */
-    public Dimen getWidth() {
+     /**
+      * Checks whether the box is void.
+      *
+      * @return <tt>true</tt> iff the box is void.
+      */
+     public boolean isVoid() {
+         return nodes == null;
+     }
 
-        return (nodes == null ? new Dimen(0) : nodes.getWidth());
-    }
-
     /**
-     * Setter for the width of the box.
+     * Setter for the depth of the box.
      * If the box is void then this method simply does nothing.
      *
-     * @param width the new width
+     * @param depth the new width
      */
-    public void setWidth(final Dimen width) {
+    public void setDepth(final Dimen depth) {
 
         if (nodes != null) {
-            nodes.setWidth(width);
+            nodes.setDepth(depth);
         }
-    }
-
-    /**
-     * Getter for the height of this box.
-     *
-     * @return the height of this box or 0pt in case of a void box
-     */
-    public Dimen getHeight() {
-
-        return (nodes == null ? new Dimen(0) : nodes.getHeight());
     }
 
     /**
@@ -184,52 +219,12 @@ public class Box implements Serializable {
     }
 
     /**
-     * Getter for the depth of this box.
+     * Setter for the move parameter.
+     * The move parameter describes hpw far from its original position the box
+     * is moved leftwards or rightwards. Positive values indicate a move
+     * rightwards.
      *
-     * @return the depth of this box or 0pt in case of a void box
-     */
-    public Dimen getDepth() {
-
-        return (nodes == null ? new Dimen(0) : nodes.getDepth());
-    }
-
-    /**
-     * Setter for the depth of the box.
-     * If the box is void then this method simply does nothing.
-     *
-     * @param depth the new width
-     */
-    public void setDepth(final Dimen depth) {
-
-        if (nodes != null) {
-            nodes.setDepth(depth);
-        }
-    }
-
-    /**
-     * ...
-     *
-     * @return ...
-     */
-    public Dimen getMove() {
-
-        return this.nodes.getMove();
-    }
-
-    /**
-     * ...
-     *
-     * @return ...
-     */
-    public Dimen getShift() {
-
-        return this.nodes.getShift();
-    }
-
-    /**
-     * ...
-     *
-     * @param d ...
+     * @param d the new move parameter
      */
     public void setMove(final Dimen d) {
 
@@ -237,13 +232,28 @@ public class Box implements Serializable {
     }
 
     /**
-     * ...
+     * Setter for the shift parameter.
+     * The shift parameter describes hpw far from its original position the box
+     * is shifted up or down. Positive values indicate a move upwards.
      *
-     * @param d ...
+     * @param d the new shift parameter
      */
     public void setShift(final Dimen d) {
 
         this.nodes.setShift(d);
+    }
+
+    /**
+     * Setter for the width of the box.
+     * If the box is void then this method simply does nothing.
+     *
+     * @param width the new width
+     */
+    public void setWidth(final Dimen width) {
+
+        if (nodes != null) {
+            nodes.setWidth(width);
+        }
     }
 
 }

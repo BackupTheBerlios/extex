@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.file;
 
 import java.io.File;
@@ -28,21 +29,22 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileFinderDirect implements FileFinder {
 
     /**
-     * The field <tt>ext</tt> ...
+     * The field <tt>extensionList</tt> contains the list of extensions to use.
      */
     private StringList extensionList;
 
     /**
      * Creates a new object.
      *
-     * @param extensions ...
+     * @param extensions the list of extensions to use
      */
     public FileFinderDirect(final StringList extensions) {
+
         super();
         extensionList = extensions;
     }
@@ -55,6 +57,7 @@ public class FileFinderDirect implements FileFinder {
      * @param extensions the extensions to set.
      */
     public void setExtension(final String extensions) {
+
         extensionList = new StringList(extensions, ":");
     }
 
@@ -64,6 +67,7 @@ public class FileFinderDirect implements FileFinder {
      */
     public File findFile(final String name, final String type)
             throws ConfigurationException {
+
         File file;
 
         StringListIterator extIt = extensionList.getIterator();

@@ -50,9 +50,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class GlueComponent implements Serializable {
+public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
      * The field <tt>POINT_PER_100_IN</tt> contains the ...
@@ -66,7 +66,8 @@ public class GlueComponent implements Serializable {
     public static final long ONE = 1 << 16;
 
     /**
-     * The constant <tt>XXX</tt> contains the ...
+     * The constant <tt>FLOAT_DIGITS</tt> contains the ...
+     *
      * Attention: Do not change this value unless you have read and understood
      * TeX the program!
      */
@@ -585,7 +586,7 @@ public class GlueComponent implements Serializable {
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [103]"
-     * @see #toToks()
+     * @see #toToks(TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)
      */
@@ -631,13 +632,13 @@ public class GlueComponent implements Serializable {
         } while (val > delta);
 
         if (order == 0) {
-            toks.add(factory.newInstance(Catcode.LETTER, "p"));
-            toks.add(factory.newInstance(Catcode.LETTER, "t"));
+            toks.add(factory.newInstance(Catcode.LETTER, 'p'));
+            toks.add(factory.newInstance(Catcode.LETTER, 't'));
         } else if (order > 0) {
-            toks.add(factory.newInstance(Catcode.LETTER, "f"));
-            toks.add(factory.newInstance(Catcode.LETTER, "i"));
+            toks.add(factory.newInstance(Catcode.LETTER, 'f'));
+            toks.add(factory.newInstance(Catcode.LETTER, 'i'));
             for (int i = order; i > 0; i--) {
-                toks.add(factory.newInstance(Catcode.LETTER, "l"));
+                toks.add(factory.newInstance(Catcode.LETTER, 'l'));
             }
         } else {
             throw new GeneralPanicException("TTP.Confusion");

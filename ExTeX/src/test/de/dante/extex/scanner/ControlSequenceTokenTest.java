@@ -22,25 +22,25 @@ import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for control sequence tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ControlSequenceTokenTest extends TestCase {
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(ControlSequenceTokenTest.class);
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
-    private static Token t = new ControlSequenceToken("x");
+    private static Token t = new ControlSequenceToken("x", "");
 
     /**
      */
@@ -75,7 +75,7 @@ public class ControlSequenceTokenTest extends TestCase {
     /**
      */
     public void testEqualsToken1() {
-        Token t1 = new ControlSequenceToken(" ");
+        Token t1 = new ControlSequenceToken(" ", "");
         Token t2 = new OtherToken(new UnicodeChar(' '));
         assertFalse(t1.equals(t2));
     }

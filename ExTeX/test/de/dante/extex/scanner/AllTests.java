@@ -22,24 +22,32 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * ...
+ * Test cases for the scanner.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AllTests {
 
     /**
-     * ...
+     * The constructor is private to avoid that somebody uses it.
+     */
+    private AllTests() {
+
+        super();
+    }
+    
+    /**
+     * Command line interface.
      *
-     * @param args ...
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(AllTests.class);
     }
 
     /**
-     * ...
+     * Combines all test in this package into one suite.
      *
      * @return the suite
      */

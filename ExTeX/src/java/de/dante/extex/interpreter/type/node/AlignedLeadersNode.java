@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Node;
@@ -28,7 +29,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class AlignedLeadersNode extends GlueNode implements Node {
 
@@ -37,16 +38,21 @@ public class AlignedLeadersNode extends GlueNode implements Node {
      *
      */
     public AlignedLeadersNode() {
+
         super();
     }
 
     /**
-     * ...
+     * This method returns the printable representation.
+     * This is meant to produce a exaustive form as it is used in tracing
+     * output to the log file.
      *
-     * @return ...
+     * @return the printable representation
+     *
      * @see "TeX -- The Program [190]"
      */
     public String toString() {
+
         return "aleaders "; //TODO incomplete
     }
 

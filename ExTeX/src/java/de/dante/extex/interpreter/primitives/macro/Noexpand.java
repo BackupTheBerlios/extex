@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * <code>\noexpand</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Noexpand extends AbstractCode implements ExpandableCode {
 
@@ -60,6 +60,7 @@ public class Noexpand extends AbstractCode implements ExpandableCode {
 
         Token t = source.getToken();
         prefix.clear();
+        throw new RuntimeException("unimplemented");
     }
 
     /**

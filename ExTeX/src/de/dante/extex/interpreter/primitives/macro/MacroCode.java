@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
@@ -120,12 +120,10 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
                     no = t.getChar().getCodePoint() - '0';
                     if (args[no] == null) {
                         throw new GeneralException("internal error");
-                        //TODO: error
                     }
                     toks.add(args[no]);
                 } else {
                     throw new GeneralException("internal error");
-                    //TODO: error
                 }
             } else {
                 toks.add(t);
@@ -171,7 +169,6 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
         Tokens[] args = new Tokens[numberOfParams];
         Token ti;
         Token t;
-        int i = 1;
         int len = pattern.length();
 
         for (int pi = 0; pi < len; pi++) {

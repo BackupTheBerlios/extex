@@ -22,23 +22,30 @@ import junit.framework.Test;
 import junit.framework.TestSuite;
 
 /**
- * ...
+ * Test suite for all tests in this package.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AllTests {
 
     /**
-     * ...
-     * @param args ...
+     * Creates a new object.
+     */
+    private AllTests() {
+    }
+
+    /**
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(AllTests.class);
     }
 
     /**
-     * ...
+     * The test suite.
+     *
      * @return the suite
      */
     public static Test suite() {

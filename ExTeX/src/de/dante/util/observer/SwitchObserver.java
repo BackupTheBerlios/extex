@@ -27,7 +27,7 @@ import de.dante.util.Switch;
  * {@link de.dante.util.Switch Switch} when an event is received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SwitchObserver implements Observer {
 
@@ -57,8 +57,8 @@ public class SwitchObserver implements Observer {
     }
 
     /**
-     * @see de.dante.util.observer.Observer#update(de.dante.util.Observable,
-     *      java.lang.Object)
+     * @see de.dante.util.observer.Observer#update(
+     *      de.dante.util.observer.Observable, java.lang.Object)
      */
     public void update(final Observable observable, final Object item)
             throws GeneralException {
