@@ -20,6 +20,7 @@ package de.dante.extex.font;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import org.jdom.Attribute;
@@ -44,7 +45,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -56,19 +57,31 @@ public class EFMFont extends XMLFont implements Font {
 	/**
 	 * the external fontfile
 	 */
-	private String externalfile;
-	
+	private File externalfile;
+
+	/**
+	 * the em-size for the font
+	 */
+	private Dimen emsize;
+
 	/**
 	 * Creates a new object.
 	 */
-	public EFMFont(String name, FileFinder fileFinder) throws GeneralException, ConfigurationException {
+	public EFMFont(String name, Dimen emsize, FileFinder fileFinder) throws GeneralException, ConfigurationException {
 		super();
 		// trim name !
 		if (name != null) {
 			this.name = name.trim();
 		}
+		this.emsize = emsize;
+		em = emsize;
 		loadFont(fileFinder);
 	}
+
+	/**
+	 * fontfile
+	 */
+	File fontfile;
 
 	/**
 	 * load the Font
@@ -77,9 +90,7 @@ public class EFMFont extends XMLFont implements Font {
 	private void loadFont(FileFinder finder) throws GeneralException, ConfigurationException {
 		if (name != null) {
 
-			File fontfile = finder.findFile(name, "efm");
-
-			System.err.println("load FONT " + fontfile); // TODO kill line after test
+			fontfile = finder.findFile(name, "efm");
 
 			if (fontfile.exists()) {
 
@@ -90,27 +101,33 @@ public class EFMFont extends XMLFont implements Font {
 					Document doc = builder.build(fontfile);
 
 					// get fontgroup
-					fontgroup = doc.getRootElement();
+					Element fontgroup = doc.getRootElement();
 
 					if (fontgroup == null) {
 						throw new MainFontException("not fontgroup found"); // TODO change
 					}
 
-					// get font-face
-					Element fontface = scanForElement(fontgroup, "font-face");
+					// empr
+					Attribute attr = fontgroup.getAttribute("empr");
 
-					if (fontface == null) {
-						throw new MainFontException("not fontgroup found"); // TODO change
+					if (attr != null) {
+						try {
+							empr = attr.getFloatValue();
+						} catch (Exception e) {
+							empr = 100.0f;
+						}
 					}
+					// calculate em
+					em = new Dimen((long) (emsize.getValue() * empr / 100));
 
 					// get units_per_em
-					Attribute attr = fontface.getAttribute("units-per-em");
+					attr = fontgroup.getAttribute("units-per-em");
 					if (attr != null) {
 						units_per_em = attr.getIntValue();
 					}
 
 					// get ex
-					attr = fontface.getAttribute("x-height");
+					attr = fontgroup.getAttribute("x-height");
 					if (attr != null) {
 						ex = attr.getIntValue();
 					}
@@ -118,12 +135,61 @@ public class EFMFont extends XMLFont implements Font {
 					// get glyph-list
 					Element font = scanForElement(fontgroup, "font");
 					if (font != null) {
-						glyphlist = font.getChildren("glyph");
+						List glyphlist = font.getChildren("glyph");
+						Element e;
+
+						for (int i = 0; i < glyphlist.size(); i++) {
+							e = (Element) glyphlist.get(i);
+							String key = e.getAttributeValue("ID");
+							if (key != null) {
+								GlyphValues gv = new GlyphValues();
+								gv.glyph_number = e.getAttributeValue("glyph-number");
+								gv.glyph_name = e.getAttributeValue("glyph-name");
+								gv.unicode = e.getAttributeValue("unicode");
+								gv.width = e.getAttributeValue("width");
+								gv.depth = e.getAttributeValue("depth");
+								gv.height = e.getAttributeValue("height");
+								gv.bllx = e.getAttributeValue("bllx");
+								gv.blly = e.getAttributeValue("blly");
+								gv.burx = e.getAttributeValue("burx");
+								gv.bury = e.getAttributeValue("bury");
+
+								// kerning
+								List kerninglist = e.getChildren("kerning");
+								for (int k = 0; k < kerninglist.size(); k++) {
+									Element kerning = (Element) kerninglist.get(k);
+									KerningValues kv = new KerningValues();
+									kv.id = kerning.getAttributeValue("glyph-id");
+									kv.name = kerning.getAttributeValue("glyph-name");
+									kv.size = kerning.getAttributeValue("size");
+									gv.kerning.put(kv.id, kv);
+								}
+
+								// ligature
+								List ligaturelist = e.getChildren("ligature");
+								for (int k = 0; k < ligaturelist.size(); k++) {
+									Element ligature = (Element) ligaturelist.get(k);
+									LigatureValues lv = new LigatureValues();
+									lv.letter = ligature.getAttributeValue("letter");
+									lv.letterid = ligature.getAttributeValue("letter-id");
+									lv.lig = ligature.getAttributeValue("lig");
+									lv.ligid = ligature.getAttributeValue("lig-id");
+									gv.ligature.put(lv.letterid, lv);
+								}
+								glyph.put(key, gv);
+								glyphname.put(gv.glyph_name, key);
+							}
+						}
 					}
 
 					// exernal fontfile
-					externalfile = font.getAttribute("filename").getValue();
-					
+					String efile = font.getAttribute("filename").getValue();
+
+					if (efile != null) {
+						// externalfile = finder.findFile(efile, "pfb"); TODO change if FileFinder is okay
+						externalfile = new File("./font/" + efile);
+					}
+
 				} catch (JDOMException e) {
 					throw new MainFontException(e.getMessage()); // TODO change
 				} catch (IOException e) {
@@ -139,27 +205,78 @@ public class EFMFont extends XMLFont implements Font {
 	}
 
 	/**
-	 * The fontgroup-element
+	 * The hash for the glyphs (ID)
 	 */
-	private Element fontgroup = null;
+	private HashMap glyph = new HashMap();
 
 	/**
-	 * The list with all glyph
+	 * The hash for the glyphs (name -> ID)
 	 */
-	private List glyphlist = null;
+	private HashMap glyphname = new HashMap();
 
 	/**
+	 * Internal container for the glyph-values 
+	 */
+	private class GlyphValues {
+		String glyph_number;
+		String glyph_name;
+		String unicode;
+		String width;
+		String bllx;
+		String blly;
+		String burx;
+		String bury;
+		String depth;
+		String height;
+		HashMap kerning = new HashMap();
+		HashMap ligature = new HashMap();
+	}
+
+	/**
+	 * container for kerning-values 
+	 */
+	private class KerningValues {
+		String name;
+		String id;
+		String size;
+	}
+
+	/**
+	 * container for ligature-values 
+	 */
+	private class LigatureValues {
+		String letter;
+		String letterid;
+		String lig;
+		String ligid;
+	}
+
+	/**
+	 * Return the with of a space.
+	 * 
 	 * @see de.dante.extex.interpreter.type.Font#getSpace()
 	 */
 	public Glue getSpace() {
-		return new Glue(12 * Dimen.ONE); // TODO change
+		// use em-size for 'space'
+		Glue rt = new Glue(em);
+
+		// glyph 'space' exists?
+		String key = (String) glyphname.get("space");
+		if (key != null) {
+			try {
+				rt = new Glue(getWidth(new UnicodeChar(Integer.parseInt(key))));
+			} catch (Exception e) {
+				// do nothing, use default 
+			}
+		}
+		return rt;
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getEm()
 	 */
 	public Dimen getEm() {
-		return new Dimen(12 * Dimen.ONE); // TODO change
+		return em;
 	}
 
 	/**
@@ -168,10 +285,15 @@ public class EFMFont extends XMLFont implements Font {
 	private int ex = 0;
 
 	/**
+	 * the em-procent-size 
+	 */
+	private float empr = 100.0f;
+
+	/**
 	 * em: the width 
 	 */
-	private Dimen em = new Dimen(Dimen.ONE * 12);// change
-	
+	private Dimen em;
+
 	/**
 	 * units per em
 	 */
@@ -199,66 +321,58 @@ public class EFMFont extends XMLFont implements Font {
 	}
 
 	public String toString() {
-		return "<fontname: " + getFontName() + 
-		" units_per_em = " + units_per_em + 
-		" ex = " + ex + 
-		" >";
+		return "<fontname (EFM): "
+			+ getFontName()
+			+ " filename "
+			+ fontfile
+			+ (isExternalFont() ? " (" + externalfile + ")" : "")
+			+ " with size "
+			+ emsize.toPT()
+			+ " units_per_em = "
+			+ units_per_em
+			+ " ex = "
+			+ ex
+			+ " em = "
+			+ em.toPT()
+			+ " (with "
+			+ empr
+			+ "%)"
+			+ " number of glyphs = "
+			+ glyph.size()
+			+ " >";
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
 	 */
 	public Dimen getDepth(UnicodeChar c) {
-		
 		Dimen rt = Dimen.ZERO_PT;
-		
-		Element glyph = getGlyph(c.getCodePoint());
-		if (glyph != null) {
-			Attribute attr = glyph.getAttribute("depth");
+
+		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
+		if (gv != null) {
 			try {
-				rt = new Dimen(units_per_em, attr.getIntValue(),em);
+				int d = Integer.parseInt(gv.depth);
+				rt = new Dimen(units_per_em, d, em);
 			} catch (Exception e) {
-				// do nothingM return ZERO_PT
+				// do nothing, return ZERO_PT
 			}
 		}
 		return rt;
 	}
 
 	/**
-	 * Return the glyph-element with id ot <code>null</code> if not found
-	 * @param id	the id
-	 * @return	the glyph-element
-	 */
-	private Element getGlyph(int id) {
-		Element e;
-		Attribute attr;
-		for (int i = 0; i < glyphlist.size(); i++) {
-			e = (Element) glyphlist.get(i);
-			try {
-				attr = e.getAttribute("ID");
-				if (attr != null && attr.getIntValue() == id) {
-					return e;
-				}
-			} catch (Exception err) {
-				// do nothing, try next element
-			}
-		}
-		return null;
-	}
-	
-	/**
 	 * @see de.dante.extex.interpreter.type.Font#getHeight(de.dante.util.UnicodeChar)
 	 */
 	public Dimen getHeight(UnicodeChar c) {
 		Dimen rt = Dimen.ZERO_PT;
-		
-		Element glyph = getGlyph(c.getCodePoint());
-		if (glyph != null) {
-			Attribute attr = glyph.getAttribute("height");
+
+		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
+		if (gv != null) {
 			try {
-				rt = new Dimen(units_per_em, attr.getIntValue(),em);
+				int h = Integer.parseInt(gv.height);
+				rt = new Dimen(units_per_em, h, em);
 			} catch (Exception e) {
-				// do nothingM return ZERO_PT
+				// do nothing, return ZERO_PT
 			}
 		}
 		return rt;
@@ -269,14 +383,14 @@ public class EFMFont extends XMLFont implements Font {
 	 */
 	public Dimen getWidth(UnicodeChar c) {
 		Dimen rt = Dimen.ZERO_PT;
-		
-		Element glyph = getGlyph(c.getCodePoint());
-		if (glyph != null) {
-			Attribute attr = glyph.getAttribute("width");
+
+		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
+		if (gv != null) {
 			try {
-				rt = new Dimen(units_per_em, attr.getIntValue(),em);
+				int w = Integer.parseInt(gv.width);
+				rt = new Dimen(units_per_em, w, em);
 			} catch (Exception e) {
-				// do nothingM return ZERO_PT
+				// do nothing, return ZERO_PT
 			}
 		}
 		return rt;
@@ -286,40 +400,80 @@ public class EFMFont extends XMLFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
 	 */
 	public boolean isDefined(UnicodeChar c) {
-		Element glyph = getGlyph(c.getCodePoint());
-		if (glyph == null) {
-			return false;
-		}
-		return true;
+		return glyph.containsKey(String.valueOf(c.getCodePoint()));
 	}
 
 	/**
+	 * Return the kerning between c1 and c2.
 	 * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
 	 */
 	public Dimen kern(UnicodeChar c1, UnicodeChar c2) {
-		return Dimen.ZERO_PT; // TODO change
+		Dimen rt = Dimen.ZERO_PT;
+
+		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c1.getCodePoint()));
+		if (gv != null) {
+			KerningValues kv = (KerningValues) gv.kerning.get(String.valueOf(c2.getCodePoint()));
+			try {
+				int size = Integer.parseInt(kv.size);
+				rt = new Dimen(units_per_em, size, em);
+			} catch (Exception e) {
+				// do nothing, use default
+			}
+		}
+		return rt;
 	}
 
 	/**
+	 * Return the ligature as <code>UnicodeChar</code>, 
+	 * or <code>null</code>, if no ligature exists.
+	 * 
+	 * If you get a ligature-character, then you MUST call the 
+	 * method <code>ligature()</code> twice, if a ligature with 
+	 * more then two characters exist.
+	 * (e.g. f - ff - ffl)
 	 * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
 	 */
-	public String ligature(UnicodeChar c1, UnicodeChar c2) {
-		return null;
-	}
-	
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#externalFileName()
-	 */
-	public String externalFileName() {
-		return externalfile;
+	public UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2) {
+		UnicodeChar rt = null;
+
+		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c1.getCodePoint()));
+		if (gv != null) {
+			LigatureValues lv = (LigatureValues) gv.ligature.get(String.valueOf(c2.getCodePoint()));
+			try {
+				int id = Integer.parseInt(lv.ligid);
+				rt = new UnicodeChar(id);
+			} catch (Exception e) {
+				// do nothing, use default
+			}
+		}
+		return rt;
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#isExternalFont()
 	 */
 	public boolean isExternalFont() {
-		return true;
+		return externalfile == null ? false : true;
 	}
-	
-	
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getExternalFile()
+	 */
+	public File getExternalFile() {
+		return externalfile;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getExternalID()
+	 */
+	public String getExternalID(UnicodeChar c) {
+		String rt = null;
+		if (externalfile != null) {
+			GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
+			if (gv != null) {
+				rt = gv.glyph_number;
+			}
+		}
+		return rt;
+	}
 }

@@ -40,7 +40,7 @@ import de.dante.util.file.FileFinder;
  * It use a fontfile in efm-format.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SVGFont implements Font {
 
@@ -178,19 +178,10 @@ public class SVGFont implements Font {
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
 	 */
-	public String ligature(UnicodeChar c1, UnicodeChar c2) {
+	public UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2) {
 		return null;
 	}
 	
-	
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#externalFileName()
-	 */
-	public String externalFileName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#isExternalFont()
 	 */
@@ -198,5 +189,22 @@ public class SVGFont implements Font {
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getExternalFile()
+	 */
+	public File getExternalFile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getExternalID()
+	 */
+	public String getExternalID(UnicodeChar c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

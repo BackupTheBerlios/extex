@@ -18,6 +18,8 @@
  */
 package de.dante.extex.font;
 
+import java.io.File;
+
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
@@ -25,113 +27,119 @@ import de.dante.util.UnicodeChar;
 
 /**
  * This class implements a dummy font which does not contain any characters.
- *
+ * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NullFont implements Font {
 
-    /**
-     * Creates a new object.
-     */
-    public NullFont() {
-        super();
-    }
+	/**
+	 * Creates a new object.
+	 */
+	public NullFont() {
+		super();
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getSpace()
-     */
-    public Glue getSpace() {
-        return new Glue(12 * Dimen.ONE);
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getSpace()
+	 */
+	public Glue getSpace() {
+		return new Glue(12 * Dimen.ONE);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getEm()
-     */
-    public Dimen getEm() {
-        return new Dimen(12 * Dimen.ONE);
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getEm()
+	 */
+	public Dimen getEm() {
+		return new Dimen(12 * Dimen.ONE);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getEx()
-     */
-    public Dimen getEx() {
-        return new Dimen(6 * Dimen.ONE);
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getEx()
+	 */
+	public Dimen getEx() {
+		return new Dimen(6 * Dimen.ONE);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
-     */
-    public Dimen getFontDimen(final long index) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
+	 */
+	public Dimen getFontDimen(long index) {
+		return null;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getFontName()
-     */
-    public String getFontName() {
-        return "dummy";
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getFontName()
+	 */
+	public String getFontName() {
+		return "dummy";
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
-     */
-    public Dimen getDepth(final UnicodeChar c) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getDepth(UnicodeChar c) {
+		return null;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getHeight(de.dante.util.UnicodeChar)
-     */
-    public Dimen getHeight(final UnicodeChar c) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getHeight(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getHeight(UnicodeChar c) {
+		return null;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getWidth(de.dante.util.UnicodeChar)
-     */
-    public Dimen getWidth(final UnicodeChar c) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getWidth(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getWidth(UnicodeChar c) {
+		return null;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
-     */
-    public boolean isDefined(final UnicodeChar c) {
-        return false;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
+	 */
+	public boolean isDefined(UnicodeChar c) {
+		return false;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar,
-     *      de.dante.util.UnicodeChar)
-     */
-    public Dimen kern(final UnicodeChar c1, final UnicodeChar c2) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+	 */
+	public Dimen kern(UnicodeChar c1, UnicodeChar c2) {
+		return null;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar,
-     *      de.dante.util.UnicodeChar)
-     */
-    public String ligature(final UnicodeChar c1, final UnicodeChar c2) {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+	 */
+	public UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2) {
+		return null;
+	}
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#isExternalFont()
+	 */
+	public boolean isExternalFont() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#externalFileName()
-     */
-    public String externalFileName() {
-        // TODO Auto-generated method stub
-        return null;
-    }
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getExternalFile()
+	 */
+	public File getExternalFile() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.Font#isExternalFont()
-     */
-    public boolean isExternalFont() {
-        // TODO Auto-generated method stub
-        return false;
-    }
-
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getExternalID()
+	 */
+	public String getExternalID(UnicodeChar c) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

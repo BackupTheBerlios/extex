@@ -21,6 +21,7 @@ package de.dante.extex.font;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
@@ -28,44 +29,45 @@ import de.dante.util.file.FileFinder;
 
 /**
  * Factory to load a font.
- *
+ * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FontFactoryImpl implements FontFactory {
 
-    /**
-     * Fontmap
-     */
-    private Map fontmap = new HashMap();
+	/**
+	 * Fontmap
+	 */
+	private Map fontmap = new HashMap();
 
-    /**
-     * the file finder
-     */
-    private FileFinder finder;
+	/**
+	 * the file finder
+	 */
+	private FileFinder finder;
+	
+	/**
+	 * Creates a new object.
+	 */
+	public FontFactoryImpl(FileFinder fileFinder) {
+		super();
+		finder = fileFinder;
+	}
 
-    /**
-     * Creates a new object.
-     *
-     * @param fileFinder ...
-     */
-    public FontFactoryImpl(final FileFinder fileFinder) {
-        super();
-        finder = fileFinder;
-    }
-
-    /**
-     * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
-     */
-    // TODO the name is not only the key for the font!
-    public Font getInstance(final String name) throws GeneralException,
-            ConfigurationException {
-        Font font = (Font) (fontmap.get(name));
-        if (font == null) {
-            // TODO incomplete
-            font = new EFMFont(name, finder);
-        }
-        return font;
-    }
+	/**
+	 * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
+	 */
+	// TODO the name is not only the key for the font!
+	public Font getInstance(String name, Dimen size) throws GeneralException, ConfigurationException {
+		Font font = (Font) (fontmap.get(name));
+		if (font == null) {
+			font = new EFMFont(name,size,finder);
+			System.err.println(font);// TODO delete after test
+			 // UnicodeChar uc;
+			 // System.err.println((uc = font.ligature(new UnicodeChar('f'),new UnicodeChar('f'))).getCodePoint());
+			 // System.err.println(font.ligature(uc,new UnicodeChar('l')).getCodePoint());
+			 // System.err.println(font.kern(new UnicodeChar('W'),new UnicodeChar('o')).toPT());
+		}
+		return font;
+	}
 }

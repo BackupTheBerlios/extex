@@ -41,7 +41,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is a reference implementation of the Typesetter interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
     /** the factory to produce glyph nodes */
@@ -167,6 +167,8 @@ public class TypesetterImpl implements Typesetter, Manager {
         par();
         //TODO
         System.err.println(listMaker.close().toString());
+        
+        
     }
 
     /**
@@ -185,7 +187,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      */
     public void pop() throws GeneralException {
         if (saveStack.empty()) {
-            throw new GeneralException("xxx");
+            throw new GeneralException("xxx");// TODO
         }
 
         this.listMaker = (ListMaker) (saveStack.pop());

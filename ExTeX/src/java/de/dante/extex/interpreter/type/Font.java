@@ -18,6 +18,8 @@
  */
 package de.dante.extex.interpreter.type;
 
+import java.io.File;
+
 import de.dante.util.UnicodeChar;
 
 /**
@@ -25,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Font {
 
@@ -52,9 +54,34 @@ public interface Font {
 	 */
 	public abstract boolean isDefined(UnicodeChar c);
 
+	/**
+	 * Return the kerning between c1 und c2.
+	 * @param c1	the first character
+	 * @param c2	the second character
+	 * @return	the kerning
+	 */
 	public abstract Dimen kern(UnicodeChar c1, UnicodeChar c2);
-	public abstract String ligature(UnicodeChar c1, UnicodeChar c2);
+	
+	/**
+	 * Return the ligature as <code>UnicodeChar</code>, 
+	 * or <code>null</code>, if no ligature exists.
+	 * 
+	 * If you get a ligature-character, then you MUST call the 
+	 * method <code>ligature()</code> twice, if a ligature with 
+	 * more then two characters exist.
+	 * (e.g. f - ff - ffl)
+	 * 
+	 * @param c1	the first character
+	 * @param c2	the second character
+	 * @return	the ligature-character as <code>UnicodeChar</code>, or
+	 * 	        <code>null</code>, if no exists
+	 */
+	public abstract UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2);
 
+	/**
+	 * Return the width of space-character.
+	 * @return	the width of the space-character
+	 */
 	public abstract Glue getSpace();
 
 	/**
@@ -82,8 +109,14 @@ public interface Font {
 	public abstract boolean isExternalFont();
 	
 	/**
-	 * Return the name of a external fontfile or 
+	 * Return the <code>File</code>-object of a external fontfile or 
 	 * <code>null</code>, if no file exists.
 	 */
-	public abstract String externalFileName();
+	public abstract File getExternalFile();
+
+	/**
+	 * Return the external ID to find the glyph in the external file.
+	 * @return the external ID, or <code>null</code>, if no exists.
+	 */
+	public abstract String getExternalID(UnicodeChar c);
 }

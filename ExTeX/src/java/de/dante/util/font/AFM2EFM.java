@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
+import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
@@ -39,22 +40,26 @@ import org.jdom.output.XMLOutputter;
  * This class implements a converter from AFM to EFM.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 // TODO incomplete
 public class AFM2EFM {
 
 	private String pfbname;
 	private String efmname;
+	private String defaultsize;
 	
 	/**
 	 * init
-	 * @param in	Stream for Reading the afm-file
+	 * @param afmin		Stream for Reading the afm-file
+	 * @param pfbname	the name of the pfbfile
+	 * @param efmname	the name of the efmfile
 	 */
-	public AFM2EFM(BufferedInputStream afmin, String pfbname, String efmname) {
+	public AFM2EFM(BufferedInputStream afmin, String pfbname, String efmname, String defaultsize) {
 
-		this.pfbname=pfbname;
-		this.efmname=efmname;
+		this.pfbname = pfbname;
+		this.efmname = efmname;
+		this.defaultsize =defaultsize;
 		
 		try {
 
@@ -68,8 +73,8 @@ public class AFM2EFM {
 			reader.close();
 
 		} catch (IOException e) {
-				e.printStackTrace();
-				System.exit(1);
+			e.printStackTrace();
+			System.exit(1);
 		}
 	}
 
@@ -111,42 +116,40 @@ public class AFM2EFM {
 	/**
 	 * The llx of the FontBox.
 	 */
-	private int afmllx = -50;
+	private int afmllx = -9999;
 
 	/**
 	 * The lly of the FontBox.
 	 */
-	private int afmlly = -200;
+	private int afmlly = -9999;
 
 	/**
 	 * The lurx of the FontBox.
 	 */
-	private int afmurx = 1000;
+	private int afmurx = -9999;
 
 	/**
 	 * The ury of the FontBox.
 	 */
-	private int afmury = 900;
+	private int afmury = -9999;
 
 	/**
 	 * The underline position.
 	 */
-	private int afmUnderlinePosition = -100;
+	private int afmUnderlinePosition = 0;
 
 	/**
 	 * The underline thickness.
 	 */
-	private int afmUnderlineThickness = 50;
+	private int afmUnderlineThickness = 0;
 
 	/**
 	 * The font's encoding name. 
 	 * This encoding is
-	 * \begin{itemize}
-	 * \item StandardEncoding
-	 * \item AdobeStandardEncoding
-	 * \item For all other names the font is treated as symbolic.
-	 * \end{itemize}
-	 */
+	 * - StandardEncoding
+	 * - AdobeStandardEncoding
+	 * - For all other names the font is treated as symbolic.
+	?	 */
 	private String afmEncodingScheme = "FontSpecific";
 
 	/**
@@ -162,12 +165,12 @@ public class AFM2EFM {
 	/**
 	 * Ascender
 	 */
-	private int afmAscender = 800;
+	private int afmAscender = 0;
 
 	/**
 	 * Descender
 	 */
-	private int afmDescender = -200;
+	private int afmDescender = 0;
 
 	/**
 	 * StdHW
@@ -177,12 +180,22 @@ public class AFM2EFM {
 	/**
 	 * StdVW
 	 */
-	private int afmStdVW = 80;
+	private int afmStdVW = 0;
 
 	/**
 	 * Represents the section CharMetrics in the AFM file. 
 	 */
 	private ArrayList afmCharMetrics = new ArrayList(256);
+
+	/**
+	 * Represents the section KerningPairs in the AFM file.
+	 */
+	private ArrayList afmKerningPairs = new ArrayList(256);
+
+	/**
+	 * Char-Name - Char-Number
+	 */
+	private HashMap afmCharNameNumber = new HashMap(256);
 
 	/**
 	 * Read the AFM-File 
@@ -259,8 +272,8 @@ public class AFM2EFM {
 		}
 		// metric not found
 		if (!isMetrics) {
-				System.err.println("Missing StartCharMetrics");
-				System.exit(1);
+			System.err.println("Missing StartCharMetrics");
+			System.exit(1);
 		}
 		// read the metric
 		while ((line = reader.readLine()) != null) {
@@ -311,12 +324,21 @@ public class AFM2EFM {
 				}
 			}
 			afmCharMetrics.add(cm);
+
+			// store name and number 
+			if (afmCharNameNumber.containsKey(cm.N)) {
+				if (cm.C != -1) {
+					afmCharNameNumber.put(cm.N, new Integer(cm.C));
+				}
+			} else {
+				afmCharNameNumber.put(cm.N, new Integer(cm.C));
+			}
 		}
 
 		// metric close?
 		if (isMetrics) {
-				System.err.println("Missing EndCharMetrics");
-				System.exit(1);
+			System.err.println("Missing EndCharMetrics");
+			System.exit(1);
 		}
 
 		// read  next command
@@ -335,44 +357,47 @@ public class AFM2EFM {
 			}
 		}
 		if (!isMetrics) {
-				System.err.println("Missing EndFontMetrics");
-				System.exit(1);
+			System.err.println("Missing EndFontMetrics");
+			System.exit(1);
 		}
 
-		// read the next command (KernPairs)
-		//		while ((line = reader.readLine()) != null) {
-		//			StringTokenizer tok = new StringTokenizer(line);
-		//			if (!tok.hasMoreTokens())
-		//				continue;
-		//			String ident = tok.nextToken();
-		//			if (ident.equals("KPX")) {
-		//				String first = tok.nextToken();
-		//				String second = tok.nextToken();
-		//				Integer width = new Integer(Float.valueOf(tok.nextToken()).intValue());
-		//				Object relates[] = (Object[]) KernPairs.get(first);
-		//				if (relates == null)
-		//					KernPairs.put(first, new Object[] { second, width });
-		//				else {
-		//					int n = relates.length;
-		//					Object relates2[] = new Object[n + 2];
-		//					System.arraycopy(relates, 0, relates2, 0, n);
-		//					relates2[n] = second;
-		//					relates2[n + 1] = width;
-		//					KernPairs.put(first, relates2);
-		//				}
-		//			} else if (ident.equals("EndKernPairs")) {
-		//				isMetrics = false;
-		//				break;
-		//			}
-		//		}
-		//		if (isMetrics)
-		//			throw new DocumentException("Missing EndKernPairs in " + fileName);
+		// read KernPairs
+		while ((line = reader.readLine()) != null) {
+			StringTokenizer tok = new StringTokenizer(line);
+			if (!tok.hasMoreTokens())
+				continue;
+			String ident = tok.nextToken();
+			if (ident.equals("KPX")) {
+				KernPairs kp = new KernPairs();
+				kp.charpre = tok.nextToken();
+				kp.charpost = tok.nextToken();
+				kp.kerningsize = tok.nextToken();
+				afmKerningPairs.add(kp);
+
+			} else if (ident.equals("EndKernPairs")) {
+				isMetrics = false;
+				break;
+			}
+		}
+		if (isMetrics) {
+			System.err.println("Missing EndKernPairs");
+			System.exit(1);
+		}
+	}
+
+	/**
+	 * container for KerningPair
+	 */
+	private class KernPairs {
+		String charpre;
+		String charpost;
+		String kerningsize;
 	}
 
 	/**
 	 * Container for the AFM-CharMetrik
 	 */
-	public class AFMCharMetric {
+	private class AFMCharMetric {
 
 		/**
 		 * C
@@ -482,16 +507,16 @@ public class AFM2EFM {
 	private String filenameWithoutExtensionAndPath(String file) {
 		String rt = file;
 		int i = file.lastIndexOf(".");
-		if (i>0) {
-			rt = file.substring(0,i);
+		if (i > 0) {
+			rt = file.substring(0, i);
 		}
-		i= rt.lastIndexOf(File.separator);
-		if (i>0) {
-			rt = rt.substring(i+1);
+		i = rt.lastIndexOf(File.separator);
+		if (i > 0) {
+			rt = rt.substring(i + 1);
 		}
 		return rt;
 	}
-	
+
 	/**
 	 * remove the path, if exists
 	 */
@@ -503,7 +528,7 @@ public class AFM2EFM {
 		}
 		return rt;
 	}
-	
+
 	/**
 	 * Create a EFM-File
 	 */
@@ -515,33 +540,38 @@ public class AFM2EFM {
 			Element root = new Element("fontgroup");
 			root.setAttribute("name", filenameWithoutExtensionAndPath(efmname));
 			root.setAttribute("id", filenameWithoutExtensionAndPath(efmname));
-			Document doc = new Document(root);
+			root.setAttribute("default-size", defaultsize);
+			root.setAttribute("empr", "100");
+
+			Document doc = new Document();
+			doc.addContent(new Comment(" ExTeX-Font-Metric-File (EFM) "));
+			// TODO add DTD
+			doc.setRootElement(root);
 
 			Element font = new Element("font");
 			font.setAttribute("type", "type1");
 			font.setAttribute("filename", filenameWithoutPath(pfbname));
 			root.addContent(font);
-			
-			Element fontface = new Element("font-face");
-			font.addContent(fontface);
-			
-			fontface.setAttribute("font-name", afmFontName);
-			fontface.setAttribute("font-fullname", afmFullName);
-			fontface.setAttribute("font-family", afmFamilyName);
-			fontface.setAttribute("font-weight", afmWeight);
-			fontface.setAttribute("units-per-em", "1000");
-			fontface.setAttribute("bbox", String.valueOf(afmllx) + ' ' +
-					String.valueOf(afmlly) + ' ' + 
-					String.valueOf(afmurx) + ' ' + 
-					String.valueOf(afmury)
-			);
+
+			font.addContent(new Comment(" type: the source-type of the metric-file e.g. Type1 AFM "));
+			font.addContent(new Comment(" filename : the filename of the pfb-file "));
+
+			font.setAttribute("font-name", afmFontName);
+			font.setAttribute("font-fullname", afmFullName);
+			font.setAttribute("font-family", afmFamilyName);
+			font.setAttribute("font-weight", afmWeight);
+
+			root.setAttribute("units-per-em", "1000");
+			root.setAttribute(
+				"bbox",
+				String.valueOf(afmllx) + ' ' + String.valueOf(afmlly) + ' ' + String.valueOf(afmurx) + ' ' + String.valueOf(afmury));
 			if (afmUnderlineThickness != 0) {
-				fontface.setAttribute("underline-position", String.valueOf(afmUnderlinePosition));
-				fontface.setAttribute("underline-thickness", String.valueOf(afmUnderlineThickness));
+				font.setAttribute("underline-position", String.valueOf(afmUnderlinePosition));
+				font.setAttribute("underline-thickness", String.valueOf(afmUnderlineThickness));
 			}
-			fontface.setAttribute("x-height", String.valueOf(afmXHeight));
-			fontface.setAttribute("cap-height", String.valueOf(afmCapHeight));
-			
+			root.setAttribute("x-height", String.valueOf(afmXHeight));
+			root.setAttribute("cap-height", String.valueOf(afmCapHeight));
+
 			// ???
 			//fontface.setAttribute("characterset", afmCharacterSet);
 			//fontface.setAttribute("italicangle", String.valueOf(afmItalicAngle));
@@ -574,16 +604,16 @@ public class AFM2EFM {
 						glyph.setAttribute("width", String.valueOf(cm.Bllx + cm.Burx));
 					}
 				}
-				
+
 				if (cm.Bllx != -9999) {
 					glyph.setAttribute("bllx", String.valueOf(cm.Bllx));
 					glyph.setAttribute("blly", String.valueOf(cm.Blly));
 					glyph.setAttribute("burx", String.valueOf(cm.Burx));
 					glyph.setAttribute("bury", String.valueOf(cm.Bury));
-			
-					if (cm.Blly < 0){
+
+					if (cm.Blly < 0) {
 						glyph.setAttribute("depth", String.valueOf(-cm.Blly));
-					} 	else {
+					} else {
 						glyph.setAttribute("depth", "0");
 					}
 					if (cm.Bury > 0) {
@@ -591,25 +621,30 @@ public class AFM2EFM {
 					} else {
 						glyph.setAttribute("height", "0");
 					}
-				}
-				
-				
-				if (cm.L != null) {
-					glyph.setAttribute("ligature", "true");
 					
+					// kerning
+					addKerning(glyph);
+				}
+
+				if (cm.L != null) {
+	
 					Iterator iterator = cm.L.keySet().iterator();
 
 					while (iterator.hasNext()) {
 						String key = (String) iterator.next();
-						Element lig = new Element("l");
+						Element lig = new Element("ligature");
 						lig.setAttribute("letter", key);
-						lig.setAttribute("lig", (String) cm.L.get(key));
+						lig.setAttribute("letter-id", getIDforName(key));
+						String value = (String) cm.L.get(key);
+						lig.setAttribute("lig", value);
+						lig.setAttribute("lig-id", getIDforName(value));
 						glyph.addContent(lig);
 					}
 				}
 
 				// add to fontseg
 				font.addContent(glyph);
+
 			}
 
 			// write to efm-file
@@ -619,8 +654,52 @@ public class AFM2EFM {
 			out.close();
 
 		} catch (Exception e) {
-				e.printStackTrace();
-				System.exit(1);
+			e.printStackTrace();
+			System.exit(1);
+		}
+	}
+
+	/**
+	 * Add the kerning-pais for the glyph
+	 */
+	private void addKerning(Element glyph) {
+
+		String glyphname = glyph.getAttributeValue("glyph-name");
+		KernPairs kp;
+		
+		for (int i=0; i<afmKerningPairs.size(); i++) {
+			kp = (KernPairs)afmKerningPairs.get(i);
+			if (kp.charpre.equals(glyphname)) {
+				Element kerning = new Element("kerning");
+
+				kerning.setAttribute("glyph-name", kp.charpost);
+				kerning.setAttribute("glyph-id", getIDforName(kp.charpost));
+				kerning.setAttribute("size", kp.kerningsize);
+				
+				glyph.addContent(kerning);
+			}
+		}
+	}
+	
+	/**
+	 * Return the id for a charname 
+	 */
+	private String getIDforName(String name) {
+		int id = -1;
+
+		if (name != null) {
+			Integer i =(Integer) afmCharNameNumber.get(name);
+			if (i != null) {
+				id = i.intValue();
+			}
+		} else {
+			name = "null";
+		}
+
+		if (id >= 0) {
+			return String.valueOf(id);
+		} else {
+			return "notdef_" + name;
 		}
 	}
 
@@ -629,8 +708,8 @@ public class AFM2EFM {
 	 */
 	public static void main(String[] args) {
 
-		if (args.length != 3) {
-			System.err.println("java de.dante.util.font.afm.AFM2EFM <afm-file> <pfb-file> <efm-file>");
+		if (args.length != 4) {
+			System.err.println("java de.dante.util.font.afm.AFM2EFM <afm-file> <pfb-file> <efm-file> <default-size>");
 			System.exit(1);
 		}
 
@@ -640,7 +719,7 @@ public class AFM2EFM {
 
 			BufferedInputStream in = new BufferedInputStream(new FileInputStream(args[0]));
 
-			AFM2EFM afm = new AFM2EFM(in, args[1],args[2]);
+			AFM2EFM afm = new AFM2EFM(in, args[1], args[2], args[3]);
 
 			in.close();
 

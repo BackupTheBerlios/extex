@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<fontgroup name="CMR12" id="CMR12">
-   <font type="type1" filename="CMR12.pfb">
-      <font-face font-name="CMR12" font-fullname="CMR12" font-family="Computer Modern" font-weight="Medium" units-per-em="1000" bbox="-34 -251 988 750" x-height="431" cap-height="683" />
+<!-- ExTeX-Font-Metric-File (EFM) -->
+<fontgroup name="cmr12" id="cmr12" default-size="12pt" empr="100" units-per-em="1000" bbox="-34 -251 988 750" x-height="431" cap-height="683">
+   <font type="type1" filename="cmr12.pfb" font-name="CMR12" font-fullname="CMR12" font-family="Computer Modern" font-weight="Medium">
+      <!-- type: the source-type of the metric-file e.g. Type1 AFM -->
+      <!-- filename : the filename of the pfb-file -->
       <glyph ID="0" glyph-number="0" glyph-name="Gamma" unicode="Gamma" width="611" bllx="41" blly="0" burx="570" bury="681" depth="0" height="681" />
       <glyph ID="1" glyph-number="1" glyph-name="Delta" unicode="Delta" width="815" bllx="46" blly="0" burx="769" bury="714" depth="0" height="714" />
       <glyph ID="2" glyph-number="2" glyph-name="Theta" unicode="Theta" width="761" bllx="54" blly="-21" burx="707" bury="704" depth="21" height="704" />
@@ -13,9 +15,9 @@
       <glyph ID="8" glyph-number="8" glyph-name="Phi" unicode="Phi" width="707" bllx="54" blly="0" burx="652" bury="683" depth="0" height="683" />
       <glyph ID="9" glyph-number="9" glyph-name="Psi" unicode="Psi" width="761" bllx="55" blly="0" burx="707" bury="683" depth="0" height="683" />
       <glyph ID="10" glyph-number="10" glyph-name="Omega" unicode="Omega" width="707" bllx="44" blly="0" burx="662" bury="704" depth="0" height="704" />
-      <glyph ID="11" glyph-number="11" glyph-name="ff" unicode="ff" width="571" bllx="26" blly="0" burx="609" bury="704" depth="0" height="704" ligature="true">
-         <l letter="i" lig="ffi" />
-         <l letter="l" lig="ffl" />
+      <glyph ID="11" glyph-number="11" glyph-name="ff" unicode="ff" width="571" bllx="26" blly="0" burx="609" bury="704" depth="0" height="704">
+         <ligature letter="i" letter-id="105" lig="ffi" lig-id="177" />
+         <ligature letter="l" letter-id="108" lig="ffl" lig-id="178" />
       </glyph>
       <glyph ID="12" glyph-number="12" glyph-name="fi" unicode="fi" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
       <glyph ID="13" glyph-number="13" glyph-name="fl" unicode="fl" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
@@ -107,10 +109,10 @@
       <glyph ID="99" glyph-number="99" glyph-name="c" unicode="c" width="435" bllx="35" blly="-10" burx="406" bury="446" depth="10" height="446" />
       <glyph ID="100" glyph-number="100" glyph-name="d" unicode="d" width="543" bllx="35" blly="-10" burx="515" bury="694" depth="10" height="694" />
       <glyph ID="101" glyph-number="101" glyph-name="e" unicode="e" width="435" bllx="30" blly="-10" burx="407" bury="446" depth="10" height="446" />
-      <glyph ID="102" glyph-number="102" glyph-name="f" unicode="f" width="299" bllx="31" blly="0" burx="342" bury="704" depth="0" height="704" ligature="true">
-         <l letter="i" lig="fi" />
-         <l letter="f" lig="ff" />
-         <l letter="l" lig="fl" />
+      <glyph ID="102" glyph-number="102" glyph-name="f" unicode="f" width="299" bllx="31" blly="0" burx="342" bury="704" depth="0" height="704">
+         <ligature letter="i" letter-id="105" lig="fi" lig-id="175" />
+         <ligature letter="f" letter-id="102" lig="ff" lig-id="174" />
+         <ligature letter="l" letter-id="108" lig="fl" lig-id="176" />
       </glyph>
       <glyph ID="103" glyph-number="103" glyph-name="g" unicode="g" width="489" bllx="27" blly="-205" burx="475" bury="452" depth="205" height="452" />
       <glyph ID="104" glyph-number="104" glyph-name="h" unicode="h" width="543" bllx="32" blly="0" burx="521" bury="694" depth="0" height="694" />
@@ -150,9 +152,9 @@
       <glyph ID="169" glyph-number="169" glyph-name="Phi" unicode="Phi" width="707" bllx="54" blly="0" burx="652" bury="683" depth="0" height="683" />
       <glyph ID="170" glyph-number="170" glyph-name="Psi" unicode="Psi" width="761" bllx="55" blly="0" burx="707" bury="683" depth="0" height="683" />
       <glyph ID="173" glyph-number="173" glyph-name="Omega" unicode="Omega" width="707" bllx="44" blly="0" burx="662" bury="704" depth="0" height="704" />
-      <glyph ID="174" glyph-number="174" glyph-name="ff" unicode="ff" width="571" bllx="26" blly="0" burx="609" bury="704" depth="0" height="704" ligature="true">
-         <l letter="i" lig="ffi" />
-         <l letter="l" lig="ffl" />
+      <glyph ID="174" glyph-number="174" glyph-name="ff" unicode="ff" width="571" bllx="26" blly="0" burx="609" bury="704" depth="0" height="704">
+         <ligature letter="i" letter-id="105" lig="ffi" lig-id="177" />
+         <ligature letter="l" letter-id="108" lig="ffl" lig-id="178" />
       </glyph>
       <glyph ID="175" glyph-number="175" glyph-name="fi" unicode="fi" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
       <glyph ID="176" glyph-number="176" glyph-name="fl" unicode="fl" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
