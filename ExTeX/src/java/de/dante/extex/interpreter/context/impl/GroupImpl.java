@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
@@ -43,7 +44,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
@@ -63,10 +64,15 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	protected Map activeMap = new HashMap();
 
 	/**
+	 * The map for the boxes
+	 */
+	protected Map boxMap = new HashMap();
+
+	/**
 	 * The map for the catcodes
 	 */
 	protected Map catcodeMap = new HashMap();
-
+	
 	/**
 	 * The map for the count registers
 	 */
@@ -161,6 +167,43 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 */
 	public Tokens getAfterGroup() {
 		return afterGroup;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Group#setCount(java.lang.String,
+	 *         de.dante.extex.interpreter.type.Box)
+	 */
+	public void setBox(String name, Box value) {
+	    countMap.put(name, value);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Group#setCount(java.lang.String,
+	 *         de.dante.extex.interpreter.type.Box, boolean)
+	 */
+	public void setBox(String name, Box value, boolean global) {
+	    setBox(name, value);
+
+	    if (global && next != null) {
+	        next.setBox(name, value, global);
+	    }
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Group#getBox(java.lang.String)
+	 */
+	public Box getBox(String name) {
+	    Box box = (Box) (boxMap.get(name));
+
+	    if (box == null) {
+	        if (next != null) {
+	            box = next.getBox(name);
+	        } else {
+	            box = Box.VOID;
+	        }
+	    }
+
+	    return box;
 	}
 
 	/**

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  - Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+  - Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
   -
   - This library is free software; you can redistribute it and/or
   - modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@
     <Define name="belowdisplayskip" class=""/>
     <define name="binoppenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="botmark" class=""/>
-    <Define name="box" class=""/>
+    <Define name="box" class="de.dante.extex.interpreter.primitives.register.NumberedBox"/>
     <define name="boxmaxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="brokenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="catcode" class="de.dante.extex.interpreter.primitives.register.NumberedCatcode"/>
@@ -121,14 +121,14 @@
     <Define name="globaldefs" class=""/>
     <Define name="halign" class=""/>
     <Define name="hangafter" class=""/>
-    <Define name="hangindent" class=""/>
+    <define name="hangindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="hbadness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="hbox" class=""/>
     <Define name="hfil" class=""/>
     <Define name="hfill" class=""/>
     <Define name="hfilneg" class=""/>
-    <Define name="hfuzz" class=""/>
-    <Define name="hoffset" class=""/>
+    <define name="hfuzz" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
+    <define name="hoffset" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="holdinginserts" class=""/>
     <Define name="hrule" class=""/>
     <define name="hsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
@@ -182,7 +182,7 @@
     <Define name="limits" class=""/>
     <define name="linepenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lineskip" class=""/>
-    <Define name="lineskiplimit" class=""/>
+    <define name="lineskiplimit" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="long" class="de.dante.extex.interpreter.primitives.prefix.Long"/>
     <define name="looseness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lower" class=""/>
@@ -202,9 +202,9 @@
     <Define name="mathord" class=""/>
     <Define name="mathpunct" class=""/>
     <Define name="mathrel" class=""/>
-    <Define name="mathsurround" class=""/>
+    <define name="mathsurround" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="maxdeadcycles" class=""/>
-    <Define name="maxdepth" class=""/>
+    <define name="maxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="meaning" class=""/>
     <Define name="medmuskip" class=""/>
     <define name="message" class="de.dante.extex.interpreter.primitives.debugging.Message"/>
@@ -235,7 +235,7 @@
     <Define name="output" class=""/>
     <Define name="outputpenalty" class=""/>
     <Define name="over" class=""/>
-    <Define name="overfullrule" class=""/>
+    <define name="overfullrule" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="overline" class=""/>
     <Define name="overwithdelims" class=""/>
     <define name="pagedepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
@@ -272,7 +272,7 @@
     <Define name="scriptfont" class=""/>
     <Define name="scriptscriptfont" class=""/>
     <Define name="scriptscriptstyle" class=""/>
-    <Define name="scriptspace" class=""/>
+    <define name="scriptspace" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="scriptstyle" class=""/>
     <define name="scrollmode" class="de.dante.extex.interpreter.primitives.interaction.Scrollmode"/>
     <Define name="setbox" class=""/>
@@ -281,8 +281,8 @@
     <Define name="shipout" class=""/>
     <Define name="show" class=""/>
     <Define name="showbox" class=""/>
-    <Define name="showboxbreadth" class=""/>
-    <Define name="showboxdepth" class=""/>
+    <define name="showboxbreadth" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
+    <define name="showboxdepth" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="showlists" class=""/>
     <define name="showthe" class="de.dante.extex.interpreter.primitives.debugging.Showthe"/>
     <Define name="skewchar" class=""/>
@@ -294,7 +294,7 @@
     <Define name="special" class=""/>
     <Define name="splitbotmark" class=""/>
     <Define name="splitfirstmark" class=""/>
-    <Define name="splitmaxdepth" class=""/>
+    <define name="splitmaxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="splittopskip" class=""/>
     <Define name="string" class=""/>
     <Define name="tabskip" class=""/>
@@ -338,8 +338,8 @@
     <Define name="vfil" class=""/>
     <Define name="vfill" class=""/>
     <Define name="vfilneg" class=""/>
-    <Define name="vfuzz" class=""/>
-    <Define name="voffset" class=""/>
+    <define name="vfuzz" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
+    <define name="voffset" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="vrule" class=""/>
     <define name="vsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="vskip" class=""/>

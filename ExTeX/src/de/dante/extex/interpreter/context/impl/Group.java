@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
@@ -43,7 +44,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -86,6 +87,43 @@ public interface Group extends Tokenizer, Serializable {
 	 */
 	public abstract Tokens getAfterGroup();
 
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Box box}
+	 * register in the current group. Count registers are named, either with a
+	 * number or an arbitrary string. The numbered registers where limited to
+	 * 256 in TeX. This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name the name or the number of the register
+	 * @param value the new value of the register
+	 */
+	public abstract void setBox(String name, Box value);
+
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Box box}
+	 * register in all requested groups. Count registers are named, either with
+	 * a number or an arbitrary string. The numbered registers where limited to
+	 * 256 in TeX. This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name the name or the number of the register
+	 * @param value the new value of the register
+	 * @param global the indicator for the scope; <code>true</code> means all
+	 *            groups; otherwise the current group is affected only
+	 */
+	public abstract void setBox(String name, Box value, boolean global);
+
+	/**
+	 * Getter for the {@link de.dante.extex.interpreter.type.Box box}
+	 * register. Count registers are named, either with a number or an
+	 * arbitrary string. The numbered registers where limited to 256 in TeX.
+	 * This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name the name or number of the count register
+	 * 
+	 * @return the count register or <code>null</code> if it is not defined
+	 */
+	public abstract Box getBox(String name);
+
+	
 	/**
 	 * Setter for the catcode of a character in the current group.
 	 * 

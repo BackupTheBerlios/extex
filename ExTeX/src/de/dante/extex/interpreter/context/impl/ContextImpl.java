@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Tokens;
@@ -78,7 +79,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -180,14 +181,37 @@ public class ContextImpl implements Context, Serializable {
 	}
 
 	/**
+	 * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
+	 *         Box)
+	 */
+	public void setBox(String name, Box value) {
+		group.setBox(name, value);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
+	 *         Box, boolean)
+	 */
+	public void setBox(String name, Box value, boolean global) {
+		group.setBox(name, value, global);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Context#getBox(java.lang.String)
+	 */
+	public Box getBox(String name) {
+		return group.getBox(name);
+	}
+
+	/**
 	 * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
 	 *         long)
 	 */
 	public void setCount(String name, long value) {
-		Count count = new Count(value);
-		group.setCount(name, count);
+	    Count count = new Count(value);
+	    group.setCount(name, count);
 
-		//TODO: use existing Register instead of making a new one
+	    //TODO: use existing Register instead of making a new one
 	}
 
 	/**
@@ -195,19 +219,19 @@ public class ContextImpl implements Context, Serializable {
 	 *         long, boolean)
 	 */
 	public void setCount(String name, long value, boolean global) {
-		Count count = new Count(value);
-		group.setCount(name, count, global);
+	    Count count = new Count(value);
+	    group.setCount(name, count, global);
 
-		//TODO: use existing Register instead of making a new one
+	    //TODO: use existing Register instead of making a new one
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Context#getCount(java.lang.String)
 	 */
 	public Count getCount(String name) {
-		return group.getCount(name);
+	    return group.getCount(name);
 	}
-
+	
 	/**
 	 * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
 	 *         long)

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,30 +16,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.context.Context;
+import java.io.Serializable;
 
+import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
-/**
+/*
  * ...
  *
- * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.1 $
  */
-public interface CountConvertable {
+public class NumberedBox extends NamedBox implements Code, Serializable {
+
     /**
-     * ...
+     * Creates a new object.
+     * 
+     * @param name
+     */
+    public NumberedBox(String name) {
+        super(name);
+    }
+
+    /**
+     * Return the key (the number) for the register.
      *
-     * @param context the interpreter context
      * @param source the source for new tokens
      *
      * @return ...
      *
      * @throws GeneralException in case of an error
      */
-    public abstract long convertCount(Context context,
-                                      TokenSource source)
-                               throws GeneralException;
+    protected String getKey(TokenSource source) throws GeneralException {
+        return getName() + "#" + Long.toString(source.scanNumber());
+    }
 }

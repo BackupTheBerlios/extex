@@ -29,10 +29,12 @@ import de.dante.util.GeneralException;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Box extends AbstractNodeList implements Serializable, NodeList {
 
+    public static final Box VOID = new Box();
+    
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */

@@ -26,18 +26,18 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CountConvertable {
     /**
      * ...
      *
-     * @param context ...
-     * @param source ...
+     * @param context the interpreter context
+     * @param source the source for new tokens
      *
      * @return ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public abstract long convertCount(Context context,
                                       TokenSource source)

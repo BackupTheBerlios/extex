@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,19 +19,20 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
-
+import de.dante.extex.interpreter.type.Box;
 import de.dante.util.GeneralException;
 
-/**
+/*
  * ...
  *
- * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.1 $
  */
-public interface CountConvertable {
+public interface Boxable {
+    
     /**
      * ...
-     *
+     * 
      * @param context the interpreter context
      * @param source the source for new tokens
      *
@@ -39,7 +40,7 @@ public interface CountConvertable {
      *
      * @throws GeneralException in case of an error
      */
-    public abstract long convertCount(Context context,
-                                      TokenSource source)
-                               throws GeneralException;
+    public abstract Box getBox(Context context, TokenSource source)
+            throws GeneralException;
+
 }
