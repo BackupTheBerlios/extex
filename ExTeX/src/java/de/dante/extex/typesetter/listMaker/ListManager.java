@@ -31,16 +31,17 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ListManager {
 
     /**
      * Discart to top of the stack of list makers.
+     * @return TODO
      *
      * @throws GeneralException in case of an error
      */
-    void pop() throws GeneralException;
+    ListMaker pop() throws GeneralException;
 
     /**
      * Push a new element to the stack of list makers.
