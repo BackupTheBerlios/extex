@@ -7,6 +7,7 @@
 *.log.*
 *.out
 *.pdf
+*.tmp
 *.settings
 .xvpics
 build.properties
