@@ -18,6 +18,21 @@
  */
 package de.dante.extex;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.nio.charset.CharacterCodingException;
+import java.text.DateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Properties;
+
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.i18n.Messages;
@@ -25,6 +40,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.logging.Logger;
+import de.dante.extex.logging.LoggerFactory;
 import de.dante.extex.main.ErrorHandlerImpl;
 import de.dante.extex.main.FileCloseObserver;
 import de.dante.extex.main.FileFinderImpl;
@@ -37,36 +53,15 @@ import de.dante.extex.main.MainMissingArgumentException;
 import de.dante.extex.main.MainOutputFileNotFoundException;
 import de.dante.extex.main.MainUnknownOptionException;
 import de.dante.extex.main.MessageObserver;
+import de.dante.extex.main.TokenObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
-
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintWriter;
-
-import java.nio.charset.CharacterCodingException;
-
-import java.text.DateFormat;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Properties;
-import java.util.logging.LogManager;
 
 /**
  * This is the command line interface to ExTeX. It does all the horrible things
@@ -83,7 +78,7 @@ import java.util.logging.LogManager;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ExTeX {
     /**
@@ -94,7 +89,7 @@ public class ExTeX {
     /**
      * Exit code for internal errors
      */
-    private static final int EXIT_INTERNAL_ERROR = -111;
+    private static final int EXIT_INTERNAL_ERROR = -666;
 
     /**
      * The manually incremented version string
@@ -109,19 +104,19 @@ public class ExTeX {
     private Calendar calendar = Calendar.getInstance();
 
     /**
-     * The logger currently in use
+     * The logger currently in use.
      */
     private Logger logger;
 
     /**
-     * The properties containing the settings for the invocation
+     * The properties containing the settings for the invocation.
      */
     private Properties properties;
 
     /**
-     * Boolean indicating that it is necessary to display the banner This in
-     * formation is needed for the cases where errors show up before the normal
-     * banner has been printed.
+     * Boolean indicating that it is necessary to display the banner. This
+     * information is needed for the cases where errors show up before the
+     * normal banner has been printed.
      */
     private boolean showBanner = true;
 
@@ -150,7 +145,7 @@ public class ExTeX {
      * </td>
      * </tr>
      * <tr>
-     * <td>extex.trailingInput</td>
+     * <td>extex.code</td>
      * <td></td>
      * <td>This parameter contains TeX code to be executed directly. The
      * execution is performed after any code specified in an input file.</td>
@@ -164,7 +159,7 @@ public class ExTeX {
      * <tr>
      * <td>extex.ini</td>
      * <td></td>
-     * <td>If set to <code>true</code> then act as initex</td>
+     * <td>If set to <code>true</code> then act as initex.</td>
      * </tr>
      * <tr>
      * <td>extex.interaction</td>
@@ -186,7 +181,7 @@ public class ExTeX {
      * </tr>
      * <tr>
      * <td>extex.encoding</td>
-     * <td></td>
+     * <td>ISO-8859-1</td>
      * <td></td>
      * </tr>
      * <tr>
@@ -209,7 +204,7 @@ public class ExTeX {
         this.properties = properties;
         propertyDefault("extex.progname", "ExTeX");
         propertyDefault("extex.file", "");
-        propertyDefault("extex.trailingInput", "");
+        propertyDefault("extex.code", "");
         propertyDefault("extex.interaction", "3");
         propertyDefault("extex.jobname", "texput");
         propertyDefault("extex.jobname2", "");
@@ -219,8 +214,12 @@ public class ExTeX {
         propertyDefault("extex.texinputs", "");
         propertyDefault("extex.encoding", "ISO-8859-1");
         propertyDefault("extex.config", "config/extex.xml");
+        propertyDefault("extex.logger", "de.dante.extex.logging.LoggerImpl");
+        propertyDefault("extex.loggerTemplate", "config/logger");
+        propertyDefault("extex.nobanner", "");
+        propertyDefault("extex.traceTokenizer", "");
 
-        useLogger("extex.initial.log", "config/logger.properties");
+        useLogger("extex.initial.log", "");
     }
 
     /**
@@ -379,14 +378,16 @@ public class ExTeX {
         if (jobname == null || jobname.equals("")) {
             jobname = properties.getProperty("extex.jobname");
         }
+        showBanner = !Boolean.valueOf(properties.getProperty("extex.nobanner"))
+                .booleanValue();
 
-        useLogger("extex.log", "config/logger-"
-                               + properties.getProperty("extex.interaction")
-                               + ".properties");
-        logger.info(Messages.format("ExTeX.Version", properties
-                .getProperty("extex.progname"), VERSION, properties
-                .getProperty("java.version")));
-        showBanner = false;
+        useLogger("extex.log", properties.getProperty("extex.interaction"));
+        if (showBanner) {
+            logger.info(Messages.format("ExTeX.Version", properties
+                    .getProperty("extex.progname"), VERSION, properties
+                    .getProperty("java.version")));
+            showBanner = false;
+        }
 
         try {
             Configuration config = new ConfigurationFactory()
@@ -399,6 +400,11 @@ public class ExTeX {
                     .registerObserver("close", new FileCloseObserver(logger));
             interpreter
                     .registerObserver("message", new MessageObserver(logger));
+            if (Boolean.valueOf(properties.getProperty("extex.traceTokenizer"))
+                    .booleanValue()) {
+                interpreter
+                    .registerObserver("pop", new TokenObserver(logger));
+            }
 
             TokenStreamFactory factory = new TokenStreamFactory(config
                     .getConfiguration("Reader"));
@@ -452,7 +458,7 @@ public class ExTeX {
      * Initialize the input streams. If the property <i>extex.file</i> is set
      * and not the empty string, (e.g. from the command line) then this value
      * is used as file name to read from. If the property <i>
-     * extex.trailingInput</i> is set and not the empty string (e.g. from the
+     * extex.code</i> is set and not the empty string (e.g. from the
      * command line) then this value is used as initial input after the input
      * file has been processed. Finally, if everything before failed then read
      * input from the stdin stream.
@@ -481,7 +487,7 @@ public class ExTeX {
             }
         }
 
-        String post = properties.getProperty("extex.trailingInput");
+        String post = properties.getProperty("extex.code");
 
         if (post != null && !post.equals("")) {
             TokenStream stream = factory.newInstance(post, properties
@@ -587,7 +593,7 @@ public class ExTeX {
                 in.append(arg[i]);
             } while (++i < arg.length);
 
-            properties.setProperty("extex.trailingInput", in.toString());
+            properties.setProperty("extex.code", in.toString());
         }
 
         run();
@@ -639,34 +645,21 @@ public class ExTeX {
      * Initialize or re-initialize the logger.
      * 
      * @param loggerName the name of the logger to initialize
-     * @param prop the name of the properties template to use
+     * @param template the name of the properties template to use
      */
-    private void useLogger(String loggerName, String prop) throws MainException {
-        String dir = properties.getProperty("extex.outputdir");
-        String outname = properties.getProperty("extex.jobname");
-        File logfile = new File(dir, outname);
+    private void useLogger(String loggerName, String interaction)
+            throws MainException {
+        File logfile = new File(properties.getProperty("extex.outputdir"),
+                properties.getProperty("extex.jobname"));
+        String template = properties.getProperty("extex.loggerTemplate")
+                          + (interaction.equals("") ? "" : "-") + interaction
+                          + ".properties";
 
         try {
-            InputStream s = getClass().getClassLoader().getResourceAsStream(
-                    prop);
-            byte[] bb = new byte[8192];
-            String cfg = "";
-            int i;
-
-            while ((i = s.read(bb)) >= 0) {
-                cfg = cfg + new String(bb, 0, i);
-            }
-
-            cfg = cfg.replaceAll("\\$JOBNAME", logfile.getCanonicalPath());
-
-            LogManager logManager = LogManager.getLogManager();
-            logManager.reset();
-            logManager.readConfiguration(new ByteArrayInputStream(cfg
-                    .getBytes()));
-        } catch (IOException e) {
-            throw new MainIOException(e);
+            logger = (new LoggerFactory(properties.getProperty("extex.logger")))
+                    .getInstance(loggerName, logfile, template);
+        } catch (ConfigurationException e) {
+            throw new MainConfigurationException(e);
         }
-
-        logger = Logger.getLogger(loggerName);
     }
 }
