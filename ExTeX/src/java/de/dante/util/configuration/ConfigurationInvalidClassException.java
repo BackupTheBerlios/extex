@@ -21,10 +21,10 @@ package de.dante.util.configuration;
 
 /**
  * This exception is thrown when a dynamically loaded class does not implement
- * the expected interface.
+ * an expected interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ConfigurationInvalidClassException extends ConfigurationException {
 
@@ -35,22 +35,26 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
     private String className = null;
 
     /**
-     * The field <tt>interfaceName</tt> contains the ...
+     * The field <tt>interfaceName</tt> contains the name of the expected
+     * interface.
      */
-    private String interfaceName = null;
+    private String interfaceName = "";
 
     /**
      * Creates a new object.
      *
-     * @param className the name of the class which could not be found
+     * @param className the name of the class
+     * @param interfaceName the name of the interface expected to be
+     *  implemented by the class
      * @param config the configuration in which the problem occurred or
      * <code>null</code>
      */
     public ConfigurationInvalidClassException(final String className,
-            final Configuration config) {
+            final String interfaceName, final Configuration config) {
 
         super(null, config.toString());
         this.className = className;
+        this.interfaceName = interfaceName;
     }
 
     /**
@@ -71,7 +75,7 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
                         ? className //
                         : getCause() != null
                                 ? getCause().getLocalizedMessage()
-                                : ""));
+                                : ""), interfaceName);
     }
 
 }

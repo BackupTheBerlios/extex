@@ -31,6 +31,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationInvalidClassException;
 import de.dante.util.configuration.ConfigurationInvalidResourceException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationNotFoundException;
 import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.framework.configuration.Configurable;
@@ -65,7 +66,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
@@ -244,8 +245,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
         }
 
         if (!target.isAssignableFrom(theClass)) {
-            throw new ConfigurationInvalidClassException(target.getName(),
-                    config);
+            throw new ConfigurationInvalidClassException(theClass.getName(),
+                    target.getName(), config);
         }
 
         try {
@@ -291,7 +292,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             throw new ConfigurationInstantiationException(e);
         }
 
-        throw new ConfigurationInvalidClassException(target.getName(), config);
+        throw new ConfigurationInvalidClassException(theClass.getName(), target
+                .getName(), config);
     }
 
     /**
@@ -326,8 +328,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
         }
 
         if (!target.isAssignableFrom(theClass)) {
-            throw new ConfigurationInvalidClassException(target.getName(),
-                    config);
+            throw new ConfigurationInvalidClassException(theClass.getName(),
+                    target.getName(), config);
         }
 
         try {
@@ -387,7 +389,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             throw new ConfigurationInstantiationException(e);
         }
 
-        throw new ConfigurationInvalidClassException(target.getName(), config);
+        throw new ConfigurationInvalidClassException(theClass.getName(), target
+                .getName(), config);
     }
 
     /**
@@ -416,8 +419,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             Class theClass = Class.forName(className);
 
             if (!target.isAssignableFrom(theClass)) {
-                throw new ConfigurationInvalidClassException(target.getName(),
-                        config);
+                throw new ConfigurationInvalidClassException(
+                        theClass.getName(), target.getName(), config);
             }
 
             Constructor[] constructors = theClass.getConstructors();
@@ -459,7 +462,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             throw new ConfigurationInstantiationException(e);
         }
 
-        throw new ConfigurationInvalidClassException(target.getName(), config);
+        throw new ConfigurationInvalidClassException("", target.getName(),
+                config);
     }
 
     /**
@@ -620,14 +624,20 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      *  while reading the configuration.
      * @throws ConfigurationMissingAttributeException in case that an attribute
      *  is missing.
+     * @throws ConfigurationMissingException in case that the factory has not
+     *  been configured yet.
      */
     protected Configuration selectConfiguration(final String type)
             throws ConfigurationInvalidResourceException,
                 ConfigurationNotFoundException,
                 ConfigurationSyntaxException,
                 ConfigurationIOException,
-                ConfigurationMissingAttributeException {
+                ConfigurationMissingAttributeException,
+                ConfigurationMissingException {
 
+        if (configuration == null) {
+            throw new ConfigurationMissingException(this.getClass().getName());
+        }
         Configuration config = this.configuration.findConfiguration(type);
         if (config == null) {
             String fallback = this.configuration
