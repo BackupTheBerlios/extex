@@ -26,36 +26,39 @@ import java.util.Map;
  * ...
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HyphenationManagerImpl implements HyphenationManager {
-	
-	private Map tables = new HashMap();
-	
+
     /**
-     * ...
+     * The field <tt>tables</tt> ...
+     */
+    private Map tables = new HashMap();
+
+    /**
+     * Creates a new object.
      */
     public HyphenationManagerImpl() {
         super();
     }
 
-	/**
-	 * @see de.dante.extex.hyphenation.HyphenationManager#createHyphenationTable(java.lang.String)
-	 */
-	public HyphenationTable createHyphenationTable(String index) {
-		HyphenationTable table = (HyphenationTable)(tables.get(index));
-		if ( table == null ) {
-			table = new HyphenationTableImpl();
-			tables.put(index,table);
-		}
-		return table;
-	}
+    /**
+     * @see de.dante.extex.hyphenation.HyphenationManager#createHyphenationTable(java.lang.String)
+     */
+    public HyphenationTable createHyphenationTable(final String index) {
+        HyphenationTable table = (HyphenationTable)(tables.get(index));
+        if ( table == null ) {
+            table = new HyphenationTableImpl();
+            tables.put(index,table);
+        }
+        return table;
+    }
 
-	/**
-	 * @see de.dante.extex.hyphenation.HyphenationManager#getHyphenationTable(java.lang.String)
-	 */
-	public HyphenationTable getHyphenationTable(String index) {
-		return (HyphenationTable)(tables.get(index));
-	}
+    /**
+     * @see de.dante.extex.hyphenation.HyphenationManager#getHyphenationTable(java.lang.String)
+     */
+    public HyphenationTable getHyphenationTable(final String index) {
+        return (HyphenationTable)(tables.get(index));
+    }
 
 }

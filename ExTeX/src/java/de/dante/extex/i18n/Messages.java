@@ -40,14 +40,21 @@ import java.util.ResourceBundle;
  * For ExTeX this the properties file has many similarities to TEX.POOL in TeX.
  * </p>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Messages {
+public final class Messages {
     /** the name of the resource bundle to use */
     private static final String BUNDLE_NAME = "config.extexMessage";
 
     /** get the resource bundle for further use */
     private static ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
+
+    /**
+     * Creates a new object. This constructor is provate to avoid that an
+     * instance is created by accident.
+     */
+    private Messages() {
+    }
 
     /**
      * Getter for the value of a format string associated to a given key.
@@ -56,7 +63,7 @@ public class Messages {
      *
      * @return the resource string or <code>null</code>
      */
-    public static String getFormat(String key) {
+    public static String getFormat(final String key) {
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
@@ -71,7 +78,7 @@ public class Messages {
      * @return the resource string or the String
      * <tt>???</tt><i>key</i><tt>???</tt> if none is found
      */
-    public static String format(String key) {
+    public static String format(final String key) {
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
@@ -81,26 +88,23 @@ public class Messages {
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key.
-     * The argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt> in the format.
+     * bundle under the given key. The argument object's value of toString()
+     * replaces the substring <tt>'{0}'</tt> in the format.
      *
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
      *
      * @return the expanded format string
      */
-    public static String format(String fmt, Object a) {
-        return MessageFormat.format(format(fmt), new Object[] {
-                                        a
-                                    });
+    public static String format(final String fmt, final Object a) {
+        return MessageFormat.format(format(fmt), new Object[]{a});
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key.
-     * The argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt> and <tt>'{1}'</tt> in the format.
+     * bundle under the given key. The argument object's value of toString()
+     * replaces the substring <tt>'{0}'</tt> and <tt>'{1}'</tt> in the
+     * format.
      *
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
@@ -108,18 +112,16 @@ public class Messages {
      *
      * @return the expanded format string
      */
-    public static String format(String fmt, Object a, Object b) {
-        return MessageFormat.format(format(fmt), new Object[] {
-                                        a,
-                                        b
-                                    });
+    public static String format(final String fmt, final Object a,
+            final Object b) {
+        return MessageFormat.format(format(fmt), new Object[]{a, b});
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key.
-     * The argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
+     * bundle under the given key. The argument object's value of toString()
+     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>, and <tt>'{2}'</tt>
+     * in the format.
      *
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
@@ -128,21 +130,16 @@ public class Messages {
      *
      * @return the expanded format string
      */
-    public static String format(String fmt, Object a, Object b, Object c) {
-        return MessageFormat.format(format(fmt),
-                                    new Object[] {
-                                        a,
-                                        b,
-                                        c
-                                    });
+    public static String format(final String fmt, final Object a,
+            final Object b, final Object c) {
+        return MessageFormat.format(format(fmt), new Object[]{a, b, c});
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key.
-     * The argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt>, <tt>'{1}'</tt>, <tt>'{2}'</tt>, and <tt>'{3}'</tt> 
-     * in the format.
+     * bundle under the given key. The argument object's value of toString()
+     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
+     * and <tt>'{3}'</tt> in the format.
      *
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
@@ -152,14 +149,9 @@ public class Messages {
      *
      * @return the expanded format string
      */
-    public static String format(String fmt, Object a, Object b, Object c, Object d) {
-        return MessageFormat.format(format(fmt),
-                                    new Object[] {
-                                        a,
-                                        b,
-                                        c,
-                                        d
-                                    });
+    public static String format(final String fmt, final Object a, 
+            final Object b, final Object c, final Object d) {
+        return MessageFormat.format(format(fmt), new Object[]{a, b, c, d});
     }
 
     /**
@@ -167,7 +159,7 @@ public class Messages {
      *
      * @param locale the preferred locale to use
      */
-    public static void init(Locale locale) {
+    public static void init(final Locale locale) {
         bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 
@@ -180,15 +172,15 @@ public class Messages {
      *
      * @throws MainIOException in case of an IO error
      */
-    public static void message(PrintStream writer, String fmt)
+    public static void message(final PrintStream writer, final String fmt)
                         throws MainIOException {
         writer.println(Messages.format(fmt));
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key and print the result to a writer.
-     * The argument object's value of toString() replaces the substring
+     * bundle under the given key and print the result to a writer. The
+     * argument object's value of toString() replaces the substring
      * <tt>'{0}'</tt> in the format.
      *
      * @param writer the target output writer
@@ -197,18 +189,15 @@ public class Messages {
      *
      * @throws MainIOException in case of an IO error
      */
-    public static void message(PrintStream writer, String fmt, Object a)
-                        throws MainIOException {
-        writer.println(MessageFormat.format(format(fmt),
-                                            new Object[] {
-                                                a
-                                            }));
+    public static void message(final PrintStream writer, final String fmt,
+            final Object a) throws MainIOException {
+        writer.println(MessageFormat.format(format(fmt), new Object[]{a}));
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key and print the result to a writer.
-     * The argument object's value of toString() replaces the substring
+     * bundle under the given key and print the result to a writer. The
+     * argument object's value of toString() replaces the substring
      * <tt>'{0}'</tt> and <tt>'{1}'</tt> in the format.
      *
      * @param writer the target output writer
@@ -218,20 +207,15 @@ public class Messages {
      *
      * @throws MainIOException in case of an IO error
      */
-    public static void message(PrintStream writer, String fmt,
-                               Object a, Object b)
-                        throws MainIOException {
-        writer.println(MessageFormat.format(format(fmt),
-                                            new Object[] {
-                                                a,
-                                                b
-                                            }));
+    public static void message(final PrintStream writer, final String fmt,
+            final Object a, final Object b) throws MainIOException {
+        writer.println(MessageFormat.format(format(fmt), new Object[]{a, b}));
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
-     * bundle under the given key and print the result to a writer.
-     * The argument object's value of toString() replaces the substring
+     * bundle under the given key and print the result to a writer. The
+     * argument object's value of toString() replaces the substring
      * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
      *
      * @param writer the target output writer
@@ -242,14 +226,11 @@ public class Messages {
      *
      * @throws MainIOException in case of an IO error
      */
-    public static void message(PrintStream writer, String fmt,
-                               Object a, Object b, Object c)
-                        throws MainIOException {
-        writer.println(MessageFormat.format(format(fmt),
-                                            new Object[] {
-                                                a,
-                                                b,
-                                                c
-                                            }));
+    public static void message(final PrintStream writer, final String fmt,
+            final Object a, final Object b, final Object c)
+            throws MainIOException {
+        writer
+                .println(MessageFormat.format(format(fmt),
+                                              new Object[]{a, b, c}));
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,9 +26,9 @@ import java.io.Serializable;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Interaction implements Serializable {
+public final class Interaction implements Serializable {
     /** the constant for batch mode */
     public static final Interaction BATCHMODE = new Interaction(0);
 
@@ -42,12 +42,10 @@ public class Interaction implements Serializable {
     public static final Interaction ERRORSTOPMODE = new Interaction(3);
 
     /** the list for mapping integers to modes */
-    private static final Interaction[] modeMap = {
-                                                     BATCHMODE,
+    private static final Interaction[] modeMap = {BATCHMODE,
                                                      NONSTOPMODE,
                                                      SCROLLMODE,
-                                                     ERRORSTOPMODE
-                                                 };
+                                                     ERRORSTOPMODE};
 
     /** the encapsulated mode */
     private int mode;
@@ -56,10 +54,12 @@ public class Interaction implements Serializable {
      * Creates a new object.
      * This constructor is private to avoid that other interaction modes than
      * the predefined ones are used.
+     *
+     * @param modeValue the internal value of the mode
      */
-    private Interaction(int mode) {
+    private Interaction(final int modeValue) {
         super();
-        this.mode = mode;
+        this.mode = modeValue;
     }
 
     /**
@@ -68,10 +68,11 @@ public class Interaction implements Serializable {
      * @param mode the integer value for the interaction mode
      *
      * @return the appropriate interaction mode constant
-     * 
-     * @throws MainUnknownInteractionException
+     *
+     * @throws MainUnknownInteractionException ...
      */
-    public static Interaction get(int mode) throws MainUnknownInteractionException {
+    public static Interaction get(final int mode)
+            throws MainUnknownInteractionException {
         if (mode < 0 || mode >= modeMap.length) {
             throw new MainUnknownInteractionException(Integer.toString(mode));
         }
@@ -81,19 +82,21 @@ public class Interaction implements Serializable {
 
     /**
      * ...
-     * Allowed values are the numbers 0 to 3 or the
-     * symbolic names  batchmode (0), nonstopmode (1), scrollmode (2), and
-     * errorstopmode (3). The symbolic names can be abbreviated up to the
-     * least unique prefix, i.e. up to one character.
+     *
+     * Allowed values are the numbers 0 to 3 or the symbolic names
+     * batchmode (0), nonstopmode (1), scrollmode (2), and errorstopmode (3).
+     * The symbolic names can be abbreviated up to the least unique prefix,
+     * i.e. up to one character.
      *
      * @param mode the string representation for the mode
      *
      * @return the appropriate interaction mode constant
-     * 
+     *
      * @throws MainUnknownInteractionException in case that something is passed
-     * in which can not be interpreted as interaction mode
+     *             in which can not be interpreted as interaction mode
      */
-    public static Interaction get(String mode) throws MainUnknownInteractionException {
+    public static Interaction get(final String mode)
+            throws MainUnknownInteractionException {
         if (mode == null || mode.equals("")) {
             throw new MainUnknownInteractionException("");
         } else if ("batchmode".startsWith(mode) || mode.equals("0")) {
@@ -102,8 +105,7 @@ public class Interaction implements Serializable {
             return NONSTOPMODE;
         } else if ("scrollmode".startsWith(mode) || mode.equals("2")) {
             return SCROLLMODE;
-        } else if ("errorstopmode".startsWith(mode) ||
-                       mode.equals("3")) {
+        } else if ("errorstopmode".startsWith(mode) || mode.equals("3")) {
             return ERRORSTOPMODE;
         }
 

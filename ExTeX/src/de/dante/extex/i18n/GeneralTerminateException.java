@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ import de.dante.util.GeneralException;
  * This exception can be used to gracefully terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GeneralTerminateException extends GeneralException {
     /** the first argument */
@@ -42,9 +42,10 @@ public class GeneralTerminateException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
      */
-    public GeneralTerminateException(String messageTag) {
+    public GeneralTerminateException(final String messageTag) {
         super();
         tag = messageTag;
     }
@@ -52,50 +53,62 @@ public class GeneralTerminateException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
      */
-    public GeneralTerminateException(String messageTag, String arg1) {
+    public GeneralTerminateException(final String messageTag, final String a1) {
         super();
-        tag       = messageTag;
-        this.arg1 = arg1;
+        tag = messageTag;
+        this.arg1 = a1;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     * @param a2 the second parameter
      */
-    public GeneralTerminateException(String messageTag, String arg1,
-                                    String arg2) {
+    public GeneralTerminateException(final String messageTag, final String a1,
+                                    final String a2) {
         super();
         tag       = messageTag;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
+        this.arg1 = a1;
+        this.arg2 = a2;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     * @param a2 the second parameter
+     * @param a3 the third parameter
      */
-    public GeneralTerminateException(String messageTag, String arg1,
-                                    String arg2, String arg3) {
+    public GeneralTerminateException(final String messageTag, final String a1,
+                                    final String a2, final String a3) {
         super();
         tag       = messageTag;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
-        this.arg3 = arg3;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.arg3 = a3;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param e the cause
      */
-    public GeneralTerminateException(Throwable e) {
+    public GeneralTerminateException(final Throwable e) {
         super();
     }
 
+    /**
+     * @see java.lang.Throwable#getMessage()
+     */
     public String getMessage() {
         return Messages.format(tag, arg1, arg2, arg3);
     }

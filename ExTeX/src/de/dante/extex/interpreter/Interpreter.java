@@ -34,17 +34,17 @@ import de.dante.util.file.FileFinder;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
-	
-	/**
-	 * Setter for the file finder.
-	 * @param fileFinder	the new filefinder
-	 */
-	public abstract void setFileFinder(FileFinder fileFinder);
-	
+
+    /**
+     * Setter for the file finder.
+     * @param fileFinder    the new filefinder
+     */
+    void setFileFinder(FileFinder fileFinder);
+    
     /**
      * Setter for the error handler.
      * The value of <code>null</code> can be used to delete the error handler
@@ -52,7 +52,7 @@ public interface Interpreter extends TokenSource,
      *
      * @param handler the new error handler
      */
-    public abstract void setErrorHandler(ErrorHandler handler);
+    void setErrorHandler(ErrorHandler handler);
 
     /**
      * Getter for the error handler.
@@ -61,28 +61,28 @@ public interface Interpreter extends TokenSource,
      *
      * @return the error handler currently registered
      */
-    public abstract ErrorHandler getErrorHandler();
+    ErrorHandler getErrorHandler();
 
     /**
      * Setter for the interaction mode.
      *
      * @param interaction the interaction mode
      */
-    public abstract void setInteraction(Interaction interaction);
+    void setInteraction(Interaction interaction);
 
     /**
      * Getter for the interaction mode.
      *
      * @return the interaction mode
      */
-    public abstract Interaction getInteraction();
+    Interaction getInteraction();
 
     /**
      * ...
      *
      * @param jobname ...
      */
-    public abstract void setJobname(String jobname);
+    void setJobname(String jobname);
 
     /**
      * Setter for the token stream factory.
@@ -92,7 +92,7 @@ public interface Interpreter extends TokenSource,
      *
      * @param factory the token stream factory
      */
-    public abstract void setTokenStreamFactory(TokenStreamFactory factory);
+    void setTokenStreamFactory(TokenStreamFactory factory);
 
    
     /**
@@ -100,29 +100,27 @@ public interface Interpreter extends TokenSource,
      *
      * @param typesetter the new typesetter
      */
-    public abstract void setTypesetter(Typesetter typesetter);
+    void setTypesetter(Typesetter typesetter);
 
     /**
      * ...
      *
      * @param format the base name of the format file
      */
-    public abstract void loadFormat(String format)
+    void loadFormat(String format)
                              throws IOException;
 
     /**
      * Process the current token streams by repeatedly reading a single token
-     * and processing it until no token is left.
-     * The visitor pattern is used to branch to the appropriate method for
-     * processing a single token. E.g. the method
+     * and processing it until no token is left. The visitor pattern is used to
+     * branch to the appropriate method for processing a single token. E.g. the
+     * method
      * {@link TokenSource#visitActive(java.lang.Object,java.lang.Object) visitActive}
      * is used when the current token is an active character.
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    public abstract void run()
-                      throws ConfigurationException, 
-                             GeneralException;
+    void run() throws ConfigurationException, GeneralException;
 
     /**
      * Add a token stream and start processing it.
@@ -133,7 +131,6 @@ public interface Interpreter extends TokenSource,
      *
      * @see #run()
      */
-    public abstract void run(TokenStream stream)
-                      throws ConfigurationException, 
-                             GeneralException;
+    void run(TokenStream stream) throws ConfigurationException,
+            GeneralException;
 }

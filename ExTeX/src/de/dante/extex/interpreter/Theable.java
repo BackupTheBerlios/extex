@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,21 +24,23 @@ import de.dante.extex.interpreter.type.Tokens;
 import de.dante.util.GeneralException;
 
 /**
- * This is a interface to mark those classes which are able to provide a description.
- *
+ * This is a interface to mark those classes which are able to provide a
+ * description. This description is returned in form of
+ * {@link de.dante.extex.interpreter.type.Tokens Tokens}.
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Theable {
     /**
-     * ...
+     * This method is the getter for the description of the primitive.
      *
-     * @param context ...
-     * @param source ...
+     * @param context the interpreter context
+     * @param source the source for further tokens to qualify the request
      *
-     * @return ...
+     * @return the description of the primitive as list of Tokens
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public abstract Tokens the(Context context, TokenSource source)
                         throws GeneralException;

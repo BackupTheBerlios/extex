@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class AbstractCode implements Code {
     /**
@@ -40,9 +40,9 @@ public class AbstractCode implements Code {
     /**
      * Creates a new object.
      */
-    public AbstractCode(String name) {
+    public AbstractCode(final String codeName) {
         super();
-        this.name = name;
+        this.name = codeName;
     }
 
     /**
@@ -55,11 +55,10 @@ public class AbstractCode implements Code {
     /**
      * Setter for the name of this code instance. This information is primarily
      * needed for debugging.
-     *
-     * @param name
-     *                 the name
+     * 
+     * @param name the name
      */
-    public void setName(String name) {
+    public void setName(final String name) {
         this.name = name;
     }
 
@@ -72,25 +71,26 @@ public class AbstractCode implements Code {
 
     /**
      * ...
-     *
-     * @param context ...
-     * @param source ...
-     *
-     * @throws GeneralException ...
+     * 
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * 
+     * @throws GeneralException in case of an error. This implementation does
+     *             nothing; not even throwing an Exception.
      */
-    public void doAfterAssignment(Context context, TokenSource source)
-                           throws GeneralException {
+    public void doAfterAssignment(final Context context,
+            final TokenSource source) throws GeneralException {
     }
 
     /**
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *         de.dante.extex.interpreter.context.Context,
-     *         de.dante.extex.interpreter.TokenSource,
-     *         de.dante.extex.typesetter.Typesetter)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context,
-                        TokenSource source, Typesetter typesetter)
-                 throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
         expand(prefix, context, source, typesetter);
     }
 
@@ -100,8 +100,8 @@ public class AbstractCode implements Code {
      *         de.dante.extex.interpreter.TokenSource,
      *         de.dante.extex.typesetter.Typesetter)
      */
-    public boolean expand(Flags prefix, Context context,
-                       TokenSource source, Typesetter typesetter)
+    public boolean expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
                 throws GeneralException {
         prefix.clear();
         return false;
@@ -113,7 +113,8 @@ public class AbstractCode implements Code {
      *
      * @see de.dante.extex.interpreter.Code#set(java.lang.String)
      */
-    public void set(Context context, String value)
+    public void set(final Context context, final String value)
              throws GeneralException {
     }
+
 }

@@ -24,9 +24,14 @@ import de.dante.util.GeneralException;
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GeneralPanicException extends GeneralException {
+    /**
+     * The constant <tt>PANIC_ERROR_CODE</tt> ...
+     */
+    private static final int PANIC_ERROR_CODE = -666;
+
     /** the first argument */
     private String arg1 = "?";
 
@@ -42,60 +47,73 @@ public class GeneralPanicException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
      */
-    public GeneralPanicException(String messageTag) {
-        super(-666);
+    public GeneralPanicException(final String messageTag) {
+        super(PANIC_ERROR_CODE);
         tag = messageTag;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
      */
-    public GeneralPanicException(String messageTag, String arg1) {
-        super(-666);
+    public GeneralPanicException(final String messageTag, final String a1) {
+        super(PANIC_ERROR_CODE);
         tag       = messageTag;
-        this.arg1 = arg1;
+        this.arg1 = a1;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     * @param a2 the second parameter
      */
-    public GeneralPanicException(String messageTag, String arg1,
-                                    String arg2) {
-        super(-666);
+    public GeneralPanicException(final String messageTag, final String a1,
+                                    final String a2) {
+        super(PANIC_ERROR_CODE);
         tag       = messageTag;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
+        this.arg1 = a1;
+        this.arg2 = a2;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     * @param a2 the second parameter
+     * @param a3 the third parameter
      */
-    public GeneralPanicException(String messageTag, String arg1,
-                                    String arg2, String arg3) {
-        super(-666);
+    public GeneralPanicException(final String messageTag, final String a1,
+                                    final String a2, final String a3) {
+        super(PANIC_ERROR_CODE);
         tag       = messageTag;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
-        this.arg3 = arg3;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.arg3 = a3;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param e the cause
      */
-    public GeneralPanicException(Throwable e) {
-        super(-666);
+    public GeneralPanicException(final Throwable e) {
+        super(PANIC_ERROR_CODE);
     }
 
+    /**
+     * @see java.lang.Throwable#getMessage()
+     */
     public String getMessage() {
         return Messages.format(tag, arg1, arg2, arg3);
     }

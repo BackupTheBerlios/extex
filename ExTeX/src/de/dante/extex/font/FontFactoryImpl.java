@@ -28,41 +28,44 @@ import de.dante.util.file.FileFinder;
 
 /**
  * Factory to load a font.
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FontFactoryImpl implements FontFactory {
 
-	/**
-	 * Fontmap
-	 */
-	private Map fontmap = new HashMap();
+    /**
+     * Fontmap
+     */
+    private Map fontmap = new HashMap();
 
-	/**
-	 * the file finder
-	 */
-	private FileFinder finder;
-	
-	/**
-	 * Creates a new object.
-	 */
-	public FontFactoryImpl(FileFinder fileFinder) {
-		super();
-		finder = fileFinder;
-	}
+    /**
+     * the file finder
+     */
+    private FileFinder finder;
 
-	/**
-	 * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
-	 */
-	// TODO the name is not only the key for the font!
-	public Font getInstance(String name) throws GeneralException, ConfigurationException {
-		Font font = (Font) (fontmap.get(name));
-		if (font == null) {
-			// TODO incomplete
-			font = new EFMFont(name,finder);
-		}
-		return font;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param fileFinder ...
+     */
+    public FontFactoryImpl(final FileFinder fileFinder) {
+        super();
+        finder = fileFinder;
+    }
+
+    /**
+     * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
+     */
+    // TODO the name is not only the key for the font!
+    public Font getInstance(final String name) throws GeneralException,
+            ConfigurationException {
+        Font font = (Font) (fontmap.get(name));
+        if (font == null) {
+            // TODO incomplete
+            font = new EFMFont(name, finder);
+        }
+        return font;
+    }
 }

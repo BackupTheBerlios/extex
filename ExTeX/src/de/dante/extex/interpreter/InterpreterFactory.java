@@ -32,78 +32,80 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InterpreterFactory {
 
-	/**
-	 * The constant <tt>CLASS_ATTRIBUTE</tt> ...
-	 */
-	private static final String CLASS_ATTRIBUTE = "class";
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
 
-	/** the configuration for this factory */
-	private Configuration config;
+    /** the configuration for this factory */
+    private Configuration config;
 
-	/**
-	 * The field <tt>classname</tt> ...
-	 */
-	private String classname;
+    /**
+     * The field <tt>classname</tt> ...
+     */
+    private String classname;
 
-	/**
-	 * The field <tt>finder</tt> ...
-	 */
-	private FileFinder finder = null;
+    /**
+     * The field <tt>finder</tt> ...
+     */
+    private FileFinder finder = null;
 
     /**
      * Creates a new object.
-     * 
-     * @param config ...
-     * @throws ConfigurationException ...
+     *
+     * @param configuration ...
+     *
+     *  @throws ConfigurationException ...
      */
-    public InterpreterFactory(Configuration config)
+    public InterpreterFactory(final Configuration configuration)
             throws ConfigurationException {
         super();
-        this.config = config;
+        this.config = configuration;
         classname = config.getAttribute(CLASS_ATTRIBUTE);
-        if ( classname == null ) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,config);
+        if (classname == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
         }
     }
 
-	/**
-	 * Get a instance for the interface Interpreter.
-	 * 
-	 * @return a new instance for the interface Interpreter
-	 */
-	public Interpreter newInstance() throws ConfigurationException {
-		Interpreter interpreter;
+    /**
+     * Get a instance for the interface Interpreter.
+     *
+     * @return a new instance for the interface Interpreter
+     *
+     * @throws ConfigurationException ...
+     */
+    public Interpreter newInstance() throws ConfigurationException {
+        Interpreter interpreter;
 
-		try {
-			interpreter =
-				(Interpreter) (Class
-					.forName(classname)
-					.getConstructor(new Class[] { Configuration.class })
-					.newInstance(new Object[] { config }));
-		} catch (IllegalArgumentException e) {
-		    throw new ConfigurationInstantiationException(e);
-		} catch (SecurityException e) {
-		    throw new ConfigurationInstantiationException(e);
-		} catch (InstantiationException e) {
-		    throw new ConfigurationInstantiationException(e);
-		} catch (IllegalAccessException e) {
-		    throw new ConfigurationInstantiationException(e);
-		} catch (InvocationTargetException e) {
-		    Throwable c = e.getCause();
-		    if (c!=null && c instanceof ConfigurationException) {
-		        throw (ConfigurationException)c;
-		    }
-		    throw new ConfigurationInstantiationException(e);
-		} catch (NoSuchMethodException e) {
-		    throw new ConfigurationInstantiationException(e);
-		} catch (ClassNotFoundException e) {
-		    throw new ConfigurationClassNotFoundException(classname,config);
-		}
+        try {
+            interpreter = (Interpreter) (Class.forName(classname)
+                    .getConstructor(new Class[]{Configuration.class})
+                    .newInstance(new Object[]{config}));
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getCause();
+            if (c != null && c instanceof ConfigurationException) {
+                throw (ConfigurationException) c;
+            }
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
+        }
 
-		return interpreter;
-	}
+        return interpreter;
+    }
 }

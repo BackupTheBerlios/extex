@@ -20,12 +20,18 @@ package de.dante.extex.hyphenation;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface HyphenationFactory {
-    
-    public abstract HyphenationManager getInstance(String name);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @return ...
+     */
+    HyphenationManager getInstance(String name);
 
 }

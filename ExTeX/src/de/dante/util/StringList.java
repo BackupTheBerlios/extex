@@ -24,12 +24,12 @@ import java.util.List;
 
 /**
  * This class provides a {@link java.util.List List} of
- * {@link java.util.String String}s. This class is meant to be used as a
+ * {@link java.lang.String String}s. This class is meant to be used as a
  * type-save replacement for the generic classes implementing the
  * {@link java.util.List List} interface.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class StringList extends ArrayList implements List {
     /**

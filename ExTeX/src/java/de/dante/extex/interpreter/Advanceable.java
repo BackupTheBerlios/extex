@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,11 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This is a interface to mark those Classes which are able to advance something
+ * This is a interface to mark those Classes which are able to advance
+ * something.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Advanceable {
     /**
@@ -38,7 +39,6 @@ public interface Advanceable {
      *
      * @throws GeneralException in case of an error
      */
-    public abstract void advance(Flags prefix, Context context,
-                                 TokenSource source)
-                          throws GeneralException;
+    void advance(Flags prefix, Context context, TokenSource source)
+            throws GeneralException;
 }

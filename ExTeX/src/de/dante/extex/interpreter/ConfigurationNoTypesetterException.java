@@ -26,7 +26,7 @@ import de.dante.extex.i18n.Messages;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationNoTypesetterException
     extends ConfigurationException {
@@ -36,11 +36,11 @@ public class ConfigurationNoTypesetterException
     /**
      * Create a new object.
      *
-     * @param message the message string
+     * @param messageText the message string
      */
-    public ConfigurationNoTypesetterException(String message) {
-        super(message, (String) null);
-        this.message = message;
+    public ConfigurationNoTypesetterException(final String messageText) {
+        super(messageText, (String) null);
+        this.message = messageText;
     }
 
     /**

@@ -23,7 +23,7 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Flags {
     /** Symbolc constant for the empty prefix */
@@ -64,9 +64,9 @@ public class Flags {
     public void setImmediate() { value |= IMMEDIATE; }
     public void setExpanded() { value |= EXPANDED; }
 
-    public boolean isGlobal() { return (value & GLOBAL)!=0; }
-    public boolean isLong() { return (value & LONG)!=0; }
-    public boolean isOuter() { return (value & OUTER)!=0; }
-    public boolean isImmediate() { return (value & IMMEDIATE)!=0; }
-    public boolean isExpanded() { return (value & EXPANDED)!=0; }
+    public boolean isGlobal() { return (value & GLOBAL) != 0; }
+    public boolean isLong() { return (value & LONG) != 0; }
+    public boolean isOuter() { return (value & OUTER) != 0; }
+    public boolean isImmediate() { return (value & IMMEDIATE) != 0; }
+    public boolean isExpanded() { return (value & EXPANDED) != 0; }
 }

@@ -26,13 +26,13 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Boxable {
-    
+
     /**
      * ...
-     * 
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
@@ -40,7 +40,7 @@ public interface Boxable {
      *
      * @throws GeneralException in case of an error
      */
-    public abstract Box getBox(Context context, TokenSource source)
+    Box getBox(Context context, TokenSource source)
             throws GeneralException;
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,9 +25,9 @@ import de.dante.extex.typesetter.NodeList;
 
 /**
  * This is a first dummy implementation of a document writer.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
@@ -61,7 +61,7 @@ public class DumpDocumentWriter implements DocumentWriter {
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
      */
-    public void shipout(NodeList nodes) {
-        // TODO 
+    public void shipout(final NodeList nodes) {
+        // TODO unimplemented
     }
 }

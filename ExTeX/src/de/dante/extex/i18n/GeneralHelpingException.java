@@ -24,7 +24,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GeneralHelpingException extends GeneralException {
     /** the first argument */
@@ -42,9 +42,9 @@ public class GeneralHelpingException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the message
      */
-    public GeneralHelpingException(String messageTag) {
+    public GeneralHelpingException(final String messageTag) {
         super();
         tag = messageTag;
     }
@@ -52,47 +52,53 @@ public class GeneralHelpingException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the message
+     * @param a1 the first argument
      */
-    public GeneralHelpingException(String messageTag, String arg1) {
+    public GeneralHelpingException(final String messageTag, final String a1) {
         super();
-        tag       = messageTag;
-        this.arg1 = arg1;
+        tag = messageTag;
+        this.arg1 = a1;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param a2 the second argument
      */
-    public GeneralHelpingException(String messageTag, String arg1,
-                                    String arg2) {
+    public GeneralHelpingException(final String messageTag, final String a1,
+            final String a2) {
         super();
-        tag       = messageTag;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
+        tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param a2 the second argument
+     * @param a3 the third argument
      */
-    public GeneralHelpingException(String messageTag, String arg1,
-                                    String arg2, String arg3) {
+    public GeneralHelpingException(final String messageTag, final String a1,
+            final String a2, final String a3) {
         super();
-        tag       = messageTag;
-        this.arg1 = arg1;
-        this.arg2 = arg2;
-        this.arg3 = arg3;
+        tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.arg3 = a3;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message
+     * @param e the cause
      */
-    public GeneralHelpingException(Throwable e) {
+    public GeneralHelpingException(final Throwable e) {
         super();
     }
 

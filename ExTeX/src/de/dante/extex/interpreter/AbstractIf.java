@@ -19,7 +19,7 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.context.*;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -29,16 +29,16 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractIf extends AbstractCode {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public AbstractIf(String name) {
+    public AbstractIf(final String name) {
         super(name);
     }
 
@@ -55,8 +55,9 @@ public abstract class AbstractIf extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
         if (conditional(context, source, typesetter)) {
             context.ifPush(source.getLocator(), true);
         } else {
@@ -73,27 +74,31 @@ public abstract class AbstractIf extends AbstractCode {
      *
      * @param context the interpreter context
      * @param source the source for new tokens
+     * @param typesetter the typesetter
      *
      * @return the boolean value
+     *
+     * @throws GeneralException in case of en error
      */
-    protected abstract boolean conditional(Context context,
-                                           TokenSource source, Typesetter typesetter)
-                                    throws GeneralException;
+    protected abstract boolean conditional(final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException;
 
     /**
-     * Skip to the next matching <tt>\fi</tt> or <tT>\else</tt> Token counting 
-     * the intermediate <tt>\if</tt>s and <tt>\fi</tt>s. 
+     * Skip to the next matching <tt>\fi</tt> or <tT>\else</tt> Token
+     * counting the intermediate <tt>\if</tt> s and <tt>\fi</tt>s.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
-     * @return <code>true</code> if a matching \else has been found; otherwise
-     * return <code>false</code> if a matching \fi has been found
+     * @return <code>true</code> if a matching \else has been found;
+     *         otherwise return <code>false</code> if a matching \fi has been
+     *         found
      *
-     * @throws CodeException in case of en error
+     * @throws GeneralException in case of en error
      */
-    protected boolean skipToElseOrFi(Context context, TokenSource source)
-                              throws GeneralException {
+    protected boolean skipToElseOrFi(final Context context,
+            final TokenSource source) throws GeneralException {
         Code code;
         int n = 1;
 
@@ -109,8 +114,8 @@ public abstract class AbstractIf extends AbstractCode {
                     if (n < 1) {
                         return true;
                     }
-                } else if ((code = context.getMacro(name)) != null &&
-                               code.isIf()) {
+                } else if ((code = context.getMacro(name)) != null
+                           && code.isIf()) {
                     n++;
                 }
             }

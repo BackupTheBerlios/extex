@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.extex.interpreter.context.*;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.MacroParamToken;
 import de.dante.extex.scanner.Token;
@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.Typesetter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MacroCode extends AbstractCode implements Code {
     /** The tokens the macro expands to */
@@ -50,11 +50,12 @@ public class MacroCode extends AbstractCode implements Code {
      * @param pattern ...
      * @param body ...
      */
-    public MacroCode(String name, Flags flags, Tokens pattern, Tokens body) {
+    public MacroCode(final String name, final Flags flags,
+            final Tokens pattern, final Tokens body) {
         super(name);
         this.pattern = pattern;
-        this.body    = body;
-        this.flags   = flags;
+        this.body = body;
+        this.flags = flags;
     }
 
     /**
@@ -63,8 +64,8 @@ public class MacroCode extends AbstractCode implements Code {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter) {
         Tokens[] args = getArgs(source); //TODO
 
         for (int i = body.length() - 1; i >= 0; i--) {
@@ -88,7 +89,7 @@ public class MacroCode extends AbstractCode implements Code {
      *
      * @return ...
      */
-    private Tokens[] getArgs(TokenSource source) {
+    private Tokens[] getArgs(final TokenSource source) {
         Tokens[] ta = new Tokens[10];
         Tokens t    = new Tokens();
         //TODO

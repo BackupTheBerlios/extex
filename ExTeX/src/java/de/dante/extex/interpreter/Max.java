@@ -53,7 +53,7 @@ import de.dante.util.file.FileFinder;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
@@ -105,11 +105,14 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     private int errorCount = 0;
 
     /**
-     * The number of errors after which the run is terminated. This value might
+     * The number of errors after which the run is terminated. This value can
      * be overwritten in the configuration.
      */
     private int maxErrors = 100;
 
+    /**
+     * The field <tt>config</tt> ...
+     */
     private Configuration config;
     
     /**
@@ -119,41 +122,41 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * Creates a new object.
-     * 
-     * @param config the configuration object to take into account
-     * 
+     *
+     * @param configuration the configuration object to take into account
+     *
      * @throws ConfigurationException in case of an error
      */
-    public Max(Configuration config) throws ConfigurationException,
+    public Max(final Configuration configuration) throws ConfigurationException,
             GeneralException {
-        super(config);
-        this.config = config;
+        super(configuration);
+        this.config = configuration;
         configure(config);
     }
 
     /**
      * Setter for the file finder.
-     * 
+     *
      * @param fileFinder the new file finder
      */
-    public void setFileFinder(FileFinder fileFinder) {
+    public void setFileFinder(final FileFinder fileFinder) {
         finder = fileFinder;
     }
 
     /**
      * Setter for the error handler. The value of <code>null</code> can be
      * used to delete the error handler currently set.
-     * 
+     *
      * @param handler the new error handler
      */
-    public void setErrorHandler(ErrorHandler handler) {
+    public void setErrorHandler(final ErrorHandler handler) {
         errorHandler = handler;
     }
 
     /**
      * Getter for the error handler. The error handler might not be set. In
      * this case <code>null</code> is returned.
-     * 
+     *
      * @return the error handler currently registered
      */
     public ErrorHandler getErrorHandler() {
@@ -162,16 +165,16 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * Setter for the interaction mode.
-     * 
+     *
      * @param interaction the interaction mode
      */
-    public void setInteraction(Interaction interaction) {
+    public void setInteraction(final Interaction interaction) {
         context.setInteraction(interaction);
     }
 
     /**
      * Getter for the interaction mode.
-     * 
+     *
      * @return the interaction mode
      */
     public Interaction getInteraction() {
@@ -181,27 +184,27 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     /**
      * @see de.dante.extex.interpreter.Interpreter#setJobname(java.lang.String)
      */
-    public void setJobname(String jobname) {
+    public void setJobname(final String jobname) {
         // TODO unimplemented
     }
 
     /**
      * @see de.dante.extex.interpreter.Interpreter#setTypesetter(de.dante.extex.typesetter.Typesetter)
      */
-    public void setTypesetter(Typesetter typesetter) {
+    public void setTypesetter(final Typesetter typesetter) {
         this.typesetter = typesetter;
     }
 
     /**
      * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.lang.String)
      */
-    public void loadFormat(String format) {
+    public void loadFormat(final String format) {
         // TODO unimplemented
     }
 
     /**
      * This method can be used to register observers for certain events.
-     * 
+     *
      * The following events are currently supported: <table>
      * <tr>
      * <th>Name</th>
@@ -228,11 +231,11 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * <td>inherited from the super class</td>
      * </tr>
      * </table>
-     * 
+     *
      * @see de.dante.util.Observable#registerObserver(java.lang.String,
      *      de.dante.util.Observer)
      */
-    public void registerObserver(String name, Observer observer)
+    public void registerObserver(final String name, final Observer observer)
             throws NotObservableException {
         if ("expand".equals(name)) {
             observersExpand.add(observer);
@@ -248,20 +251,22 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * and processing it until no token is left. The visitor pattern is used to
      * branch to the appropriate method for processing a single token. E.g. the
      * method
-     * {@link #visitActive(java.lang.Object,java.lang.Object) visitActive} is
+     * {@link #visitActive(java.lang.Object,java.lang.Object) visitActive}is
      * used when the current token is an active character.
-     * 
+     *
      * @throws ConfigurationException in case of a configuration error
      */
     public void run() throws ConfigurationException, GeneralException {
         if (typesetter == null) {
             throw new ConfigurationNoTypesetterException(this.getClass()
-                    .getName()+"#run()");
+                    .getName()
+                                                         + "#run()");
         }
 
         if (getTokenStreamFactory() == null) {
-            throw new ConfigurationMissingException("TokenStreamFactory is not set",
-                                             this.getClass().getName()+"#run()");
+            throw new ConfigurationMissingException(
+                    "TokenStreamFactory is not set", this.getClass().getName()
+                                                     + "#run()");
             //TODO: use new exception or i18n
         }
 
@@ -295,23 +300,24 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * Add a token stream and start processing it.
-     * 
+     *
      * @param stream the input stream to consider
-     * 
+     *
      * @throws ConfigurationException in case of a configuration error
-     * 
+     *
      * @see #run()
      */
-    public void run(TokenStream stream) throws ConfigurationException,
+    public void run(final TokenStream stream) throws ConfigurationException,
             GeneralException {
         addStream(stream);
         run();
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitActive(Object oToken, Object arg2)
+    public Object visitActive(final Object oToken, final Object arg2)
             throws GeneralException {
         Token token = (Token) oToken;
         return execute(token, context.getActive(token.getValue()));
@@ -320,44 +326,50 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     /**
      * A comment is ignored. This should never happen since comments are eaten
      * up in the scanner already.
-     * 
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
+     *
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitComment(Object arg1, Object ignore)
+    public Object visitComment(final Object arg1, final Object ignore)
             throws GeneralException {
         return null;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitCr(Object oToken, Object ignore) throws GeneralException {
+    public Object visitCr(final Object oToken, final Object ignore)
+            throws GeneralException {
         Token token = (Token) oToken;
         //TODO unimplemented
         return null;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitEscape(Object oToken, Object ignore)
+    public Object visitEscape(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
         return execute(token, context.getMacro(token.getValue()));
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitIgnore(Object oToken, Object ignore)
+    public Object visitIgnore(final Object oToken, final Object ignore)
             throws GeneralException {
         return null;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitInvalid(Object oToken, Object ignore)
+    public Object visitInvalid(final Object oToken, final Object ignore)
             throws GeneralException {
         throw new GeneralHelpingException("TTP.InvalidChar", ((Token) oToken)
                 .getValue());
@@ -365,9 +377,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * @see "TeX -- The Program [1063]"
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitLeftBrace(Object oToken, Object ignore)
+    public Object visitLeftBrace(final Object oToken, final Object ignore)
             throws GeneralException {
         try {
             context.openGroup();
@@ -379,9 +392,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitLetter(Object oToken, Object ignore)
+    public Object visitLetter(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
         typesetter.add(context.getTypesettingContext(), token.getChar());
@@ -389,9 +403,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitMacroParam(Object oToken, Object ignore)
+    public Object visitMacroParam(final Object oToken, final Object ignore)
             throws GeneralException {
         throw new GeneralHelpingException("TTP.CantUseIn", ((Token) oToken)
                 .toString(), typesetter.getMode().toString());
@@ -399,9 +414,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * @see "TeX -- The Program [1137]"
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitMathShift(Object oToken, Object ignore)
+    public Object visitMathShift(final Object oToken, final Object ignore)
             throws GeneralException {
         if (typesetter.getMode() == Mode.MATH) {
             typesetter.toggleMath();
@@ -423,9 +439,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitOther(Object oToken, Object ignore)
+    public Object visitOther(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
         typesetter.add(context.getTypesettingContext(), token.getChar());
@@ -434,9 +451,9 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * @see "TeX -- The Program [1067]"
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object, java.lang.Object)
      */
-    public Object visitRightBrace(Object oToken, Object ignore)
+    public Object visitRightBrace(final Object oToken, final Object ignore)
             throws GeneralException {
         //TODO
         context.closeGroup();
@@ -444,18 +461,20 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitSpace(Object oToken, Object ignore)
+    public Object visitSpace(final Object oToken, final Object ignore)
             throws GeneralException {
         typesetter.addSpace(context.getTypesettingContext(), null);
         return null;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitSubMark(Object oToken, Object ignore)
+    public Object visitSubMark(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
 
@@ -464,9 +483,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitSupMark(Object oToken, Object ignore)
+    public Object visitSupMark(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
 
@@ -475,9 +495,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,
+     *      java.lang.Object)
      */
-    public Object visitTabMark(Object oToken, Object ignore)
+    public Object visitTabMark(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
 
@@ -487,15 +508,15 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * ...
-     * 
+     *
      * @param config ...
-     * 
+     *
      * @throws ConfigurationException ...
      * @throws ConfigurationMissingAttributeException ...
      * @throws ConfigurationInstantiationException ...
      */
-    private void configure(Configuration config) throws ConfigurationException,
-            GeneralException {
+    private void configure(final Configuration config)
+            throws ConfigurationException, GeneralException {
         long t = System.currentTimeMillis();
         if (config == null) {
             throw new ConfigurationMissingException("Interpreter");
@@ -564,14 +585,15 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * ...
-     * 
+     *
      * @param token the token which is about to be expanded (for error
      *            reporting purposes)
      * @param code the definition to expand
-     * 
+     *
      * @return <code>null</code>
      */
-    private Object execute(Token token, Code code) throws GeneralException {
+    private Object execute(final Token token, final Code code)
+            throws GeneralException {
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", token
                     .toString());
@@ -585,10 +607,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     /**
      * @see de.dante.extex.interpreter.Moritz#expand(de.dante.extex.scanner.Token)
      */
-    protected Token expand(Token token) throws GeneralException {
+    protected Token expand(final Token token) throws GeneralException {
         Code code;
 
-        while (token == null) {
+        for (Token t = token; t == null; t = getToken()) {
             if (token instanceof ControlSequenceToken) {
                 code = context.getMacro(token.getValue());
             } else if (token instanceof ActiveCharacterToken) {
@@ -599,7 +621,6 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
             if (!code.expand(prefix, context, this, typesetter)) {
                 return token;
             }
-            token = getToken();
         }
         return token;
     }
