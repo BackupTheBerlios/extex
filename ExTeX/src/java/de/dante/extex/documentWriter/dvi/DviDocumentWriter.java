@@ -22,6 +22,7 @@ package de.dante.extex.documentWriter.dvi;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.documentWriter.NoOutputStreamException;
 import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.font.Font;
@@ -49,7 +50,7 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DviDocumentWriter implements DocumentWriter {
     // TODO: docu (TE)
@@ -454,6 +455,10 @@ public class DviDocumentWriter implements DocumentWriter {
         throws GeneralException, IOException {
 
         GeneralException error;
+
+        if (dviWriter == null) {
+            throw new NoOutputStreamException();
+        }
 
         if (isBeginDviFile) {
             isBeginDviFile = false;
