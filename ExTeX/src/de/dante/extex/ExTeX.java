@@ -110,10 +110,76 @@ import de.dante.util.resource.FileFinderPathImpl;
  * <li>Interacting with the user in case on an error</li>
  * </ul>
  *
+ * <h3>Command Line Usage</h3>
+ *
+ * <p>
+ *  This program is normally used through a wrapper which performs all
+ *  necessary initializations and hides the implementation language from the
+ *  casual user. Since this is the default case it is described here first.
+ *  Details about the direct usage wothout the wrapper can be found in section
+ *  <a href="#invocation">Direct Java Invocation</a>.
+ * </p>
+ * <p>
+ *  This program &ndash; called <tt>extex<&/tt> here &ndash; has in its normal
+ *  form of invocation one parameter. This parameter is the name of the file to
+ *  process:
+ * </p>
+ * <pre class="CLISample">
+ *   extex file.tex </pre>
+ * <p>
+ *  The input file is sought in the current directory and other locations.
+ *  Details about searching can be found in <a href="fileSearch">Searching TeX
+ *  Files</a>.
+ * </p>
+ * <p>
+ *  In general the syntax of invocation is as follows:
+ * </p>
+ * <pre class="CLIsyntax">
+ *   extex &lang;options&rang; &lang;file&rang; </pre>
+ * <p>
+ *  
+ * </p>
+ *
+ *
+ * <a name="fileSearch"/><h3>Searching TeX Files</h3>
+ *
+ * ...
+ *
+ *
+ *
+ * <h3>User and Directory Settings</h3>
+ *
+ * <p>
+ *  Settings can be stored in properties files. Those settings are the fallbacks
+ *  if no corresponding command line arguments are found.
+ * </p>
+ *
+ * ...
+ *
+ *
+ * <a name="configuration"/><h3>Configuration Files</h3>
+ *
+ *
+ * ...
+ *
+ *
+ *
+ * <a name="invocation"/><h3>Direct Java Invocation</h3>
+ *
+ *
+ * ...
+ *
+ *
+ * <a name="installation"/><h3>Installation</h3>
+ *
+ *
+ * ...
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class ExTeX {
 
@@ -576,7 +642,7 @@ public class ExTeX {
                     .newInstance(properties.getProperty(PROP_CONFIG));
 
             OutputFactory outFactory = new OutputFactory(config
-                    .getConfiguration("Output"), new String[] {
+                    .getConfiguration("Output"), new String[]{
                     properties.getProperty(PROP_OUTPUTDIR),
                     properties.getProperty(PROP_FALLBACKOUTPUTDIR)});
 
@@ -809,6 +875,10 @@ public class ExTeX {
         String lang = (String) properties.get(PROP_LANG);
         String bundle = (String) properties.get(PROP_POOL);
 
+        if (bundle == null) {
+            return;
+        }
+
         if (lang != null) {
             if (lang.length() == 2) {
                 Messages.configure(bundle, new Locale(lang));
@@ -822,8 +892,9 @@ public class ExTeX {
                         lang.substring(3, 5), lang.substring(6, 8)));
                 return;
             }
-            Messages.configure(bundle);
         }
+
+        Messages.configure(bundle);
     }
 
     /**
@@ -1132,7 +1203,9 @@ public class ExTeX {
 
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
-                    .getConstructor(new Class[]{Configuration.class, ResourceFinder.class})
+                    .getConstructor(
+                            new Class[]{Configuration.class,
+                                    ResourceFinder.class})
                     .newInstance(new Object[]{config, fontFinder}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
