@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface NoadConsumer {
 
@@ -50,7 +50,8 @@ public interface NoadConsumer {
      * Add some math glue Noad to the internal lust.
      *
      * @param glue the glue to add
-     * @throws GeneralException TODO
+     *
+     * @throws GeneralException in case of an error
      */
     void add(Muskip glue) throws GeneralException;
 
