@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -68,6 +68,17 @@ public class TypesettingContextImpl implements TypesettingContext {
 
         super();
         this.font = null;
+        this.color = RgbColor.BLACK;
+        this.hyphenation = null;
+    }
+
+    /**
+     * Creates a new object.
+     */
+    public TypesettingContextImpl(final Font font) {
+
+        super();
+        this.font = font;
         this.color = RgbColor.BLACK;
         this.hyphenation = null;
     }
