@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,14 +34,16 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
     /**
      * The field <tt>index</tt> contains the index of the mark node for eTeX.
+     * The index 0 corresponds to the original mark of TeX.
+     * I.e. \marks0 == \mark
      */
-    private long index = -1;
+    private long index;
 
     /**
      * The field <tt>mark</tt> contains the tokens of the mark.
@@ -57,6 +59,7 @@ public class MarkNode extends AbstractNode implements Node {
 
         super();
         mark = theMark;
+        index = 0;
     }
 
     /**
