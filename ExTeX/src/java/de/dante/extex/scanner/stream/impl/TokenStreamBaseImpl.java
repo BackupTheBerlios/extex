@@ -21,6 +21,7 @@ package de.dante.extex.scanner.stream.impl;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -33,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -42,6 +43,12 @@ public class TokenStreamBaseImpl implements TokenStream {
      * TokenStream is attached to a file.
      */
     private boolean fileStream = false;
+
+    /**
+     * The field <tt>skipSpaces</tt> contains the indicator that spaces should
+     * be ignored before the next token is delivered.
+     */
+    private boolean skipSpaces = false;
 
     /**
      * The field <tt>stack</tt> contains the Token stack for the pushback
@@ -95,9 +102,25 @@ public class TokenStreamBaseImpl implements TokenStream {
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
             throws GeneralException {
 
-        return (stack.length() > 0 ? //
-                stack.removeLast() : //
-                getNext(factory, tokenizer));
+        if (!skipSpaces) {
+            return (stack.length() > 0 ? //
+                    stack.removeLast() : //
+                    getNext(factory, tokenizer));
+        }
+
+        Token t;
+        while (stack.length() > 0) {
+            t = stack.removeLast();
+            if (!(t instanceof SpaceToken)) {
+                return t;
+            }
+        }
+
+        do {
+            t = getNext(factory, tokenizer);
+        } while(t instanceof SpaceToken);
+
+        return t;
     }
 
     /**
@@ -154,6 +177,14 @@ public class TokenStreamBaseImpl implements TokenStream {
         if (token != null) {
             stack.add(token);
         }
+    }
+
+    /**
+     * Setter for skipSpaces.
+     */
+    public void skipSpaces() {
+
+        this.skipSpaces = true;
     }
 
 }
