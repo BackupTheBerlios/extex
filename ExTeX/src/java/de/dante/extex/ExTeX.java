@@ -611,7 +611,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.82 $
+ * @version $Revision: 1.83 $
  */
 public class ExTeX {
 
@@ -941,15 +941,15 @@ public class ExTeX {
      * A detailed list of the properties supported can be found in section
      * <a href="#settings">Settings</a>.
      *
-     * @param anyProperties the properties to start with
+     * @param theProperties the properties to start with
      *
      * @throws MainException in case of an error
      */
-    public ExTeX(final Properties anyProperties) throws MainException {
+    public ExTeX(final Properties theProperties) throws MainException {
 
         super();
 
-        this.properties = anyProperties;
+        this.properties = theProperties;
         propertyDefault(PROP_CODE, "");
         propertyDefault(PROP_CONFIG, "extex.xml");
         propertyDefault(PROP_ENCODING, "ISO-8859-1");
@@ -994,7 +994,7 @@ public class ExTeX {
      * The user properties are loaded from the users home directory and the
      * current directory.
      *
-     * @param anyProperties the properties to consider
+     * @param theProperties the properties to consider
      * @param dotFile the name of the local configuration file. In the case
      *            that this value is <code>null</code> no user properties
      *            will be considered.
@@ -1004,10 +1004,10 @@ public class ExTeX {
      *
      * @see #ExTeX(java.util.Properties)
      */
-    public ExTeX(final Properties anyProperties, final String dotFile)
+    public ExTeX(final Properties theProperties, final String dotFile)
             throws MainException {
 
-        this(anyProperties);
+        this(theProperties);
 
         if (dotFile != null) {
             try {
@@ -1624,8 +1624,9 @@ public class ExTeX {
                     jobname);
 
             interpreter.run();
+            //outStream.close();
 
-            outStream.close();
+            docWriter.close();
 
             int pages = docWriter.getPages();
             String outname = jobname + "." + docWriter.getExtension();
@@ -1646,6 +1647,7 @@ public class ExTeX {
             logger.throwing(this.getClass().getName(), "run", e);
             throw e;
         } catch (GeneralException e) {
+            e.getCause().printStackTrace();
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
         } catch (Throwable e) {
