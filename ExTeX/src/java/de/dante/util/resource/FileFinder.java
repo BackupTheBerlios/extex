@@ -39,7 +39,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * several extensions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
 
@@ -174,8 +174,9 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        if (trace && logger != null) {
-            logger.fine("FileFinder: Searching " + name + " [" + type + "]\n");
+        Logger log = (trace ? logger : null);
+        if (log != null) {
+            log.fine("FileFinder: Searching " + name + " [" + type + "]\n");
         }
 
         InputStream stream = null;
@@ -188,9 +189,9 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
             }
             cfg = config.getConfiguration(t);
 
-            if (trace && logger != null) {
-                logger.fine("FileFinder: " + type + " not found; Using default"
-                        + t + ".\n");
+            if (log != null) {
+                log.fine("FileFinder: `" + type
+                        + "' not found; Using default `" + t + "'.\n");
             }
         }
 
@@ -209,31 +210,24 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
             }
         }
 
-        if (trace && logger != null && stream == null) {
-            logger.fine("FileFinder: Failed for " + name + "\n");
+        if (log != null && stream == null) {
+            log.fine("FileFinder: Failed for " + name + "\n");
         }
 
         return stream;
     }
 
     /**
-     * Getter for logger.
+     * Setter for the logger.
      *
-     * @return the logger.
-     */
-    public Logger getLogger() {
-
-        return this.logger;
-    }
-
-    /**
-     * Setter for logger.
+     * @param theLogger the logger to set.
      *
-     * @param logger the logger to set.
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger theLogger) {
 
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
