@@ -34,27 +34,27 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\topt</code>.
- * It convert e Dimen-value to pt.
+ * This class provides an implementation for the primitive <code>\tosp</code>.
+ * It print a Dimen-value in sp.
  * 
  * <p>
  * Example:
  * <pre>
- * \the\topt\dimen7
- * \topt\dimen8
+ * \the\tosp\dimen7
+ * \tosp\dimen8
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class ToPT extends AbstractCode implements Theable {
+public class ToSP extends AbstractCode implements Theable {
 
 	/**
 	 * Creates a new object.
 	 *
 	 * @param name the name for tracing and debugging
 	 */
-	public ToPT(String name) {
+	public ToSP(String name) {
 		super(name);
 	}
 
@@ -86,7 +86,7 @@ public class ToPT extends AbstractCode implements Theable {
 			throw new GeneralHelpingException("TTP.UndefinedToken", cs.toString());
 		} else if (code instanceof DimenConvertable) {
 			Dimen val = new Dimen(((DimenConvertable)code).convertDimen(context,source));
-			Tokens toks = new Tokens(context,val.toPT());
+			Tokens toks = new Tokens(context,val.toString());
 			return toks;
 		} else {
 			char esc = (char) (context.getCount("escapechar").getValue());

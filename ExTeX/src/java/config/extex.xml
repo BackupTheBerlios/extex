@@ -304,7 +304,7 @@
     <Define name="textfont" class=""/>
     <Define name="textstyle" class=""/>
     <define name="the" class="de.dante.extex.interpreter.primitives.debugging.The"/>
-    <define name="topt" class="de.dante.extex.interpreter.primitives.debugging.ToPT"/>
+    <define name="tosp" class="de.dante.extex.interpreter.primitives.debugging.ToSP"/>
     <define name="printformat" class="de.dante.extex.interpreter.primitives.debugging.PrintFormat"/>
     <Define name="thickmuskip" class=""/>
     <Define name="thinmuskip" class=""/>

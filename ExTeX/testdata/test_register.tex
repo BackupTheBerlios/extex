@@ -11,7 +11,7 @@
 
 \toks0 {=}
 
-= : \the\toks0
+1: = : \the\toks0
 
 %% numbered count
 
@@ -19,84 +19,84 @@
 %% (not yet implmented in ExTeX)
 
 \count50='123
-83 : \the\count50
+2: 83 : \the\count50
 
 \count60="123
-291 : \the\count60
+3: 291 : \the\count60
 
 %% from here decimal
 
 \count40=12
-12 : \the\count40
+4: 12 : \the\count40
 
 \multiply \count40 by 3
-36 : \the\count40
+5: 36 : \the\count40
 
 \advance \count40 by -6
-30 : \the\count40
+6: 30 : \the\count40
 
 \divide \count40 by 8
-3 : \the\count40
+7: 3 : \the\count40
 
 \advance \count40 by 10
-13 : \the\count40
+8: 13 : \the\count40
 
 %% named count
 
 \countdef\nase = 40
-13 : \the\nase
+9: 13 : \the\nase
 
 \advance \nase by 5
-18 : \the\nase
+10: 18 : \the\nase
 
 \multiply\nase by 4579
-82422 : \the\nase
+11: 82422 : \the\nase
 
 \divide\nase by 3
-27474 : \the\nase
+12: 27474 : \the\nase
 
 \multiply\nase by 78164
-2147477736 : \the\nase
+13: 2147477736 : \the\nase
 
 \divide\nase by -133
--16146449 : \the\nase
+14: -16146449 : \the\nase
 
 \multiply \nase by -0
-0 : \the\nase
+15: 0 : \the\nase
 
 %% numbered dimen
 
 \dimen2=1pt
-1.0pt : \the\dimen2
+16: 1.0pt : \the\dimen2
 
 \multiply\dimen2 by 2
-2.0pt : \the\dimen2
+17: 2.0pt : \the\dimen2
 
 \advance\dimen2 by 3em
-32.00005pt : \the\dimen2
+18: 32.00005pt : \the\dimen2
 
 \advance\dimen2 by -100000sp
-30.47417pt : \the\dimen2
+19: 30.47417pt : \the\dimen2
 
 \divide\dimen2 by 2
-15.23708pt : \the\dimen2
+20: 15.23708pt : \the\dimen2
 
 %% named dimen
 
 \dimendef\hand = 2
-15.23708pt : \the\hand
+21: 15.23708pt : \the\hand
 
 \advance\hand by -.23708pt
-15.0pt : \the\hand
+22: 15.0pt : \the\hand
 
 \divide\hand by 7
-2.14285pt : \the\hand
+23: 2.14285pt : \the\hand
 
 \multiply\hand by 7
-14.99997pt : \the\hand
+24: 14.99997pt : \the\hand
 
 \advance\hand by -13.99997pt
-1.0pt : \the\hand
+25: 1.0pt : \the\hand
 
 
 %% The remaining can't be used with original TeX

@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NamedDimen extends AbstractCode implements Advanceable, Multiplyable, Divideable, Theable, DimenConvertable {
 
@@ -123,7 +123,7 @@ public class NamedDimen extends AbstractCode implements Advanceable, Multiplyabl
 	 */
 	public Tokens the(final Context context, final TokenSource source) throws GeneralException {
 		String key = getKey(source);
-		String s = context.getDimen(key).toString();
+		String s = context.getDimen(key).toPT();
 		return new Tokens(context, s);
 	}
 
