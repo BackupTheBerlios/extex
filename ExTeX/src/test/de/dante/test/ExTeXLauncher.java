@@ -22,6 +22,8 @@ package de.dante.test;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -44,7 +46,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -52,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -97,11 +99,6 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * The field <tt>props</tt> contains the ...
-     */
-    private static Properties props = null;
-
-    /**
      * Set some properties to default values. The properties set are:
      * <dl>
      * <dt><tt>extex.output</tt></dt><dd>Preset to <tt>text</tt></dd>
@@ -134,6 +131,12 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * The field <tt>props</tt> contains the merged properties from the
+     * system properties and the properties loaded from <tt>.extex-test</tt>.
+     */
+    private Properties props = null;
+
+    /**
      * Creates a new object.
      *
      * @param arg the name
@@ -141,6 +144,32 @@ public class ExTeXLauncher extends TestCase {
     public ExTeXLauncher(final String arg) {
 
         super(arg);
+    }
+
+    /**
+     * Getter for props.
+     *
+     * @return the props
+     */
+    public Properties getProps() {
+
+        if (props == null) {
+            props = System.getProperties();
+
+            File file = new File(".extex-test");
+            if (file.canRead()) {
+                try {
+                    FileInputStream inputStream = new FileInputStream(file);
+                    props.load(inputStream);
+                    inputStream.close();
+                } catch (FileNotFoundException e) {
+                    // ignored on purpose
+                } catch (IOException e) {
+                    // ignored on purpose
+                }
+            }
+        }
+        return (Properties) this.props.clone();
     }
 
     /**
@@ -155,6 +184,8 @@ public class ExTeXLauncher extends TestCase {
      */
     public void runCode(final Properties properties, final String code,
             final String log, final String expect) throws MainException {
+
+        boolean errorP = false;
 
         prepareProperties(properties);
         properties.setProperty("extex.code", code);
@@ -179,13 +210,16 @@ public class ExTeXLauncher extends TestCase {
         try {
             main.run();
         } catch (MainException e) {
-            // TODO gene: error handling unimplemented
+            errorP = true;
         }
 
         handler.close();
         logger.removeHandler(handler);
         if (log != null) {
             assertEquals(log, byteStream.toString());
+            assertFalse("Error expected", errorP);
+        } else {
+            assertTrue("No error expected", errorP);
         }
         if (expect != null) {
             assertEquals(expect, stream.toString());
@@ -204,17 +238,7 @@ public class ExTeXLauncher extends TestCase {
     public void runCode(final String code, final String log, final String expect)
             throws Exception {
 
-        if (props == null) {
-            props = System.getProperties();
-
-            File file = new File(".extex-test");
-            if (file.canRead()) {
-                FileInputStream inputStream = new FileInputStream(file);
-                props.load(inputStream);
-                inputStream.close();
-            }
-        }
-        runCode(props, code, log, expect);
+        runCode(getProps(), code, log, expect);
     }
 
     /**
@@ -256,5 +280,4 @@ public class ExTeXLauncher extends TestCase {
         logger.removeHandler(handler);
         return bytes.toString();
     }
-
 }
