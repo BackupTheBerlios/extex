@@ -25,8 +25,10 @@ import de.dante.util.framework.i18n.Localizer;
 /**
  * This exception can be used to terminate the interpreter loop.
  *
+ * @deprecated use a component specific exception instead.
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PanicException extends GeneralException {
 
@@ -40,16 +42,6 @@ public class PanicException extends GeneralException {
      * The field <tt>arg1</tt> contains the first argument.
      */
     private String arg1;
-
-    /**
-     * The field <tt>arg2</tt> contains the second argument.
-     */
-    private String arg2;
-
-    /**
-     * The field <tt>arg3</tt> contains the third argument.
-     */
-    private String arg3;
 
     /**
      * The field <tt>localizer</tt> contains the localizer.
@@ -68,22 +60,9 @@ public class PanicException extends GeneralException {
      * @param localizer the localizer to use
      * @param messageTag the name of the message in the file <i>
      *            messages.properties</i>
-     */
-    public PanicException(final Localizer localizer, final String messageTag) {
-
-        super(PANIC_ERROR_CODE);
-        this.localizer = localizer;
-        this.tag = messageTag;
-        this.arg1 = "?";
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param localizer the localizer to use
-     * @param messageTag the name of the message in the file <i>
-     *            messages.properties</i>
      * @param a1 the first parameter
+     *
+     * @deprecated use a component specific exception instead.
      */
     public PanicException(final Localizer localizer, final String messageTag,
             final String a1) {
