@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
 /**
  * Maker for a horizontal list.
  * <p>
- * After <code>par()</code>, the linebreak and hyphenation is made.
+ * After <code>par()</code>, the linebreak and hyphenation are applied.
  * <p>
  * When the horizontal list are closed, the paragraph is split into lines. It
  * use the linebreaker, which is defined with <code>\linebreaker</code>. Is
@@ -46,7 +46,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -100,7 +100,8 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
      *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void add(final TypesettingContext context, final UnicodeChar symbol) {
+    public void add(final TypesettingContext context,
+            final UnicodeChar symbol) {
 
         CharNode c = getManager().getCharNodeFactory().newInstance(context,
                 symbol);
@@ -171,8 +172,10 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
     public NodeList close() throws GeneralException {
 
         getManager().getLigatureBuilder().insertLigatures(nodes);
+        //TODO: paragraph breaking without additional hyphenation points
         //TODO: insert optional hyphenation positions
-        //TODO: paragraph breaking
+        //TODO: paragraph breaking second pass
+        //TODO: paragraph breaking third pass
 
         return nodes;
     }

@@ -17,27 +17,30 @@
  *
  */
 
-package de.dante.extex.typesetter;
+package de.dante.extex.typesetter.paragraphBuilder;
 
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.impl.Manager;
 
 /**
- * Interface for a linebreakerclass.
+ * ...
  *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public interface LineBreaker {
+public interface ParagraphBuilder {
 
     /**
-     * Break a paragraph in lines.
+     * Break a horizontal list into lines.
      *
-     * @param nodes     the horizontalnodelist (paragraph)
-     * @param manager   the manager for the nodelists
+     * @param nodes the horizontal node list containing all nodes for the
+     *   paragraph
+     * @param manager the manager for lists
      *
-     * @return the <code>Nodelist</code> with broken lines
+     * @return the
+     *   {@link de.dante.extex.interpreter.type.node.VerticalListNode
+     *   VerticalListNode} containing the hboxes of the lines
      */
-    NodeList breakLines(HorizontalListNode nodes, Manager manager);
+    NodeList breakList(HorizontalListNode nodes, Manager manager);
 }
