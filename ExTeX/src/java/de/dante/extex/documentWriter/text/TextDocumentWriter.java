@@ -21,6 +21,7 @@ package de.dante.extex.documentWriter.text;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.channels.ClosedChannelException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
@@ -36,7 +37,7 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TextDocumentWriter
         implements
@@ -68,9 +69,14 @@ public class TextDocumentWriter
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() {
+    public void close() throws IOException {
 
-        // nothing to do
+        if (out != null) {
+            out.close();
+            out = null;
+        } else {
+            throw new ClosedChannelException();
+        }
     }
 
     /**
