@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class StyleNoad implements Noad {
 
@@ -79,6 +79,7 @@ public final class StyleNoad implements Noad {
      * instead.
      *
      * @param style the style
+     * @param printName the printable representation
      */
     private StyleNoad(final String style, final String printName) {
 
