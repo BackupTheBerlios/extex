@@ -29,14 +29,14 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LogFile extends OutFile {
 
     /**
      * The field <tt>logger</tt> contains the ...
      */
-    private Logger logger;
+    private transient Logger logger;
 
     /**
      * Creates a new object.

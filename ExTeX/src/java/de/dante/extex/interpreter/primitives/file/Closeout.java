@@ -65,14 +65,14 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Closeout extends AbstractCode implements LogEnabled {
 
     /**
      * The field <tt>logger</tt> contains the logger to use.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.

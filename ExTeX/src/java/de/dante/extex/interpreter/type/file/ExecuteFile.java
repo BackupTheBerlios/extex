@@ -32,7 +32,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * shell.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExecuteFile extends OutFile {
 
@@ -40,7 +40,7 @@ public class ExecuteFile extends OutFile {
      * The field <tt>logger</tt> contains the logger for tracing and error
      * messages.
      */
-    private Logger logger;
+    private transient Logger logger;
 
     /**
      * Creates a new object.

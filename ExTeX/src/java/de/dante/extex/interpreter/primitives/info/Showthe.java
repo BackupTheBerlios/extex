@@ -47,14 +47,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Showthe extends The implements LogEnabled {
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.

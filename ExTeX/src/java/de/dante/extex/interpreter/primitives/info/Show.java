@@ -60,14 +60,14 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.
