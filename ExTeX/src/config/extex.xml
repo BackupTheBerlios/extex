@@ -194,7 +194,7 @@
     <define name="long" class="de.dante.extex.interpreter.primitives.prefix.Long"/>
     <define name="looseness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lower" class=""/>
-    <Define name="lowercase" class=""/>
+    <define name="lowercase" class="de.dante.extex.interpreter.primitives.string.Lowercase"/>
     <define name="mag" class="de.dante.extex.interpreter.primitives.register.NamedCount">1000</define>
     <Define name="mark" class=""/>
     <Define name="mathaccent" class=""/>
@@ -234,7 +234,7 @@
     <define name="nonstopmode" class="de.dante.extex.interpreter.primitives.interaction.Nonstopmode"/>
     <Define name="nulldelimiterspace" class=""/>
     <define name="nullfont" class="de.dante.extex.interpreter.primitives.font.NullFontPrimitive"/>
-    <Define name="number" class=""/>
+    <define name="number" class="de.dante.extex.interpreter.primitives.string.Number"/>
     <Define name="omit" class=""/>
     <define name="openin" class="de.dante.extex.interpreter.primitives.file.Openin"/>
     <define name="openout" class="de.dante.extex.interpreter.primitives.file.Openout"/>
@@ -276,7 +276,7 @@
     <Define name="right" class=""/>
     <define name="righthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.RightHyphenmin"/>
     <define name="rightskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
-    <Define name="romannumeral" class=""/>
+    <define name="romannumeral" class="de.dante.extex.interpreter.primitives.string.Romannumeral"/>
     <Define name="scriptfont" class=""/>
     <Define name="scriptscriptfont" class=""/>
     <Define name="scriptscriptstyle" class=""/>
@@ -338,7 +338,7 @@
     <Define name="unskip" class=""/>
     <Define name="unvbox" class=""/>
     <Define name="unvcopy" class=""/>
-    <Define name="uppercase" class=""/>
+    <define name="uppercase" class="de.dante.extex.interpreter.primitives.string.Lowercase"/>
     <Define name="vadjust" class=""/>
     <Define name="valign" class=""/>
     <define name="vbadness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -393,7 +393,6 @@
 
   </Interpreter>
 
-	
   <Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
     <LineBreaker name="default" class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
   	<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
@@ -406,11 +405,11 @@
     <text class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
   </DocumentWriter>
 
-  <Reader>
-	<string class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl32"/>
-	<file class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl32"/>
-    <reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl32"/>
-  </Reader>
+  <Scanner>
+	<String class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl"/>
+	<File class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl"/>
+    <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl"/>
+  </Scanner>
 
   <File>
     <tex>

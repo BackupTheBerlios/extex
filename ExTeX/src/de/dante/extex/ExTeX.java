@@ -62,6 +62,7 @@ import de.dante.extex.main.MainUnknownInteractionException;
 import de.dante.extex.main.MainUnknownOptionException;
 import de.dante.extex.main.MessageObserver;
 import de.dante.extex.main.TokenObserver;
+import de.dante.extex.main.TokenPushObserver;
 import de.dante.extex.main.TraceObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -96,7 +97,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class ExTeX {
 
@@ -482,7 +483,7 @@ public class ExTeX {
     /**
      * This is the main method which is invoked to run the whole engine from
      * the command line. It creates a new ExTeX object and invokes
-     * <tt>{@link #run(String[]) run()}</tt> on it.
+     * <tt>{@link #run(java.lang.String[]) run()}</tt> on it.
      * <p>
      * The return value is used as the exit status.
      * </p>
@@ -651,7 +652,7 @@ public class ExTeX {
                 .getResourceAsStream("config.extex." + arg);
         if (is == null) {
             try {
-                is = new FileInputStream(new File(".extexcfg",arg));
+                is = new FileInputStream(new File(".extexcfg", arg));
             } catch (FileNotFoundException e) {
                 return false;
             }
@@ -713,8 +714,7 @@ public class ExTeX {
                         .getProperty("path.separator")), new StringList(":tex",
                         ":")));
             }
-            finder
-                    .add(new FileFinderConfigImpl(config
+            finder.add(new FileFinderConfigImpl(config
                             .getConfiguration("File")));
             finder.add(new FileFinderImpl(logger));
 
@@ -729,6 +729,7 @@ public class ExTeX {
             if (Boolean.valueOf(properties.getProperty(PROP_TRACE_TOKENIZER))
                     .booleanValue()) {
                 interpreter.registerObserver("pop", new TokenObserver(logger));
+                interpreter.registerObserver("push", new TokenPushObserver(logger));
             }
             if (Boolean.valueOf(properties.getProperty(PROP_TRACE_MACROS))
                     .booleanValue()) {
@@ -737,7 +738,7 @@ public class ExTeX {
             }
 
             TokenStreamFactory factory = new TokenStreamFactory(config
-                    .getConfiguration("Reader"));
+                    .getConfiguration("Scanner"));
 
             factory.setFileFinder(finder);
             factory.registerObserver("file", new FileOpenObserver(logger));
@@ -1097,6 +1098,7 @@ public class ExTeX {
     private void useDebug(final String[] arg, final int idx)
         throws MainException {
 
+        logger.setLevel(Level.FINE);
         if (idx >= arg.length) {
             throw new MainMissingArgumentException("debug");
         }
