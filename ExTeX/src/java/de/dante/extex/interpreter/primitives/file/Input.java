@@ -61,7 +61,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Input extends AbstractFileCode {
 
@@ -70,7 +70,7 @@ public class Input extends AbstractFileCode {
      * stream for.
      */
     private static final String FILE_TYPE = "tex";
-    //TODO is "tex" as constant good?
+    //TODO gene: is "tex" as constant good?
 
     /**
      * Creates a new object.

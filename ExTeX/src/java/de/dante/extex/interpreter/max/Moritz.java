@@ -73,7 +73,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public abstract class Moritz
         implements
@@ -88,7 +88,7 @@ public abstract class Moritz
      */
     private static final long MAX_CHAR_CODE = Long.MAX_VALUE;
 
-    //TODO: find a good value
+    //TODO gene: find a good value
 
     /**
      * The field <tt>localizer</tt> contains the localizer to use.
@@ -116,7 +116,6 @@ public abstract class Moritz
      * accessible to the user in some way, e.g. in the log file.
      */
     //private ObserverList observersLogMessage = new ObserverList();
-
     /**
      * The field <tt>observersPop</tt> contains the observer list is used for
      * the observers which are registered to receive a notification when a new
@@ -252,6 +251,10 @@ public abstract class Moritz
      */
     protected abstract Token expand(final Token token) throws GeneralException;
 
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#execute(
+     *      de.dante.extex.scanner.Token)
+     */
     public abstract void execute(final Token token) throws GeneralException;
 
     /**
@@ -783,8 +786,8 @@ public abstract class Moritz
             observersEOF.add(observer);
         } else if ("close".equals(name)) {
             observersCloseStream.add(observer);
-        //} else if ("log".equals(name)) {
-        //    observersLogMessage.add(observer);
+            //} else if ("log".equals(name)) {
+            //    observersLogMessage.add(observer);
         } else {
             throw new NotObservableException(name);
         }

@@ -83,7 +83,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class HelpingException extends GeneralException {
 
@@ -318,8 +318,8 @@ public class HelpingException extends GeneralException {
             return localizer.format(name);
         }
 
-        // TODO The following fallback should be eliminated as soon as the
-        //       deprecated methods are removed.
+        // TODO gene: The following fallback should be eliminated
+        //       as soon as the deprecated methods are removed.
 
         String format;
         try {

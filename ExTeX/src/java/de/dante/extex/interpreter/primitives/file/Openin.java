@@ -45,7 +45,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Openin extends AbstractFileCode {
 
@@ -77,7 +77,7 @@ public class Openin extends AbstractFileCode {
         InFile file;
         try {
             file = new InFile(source.getTokenStreamFactory()
-                    .newInstance(name, "tex", "iso-8859-1")); //TODO encoding?
+                    .newInstance(name, "tex", "iso-8859-1")); //TODO gene: encoding?
             context.setInFile(key, file, prefix.isGlobal());
         } catch (FileNotFoundException e) {
             //ignored on purpose

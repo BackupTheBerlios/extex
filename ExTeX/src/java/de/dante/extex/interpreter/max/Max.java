@@ -83,7 +83,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public class Max extends Moritz
         implements
@@ -122,7 +122,7 @@ public class Max extends Moritz
      * The field <tt>errorCount</tt> contains the count for the number of
      * errors already encountered.
      */
-    private int errorCount = 0; //TODO: make proper use of the error count
+    private int errorCount = 0; //TODO gene: make proper use of the error count
 
     /**
      * The error handler is invoked whenever an error is detected. If none is
@@ -417,7 +417,7 @@ public class Max extends Moritz
                 * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
-        // TODO incomplete?
+        // TODO gene: incomplete?
         context = newContext;
     }
 
@@ -495,7 +495,7 @@ public class Max extends Moritz
         execute(new Switch(true));
         typesetter.finish();
 
-        //TODO TTP[1335]
+        //TODO gene: TTP[1335]
     }
 
     /**
@@ -642,7 +642,7 @@ public class Max extends Moritz
     public Object visitCr(final CrToken token, final Object ignore)
             throws GeneralException {
 
-        //TODO unimplemented
+        //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
     }
 

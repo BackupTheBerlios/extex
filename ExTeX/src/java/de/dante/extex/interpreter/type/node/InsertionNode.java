@@ -23,12 +23,12 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @see "TeX -- The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 
@@ -61,7 +61,7 @@ public class InsertionNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("insert"); //TODO incomplete
+        sb.append("insert"); //TODO gene: incomplete
     }
 
     /**

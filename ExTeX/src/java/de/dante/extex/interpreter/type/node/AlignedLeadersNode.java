@@ -24,12 +24,12 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class AlignedLeadersNode extends GlueNode implements Node {
 
@@ -53,7 +53,7 @@ public class AlignedLeadersNode extends GlueNode implements Node {
      */
     public String toString() {
 
-        return "aleaders "; //TODO incomplete
+        return "aleaders "; //TODO gene: incomplete
     }
 
     /**

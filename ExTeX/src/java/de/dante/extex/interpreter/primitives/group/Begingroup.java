@@ -50,7 +50,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Begingroup extends AbstractCode {
 
@@ -78,7 +78,7 @@ public class Begingroup extends AbstractCode {
         try {
             context.openGroup();
         } catch (ConfigurationException e) {
-            throw new GeneralException(e); //TODO incomplete
+            throw new GeneralException(e); //TODO gene: incomplete
         }
 
         return true;

@@ -43,10 +43,10 @@ import java.util.ResourceBundle;
  * @deprecated use Localizer instead
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public final class Messages {
-    //TODO: This class is a mess. Integrate the localized messages into the components.
+    //TODO gene: This class is a mess. Integrate the localized messages into the components.
 
     /**
      * The constant <tt>BUNDLE_NAME</tt> contains the name of the resource

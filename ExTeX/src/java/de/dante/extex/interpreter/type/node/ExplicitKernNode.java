@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Discartable;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * From The TeXbook
  * <p>
@@ -40,7 +40,7 @@ import de.dante.extex.typesetter.Discartable;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ExplicitKernNode extends AbstractKernNode implements Discartable {
 

@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -53,19 +53,20 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      */
     public void addSkip(final FixedGlue glue) {
 
-        Node gNode = new GlueNode(glue); // TODO: use factory?
+        Node gNode = new GlueNode(glue); // TODO gene: use factory?
         gNode.setHeight(glue.getLength());
         add(gNode);
     }
 
     /**
-     * ...
+     * TODO gene: missing JavaDoc.
      *
      * @param size the target size
      */
     public void spread(final FixedDimen size) {
 
-        // TODO unimplemented
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -117,8 +118,8 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     protected void updateDimensions(final Node node) {
 
         getWidth().max(node.getWidth());
-        getHeight().add(node.getHeight()); //TODO incorrect
-        getDepth().add(node.getDepth()); //TODO incorrect
+        getHeight().add(node.getHeight()); //TODO gene: incorrect
+        getDepth().add(node.getDepth()); //TODO gene: incorrect
     }
 
 }

@@ -25,10 +25,10 @@ import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TraceObserver implements Observer {
 

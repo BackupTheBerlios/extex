@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathGlyph implements Noad {
 
@@ -123,6 +123,7 @@ public class MathGlyph implements Noad {
      */
     public void setSubscript(final Noad subscript) {
 
+        // TODO gene: error unimplemented
         throw new RuntimeException("error");
     }
 
@@ -132,6 +133,7 @@ public class MathGlyph implements Noad {
      */
     public void setSuperscript(final Noad superscript) {
 
+        // TODO gene: error unimplemented
         throw new RuntimeException("error");
     }
 
@@ -150,8 +152,11 @@ public class MathGlyph implements Noad {
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        // TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        if (depth >= 0) {
+            sb.append("\"");
+            sb.append(Integer.toHexString(family));
+            sb.append(Integer.toHexString(character.getCodePoint()));
+        }
     }
 
     /**

@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class InFile implements Serializable {
 
@@ -70,7 +70,7 @@ public class InFile implements Serializable {
         if (stream == null) {
             return true;
         }
-        //TODO return stream.isEof();
+        //TODO gene: return stream.isEof();
         return false;
     }
 
@@ -117,7 +117,7 @@ public class InFile implements Serializable {
             Token t = stream.get(factory, tokenizer);
             if (t == null) {
                 return (toks.length() > 0 ? toks : null);
-            } else if (t.isa(Catcode.CR)) { //TODO correct???
+            } else if (t.isa(Catcode.CR)) { //TODO gene: correct???
                 return toks;
             }
             toks.add(t);

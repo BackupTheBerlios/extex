@@ -114,7 +114,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public class ContextImpl
         implements
@@ -383,7 +383,7 @@ public class ContextImpl
 
         /*
         Tokens result = new Tokens();
-        //TODO use interface instead of implementation
+        //TODO gene: use interface instead of implementation
         TokenStreamBaseImpl stream = new TokenStreamBaseImpl(false, tokens);
 
          while (!stream.isEof()) {
@@ -640,7 +640,7 @@ public class ContextImpl
      */
     public ParagraphShape getParshape() {
 
-        //TODO: How does \parshape interact with groups?
+        //TODO gene: How does \parshape interact with groups?
         return this.parshape;
     }
 

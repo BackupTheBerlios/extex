@@ -65,7 +65,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Def extends AbstractAssignment {
 
@@ -116,7 +116,7 @@ public class Def extends AbstractAssignment {
             throws GeneralException {
 
         Tokens body = source.scanTokens();
-        //TODO maybe the treatment of # is incorrect
+        //TODO gene: maybe the treatment of # is incorrect
         return body;
     }
 

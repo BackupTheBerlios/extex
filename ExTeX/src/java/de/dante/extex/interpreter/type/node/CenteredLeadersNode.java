@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Node;
@@ -23,12 +24,12 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
@@ -36,6 +37,7 @@ public class CenteredLeadersNode extends GlueNode implements Node {
      * Creates a new object.
      */
     public CenteredLeadersNode() {
+
         super(null);
     }
 
@@ -49,11 +51,13 @@ public class CenteredLeadersNode extends GlueNode implements Node {
      * @see "TeX -- The Program [190]"
      */
     public String toString() {
-        return "cleaders "; //TODO
+
+        return "cleaders "; //TODO gene: incomplete
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visit(final NodeVisitor visitor, final Object value,

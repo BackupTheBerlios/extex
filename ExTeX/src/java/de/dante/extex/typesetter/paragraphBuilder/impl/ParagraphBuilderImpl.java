@@ -53,7 +53,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * <doc name="emergencystretch" type="register">
  * <h3>The Parameter <tt>\emergencystretch</tt></h3>
@@ -139,9 +139,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, HyphenationEnabled {
+public class ParagraphBuilderImpl
+        implements
+            ParagraphBuilder,
+            LogEnabled,
+            HyphenationEnabled {
 
     /**
      * The constant <tt>COMPLETE</tt> contains the indicator that the
@@ -272,7 +276,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
      */
     public NodeList build(final HorizontalListNode nodes) {
 
-        //TODO split into smaller methods
+        //TODO gene: split into smaller methods
 
         if (!COMPLETE) {
             return nodes;
@@ -363,20 +367,20 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
                 a[xi++] = breakPoint[i].getPosition();
             }
         }
-        return new Breaks(999, a); //TODO
+        return new Breaks(999, a); //TODO gene:
     }
 
     /**
-     * ...
+     * Determine the demerits.
      *
      * @param breakPoint the list of possible break points
      * @param pi the index of the end point of the current line
      * @param leftskip the skip to be included at the left end of each line
      * @param rightskip the skip to be included at the right end of each line
      * @param lineWidth the size of the current line
-     * @param threshold ...
+     * @param threshold the threshold
      *
-     * @return ...
+     * @return the demerits
      */
     private int computeDemerits(final BreakPoint[] breakPoint, final int pi,
             final FixedGlue leftskip, final FixedGlue rightskip,
@@ -472,11 +476,11 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
      * @param breakPoint the list of possible break points
      * @param line the starting line number
      * @param threshold the threshold for the penalties of a single line
-     * @param depth ...
+     * @param depth TODO gene: doc
      * @param pointIndex the index of the point
      * @param leftskip the skip for the left side
      * @param rightskip the skip for the right side
-     * @param emergencystretch ...
+     * @param emergencystretch the emergency stretch to add
      *
      * @return the container with the breaks or <code>null</code> if none is
      *  found.

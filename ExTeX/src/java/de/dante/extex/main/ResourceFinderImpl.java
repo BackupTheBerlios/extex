@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its super class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ResourceFinderImpl
         implements
@@ -131,7 +131,7 @@ public class ResourceFinderImpl
                 return null;
             }
             if (line.charAt(0) == '\\') {
-                //TODO make use of the line read
+                //TODO gene: make use of the line read
                 throw new RuntimeException("unimplemented");
             } else {
                 InputStream stream = parent.findResource(line, type);

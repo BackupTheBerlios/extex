@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -124,7 +124,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("discretionary"); //TODO incomplete
+        sb.append("discretionary"); //TODO gene: incomplete
     }
 
     /**

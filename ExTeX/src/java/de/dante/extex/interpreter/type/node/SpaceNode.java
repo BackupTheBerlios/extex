@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class SpaceNode extends GlueNode implements Node {
 
@@ -87,7 +87,7 @@ public class SpaceNode extends GlueNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("\\space "); //TODO I18N???
+        sb.append("\\space "); //TODO gene: I18N???
         sb.append(this.size.toString());
         if (DEVELOP && !getWidth().eq(size.getLength())) {
             sb.append(" [");

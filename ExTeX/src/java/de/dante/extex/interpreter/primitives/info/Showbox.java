@@ -54,7 +54,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Showbox extends AbstractBox implements LogEnabled {
 
@@ -99,8 +99,8 @@ public class Showbox extends AbstractBox implements LogEnabled {
         if (b == null) {
             logger.info(context.esc(key) + "=void");
         } else {
-            //TODO execute() unimplemented
-            throw new RuntimeException("unimplemented");
+            logger.info(b.getNodes().toString());
+            //TODO gene: correct??
         }
         logger.info(getLocalizer().format("TTP.Show.OK"));
         return true;

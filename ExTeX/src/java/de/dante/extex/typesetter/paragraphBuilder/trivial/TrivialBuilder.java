@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -139,7 +139,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
     }
 
     /**
-     * ...
+     * TODO gene: missing JavaDoc.
      *
      * @param start the index of the first node to consider
      * @param len the length of nodes

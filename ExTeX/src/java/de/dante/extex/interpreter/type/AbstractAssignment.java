@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 
@@ -93,5 +93,5 @@ public abstract class AbstractAssignment extends AbstractCode {
     public abstract void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException;
-    //todo maybe the typesetter argument can be deleted.
+    //TODO gene: maybe the typesetter argument can be deleted.
 }

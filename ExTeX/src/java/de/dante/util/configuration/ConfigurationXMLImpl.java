@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -186,7 +186,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * </pre>
      *
      *
-     * TODO documentation incomplete
+     * TODO gene: documentation incomplete
      *
      * searches the following files on the classpath:
      *

@@ -48,7 +48,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ErrorHandlerImpl
         implements
@@ -250,7 +250,7 @@ public class ErrorHandlerImpl
                             break;
                         case 'd':
                         case 'D':
-                            //TODO: support debug? TTP[84] TTP[1338]
+                            //TODO gene: support debug? TTP[84] TTP[1338]
                             throw new RuntimeException("unimplemented");
                         case 'e':
                         case 'E':

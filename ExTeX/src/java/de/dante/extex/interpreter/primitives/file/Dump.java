@@ -72,7 +72,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -137,7 +137,7 @@ public class Dump extends AbstractCode implements LogEnabled {
             throw new HelpingException(getLocalizer(), "TTP.DumpInGroup");
         }
 
-        //TODO @see "TeX -- The Program [1328]"
+        //TODO gene: @see "TeX -- The Program [1328]"
 
         Tokens jobnameTokens = context.getToks("jobname");
         if (jobnameTokens == null) {

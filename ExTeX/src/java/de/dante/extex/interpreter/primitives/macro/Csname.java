@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Csname extends AbstractCode
         implements
@@ -157,7 +157,7 @@ public class Csname extends AbstractCode
                 } else if (code instanceof ExpandableCode) {
                     //((ExpandableCode) code).expand(Flags.NONE, getContext(),
                     //                               this, getTypesetter());
-                    //TODO handle expansion
+                    //TODO gene: handle expansion
                     throw new RuntimeException("unimplemented");
                 }
 

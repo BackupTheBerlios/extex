@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.type.Knot;
 import de.dante.util.GeneralException;
 
-// TODO:This interface should be moved to the package type
+// TODO gene: This interface should be moved to the package type
 /**
  * A node is the basic data structure for the typesetter. It has a reference
  * point and three dimensions, namely width, height, and depth (see figure).
@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface Node extends Knot {
 

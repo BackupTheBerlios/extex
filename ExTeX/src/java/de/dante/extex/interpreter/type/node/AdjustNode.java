@@ -24,13 +24,13 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @see "TeX -- The Program [142]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
@@ -53,7 +53,7 @@ public class AdjustNode extends AbstractNode implements Node {
      */
     public String toString() {
 
-        return "vadjust "; //TODO incomplete
+        return "vadjust "; //TODO gene: incomplete
     }
 
     /**
@@ -62,7 +62,7 @@ public class AdjustNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("vadjust "); //TODO unimplemented
+        sb.append("vadjust "); //TODO gene: unimplemented
     }
 
     /**

@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -119,7 +119,7 @@ public class ChoiceNoad implements Noad {
         script.toString(sb);
         sb.append(" s");
         scriptScript.toString(sb);
-        // TODO Check
+        //TODO gene: Check
 
     }
 

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Node;
@@ -23,12 +24,12 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ExpandedLeadersNode extends GlueNode implements Node {
 
@@ -37,6 +38,7 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
      *
      */
     public ExpandedLeadersNode() {
+
         super(null);
     }
 
@@ -50,7 +52,8 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
      * @see "TeX -- The Program [190]"
      */
     public String toString() {
-        return "xleaders "; //TODO incomplete
+
+        return "xleaders "; //TODO gene: incomplete
     }
 
     /**

@@ -28,10 +28,10 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This WhatsIt node writes some expanded tokens to an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
 
@@ -77,7 +77,7 @@ public class WhatsItWriteNode extends WhatsItNode {
         Tokens toks = context.expand(tokens, typesetter);
 
         if (file == null || !file.isOpen()) {
-            // TODO stdout unimplemented
+            // TODO gene: stdout unimplemented
             //source.update("message", toks.toText());
         } else {
             try {

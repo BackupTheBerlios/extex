@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -228,6 +228,7 @@ public abstract class AbstractNode implements Node {
 
         sb.append(prefix);
 
-        //TODO incomplete
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 }
