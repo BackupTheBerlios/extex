@@ -27,9 +27,9 @@ import de.dante.util.GeneralException;
  * This interface describes the capability to deliver a Box.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public interface Boxable {
+public interface Boxable extends BoxOrRule {
 
     /**
      * Getter for the content as Box.
