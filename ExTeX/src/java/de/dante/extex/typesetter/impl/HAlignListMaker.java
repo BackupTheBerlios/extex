@@ -26,10 +26,12 @@ import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.table.Omit;
-import de.dante.extex.interpreter.primitives.table.PreambleItem;
+import de.dante.extex.interpreter.primitives.table.util.PreambleItem;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
@@ -40,38 +42,68 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
             AlignmentList {
 
     /**
-     * ...
+     * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     protected class Cell {
 
         /**
-         * The field <tt>list</tt> contains the ...
+         * The field <tt>list</tt> contains the nodes of this cell.
          */
-        NodeList list;
+        private NodeList list = null;
 
         /**
-         * The field <tt>span</tt> contains the ...
+         * The field <tt>span</tt> contains the indicator that this cell should
+         * be joined with the next cell when generating boxes.
          */
-        boolean span;
+        private boolean span = false;
 
         /**
          * Creates a new object.
          *
+         * @param nodes the nodes of this cell
          */
-        public Cell() {
+        public Cell(final NodeList nodes) {
 
             super();
-            // TODO unimplemented
+            list = nodes;
+        }
+
+        /**
+         * Getter for list.
+         *
+         * @return the list.
+         */
+        public NodeList getList() {
+
+            return this.list;
+        }
+
+        /**
+         * Getter for span.
+         *
+         * @return the span.
+         */
+        public boolean isSpan() {
+
+            return this.span;
+        }
+
+        /**
+         * Setter for span.
+         */
+        public void setSpan() {
+
+            this.span = true;
         }
     }
 
@@ -93,15 +125,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     private PreambleItem format;
 
     /**
-     * The field <tt>span</tt> contains the number cells currently spanned.
-     */
-    private int span;
-
-    /**
      * The field <tt>line</tt> contains the cells of the current line.
-     * A cell might be null if it is joined with the previous cell.
      */
-    private NodeList[] line;
+    private Cell[] line;
 
     /**
      * The field <tt>preamble</tt> contains the preamble for this halign.
@@ -117,41 +143,49 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * The field <tt>width</tt> contains the target width or <code>null</code>
      * to indicate that the natural width sould be used.
      */
-    private Dimen width;
+    private FixedDimen width;
+
+    /**
+     * The field <tt>spread</tt> contains the ...
+     */
+    private boolean spread;
 
     /**
      * Creates a new object.
      * @param manager the manager
-     * @param context TODO
-     * @param source TODO
+     * @param context the interpreter context
+     * @param source the token source
      * @param thePreamble the list of preamble items
      * @param theWidth the target width or <code>null</code> if the natural width
      *  should be used
+     * @param spread indicator that the width should be interpreted relative
      *
      * @throws GeneralException in case of an error
      */
     public HAlignListMaker(final Manager manager, final Context context,
             final TokenSource source, final List thePreamble,
-            final Dimen theWidth) throws GeneralException {
+            final FixedDimen theWidth, final boolean spread)
+            throws GeneralException {
 
         super(manager);
         preamble = thePreamble;
         width = theWidth;
+        this.spread = spread;
         clearLine(context, source);
     }
 
     /**
      * Clear all entries of the current line.
      *
-     * @param context TODO
-     * @param source TODO
+     * @param context the interpreter context
+     * @param source the token source
      *
      * @throws GeneralException in case of an error
      */
     private void clearLine(final Context context, final TokenSource source)
             throws GeneralException {
 
-        line = new NodeList[preamble.size()];
+        line = new Cell[preamble.size()];
         col = 0;
 
         startCell(context, source);
@@ -162,27 +196,37 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      */
     public NodeList close() throws GeneralException {
 
-        Dimen[] wd = determineNaturalWidth();
+        Dimen[] wd = computeNaturalWidth();
         Dimen w = sum(wd);
 
         if (width != null) {
+            if (spread) {
+                w.add(width);
+            } else {
+                w.set(width);
+            }
             //TODO
         }
 
+        NodeList result = new VerticalListNode();
         NodeList nl;
-        for (int j = rows.size() - 1; j > 0; j--) {
-            line = (NodeList[]) rows.get(j);
+
+        for (int j = 0; j < rows.size(); j++) {
+            NodeList row = new HorizontalListNode();
+            line = (Cell[]) rows.get(j);
+
             for (int i = 0; i < line.length; i++) {
-                nl = line[i];
-                if (nl != null && i + 1 < line.length && line[i + 1] != null) {
+                Cell cell = line[i];
+                if (cell != null) {
+                    nl = cell.getList();
                     nl.spread(wd[i], wd[i]); //TODO check
+                    row.add(nl);
                 }
             }
+
         }
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
-        //return null;
+        return result;
     }
 
     /**
@@ -205,9 +249,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     /**
      * ...
      *
-     * @return
+     * @return an array with the maximal natural widths of each column
      */
-    private Dimen[] determineNaturalWidth() {
+    private Dimen[] computeNaturalWidth() {
 
         Dimen[] wd = new Dimen[line.length];
         NodeList nl;
@@ -217,10 +261,10 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
         }
 
         for (int j = rows.size() - 1; j > 0; j--) {
-            line = (NodeList[]) rows.get(j);
+            line = (Cell[]) rows.get(j);
             for (int i = 0; i < line.length; i++) {
-                nl = line[i];
-                if (nl != null && i + 1 < line.length && line[i + 1] != null) {
+                nl = line[i].getList();
+                if (nl != null) {
                     wd[i].max(nl.getWidth());
                 }
             }
@@ -257,21 +301,22 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.AlignmentList#span()
+     * @see de.dante.extex.typesetter.impl.AlignmentList#span(Context, TokenSource)
      */
-    public void span() throws GeneralException {
+    public void span(final Context context, final TokenSource source)
+            throws GeneralException {
 
-        if (col + span > line.length) {
+        if (col >= line.length) {
             new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", "???");
         }
-        span++;
+        col++;
     }
 
     /**
-     * ...
+     * Start a new cell.
      *
-     * @param context TODO
-     * @param source TODO
+     * @param context the interpreter context
+     * @param source the token source
      *
      * @throws GeneralException in case of an error
      */
@@ -279,7 +324,6 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
             throws GeneralException {
 
         format = (PreambleItem) preamble.get(col);
-        span = 1;
 
         Token t = source.scanNonSpace();
         if (t instanceof CodeToken) {
@@ -303,14 +347,14 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     public void tab(final Context context, final TokenSource source,
             final Token token) throws GeneralException {
 
-        if (col + span > line.length) {
+        if (col >= line.length) {
             new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", "???");
         }
 
-        source.push(format.getPost()); //TODO wrong
-        line[col] = super.close();
+        source.push(format.getPost()); //TODO wrong?
+        line[col] = new Cell(super.close());
         setNodes(new HorizontalListNode());
-        col += span;
+        col++;
         startCell(context, source);
     }
 }
