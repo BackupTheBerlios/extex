@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,13 +27,13 @@ import de.dante.extex.i18n.Messages;
  * <p>
  * The class to be used for the configuration can be set with the
  * <tt>System.property</tt> named <tt>Util.Configuarion.class</tt>.
- * If this property is nit set then the fallback class
+ * If this property is not set then the fallback class
  * {@link de.dante.util.configuration.ConfigurationXMLImpl ConfigurationXMLImpl}
  * is used instead.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ConfigurationFactory {
 

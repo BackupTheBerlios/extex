@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,9 +25,10 @@ import de.dante.extex.i18n.Messages;
  * This Exception is thrown when a configuration contains a syntax error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationSyntaxException extends ConfigurationException {
+
     /**
      * Create a new object.
      *
@@ -51,11 +52,14 @@ public class ConfigurationSyntaxException extends ConfigurationException {
     }
 
     /**
-     * Getter for the text prefix of this ConfigException.
+     * Getter for the text prefix of this Exception.
+     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * under the key <tt>ConfigurationSyntaxException.Text</tt>.
      *
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigSyntaxException.Text");
+        return Messages.format("ConfigurationSyntaxException.Text");
     }
+
 }

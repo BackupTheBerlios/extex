@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,13 +21,15 @@ package de.dante.util.configuration;
 import java.util.Iterator;
 
 /**
- * This class provides an Iterator over multiple DOM trees.
+ * This class provides an Iterator over multiple Configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MultiConfigurationIterator implements Iterator {
-    /** the internal iterator in config[ptr] */
+    /**
+     * The field <tt>iter</tt> contains the internal iterator in config[ptr].
+     */
     private Iterator iter = null;
 
     /**
@@ -35,24 +37,31 @@ public class MultiConfigurationIterator implements Iterator {
      */
     private String key;
 
-    /** the list of configurations to iterate over */
+    /**
+     * The field <tt>config</tt> contains the list of configurations to iterate
+     * over.
+     */
     private Configuration[] config;
 
-    /** the index of configurations to be treated next */
+    /**
+     * The field <tt>ptr</tt> contains the index of configurations to be treated
+     * next.
+     */
     private int ptr = 0;
 
     /**
      * Creates a new object.
      *
-     * @param cfg ...
+     * @param cfg the array of configurations to combine
      * @param key ...
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error
      */
     public MultiConfigurationIterator(final Configuration[] cfg,
         final String key) throws ConfigurationException {
+
         super();
-        config = cfg;
+        this.config = cfg;
         this.key = key;
 
         if (cfg.length > 0) {
@@ -64,6 +73,7 @@ public class MultiConfigurationIterator implements Iterator {
      * @see java.util.Iterator#hasNext()
      */
     public boolean hasNext() {
+
         if (iter == null) {
             return false;
         }
@@ -92,6 +102,7 @@ public class MultiConfigurationIterator implements Iterator {
      * @see java.util.Iterator#next()
      */
     public Object next() {
+
         if (iter == null) {
             return null;
         }
@@ -119,7 +130,9 @@ public class MultiConfigurationIterator implements Iterator {
      * @see java.util.Iterator#remove()
      */
     public void remove() {
+
         //todo unimplemented because not needed yet
         throw new RuntimeException("unimplemented");
     }
+
 }

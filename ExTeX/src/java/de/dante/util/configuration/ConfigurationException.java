@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a problem in the configuration is detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class ConfigurationException extends Exception {
 
@@ -42,24 +42,25 @@ public abstract class ConfigurationException extends Exception {
     /**
      * Creates a new object.
      *
-     * @param aMessage the message string
+     * @param theMessage the message string
      */
-    public ConfigurationException(final String aMessage) {
-        super(aMessage);
-        this.message = aMessage;
+    public ConfigurationException(final String theMessage) {
+        super(theMessage);
+        this.message = theMessage;
     }
 
     /**
      * Creates a new object.
      *
-     * @param aMessage the message string
-     * @param source the name of the file causing this error
+     * @param theMessage the message string
+     * @param theSource the name of the file causing this error
      */
-    public ConfigurationException(final String aMessage, final String source) {
+    public ConfigurationException(final String theMessage,
+            final String theSource) {
 
-        super(aMessage);
-        this.message = aMessage;
-        this.source = source;
+        super(theMessage);
+        this.message = theMessage;
+        this.source = theSource;
     }
 
     /**
@@ -75,7 +76,49 @@ public abstract class ConfigurationException extends Exception {
     }
 
     /**
-     * Getter for the message of this Exception
+     * Getter for the message of this Exception.
+     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}.
+     * The key depends on the further information present:
+     *
+     * <p>
+     * <tt>ConfigurationException.FormatCauseMessageLocation</tt>
+     * is used when a cause, a message, and a location are present.
+     * The arguments {1}, {2}, and {3} are set respectively.
+     * </p>
+     * <p>
+     * <tt>ConfigurationException.FormatCauseLocation</tt>
+     * is used when a cause and a location are present.
+     * The arguments {1} and {2} are set respectively.
+     * </p>
+     * <p>
+     * <tt>ConfigurationException.FormatCauseMessage</tt>
+     * is used when a cause and a message are present.
+     * The arguments {1} and {2} are set respectively.
+     * </p>
+     * <p>
+     * <tt>ConfigurationException.FormatCause</tt>
+     * is used when a cause is present.
+     * The argument {1} is set respectively.
+     * </p>
+     * <p>
+     * <tt>ConfigurationException.FormatMessageLocation</tt>
+     * is used when a message and a location are present.
+     * The arguments {1} and {2} are set respectively.
+     * </p>
+     * <p>
+     * <tt>ConfigurationException.FormatMessage</tt>
+     * is used when a message is present.
+     * The argument {1} is set respectively.
+     * </p>
+     * <p>
+     * <tt>ConfigurationException.FormatLocation</tt>
+     * is used when a location is present.
+     * The argument {1} is set respectively.
+     * </p>
+     * <p>
+     * The arguments {0} is always replaced by the text from
+     * <tt>{@link #getText() getText()}</tt>.
+     * </p>
      *
      * @return the message
      */
@@ -90,22 +133,22 @@ public abstract class ConfigurationException extends Exception {
                         if (message != null) {
                             return Messages
                                     .format(
-                                            "ConfigException.format_text_cause_message_location",
+                                            "ConfigurationException.FormatCauseMessageLocation",
                                             getText(), msg, message, source);
                         } else {
                             return Messages
                                     .format(
-                                            "ConfigException.format_text_cause_location",
+                                            "ConfigurationException.FormatCauseLocation",
                                             getText(), msg, source);
                         }
                     } else if (message != null) {
                         return Messages
                                 .format(
-                                        "ConfigException.format_text_cause_message",
+                                        "ConfigurationException.FormatCauseMessage",
                                         getText(), msg, message);
                     } else {
                         return Messages
-                                .format("ConfigException.format_text_cause",
+                                .format("ConfigurationException.FormatCause",
                                         getText(), msg);
                     }
                 }
@@ -115,26 +158,29 @@ public abstract class ConfigurationException extends Exception {
         if (source != null) {
             if (message != null) {
                 return Messages
-                        .format("ConfigException.format_text_message_location",
+                        .format("ConfigurationException.FormatMessageLocation",
                                 getText(), message, source);
             } else {
-                return Messages.format("ConfigException.format_text_location",
+                return Messages.format("ConfigurationException.FormatLocation",
                                        getText(), source);
             }
         } else if (message != null) {
-            return Messages.format("ConfigException.format_text_message",
+            return Messages.format("ConfigurationException.FormatMessage",
                                    getText(), message);
         } else {
-            return Messages.format("ConfigException.format_text", getText());
+            return Messages.format("ConfigurationException.FormatText",
+                                   getText());
         }
     }
 
     /**
-     * Getter for the text prefix of this ConfigException.
+     * Getter for the text prefix of this ConfigurationException.
+     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * under the key <tt>ConfigurationException.Text</tt>.
      *
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigException.Configuration_error");
+        return Messages.format("ConfigurationException.Text");
     }
 }

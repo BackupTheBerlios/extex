@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -118,7 +118,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * the resource
      */
     public ConfigurationXMLImpl(final String aResource)
-        throws ConfigurationException {
+            throws ConfigurationException {
         super();
 
         if (aResource == null || aResource.equals("")) {
@@ -195,7 +195,8 @@ public class ConfigurationXMLImpl implements Configuration {
      * </pre>
      *
      * <p>
-     * Then <tt>getConfig("abc")</tt> returns a new XMLConfig rooted at abc.
+     * Then <tt>getConfiguration("abc")</tt> returns a new XMLConfig rooted at
+     * abc.
      * </p>
      * <p>
      * If there are more than one tags with the same name then the first one is
@@ -212,26 +213,56 @@ public class ConfigurationXMLImpl implements Configuration {
      * @throws ConfigurationNotFoundException in case that the given name does
      * not correspond to one of the tags in the current configuration
      * @throws ConfigurationException in case of another type of error
+     *
+     * @see #findConfiguration(String) 
      */
     public Configuration getConfiguration(final String name)
             throws ConfigurationException {
 
         Configuration cfg = findConfiguration(name);
-        
-        if ( cfg == null ) {
+
+        if (cfg == null) {
             throw new ConfigurationNotFoundException(name, toString());
         }
         return cfg;
     }
 
     /**
-     * ...
+     * Extract a sub-configuration with a given name.
+     * <p>
+     * Consider the following example with the configuration currently rooted
+     * at cfg:
+     * </p>
      *
-     * @param name ...
+     * <pre>
+     *  &lt;cfg&gt;
+     *    . . .
+     *    &lt;abc&gt;
+     *      . . .
+     *    &lt;/abc&gt;
+     *    . . .
+     *  &lt;/cfg&gt;
+     * </pre>
      *
-     * @return ...
+     * <p>
+     * Then <tt>findConfiguration("abc")</tt> returns a new XMLConfig 
+     * rooted at abc.
+     * </p>
+     * <p>
+     * If there are more than one tags with the same name then the first one is
+     * used.
+     * </p>
+     * <p>
+     * If there are no tags with the given name then an exception is thrown.
+     * </p>
      *
-     * @throws ConfigurationException
+     * @param name the tag name of the sub-configuration
+     *
+     * @return the sub-configuration or <code>null</code> if none was found
+     *
+     * @throws ConfigurationException in case of an error
+     *
+     * @see #getConfiguration(String) 
      */
     public Configuration findConfiguration(final String name)
             throws ConfigurationException {

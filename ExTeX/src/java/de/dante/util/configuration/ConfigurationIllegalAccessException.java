@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ import de.dante.extex.i18n.Messages;
  * illegal access.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationIllegalAccessException
     extends ConfigurationException {
@@ -41,11 +41,15 @@ public class ConfigurationIllegalAccessException
 
     /**
      * Getter for the text prefix of this ConfigException.
+     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * under the key <tt>ConfigurationIllegalAccessException.Text</tt>. The
+     * argument {0} is replaced by the message of the embedded cause as passed
+     * to the constructor.
      *
      * @return the text
      */
     protected String getMesssage() {
-        return Messages.format("ConfigIllegalAccessException.Text",
+        return Messages.format("ConfigurationIllegalAccessException.Text",
                                getCause().getMessage());
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,31 +19,23 @@
 package de.dante.util.configuration;
 
 /**
- * ...
+ * This exception is thrown when some other kind of Exception has been
+ * encountered during configuration. The original Exception is contained as
+ * cause in this exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationWrapperException extends ConfigurationException {
 
     /**
      * Creates a new object.
      *
-     * @param cause ...
+     * @param cause the Exception causing the error
      */
     public ConfigurationWrapperException(final Throwable cause) {
 
         super(null, cause);
     }
 
-    /**
-     * Creates a new object.
-     *
-     * @param aMessage ...
-     * @param cause ...
-     */
-    public ConfigurationWrapperException(String aMessage, Throwable cause) {
-
-        super(aMessage, cause);
-    }
 }
