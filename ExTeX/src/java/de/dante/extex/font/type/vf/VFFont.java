@@ -35,9 +35,6 @@ import de.dante.util.file.random.RandomAccessR;
 
 /**
  * This class read a VF-file.
- *
- * @see <a href="package-summary.html#VFformat">VF-Format</a>
- *
  * <p>
  * A VF file is organized as a stream of 8-bit bytes, using conventions
  * borrowed from DVI and PK files. Thus, a device driver that knows
@@ -46,9 +43,11 @@ import de.dante.util.file.random.RandomAccessR;
  * We shall assume that DVI format is understood; the conventions in the
  * DVI documentation (see, for example, TeX: The Program, part 31)
  * are adopted here to define VF format.
+ * </p>
+ * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VFFont implements XMLConvertible, Serializable {
 

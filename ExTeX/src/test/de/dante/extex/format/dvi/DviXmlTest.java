@@ -31,6 +31,8 @@ import java.util.Properties;
 
 import junit.framework.TestCase;
 
+import org.jaxen.JaxenException;
+import org.jaxen.jdom.JDOMXPath;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
@@ -51,7 +53,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the DviXml class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class DviXmlTest extends TestCase {
@@ -71,7 +73,7 @@ public class DviXmlTest extends TestCase {
      */
     protected void setUp() throws Exception {
 
-        String file = "src/test/data/lettrine.dvi";
+        String file = "src/test/data/dvi/lettrine.dvi";
 
         root = new Element("dvi");
         RandomAccessInputFile rar = new RandomAccessInputFile(file);
@@ -95,36 +97,46 @@ public class DviXmlTest extends TestCase {
 
     /**
      * test the dviXml interpreter
+     * @throws JaxenException if a jaxen error is occured
      */
-    public void testInterpretpre() {
+    public void testInterpretpre() throws JaxenException {
 
-        assertEquals("2", findAttrElement("pre", "identifies"));
-        assertEquals("25400000", findAttrElement("pre", "num"));
-        assertEquals("473628672", findAttrElement("pre", "den"));
-        assertEquals("1000", findAttrElement("pre", "mag"));
+        JDOMXPath path = new JDOMXPath("/dvi/pre");
+        Element el = (Element) path.selectSingleNode(root);
+
+        assertEquals("2", el.getAttributeValue("identifies"));
+        assertEquals("25400000", el.getAttributeValue("num"));
+        assertEquals("473628672", el.getAttributeValue("den"));
+        assertEquals("1000", el.getAttributeValue("mag"));
     }
 
     /**
      * test the dviXml interpreter
+     * @throws JaxenException if a jaxen error is occured
      */
-    public void testInterpretpostpost() {
+    public void testInterpretpostpost() throws JaxenException {
 
-        assertEquals("20510", findAttrElement("post_post", "q"));
-        assertEquals("2", findAttrElement("post_post", "identifies"));
+        JDOMXPath path = new JDOMXPath("/dvi/post_post");
+        Element el = (Element) path.selectSingleNode(root);
+
+        assertEquals("20510", el.getAttributeValue("q"));
+        assertEquals("2", el.getAttributeValue("identifies"));
     }
 
     /**
      * test the dviXml interpreter
+     * @throws JaxenException if a jaxen error is occured
      */
-    public void testInterpretfont() {
+    public void testInterpretfont() throws JaxenException {
 
-        assertEquals("15", findAttrElementNr("bop", "fntdef1", "font", 0));
-        assertEquals("cmbx12", findAttrElementNr("bop", "fntdef1", "name", 0));
-        assertEquals("-1026142560", findAttrElementNr("bop", "fntdef1",
-                "checksum", 0));
-        assertEquals("943718", findAttrElementNr("bop", "fntdef1",
-                "scalefactor", 0));
-        assertEquals("1200", findAttrElementNr("bop", "fntdef1", "scaled", 0));
+        JDOMXPath path = new JDOMXPath("/dvi/post/fntdef1[@font='15']");
+        Element el = (Element) path.selectSingleNode(root);
+
+        assertEquals("15", el.getAttributeValue("font"));
+        assertEquals("cmbx12", el.getAttributeValue("name"));
+        assertEquals("-1026142560", el.getAttributeValue("checksum"));
+        assertEquals("943718", el.getAttributeValue("scalefactor"));
+        assertEquals("1200", el.getAttributeValue("scaled"));
     }
 
     /**

@@ -39,10 +39,10 @@ import de.dante.extex.format.dvi.command.DviFntDef;
 import de.dante.extex.format.dvi.command.DviFntNum;
 import de.dante.extex.format.dvi.command.DviNOP;
 import de.dante.extex.format.dvi.command.DviPOP;
-import de.dante.extex.format.dvi.command.DviPush;
 import de.dante.extex.format.dvi.command.DviPost;
 import de.dante.extex.format.dvi.command.DviPostPost;
 import de.dante.extex.format.dvi.command.DviPre;
+import de.dante.extex.format.dvi.command.DviPush;
 import de.dante.extex.format.dvi.command.DviRight;
 import de.dante.extex.format.dvi.command.DviRule;
 import de.dante.extex.format.dvi.command.DviW;
@@ -73,7 +73,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class DviXml implements DviInterpreter, DviExecuteCommand {
@@ -149,18 +149,6 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
     private int mag;
 
     /**
-     * Calculate the scaled from a font (with times 1000).
-     *
-     * @param s the scalefactor
-     * @param d the desigsize
-     * @return Returns the scaled.
-     */
-    private int getScaled(final int s, final int d) {
-
-        return (int) ((double) mag * s / d + 0.5d);
-    }
-
-    /**
      * Load the font.
      *
      * @param command   the command
@@ -172,9 +160,8 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         Integer key = new Integer(command.getFont());
-        Dimen designsize = new Dimen(command.getScale());
-        Count scale = new Count(getScaled(command.getScale(), command
-                .getDesignsize()));
+        Dimen designsize = command.getScaleAsDimen();
+        Count scale = command.getScaledAsCount(mag);
         String name = command.getFName();
 
         Font f = fontfactory.getInstance(name, designsize, scale, new Glue(0),
@@ -203,8 +190,9 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             element.setAttribute("designsize_pt", Unit
                     .getDimenAsPTString(new Dimen(command.getDesignsize())));
         }
-        element.setAttribute("scaled", String.valueOf(getScaled(command
-                .getScale(), command.getDesignsize())));
+        element
+                .setAttribute("scaled", command.getScaledAsCount(mag)
+                        .toString());
         element.setAttribute("area", command.getArea());
         element.setAttribute("name", command.getFName());
     }
@@ -345,7 +333,7 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
     /**
      * Set the Font and Glyph-Info.
-     * @param opcode    the opcode (cahr-id)
+     * @param opcode    the opcode (char-id)
      * @param element   the element
      * @throws DviMissingFontException  if the font is missinbg.
      */
@@ -390,30 +378,6 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
     }
 
     /**
-     * get bit 24
-     */
-    private static final int X24 = 0x800000;
-
-    /**
-     * get low 23 bit
-     */
-    private static final int L24 = 0x7f0000;
-
-    /**
-     * Convert int to sign 24 bit
-     * @param i32   the int-value
-     * @return Returns a 24 bit sign value
-     */
-    private int convInt24toSign(final int i32) {
-
-        int v = i32;
-        if ((i32 & X24) > 0) {
-            v = -(v & L24);
-        }
-        return v;
-    }
-
-    /**
      * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
      *      de.dante.extex.format.dvi.command.DviBOP)
      */
@@ -437,13 +401,6 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
     }
 
     /**
-     * set_char_0:
-     * Typeset character number 0 from font <code>f</code> such that the
-     * reference point of the character is at <code>(h,v)</code>.
-     * Then increase <code>h</code> by the width
-     * of that character. Note that a character may have zero or negative
-     * width, so one cannot be sure that <code>h</code> will advance after
-     * this command; but <code>h</code> usually does increase.
      * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
      *      de.dante.extex.format.dvi.command.DviChar)
      */
@@ -596,6 +553,7 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviPre command) throws DviException,
             FontException, ConfigurationException {
 
+        mag = command.getMag();
         Element element = createElement(command);
         element.setAttribute("identifies", String.valueOf(command
                 .getIdentifier()));
