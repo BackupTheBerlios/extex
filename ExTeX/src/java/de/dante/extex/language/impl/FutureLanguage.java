@@ -19,14 +19,13 @@
 
 package de.dante.extex.language.impl;
 
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.util.GeneralException;
 
 /**
  * This class implements the future pattern for a language object. The real
@@ -34,27 +33,34 @@ import de.dante.util.GeneralException;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FutureLanguage implements Language {
 
     /**
-     * The field <tt>creator</tt> contains the ...
+     * The field <tt>creator</tt> contains the creator which should be contacted
+     * to perform the real task.
      */
     private LanguageCreator creator;
 
     /**
-     * The field <tt>index</tt> contains the ...
+     * The field <tt>index</tt> contains the name of the language for the
+     * creator.
      */
     private String index;
 
+    /**
+     * The field <tt>language</tt> contains the language for which we are acting
+     * as proxy.
+     */
     private Language language = null;
 
     /**
      * Creates a new object.
      *
-     * @param index
-     * @param creator
+     * @param index the name of the language for the creator
+     * @param creator the creator which should be contacted to perform the
+     *  real task
      */
     public FutureLanguage(final String index, final LanguageCreator creator) {
 
@@ -66,9 +72,9 @@ public class FutureLanguage implements Language {
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#addHyphenation(
      *      de.dante.extex.interpreter.type.tokens.Tokens,
-     *      de.dante.extex.interpreter.context.Context)
+     *      TypesetterOptions)
      */
-    public void addHyphenation(final Tokens word, final Context context)
+    public void addHyphenation(final Tokens word, final TypesetterOptions context)
             throws HyphenationException {
 
         load().addHyphenation(word, context);
@@ -84,10 +90,11 @@ public class FutureLanguage implements Language {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Create a new instance if required.
      *
-     * @return
-     * @throws HyphenationException
+     * @return the language instance to be used
+     *
+     * @throws HyphenationException in case of an error
      */
     private Language create() throws HyphenationException {
 
@@ -120,19 +127,20 @@ public class FutureLanguage implements Language {
      *      de.dante.extex.scanner.type.Token)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final Context context, final Token hyphen) throws GeneralException {
+            final TypesetterOptions context, final Token hyphen)
+            throws HyphenationException {
 
         return load().hyphenate(nodelist, context, hyphen);
     }
 
     /**
      * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
-     *      de.dante.extex.typesetter.type.NodeList)
+     *      de.dante.extex.typesetter.type.NodeList, int)
      */
-    public void insertLigatures(final NodeList list)
+    public int insertLigatures(final NodeList list, final int start)
             throws HyphenationException {
 
-        load().insertLigatures(list);
+        return load().insertLigatures(list, start);
     }
 
     /**
@@ -144,10 +152,11 @@ public class FutureLanguage implements Language {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Load or create a new instance if required.
      *
-     * @return
-     * @throws HyphenationException
+     * @return the new instance
+     *
+     * @throws HyphenationException in case of an error
      */
     private Language load() throws HyphenationException {
 
