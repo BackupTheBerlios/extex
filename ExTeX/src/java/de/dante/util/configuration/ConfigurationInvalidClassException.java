@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,7 @@ package de.dante.util.configuration;
  * the expected interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationInvalidClassException extends ConfigurationException {
 
@@ -32,18 +32,12 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
      * The field <tt>classname</tt> contains the name of the class which
      * could not be found.
      */
-    private String classname = null;
+    private String className = null;
 
     /**
-     * Creates a new object.
-     *
-     * @param aClassName the name of the class which could not be found
+     * The field <tt>interfaceName</tt> contains the ...
      */
-    public ConfigurationInvalidClassException(final String aClassName) {
-
-        super(null);
-        this.classname = aClassName;
-    }
+    private String interfaceName = null;
 
     /**
      * Creates a new object.
@@ -56,7 +50,7 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
             final Configuration config) {
 
         super(null, config.toString());
-        this.classname = className;
+        this.className = className;
     }
 
     /**
@@ -73,8 +67,8 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
 
         return getLocalizer().format(
                 "ConfigurationInvalidClassException.Text",
-                (classname != null //
-                        ? classname //
+                (className != null //
+                        ? className //
                         : getCause() != null
                                 ? getCause().getLocalizedMessage()
                                 : ""));
