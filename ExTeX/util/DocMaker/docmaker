@@ -1,0 +1,301 @@
+#!/bin/perl -w
+##*****************************************************************************
+## $Id: docmaker.pl,v 0.00 2004/02/19 08:35:58 gene Exp $
+##*****************************************************************************
+## Author: Gerd Neugebauer
+##=============================================================================
+
+=head1 NAME
+
+docmaker - extract XML documentation from files
+
+=head1 SYNOPSIS
+
+docmaker [-v|-verbose] [-outfile outfile] [-css stylesheet] [basedir]
+
+docmaker [-h|-help]
+
+=head1 DESCRIPTION
+
+docmaker is a program to traverse a directory tree and search for java
+and HTML files. Each file may contain documentation enclosed in the
+XML tag <doc>...</doc>. These information is collected.
+
+
+
+=head1 OPTIONS
+
+=over 4
+
+=item -help
+
+print this description
+
+=item -verbose
+
+act verbosely by printing a dot for each file analyzed.
+
+=item -css <stylesheet>
+
+specify the location of the stylesheet to use.
+Note that the stylesheet is included as reference. Thus you should be
+careful when relocating the output file.
+
+=item -outfile <outfile>
+
+Send the output to the given file instead of the standard outout stream.
+
+=item -title <title>
+
+Sets the title.
+
+=back
+
+=head1 AUTHOR
+
+Gerd Neugebauer
+
+=head1 BUGS
+
+=over 4
+
+=item *
+
+Resolution of hyperlinks is not implemented yet.
+
+=back
+
+=cut
+
+use strict;
+
+use FileHandle;
+use File::Find;
+use Cwd;
+
+#------------------------------------------------------------------------------
+# Function:     usage
+# Arguments:    
+# Returns:      
+# Description:  
+#
+sub usage
+{ use Pod::Text;
+  Pod::Text->new()->parse_from_filehandle(new FileHandle($0,'r'),\*STDERR);
+  exit(0);
+}
+
+#------------------------------------------------------------------------------
+# Variable:     $verbose
+# Description:  
+#
+my $verbose = 0;
+
+#------------------------------------------------------------------------------
+# Variable:     %info
+# Description:  
+#
+my %info;
+
+#------------------------------------------------------------------------------
+# Variable:     $noFiles
+# Description:  
+#
+my $noFiles = 0;
+
+#------------------------------------------------------------------------------
+# Variable:     $noDocs
+# Description:  
+#
+my $noDocs = 0;
+
+#------------------------------------------------------------------------------
+# Variable:     $outfile
+# Description:  
+#
+my $outfile = undef;
+
+#------------------------------------------------------------------------------
+# Variable:	$title
+# Description:	
+#
+my $title ="ExTeX: Documentation";
+
+#------------------------------------------------------------------------------
+# Variable:	$css
+# Description:	
+#
+my $css	  = undef;
+
+#------------------------------------------------------------------------------
+# Variable:	$outType
+# Description:	
+#
+my $outType = "HTML";
+
+my $quiet = undef;
+
+use Getopt::Long;
+GetOptions("h|help"    => \&usage,
+           "verbose"   => \$verbose,
+           "quiet"     => \$quiet,
+           "outfile=s" => \$outfile,
+           "css=s"     => \$css,
+           "title=s"   => \$title,
+           "html"      => sub { $outType = 'HTML'; },
+           "tex"       => sub { $outType = 'TeX'; },
+          );
+
+my $cwd = getcwd();
+chdir $ARGV[0] if defined $ARGV[0];
+
+analyzeTree();
+chdir $cwd;
+if ( $outfile ) {
+  my $out = new FileHandle($outfile,'w');
+  generate($out);
+  $out->close();
+} else {
+  generate(\*STDOUT);
+}
+
+#------------------------------------------------------------------------------
+# Function:     analyzeTree
+#
+sub analyzeTree {
+  find({no_chdir=>1,
+        wanted=>\&analyze},'.');
+  print STDERR "\n" if $verbose;
+  if ( not $quiet ) {
+    print STDERR "$noFiles files analyzed: $noDocs docs found\n";
+    print STDERR "Output written to $outfile\n" if $outfile;
+  }
+}
+
+#------------------------------------------------------------------------------
+# Function:     analyze
+#
+sub analyze {
+  my $file = $_;
+  if ( $_ eq 'CVS' ) {
+    $File::Find::prune = 1;
+    return
+  } 
+  return if not $_ =~ m/\.(java|html)$/;
+  $noFiles++;
+  print STDERR '.' if $verbose;
+
+  my $fd   = new FileHandle($_) || die "$_: $!\n";
+  s|^./||;
+  s:\.(java|html)$::;
+  s|/|.|g;
+#  print $_,"\n";
+  my $base     = $_;
+  my $inDoc    = undef;
+  my $type     = "";
+  my $name     = "";
+  my $contents = "";
+  my $package  = "";
+  my $class    = "";
+  local $_;
+
+  while(<$fd>) {
+    if (m/package (.*);/ ) { $package = $1; }
+    elsif (m/class ([^ {}]*);/ ) { $class = $1; }
+    elsif ( $inDoc ) {
+      if (m/\<\/doc\>/) {
+        $info{"$type:$name"} = $contents;
+        $inDoc                = undef;
+        $type                 = "";
+        $name                 = "";
+        $contents             = "";
+      } else {
+        s/^\s*\* ?//;
+        $contents  .= $_;
+      }
+    } elsif (m/\<doc(.*)\>/) {
+      $_        = $1;
+      $noDocs++;
+      if (m/name="([^"]*)"/) { $name = $1; }
+      if (m/type="([^"]*)"/) { $type = $1; }
+      if ( $name eq '' ) { print STDERR "\n$file: Missing name\n"; }
+      $inDoc = 1;
+    }
+
+  }
+  
+  $fd->close();
+}
+
+
+#------------------------------------------------------------------------------
+# Function:     generate
+#
+sub generate {
+  my $out  = shift;
+  if($outType eq 'HTML') { HTML::generate($out); }
+  elsif($outType eq 'TeX') { TeX::generate($out); }
+  else {
+    die "";
+  }
+}
+
+package HTML;
+
+#------------------------------------------------------------------------------
+# Function:     generate
+#
+sub generate {
+  my $out  = shift;
+  local $_;
+
+  print $out <<_EOF_;
+<html>
+ <head>
+  <title>$title</title>
+_EOF_
+  if (defined $css) {
+    print $out <<_EOF_;
+  <link rel="stylesheet" href="$css" type="text/css">
+_EOF_
+}
+  print $out <<_EOF_;
+ </head>
+ <body>
+  <h1>$title</h1>
+_EOF_
+  foreach my $i (sort(keys(%info))) {
+    print $out "<a name=\"$i\">\n";
+    $_ = $info{$i};
+    while (m|\{\@link\s+([^{} ]*)\s+([^{}]*)\}|) {
+      my $a2 = $2;
+      $_ = $` . "<code><a href=\"" . getLink($1) . "\">$a2</a></code>" . $';
+    }
+#    s|\{\@link\s+([^{} ]*)\s+([^{}]*)\}|<code><a href="$1">$2</a></code>|gx;
+    while (m|\{\@linkplain\s+([^{} ]*)\s+([^{}]*)\}|) {
+      my $a2 = $2;
+      $_ = $` . "<a href=\"" . getLink($1) . "\">$a2</a>" . $';
+    }
+#    s|\{\@linkplain\s+([^{} ]*)\s+([^{}]*)\}|<a href="$1">$2</a>|g;
+    s/\&\#5c;/\\/g;
+    print $out $_."\n\n";
+  }
+  print $out <<_EOF_;
+ </body>
+_EOF_
+}
+
+#------------------------------------------------------------------------------
+# Function:	getLink
+#
+sub getLink {
+  local $_ = shift;
+  chomp;
+#  print ">$_<\n";
+  return $_;
+}
+
+#------------------------------------------------------------------------------
+# Local Variables: 
+# mode: perl
+# End: 
