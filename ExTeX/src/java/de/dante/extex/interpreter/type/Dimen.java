@@ -20,7 +20,6 @@ package de.dante.extex.interpreter.type;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.CountConvertable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Catcode;
@@ -32,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 

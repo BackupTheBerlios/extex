@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.max;
 import java.util.Stack;
 
 import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
@@ -34,9 +35,9 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
-import de.dante.util.NotObservableException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
@@ -53,7 +54,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class Moritz implements TokenSource, Observable {
     /**
@@ -446,7 +447,14 @@ public abstract class Moritz implements TokenSource, Observable {
      *             file has been reached before an integer could be acquired
      */
     public boolean scanKeyword(final String s) throws GeneralException {
-        return scanKeyword(s, 0);
+
+        skipSpace();
+        if (scanKeyword(s, 0) ) {
+            skipSpace();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -546,7 +554,7 @@ public abstract class Moritz implements TokenSource, Observable {
         return scanNumber(scanNonSpace());
     }
 
-    /**
+/**
      * Scan a number with a given first token.
      *
      * @param token the first token to consider
@@ -557,49 +565,108 @@ public abstract class Moritz implements TokenSource, Observable {
      *             file has been reached before an integer could be acquired
      */
     public long scanNumber(final Token token) throws GeneralException {
+
         long n = 0;
-        Token t = token;
+        Token t;
 
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
-        } else if (t.isa(Catcode.OTHER) && t.getValue().matches("[0-9]")) {
-            do {
-                n = n * 10 + t.getValue().charAt(0) - '0';
-                t = scanToken();
-            } while (t != null && t.isa(Catcode.OTHER)
-                     && t.getValue().matches("[0-9]"));
+        if (token != null && token.isa(Catcode.OTHER)) {
+            switch (token.getValue().charAt(0)) {
+                case '0' :
+                case '1' :
+                case '2' :
+                case '3' :
+                case '4' :
+                case '5' :
+                case '6' :
+                case '7' :
+                case '8' :
+                case '9' :
+                    n = token.getValue().charAt(0) - '0';
 
-            if (t != null) {
-                stream.put(t);
-            }
-        } else if (t.isa(Catcode.OTHER) && t.getValue().equals("'")) {
-            while (t != null && t.isa(Catcode.OTHER)
-                   && t.getValue().matches("[0-7]")) {
-                n = n * 8 + t.getValue().charAt(0) - '0';
-                t = scanToken();
-            }
+                    for (t = getToken(); //
+                         t != null && t.isa(Catcode.OTHER)
+                         && t.getValue().matches("[0-9]"); //
+                         t = scanToken()) {
+                        n = n * 10 + t.getValue().charAt(0) - '0';
+                    }
 
-            if (t != null) {
-                stream.put(t);
-            }
-        } else if (t.isa(Catcode.OTHER) && t.getValue().equals("`")) {
-            t = getToken();
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
 
-            if (t == null) {
-                throw new GeneralHelpingException("TTP.MissingNumber");
-            }
+                case '`' :
+                    t = getToken();
 
-            n = t.getValue().charAt(0);
-        } else if (t.isa(Catcode.OTHER) && t.getValue().equals("\"")) {
-            //TODO parse hex numbers
-        } else {
-            if (t != null) {
-                stream.put(t);
+                    if (t != null) {
+                        return t.getValue().charAt(0);
+                    }
+                // fall through to error handling
+
+                case '\'' :
+                    for (t = getToken(); //
+                         t != null && t.isa(Catcode.OTHER)
+                         && t.getValue().matches("[0-7]"); //
+                         t = scanToken()) {
+                        n = n * 8 + t.getValue().charAt(0) - '0';
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+
+                case '"' :
+                    for (t = getToken(); //
+                         t != null && t.isa(Catcode.OTHER)
+                         && t.getValue().matches("[0-9a-fA-F]"); //
+                         t = scanToken()) {
+                        switch (t.getValue().charAt(0)) {
+                            case '0' :
+                            case '1' :
+                            case '2' :
+                            case '3' :
+                            case '4' :
+                            case '5' :
+                            case '6' :
+                            case '7' :
+                            case '8' :
+                            case '9' :
+                                n = n * 16 + t.getValue().charAt(0) - '0';
+                                break;
+                            case 'a' :
+                            case 'b' :
+                            case 'c' :
+                            case 'd' :
+                            case 'e' :
+                            case 'f' :
+                                n = n * 16 + t.getValue().charAt(0) - 'a' + 10;
+                                break;
+                            case 'A' :
+                            case 'B' :
+                            case 'C' :
+                            case 'D' :
+                            case 'E' :
+                            case 'F' :
+                                n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
+                                break;
+                            default :
+                                throw new GeneralPanicException(
+                                        "this can't happen");
+                        }
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
             }
-            throw new GeneralHelpingException("TTP.MissingNumber");
         }
 
-        return n;
+        throw new GeneralHelpingException("TTP.MissingNumber");
     }
 
     /**
