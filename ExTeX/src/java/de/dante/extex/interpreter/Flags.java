@@ -23,9 +23,14 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Flags {
+
+    /**
+     * The constant <tt>NONE</tt> contains the ...
+     */
+    public static final Flags NONE = new Flags();
 
     /**
      * The field <tt>globalP</tt> contains the ...
