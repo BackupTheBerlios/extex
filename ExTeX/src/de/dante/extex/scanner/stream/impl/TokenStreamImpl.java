@@ -44,7 +44,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
@@ -201,10 +201,15 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
         TokenFactory factory = (TokenFactory) oFactory;
         Tokenizer tokenizer = (Tokenizer) oTokenizer;
+
+        if (atEndOfLine()) {
+            //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
+            return factory.newInstance(Catcode.ESCAPE, "");
+        }
+        
         UnicodeChar uc = getChar(tokenizer);
 
-        if (uc == null || tokenizer.getCatcode(uc) == Catcode.CR) {
-            //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
+        if (uc == null) {
             return factory.newInstance(Catcode.ESCAPE, "");
 
         } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
@@ -422,35 +427,34 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
         if (tokenizer.getCatcode(uc) == Catcode.SUPMARK) {
 
+            int charCode = uc.getCodePoint();
             int savePointer = pointer;
             UnicodeChar c = getRawChar();
 
-            if (c == null) {
-                // fall-through: just return the super mark already read
-            } else if (c.getCodePoint() == '^') {
+            if (uc.equals(c)) {
                 c = getRawChar();
                 if (c == null) {
-                    return new UnicodeChar(0); //TODO
+                    return new UnicodeChar(0);
                 }
                 int hexHigh = hex2int(c.getCodePoint());
                 if (hexHigh >= 0) {
                     savePointer = pointer;
                     uc = getRawChar();
                     if (uc == null) {
-                        uc = new UnicodeChar(hexHigh); //TODO
+                        uc = new UnicodeChar(hexHigh);
                     } else {
                         int hexLow = hex2int(uc.getCodePoint());
                         if (hexLow < 0) {
                             pointer = savePointer;
-                            uc = new UnicodeChar(hexHigh); //TODO
+                            uc = new UnicodeChar(hexHigh);
                         } else {
                             uc = new UnicodeChar((hexHigh << 4) + hexLow);
                         }
                     }
-                } else {
-                    // 0100 = 64
+                } else if (c != null) {
+                    hexHigh =  c.getCodePoint();
                     uc = new UnicodeChar(((hexHigh < 0100) ? hexHigh + 0100
-                            : hexHigh - 0100));
+                            : hexHigh - 0100));                    // 0100 = 64
                 }
             } else {
                 pointer = savePointer;
@@ -469,6 +473,17 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
         return (pointer >= line.length() ? null : new UnicodeChar(line,
                 pointer++));
+    }
+
+    /**
+     * ...
+     *
+     * @return <code>true</code> iff the next reading operation would try to
+     * refill the line buffer
+     */
+    private final boolean atEndOfLine() {
+
+        return (pointer >= line.length());
     }
 
     /**
@@ -524,7 +539,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      * This is a type-save class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private static final class State {
 
