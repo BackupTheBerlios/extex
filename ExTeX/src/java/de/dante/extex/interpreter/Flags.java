@@ -21,7 +21,7 @@ package de.dante.extex.interpreter;
 
 /**
  * This interface describes a set of named flags.
- * 
+ *
  * <p>
  * The flags correspond largely to the prefix macros like <tt>\global</tt>
  * The following flags are known:
@@ -65,10 +65,16 @@ package de.dante.extex.interpreter;
  *   <td>The outer flag controls ...
  *   </td>
  *  </tr>
+ *  <tr>
+ *   <td><b>protected</b></td>
+ *   <td><tt>\protected</tt></td>
+ *   <td>The protected flag controls ...
+ *   </td>
+ *  </tr>
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Flags {
 
@@ -76,7 +82,7 @@ public interface Flags {
      * The constant <tt>NONE</tt> contains a instance where no flags are set.
      * Beware of changing this instance!
      */
-    public static final Flags NONE = new FlagsImpl();
+    static final Flags NONE = new FlagsImpl();
 
     /**
      * This method clears all flags.
@@ -119,6 +125,13 @@ public interface Flags {
     boolean isOuter();
 
     /**
+     * Getter for the protected flag.
+     *
+     * @return the current value of the protected flag
+     */
+    boolean isProtected();
+
+    /**
      * Setter for the expanded flag.
      */
     void setExpanded();
@@ -149,5 +162,10 @@ public interface Flags {
      * Setter for the outer flag.
      */
     void setOuter();
+
+    /**
+     * Setter for the protected flag.
+     */
+    void setProtected();
 
 }

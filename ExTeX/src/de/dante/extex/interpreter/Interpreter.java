@@ -27,8 +27,8 @@ import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.file.FileFinder;
 import de.dante.util.observer.Observable;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * ...
@@ -36,7 +36,7 @@ import de.dante.util.observer.Observable;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -63,7 +63,7 @@ public interface Interpreter extends TokenSource, Observable {
      *
      * @param fileFinder the new file finder
      */
-    void setFileFinder(FileFinder fileFinder);
+    void setFileFinder(ResourceFinder fileFinder);
 
     /**
      * Setter for the font factory

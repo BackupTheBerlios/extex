@@ -43,7 +43,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public interface TokenSource {
 
@@ -159,13 +159,14 @@ public interface TokenSource {
     /**
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
-     * 
+     *
      * <doc type="syntax" name="equals">
      * This method parses the following syntactic entity:
      * <pre class="syntax">
      *   &lang;equals&rang;
      *     := {@linkplain #skipSpace() &lang;optional spaces&rang;}
-     *      |  {@linkplain #skipSpace() &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> </pre>
+     *      |  {@linkplain #skipSpace()
+     *          &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> </pre>
      * </doc>
      *
      * @throws GeneralException in case of an error
@@ -185,7 +186,7 @@ public interface TokenSource {
      * <p>
      *  <pre class="syntax">
      *    &lang;token&rang;  </pre>
-     * 
+     *
      * </p>
      * </doc>
      *
@@ -280,7 +281,7 @@ public interface TokenSource {
      *  optionally precceded by whitespace and a sign <tt>+</tt> or <tt>-</tt>.
      * </p>
      * <p>
-     *  Tokens are expanded while gathering the requested values. 
+     *  Tokens are expanded while gathering the requested values.
      * </p>
      * </doc>
      *
