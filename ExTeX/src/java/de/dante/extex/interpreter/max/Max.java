@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public class Max extends Moritz
         implements
@@ -608,8 +608,8 @@ public class Max extends Moritz
             throws ConfigurationException {
 
         super.setTokenStreamFactory(factory);
-        context.setStandardTokenStream(factory
-                .newInstance(new InputStreamReader(System.in)));
+//        context.setStandardTokenStream(factory
+//                .newInstance(new InputStreamReader(System.in)));
     }
 
     /**
