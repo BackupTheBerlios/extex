@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,8 +22,9 @@ package de.dante.extex.interpreter.primitives.math.style;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.util.GeneralException;
 
@@ -49,9 +50,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Textstyle extends AbstractCode {
+public class Textstyle extends AbstractMathCode {
 
     /**
      * Creates a new object.
@@ -74,7 +75,8 @@ public class Textstyle extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        typesetter.add(StyleNoad.TEXTSTYLE);
+        NoadConsumer nc = getListMaker(context, typesetter);
+        nc.add(StyleNoad.TEXTSTYLE);
         return true;
     }
 
