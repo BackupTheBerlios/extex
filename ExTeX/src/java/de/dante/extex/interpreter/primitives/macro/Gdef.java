@@ -28,9 +28,10 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\gdef</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Gdef extends Def {
+
     /**
      * Creates a new object.
      *
@@ -51,7 +52,7 @@ public class Gdef extends Def {
             throws GeneralException {
 
         prefix.setGlobal();
-        super.execute(prefix, context, source, typesetter);
+        super.assign(prefix, context, source, typesetter);
     }
 
 }
