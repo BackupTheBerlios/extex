@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import java.io.Serializable;
+
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -28,9 +30,9 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public final class StyleNoad implements Noad {
+public final class StyleNoad implements Noad, Serializable {
 
     /**
      * The constant <tt>DISPLAYSTYLE</tt> contains the value for the display
@@ -161,4 +163,5 @@ public final class StyleNoad implements Noad {
         mathContext.setStyle(this);
     }
 
+    //TODO gene: implement readResolve()
 }
