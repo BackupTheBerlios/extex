@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,24 +25,12 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 
-/*
- * ...
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
- */
-/*
- * ...
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
- */
 /**
  * This is a wrapper class for the logger.
  * Currently the Java 1.4 logger is wrapped.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LoggerImpl implements Logger {
     /** the wrapped logger */
@@ -75,15 +63,6 @@ public class LoggerImpl implements Logger {
      * @param name
      * @param logfile
      * @param template
-     * @return @throws SecurityException
-     * @throws IOException
-     */
-    /**
-     * ...
-     * 
-     * @param name
-     * @param logfile
-     * @param template
      * 
      * @return
      */
@@ -99,8 +78,9 @@ public class LoggerImpl implements Logger {
         while ((i = s.read(bb)) >= 0) {
             cfg = cfg + new String(bb, 0, i);
         }
-
-        cfg = cfg.replaceAll("\\$JOBNAME", logfile.getCanonicalPath());
+        
+        String path = logfile.getPath().replaceAll("[\\\\]","\\\\\\\\\\\\\\\\");
+        cfg = cfg.replaceAll("\\$JOBNAME", path);
 
         LogManager logManager = LogManager.getLogManager();
         logManager.reset();
