@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.language.ligature.LigatureBuilder;
-import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
@@ -48,6 +47,7 @@ import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides a node visitor to insert discretionaries into nodes.
@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class NV implements NodeVisitor {
 
@@ -70,7 +70,7 @@ class NV implements NodeVisitor {
      * The field <tt>hyphen</tt> contains the token to insert at a hyphenation
      * position into the discretionary.
      */
-    private Token hyphen;
+    private UnicodeChar hyphen;
 
     /**
      * The field <tt>nodes</tt> contains the node list to add the current
@@ -97,7 +97,7 @@ class NV implements NodeVisitor {
      * @param factory the factory to acquire new char nodes
      * @param hyph the indocator for allowed hyphenation positions
      */
-    public NV(final NodeList nodes, final Token hyphen,
+    public NV(final NodeList nodes, final UnicodeChar hyphen,
             final TypesettingContext tc, final CharNodeFactory factory,
             final boolean[] hyph) {
 
@@ -180,7 +180,7 @@ class NV implements NodeVisitor {
         Count index = (Count) value;
         if (isHyph[(int) index.getValue()]) {
             nodes.add(new DiscretionaryNode(null, new HorizontalListNode(cnf
-                    .newInstance(tc, hyphen.getChar())), null));
+                    .newInstance(tc, hyphen)), null));
         }
         nodes.add(node);
         index.add(1);
@@ -326,8 +326,7 @@ class NV implements NodeVisitor {
         if (isHyph[index]) {
             next++;
             nodes.add(new DiscretionaryNode(//
-                    new HorizontalListNode(cnf.newInstance(tc, //
-                            hyphen.getChar())), //
+                    new HorizontalListNode(cnf.newInstance(tc, hyphen)), //
                     new HorizontalListNode(), //
                     new HorizontalListNode(node)));
         }
@@ -338,7 +337,7 @@ class NV implements NodeVisitor {
             case 1:
                 int leftLen = node.getLeft().countChars();
                 if (isHyph[leftLen]) { //todo gene: check off by 1
-                    Node h = cnf.newInstance(tc, hyphen.getChar());
+                    Node h = cnf.newInstance(tc, hyphen);
                     NodeList pre = new HorizontalListNode(node.getLeft(), h);
                     NodeList post = new HorizontalListNode(node.getRight());
                     nodes.add(new DiscretionaryNode(pre, post,
@@ -357,7 +356,7 @@ class NV implements NodeVisitor {
                     pre.add(chars[i]);
                     i++;
                 }
-                pre.add(cnf.newInstance(tc, hyphen.getChar()));
+                pre.add(cnf.newInstance(tc, hyphen));
 
                 while (i < index + n) {
                     post.add(chars[i]);
