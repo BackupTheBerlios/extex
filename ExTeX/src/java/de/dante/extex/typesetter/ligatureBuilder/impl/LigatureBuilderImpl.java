@@ -20,8 +20,10 @@
 package de.dante.extex.typesetter.ligatureBuilder.impl;
 
 import de.dante.extex.font.Glyph;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
+import de.dante.extex.interpreter.type.node.ImplicitKernNode;
 import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
@@ -32,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -96,33 +98,39 @@ public class LigatureBuilderImpl implements LigatureBuilder {
             font2 = ((CharNode) n2).getTypesettingContext().getFont();
             uc2 = ((CharNode) n2).getCharacter();
 
-            if (font2 == font1) {
-
-                //UnicodeChar lig = font1.getLigature(uc1, uc2);
-                Glyph g = font1.getGlyph(uc1);
-                if (g == null) {
-                    return i; //TODO: DIRTY?
-                }
-                UnicodeChar lig = g.getLigature(uc2);
-                if (lig != null) {
-                    Node ligNode = new LigatureNode(node
-                            .getTypesettingContext(), lig, n1, n2);
-                    list.remove(i);
-                    list.remove(--i);
-                    list.add(i, ligNode);
-                    uc1 = lig;
-                    n1 = ligNode;
-                    size--;
-                } else {
-                    n1 = n2;
-                    font1 = font2;
-                    uc1 = uc2;
-                }
-            } else {
+            if (font2 != font1) {
                 n1 = n2;
                 font1 = font2;
                 uc1 = uc2;
+                continue;
             }
+            //UnicodeChar lig = font1.getLigature(uc1, uc2);
+            Glyph g = font1.getGlyph(uc1);
+            if (g == null) {
+                return i; //TODO: DIRTY?
+            }
+
+            UnicodeChar lig = g.getLigature(uc2);
+            if (lig != null) {
+                Node ligNode = new LigatureNode(node.getTypesettingContext(),
+                        lig, n1, n2);
+                list.remove(i);
+                list.remove(--i);
+                list.add(i, ligNode);
+                uc1 = lig;
+                n1 = ligNode;
+                size--;
+                continue;
+            }
+
+            Dimen kern = g.getKerning(uc2);
+            if (!kern.eq(Dimen.ZERO_PT)) {
+                list.add(i, new ImplicitKernNode(kern));
+            }
+
+            n1 = n2;
+            uc1 = uc2;
+
         }
 
         return i;
