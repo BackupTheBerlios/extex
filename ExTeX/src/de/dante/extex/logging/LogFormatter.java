@@ -26,7 +26,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LogFormatter extends Formatter {
 
@@ -40,13 +40,15 @@ public class LogFormatter extends Formatter {
      * The field <tt>col</tt> contains the current column for the next
      * output character.
      */
-    private int col = 0;
+    private int col;
 
     /**
      * Creates a new object.
      */
     public LogFormatter() {
+
         super();
+        this.col = 0;
     }
 
     /**

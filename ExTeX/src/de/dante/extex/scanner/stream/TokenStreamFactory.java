@@ -21,7 +21,6 @@ package de.dante.extex.scanner.stream;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Reader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -120,7 +119,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TokenStreamFactory implements Observable {
 
@@ -287,13 +286,11 @@ public class TokenStreamFactory implements Observable {
      *
      * @throws ConfigurationException in case of an error in the configuration
      * @throws FileNotFoundException in case that the file could not be opened
-     * @throws IOException in case of an IO error of some kind
      */
     public TokenStream newInstance(final String fileName,
             final String fileType, final String encoding)
             throws ConfigurationException,
-                FileNotFoundException,
-                IOException {
+                FileNotFoundException {
 
         if (fileFinder == null) {
             throw new MissingFileFinderException("");

@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -156,7 +156,8 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.TokenFactory#newInstance(de.dante.extex.scanner.Catcode,
+     * @see de.dante.extex.scanner.TokenFactory#newInstance(
+     *      de.dante.extex.scanner.Catcode,
      *      de.dante.util.UnicodeChar)
      */
     public Token newInstance(final Catcode code, final UnicodeChar c)
@@ -282,7 +283,8 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * A left brace token is expected to take a single character only.
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
+     *      java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitLeftBrace(final Object oValue, final Object oChar,
@@ -344,7 +346,8 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(
+     *      java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitMacroParam(final Object oValue, final Object oChar,
@@ -374,7 +377,8 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(
+     *      java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitMathShift(final Object oValue, final Object oChar,
@@ -434,7 +438,8 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(java.lang.Object,
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(
+     *      java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitRightBrace(final Object oValue, final Object oChar,

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.main;
 
 import java.io.IOException;
@@ -44,9 +45,16 @@ import de.dante.util.configuration.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
+
+    /**
+     * The constant <tt>NL</tt> contains the String with the newline character,
+     * since it is needed several times.
+     */
+    private static final String NL = "\n";
+
     /**
      * The field <tt>logger</tt> contains the logger to write a protocol of
      * the interaction to. Note that the error has already been logged when
@@ -61,43 +69,118 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
      * @param theLogger the logger for the interaction logging
      */
     public ErrorHandlerImpl(final Logger theLogger) {
+
         super();
         this.logger = theLogger;
     }
 
     /**
-     * @see de.dante.extex.interpreter.ErrorHandler#handleError(de.dante.util.GeneralException,
-     *     de.dante.extex.scanner.Token,
-     *     de.dante.extex.interpreter.TokenSource,
-     *     de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.interpreter.ErrorHandler#handleError(
+     *      de.dante.util.GeneralException,
+     *      de.dante.extex.scanner.Token,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.interpreter.context.Context)
      */
     public boolean handleError(final GeneralException exception, final Token t,
             final TokenSource source, final Context context)
             throws GeneralException {
 
-        Interaction interaction = context.getInteraction();
-        GeneralException e = exception;
+        return context.getInteraction().visit(this, source, context, exception);
+    }
 
-        //TODO: introduce an InteractionVisitor and eliminate the ugly switch
-        if (interaction == Interaction.BATCHMODE) {
-            return true;
-        } else if (interaction == Interaction.NONSTOPMODE) {
-            return true;
-        } else if (interaction == Interaction.SCROLLMODE) {
-            return false;
+    /**
+     * Read a line of characters from the standard input stream.
+     * Leading spaces are ignored. At end of file <code>null</code> is returned.
+     *
+     * @return the line read or <code>null</code> to signal EOF
+     *
+     * @throws IOException in case of an error during IO. This is rather
+     * unlikely
+     */
+    private String readLine() throws IOException {
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int c = System.in.read(); c > 0; c = System.in.read()) {
+            if (c == '\n') {
+                sb.append((char) c);
+                return sb.toString();
+            } else if (c != ' ' || sb.length() > 0) {
+                sb.append((char) c);
+            }
         }
 
-        //if (interaction == Interaction.ERRORSTOPMODE) {
-        Locator locator = source.getLocator();
-        logger.severe("\n\n" + locator.getLine() + "\n"
-                      + point(locator.getLinePointer()));
+        return (sb.length() > 0 ? sb.toString() : null);
+    }
 
-        logger.severe("\n! " + e.getMessage() + "\n");
+    /**
+     * ...
+     *
+     * @param locator ...
+     */
+    protected void showErrorLine(final Locator locator) {
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = locator.getLinePointer(); i > 0; i--) {
+            sb.append('_');
+        }
+        sb.append('^');
+        logger.severe("\n\n" + locator.getLine() + NL
+                      + sb.toString());
+
         String file = locator.getFilename();
         logger.severe("<" + (file == null ? "" : file) + "> \n");
         logger.severe("l." + Integer.toString(locator.getLineno()) + " \n");
+    }
 
-        // Interact with the user in case of an error
+    /**
+     * @see de.dante.extex.interpreter.InteractionVisitor#visitBatchmode(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public boolean visitBatchmode(final Object arg1, final Object arg2,
+            final Object arg3) throws GeneralException {
+
+        return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.InteractionVisitor#visitErrorstopmode(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public boolean visitErrorstopmode(final Object arg1, final Object arg2,
+            final Object arg3) throws GeneralException {
+
+        return false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.InteractionVisitor#visitNonstopmode(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public boolean visitNonstopmode(final Object arg1, final Object arg2,
+            final Object arg3) throws GeneralException {
+
+        return true;
+    }
+
+    /**
+     * Interact with the user in case of an error
+     *
+     * @see de.dante.extex.interpreter.InteractionVisitor#visitScrollmode(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public boolean visitScrollmode(final Object oSource, final Object oContext,
+            final Object oException) throws GeneralException {
+
+        final TokenSource source = (TokenSource) oSource;
+        final Context context = (Context) oContext;
+        GeneralException e = (GeneralException) oException;
+        final Locator locator = source.getLocator();
+
+        logger.severe(NL + "! " + e.getMessage() + NL);
+        showErrorLine(locator);
+
         try {
             boolean firstHelp = true;
 
@@ -114,16 +197,16 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                     return true;
                 } else {
                     switch (line.charAt(0)) {
-                        case '0' :
-                        case '9' :
-                        case '8' :
-                        case '7' :
-                        case '6' :
-                        case '5' :
-                        case '4' :
-                        case '3' :
-                        case '2' :
-                        case '1' :
+                        case '0':
+                        case '9':
+                        case '8':
+                        case '7':
+                        case '6':
+                        case '5':
+                        case '4':
+                        case '3':
+                        case '2':
+                        case '1':
                             int count = line.charAt(0) - '0';
                             if (line.length() > 1
                                 && Character.isDigit(line.charAt(1))) {
@@ -133,24 +216,22 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                                 source.getToken();
                             }
                             firstHelp = false;
-                            e = new GeneralHelpingException("unimplemented"); //TODO
                             break;
-                        case 'd' :
-                        case 'D' :
+                        case 'd':
+                        case 'D':
                             //TODO: support debug? TTP[84] TTP[1338]
                             break;
-                        case 'e' :
-                        case 'E' :
+                        case 'e':
+                        case 'E':
                             //TODO: support edit? TTP[84]
                             break;
-                        case 'i' :
-                        case 'I' :
+                        case 'i':
+                        case 'I':
                             source.addStream(source.getTokenStreamFactory()
                                     .newInstance(line.substring(1)));
-                            //TODO: better guess for the encoding?
                             break;
-                        case 'h' :
-                        case 'H' :
+                        case 'h':
+                        case 'H':
 
                             String help;
 
@@ -162,38 +243,38 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                             }
 
                             firstHelp = false;
-                            logger.severe(help + "\n");
+                            logger.severe(help + NL);
                             break;
-                        case 'q' :
-                        case 'Q' :
+                        case 'q':
+                        case 'Q':
                             context.setInteraction(Interaction.BATCHMODE, true);
                             logger.info(Messages
                                     .format("ErrorHandler.batchmode")
-                                        + "\n");
+                                        + NL);
                             return true;
-                        case 'r' :
-                        case 'R' :
+                        case 'r':
+                        case 'R':
                             context.setInteraction(Interaction.NONSTOPMODE,
                                                    true);
                             logger.info(Messages
                                     .format("ErrorHandler.nonstopmode")
-                                        + "\n");
+                                        + NL);
                             return true;
-                        case 's' :
-                        case 'S' :
+                        case 's':
+                        case 'S':
                             context
                                     .setInteraction(Interaction.SCROLLMODE,
                                                     true);
                             logger.info(Messages
                                     .format("ErrorHandler.scrollmode")
-                                        + "\n");
+                                        + NL);
                             return true;
-                        case 'x' :
-                        case 'X' :
+                        case 'x':
+                        case 'X':
                             return false;
-                        default :
+                        default:
                             logger.severe(Messages.format("ErrorHandler.help")
-                                          + "\n");
+                                          + NL);
                     }
                 }
             }
@@ -206,73 +287,4 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
         }
     }
 
-    /**
-     * ...
-     *
-     * @return ...
-     *
-     * @throws IOException in case of an IO error
-     */
-    private String readLine() throws IOException {
-
-        StringBuffer sb = new StringBuffer();
-
-        for (int c = System.in.read(); c != '\n'; c = System.in.read()) {
-            if (c < 0) {
-                return null;
-            }
-            sb.append((char) c);
-        }
-
-        return sb.toString();
-    }
-
-    /**
-     * ...
-     *
-     * @param n the pointing position
-     * @return the string representation of the pointer
-     */
-    private String point(final int n) {
-
-        StringBuffer sb = new StringBuffer();
-
-        for (int i = n; i > 0; i--) {
-            sb.append('_');
-        }
-        sb.append('^');
-        return sb.toString();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitBatchmode()
-     */
-    public void visitBatchmode() {
-
-        // TODO Auto-generated method stub
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitErrorstopmode()
-     */
-    public void visitErrorstopmode() {
-
-        // TODO Auto-generated method stub
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitNonstopmode()
-     */
-    public void visitNonstopmode() {
-
-        // TODO Auto-generated method stub
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitScrollmode()
-     */
-    public void visitScrollmode() {
-
-        // TODO Auto-generated method stub
-    }
 }
