@@ -52,7 +52,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface Context extends Serializable {
 
@@ -69,6 +69,17 @@ public interface Context extends Serializable {
      * @throws GeneralException in case of an error
      */
     Code getCode(Token t) throws GeneralException;
+
+    /**
+     * Convenience method to set the code assigned to a Token.
+     * ...
+     *
+     * @param t ...
+     * @param code the code for the token
+     * @param global TODO
+     * @throws GeneralException in case of an error
+     */
+    void setCode(Token t, Code code, boolean global) throws GeneralException;
 
     /**
      * Setter for active characters in the current group.
@@ -258,26 +269,26 @@ public interface Context extends Serializable {
     Tokens getToks(String name);
 
     /**
-     * ...
+     * Setter for the named dimen register.
      *
-     * @param name ...
-     * @param value ...
+     * @param name the name of the register
+     * @param value the value of the register
      */
     void setDimen(String name, Dimen value);
 
     /**
      * ...
      *
-     * @param name ...
-     * @param value ...
+     * @param name the name of the register
+     * @param value the value of the register
      */
     void setDimen(String name, long value);
 
     /**
      * ...
      *
-     * @param name ...
-     * @param value ...
+     * @param name the name of the register
+     * @param value the value of the register
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
@@ -333,6 +344,8 @@ public interface Context extends Serializable {
      * ...
      *
      * @param font ...
+     *
+     * @throws ConfigurationException ...
      */
     void setTypesettingContext(Font font) throws ConfigurationException;
 
@@ -340,6 +353,8 @@ public interface Context extends Serializable {
      * ...
      *
      * @param color ...
+     *
+     * @throws ConfigurationException ...
      */
     void setTypesettingContext(Color color) throws ConfigurationException;
 
@@ -347,6 +362,8 @@ public interface Context extends Serializable {
      * ...
      *
      * @param direction ...
+     *
+     * @throws ConfigurationException ...
      */
     void setTypesettingContext(Direction direction) throws ConfigurationException;
 
@@ -354,6 +371,8 @@ public interface Context extends Serializable {
      * ...
      *
      * @param angle ...
+     *
+     * @throws ConfigurationException ...
      */
     void setTypesettingContext(int angle) throws ConfigurationException;
 
@@ -574,6 +593,9 @@ public interface Context extends Serializable {
     /**
      * ...
      *
+     * @param typesetter ...
+     * @param source ...
+     *
      * @throws GeneralException in case of an error
      */
     void closeGroup(Typesetter typesetter, TokenSource source) throws GeneralException;
@@ -629,7 +651,7 @@ public interface Context extends Serializable {
      * @return ...
      */
     InFile getInFile(String name);
-    
+
     /**
      * ...
      *

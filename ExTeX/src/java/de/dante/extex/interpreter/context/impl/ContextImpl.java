@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context.impl;
 
 import java.io.Serializable;
@@ -96,7 +97,7 @@ import de.dante.util.observer.ObserverList;
  * <ul>
  * <li>Clear the value in all groups and set it in the bottommost group.</li>
  * <li>Set the value in all groups where it has a local value.</li>
- * <li>Set teh value in all groups.</li>
+ * <li>Set the value in all groups.</li>
  * </ul>
  * Here the third approach is used which is suspected to be a little more
  * efficient on the cost of slightly more memory consumption.</li>
@@ -104,7 +105,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -236,10 +237,12 @@ public class ContextImpl implements Context, Observable, Serializable {
             throws ConfigurationException, GeneralException {
 
         super();
-        groupFactory = new GroupFactory(configuration.getConfiguration(GROUP_TAG));
+        groupFactory = new GroupFactory(configuration
+                .getConfiguration(GROUP_TAG));
         group = groupFactory.newInstance(group);
 
-        Configuration fontConfiguration = configuration.getConfiguration(FONT_TAG);
+        Configuration fontConfiguration = configuration
+                .getConfiguration(FONT_TAG);
         String fontClass = fontConfiguration.getAttribute(CLASS_ATTRIBUTE);
 
         if (fontClass == null || fontClass.equals("")) {
@@ -299,8 +302,9 @@ public class ContextImpl implements Context, Observable, Serializable {
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
 
-        magnificationMax = configuration.getValueAsInteger("maximalMagnification",
-                                                    (int) MAGNIFICATION_MAX);
+        magnificationMax = configuration
+                .getValueAsInteger("maximalMagnification",
+                                   (int) MAGNIFICATION_MAX);
 
     }
 
@@ -309,6 +313,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *         de.dante.extex.interpreter.Code)
      */
     public void setActive(final String name, final Code code) {
+
         group.setActive(name, code);
     }
 
@@ -318,6 +323,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setActive(final String name, final Code code,
             final boolean global) {
+
         group.setActive(name, code, global);
     }
 
@@ -336,6 +342,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         return afterassignment;
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setAfterassignment(de.dante.extex.scanner.Token)
      */
@@ -343,6 +350,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         afterassignment = token;
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode)
@@ -358,6 +366,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setCatcode(final UnicodeChar c, final Catcode cc,
             final boolean global) {
+
         group.setCatcode(c, cc, global);
     }
 
@@ -366,6 +375,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *         de.dante.extex.interpreter.type.Box)
      */
     public void setBox(final String name, final Box value) {
+
         group.setBox(name, value);
     }
 
@@ -373,8 +383,8 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
      *      de.dante.extex.interpreter.type.Box, boolean)
      */
-    public void setBox(final String name, final Box value,
-            final boolean global) {
+    public void setBox(final String name, final Box value, final boolean global) {
+
         group.setBox(name, value, global);
     }
 
@@ -382,6 +392,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getBox(java.lang.String)
      */
     public Box getBox(final String name) {
+
         return group.getBox(name);
     }
 
@@ -402,6 +413,21 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#setCode(de.dante.extex.scanner.Token, de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setCode(final Token t, final Code code, final boolean global)
+            throws GeneralException {
+
+        if (t instanceof ControlSequenceToken) {
+            setMacro(t.getValue(), code, global);
+        } else if (t instanceof ActiveCharacterToken) {
+            setActive(t.getValue(), code, global);
+        } else {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
      *         long)
      */
@@ -419,6 +445,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setCount(final String name, final long value,
             final boolean global) {
+
         Count count = new Count(value);
         group.setCount(name, count, global);
 
@@ -522,7 +549,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.Glue, boolean)
      */
     public void setGlue(final String name, final Glue value,
-        final boolean global) {
+            final boolean global) {
 
         group.setSkip(name, value, global);
     }
@@ -532,6 +559,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.Glue)
      */
     public void setGlue(final String name, final Glue value) {
+
         group.setSkip(name, value);
     }
 
@@ -600,8 +628,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *
      * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
      */
-    public void setMagnification(final long mag)
-             throws GeneralHelpingException {
+    public void setMagnification(final long mag) throws GeneralHelpingException {
 
         if (magnificationLock && this.magnification != mag) {
             throw new GeneralHelpingException("TTP.IncompatMag", Long
@@ -627,7 +654,6 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         return magnification;
     }
-
 
     /**
      * @see de.dante.extex.interpreter.context.Context#getMuskip(java.lang.String)
@@ -678,17 +704,21 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Color)
      */
-    public void setTypesettingContext(Color color) throws ConfigurationException {
+    public void setTypesettingContext(Color color)
+            throws ConfigurationException {
 
         tcFactory.newInstance(group.getTypesettingContext(), color);
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Direction)
      */
-    public void setTypesettingContext(Direction direction) throws ConfigurationException {
+    public void setTypesettingContext(Direction direction)
+            throws ConfigurationException {
 
         tcFactory.newInstance(group.getTypesettingContext(), direction);
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.type.Font)
      */
@@ -696,6 +726,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         tcFactory.newInstance(group.getTypesettingContext(), font);
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(int)
      */
@@ -703,6 +734,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         tcFactory.newInstance(group.getTypesettingContext(), angle);
     }
+
     /**
      * Setter for the typesetting context in the current group.
      *
@@ -756,8 +788,8 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#closeGroup(de.dante.extex.typesetter.Typesetter,
      *     de.dante.extex.interpreter.TokenSource)
      */
-    public void closeGroup(final Typesetter typesetter,
-            final TokenSource source) throws GeneralException {
+    public void closeGroup(final Typesetter typesetter, final TokenSource source)
+            throws GeneralException {
 
         Group next = group.getNext();
 
@@ -875,7 +907,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.InFile, boolean)
      */
     public void setInFile(final String name, final InFile file,
-        final boolean global) {
+            final boolean global) {
 
         group.setInFile(name, file, global);
     }
@@ -894,7 +926,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.OutFile, boolean)
      */
     public void setOutFile(final String name, final OutFile file,
-        final boolean global) {
+            final boolean global) {
 
         group.setOutFile(name, file, global);
     }
@@ -904,10 +936,10 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.util.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
-        throws NotObservableException {
+            throws NotObservableException {
 
         if ("interaction".equals(name)) {
-             observersInteraction.add(observer);
+            observersInteraction.add(observer);
         } else {
             throw new NotObservableException(name);
         }
