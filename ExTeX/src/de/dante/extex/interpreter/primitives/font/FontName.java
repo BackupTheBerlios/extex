@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontName extends AbstractCode {
 
@@ -69,11 +69,11 @@ public class FontName extends AbstractCode {
         Token tok = source.getNonSpace();
 
         if (tok == null || !(tok instanceof ControlSequenceToken)) {
-            throw new GeneralException("no fontprimitive found!"); // TODO change
+            throw new GeneralException("no fontprimitive found!"); // TODO i18n
         }
         Code code = context.getMacro(tok.getValue());
         if (code == null || !(code instanceof FontCode)) {
-            throw new GeneralException("no fontprimitive found!"); // TODO change
+            throw new GeneralException("no fontprimitive found!"); // TODO i18n
         }
         source.push(new Tokens(context, ((FontCode) code).getFontname()));
 

@@ -46,14 +46,9 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DefFont extends AbstractCode {
-
-    /**
-     * Default-Font-size
-     */
-    private static final int DEFAULTSIZE = 10;
 
     /**
      * Default-Scale-factor
@@ -84,12 +79,10 @@ public class DefFont extends AbstractCode {
         source.scanOptionalEquals();
         String filename = scanFileName(source);
         int size = getFontSize(filename);
-        if (size < 0) {
-            size = DEFAULTSIZE;
-        }
-        Dimen fontsize = new Dimen(Dimen.ONE * size);
+        Dimen fontsize;
 
-        // optional parameters
+        // optional parameters 'at' and 'scaled'
+        // if 'at' not used, the fontname must have a size (e.g. cmr10)
         try {
             if (source.scanKeyword("at", true)) {
                 // \font\myfont=cmr12 at 15pt
@@ -102,10 +95,18 @@ public class DefFont extends AbstractCode {
                 long scale = source.scanInteger();
                 fontsize = new Dimen(Dimen.ONE * size * scale
                         / DEFAULTSCALEFACTOR);
+            } else {
+                // use size from the fontname
+                fontsize = new Dimen(Dimen.ONE * size);
             }
         } catch (Exception e) {
-            // do nothing, use default
+            // use size from the fontname
             fontsize = new Dimen(Dimen.ONE * size);
+        }
+
+        // fontsize < 0
+        if (fontsize.lt(Dimen.ZERO_PT)) {
+            throw new GeneralHelpingException("FONT.nofontsize");
         }
 
         FontFactory ff = context.getFontFactory();
@@ -117,13 +118,8 @@ public class DefFont extends AbstractCode {
         }
 
         // create new primitive
-        Code code = context.getMacro(tok.getValue());
-        if (code != null) {
-            throw new GeneralHelpingException("FONT.fontprimitiveexists", code
-                    .getName());
-        }
-        code = new FontCode(tok.getValue(), font);
-        context.setMacro(tok.getValue(), code);
+        Code code = new FontCode(tok.getValue(), font);
+        context.setMacro(tok.getValue(), code, prefix.isGlobal());
         prefix.clear();
     }
 

@@ -1,5 +1,5 @@
 %
-% @version $Revision: 1.4 $ $Date: 2004/02/23 10:22:11 $
+% @version $Revision: 1.5 $ $Date: 2004/03/23 10:30:32 $
 %
 % Test für font
 %
@@ -7,19 +7,22 @@
 \catcode`\}=2 % right brace is end-group character
 %
 %
-\font\hugo=cmex10
+\font\hugo=cmr12
 \the\hugo
 \hugo
-\font\peter=cmex10 at 20pt
-\font\hans=cmex10 at 15truept
-\font\magnifiedfiverm=cmex10 scaled 2000
+\font\peter=cmr12 at 20pt
+\font\hans=cmr12 at 15truept
+\font\magnifiedfiverm=cmr12 scaled 2000
 \fontname\peter
 %
-\the\fontdimen1\peter
-\fontdimen1\peter=30pt
-\the\fontvalue\peter{SLANT}
-\fontvalue\peter{SLANT}=100pt
+%\the\fontdimen1\peter
+%\fontdimen1\peter=30pt
+%\the\fontvalue\peter{SLANT}
+%\fontvalue\peter{SLANT}=100pt
 %
 ----------------------------
 
-\font\xyz\cmr12
+\font\xyz=cmr12
+
+\font\par = cmr12
+
