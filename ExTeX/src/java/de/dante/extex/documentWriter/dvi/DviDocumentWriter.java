@@ -52,7 +52,7 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DviDocumentWriter implements DocumentWriter, Localizable {
     // TODO: docu (TE)
@@ -124,7 +124,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
     private Mode mode = Mode.VERTICAL;
 
     /**
-     * Object fo rlcalize strings messages.
+     * Object for localize strings messages.
      *
      */
     private Localizer localizer = null;
@@ -190,11 +190,25 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
         }
 
 
+        private GeneralException confusion(final String node) throws GeneralException {
+            final String argument;
+
+            if (localizer == null) {
+                argument = "ExTeX.DocumentWriterWrongNode: " + node;
+            } else {
+                argument = localizer.format("ExTeX.DocumentWriterWrongNode", node);
+            }
+
+            return new PanicException(localizer, "TTP.Confusion",
+                                      argument);
+
+        }
+
         public Object visitAdjust(final Object value, final Object value2)
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -202,7 +216,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -211,7 +225,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -219,7 +233,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -228,7 +242,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -254,7 +268,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -263,7 +277,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             throws GeneralException {
 
             // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new GeneralException("unimplemented");
         }
 
 
@@ -298,8 +312,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
         public Object visitInsertion(final Object value, final Object value2)
             throws GeneralException {
 
-            throw new PanicException(localizer, "TTP.Confusion",
-                localizer.format("ExTeX.DocumentWriterWrongNode", "insertion"));
+            throw confusion("insertion");
         }
 
 
@@ -328,16 +341,14 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
         public Object visitMark(final Object value, final Object value2)
             throws GeneralException {
 
-            throw new PanicException(localizer, "TTP.Confusion",
-                localizer.format("ExTeX.DocumentWriterWrongNode", "mark"));
+            throw confusion("mark");
         }
 
 
         public Object visitPenalty(final Object value, final Object value2)
             throws GeneralException {
 
-            throw new PanicException(localizer, "TTP.Confusion",
-                localizer.format("ExTeX.DocumentWriterWrongNode", "penalty"));
+            throw confusion("penalty");
         }
 
 
