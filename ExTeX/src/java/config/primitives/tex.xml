@@ -443,7 +443,7 @@
   <define name="overfullrule"
           class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
   <define name="overline"
-          class="de.dante.extex.interpreter.primitives.math.fraction.Overline"/>
+          class="de.dante.extex.interpreter.primitives.math.Overline"/>
   <define name="overwithdelims"
           class="de.dante.extex.interpreter.primitives.math.fraction.Overwithdelims"/>
   <define name="pagedepth"
