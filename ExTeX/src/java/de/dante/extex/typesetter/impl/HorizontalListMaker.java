@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.SpaceNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -43,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -164,7 +165,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
             }
         }
 
-        addGlue(space);
+        add(new SpaceNode(space));
     }
 
     /**
