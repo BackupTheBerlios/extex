@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,10 +35,9 @@ import de.dante.util.observer.Observable;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public interface Interpreter extends TokenSource,
-                                     Observable {
+public interface Interpreter extends TokenSource, Observable {
 
     /**
      * Setter for the error handler.
@@ -69,8 +68,10 @@ public interface Interpreter extends TokenSource,
      * Setter for the interaction mode.
      *
      * @param interaction the interaction mode
+     *
+     * @throws GeneralException in case of an error
      */
-    void setInteraction(Interaction interaction);
+    void setInteraction(Interaction interaction) throws GeneralException;
 
     /**
      * Getter for the interaction mode.
@@ -82,14 +83,16 @@ public interface Interpreter extends TokenSource,
     /**
      * Getter for the context
      *
-     * @return	the context
+     * @return the context
      */
     Context getContext();
 
     /**
-     * ...
+     * Setter for the job name.
      *
-     * @param jobname ...
+     * @param jobname the new value for the job name
+     *
+     * @throws GeneralException in case of an error
      */
     void setJobname(String jobname) throws GeneralException;
 

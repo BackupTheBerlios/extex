@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,10 +31,10 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -128,4 +128,5 @@ public abstract class AbstractListMaker implements ListMaker {
     public void setPrevDepth(final Dimen pd) throws GeneralException {
         throw new GeneralHelpingException("TTP.ImproperSForPD", "prevdepth");
     }
+
 }

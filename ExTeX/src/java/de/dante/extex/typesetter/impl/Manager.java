@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,54 +27,54 @@ import de.dante.util.GeneralException;
 /**
  * Interface for the Manager of a typesetter.
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public interface Manager {
 
-	/**
-	 * ...
-	 *
-	 * @throws GeneralException ...
-	 */
-	void pop() throws GeneralException;
+    /**
+     * ...
+     *
+     * @throws GeneralException ...
+     */
+    void pop() throws GeneralException;
 
-	/**
-	 * ...
-	 *
-	 * @param listMaker ...
-	 *
-	 * @throws GeneralException ...
-	 */
-	void push(ListMaker listMaker) throws GeneralException;
+    /**
+     * ...
+     *
+     * @param listMaker ...
+     *
+     * @throws GeneralException ...
+     */
+    void push(ListMaker listMaker) throws GeneralException;
 
-	/**
-	 * ...
-	 *
-	 * @throws GeneralException ...
-	 */
-	void closeTopList() throws GeneralException;
+    /**
+     * ...
+     *
+     * @throws GeneralException ...
+     */
+    void closeTopList() throws GeneralException;
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 */
-	CharNodeFactory getCharNodeFactory();
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    CharNodeFactory getCharNodeFactory();
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 */
-	DocumentWriter getDocumentWriter();
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    DocumentWriter getDocumentWriter();
 
-	/**
-	 * Getter for the context.
-	 * 
-	 * @return ...
-	 */
-	Context getContext();
+    /**
+     * Getter for the context.
+     *
+     * @return ...
+     */
+    Context getContext();
 
 }

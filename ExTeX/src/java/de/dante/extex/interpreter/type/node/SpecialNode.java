@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,28 +24,31 @@ import de.dante.extex.typesetter.Node;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
-	private String text;
+    /**
+     * The field <tt>text</tt> contains the ...
+     */
+    private String text;
 
-	/**
-	 * Creates a new object.
-	 */
-	public SpecialNode(final String theText) {
-		super();
-		text = theText;
-	}
+    /**
+     * Creates a new object.
+     */
+    public SpecialNode(final String theText) {
+        super();
+        text = theText;
+    }
 
-	/**
-	 * Getter for text.
-	 *
-	 * @return the text.
-	 */
-	public String getText() {
-		return text;
-	}
+    /**
+     * Getter for text.
+     *
+     * @return the text.
+     */
+    public String getText() {
+        return text;
+    }
 
 }

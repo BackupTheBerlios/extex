@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,7 +30,6 @@ import java.nio.charset.CharacterCodingException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
@@ -51,6 +50,7 @@ import de.dante.extex.main.ErrorHandlerImpl;
 import de.dante.extex.main.FileCloseObserver;
 import de.dante.extex.main.FileFinderImpl;
 import de.dante.extex.main.FileOpenObserver;
+import de.dante.extex.main.InteractionObserver;
 import de.dante.extex.main.MainCodingException;
 import de.dante.extex.main.MainConfigurationException;
 import de.dante.extex.main.MainException;
@@ -70,12 +70,12 @@ import de.dante.util.StringList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.file.FileFinderConfigImpl;
 import de.dante.util.file.FileFinderDirect;
 import de.dante.util.file.FileFinderList;
 import de.dante.util.file.FileFinderPathImpl;
 import de.dante.util.file.OutputFactory;
+import de.dante.util.observer.Observer;
 
 /**
  * This is the command line interface to ExTeX. It does all the horrible things
@@ -93,96 +93,9 @@ import de.dante.util.file.OutputFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class ExTeX {
-
-    /**
-     * The field <tt>DOT_EXTEX</tt> contains the name of the user properties
-     * file.
-     */
-    private static final String DOT_EXTEX = ".extex";
-
-    /**
-     * The field <tt>PROP_JOBNAME</tt> contains the name of the
-     * property for the job name.
-     */
-    private static final String PROP_JOBNAME = "extex.jobname";
-    /**
-     * The field <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
-     * property for the jobname to be used with high priority.
-     */
-    private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
-    /**
-     * The field <tt>PROP_OUTPUT</tt> contains the name of the property for the
-     * ...
-     */
-    private static final String PROP_OUTPUT = "extex.output";
-    /**
-     * The field <tt>PROP_INI</tt> contains the name of the property for the
-     * ...
-     */
-    private static final String PROP_INI = "extex.ini";
-    /**
-     * The field <tt>PROP_FILE</tt> contains the name of the property for the
-     * ...
-     */
-    private static final String PROP_FILE = "extex.file";
-    /**
-     * The field <tt>PROP_NOBANNER</tt> contains the name of the property for
-     * the ...
-     */
-    private static final String PROP_NOBANNER = "extex.nobanner";
-    /**
-     * The field <tt>PROP_CONFIG</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_CONFIG = "extex.config";
-    /**
-     * The field <tt>PROP_ENCODING</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_ENCODING = "extex.encoding";
-    /**
-     * The field <tt>PROP_CODE</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_CODE = "extex.code";
-    /**
-     * The field <tt>PROP_PROGNAME</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_PROGNAME = "extex.progname";
-    /**
-     * The field <tt>PROP_OUTPUTDIR</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_OUTPUTDIR = "extex.outputdir";
-    /**
-     * The field <tt>PROP_TEXINPUTS</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_TEXINPUTS = "extex.texinputs";
-    /**
-     * The field <tt>PROP_INTERACTION</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_INTERACTION = "extex.interaction";
-    /**
-     * The field <tt>PROP_TRACE_MACROS</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_TRACE_MACROS = "extex.traceMacros";
-    /**
-     * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_TRACE_TOKENIZER = "extex.traceTokenizer";
-    /**
-     * The field <tt>PROP_FMT</tt> contains the name of the property for the
-     * name of the format file to use.
-     */
-    private static final String PROP_FMT = "extex.fmt";
 
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
@@ -190,6 +103,13 @@ public class ExTeX {
      * year 2003.
      */
     private static final int COPYRIGHT_YEAR = 2003;
+
+    /**
+     * The field <tt>DOT_EXTEX</tt> contains the name of the user properties
+     * file. This file contains property settings which are read when ExTeX is
+     * started.
+     */
+    private static final String DOT_EXTEX = ".extex";
 
     /**
      * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
@@ -204,10 +124,117 @@ public class ExTeX {
     private static final int EXIT_INTERNAL_ERROR = -666;
 
     /**
+     * The field <tt>PROP_CODE</tt> contains the name of the
+     * property for the TeX code to be inserted at the beginning of the job.
+     */
+    private static final String PROP_CODE = "extex.code";
+
+    /**
+     * The field <tt>PROP_CONFIG</tt> contains the name of the
+     * property for the configuration resource to use.
+     */
+    private static final String PROP_CONFIG = "extex.config";
+
+    /**
+     * The field <tt>PROP_ENCODING</tt> contains the name of the property for
+     * the standard encoding to use.
+     */
+    private static final String PROP_ENCODING = "extex.encoding";
+
+    /**
+     * The field <tt>PROP_FILE</tt> contains the name of the property for the
+     * input file to read.
+     */
+    private static final String PROP_FILE = "extex.file";
+
+    /**
+     * The field <tt>PROP_FMT</tt> contains the name of the property for the
+     * name of the format file to use.
+     */
+    private static final String PROP_FMT = "extex.fmt";
+
+    /**
+     * The field <tt>PROP_INI</tt> contains the name of the property for the
+     * boolean value indicating that some kind of emulations for iniTeX should
+     * be provided. Currently this has no effect in ExTeX.
+     */
+    private static final String PROP_INI = "extex.ini";
+
+    /**
+     * The field <tt>PROP_INTERACTION</tt> contains the name of the
+     * property for the interaction mode.
+     */
+    private static final String PROP_INTERACTION = "extex.interaction";
+
+    /**
+     * The field <tt>PROP_JOBNAME</tt> contains the name of the
+     * property for the job name. The value can be overruled by the property
+     * named in <tt>PROP_JOBNAME_MASTER</tt>.
+     */
+    private static final String PROP_JOBNAME = "extex.jobname";
+
+    /**
+     * The field <tt>PROP_JOBNAME_MASTER</tt> contains the name of the
+     * property for the jobname to be used with high priority.
+     */
+    private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
+
+    /**
+     * The field <tt>PROP_LANG</tt> contains the name of the property for the
+     * language to use for messages.
+     */
+    private static final String PROP_LANG = "extex.lang";
+
+    /**
+     * The field <tt>PROP_NO_BANNER</tt> contains the name of the property for
+     * the boolean value indicating whether or not to show a program banner.
+     */
+    private static final String PROP_NO_BANNER = "extex.nobanner";
+
+    /**
+     * The field <tt>PROP_OUTPUT</tt> contains the name of the property for the
+     * output driver. This value is resolved by the DocumentWriterFactory to
+     * find the appropriate class.
+     */
+    private static final String PROP_OUTPUT = "extex.output";
+
+    /**
+     * The field <tt>PROP_OUTPUTDIR</tt> contains the name of the
+     * property for the output directory.
+     */
+    private static final String PROP_OUTPUTDIR = "extex.outputdir";
+
+    /**
+     * The field <tt>PROP_PROGNAME</tt> contains the name of the
+     * property for the program name used in usage messages.
+     */
+    private static final String PROP_PROGNAME = "extex.progname";
+
+    /**
+     * The field <tt>PROP_TEXINPUTS</tt> contains the name of the
+     * property for the ...
+     */
+    private static final String PROP_TEXINPUTS = "extex.texinputs";
+
+    /**
+     * The field <tt>PROP_TRACE_MACROS</tt> contains the name of the
+     * property for the boolean determining whether or not the execution of
+     * macros should produce tracing output.
+     */
+    private static final String PROP_TRACE_MACROS = "extex.traceMacros";
+
+    /**
+     * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
+     * property for the boolean determining whether or not the tokenizer
+     * should produce tracing output.
+     */
+    private static final String PROP_TRACE_TOKENIZER = "extex.traceTokenizer";
+
+    /**
      * The constant <tt>VERSION</tt> contains the manually incremented version
      * string.
      */
-    private static final String VERSION = "0.5g";
+    private static final String VERSION = "0.6";
 
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
@@ -218,14 +245,21 @@ public class ExTeX {
     private Calendar calendar = Calendar.getInstance();
 
     /**
+     * The field <tt>interactionObserver</tt> contains the observer called
+     * whenever the interaction mode is changed.
+     */
+    private Observer interactionObserver = null;
+
+    /**
      * The field <tt>logger</tt> contains the logger currently in use.
      */
     private Logger logger;
 
     /**
-     * The field <tt>consoleHandler</tt> contains the ...
+     * The field <tt>outStream</tt> contains the output stream for the document
+     * writer.
      */
-    private Handler consoleHandler = new ConsoleHandler();
+    private OutputStream outStream = null;
 
     /**
      * The field <tt>properties</tt> contains the properties containing the
@@ -307,7 +341,7 @@ public class ExTeX {
      * <tr>
      * <td>extex.texinputs</td>
      * <td></td>
-     * <td></td>
+     * <td>...</td>
      * </tr>
      * <tr>
      * <td>extex.outputdir</td>
@@ -317,8 +351,8 @@ public class ExTeX {
      * </tr>
      * <tr>
      * <td>extex.output</td>
-     * <td>dump</td>
-     * <td>This parameter contain the outputformat.</td>
+     * <td>pdf</td>
+     * <td>This parameter contain the output format.</td>
      * </tr>
      * </table>
      *
@@ -328,29 +362,35 @@ public class ExTeX {
      */
     public ExTeX(final Properties anyProperties) throws MainException {
         super();
+
         this.properties = anyProperties;
-        propertyDefault(PROP_PROGNAME, "ExTeX");
-        propertyDefault(PROP_FILE, "");
         propertyDefault(PROP_CODE, "");
+        propertyDefault(PROP_CONFIG, "extex.xml");
+        propertyDefault(PROP_ENCODING, "ISO-8859-1");
+        propertyDefault(PROP_FILE, "");
+        propertyDefault(PROP_FMT, "");
+        propertyDefault(PROP_INI, "");
         propertyDefault(PROP_INTERACTION, "3");
         propertyDefault(PROP_JOBNAME, "texput");
         propertyDefault(PROP_JOBNAME_MASTER, "");
-        propertyDefault(PROP_INI, "");
-        propertyDefault(PROP_FMT, "");
+        propertyDefault(PROP_NO_BANNER, "");
+        propertyDefault(PROP_LANG, "");
+        propertyDefault(PROP_OUTPUT, "pdf");
         propertyDefault(PROP_OUTPUTDIR, ".");
+        propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
-        propertyDefault(PROP_ENCODING, "ISO-8859-1");
-        propertyDefault(PROP_CONFIG, "extex.xml");
-        propertyDefault(PROP_OUTPUT, "*");
-        propertyDefault(PROP_NOBANNER, "");
-        propertyDefault(PROP_TRACE_TOKENIZER, "");
         propertyDefault(PROP_TRACE_MACROS, "");
-        propertyDefault(PROP_OUTPUT, "dump");
+        propertyDefault(PROP_TRACE_TOKENIZER, "");
 
-        logger = Logger.getLogger("de.dante.extex");
+        applyLanguage();
+
+        logger = Logger.getLogger(getClass().getName());
         logger.setUseParentHandlers(false);
+
+        Handler consoleHandler = new ConsoleHandler();
         logger.addHandler(consoleHandler);
         consoleHandler.setFormatter(new LogFormatter());
+        interactionObserver = new InteractionObserver(consoleHandler);
         applyInteraction();
     }
 
@@ -384,6 +424,8 @@ public class ExTeX {
             } catch (IOException e) {
                 throw new MainIOException(e);
             }
+
+            applyLanguage();
         }
     }
 
@@ -393,6 +435,7 @@ public class ExTeX {
      * @return the logger.
      */
     public Logger getLogger() {
+
         return logger;
     }
 
@@ -402,7 +445,28 @@ public class ExTeX {
      * @param aLogger the logger to set.
      */
     public void setLogger(final Logger aLogger) {
+
         this.logger = aLogger;
+    }
+
+    /**
+     * Getter for outStream.
+     *
+     * @return the outStream.
+     */
+    public OutputStream getOutStream() {
+
+        return outStream;
+    }
+
+    /**
+     * Setter for outStream.
+     *
+     * @param outStream the outStream to set.
+     */
+    public void setOutStream(final OutputStream outStream) {
+
+        this.outStream = outStream;
     }
 
     /**
@@ -441,35 +505,6 @@ public class ExTeX {
     }
 
     /**
-     * ...
-     *
-     * @throws MainUnknownInteractionException in case that the interaction is
-     *             not set properly
-     */
-    private void applyInteraction() throws MainUnknownInteractionException {
-        Interaction i = Interaction.get(properties
-            .getProperty(PROP_INTERACTION));
-
-        consoleHandler.setLevel(i == Interaction.BATCHMODE //
-            ? Level.SEVERE : Level.INFO);
-    }
-
-    /**
-     * Load properties from a given file if it exists.
-     *
-     * @param file the file to consider
-     *
-     * @throws IOException in case of an IO Error during the reading of the
-     *             properties file
-     */
-    private void loadUserProperties(final File file) throws IOException {
-
-        if (file != null && file.canRead()) {
-            properties.load(new FileInputStream(file));
-        }
-    }
-
-    /**
      * This class provides access to the whole functionality of ExTeX on the
      * command line. The exception is that this method does not call
      * <code>{@link System#exit(int) System.exit()}</code>
@@ -480,6 +515,7 @@ public class ExTeX {
      * @return the exit status
      */
     public int run(final String[] args) {
+
         boolean onceMore = true;
         int returnCode = EXIT_OK;
 
@@ -527,6 +563,9 @@ public class ExTeX {
                     } else if (arg.startsWith("-job-name=")) {
                         properties.setProperty(PROP_JOBNAME_MASTER, arg
                             .substring("-job-name=".length()));
+                    } else if ("-language".startsWith(arg)) {
+                        useArg(PROP_LANG, args, ++i);
+                        applyLanguage();
                     } else if ("-progname".startsWith(arg)) {
                         useArg(PROP_PROGNAME, args, ++i);
                     } else if (arg.startsWith("-progname=")) {
@@ -554,7 +593,7 @@ public class ExTeX {
                     } else if ("--".equals(arg)) {
                         useArg(PROP_CONFIG, args, ++i);
                     } else {
-                        properties.setProperty(PROP_CONFIG,arg.substring(1));
+                        properties.setProperty(PROP_CONFIG, arg.substring(1));
                         //throw new MainUnknownOptionException(arg);
                     }
                 } else if (arg.startsWith("&")) {
@@ -579,15 +618,7 @@ public class ExTeX {
             returnCode = e.getCode();
         } catch (Throwable e) {
             showBanner();
-
-            String msg = e.getMessage();
-            logException(Messages
-                .format("ExTeX.InternalError",
-                        (msg != null && !msg.equals("") ? msg
-                            : e.getCause() != null
-                              && e.getCause().getMessage() != null ? e
-                                .getCause().getMessage() : "")), e);
-
+            logInternalError(e);
             logger.info(Messages.format("ExTeX.Logfile", properties
                 .getProperty(PROP_JOBNAME)));
 
@@ -595,22 +626,6 @@ public class ExTeX {
         }
 
         return returnCode;
-    }
-
-    /**
-     * Log a throwable including its stack trace to the logger.
-     *
-     * @param text the prefix text to log
-     * @param e the throwable to log
-     */
-    private void logException(final String text, final Throwable e) {
-        logger.severe(text);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter pw = new PrintWriter(os);
-        e.printStackTrace(pw);
-        pw.flush();
-        logger.config(os.toString());
     }
 
     /**
@@ -626,7 +641,7 @@ public class ExTeX {
         if (jobname == null || jobname.equals("")) {
             jobname = properties.getProperty(PROP_JOBNAME);
         }
-        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NOBANNER))
+        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
 
         try {
@@ -635,8 +650,8 @@ public class ExTeX {
             fileHandler.setLevel(Level.ALL);
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
-            logger.severe(Messages.format("ExTeX.LogFileError", e
-                            .getMessage()));
+            logger.severe(Messages.format("ExTeX.LogFileError",
+                          e.getMessage()));
             fileHandler = null;
         } catch (IOException e) {
             logger.severe(Messages.format("ExTeX.LogFileError", e.toString()));
@@ -705,9 +720,11 @@ public class ExTeX {
                     .getConfiguration("DocumentWriter")).newInstance(properties
                     .getProperty(PROP_OUTPUT));
 
-            OutputStream stream = outFactory
+            if (outStream == null) {
+                outStream = outFactory
                     .createOutputStream(jobname, docWriter.getExtension());
-            docWriter.setOutputStream(stream);
+            }
+            docWriter.setOutputStream(outStream);
             typesetter.setDocumentWriter(docWriter);
 
             interpreter.setTypesetter(typesetter);
@@ -716,7 +733,7 @@ public class ExTeX {
 
             interpreter.run();
 
-            stream.close();
+            outStream.close();
 
             int pages = docWriter.getPages();
             String outname = jobname + "." + docWriter.getExtension();
@@ -735,6 +752,8 @@ public class ExTeX {
         } catch (GeneralException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
+        } catch (Throwable e) {
+            logInternalError(e);
         } finally {
             if (fileHandler != null) {
                 fileHandler.close();
@@ -752,45 +771,96 @@ public class ExTeX {
     }
 
     /**
-     * Return the configobject for the DocumentWriter
-	 * @param config		the global config-object
-	 * @return	the configobject for the DocumentWriter
-	 * @throws ConfigurationException
-	 * @throws ConfigurationMissingAttributeException
-	 */
-	private Configuration getDocumentWriterConfig(Configuration config) throws ConfigurationException, ConfigurationMissingAttributeException {
-		Configuration documentwriterconfig = config.getConfiguration("DocumentWriter");
-		Iterator iterator = documentwriterconfig.iterator("WriterOutput");
-		Configuration dwcfg = null;
-		while (iterator.hasNext()) {
-			dwcfg = (Configuration) iterator.next();
-			String name = dwcfg.getAttribute("name");
-
-			if (name == null || name.equals("")) {
-				throw new ConfigurationMissingAttributeException("name", dwcfg);
-			}
-
-			if  (((String)properties.get(PROP_OUTPUT)).toLowerCase().equals(name)) {
-				break;
-			}
-		}
-		return dwcfg;
-	}
-
-	/**
-     * Print the program banner to the logger stream and remember that this has
-     * been done already to avoid repeating.
+     * Propagate the settings for the interaction mode to the
+     * <code>interactionObserver</code>.
+     *
+     * @throws MainUnknownInteractionException in case that the interaction is
+     *             not set properly
      */
-    private void showBanner() {
-        if (showBanner) {
-            logger.info(Messages.format("ExTeX.Version", //
-                                        properties
-                                            .getProperty(PROP_PROGNAME),
-                                        VERSION, //
-                                        properties
-                                            .getProperty("java.version")));
-            showBanner = false;
+    private void applyInteraction() throws MainUnknownInteractionException {
+
+        try {
+            interactionObserver.update(null, Interaction.get(properties
+                    .getProperty(PROP_INTERACTION)));
+        } catch (GeneralException e) {
+            throw new MainUnknownInteractionException("");
         }
+    }
+
+    /**
+     * ...
+     */
+    private void applyLanguage() {
+
+        String lang = (String) properties.get(PROP_LANG);
+        if (lang != null) {
+            if (lang.matches("..")) {
+                Messages.configure(new Locale(lang));
+                return;
+            } else if (lang.matches("..[_-]..")) {
+                Messages.configure(new Locale(lang.substring(0, 2), //
+                        lang.substring(3, 5)));
+                return;
+            } else if (lang.matches("..[_-]..[_-]..")) {
+                Messages.configure(new Locale(lang.substring(0, 2), //
+                        lang.substring(3, 5), lang.substring(6, 8)));
+                return;
+            }
+        }
+    }
+
+    /**
+     * Load properties from a given file if it exists.
+     *
+     * @param file the file to consider
+     *
+     * @throws IOException in case of an IO Error during the reading of the
+     *             properties file
+     */
+    private void loadUserProperties(final File file) throws IOException {
+
+        if (file != null && file.canRead()) {
+            properties.load(new FileInputStream(file));
+        }
+    }
+
+    /**
+     * Log a throwable including its stack trace to the logger.
+     *
+     * @param text the prefix text to log
+     * @param e the throwable to log
+     */
+    private void logException(final String text, final Throwable e) {
+        logger.severe(text);
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PrintWriter pw = new PrintWriter(os);
+        e.printStackTrace(pw);
+        pw.flush();
+        logger.fine(os.toString());
+    }
+
+    /**
+     * Log a throwable including its stack trace to the logger.
+     *
+     * @param e the throwable to log
+     */
+    private void logInternalError(final Throwable e) {
+
+        String msg = e.getMessage();
+        for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
+            msg = t.getMessage();
+            if ("".equals(msg)) {
+                msg = null;
+            }
+        }
+
+        if (msg == null) {
+            msg = e.getClass().getName();
+            msg = msg.substring(msg.lastIndexOf('.') + 1);
+        }
+
+        logException(Messages.format("ExTeX.InternalError", msg), e);
     }
 
     /**
@@ -807,8 +877,10 @@ public class ExTeX {
      * @throws ConfigurationException in case of a configuration error
      * @throws MainIOException in case of an IO error
      */
+
     private void initializeStreams(final Interpreter interpreter)
-        throws ConfigurationException, MainIOException {
+            throws ConfigurationException, MainIOException {
+
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
         String filename = properties.getProperty(PROP_FILE);
@@ -831,21 +903,22 @@ public class ExTeX {
         String post = properties.getProperty(PROP_CODE);
 
         if (post != null && !post.equals("")) {
-            TokenStream stream = factory.newInstance(post);
+            TokenStream stream = factory.newInstance(post, properties
+                .getProperty(PROP_ENCODING));
             interpreter.addStream(stream);
             notInitialized = false;
         }
 
         if (notInitialized) {
             TokenStream stream = factory.newInstance(new InputStreamReader(
-                System.in));
+                System.in), properties.getProperty(PROP_ENCODING));
             interpreter.addStream(stream);
 
         }
     }
 
     /**
-     * Load a format if a name of a format is given
+     * Load a format if a name of a format is given.
      *
      * @param interpreter the interpreter to delegate the loading to
      * @param fmt the name of the format to use or <code>null</code>
@@ -853,7 +926,8 @@ public class ExTeX {
      * @throws IOException in case, well, you guess it
      */
     private void loadFormat(final Interpreter interpreter, final String fmt)
-        throws IOException {
+            throws IOException {
+
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
             DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
@@ -872,6 +946,7 @@ public class ExTeX {
      * @param value the default value
      */
     private void propertyDefault(final String name, final String value) {
+
         if (!properties.containsKey(name)) {
             properties.setProperty(name, value);
         }
@@ -889,6 +964,7 @@ public class ExTeX {
      */
     private void runWithArgs(final String[] arg, final int idx)
             throws MainException {
+
         if (idx < arg.length) {
             StringBuffer in = new StringBuffer();
 
@@ -915,6 +991,7 @@ public class ExTeX {
      */
     private void runWithFile(final String[] arg, final int idx)
         throws MainException {
+
         if (idx >= arg.length) {
             run();
             return;
@@ -931,6 +1008,23 @@ public class ExTeX {
     }
 
     /**
+     * Print the program banner to the logger stream and remember that this has
+     * been done already to avoid repeating.
+     */
+    private void showBanner() {
+
+        if (showBanner) {
+            logger.info(Messages.format("ExTeX.Version", //
+                                        properties
+                                            .getProperty(PROP_PROGNAME),
+                                        VERSION, //
+                                        properties
+                                            .getProperty("java.version")));
+            showBanner = false;
+        }
+    }
+
+    /**
      * Acquire the next argument from the command line and set a property
      * accordingly. If none is found then an exception is thrown.
      *
@@ -942,6 +1036,7 @@ public class ExTeX {
      */
     private void useArg(final String name, final String[] arg, final int idx)
             throws MainMissingArgumentException {
+
         if (idx >= arg.length) {
             throw new MainMissingArgumentException(name);
         }
@@ -961,6 +1056,7 @@ public class ExTeX {
      */
     private void useDebug(final String[] arg, final int idx)
         throws MainException {
+
         if (idx >= arg.length) {
             throw new MainMissingArgumentException("debug");
         }

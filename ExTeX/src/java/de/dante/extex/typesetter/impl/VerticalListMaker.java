@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -43,7 +43,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
      * This value contains the previous depth for baseline calculations. In
      * contrast to TeX the value null is used to indicate that the next box on
      * the vertical list should be exempt from the baseline calculations.
-     * 
+     *
      * @see "TeX -- The Program [212]"
      */
     private Dimen prevDepth = new Dimen(-1000 * Dimen.ONE);
@@ -55,7 +55,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param manager the manager to ask for global changes
      */
     public VerticalListMaker(final Manager manager) {
@@ -99,7 +99,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
         final Count spacefactor) throws GeneralException {
@@ -117,7 +118,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 
     /**
      * <tt>\par</tt> s are silently ignored in vertical mode.
-     * 
+     *
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() {
@@ -132,4 +133,5 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 
         prevDepth.set(pd);
     }
+
 }

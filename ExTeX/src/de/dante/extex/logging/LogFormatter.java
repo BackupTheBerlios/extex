@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LogFormatter extends Formatter {
 
@@ -37,7 +37,8 @@ public class LogFormatter extends Formatter {
     private static int LINE_LENGTH = 80;
 
     /**
-     * The field <tt>col</tt> contains the ...
+     * The field <tt>col</tt> contains the current column for the next
+     * output character.
      */
     private int col = 0;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -54,7 +54,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param pre the Tokens to be inserted at the end of the line in case of a
      *            line breaking at this position.
      * @param post the Tokens to be inserted at the beginning of th next ine in
@@ -86,7 +86,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
     public Tokens getPostBreak() {
         return postBreak;
     }
-    
+
     /**
      * Getter for preBreak.
      *
@@ -96,21 +96,21 @@ public class DiscretionaryNode extends AbstractNode implements Node {
         return preBreak;
     }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 *
-	 * @see "TeX -- The Program [195]"
-	 */
-	public String toString() {
-		return "discretionary"; //TODO incomplete
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     *
+     * @see "TeX -- The Program [195]"
+     */
+    public String toString() {
+        return "discretionary"; //TODO incomplete
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("discretionary"); //TODO incomplete

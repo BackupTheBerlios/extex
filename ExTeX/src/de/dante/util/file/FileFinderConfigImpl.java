@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,17 +28,19 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileFinderConfigImpl implements FileFinder {
 
     /**
-     * The field <tt>EXTENSION_TAG</tt> ...
+     * The constant <tt>EXTENSION_TAG</tt> contains the name of the tag to get
+     * the possible extensions.
      */
     private static final String EXTENSION_TAG = "extension";
 
     /**
-     * The field <tt>PATH_TAG</tt> ...
+     * The constant <tt>PATH_TAG</tt> contains the name of the tag to get the
+     * path information.
      */
     private static final String PATH_TAG = "path";
 

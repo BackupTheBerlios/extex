@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,14 +32,17 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DocumentWriterFactory {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribiute
+     * used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
+
+    private static final String DEFAULT_ATTRIBUTE = "default";
 
     /**
      * The field <tt>config</tt> contains the configuration to use.
@@ -60,7 +63,7 @@ public class DocumentWriterFactory {
     /**
      * Provide a new instance of a document writer.
      *
-     * @param type ...
+     * @param type the type of the document writer
      *
      * @return the new instance
      *
@@ -71,10 +74,10 @@ public class DocumentWriterFactory {
 
         Configuration cfg = config.findConfiguration(type != null ? type : "");
         if (cfg == null) {
-            String fallback = config.getAttribute("default");
+            String fallback = config.getAttribute(DEFAULT_ATTRIBUTE);
             if (fallback == null) {
-                throw new ConfigurationMissingAttributeException("default",
-                        config);
+                throw new ConfigurationMissingAttributeException(
+                        DEFAULT_ATTRIBUTE, config);
             }
             cfg = config.findConfiguration(fallback);
             if (cfg == null) {
@@ -124,4 +127,5 @@ public class DocumentWriterFactory {
         return docWriter;
 
     }
+
 }

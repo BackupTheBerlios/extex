@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ import de.dante.util.configuration.Configuration;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
@@ -45,6 +45,8 @@ public class DumpDocumentWriter implements DocumentWriter {
 
     /**
      * Creates a new object.
+     *
+     * @param cfg the configuration object
      */
     public DumpDocumentWriter(final Configuration cfg) {
         super();
@@ -76,7 +78,7 @@ public class DumpDocumentWriter implements DocumentWriter {
      */
     public void shipout(final NodeList nodes) throws IOException {
         StringBuffer sb = new StringBuffer();
-        nodes.toString(sb,"\n");
+        nodes.toString(sb, "\n");
         out.write(sb.toString().getBytes());
         out.write('\n');
         shippedPages++;

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -49,20 +49,23 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     private Dimen move = new Dimen(0);
 
     /**
-     * The field <tt>targetWidth</tt> contains the ...
+     * The field <tt>targetWidth</tt> contains the requested width of the node
+     * list.
      */
     private Dimen targetWidth = null;
 
     /**
-     * The field <tt>targetDepth</tt> contains the ...
+     * The field <tt>targetDepth</tt> contains the requested depth of the node
+     * list.
      */
     private Dimen targetDepth = null;
 
     /**
-     * The field <tt>targetHeight</tt> contains the ...
+     * The field <tt>targetHeight</tt> contains the requested height of the node
+     * list.
      */
     private Dimen targetHeight = null;
-    
+
     /**
      * The field <tt>list</tt> is the container for the elements of this node
      * list.
@@ -114,11 +117,11 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * ...
-     * 
-     * @param node
+     *
+     * @param node ...
      */
-    protected abstract void updateDimensions(Node node);
-    
+    protected abstract void updateDimensions(final Node node);
+
     /**
      * Getter for targetDepth.
      *
@@ -175,7 +178,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * Return the size of the <code>NodeList</code>.
-     * 
+     *
      * @return the size of the <code>NodeList</code>
      */
     public int size() {
@@ -211,7 +214,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * ...
-     * 
+     *
      * @return the String representation of the object
      * @see "TeX -- The Program [182]"
      */
@@ -260,4 +263,5 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
             ((Node) list.get(i)).toString(sb, prefix2);
         }
     }
+
 }

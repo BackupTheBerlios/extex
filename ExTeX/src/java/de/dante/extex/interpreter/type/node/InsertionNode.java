@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,42 +28,44 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 
-	/**
-	 * Creates a new object.
-	 */
-	public InsertionNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     */
+    public InsertionNode() {
+        super();
+    }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [188]"
-	 */
-	public String toString() {
-		return "ins"; //TODO
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [188]"
+     */
+    public String toString() {
+        return "ins"; //TODO
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("ins"); //TODO
     }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitInsertion(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitInsertion(value, value2);
+    }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -50,7 +50,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface Context extends Serializable {
 
@@ -94,16 +94,16 @@ public interface Context extends Serializable {
     Code getActive(String name);
 
     /**
-     * ...
+     * Getter for the afterassignment token.
      *
-     * @return ...
+     * @return the afterassignment token.
      */
     Token getAfterassignment();
 
     /**
-     * ...
+     * Setter for the afterassignment token.
      *
-     * @param token ...
+     * @param token the afterassignment token.
      */
     void setAfterassignment(Token token);
 
@@ -370,15 +370,6 @@ public interface Context extends Serializable {
     HyphenationTable getHyphenationTable(int language) throws GeneralException;
 
     /**
-     * Setter for the interaction in the current group. The interaction
-     * determines how verbose the actions are reported and how the interaction
-     * with the user is performed in case of an error.
-     *
-     * @param interaction the new value of the interaction
-     */
-    void setInteraction(Interaction interaction);
-
-    /**
      * Setter for the interaction in all requested groups. The interaction
      * determines how verbose the actions are reported and how the interaction
      * with the user is performed in case of an error.
@@ -386,8 +377,11 @@ public interface Context extends Serializable {
      * @param interaction the new value of the interaction
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     *
+     * @throws GeneralException in case of an error
      */
-    void setInteraction(Interaction interaction, boolean global);
+    void setInteraction(Interaction interaction, boolean global)
+         throws GeneralException;
 
     /**
      * Getter for the interaction. The interaction determines how verbose the

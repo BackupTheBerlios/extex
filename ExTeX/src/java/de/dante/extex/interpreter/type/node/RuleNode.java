@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,42 +30,59 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
-	/**
-	 * The field <tt>context</tt> ...
-	 */
-	private TypesettingContext context;
+    /**
+     * The field <tt>context</tt> ...
+     */
+    private TypesettingContext context;
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @see "TeX -- The Program [139]"
-	 */
-	public RuleNode(final Dimen width, final Dimen height, final Dimen depth, final TypesettingContext context) {
-		super(width, height, depth);
-		this.context = context;
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param width ...
+     * @param height ...
+     * @param depth ...
+     * @param context the typographic context
+     *
+     * @see "TeX -- The Program [139]"
+     */
+    public RuleNode(final Dimen width, final Dimen height, final Dimen depth,
+            final TypesettingContext context) {
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [187]"
-	 */
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		toString(sb, "");
-		return sb.toString();
-	}
+        super(width, height, depth);
+        this.context = context;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 * @see "TeX -- The Program [187]"
-	 */
+    /**
+     * Getter for the typographic context.
+     *
+     * @return the typographic context.
+     */
+    public TypesettingContext getContext() {
+
+        return context;
+    }
+    /**
+     * ...
+     *
+     * @return ...
+     *
+     * @see "TeX -- The Program [187]"
+     */
+    public String toString() {
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     * @see "TeX -- The Program [187]"
+     */
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("rule(");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,10 +22,10 @@ import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.typesetter.Node;
 
 /**
- * ...
+ * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractNode implements Node {
     /**
@@ -58,7 +58,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param aWidth the width of the node
      */
     public AbstractNode(final Dimen aWidth) {
@@ -70,7 +70,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param aWidth the width of the node
      * @param aHeight the height of the node
      * @param aDepth the depth of the node
@@ -126,11 +126,11 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * ...
+     * Compute a text representation of this object.
      *
-     * @param prefix ...
+     * @param prefix the string prepended to each line of the resulting text
      *
-     * @return ...
+     * @return the text representation of this object
      */
     protected String toText(final String prefix) {
         StringBuffer sb = new StringBuffer();
@@ -139,10 +139,10 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * ...
+     * Puts a text representation of the object into a string buffer.
      *
      * @param sb the output string buffer
-     * @param prefix ...
+     * @param prefix the string prepended to each line of the resulting text
      */
     public void toText(final StringBuffer sb, final String prefix) {
         sb.append(prefix);

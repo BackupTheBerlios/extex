@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -32,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <tt>nonstopmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Nonstopmode extends AbstractCode {
 
@@ -52,7 +53,8 @@ public class Nonstopmode extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         context.setInteraction(Interaction.NONSTOPMODE, prefix.isGlobal());
         prefix.clear();

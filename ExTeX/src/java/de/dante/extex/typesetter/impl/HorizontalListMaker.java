@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -105,9 +105,11 @@ public class HorizontalListMaker extends AbstractListMaker
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void add(final TypesettingContext context, final UnicodeChar symbol) {
+    public void add(final TypesettingContext context,
+            final UnicodeChar symbol) {
+
         CharNode c = getManager().getCharNodeFactory().newInstance(context,
-            symbol);
+                                                                   symbol);
         nodes.add(c);
 
         int f = c.getSpaceFactor();
@@ -115,7 +117,7 @@ public class HorizontalListMaker extends AbstractListMaker
         if (f != 0) {
             spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
                            && f > DEFAULT_SPACEFACTOR //
-                ? DEFAULT_SPACEFACTOR : f);
+                    ? DEFAULT_SPACEFACTOR : f);
         }
     }
 
@@ -127,7 +129,7 @@ public class HorizontalListMaker extends AbstractListMaker
         spacefactor = DEFAULT_SPACEFACTOR;
     }
 
-/**
+    /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.Count)
      */

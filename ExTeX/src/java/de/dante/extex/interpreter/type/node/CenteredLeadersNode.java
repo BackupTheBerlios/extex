@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,33 +28,35 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
-	/**
-	 * Creates a new object.
-	 */
-	public CenteredLeadersNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     */
+    public CenteredLeadersNode() {
+        super();
+    }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [190]"
-	 */
-	public String toString() {
-		return "cleaders "; //TODO
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [190]"
+     */
+    public String toString() {
+        return "cleaders "; //TODO
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitCenteredLeaders(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitCenteredLeaders(value, value2);
+    }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -64,6 +64,7 @@ import de.dante.util.file.FileFinderList;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
+import de.dante.util.observer.ObserverList;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -99,10 +100,14 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
+    /**
+     * The constant <tt>TYPESETTING_CONTEXT_TAG</tt> contains the name of the
+     * configuration tag for the typesetting context.
+     */
     private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
 
     /**
@@ -194,25 +199,34 @@ public class ContextImpl implements Context, Observable, Serializable {
      * whole document in permille. The value is always greater than 0 and
      * less or equal to magnificationMax.
      */
-    private long magnification = 1000;
+    private long magnification = Math.max(1000, MAGNIFICATION_MAX);
 
     /**
-     * The field <tt>tcFactory</tt> ...
+     * The field <tt>observersInteraction</tt> contains the observer list which
+     * is used for the observers registered to receive notifications
+     * when the interaction is changed. The argument is the new interaction
+     * mode.
+     */
+    private ObserverList observersInteraction = new ObserverList();
+
+    /**
+     * The field <tt>tcFactory</tt> contains the factory to acquire new
+     * instances of a TypesettingContext.
      */
     private TypesettingContextFactory tcFactory;
 
     /**
-     * The field <tt>fontFactory</tt> ...
+     * The field <tt>fontFactory</tt> contains the font factory to use.
      */
     private FontFactory fontFactory;
 
     /**
      * Creates a new object.
      *
-     * @param configuration ...
+     * @param configuration the configuration to use
      *
-     * @throws ConfigurationException ...
-     * @throws GeneralException ...
+     * @throws ConfigurationException in case of an configuration error
+     * @throws GeneralException in case of an execution error
      */
     public ContextImpl(final Configuration configuration)
             throws ConfigurationException, GeneralException {
@@ -257,12 +271,13 @@ public class ContextImpl implements Context, Observable, Serializable {
                     configuration.toString());
         }
 
-        long s;
         String size = fontConfiguration.getAttribute(DEFAULT_SIZE);
         if (size == null) {
             throw new ConfigurationMissingAttributeException(DEFAULT_SIZE,
                     fontConfiguration);
         }
+
+        long s;
         try {
             float f = Float.parseFloat(size);
             s = (long) (Dimen.ONE * f);
@@ -270,6 +285,7 @@ public class ContextImpl implements Context, Observable, Serializable {
             throw new ConfigurationMissingAttributeException(DEFAULT_SIZE,
                     fontConfiguration);
         }
+
         Dimen fontsize = new Dimen(s);
 
         tcFactory = new TypesettingContextFactory(typesettingConfig);
@@ -366,10 +382,27 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getCode(de.dante.extex.scanner.Token)
+     */
+    public Code getCode(final Token t) throws GeneralException {
+
+        if (t == null) {
+            return null;
+        } else if (t instanceof ControlSequenceToken) {
+            return getMacro(t.getValue());
+        } else if (t instanceof ActiveCharacterToken) {
+            return getActive(t.getValue());
+        }
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
      *         long)
      */
     public void setCount(final String name, final long value) {
+
         Count count = new Count(value);
         group.setCount(name, count);
 
@@ -392,6 +425,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getCount(java.lang.String)
      */
     public Count getCount(final String name) {
+
         return group.getCount(name);
     }
 
@@ -400,6 +434,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *         long)
      */
     public void setDimen(final String name, final long value) {
+
         Dimen dimen = new Dimen(value);
         group.setDimen(name, dimen);
 
@@ -411,6 +446,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *         de.dante.extex.interpreter.type.Dimen)
      */
     public void setDimen(final String name, final Dimen value) {
+
         group.setDimen(name, value);
     }
 
@@ -420,6 +456,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setDimen(final String name, final Dimen value,
             final boolean global) {
+
         group.setDimen(name, value, global);
     }
 
@@ -429,6 +466,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setDimen(final String name, final long value,
             final boolean global) {
+
         Dimen dimen = new Dimen(value);
         group.setDimen(name, dimen, global);
 
@@ -439,6 +477,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getDimen(java.lang.String)
      */
     public Dimen getDimen(final String name) {
+
         return group.getDimen(name);
     }
 
@@ -446,12 +485,15 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getFontFactory()
      */
     public FontFactory getFontFactory() {
+
         return fontFactory;
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setFontFactory(de.dante.extex.font.FontFactory)
      */
     public void setFontFactory(final FontFactory factory) {
+
         this.fontFactory = factory;
     }
 
@@ -459,6 +501,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
      */
     public boolean isGlobalGroup() {
+
         return (group.getNext() == null);
     }
 
@@ -466,16 +509,20 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getGlue(java.lang.String)
      */
     public Glue getGlue(final String name) {
+
         return group.getSkip(name);
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setGlue(java.lang.String,
      *      de.dante.extex.interpreter.type.Glue, boolean)
      */
     public void setGlue(final String name, final Glue value,
         final boolean global) {
+
         group.setSkip(name, value, global);
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setGlue(java.lang.String,
      *      de.dante.extex.interpreter.type.Glue)
@@ -488,15 +535,9 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
      */
     public HyphenationTable getHyphenationTable(final int language) {
+
         return hyphenationManager.getHyphenationTable(Integer
                 .toString(language));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction)
-     */
-    public void setInteraction(final Interaction interaction) {
-        group.setInteraction(interaction);
     }
 
     /**
@@ -504,14 +545,17 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      boolean)
      */
     public void setInteraction(final Interaction interaction,
-            final boolean global) {
+            final boolean global) throws GeneralException {
+
         group.setInteraction(interaction, global);
+        observersInteraction.update(this, interaction);
     }
 
     /**
      * @see de.dante.extex.interpreter.context.Context#getInteraction()
      */
     public Interaction getInteraction() {
+
         return group.getInteraction();
     }
 
@@ -520,6 +564,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *         de.dante.extex.interpreter.Code)
      */
     public void setMacro(final String name, final Code code) {
+
         group.setMacro(name, code);
     }
 
@@ -529,6 +574,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setMacro(final String name, final Code code,
             final boolean global) {
+
         group.setMacro(name, code, global);
     }
 
@@ -536,6 +582,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getMacro(java.lang.String)
      */
     public Code getMacro(final String name) {
+
         return group.getMacro(name);
     }
 
@@ -573,6 +620,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getMagnification()
      */
     public long getMagnification() {
+
         return magnification;
     }
 
@@ -609,6 +657,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @return the token factory
      */
     public TokenFactory getTokenFactory() {
+
         return tokenFactory;
     }
 
@@ -618,6 +667,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @return the tokenizer
      */
     public Tokenizer getTokenizer() {
+
         return (Tokenizer) group;
     }
 
@@ -627,6 +677,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @param context the new context to use
      */
     public void setTypesettingContext(final TypesettingContext context) {
+
         group.setTypesettingContext(context);
     }
 
@@ -639,6 +690,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setTypesettingContext(final TypesettingContext context,
             final boolean global) {
+
         group.setTypesettingContext(context, global);
     }
 
@@ -648,6 +700,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @return the typesetting context
      */
     public TypesettingContext getTypesettingContext() {
+
         return group.getTypesettingContext();
     }
 
@@ -655,6 +708,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
      */
     public void afterGroup(final Token t) {
+
         group.afterGroup(t);
     }
 
@@ -678,6 +732,10 @@ public class ContextImpl implements Context, Observable, Serializable {
             throw new GeneralHelpingException("TTP.TooManyRightBraces");
         }
 
+        if (group.getInteraction() != next.getInteraction()) {
+            observersInteraction.update(this, next.getInteraction());
+        }
+
         group.runAfterGroup(this, typesetter);
 
         Tokens toks = group.getAfterGroup();
@@ -694,16 +752,18 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @return ...
      */
     public long popConditional() {
+
         return ((Conditional) conditionalStack.pop()).getValue();
     }
 
     /**
-     * Put a boolean value onto the if stack.
+     * Put a value onto the conditional stack.
      *
      * @param locator the locator for the start of the if statement
      * @param value the value to push
      */
     public void pushConditional(final Locator locator, final long value) {
+
         conditionalStack.add(new Conditional(locator, value));
     }
 
@@ -711,6 +771,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#openGroup()
      */
     public void openGroup() throws ConfigurationException {
+
         group = groupFactory.newInstance(group);
     }
 
@@ -718,6 +779,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
      */
     public Tokens getToks(final String name) {
+
         return group.getToks(name);
     }
 
@@ -727,6 +789,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setToks(final String name, final Tokens toks,
             final boolean global) {
+
         group.setToks(name, toks, global);
     }
 
@@ -735,6 +798,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.Tokens)
      */
     public void setToks(final String name, final Tokens toks) {
+
         group.setToks(name, toks);
     }
 
@@ -744,6 +808,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @return the group.
      */
     protected Group getGroup() {
+
         return group;
     }
 
@@ -751,6 +816,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getInFile(java.lang.String)
      */
     public InFile getInFile(final String name) {
+
         return group.getInFile(name);
     }
 
@@ -758,6 +824,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getOutFile(java.lang.String)
      */
     public OutFile getOutFile(final String name) {
+
         return group.getOutFile(name);
     }
 
@@ -766,6 +833,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.InFile)
      */
     public void setInFile(final String name, final InFile file) {
+
         group.setInFile(name, file);
     }
 
@@ -775,6 +843,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setInFile(final String name, final InFile file,
         final boolean global) {
+
         group.setInFile(name, file, global);
     }
 
@@ -783,6 +852,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      *      de.dante.extex.interpreter.type.OutFile)
      */
     public void setOutFile(final String name, final OutFile file) {
+
         group.setOutFile(name, file);
     }
 
@@ -792,6 +862,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void setOutFile(final String name, final OutFile file,
         final boolean global) {
+
         group.setOutFile(name, file, global);
     }
 
@@ -801,24 +872,12 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public void registerObserver(final String name, final Observer observer)
         throws NotObservableException {
-        // Currently left empty.
-        // Needed for the observer pattern on closing groups
-    }
 
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getCode(de.dante.extex.scanner.Token)
-     */
-    public Code getCode(final Token t) throws GeneralException {
-
-        if (t == null) {
-            return null;
-        } else if (t instanceof ControlSequenceToken) {
-            return getMacro(t.getValue());
-        } else if (t instanceof ActiveCharacterToken) {
-            return getActive(t.getValue());
+        if ("interaction".equals(name)) {
+             observersInteraction.add(observer);
+        } else {
+            throw new NotObservableException(name);
         }
-
-        return null;
     }
 
     /**
