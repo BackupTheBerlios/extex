@@ -19,12 +19,9 @@
 
 package de.dante.extex.i18n;
 
-import java.text.MessageFormat;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
-
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides an Exception with the possibility to provide additional
@@ -83,7 +80,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class HelpingException extends GeneralException {
 
@@ -100,23 +97,6 @@ public class HelpingException extends GeneralException {
     private static final String DEFAULT_ARGUMENT = "?";
 
     /**
-     * The field <tt>defaultBundle</tt> contains the default resource bundle.
-     */
-    private static ResourceBundle defaultBundle = null;
-
-    /**
-     * Setter for the resource bundle to use.
-     *
-     * @param resource the ResourceBundle to use
-     *
-     * @deprecated use the localizer instead.
-     */
-    public static void setResource(final ResourceBundle resource) {
-
-        defaultBundle = resource;
-    }
-
-    /**
      * The field <tt>arg1</tt> contains the first argument.
      */
     private String arg1;
@@ -130,11 +110,6 @@ public class HelpingException extends GeneralException {
      * The field <tt>arg3</tt> contains the third argument.
      */
     private String arg3;
-
-    /**
-     * The field <tt>bundle</tt> contains the resource bundle to use.
-     */
-    private ResourceBundle bundle = null;
 
     /**
      * The field <tt>localizer</tt> contains the localizer.
@@ -245,7 +220,8 @@ public class HelpingException extends GeneralException {
 
         super();
         this.tag = messageTag;
-        this.bundle = defaultBundle;
+        this.localizer = LocalizerFactory.getLocalizer(HelpingException.class
+                .getName());
     }
 
     /**
@@ -260,8 +236,9 @@ public class HelpingException extends GeneralException {
 
         super();
         this.tag = messageTag;
+        this.localizer = LocalizerFactory.getLocalizer(HelpingException.class
+                .getName());
         this.arg1 = a1;
-        this.bundle = defaultBundle;
     }
 
     /**
@@ -278,36 +255,10 @@ public class HelpingException extends GeneralException {
 
         super();
         this.tag = messageTag;
+        this.localizer = LocalizerFactory.getLocalizer(HelpingException.class
+                .getName());
         this.arg1 = a1;
         this.arg2 = a2;
-        this.bundle = defaultBundle;
-    }
-
-    /**
-     * Unfailing getter for a format string.
-     *
-     * @param name the key string for the format
-     *
-     * @return the format string to use
-     */
-    protected String determineFormat(final String name) {
-
-        if (localizer != null) {
-            return localizer.format(name);
-        }
-
-        // TODO gene: The following fallback should be eliminated
-        //       as soon as the deprecated methods are removed.
-
-        String format;
-        try {
-            return this.bundle.getString(name);
-        } catch (MissingResourceException e) {
-            format = "???" + name + "???";
-        } catch (NullPointerException e) {
-            format = "???" + name + "???";
-        }
-        return format;
     }
 
     /**
@@ -317,8 +268,7 @@ public class HelpingException extends GeneralException {
      */
     public String getHelp() {
 
-        return MessageFormat.format(determineFormat(tag + ".help"),
-                new Object[]{arg1, arg2, arg3});
+        return localizer.format(tag + ".help", arg1, arg2, arg3);
     }
 
     /**
@@ -328,8 +278,7 @@ public class HelpingException extends GeneralException {
      */
     public String getLocalizedMessage() {
 
-        return MessageFormat.format(determineFormat(tag), //
-                new Object[]{arg1, arg2, arg3});
+        return localizer.format(tag, arg1, arg2, arg3);
     }
 
 }
