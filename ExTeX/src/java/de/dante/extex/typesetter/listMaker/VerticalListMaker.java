@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -155,9 +155,10 @@ public class VerticalListMaker extends AbstractListMaker {
     public void letter(final Context context, final TypesettingContext font,
             final UnicodeChar symbol) throws TypesetterException {
 
-        ListMaker hlist = new HorizontalListMaker(getManager());
+        ListManager man = getManager();
+        ListMaker hlist = new HorizontalListMaker(man);
         hlist.letter(context, font, symbol);
-        getManager().push(hlist);
+        man.push(hlist);
     }
 
 }
