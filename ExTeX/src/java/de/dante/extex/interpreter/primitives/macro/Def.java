@@ -24,11 +24,13 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.LeftBraceToken;
 import de.dante.extex.scanner.MacroParamToken;
 import de.dante.extex.scanner.OtherToken;
+import de.dante.extex.scanner.RightBraceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -63,7 +65,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Def extends AbstractAssignment {
 
@@ -136,23 +138,34 @@ public class Def extends AbstractAssignment {
         boolean afterHash = false;
 
         for (Token t = source.getToken(); t != null; t = source.getToken()) {
+
             if (t instanceof LeftBraceToken) {
                 source.push(t);
                 pattern.setArity(no);
                 return pattern;
+            } else if (t instanceof RightBraceToken) {
+                throw new HelpingException(getLocalizer(),
+                        "TTP.MissingLeftDefBrace",
+                        printableControlSequence(context));
+            } else if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code != null && code.isOuter()) {
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.OuterInDef", printableControlSequence(context));
+                }
             }
 
             if (afterHash) {
                 if (t instanceof OtherToken) {
                     if (t.getValue().charAt(0) != '0' + no) {
                         throw new HelpingException(getLocalizer(),
-                                "TTP.NonConseqParams",
+                                "TTP.NonConsequtiveParams",
                                 printableControlSequence(context));
                     }
                     no++;
                 } else if (!(t instanceof MacroParamToken)) {
                     throw new HelpingException(getLocalizer(),
-                            "TTP.NonConseqParams",
+                            "TTP.NonConsequtiveParams",
                             printableControlSequence(context));
                 }
                 afterHash = false;
