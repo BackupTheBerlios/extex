@@ -62,7 +62,6 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.main.Version;
 import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
@@ -71,6 +70,7 @@ import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.main.exception.MainMissingArgumentException;
 import de.dante.extex.main.exception.MainUnknownInteractionException;
 import de.dante.extex.main.exception.MainUnknownOptionException;
+import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.observer.FileCloseObserver;
 import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.InteractionObserver;
@@ -611,7 +611,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.88 $
+ * @version $Revision: 1.89 $
  */
 public class ExTeX {
 
