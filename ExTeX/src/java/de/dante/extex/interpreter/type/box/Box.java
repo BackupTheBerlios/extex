@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.type.box;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -42,7 +42,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Box implements Serializable {
 
@@ -78,7 +78,7 @@ public class Box implements Serializable {
 
         if (!t.isa(Catcode.LEFTBRACE)) {
             //TODO insert { and try to recover
-            throw new HelpingException(getLocalizer(), "TTP.MissingLeftBrace");
+            throw new MissingLeftBraceHelpingException("???");
         }
 
         if (isHorizontal) {
