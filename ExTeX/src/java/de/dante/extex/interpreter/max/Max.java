@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.max;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
@@ -36,6 +38,8 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
+import de.dante.extex.interpreter.loader.LoaderException;
+import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -56,6 +60,7 @@ import de.dante.extex.scanner.SupMarkToken;
 import de.dante.extex.scanner.TabMarkToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.TokenVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -83,7 +88,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Max extends Moritz
         implements
@@ -212,6 +217,7 @@ public class Max extends Moritz
 
         context = new ContextFactory(config.getConfiguration("Context"))
                 .newInstance(null);
+        context.setTokenFactory(new TokenFactoryImpl()); //TODO
         setContext(context);
         try {
             context.setInteraction(Interaction.ERRORSTOPMODE, true);
@@ -304,15 +310,6 @@ public class Max extends Moritz
                 throw new ConfigurationWrapperException(e);
             }
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#dumpFormat()
-     */
-    public void dumpFormat() {
-
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -427,12 +424,32 @@ public class Max extends Moritz
     }
 
     /**
-     * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.lang.String)
+     * ...
+     *
+     * @param stream the stream to read the format information from
+     *
+     * @throws LoaderException in case that a class could not be found
+     *  on the classpath or a wrong class is contained in the format
+     * @throws IOException in case that an IO error occurs during the reading
+     *  of the format
+     *
+     * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.io.InputStream)
      */
-    public void loadFormat(final String format) {
+    public void loadFormat(final InputStream stream)
+            throws IOException, LoaderException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        SerialLoader loader = new SerialLoader();
+        Context newContext = loader.load(stream);
+
+        newContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        newContext.setCount("month", calendar.get(Calendar.MONTH), true);
+        newContext.setCount("year", calendar.get(Calendar.YEAR), true);
+        newContext.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+        newContext.setFontFactory(context.getFontFactory());
+        newContext.setTokenFactory(context.getTokenFactory());
+        // TODO incomplete?
+        context = newContext;
     }
 
     /**
