@@ -19,6 +19,9 @@
 
 package de.dante.extex.documentWriter.dvi;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
@@ -32,24 +35,19 @@ import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.CharNode;
-import de.dante.extex.typesetter.type.node.GlueNode;
-import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
-import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
-import java.io.IOException;
-import java.io.OutputStream;
 
 /**
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DviDocumentWriter
         implements
@@ -198,85 +196,83 @@ public class DviDocumentWriter
 
         }
 
-        public Object visitAdjust(final Object value, final Object value2)
+        public Object visitAdjust(final Node value, final Object value2)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAfterMath(final Object value, final Object value2)
+        public Object visitAfterMath(final Node value, final Object value2)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAlignedLeaders(final Object value,
+        public Object visitAlignedLeaders(final Node value,
                 final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitBeforeMath(final Object value, final Object value2)
+        public Object visitBeforeMath(final Node node, final Object value2)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitCenteredLeaders(final Object value,
-                final Object value2) throws GeneralException {
+        public Object visitCenteredLeaders(final Node node,
+                final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitChar(final Object value, final Object value2)
+        public Object visitChar(final Node node, final Object value)
                 throws GeneralException {
 
-            CharNode node = (CharNode) value;
-            Font font = node.getTypesettingContext().getFont();
+            CharNode cnode = (CharNode) node;
+            Font font = cnode.getTypesettingContext().getFont();
 
             if (currentFont != font) {
                 dviWriter.selectFont(font);
                 currentFont = font;
             }
 
-            dviWriter.writeNode(node);
+            dviWriter.writeNode(cnode);
 
             return null;
         }
 
-        public Object visitDiscretionary(final Object value, final Object value2)
+        public Object visitDiscretionary(final Node node, final Object value)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitExpandedLeaders(final Object value,
-                final Object value2) throws GeneralException {
+        public Object visitExpandedLeaders(final Node node,
+                final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitGlue(final Object value, final Object value2)
+        public Object visitGlue(final Node node, final Object value)
                 throws GeneralException {
-
-            GlueNode node = (GlueNode) value;
 
             dviWriter.writeSpace(node.getWidth(), mode);
 
             return null;
         }
 
-        public Object visitHorizontalList(final Object value,
-                final Object value2) throws GeneralException {
+        public Object visitHorizontalList(final Node node,
+                final Object value) throws GeneralException {
 
-            NodeList nodes = (NodeList) value;
+            NodeList nodes = (NodeList) node;
             Mode oldMode = mode;
 
             mode = Mode.HORIZONTAL;
@@ -287,66 +283,62 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitInsertion(final Object value, final Object value2)
+        public Object visitInsertion(final Node node, final Object value)
                 throws GeneralException {
 
             throw confusion("insertion");
         }
 
-        public Object visitKern(final Object value, final Object value2)
+        public Object visitKern(final Node node, final Object value)
                 throws GeneralException {
-
-            KernNode node = (KernNode) value;
 
             dviWriter.writeSpace(node.getWidth(), mode);
 
             return null;
         }
 
-        public Object visitLigature(final Object value, final Object value2)
+        public Object visitLigature(final Node node, final Object value)
                 throws GeneralException {
 
-            LigatureNode node = (LigatureNode) value;
+            LigatureNode lnode = (LigatureNode) node;
 
-            visitChar(node, value2);
+            visitChar(lnode, value);
 
             return null;
         }
 
-        public Object visitMark(final Object value, final Object value2)
+        public Object visitMark(final Node node, final Object value)
                 throws GeneralException {
 
             throw confusion("mark");
         }
 
-        public Object visitPenalty(final Object value, final Object value2)
+        public Object visitPenalty(final Node node, final Object value)
                 throws GeneralException {
 
             throw confusion("penalty");
         }
 
-        public Object visitRule(final Object value, final Object value2)
+        public Object visitRule(final Node node, final Object value)
                 throws GeneralException {
 
-            dviWriter.writeNode((RuleNode) value);
+            dviWriter.writeNode((RuleNode) node);
 
             return null;
         }
 
-        public Object visitSpace(final Object value, final Object value2)
+        public Object visitSpace(final Node node, final Object value)
                 throws GeneralException {
-
-            SpaceNode node = (SpaceNode) value;
 
             dviWriter.writeSpace(node.getWidth(), mode);
 
             return null;
         }
 
-        public Object visitVerticalList(final Object value, final Object value2)
+        public Object visitVerticalList(final Node node, final Object value)
                 throws GeneralException {
 
-            NodeList nodes = (NodeList) value;
+            NodeList nodes = (NodeList) node;
             Mode oldMode = mode;
 
             mode = Mode.VERTICAL;
@@ -357,10 +349,10 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitWhatsIt(final Object value, final Object value2)
+        public Object visitWhatsIt(final Node nde, final Object value)
                 throws GeneralException {
 
-            dviWriter.writeNode((WhatsItNode) value);
+            dviWriter.writeNode((WhatsItNode) nde);
             return null;
         }
 

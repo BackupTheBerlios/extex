@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -40,7 +40,6 @@ import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -55,7 +54,7 @@ import de.dante.util.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SVGDocumentWriter
         implements
@@ -286,10 +285,10 @@ public class SVGDocumentWriter
     // ----------------------------------------------
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(Node,
      * java.lang.Object)
      */
-    public Object visitAdjust(final Object value, final Object value2) {
+    public Object visitAdjust(final Node value, final Object value2) {
 
         //        Element element = new Element("adjust");
         //        AdjustNode node = (AdjustNode) value;
@@ -297,10 +296,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(Node,
      * java.lang.Object)
      */
-    public Object visitAfterMath(final Object value, final Object value2) {
+    public Object visitAfterMath(final Node value, final Object value2) {
 
         //        Element element = new Element("aftermath");
         //        AfterMathNode node = (AfterMathNode) value;
@@ -308,10 +307,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(Node,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final Object value, final Object value2) {
+    public Object visitAlignedLeaders(final Node value, final Object value2) {
 
         //        Element element = new Element("alignedleaders");
         //        AlignedLeadersNode node = (AlignedLeadersNode) value;
@@ -319,10 +318,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(Node,
      * java.lang.Object)
      */
-    public Object visitBeforeMath(final Object value, final Object value2) {
+    public Object visitBeforeMath(final Node node, final Object value2) {
 
         //        Element element = new Element("beforemath");
         //        BeforeMathNode node = (BeforeMathNode) value;
@@ -330,10 +329,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(Node,
      * java.lang.Object)
      */
-    public Object visitCenteredLeaders(final Object value, final Object value2) {
+    public Object visitCenteredLeaders(final Node node, final Object value) {
 
         //        Element element = new Element("centeredleaders");
         //        CenteredLeadersNode node = (CenteredLeadersNode) value;
@@ -341,14 +340,14 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(Node,
      * java.lang.Object)
      */
-    public Object visitChar(final Object value, final Object value2) {
+    public Object visitChar(final Node node, final Object value) {
 
-        CharNode node = (CharNode) value;
-        UnicodeChar uc = node.getCharacter();
-        Font font = node.getTypesettingContext().getFont();
+        CharNode cnode = (CharNode) node;
+        UnicodeChar uc = cnode.getCharacter();
+        Font font = cnode.getTypesettingContext().getFont();
 
         // ------- text --------------
         Element text = new Element("text", SVGNAMESPACE);
@@ -383,10 +382,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(Node,
      * java.lang.Object)
      */
-    public Object visitDiscretionary(final Object value, final Object value2) {
+    public Object visitDiscretionary(final Node node, final Object value) {
 
         //        Element element = new Element("discretionary");
         //        DiscretionaryNode node = (DiscretionaryNode) value;
@@ -394,10 +393,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(Node,
      * java.lang.Object)
      */
-    public Object visitExpandedLeaders(final Object value, final Object value2) {
+    public Object visitExpandedLeaders(final Node node, final Object value) {
 
         //        Element element = new Element("expandedleaders");
         //        ExpandedLeadersNode node = (ExpandedLeadersNode) value;
@@ -405,10 +404,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(Node,
      * java.lang.Object)
      */
-    public Object visitGlue(final Object value, final Object value2) {
+    public Object visitGlue(final Node node, final Object value) {
 
         //        Element element = new Element("glue");
         //        GlueNode node = (GlueNode) value;
@@ -419,20 +418,20 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(Node,
      * java.lang.Object)
      */
-    public Object visitHorizontalList(final Object value, final Object value2)
+    public Object visitHorizontalList(final Node node, final Object value)
             throws GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
-        HorizontalListNode node = (HorizontalListNode) value;
+        HorizontalListNode lnode = (HorizontalListNode) node;
 
         setDimenLength(rect, "x", currentX);
         setDimenLength(rect, "y", currentY);
-        setDimenLength(rect, "width", node.getWidth());
-        Dimen rH = new Dimen(node.getHeight());
-        rH.add(node.getDepth());
+        setDimenLength(rect, "width", lnode.getWidth());
+        Dimen rH = new Dimen(lnode.getHeight());
+        rH.add(lnode.getDepth());
         setDimenLength(rect, "height", rH);
         rect.setAttribute("fill", "none");
         rect.setAttribute("stroke", "red");
@@ -445,16 +444,16 @@ public class SVGDocumentWriter
         Dimen saveY = new Dimen(currentY);
 
         // set x to baseline
-        currentY.add(node.getHeight());
+        currentY.add(lnode.getHeight());
 
         // baseline
-        if (node.getDepth().getValue() != 0) {
+        if (lnode.getDepth().getValue() != 0) {
 
             Element line = new Element("line", SVGNAMESPACE);
             setDimenLength(line, "x1", currentX);
             setDimenLength(line, "y1", currentY);
             Dimen x2 = new Dimen(currentX);
-            x2.add(node.getWidth());
+            x2.add(lnode.getWidth());
             setDimenLength(line, "x2", x2);
             setDimenLength(line, "y2", currentY);
             line.setAttribute("stroke", "red");
@@ -463,24 +462,24 @@ public class SVGDocumentWriter
             parent.addContent(line);
         }
 
-        NodeIterator it = node.iterator();
+        NodeIterator it = lnode.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
-            newnode.visit(this, node);
+            newnode.visit(this, lnode);
         }
         currentX.set(saveX);
         currentY.set(saveY);
-        currentY.add(node.getHeight());
-        currentY.add(node.getDepth());
+        currentY.add(lnode.getHeight());
+        currentY.add(lnode.getDepth());
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(Node,
      * java.lang.Object)
      */
-    public Object visitInsertion(final Object value, final Object value2) {
+    public Object visitInsertion(final Node node, final Object value) {
 
         //        Element element = new Element("insertion");
         //        InsertionNode node = (InsertionNode) value;
@@ -488,10 +487,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(Node,
      * java.lang.Object)
      */
-    public Object visitKern(final Object value, final Object value2) {
+    public Object visitKern(final Node node, final Object value) {
 
         //        Element element = new Element("kern");
         //        KernNode node = (KernNode) value;
@@ -499,10 +498,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(Node,
      * java.lang.Object)
      */
-    public Object visitLigature(final Object value, final Object value2) {
+    public Object visitLigature(final Node node, final Object value) {
 
         //        Element element = new Element("ligature");
         //        LigatureNode node = (LigatureNode) value;
@@ -524,10 +523,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(Node,
      * java.lang.Object)
      */
-    public Object visitMark(final Object value, final Object value2) {
+    public Object visitMark(final Node node, final Object value) {
 
         //        Element element = new Element("mark");
         //        MarkNode node = (MarkNode) value;
@@ -535,10 +534,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(Node,
      * java.lang.Object)
      */
-    public Object visitPenalty(final Object value, final Object value2) {
+    public Object visitPenalty(final Node node, final Object value) {
 
         //        Element element = new Element("penalty");
         //        PenaltyNode node = (PenaltyNode) value;
@@ -547,10 +546,10 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(Node,
      * java.lang.Object)
      */
-    public Object visitRule(final Object value, final Object value2) {
+    public Object visitRule(final Node node, final Object value) {
 
         //        Element element = new Element("rule");
         //        RuleNode node = (RuleNode) value;
@@ -558,13 +557,12 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(Node,
      * java.lang.Object)
      */
-    public Object visitSpace(final Object value, final Object value2) {
+    public Object visitSpace(final Node node, final Object value) {
 
         Element rect = new Element("rect", SVGNAMESPACE);
-        SpaceNode node = (SpaceNode) value;
 
         setDimenLength(rect, "x", currentX);
         Dimen y = new Dimen(currentY);
@@ -583,20 +581,20 @@ public class SVGDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(Node,
      * java.lang.Object)
      */
-    public Object visitVerticalList(final Object value, final Object value2)
+    public Object visitVerticalList(final Node node, final Object value)
             throws GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
-        VerticalListNode node = (VerticalListNode) value;
+        VerticalListNode lnode = (VerticalListNode) node;
 
         setDimenLength(rect, "x", currentX);
         setDimenLength(rect, "y", currentY);
-        setDimenLength(rect, "width", node.getWidth());
-        Dimen rH = new Dimen(node.getHeight());
-        rH.add(node.getDepth());
+        setDimenLength(rect, "width", lnode.getWidth());
+        Dimen rH = new Dimen(lnode.getHeight());
+        rH.add(lnode.getDepth());
         setDimenLength(rect, "height", rH);
         rect.setAttribute("fill", "none");
         rect.setAttribute("stroke", "yellow");
@@ -608,24 +606,24 @@ public class SVGDocumentWriter
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
-        NodeIterator it = node.iterator();
+        NodeIterator it = lnode.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
-            newnode.visit(this, node);
+            newnode.visit(this, lnode);
         }
         currentX.set(saveX);
         currentY.set(saveY);
-        currentY.add(node.getDepth());
-        currentY.add(node.getHeight());
+        currentY.add(lnode.getDepth());
+        currentY.add(lnode.getHeight());
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(Node,
      * java.lang.Object)
      */
-    public Object visitWhatsIt(final Object value, final Object value2) {
+    public Object visitWhatsIt(final Node nde, final Object value) {
 
         //        Element element = new Element("whatsit");
         //        WhatsItNode node = (WhatsItNode) value;

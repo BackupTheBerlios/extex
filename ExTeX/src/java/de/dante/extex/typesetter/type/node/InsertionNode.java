@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InsertionNode extends AbstractNode implements Node {
 
@@ -64,17 +64,6 @@ public class InsertionNode extends AbstractNode implements Node {
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("insert"); //TODO gene: incomplete
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-
-        return visitor.visitInsertion(value, value2);
     }
 
     /**

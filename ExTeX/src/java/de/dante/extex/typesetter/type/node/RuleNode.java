@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -105,17 +105,6 @@ public class RuleNode extends AbstractNode implements Node {
         x = getWidth();
         String w = (x == null ? "*" : x.toString());
         sb.append(getLocalizer().format("RuleNode.Text", h, d, w));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-
-        return visitor.visitRule(value, value2);
     }
 
     /**

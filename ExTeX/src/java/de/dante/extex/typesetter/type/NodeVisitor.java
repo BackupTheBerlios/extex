@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -121,11 +121,11 @@ import de.dante.util.GeneralException;
  *         <i>// Do something with node depending on its type</i>
  *     }
  * <b>
- *     public Object visitAdjust(final Object arg1, final Object arg2) {
+ *     public Object visitAdjust(final Node node, final Object arg) {
  *         <i>// do something for adjust nodes</i>
  *     }
  *
- *     public Object visitChar(final Object arg1, final Object arg2) {
+ *     public Object visitChar(final Node node, final Object arg) {
  *         <i>// do something for char nodes</i>
  *     }
  *
@@ -152,13 +152,13 @@ import de.dante.util.GeneralException;
  *         <b>node.visit(this, node, null);</b>
  *     }
  *
- *     public Object visitAdjust(final Object arg1, final Object arg2) {
- *         <b>AdjustNode node = (AdjustNode) arg1;</b>
+ *     public Object visitAdjust(final Node node, final Object arg) {
+ *         <b>AdjustNode anode = (AdjustNode) node;</b>
  *         <i>// do something for adjust nodes</i>
  *     }
  *
- *     public Object visitChar(final Object arg1, final Object arg2) {
- *         <b>CharNode node = (CharNode) arg1;</b>
+ *     public Object visitChar(final Node node, final Object arg) {
+ *         <b>CharNode cnode = (CharNode) node;</b>
  *         <i>// do something for char nodes</i>
  *     }
  *
@@ -177,13 +177,13 @@ import de.dante.util.GeneralException;
  * situations.
  * </p>
  * <p>
- * The visitor is not necessarily the class MyDocumentWriter. If this class
- * contains several methods which need to distinguish the types of the nodes
- * it is possible to use another class as visitor, e.g. an inner class.
+ * The visitor is not necessarily the class <tt>MyDocumentWriter</tt>. If this
+ * class contains several methods which need to distinguish the types of the
+ * nodes it is possible to use another class as visitor, e.g. an inner class.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface NodeVisitor {
 
@@ -192,265 +192,265 @@ public interface NodeVisitor {
      * {@link de.dante.extex.typesetter.type.node.AdjustNode AdjustNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitAdjust(Object value, Object value2) throws GeneralException;
+    Object visitAdjust(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.AfterMathNode AfterMathNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitAfterMath(Object value, Object value2) throws GeneralException;
+    Object visitAfterMath(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.AlignedLeadersNode AlignedLeadersNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitAlignedLeaders(Object value, Object value2) throws GeneralException;
+    Object visitAlignedLeaders(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.BeforeMathNode BeforeMathNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitBeforeMath(Object value, Object value2) throws GeneralException;
+    Object visitBeforeMath(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.CenteredLeadersNode CenteredLeadersNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitCenteredLeaders(Object value, Object value2) throws GeneralException;
+    Object visitCenteredLeaders(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.CharNode CharNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitChar(Object value, Object value2) throws GeneralException;
+    Object visitChar(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.DiscretionaryNode DiscretionaryNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitDiscretionary(Object value, Object value2) throws GeneralException;
+    Object visitDiscretionary(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.ExpandedLeadersNode ExpandedLeadersNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitExpandedLeaders(Object value, Object value2) throws GeneralException;
+    Object visitExpandedLeaders(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.GlueNode GlueNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitGlue(Object value, Object value2) throws GeneralException;
+    Object visitGlue(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.HorizontalListNode HorizontalListNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitHorizontalList(Object value, Object value2) throws GeneralException;
+    Object visitHorizontalList(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when an
      * {@link de.dante.extex.typesetter.type.node.InsertionNode InsertionNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitInsertion(Object value, Object value2) throws GeneralException;
+    Object visitInsertion(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.KernNode KernNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitKern(Object value, Object value2) throws GeneralException;
+    Object visitKern(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.LigatureNode LigatureNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitLigature(Object value, Object value2) throws GeneralException;
+    Object visitLigature(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.MarkNode MarkNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitMark(Object value, Object value2) throws GeneralException;
+    Object visitMark(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.PenaltyNode PenaltyNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitPenalty(Object value, Object value2) throws GeneralException;
+    Object visitPenalty(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.RuleNode RuleNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitRule(Object value, Object value2) throws GeneralException;
+    Object visitRule(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.SpaceNode SpaceNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitSpace(Object value, Object value2) throws GeneralException;
+    Object visitSpace(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.VerticalListNode VerticalListNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitVerticalList(Object value, Object value2) throws GeneralException;
+    Object visitVerticalList(Node node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
      * {@link de.dante.extex.typesetter.type.node.WhatsItNode WhatsItNode}
      * has been encoutered.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param n0de the first parameter for the visitor is the node visited
+     * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitWhatsIt(Object value, Object value2) throws GeneralException;
+    Object visitWhatsIt(Node n0de, Object value) throws GeneralException;
 
 }

@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
@@ -291,18 +291,18 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitAdjust(final Object value, final Object value2) {
+    public Object visitAdjust(final Node value, final Object value2) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitAfterMath(final Object value, final Object value2) {
+    public Object visitAfterMath(final Node value, final Object value2) {
 
         Node node = (Node) value;
         HyphValues hv = (HyphValues) value2;
@@ -314,20 +314,19 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitAlignedLeaders(final Object value, final Object value2) {
+    public Object visitAlignedLeaders(final Node value, final Object value2) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitBeforeMath(final Object value, final Object value2) {
+    public Object visitBeforeMath(final Node node, final Object value2) {
 
-        Node node = (Node) value;
         HyphValues hv = (HyphValues) value2;
         hv.setState(IGNORE);
         hv.getParent().add(node);
@@ -337,73 +336,73 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitCenteredLeaders(final Object value, final Object value2) {
+    public Object visitCenteredLeaders(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitChar(final Object value, final Object value2) {
+    public Object visitChar(final Node node, final Object value) {
 
-        CharNode node = (CharNode) value;
-        HyphValues hv = (HyphValues) value2;
+        CharNode cnode = (CharNode) node;
+        HyphValues hv = (HyphValues) value;
 
         if (hv.getState() == NORMAL) {
             hv.setState(WORD);
             hv.newWord();
-            hv.addWordChar(node);
+            hv.addWordChar(cnode);
         } else if (hv.getState() == WORD) {
-            hv.addWordChar(node);
+            hv.addWordChar(cnode);
         }
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitDiscretionary(final Object value, final Object value2) {
+    public Object visitDiscretionary(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitExpandedLeaders(final Object value, final Object value2) {
+    public Object visitExpandedLeaders(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitGlue(final Object value, final Object value2) {
+    public Object visitGlue(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitHorizontalList(final Object value, final Object value2) {
+    public Object visitHorizontalList(final Node node, final Object value) {
 
-        HorizontalListNode nodelist = (HorizontalListNode) value;
-        HyphValues hv = (HyphValues) value2;
+        HorizontalListNode nodeList = (HorizontalListNode) node;
+        HyphValues hv = (HyphValues) value;
 
-        NodeIterator it = nodelist.iterator();
+        NodeIterator it = nodeList.iterator();
         while (it.hasNext()) {
-            Node node = it.next();
+            Node anode = it.next();
             try {
-                node.visit(this, node, hv);
+                anode.visit(this, hv);
             } catch (GeneralException e) {
                 System.err.println("\n\nException: " + e.getMessage());
                 // TODO: handle exception
@@ -414,80 +413,80 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitInsertion(final Object value, final Object value2) {
+    public Object visitInsertion(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitKern(final Object value, final Object value2) {
+    public Object visitKern(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitLigature(final Object value, final Object value2) {
+    public Object visitLigature(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitMark(final Object value, final Object value2) {
+    public Object visitMark(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitPenalty(final Object value, final Object value2) {
+    public Object visitPenalty(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitRule(final Object value, final Object value2) {
+    public Object visitRule(final Node node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(Node, java.lang.Object)
      */
-    public Object visitSpace(final Object value, final Object value2) {
+    public Object visitSpace(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitVerticalList(final Object value, final Object value2) {
+    public Object visitVerticalList(final Node node, final Object value) {
 
         return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(
-     *      java.lang.Object, java.lang.Object)
+     *      Node, java.lang.Object)
      */
-    public Object visitWhatsIt(final Object value, final Object value2) {
+    public Object visitWhatsIt(final Node nde, final Object value) {
 
         return null;
     }

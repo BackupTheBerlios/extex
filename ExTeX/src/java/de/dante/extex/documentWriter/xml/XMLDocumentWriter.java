@@ -40,20 +40,12 @@ import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.AdjustNode;
 import de.dante.extex.typesetter.type.node.AfterMathNode;
 import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
-import de.dante.extex.typesetter.type.node.BeforeMathNode;
-import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
-import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.type.node.InsertionNode;
-import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
-import de.dante.extex.typesetter.type.node.MarkNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
-import de.dante.extex.typesetter.type.node.RuleNode;
-import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
@@ -65,7 +57,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class XMLDocumentWriter
         implements
@@ -470,10 +462,10 @@ public class XMLDocumentWriter
     // ----------------------------------------------
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(Node,
      * java.lang.Object)
      */
-    public Object visitAdjust(final Object value, final Object value2) {
+    public Object visitAdjust(final Node value, final Object value2) {
 
         Element element = new Element("adjust");
         AdjustNode node = (AdjustNode) value;
@@ -482,10 +474,10 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(Node,
      * java.lang.Object)
      */
-    public Object visitAfterMath(final Object value, final Object value2) {
+    public Object visitAfterMath(final Node value, final Object value2) {
 
         Element element = new Element("aftermath");
         AfterMathNode node = (AfterMathNode) value;
@@ -494,10 +486,10 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(Node,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final Object value, final Object value2) {
+    public Object visitAlignedLeaders(final Node value, final Object value2) {
 
         Element element = new Element("alignedleaders");
         AlignedLeadersNode node = (AlignedLeadersNode) value;
@@ -506,40 +498,38 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(Node,
      * java.lang.Object)
      */
-    public Object visitBeforeMath(final Object value, final Object value2) {
+    public Object visitBeforeMath(final Node node, final Object value2) {
 
         Element element = new Element("beforemath");
-        BeforeMathNode node = (BeforeMathNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(Node,
      * java.lang.Object)
      */
-    public Object visitCenteredLeaders(final Object value, final Object value2) {
+    public Object visitCenteredLeaders(final Node node, final Object value) {
 
         Element element = new Element("centeredleaders");
-        CenteredLeadersNode node = (CenteredLeadersNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(Node,
      * java.lang.Object)
      */
-    public Object visitChar(final Object value, final Object value2) {
+    public Object visitChar(final Node node, final Object value) {
 
         Element element = new Element("char");
-        CharNode node = (CharNode) value;
-        UnicodeChar uc = node.getCharacter();
+        CharNode cnode = (CharNode) node;
+        UnicodeChar uc = cnode.getCharacter();
         addNodeAttributes(node, element);
-        element.setAttribute("font", node.getTypesettingContext().getFont()
+        element.setAttribute("font", cnode.getTypesettingContext().getFont()
                 .getFontName());
         element.setAttribute("codepoint", String.valueOf(uc.getCodePoint()));
         String ucname = uc.getUnicodeName();
@@ -558,37 +548,36 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(Node,
      * java.lang.Object)
      */
-    public Object visitDiscretionary(final Object value, final Object value2) {
+    public Object visitDiscretionary(final Node node, final Object value) {
 
         Element element = new Element("discretionary");
-        DiscretionaryNode node = (DiscretionaryNode) value;
-        addNodeAttributes(node, element);
+        DiscretionaryNode dnode = (DiscretionaryNode) node;
+        addNodeAttributes(dnode, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(Node,
      * java.lang.Object)
      */
-    public Object visitExpandedLeaders(final Object value, final Object value2) {
+    public Object visitExpandedLeaders(final Node node, final Object value) {
 
         Element element = new Element("expandedleaders");
-        ExpandedLeadersNode node = (ExpandedLeadersNode) value;
-        addNodeAttributes(node, element);
+        ExpandedLeadersNode lnode = (ExpandedLeadersNode) node;
+        addNodeAttributes(lnode, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(Node,
      * java.lang.Object)
      */
-    public Object visitGlue(final Object value, final Object value2) {
+    public Object visitGlue(final Node node, final Object value) {
 
         Element element = new Element("glue");
-        GlueNode node = (GlueNode) value;
         addNodeAttributes(node, element);
         currentX.add(node.getWidth());
         currentY.add(node.getHeight());
@@ -597,14 +586,14 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(Node,
      * java.lang.Object)
      */
-    public Object visitHorizontalList(final Object value, final Object value2)
+    public Object visitHorizontalList(final Node node, final Object value)
             throws GeneralException {
 
         Element element = new Element("horizontallist");
-        HorizontalListNode node = (HorizontalListNode) value;
+        HorizontalListNode lnode = (HorizontalListNode) node;
         addNodeAttributes(node, element);
         //        element.setAttribute("x_depth",String.valueOf(node.getDepth()));
         //        setBaseline(node);
@@ -612,7 +601,7 @@ public class XMLDocumentWriter
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
-        NodeIterator it = node.iterator();
+        NodeIterator it = lnode.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
             Object o = newnode.visit(this, node);
@@ -628,40 +617,38 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(Node,
      * java.lang.Object)
      */
-    public Object visitInsertion(final Object value, final Object value2) {
+    public Object visitInsertion(final Node node, final Object value) {
 
         Element element = new Element("insertion");
-        InsertionNode node = (InsertionNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(Node,
      * java.lang.Object)
      */
-    public Object visitKern(final Object value, final Object value2) {
+    public Object visitKern(final Node node, final Object value) {
 
         Element element = new Element("kern");
-        KernNode node = (KernNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(Node,
      * java.lang.Object)
      */
-    public Object visitLigature(final Object value, final Object value2) {
+    public Object visitLigature(final Node node, final Object value) {
 
         Element element = new Element("ligature");
-        LigatureNode node = (LigatureNode) value;
+        LigatureNode lnode = (LigatureNode) node;
         addNodeAttributes(node, element);
-        Node first = node.getFirst();
-        Node second = node.getSecond();
+        Node first = lnode.getFirst();
+        Node second = lnode.getSecond();
         if (first != null) {
             Element e = getNodeElement(first);
             if (e != null) {
@@ -678,69 +665,66 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(Node,
      * java.lang.Object)
      */
-    public Object visitMark(final Object value, final Object value2) {
+    public Object visitMark(final Node node, final Object value) {
 
         Element element = new Element("mark");
-        MarkNode node = (MarkNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(Node,
      * java.lang.Object)
      */
-    public Object visitPenalty(final Object value, final Object value2) {
+    public Object visitPenalty(final Node node, final Object value) {
 
         Element element = new Element("penalty");
-        PenaltyNode node = (PenaltyNode) value;
+        PenaltyNode pnode = (PenaltyNode) node;
         addNodeAttributes(node, element);
-        element.setAttribute("penalty", String.valueOf(node.getPenalty()));
+        element.setAttribute("penalty", String.valueOf(pnode.getPenalty()));
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(Node,
      * java.lang.Object)
      */
-    public Object visitRule(final Object value, final Object value2) {
+    public Object visitRule(final Node node, final Object value) {
 
         Element element = new Element("rule");
-        RuleNode node = (RuleNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(Node,
      * java.lang.Object)
      */
-    public Object visitSpace(final Object value, final Object value2) {
+    public Object visitSpace(final Node node, final Object value) {
 
         Element element = new Element("space");
-        SpaceNode node = (SpaceNode) value;
         addNodeAttributes(node, element);
         return element;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(Node,
      * java.lang.Object)
      */
-    public Object visitVerticalList(final Object value, final Object value2)
+    public Object visitVerticalList(final Node node, final Object value)
             throws GeneralException {
 
         Element element = new Element("verticallist");
-        VerticalListNode node = (VerticalListNode) value;
+        VerticalListNode lnode = (VerticalListNode) node;
         addNodeAttributes(node, element);
 
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
-        NodeIterator it = node.iterator();
+        NodeIterator it = lnode.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
 
@@ -759,13 +743,13 @@ public class XMLDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(java.lang.Object,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(Node,
      * java.lang.Object)
      */
-    public Object visitWhatsIt(final Object value, final Object value2) {
+    public Object visitWhatsIt(final Node nde, final Object value) {
 
         Element element = new Element("whatsit");
-        WhatsItNode node = (WhatsItNode) value;
+        WhatsItNode node = (WhatsItNode) nde;
         addNodeAttributes(node, element);
         return element;
     }

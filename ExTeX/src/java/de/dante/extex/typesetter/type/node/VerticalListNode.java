@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -87,17 +87,6 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 
         sb.append("\\vbox");
         super.toString(sb, prefix);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-
-        return visitor.visitVerticalList(value, value2);
     }
 
     /**
