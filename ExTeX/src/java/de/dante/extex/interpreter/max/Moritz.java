@@ -71,7 +71,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public abstract class Moritz
         implements
@@ -266,12 +266,12 @@ public abstract class Moritz
     public Box getBox(final Typesetter typesetter) throws GeneralException {
 
         Token t = getToken();
-        if (t == null || !(t instanceof CodeToken)) {
+        if (!(t instanceof CodeToken)) {
             throw new HelpingException(localizer, "TTP.BoxExpected");
         }
         Context context = getContext();
         Code code = context.getCode((CodeToken) t);
-        if (code == null || !(code instanceof Boxable)) {
+        if (!(code instanceof Boxable)) {
             throw new HelpingException(localizer, "TTP.BoxExpected");
         }
         Box box = ((Boxable) code).getBox(context, this, typesetter);
