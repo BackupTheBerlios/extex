@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -146,6 +146,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @param nodes the node list to take the nodes from
      * @param hlist the target list to put the nodes into
      * @param width the target width
+     * @param accumulator an accumulator for the glue
      *
      * @return the index of the first node after the ones already processed
      */
@@ -160,6 +161,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         Glue w = new Glue(0);
 
         while (i < len) {
+
             int point = findNextBreakPoint(nodes, i, w);
             if (w.gt(width)) {
                 if (i == start + 1) {
@@ -170,12 +172,6 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
             }
 
             i = saveNodes(nodes, i, point, hlist, accumulator);
-
-            while (i < len && nodes.get(i) instanceof Discartable) {
-                hlist.add(nodes.get(i));
-                nodes.get(i).addWidthTo(accumulator);
-                i++;
-            }
         }
 
         return i;
@@ -220,7 +216,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         Dimen adjustLeftRight = new Dimen(leftskip.getLength());
         adjustLeftRight.add(rightskip.getLength());
         FixedGlue lineskip = options.getGlueOption("lineskip");
-        boolean first = true;
+        //boolean first = true;
         Glue accumulator = new Glue(0);
 
         while (i < len) {
@@ -241,7 +237,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
             //if (first) {
             //    first = false;
-                vlist.add(new GlueNode(lineskip));
+            vlist.add(new GlueNode(lineskip));
             //} else {
             //    vlist.add(new GlueNode(lineskip));
             //}
@@ -299,13 +295,19 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         Node node;
         boolean math = false;
         int len = nodes.size();
+        int i = start;
+        
+        while (i < len && nodes.get(i) instanceof Discartable) {
+            nodes.get(i).addWidthTo(width);
+            i++;
+        }
 
-        for (int i = start; i < len; i++) {
+        for (; i < len; i++) {
             node = nodes.get(i);
 
             if (node instanceof CharNode) {
-                node.addWidthTo(width);
-
+                //node.addWidthTo(width);
+                //continue;
             } else if (node instanceof GlueNode
                     && !(nodes.get(i - 1) instanceof Discartable)) {
 
@@ -349,7 +351,6 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
     /**
      * Initializes the field <tt>parshape</tt> if not set already.
      * For this purpose the options are considered.
-     *
      */
     private void prepareParshape() {
 
@@ -373,17 +374,19 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
     }
 
     /**
-     * ...
+     * Copy nodes from one list into another.
      *
      * @param nodes the list of nodes to consider
      * @param start the initial index
      * @param end the index of the element after the ones to save
-     * @param hlist the destinmation list
+     * @param hlist the destination list
+     * @param accumulator the accumulator for the glue of the saved nodes
      *
-     * @return ...
+     * @return the index of the first node which has not been copied
      */
     private int saveNodes(final HorizontalListNode nodes, final int start,
-            final int end, final HorizontalListNode hlist, final Glue accumulator) {
+            final int end, final HorizontalListNode hlist,
+            final Glue accumulator) {
 
         Node node;
         for (int i = start; i < end; i++) {
@@ -409,15 +412,17 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * Adjust the width of the current line.
      *
      * @param hlist the target list to put the nodes into
-     * @param targetWidth the target width
-     * @param w ...
+     * @param targetWidth the target width to which the hlist should be
+     *  adjusted
+     * @param w the accumulated width of the hlist
      */
     private void spread(final HorizontalListNode hlist,
             final FixedDimen targetWidth, final Glue w) {
 
         Dimen width = w.getLength();
-        FixedGlueComponent component = (width.lt(targetWidth) ? w.getStretch() : w
-                .getShrink());
+        FixedGlueComponent component = (width.lt(targetWidth)
+                ? w.getStretch()
+                : w.getShrink());
 
         Dimen wd = new Dimen(targetWidth.getValue() - width.getValue());
         NodeIterator it = hlist.iterator();
