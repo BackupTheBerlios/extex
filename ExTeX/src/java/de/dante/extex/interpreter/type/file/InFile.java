@@ -24,6 +24,7 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class InFile implements Serializable {
 
@@ -54,22 +55,6 @@ public class InFile implements Serializable {
     private TokenStream stream = null;
 
     /**
-     * The field <tt>lookahead</tt> contains the lokk-ahead token.
-     */
-    private Token lookahead = null;
-
-    /**
-     * Creates a new object.
-     *
-     * @param theFile the name of the file to read
-     */
-    public InFile(final File theFile) {
-
-        super();
-        this.file = theFile;
-    }
-
-    /**
      * Creates a new object.
      *
      * @param inStream the token stream to read from
@@ -86,13 +71,13 @@ public class InFile implements Serializable {
      *
      * @return <code>true</code> iff no further token can be read.
      */
-    public boolean ifEof() {
+    public boolean isEof() {
 
         if (stream == null) {
             return true;
         }
-        //TODO incorrect and incomplete
-        return (lookahead == null);
+        //TODO return stream.isEof();
+        return false; // TODO
     }
 
     /**
@@ -129,18 +114,19 @@ public class InFile implements Serializable {
             throws GeneralException {
 
         if (stream == null) {
-            if (file == null) {
-                // TODO unimplemented
-                throw new RuntimeException("unimplemented");
-            } else if (!isOpen()) {
-                // TODO unimplemented
-                throw new RuntimeException("unimplemented");
-            }
+            return null;
         }
-        Token t = lookahead;
-        lookahead = stream.get(factory, tokenizer);
-        //TODO incorrect and incomplete
-        return new Tokens(t);
-    }
 
+        Tokens toks = new Tokens();
+
+        for (;;) {
+            Token t = stream.get(factory, tokenizer);
+            if (t == null) {
+                return (toks.length() > 0 ? toks : null);
+            } else if (t.isa(Catcode.CR)) { //TODO correct???
+                return toks;
+            }
+            toks.add(t);
+        }
+    }
 }
