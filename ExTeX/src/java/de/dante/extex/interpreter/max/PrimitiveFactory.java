@@ -16,9 +16,11 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.max;
 
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
@@ -30,7 +32,7 @@ import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
-
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This is a factory to deliver primitives from a configuration.
@@ -43,7 +45,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -63,9 +65,11 @@ public class PrimitiveFactory extends AbstractFactory {
 
     /**
      * Scan a configuration and define the primitives found.
+     *
      * @param configuration the configuration to scan
      * @param tokenFactory the token factory to use
      * @param context the interpreter context to register the primitive in
+     * @param outputLogger the logger to produce output to
      *
      * @throws GeneralException In case of an error
      * @throws ConfigurationException in case of an error
@@ -81,7 +85,8 @@ public class PrimitiveFactory extends AbstractFactory {
      * </ul>
      */
     public void define(final Configuration configuration,
-            final TokenFactory tokenFactory, final Context context)
+            final TokenFactory tokenFactory, final Context context,
+            final Logger outputLogger)
             throws GeneralException,
                 ConfigurationException {
 
@@ -91,11 +96,14 @@ public class PrimitiveFactory extends AbstractFactory {
             Configuration cfg = (Configuration) iterator.next();
 
             String name = cfg.getAttribute(NAME_ATTRIBUTE);
-            Code code = (Code) createInstanceForConfiguration(
-                    cfg, Code.class, name);
+            Code code = (Code) createInstanceForConfiguration(cfg, Code.class,
+                    name);
 
             context.setCode(tokenFactory.createToken(Catcode.ESCAPE, name,
                     Namespace.DEFAULT_NAMESPACE), code, true);
+            if (code instanceof LogEnabled) {
+                ((LogEnabled) code).enableLogging(outputLogger);
+            }
             if (code instanceof InitializableCode) {
                 ((InitializableCode) code).init(context, cfg.getValue());
             }
