@@ -45,7 +45,7 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviDocumentWriter implements DocumentWriter {
     // TODO: docu (TE)
@@ -166,7 +166,7 @@ public class DviDocumentWriter implements DocumentWriter {
             dviWriter.writeVerticalSpace(nodes.getShift());
             while (iterator.hasNext()) {
                 Node node = iterator.next();
-                node.visit(visitor, node, null);
+                node.visit(visitor, node);
             }
             dviWriter.restoreCurrentPositions();
         }
@@ -451,7 +451,7 @@ public class DviDocumentWriter implements DocumentWriter {
         mode = Mode.VERTICAL;
         dviWriter.beginPage();
 
-        nodes.visit(visitor, nodes, null);
+        nodes.visit(visitor, nodes);
 
         dviWriter.endPage();
 
