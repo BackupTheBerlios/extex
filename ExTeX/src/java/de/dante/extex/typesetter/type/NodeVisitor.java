@@ -204,7 +204,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface NodeVisitor {
 
@@ -475,13 +475,13 @@ public interface NodeVisitor {
      * {@link de.dante.extex.typesetter.type.node.WhatsItNode WhatsItNode}
      * has been encoutered.
      *
-     * @param n0de the first parameter for the visitor is the node visited
+     * @param node the first parameter for the visitor is the node visited
      * @param value the second parameter for the visitor
      *
      * @return the visitor specific value
      *
      * @throws GeneralException in case of an error
      */
-    Object visitWhatsIt(WhatsItNode n0de, Object value) throws GeneralException;
+    Object visitWhatsIt(WhatsItNode node, Object value) throws GeneralException;
 
 }
