@@ -19,10 +19,8 @@
 
 package de.dante.extex.scanner.stream.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -35,7 +33,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -49,7 +47,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      * The field <tt>stack</tt> contains the Token stack for the pushback
      * operation.
      */
-    private List stack = new ArrayList();
+    private Tokens stack = new Tokens();
 
     /**
      * Creates a new object.
@@ -64,11 +62,28 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
+     * Creates a new object.
+     *
+     * @param isFile indicator whether or not the token stream is assigned to
+     * a file
+     * @param tokens the tokens to push to the stream initially
+     */
+    public TokenStreamBaseImpl(final boolean isFile, final Tokens tokens) {
+
+        super();
+        this.fileStream = isFile;
+
+        for (int i = tokens.length() - 1; i > 0; i--) {
+            stack.add(tokens.get(i));
+        }
+    }
+
+    /**
      * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
      */
     public boolean closeFileStream() {
 
-        stack = new ArrayList();
+        stack = new Tokens();
         return false;
     }
 
@@ -80,8 +95,9 @@ public class TokenStreamBaseImpl implements TokenStream {
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
             throws GeneralException {
 
-        return (stack.size() == 0 ? getNext(factory, tokenizer) : (Token) stack
-                .remove(stack.size() - 1));
+        return (stack.length() > 0 ? //
+                stack.removeLast() : //
+                getNext(factory, tokenizer));
     }
 
     /**
@@ -113,10 +129,12 @@ public class TokenStreamBaseImpl implements TokenStream {
      * ...
      *
      * @return ...
+     *
+     * @throws GeneralException ...
      */
-    public boolean isEof()  throws GeneralException {
+    public boolean isEof() throws GeneralException {
 
-        return (stack.size() == 0);
+        return (stack.length() == 0);
     }
 
     /**
