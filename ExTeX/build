@@ -1,6 +1,9 @@
 #!/bin/sh
-
-#exec java -classpath `dirname $0`/bin de.dante.extex.ExTeX $*
+# This file should be executable.
+echo
+echo "ExTeX Build System"
+echo "----------------"
+echo
 
 if [ "$JAVA_HOME" = "" ] ; then
   echo "ERROR: JAVA_HOME not found in your environment."
@@ -22,6 +25,8 @@ if $cygwin ; then
     JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
 fi
 
+LIBDIR=lib
+
 LOCALCLASSPATH=$JAVA_HOME/lib/tools.jar
 LOCALCLASSPATH=$LOCALCLASSPATH:$JAVA_HOME/lib/classes.zip
 
@@ -30,16 +35,28 @@ for i in $LIBDIR/*.jar ; do
         LOCALCLASSPATH=$LOCALCLASSPATH:$i
 done
 
+# jar-Dateien
 for i in lib.develop/*.jar ; do
-        LOCALCLASSPATH=$LOCALCLASSPATH:$i
-done
-
-for i in tmp/ExTeX/*.jar ; do
         LOCALCLASSPATH=$LOCALCLASSPATH:$i
 done
 
 # export $LOCALCLASSPATH
 
-exec java -classpath $LOCALCLASSPATH de.dante.extex.ExTeX testdata/testreg.tex
-  
-  
+# antRun must be executable (can't do this in build.xml because Ant uses antRun
+# to do the chmod)
+chmod +rx util/antRun
+
+ANT_HOME=$LIBDIR
+
+# For Cygwin, switch paths to Windows format before running java
+if $cygwin; then
+  JAVA_HOME=`cygpath --path --windows "$JAVA_HOME"`
+  LOCALCLASSPATH=`cygpath --path --windows "$LOCALCLASSPATH"`
+fi
+
+echo
+echo Building with classpath $LOCALCLASSPATH
+echo Starting Ant...
+echo
+
+$JAVA_HOME/bin/java -Dant.home=$ANT_HOME -classpath "$LOCALCLASSPATH" org.apache.tools.ant.Main $*
