@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -176,6 +176,14 @@ public interface Context extends Tokenizer, Serializable {
      *  if none is set
      */
     Glue getGlue(String name);
+
+    /**
+     * Getter for the group level. The group level is the number of groups which
+     * are currently open. Thus this number of groups can be closed.
+     *
+     * @return the group level
+     */
+    long getGroupLevel();
 
     /**
      * Getter for the hyphenation record for a given language. The language is
@@ -568,7 +576,8 @@ public interface Context extends Tokenizer, Serializable {
     /**
      * Setter for the namespace.
      * @param namespace the new namespace
-     * @param global TODO
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setNamespace(String namespace, boolean global);
 

@@ -53,7 +53,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -78,6 +78,14 @@ public interface Group extends Tokenizer, Serializable {
      * @return the after group tokens
      */
     Tokens getAfterGroup();
+
+    /**
+     * Getter for the group level. The group level is the number of groups which
+     * are currently open. Thus this number of groups can be closed.
+     *
+     * @return the group level
+     */
+    long getLevel();
 
     /**
      * Getter for the {@link de.dante.extex.interpreter.type.box.Box box}register.
@@ -453,7 +461,8 @@ public interface Group extends Tokenizer, Serializable {
     /**
      * Setter for the namespace.
      * @param namespace the new namespace
-     * @param global TODO
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setNamespace(String namespace, boolean global);
 

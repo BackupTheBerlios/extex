@@ -113,7 +113,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class ContextImpl
         implements
@@ -124,7 +124,6 @@ public class ContextImpl
             TokenStreamOptions,
             Observable,
             Serializable {
-
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
      * sub-configuration for the group factory.
@@ -344,10 +343,11 @@ public class ContextImpl
     }
 
     /**
-     * ...
+     * Get the {@link Catcode Catcode} for a given Unicode character.
      *
-     * @param uc
-     * @return
+     * @param uc the Unicode character to get the catcode for.
+     *
+     * @return the catcode for the character
      *
      * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
      */
@@ -448,6 +448,19 @@ public class ContextImpl
     protected Group getGroup() {
 
         return group;
+    }
+
+    /**
+     * Getter for the group level. The group level is the number of groups which
+     * are currently open. Thus this number of groups can be closed.
+     *
+     * @return the group level
+     *
+     * @see de.dante.extex.interpreter.context.Context#getGroupLevel()
+     */
+    public long getGroupLevel() {
+
+        return group.getLevel();
     }
 
     /**
