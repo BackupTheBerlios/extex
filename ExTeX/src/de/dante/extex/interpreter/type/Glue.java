@@ -22,6 +22,7 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
@@ -29,11 +30,12 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Glue implements Serializable {
+
     /**
-     * The field <tt>length</tt> contains the ...
+     * The field <tt>length</tt> contains the natural length of the glue.
      */
     private GlueComponent length = new GlueComponent(0);
 
@@ -53,8 +55,9 @@ public class Glue implements Serializable {
      * @param length ...
      */
     public Glue(final long length) {
+
         super();
-        this.length = new Dimen(length);
+        this.length = new GlueComponent(length);
     }
 
     /**
@@ -66,10 +69,11 @@ public class Glue implements Serializable {
      */
     public Glue(final GlueComponent length, final GlueComponent stretch,
             final GlueComponent shrink) {
+
         super();
-        this.length = length;
-        this.stretch = stretch;
-        this.shrink = shrink;
+        this.length = length.copy();
+        this.stretch = stretch.copy();
+        this.shrink = shrink.copy();
     }
 
     /**
@@ -78,8 +82,9 @@ public class Glue implements Serializable {
      * @param length ...
      */
     public Glue(final Dimen length) {
+
         super();
-        this.length = length;
+        this.length = length.copy();
     }
 
     /**
@@ -93,28 +98,54 @@ public class Glue implements Serializable {
             throws GeneralException {
 
         super();
-        this.length = new Dimen(context, source);
+        this.length = new GlueComponent(context, source, false);
         if (source.scanKeyword("plus")) {
-            this.stretch = new GlueComponent(source, context, true);
+            this.stretch = new GlueComponent(context, source, true);
         }
         if (source.scanKeyword("minus")) {
-            this.shrink = new GlueComponent(source, context, true);
+            this.shrink = new GlueComponent(context, source, true);
         }
     }
 
     /**
-     * ...
+     * Getter for the length.
+     * Note that the value returned is independent from the original object.
+     * Changing its value does not affect the length of the glue.
      *
-     * @return ...
+     * @return the natural length
      */
     public Dimen getLength() {
         return new Dimen(length.getValue());
     }
 
     /**
-     * ...
+     * Getter for shrink.
+     * Note that the value returned is independent from the original object.
+     * Changing its value does not affect the shrink of the glue.
      *
-     * @return ...
+     * @return the shrink.
+     */
+    public Dimen getShrink() {
+
+        return new Dimen(shrink.getValue());
+    }
+
+    /**
+     * Getter for stretch.
+     * Note that the value returned is independent from the original object.
+     * Changing its value does not affect the stretch of the glue.
+     *
+     * @return the stretch.
+     */
+    public GlueComponent getStretch() {
+
+        return new Dimen(stretch.getValue());
+    }
+
+    /**
+     * Make a copy of this object.
+     *
+     * @return a new instance withe the same internal values
      */
     public Glue copy() {
 
@@ -125,12 +156,12 @@ public class Glue implements Serializable {
      * ...
      *
      * @param g the glue to add
-     *
-     * @return this to allow the combination in an expression
      */
-    public Glue add(final Glue g) {
-        //TODO incomplete
-        return this;
+    public void add(final Glue g) {
+
+        this.length.add(g.getLength());
+        this.stretch.add(g.getStretch());
+        this.shrink.add(g.getShrink());
     }
 
     /**
@@ -180,7 +211,37 @@ public class Glue implements Serializable {
      */
     public String toString() {
 
-        return length.toString() + " "; //TODO incomplete
+        StringBuffer sb = new StringBuffer(length.toString());
+        if (stretch.getValue() != 0) {
+            sb.append(" plus ");
+            sb.append(stretch.toString());
+        }
+        if (shrink.getValue() != 0) {
+            sb.append(" minus ");
+            sb.append(shrink.toString());
+        }
+        return sb.toString();
+    }
+
+    /**
+     * ...
+     *
+     * @return the string representation of this glue
+     * @see "TeX -- The Program [178,177]"
+     */
+    public Tokens toToks(final TokenFactory factory) throws GeneralException {
+
+        Tokens toks = length.toToks(factory);
+
+        if (stretch.getValue() != 0) {
+            toks.add(factory, " plus ");
+            stretch.toToks(toks, factory);
+        }
+        if (shrink.getValue() != 0) {
+            toks.add(factory, " minus ");
+            shrink.toToks(toks, factory);
+        }
+        return toks;
     }
 
 }
