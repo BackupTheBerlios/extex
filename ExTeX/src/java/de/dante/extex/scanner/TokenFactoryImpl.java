@@ -19,6 +19,7 @@
 
 package de.dante.extex.scanner;
 
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -51,130 +52,9 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
-
-    /**
-     * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
-     * the hash code.
-     */
-    private static final int HASH_FACTOR = 17;
-
-    /**
-     * This inner class is used as key for caching controls sequences.
-     * The equality is determined from a name string (S) and
-     * a namespace string (S).
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
-     */
-    private final class SSKey {
-
-        /**
-         * The field <tt>uc</tt> contains the name of the control sequence.
-         */
-        private String name;
-
-        /**
-         * The field <tt>namespace</tt> contains the namespace of the control
-         * sequence.
-         */
-        private String namespace;
-
-        /**
-         * Creates a new object.
-         *
-         * @param theNamespace the initial namespace
-         * @param theName the name of the control sequence
-         */
-        public SSKey(final String theNamespace, final String theName) {
-
-            this.namespace = theNamespace;
-            this.name = theName;
-        }
-
-        /**
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        public boolean equals(final Object other) {
-
-            if (other == null || !(other instanceof SSKey)) {
-                return false;
-            }
-            SSKey otherkey = (SSKey) other;
-            return (name.equals(otherkey.name) && namespace
-                    .equals(otherkey.namespace));
-        }
-
-        /**
-         * @see java.lang.Object#hashCode()
-         */
-        public int hashCode() {
-
-            return name.hashCode() + HASH_FACTOR * namespace.hashCode();
-        }
-    }
-
-    /**
-     * This inner class is used as key for caching active characters.
-     * The equality is determined from a Unicode
-     * character (U) and a namespace string (S).
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
-     */
-    private final class USKey {
-
-        /**
-         * The field <tt>HASH_FACTOR</tt> contains the ...
-         */
-        private static final int HASH_FACTOR = 17;
-
-        /**
-         * The field <tt>namespace</tt> contains the namespace of the active
-         * character.
-         */
-        private String namespace;
-
-        /**
-         * The field <tt>uc</tt> contains the Unicode character.
-         */
-        private UnicodeChar uc;
-
-        /**
-         * Creates a new object.
-         *
-         * @param theNamespace the initial namespace
-         * @param theChar the initial Unicode character
-         */
-        public USKey(final String theNamespace, final UnicodeChar theChar) {
-
-            this.namespace = theNamespace;
-            this.uc = theChar;
-        }
-
-        /**
-         * @see java.lang.Object#equals(java.lang.Object)
-         */
-        public boolean equals(final Object other) {
-
-            if (other == null || !(other instanceof USKey)) {
-                return false;
-            }
-            USKey otherkey = (USKey) other;
-            return (uc.equals(otherkey.uc) && namespace
-                    .equals(otherkey.namespace));
-        }
-
-        /**
-         * @see java.lang.Object#hashCode()
-         */
-        public int hashCode() {
-
-            return uc.hashCode() + HASH_FACTOR * namespace.hashCode();
-        }
-    }
 
     /**
      * The field <tt>crToken</tt> contains the one and only cr token in the
@@ -292,15 +172,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token createToken(final Catcode code, final String value)
             throws CatcodeException {
 
-        try {
-            return (Token) code.visit(this, value, null,
-                    Namespace.DEFAULT_NAMESPACE);
-        } catch (CatcodeException e) {
-            throw e;
-        } catch (Exception e) {
-            // this should not happen
-            throw new CatcodeException(e);
-        }
+        return createToken(code, value, Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
@@ -332,15 +204,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token createToken(final Catcode code, final UnicodeChar c)
             throws CatcodeException {
 
-        String namespace = "";
-        try {
-            return (Token) code.visit(this, null, c, namespace);
-        } catch (CatcodeException e) {
-            throw e;
-        } catch (Exception e) {
-            // this should not happen
-            throw new CatcodeException(e);
-        }
+        return createToken(code, c, Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
@@ -385,12 +249,22 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             throw new CatcodeVisitorException();
         }
 
-        USKey key = new USKey((String) oNamespace, uc);
-        Object token = activeCache.get(key);
+        String namespace = (String) oNamespace;
+        Map map = (Map) (activeCache.get(namespace));
 
+        if (map == null) {
+            map = new HashMap();
+            activeCache.put(namespace, map);
+        }
+
+        Object token = map.get(uc);
+
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new ActiveCharacterToken(uc, (String) oNamespace);
-            activeCache.put(key, token);
+            map.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -436,12 +310,22 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             throw new CatcodeVisitorException();
         }
 
-        SSKey key = new SSKey((String) oNamespace, value);
-        Object token = csCache.get(key);
+        String namespace = (String) oNamespace;
+        Map map = (Map) (csCache.get(namespace));
 
+        if (map == null) {
+            map = new HashMap();
+            csCache.put(namespace, map);
+        }
+
+        Object token = map.get(value);
+
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new ControlSequenceToken(value, (String) oNamespace);
-            csCache.put(key, token);
+            map.put(value, new WeakReference(token));
         }
 
         return token;
@@ -508,9 +392,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = leftBraceCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new LeftBraceToken(uc);
-            leftBraceCache.put(uc, token);
+            leftBraceCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -540,9 +427,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = letterCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new LetterToken(uc);
-            letterCache.put(uc, token);
+            letterCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -571,9 +461,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = macroParamCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new MacroParamToken(uc);
-            macroParamCache.put(uc, token);
+            macroParamCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -602,9 +495,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = mathShiftCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new MathShiftToken(uc);
-            mathShiftCache.put(uc, token);
+            mathShiftCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -632,9 +528,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = otherCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new OtherToken(uc);
-            otherCache.put(uc, token);
+            otherCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -663,9 +562,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = rightBraceCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new RightBraceToken(uc);
-            rightBraceCache.put(uc, token);
+            rightBraceCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -712,9 +614,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = subMarkCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new SubMarkToken(uc);
-            subMarkCache.put(uc, token);
+            subMarkCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -742,9 +647,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = supMarkCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new SupMarkToken(uc);
-            supMarkCache.put(uc, token);
+            supMarkCache.put(uc, new WeakReference(token));
         }
 
         return token;
@@ -772,9 +680,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
         Object token = tabMarkCache.get(uc);
 
+        if (token != null) {
+            token = ((WeakReference) token).get();
+        }
         if (token == null) {
             token = new TabMarkToken(uc);
-            tabMarkCache.put(uc, token);
+            tabMarkCache.put(uc, new WeakReference(token));
         }
 
         return token;
