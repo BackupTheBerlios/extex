@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.type.node;
 
+import java.io.IOException;
+
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -29,7 +31,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
 
@@ -61,23 +63,28 @@ public class WhatsItWriteNode extends WhatsItNode {
      * time of shipping the node to the DocumentWriter.
      *
      * @param context the interpreter context
+     * @param typesetter the typesetter
      *
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.typesetter.Node#atShipping(
-     *      de.dante.extex.interpreter.context.Context)
+     *      de.dante.extex.interpreter.context.Context, Typesetter)
      */
-    public void atShipping(final Context context) throws GeneralException {
+    public void atShipping(final Context context, final Typesetter typesetter)
+            throws GeneralException {
 
         OutFile file = context.getOutFile(key);
-        Typesetter typesetter = null; //TODO fill with value
         Tokens toks = context.expand(tokens, typesetter);
 
         if (file == null || !file.isOpen()) {
             // TODO stdout unimplemented
             //source.update("message", toks.toText());
         } else {
-            file.write(toks);
+            try {
+                file.write(toks);
+            } catch (IOException e) {
+                throw new GeneralException(e);
+            }
         }
     }
 }
