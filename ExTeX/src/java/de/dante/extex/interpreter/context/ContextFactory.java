@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context;
 
 import java.lang.reflect.Constructor;
@@ -26,6 +27,7 @@ import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 
 /**
  * ...
@@ -37,28 +39,26 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ContextFactory {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * for the class name.
+     * used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
+
+    /**
+     * The constant <tt>DEFAULT_ATTRIBUTE</tt> contains the name of the
+     * attribute used to get the default configuration.
+     */
+    private static final String DEFAULT_ATTRIBUTE = "default";
 
     /**
      * The field <tt>config</tt> contains the configuration for this factory.
      */
     private Configuration config = null;
-
-    /**
-     * The field <tt>constructor</tt> contains the constructor of the class to
-     * instantiate. It is kept here to speed up the method
-     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group)
-     *  newInstance}.
-     */
-    private Constructor constructor;
 
     /**
      * Creates a new object.
@@ -69,39 +69,65 @@ public class ContextFactory {
      */
     public ContextFactory(final Configuration configuration)
             throws ConfigurationException {
+
         super();
         config = configuration;
-
-        String classname = config.getAttribute(CLASS_ATTRIBUTE);
-        if (classname == null) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    config);
-        }
-
-        try {
-            constructor = Class.forName(classname).getConstructor(
-                    new Class[]{Configuration.class});
-        } catch (SecurityException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (NoSuchMethodException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname, config);
-        }
     }
 
     /**
-     * Get a instance for the interface Context.
+     * Get an instance of a context.
+     * This method selects one of the entries in the configuration. The
+     * selection is done with the help of a type String. If the type is
+     * <code>null</code> or the empty string then the default from the
+     * configuration is used.
      *
-     * @return a new instance for the interface Context
+     * @param type the type to use
      *
-     * @throws ConfigurationException in case of an error in the configuration.
+     * @return a new context
+     *
+     * @throws ConfigurationException in case of an configuration error
      */
-    public Context newInstance() throws ConfigurationException {
+    public Context newInstance(final String type)
+            throws ConfigurationException {
+
+        Configuration cfg = config.findConfiguration(type != null ? type : "");
+        if (cfg == null) {
+            String fallback = config.getAttribute(DEFAULT_ATTRIBUTE);
+            if (fallback == null || "".equals(fallback)) {
+                throw new ConfigurationMissingAttributeException(
+                        DEFAULT_ATTRIBUTE, config);
+            }
+            cfg = config.findConfiguration(fallback);
+            if (cfg == null) {
+                throw new ConfigurationMissingAttributeException(fallback,
+                        config);
+            }
+        }
+
+        String className = cfg.getAttribute(CLASS_ATTRIBUTE);
+
+        if (className == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    cfg);
+        }
+
         Context context;
 
         try {
-            context = (Context) (constructor.newInstance(new Object[]{config}));
+            Constructor constructor = Class.forName(className)
+                    .getConstructor(new Class[]{Configuration.class});
+            context = (Context) constructor
+                    .newInstance(new Object[]{cfg});
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationNoSuchMethodException(className
+                                                         + "("
+                                                         + Configuration.class
+                                                                 .getName()
+                                                         + ")");
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(className, config);
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (InstantiationException e) {
@@ -118,4 +144,5 @@ public class ContextFactory {
 
         return context;
     }
+
 }

@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.FlagsImpl;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
@@ -66,7 +67,7 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Max extends Moritz implements Interpreter, TokenSource,
         Observable, CatcodeVisitor {
@@ -85,6 +86,11 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     private static final int MAX_ERRORS_DEFAULT = 100;
 
     /**
+     * The field <tt>NAMESPACE</tt> contains the ...
+     */
+    private static final String NAMESPACE = "";
+
+    /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
      * been started.
      */
@@ -97,15 +103,30 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     private Context context = null;
 
     /**
+     * The field <tt>errorCount</tt> contains the count for the number of
+     * errors already encountered.
+     */
+    private int errorCount = 0;
+
+    /**
      * The error handler is invoked whenever an error is detected. If none is
      * registered then the default behaviour is shown.
      */
     private ErrorHandler errorHandler = null;
 
     /**
-     * This is the prefix for the next invocations.
+     * The field <tt>everyRun</tt> contains the String to be inserted at the
+     * beginning of each run. It can be <code>null</code> to denote that
+     * nothing should be inserted.
      */
-    private Flags prefix = new Flags();
+    private Configuration everyRun = null;
+
+    /**
+     * The field <tt>maxErrors</tt> contains the number of errors after which
+     * the run is terminated. This value can be overwritten in the
+     * configuration.
+     */
+    private int maxErrors = MAX_ERRORS_DEFAULT;
 
     /**
      * This observer list is used for the observers which are registered to
@@ -128,30 +149,15 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     private ObserverList observersMacro = new ObserverList();
 
     /**
+     * This is the prefix for the next invocations.
+     */
+    private Flags prefix = new FlagsImpl();
+
+    /**
      * The field <tt>typesetter</tt> contains the typesetter for handling
      * "left-over" material.
      */
     private Typesetter typesetter = null;
-
-    /**
-     * The field <tt>errorCount</tt> contains the count for the number of
-     * errors already encountered.
-     */
-    private int errorCount = 0;
-
-    /**
-     * The field <tt>maxErrors</tt> contains the number of errors after which
-     * the run is terminated. This value can be overwritten in the
-     * configuration.
-     */
-    private int maxErrors = MAX_ERRORS_DEFAULT;
-
-    /**
-     * The field <tt>everyRun</tt> contains the String to be inserted at the
-     * beginning of each run. It can be <code>null</code> to denote that
-     * nothing should be inserted.
-     */
-    private Configuration everyRun = null;
 
     /**
      * Creates a new object.
@@ -174,22 +180,30 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     }
 
     /**
+     * @see de.dante.extex.interpreter.Interpreter#dumpFormat()
+     */
+    public void dumpFormat() {
+
+        // TODO unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#executeGroup()
+     */
+    public void executeGroup() throws GeneralException {
+
+        Switch b = new Switch(true);
+        context.afterGroup(new SwitchObserver(b, false));
+        execute(b);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.max.Moritz#getContext()
      */
     public Context getContext() {
 
         return context;
-    }
-
-    /**
-     * Setter for the error handler. The value of <code>null</code> can be
-     * used to delete the error handler currently set.
-     *
-     * @param handler the new error handler
-     */
-    public void setErrorHandler(final ErrorHandler handler) {
-
-        errorHandler = handler;
     }
 
     /**
@@ -204,39 +218,6 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     }
 
     /**
-     * Setter for the file finder.
-     *
-     * @param fileFinder the new file finder
-     */
-    public void setFileFinder(final FileFinder fileFinder) {
-
-        //finder = fileFinder;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#setFontFactory(
-     *      de.dante.extex.font.FontFactory)
-     */
-    public void setFontFactory(final FontFactory fontFactory) {
-
-        context.setFontFactory(fontFactory);
-    }
-
-    /**
-     * Setter for the interaction mode.
-     * The interaction mode is set globally.
-     *
-     * @param interaction the interaction mode
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void setInteraction(final Interaction interaction)
-            throws GeneralException {
-
-        context.setInteraction(interaction, true);
-    }
-
-    /**
      * Getter for the interaction mode.
      *
      * @return the interaction mode
@@ -244,23 +225,6 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     public Interaction getInteraction() {
 
         return context.getInteraction();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#setJobname(java.lang.String)
-     */
-    public void setJobname(final String jobname) throws GeneralException {
-
-        context.setToks("jobname", new Tokens(context, jobname), true);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#setTypesetter(
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void setTypesetter(final Typesetter theTypesetter) {
-
-        this.typesetter = theTypesetter;
     }
 
     /**
@@ -275,15 +239,6 @@ public class Max extends Moritz implements Interpreter, TokenSource,
      * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.lang.String)
      */
     public void loadFormat(final String format) {
-
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#dumpFormat()
-     */
-    public void dumpFormat() {
 
         // TODO unimplemented
         throw new RuntimeException("unimplemented");
@@ -366,39 +321,6 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     }
 
     /**
-     * This method contaons the main execution loop.
-     *
-     * @param onceMore switch to controll the termination of the execution
-     *
-     * @throws GeneralException in case of an error
-     */
-    private void execute(final Switch onceMore) throws GeneralException {
-
-        for (Token current = getToken(); //
-        current != null && onceMore.isOn(); //
-        current = getToken()) {
-            observersExpand.update(this, current);
-            try {
-                current.getCatcode().visit(this, current, null, null);
-            } catch (GeneralPanicException e) {
-                throw e; //TODO report the problem and terminate
-            } catch (GeneralException e) {
-                if (++errorCount > maxErrors) { // cf. TTP[82]
-                    throw new GeneralPanicException("TTP.ErrorLimitReached",
-                            Integer.toString(maxErrors));
-                } else if (errorHandler != null) {
-                    errorHandler.handleError(e, current, this, context);
-                } else {
-                    throw e;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new GeneralPanicException(e);
-            }
-        }
-    }
-
-    /**
      * Add a token stream and start processing it.
      *
      * @param stream the input stream to consider
@@ -417,118 +339,64 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     }
 
     /**
-     * Apply the configuration options found in the given configuration object.
+     * Setter for the error handler. The value of <code>null</code> can be
+     * used to delete the error handler currently set.
      *
-     * @param config the configuration object to consider.
-     *
-     * @throws ConfigurationException in case of a configuration error
-     * @throws GeneralException in case of another error
+     * @param handler the new error handler
      */
-    private void configure(final Configuration config)
-            throws ConfigurationException,
-                GeneralException {
+    public void setErrorHandler(final ErrorHandler handler) {
 
-        if (config == null) {
-            throw new ConfigurationMissingException("Interpreter");
-        }
-
-        context = new ContextFactory(config.getConfiguration("Context"))
-                .newInstance();
-        setContext(context);
-        context.setInteraction(Interaction.ERRORSTOPMODE, true);
-
-        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
-
-        TokenFactory tokenFactory = context.getTokenFactory();
-        Iterator iterator = config.iterator("define");
-
-        while (iterator.hasNext()) {
-            Configuration cfg = (Configuration) iterator.next();
-            String name = cfg.getAttribute("name");
-
-            if (name == null || name.equals("")) {
-                throw new ConfigurationMissingAttributeException("name", cfg);
-            }
-
-            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
-
-            if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException(
-                        CLASS_ATTRIBUTE, cfg);
-            }
-
-            try {
-                Code code = (Code) (Class.forName(classname)
-                        .getConstructor(new Class[]{String.class})
-                        .newInstance(new Object[]{name}));
-                code.set(context, cfg.getValue());
-                context.setCode(tokenFactory.newInstance(Catcode.ESCAPE, name),
-                                code, true);
-            } catch (IllegalArgumentException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (SecurityException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InstantiationException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (IllegalAccessException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InvocationTargetException e) {
-                Throwable c = e.getCause();
-                if (c != null && c instanceof ConfigurationException) {
-                    throw (ConfigurationException) c;
-                }
-                throw new ConfigurationInstantiationException(e);
-            } catch (NoSuchMethodException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname, config);
-            }
-        }
-
-        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-        context.setCount("month", calendar.get(Calendar.MONTH), true);
-        context.setCount("year", calendar.get(Calendar.YEAR), true);
-        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
-                                 + calendar.get(Calendar.MINUTE), true);
-
-        everyRun = config.findConfiguration("everyjob");
+        errorHandler = handler;
     }
 
     /**
-     * @see de.dante.extex.interpreter.max.Moritz#expand(
-     *      de.dante.extex.scanner.Token)
+     * Setter for the file finder.
+     *
+     * @param fileFinder the new file finder
      */
-    protected Token expand(final Token token) throws GeneralException {
+    public void setFileFinder(final FileFinder fileFinder) {
 
-        Code code;
-        Token t = token;
-        //System.err.println("expand " + t.toString());
-        while (t != null) { //TODO ???
-            if (t instanceof CodeToken) {
-                observersMacro.update(this, t);
-                code = context.getCode(t);
-            } else {
-                return t;
-            }
-            if (code instanceof ExpandableCode) {
-                ((ExpandableCode) code).expand(prefix, context, this,
-                                               typesetter);
-            } else {
-                return t;
-            }
-            t = getToken();
-        }
-        return t;
+        //finder = fileFinder;
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#executeGroup()
+     * @see de.dante.extex.interpreter.Interpreter#setFontFactory(
+     *      de.dante.extex.font.FontFactory)
      */
-    public void executeGroup() throws GeneralException {
+    public void setFontFactory(final FontFactory fontFactory) {
 
-        Switch b = new Switch(true);
-        context.afterGroup(new SwitchObserver(b, false));
-        execute(b);
+        context.setFontFactory(fontFactory);
+    }
+
+    /**
+     * Setter for the interaction mode.
+     * The interaction mode is set globally.
+     *
+     * @param interaction the interaction mode
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void setInteraction(final Interaction interaction)
+            throws GeneralException {
+
+        context.setInteraction(interaction, true);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#setJobname(java.lang.String)
+     */
+    public void setJobname(final String jobname) throws GeneralException {
+
+        context.setToks("jobname", new Tokens(context, jobname), true);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#setTypesetter(
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void setTypesetter(final Typesetter theTypesetter) {
+
+        this.typesetter = theTypesetter;
     }
 
     /**
@@ -539,7 +407,7 @@ public class Max extends Moritz implements Interpreter, TokenSource,
             final Object ignore2) throws GeneralException {
 
         Token token = (Token) oToken;
-        Code code = context.getActive(token.getValue());
+        Code code = context.getCode(token);
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", //
                     token.toString());
@@ -582,7 +450,7 @@ public class Max extends Moritz implements Interpreter, TokenSource,
 
         Token token = (Token) oToken;
         observersMacro.update(this, token);
-        Code code = context.getMacro(token.getValue());
+        Code code = context.getCode(token);
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", //
                     token.toString());
@@ -758,6 +626,144 @@ public class Max extends Moritz implements Interpreter, TokenSource,
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
+    }
+
+    /**
+     * Apply the configuration options found in the given configuration object.
+     *
+     * @param config the configuration object to consider.
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
+     */
+    private void configure(final Configuration config)
+            throws ConfigurationException,
+                GeneralException {
+
+        if (config == null) {
+            throw new ConfigurationMissingException("Interpreter");
+        }
+
+        context = new ContextFactory(config.getConfiguration("Context"))
+                .newInstance(null);
+        setContext(context);
+        context.setInteraction(Interaction.ERRORSTOPMODE, true);
+
+        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
+
+        TokenFactory tokenFactory = context.getTokenFactory();
+        Iterator iterator = config.iterator("define");
+
+        while (iterator.hasNext()) {
+            Configuration cfg = (Configuration) iterator.next();
+            String name = cfg.getAttribute("name");
+
+            if (name == null || name.equals("")) {
+                throw new ConfigurationMissingAttributeException("name", cfg);
+            }
+
+            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
+
+            if (classname == null || classname.equals("")) {
+                throw new ConfigurationMissingAttributeException(
+                        CLASS_ATTRIBUTE, cfg);
+            }
+
+            try {
+                Code code = (Code) (Class.forName(classname)
+                        .getConstructor(new Class[]{String.class})
+                        .newInstance(new Object[]{name}));
+                code.set(context, cfg.getValue());
+                context.setCode(tokenFactory.newInstance(Catcode.ESCAPE, name, NAMESPACE),
+                                code, true);
+            } catch (IllegalArgumentException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (SecurityException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InstantiationException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (IllegalAccessException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InvocationTargetException e) {
+                Throwable c = e.getCause();
+                if (c != null && c instanceof ConfigurationException) {
+                    throw (ConfigurationException) c;
+                }
+                throw new ConfigurationInstantiationException(e);
+            } catch (NoSuchMethodException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (ClassNotFoundException e) {
+                throw new ConfigurationClassNotFoundException(classname, config);
+            }
+        }
+
+        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        context.setCount("month", calendar.get(Calendar.MONTH), true);
+        context.setCount("year", calendar.get(Calendar.YEAR), true);
+        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
+                                 + calendar.get(Calendar.MINUTE), true);
+
+        everyRun = config.findConfiguration("everyjob");
+    }
+
+    /**
+     * This method contaons the main execution loop.
+     *
+     * @param onceMore switch to controll the termination of the execution
+     *
+     * @throws GeneralException in case of an error
+     */
+    private void execute(final Switch onceMore) throws GeneralException {
+
+        for (Token current = getToken(); //
+        current != null && onceMore.isOn(); //
+        current = getToken()) {
+            observersExpand.update(this, current);
+            try {
+                current.getCatcode().visit(this, current, null, null);
+            } catch (GeneralPanicException e) {
+                throw e; //TODO report the problem and terminate
+            } catch (GeneralException e) {
+                if (++errorCount > maxErrors) { // cf. TTP[82]
+                    throw new GeneralPanicException("TTP.ErrorLimitReached",
+                            Integer.toString(maxErrors));
+                } else if (errorHandler != null) {
+                    errorHandler.handleError(e, current, this, context);
+                } else {
+                    throw e;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new GeneralPanicException(e);
+            }
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.max.Moritz#expand(
+     *      de.dante.extex.scanner.Token)
+     */
+    protected Token expand(final Token token) throws GeneralException {
+
+        Code code;
+        Token t = token;
+        //System.err.println("expand " + t.toString());
+        while (t != null) { //TODO ???
+            if (t instanceof CodeToken) {
+                observersMacro.update(this, t);
+                code = context.getCode(t);
+            } else {
+                return t;
+            }
+            if (code instanceof ExpandableCode) {
+                ((ExpandableCode) code).expand(prefix, context, this,
+                                               typesetter);
+            } else {
+                return t;
+            }
+            t = getToken();
+        }
+        return t;
     }
 
 }

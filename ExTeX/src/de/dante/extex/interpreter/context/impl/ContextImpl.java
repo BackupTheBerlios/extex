@@ -21,7 +21,9 @@ package de.dante.extex.interpreter.context.impl;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.NullFont;
@@ -31,30 +33,37 @@ import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Conditional;
+import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.context.CodeChangeObserver;
 import de.dante.extex.interpreter.context.Color;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.CountChangeObserver;
 import de.dante.extex.interpreter.context.Direction;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.CatcodeException;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -100,25 +109,15 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
-public class ContextImpl implements Context, Observable, Serializable {
+public class ContextImpl implements Context, TypesetterOptions, Observable, Serializable {
 
     /**
-     * The constant <tt>TYPESETTING_CONTEXT_TAG</tt> contains the name of the
-     * configuration tag for the typesetting context.
-     */
-    private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
-
-    /**
-     * The constant <tt>GROUP_TAG</tt> ...
+     * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
+     * sub-configuration for the group factory.
      */
     private static final String GROUP_TAG = "Group";
-
-    /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
-     */
-    private static final String CLASS_ATTRIBUTE = "class";
 
     /**
      * The constant <tt>MAGNIFICATION_MAX</tt> contains the maximal allowed
@@ -128,15 +127,44 @@ public class ContextImpl implements Context, Observable, Serializable {
     private static final long MAGNIFICATION_MAX = 0x8000;
 
     /**
+     * The constant <tt>TYPESETTING_CONTEXT_TAG</tt> contains the name of the
+     * configuration tag for the typesetting context.
+     */
+    private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
+
+    /**
+     * The field <tt>afterassignment</tt> contains the token to be inserted
+     * after a assignemnt is completed or <code>null</code>.
+     */
+    private Token afterassignment = null;
+
+    /**
+     * The field <tt>codeChangeObservers</tt> contains the list of observers
+     * registered for change event on the code.
+     */
+    private Map codeChangeObservers = new HashMap();
+
+    /**
+     * The field <tt>conditionalStack</tt> contains the  stack for conditionals.
+     */
+    private List conditionalStack = new ArrayList();
+
+    /**
+     * The field <tt>countChangeObservers</tt> contains the list of observers
+     * registered for change event on the count registers.
+     */
+    Map countChangeObservers = new HashMap(); 
+
+    /**
+     * The field <tt>fontFactory</tt> contains the font factory to use.
+     */
+    private FontFactory fontFactory;
+
+    /**
      * The field <tt>group</tt> contains the entry to the linked list of groups.
      * The current group is the first one.
      */
     private Group group = null;
-
-    /**
-     * The field <tt>afterassignment</tt> contains the ...
-     */
-    private Token afterassignment = null;
 
     /**
      * The field <tt>groupFactory</tt> contains the factory to acquire
@@ -145,26 +173,16 @@ public class ContextImpl implements Context, Observable, Serializable {
     private transient GroupFactory groupFactory;
 
     /**
-     * The field <tt>hyphenationManager</tt> contains the ...
+     * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
     private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
     /**
-     * The field <tt>conditionalStack</tt> contains the  stack for conditionals.
+     * The field <tt>magnification</tt> contains the magnification for the
+     * whole document in permille. The value is always greater than 0 and
+     * less or equal to magnificationMax.
      */
-    private List conditionalStack = new ArrayList();
-
-    /**
-     * The token factory implementation to use.
-     */
-    private transient TokenFactory tokenFactory = new TokenFactoryImpl();
-
-    /**
-     * The field <tt>magnificationMax</tt> contains the maximal allowed
-     * maginification value. This is initialized to MAGNIFICATION_MAX and
-     * may be overwritten from within the configuration.
-     */
-    private long magnificationMax = MAGNIFICATION_MAX;
+    private long magnification = Math.max(1000, MAGNIFICATION_MAX);
 
     /**
      * The field <tt>magnificationLock</tt> is used to determine whether the
@@ -175,11 +193,16 @@ public class ContextImpl implements Context, Observable, Serializable {
     private boolean magnificationLock = false;
 
     /**
-     * The field <tt>magnification</tt> contains the magnification for the
-     * whole document in permille. The value is always greater than 0 and
-     * less or equal to magnificationMax.
+     * The field <tt>magnificationMax</tt> contains the maximal allowed
+     * maginification value. This is initialized to MAGNIFICATION_MAX and
+     * may be overwritten from within the configuration.
      */
-    private long magnification = Math.max(1000, MAGNIFICATION_MAX);
+    private long magnificationMax = MAGNIFICATION_MAX;
+
+    /**
+     * The field <tt>namespace</tt> contains the current namespace.
+     */
+    private String namespace = "";
 
     /**
      * The field <tt>observersInteraction</tt> contains the observer list which
@@ -196,9 +219,9 @@ public class ContextImpl implements Context, Observable, Serializable {
     private TypesettingContextFactory tcFactory;
 
     /**
-     * The field <tt>fontFactory</tt> contains the font factory to use.
+     * The token factory implementation to use.
      */
-    private FontFactory fontFactory;
+    private transient TokenFactory tokenFactory = new TokenFactoryImpl();
 
     /**
      * Creates a new object.
@@ -239,13 +262,50 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
-     *      de.dante.extex.interpreter.Code, boolean)
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(
+     *      de.dante.util.observer.Observer)
      */
-    public void setActive(final String name, final Code code,
-            final boolean global) {
+    public void afterGroup(final Observer observer) {
 
-        group.setActive(name, code, global);
+        group.afterGroup(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(
+     *      de.dante.extex.scanner.Token)
+     */
+    public void afterGroup(final Token t) {
+
+        group.afterGroup(t);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#closeGroup(
+     *      de.dante.extex.typesetter.Typesetter,
+     *     de.dante.extex.interpreter.TokenSource)
+     */
+    public void closeGroup(final Typesetter typesetter, final TokenSource source)
+            throws GeneralException {
+
+        Group next = group.getNext();
+
+        if (next == null) {
+            throw new GeneralHelpingException("TTP.TooManyRightBraces");
+        }
+
+        if (group.getInteraction() != next.getInteraction()) {
+            observersInteraction.update(this, next.getInteraction());
+        }
+
+        group.runAfterGroup(this, typesetter);
+
+        Tokens toks = group.getAfterGroup();
+        group = next;
+
+        if (toks != null) {
+            source.push(toks);
+        }
+
     }
 
     /**
@@ -253,7 +313,14 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public Code getActive(final String name) {
 
-        return group.getActive(name);
+        try {
+            return group
+                    .getCode(getTokenFactory().newInstance(Catcode.ACTIVE,
+                                                           name, namespace));
+        } catch (CatcodeException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -262,36 +329,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     public Token getAfterassignment() {
 
         return afterassignment;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(
-     *      de.dante.extex.scanner.Token)
-     */
-    public void setAfterassignment(final Token token) {
-
-        afterassignment = token;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setCatcode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.scanner.Catcode, boolean)
-     */
-    public void setCatcode(final UnicodeChar c, final Catcode cc,
-            final boolean global) {
-
-        group.setCatcode(c, cc, global);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-     *      de.dante.extex.interpreter.type.box.Box, boolean)
-     */
-    public void setBox(final String name, final Box value,
-            final boolean global) {
-
-        group.setBox(name, value, global);
     }
 
     /**
@@ -308,46 +345,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      */
     public Code getCode(final Token t) throws GeneralException {
 
-        if (t == null) {
-            return null;
-        } else if (t instanceof ControlSequenceToken) {
-            return getMacro(t.getValue());
-        } else if (t instanceof ActiveCharacterToken) {
-            return getActive(t.getValue());
-        }
-
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setCode(
-     *      de.dante.extex.scanner.Token,
-     *      de.dante.extex.interpreter.Code, boolean)
-     */
-    public void setCode(final Token t, final Code code, final boolean global)
-            throws GeneralException {
-
-        if (t instanceof ControlSequenceToken) {
-            setMacro(t.getValue(), code, global);
-        } else if (t instanceof ActiveCharacterToken) {
-            setActive(t.getValue(), code, global);
-        } else {
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setCount(
-     *      java.lang.String,
-     *      long, boolean)
-     */
-    public void setCount(final String name, final long value,
-            final boolean global) {
-
-        Count count = new Count(value);
-        group.setCount(name, count, global);
-
-        //TODO: use existing Register instead of making a new one
+        return group.getCode(t);
     }
 
     /**
@@ -360,12 +358,388 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(java.lang.String)
+     */
+    public FixedCount getCountOption(final String name) {
+
+        return group.getCount(name);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getDelcode(
      *      de.dante.util.UnicodeChar)
      */
     public Count getDelcode(final UnicodeChar c) {
 
         return group.getDelcode(c);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getDimen(
+     *      java.lang.String)
+     */
+    public Dimen getDimen(final String name) {
+
+        return group.getDimen(name);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#getDimenOption(java.lang.String)
+     */
+    public FixedDimen getDimenOption(final String name) {
+
+        return group.getDimen(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getFont(java.lang.String)
+     */
+    public Font getFont(final String name) {
+
+        return this.group.getFont(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getFontFactory()
+     */
+    public FontFactory getFontFactory() {
+
+        return fontFactory;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getGlue(java.lang.String)
+     */
+    public Glue getGlue(final String name) {
+
+        return group.getSkip(name);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(java.lang.String)
+     */
+    public FixedGlue getGlueOption(final String name) {
+
+        return group.getSkip(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
+     */
+    public HyphenationTable getHyphenationTable(final int language) {
+
+        return hyphenationManager.getHyphenationTable(Integer
+                .toString(language));
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getInFile(
+     *      java.lang.String)
+     */
+    public InFile getInFile(final String name) {
+
+        return group.getInFile(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getInteraction()
+     */
+    public Interaction getInteraction() {
+
+        return group.getInteraction();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getLccode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getLccode(final UnicodeChar uc) {
+
+        return group.getLccode(uc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMacro(
+     *      java.lang.String)
+     */
+    public Code getMacro(final String name) {
+
+        try {
+            return getCode(tokenFactory.newInstance(Catcode.ESCAPE, name,
+                                                    namespace));
+        } catch (CatcodeException e) {
+            e.printStackTrace();
+        } catch (GeneralException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMagnification()
+     */
+    public long getMagnification() {
+
+        return magnification;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMathcode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public Count getMathcode(final UnicodeChar c) {
+
+        return group.getMathcode(c);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMuskip(
+     *      java.lang.String)
+     */
+    public Muskip getMuskip(final String name) {
+
+        return group.getMuskip(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getNamespace()
+     */
+    public String getNamespace() {
+
+        return this.namespace;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getOutFile(
+     *      java.lang.String)
+     */
+    public OutFile getOutFile(final String name) {
+
+        return group.getOutFile(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getSfcode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public Count getSfcode(final UnicodeChar c) {
+
+        return group.getSfcode(c);
+    }
+
+    /**
+     * Getter for the token factory.
+     *
+     * @return the token factory
+     */
+    public TokenFactory getTokenFactory() {
+
+        return tokenFactory;
+    }
+
+    /**
+     * Getter for the tokenizer.
+     *
+     * @return the tokenizer
+     */
+    public Tokenizer getTokenizer() {
+
+        return (Tokenizer) group;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
+     */
+    public Tokens getToks(final String name) {
+
+        return group.getToks(name);
+    }
+
+    /**
+     * Getter for the typesetting context.
+     *
+     * @return the typesetting context
+     */
+    public TypesettingContext getTypesettingContext() {
+
+        return group.getTypesettingContext();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getUccode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getUccode(final UnicodeChar lc) {
+
+        return group.getUccode(lc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
+     */
+    public boolean isGlobalGroup() {
+
+        return (group.getNext() == null);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#openGroup()
+     */
+    public void openGroup() throws ConfigurationException {
+
+        group = groupFactory.newInstance(group);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#popConditional()
+     */
+    public Conditional popConditional() throws GeneralException {
+
+        int size = conditionalStack.size();
+        if (size <= 0) {
+            return null;
+        }
+        return ((Conditional) conditionalStack.remove(size - 1));
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#pushConditional(
+     *      de.dante.util.Locator, boolean)
+     */
+    public void pushConditional(final Locator locator,
+            final boolean isIfThenElse) {
+
+        conditionalStack.add(isIfThenElse ? new Conditional(locator)
+                : new ConditionalSwitch(locator));
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#registerCodeChangeObserver(de.dante.extex.interpreter.context.CodeChangeObserver, de.dante.extex.scanner.Token)
+     */
+    public void registerCodeChangeObserver(final CodeChangeObserver observer,
+            final Token name) {
+
+        List observerList = (List) codeChangeObservers.get(name);
+        if (null == observerList) {
+            observerList = new ArrayList();
+            codeChangeObservers.put(name, observerList);
+        }
+        observerList.add(observer);
+    }
+
+    /**
+     * @see de.dante.util.observer.Observable#registerObserver(
+     *      java.lang.String,
+     *      de.dante.util.observer.Observer)
+     */
+    public void registerObserver(final String name, final Observer observer)
+            throws NotObservableException {
+
+        if ("interaction".equals(name)) {
+            observersInteraction.add(observer);
+        } else {
+            throw new NotObservableException(name);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String, de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setActive(final String name, final Code code,
+            final boolean global) {
+
+        try {
+            group.setCode(tokenFactory.newInstance(Catcode.ACTIVE, name), code,
+                          global);
+        } catch (CatcodeException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
+     *      de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setActive(final Token token, final Code code,
+            final boolean global) {
+
+        group.setCode(token, code, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(
+     *      de.dante.extex.scanner.Token)
+     */
+    public void setAfterassignment(final Token token) {
+
+        afterassignment = token;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
+     *      de.dante.extex.interpreter.type.box.Box, boolean)
+     */
+    public void setBox(final String name, final Box value,
+            final boolean global) {
+
+        group.setBox(name, value, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.scanner.Catcode, boolean)
+     */
+    public void setCatcode(final UnicodeChar c, final Catcode cc,
+            final boolean global) {
+
+        group.setCatcode(c, cc, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCode(
+     *      de.dante.extex.scanner.Token,
+     *      de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setCode(final Token t, final Code code, final boolean global)
+            throws GeneralException {
+
+        if (!(t instanceof CodeToken)) {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        }
+        group.setCode(t, code, global);
+
+        List observerList = (List) codeChangeObservers.get(t);
+        if (null != observerList) {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((CodeChangeObserver) observerList.get(i))
+                        .receiveCodeChange(t, code);
+            }
+        }
+
+    }
+    
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCount(
+     *      java.lang.String,
+     *      long, boolean)
+     */
+    public void setCount(final String name, final long value,
+            final boolean global) {
+
+        Count count = new Count(value);
+        group.setCount(name, count, global);
+
+        List observerList = (List) countChangeObservers.get(name);
+        if (null != observerList) {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((CountChangeObserver) observerList.get(i))
+                        .receiveCountChange(name, count);
+            }
+        }
+
     }
 
     /**
@@ -400,25 +774,6 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         Dimen dimen = new Dimen(value);
         group.setDimen(name, dimen, global);
-
-        //TODO: use existing Register instead of making a new one
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getDimen(
-     *      java.lang.String)
-     */
-    public Dimen getDimen(final String name) {
-
-        return group.getDimen(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getFont(java.lang.String)
-     */
-    public Font getFont(final String name) {
-
-        return this.group.getFont(name);
     }
 
     /**
@@ -433,36 +788,12 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getFontFactory()
-     */
-    public FontFactory getFontFactory() {
-
-        return fontFactory;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#setFontFactory(
      *      de.dante.extex.font.FontFactory)
      */
     public void setFontFactory(final FontFactory factory) {
 
         this.fontFactory = factory;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
-     */
-    public boolean isGlobalGroup() {
-
-        return (group.getNext() == null);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getGlue(java.lang.String)
-     */
-    public Glue getGlue(final String name) {
-
-        return group.getSkip(name);
     }
 
     /**
@@ -476,12 +807,14 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
+     * @see de.dante.extex.interpreter.context.Context#setInFile(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.file.InFile, boolean)
      */
-    public HyphenationTable getHyphenationTable(final int language) {
+    public void setInFile(final String name, final InFile file,
+            final boolean global) {
 
-        return hyphenationManager.getHyphenationTable(Integer
-                .toString(language));
+        group.setInFile(name, file, global);
     }
 
     /**
@@ -497,31 +830,13 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getInteraction()
+     * @see de.dante.extex.interpreter.context.Context#setLccode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
      */
-    public Interaction getInteraction() {
+    public void setLccode(final UnicodeChar uc, final UnicodeChar lc) {
 
-        return group.getInteraction();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setMacro(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.Code, boolean)
-     */
-    public void setMacro(final String name, final Code code,
-            final boolean global) {
-
-        group.setMacro(name, code, global);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getMacro(
-     *      java.lang.String)
-     */
-    public Code getMacro(final String name) {
-
-        return group.getMacro(name);
+        group.setLccode(uc, lc);
     }
 
     /**
@@ -543,31 +858,12 @@ public class ContextImpl implements Context, Observable, Serializable {
 
         magnificationLock = true;
 
-        long maximalMagnification;
-
         if (mag < 1 || mag > magnificationMax) {
             throw new GeneralHelpingException("TTP.IllegalMag", Long
                     .toString(mag));
         }
 
         magnification = mag;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getMagnification()
-     */
-    public long getMagnification() {
-
-        return magnification;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getMathcode(
-     *      de.dante.util.UnicodeChar)
-     */
-    public Count getMathcode(final UnicodeChar c) {
-
-        return group.getMathcode(c);
     }
 
     /**
@@ -582,15 +878,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getMuskip(
-     *      java.lang.String)
-     */
-    public Muskip getMuskip(final String name) {
-
-        return group.getMuskip(name);
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#setMuskip(
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.muskip.Muskip, boolean)
@@ -602,12 +889,22 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getSfcode(
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#setNamespace(java.lang.String)
      */
-    public Count getSfcode(final UnicodeChar c) {
+    public void setNamespace(final String namespace) {
 
-        return group.getSfcode(c);
+        this.namespace = namespace;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setOutFile(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.file.OutFile, boolean)
+     */
+    public void setOutFile(final String name, final OutFile file,
+            final boolean global) {
+
+        group.setOutFile(name, file, global);
     }
 
     /**
@@ -622,23 +919,13 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * Getter for the token factory.
-     *
-     * @return the token factory
+     * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
+     *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
      */
-    public TokenFactory getTokenFactory() {
+    public void setToks(final String name, final Tokens toks,
+            final boolean global) {
 
-        return tokenFactory;
-    }
-
-    /**
-     * Getter for the tokenizer.
-     *
-     * @return the tokenizer
-     */
-    public Tokenizer getTokenizer() {
-
-        return (Tokenizer) group;
+        group.setToks(name, toks, global);
     }
 
     /**
@@ -704,106 +991,26 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * Getter for the typesetting context.
-     *
-     * @return the typesetting context
+     * @see de.dante.extex.interpreter.context.Context#setUccode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
      */
-    public TypesettingContext getTypesettingContext() {
+    public void setUccode(final UnicodeChar lc, final UnicodeChar uc) {
 
-        return group.getTypesettingContext();
+        group.setUccode(lc, uc);
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#afterGroup(
-     *      de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.Context#unregisterCodeChangeObserver(de.dante.extex.interpreter.context.CodeChangeObserver, de.dante.extex.scanner.Token)
      */
-    public void afterGroup(final Token t) {
+    public void unregisterCodeChangeObserver(final CodeChangeObserver observer,
+            final Token name) {
 
-        group.afterGroup(t);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#afterGroup(
-     *      de.dante.util.observer.Observer)
-     */
-    public void afterGroup(final Observer observer) {
-
-        group.afterGroup(observer);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#closeGroup(
-     *      de.dante.extex.typesetter.Typesetter,
-     *     de.dante.extex.interpreter.TokenSource)
-     */
-    public void closeGroup(final Typesetter typesetter, final TokenSource source)
-            throws GeneralException {
-
-        Group next = group.getNext();
-
-        if (next == null) {
-            throw new GeneralHelpingException("TTP.TooManyRightBraces");
+        List observerList = (List) codeChangeObservers.get(name);
+        if (null == observerList) {
+            return;
         }
-
-        if (group.getInteraction() != next.getInteraction()) {
-            observersInteraction.update(this, next.getInteraction());
-        }
-
-        group.runAfterGroup(this, typesetter);
-
-        Tokens toks = group.getAfterGroup();
-        group = next;
-
-        if (toks != null) {
-            source.push(toks);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#popConditional()
-     */
-    public Conditional popConditional() throws GeneralException {
-
-        int size = conditionalStack.size();
-        if (size <= 0) {
-            return null;
-        }
-        return ((Conditional) conditionalStack.remove(size - 1));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#pushConditional(
-     *      de.dante.util.Locator, boolean)
-     */
-    public void pushConditional(final Locator locator, final boolean value) {
-
-        conditionalStack.add(new Conditional(locator, value));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#openGroup()
-     */
-    public void openGroup() throws ConfigurationException {
-
-        group = groupFactory.newInstance(group);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
-     */
-    public Tokens getToks(final String name) {
-
-        return group.getToks(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
-     *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
-     */
-    public void setToks(final String name, final Tokens toks,
-            final boolean global) {
-
-        group.setToks(name, toks, global);
+        observerList.remove(observer);
     }
 
     /**
@@ -814,99 +1021,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     protected Group getGroup() {
 
         return group;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getInFile(
-     *      java.lang.String)
-     */
-    public InFile getInFile(final String name) {
-
-        return group.getInFile(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getOutFile(
-     *      java.lang.String)
-     */
-    public OutFile getOutFile(final String name) {
-
-        return group.getOutFile(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setInFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.InFile, boolean)
-     */
-    public void setInFile(final String name, final InFile file,
-            final boolean global) {
-
-        group.setInFile(name, file, global);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setOutFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.OutFile, boolean)
-     */
-    public void setOutFile(final String name, final OutFile file,
-            final boolean global) {
-
-        group.setOutFile(name, file, global);
-    }
-
-    /**
-     * @see de.dante.util.observer.Observable#registerObserver(
-     *      java.lang.String,
-     *      de.dante.util.observer.Observer)
-     */
-    public void registerObserver(final String name, final Observer observer)
-            throws NotObservableException {
-
-        if ("interaction".equals(name)) {
-            observersInteraction.add(observer);
-        } else {
-            throw new NotObservableException(name);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getLccode(
-     *      de.dante.util.UnicodeChar)
-     */
-    public UnicodeChar getLccode(final UnicodeChar uc) {
-
-        return group.getLccode(uc);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getUccode(
-     *      de.dante.util.UnicodeChar)
-     */
-    public UnicodeChar getUccode(final UnicodeChar lc) {
-
-        return group.getUccode(lc);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setLccode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void setLccode(final UnicodeChar uc, final UnicodeChar lc) {
-
-        group.setLccode(uc, lc);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setUccode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void setUccode(final UnicodeChar lc, final UnicodeChar uc) {
-
-        group.setUccode(lc, uc);
     }
 
 }

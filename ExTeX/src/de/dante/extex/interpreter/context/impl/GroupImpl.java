@@ -54,7 +54,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -75,20 +75,16 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private static final Count SFCODE_LETTER = new ImmutableCount(999);
 
     /**
-     * The field <tt>next</tt> contains the next group in the linked list.
+     * The field <tt>afterGroup</tt> contains the tokens to be inserted after
+     * the group has been closed.
      */
-    private Group next = null;
+    private Tokens afterGroup = null;
 
     /**
-     * The field <tt>interaction</tt> contains the currently active
-     * intercation mode.
+     * The field <tt>afterGroupObservers</tt> contains the listr of observers
+     * to be invoked after the group has been closed.
      */
-    private Interaction interaction = null;
-
-    /**
-     * The field <tt>activeMap</tt> contains the map for the active characters.
-     */
-    private Map activeMap = new HashMap();
+    private ObserverList afterGroupObservers = new ObserverList();
 
     /**
      * The field <tt>boxMap</tt> contains the map for the boxes.
@@ -99,6 +95,12 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>catcodeMap</tt> contains the map for the catcodes.
      */
     private Map catcodeMap = new HashMap();
+
+    /**
+     * The field <tt>codeMap</tt> contains the map for the active characters and
+     * macros. The key is a Token. The value is a Code.
+     */
+    private Map codeMap = new HashMap();
 
     /**
      * The field <tt>countMap</tt> contains the map for the count registers.
@@ -132,15 +134,16 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map inFileMap = new HashMap();
 
     /**
+     * The field <tt>interaction</tt> contains the currently active
+     * intercation mode.
+     */
+    private Interaction interaction = null;
+
+    /**
      * The field <tt>lccodeMap</tt> contains the map for the translation to
      * lower case.
      */
     private Map lccodeMap = new HashMap();
-
-    /**
-     * The field <tt>macroMap</tt> contains the map for the macros.
-     */
-    private Map macroMap = new HashMap();
 
     /**
      * The field <tt>mathcodeMap</tt> contains the map for the catcodes.
@@ -151,6 +154,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>muskipMap</tt> contains the map for the muskip registers.
      */
     private Map muskipMap = new HashMap();
+
+    /**
+     * The field <tt>next</tt> contains the next group in the linked list.
+     */
+    private Group next = null;
 
     /**
      * The field <tt>outFileMap</tt> contains the map for the output files.
@@ -173,75 +181,49 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map toksMap = new HashMap();
 
     /**
-     * The field <tt>uccodeMap</tt> contains the map for the translation to
-     * upper case.
-     */
-    private Map uccodeMap = new HashMap();
-
-    /**
-     * The field <tt>afterGroup</tt> contains the tokens to be inserted after
-     * the group has been closed.
-     */
-    private Tokens afterGroup = null;
-
-    /**
-     * The field <tt>afterGroupObservers</tt> contains the ...
-     */
-    private ObserverList afterGroupObservers = new ObserverList();
-
-    /**
      * The field <tt>typesettingContext</tt> contains the typesetting context
      * to be used.
      */
     private TypesettingContext typesettingContext = null;
 
     /**
+     * The field <tt>uccodeMap</tt> contains the map for the translation to
+     * upper case.
+     */
+    private Map uccodeMap = new HashMap();
+
+    /**
      * Creates a new object.
      *
-     * @param aNext the next group in the stack. If the value is
+     * @param theNext the next group in the stack. If the value is
      *      <code>null</code> then this is the global base
      */
-    public GroupImpl(final Group aNext) {
+    public GroupImpl(final Group theNext) {
 
         super();
-        this.next = aNext;
+        this.next = theNext;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setActive(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.Code)
+     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
+     *      de.dante.util.observer.Observer)
      */
-    public void setActive(final String name, final Code code) {
+    public void afterGroup(final Observer observer) {
 
-        activeMap.put(name, code);
+        afterGroupObservers.add(observer);
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setActive(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.Code, boolean)
+     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
+     *      de.dante.extex.scanner.Token)
      */
-    public void setActive(final String name, final Code code,
-            final boolean global) {
+    public void afterGroup(final Token t) {
 
-        activeMap.put(name, code);
-
-        if (global && next != null) {
-            next.setActive(name, code, global);
+        if (afterGroup == null) {
+            afterGroup = new Tokens();
         }
-    }
 
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getActive(
-     *      java.lang.String)
-     */
-    public Code getActive(final String name) {
-
-        Code code = (Code) (activeMap.get(name));
-        return (code != null ? code //
-                : next != null ? next.getActive(name) //
-                        : null);
+        afterGroup.add(t);
     }
 
     /**
@@ -250,30 +232,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public Tokens getAfterGroup() {
 
         return afterGroup;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setBox(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Box)
-     */
-    public void setBox(final String name, final Box value) {
-
-        boxMap.put(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setBox(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Box, boolean)
-     */
-    public void setBox(final String name, final Box value, final boolean global) {
-
-        setBox(name, value);
-
-        if (global && next != null) {
-            next.setBox(name, value, global);
-        }
     }
 
     /**
@@ -289,31 +247,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         }
 
         return box;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.scanner.Catcode)
-     */
-    public void setCatcode(final UnicodeChar c, final Catcode code) {
-
-        catcodeMap.put(c, code);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.scanner.Catcode, boolean)
-     */
-    public void setCatcode(final UnicodeChar c, final Catcode value,
-            final boolean global) {
-
-        setCatcode(c, value);
-
-        if (global && next != null) {
-            next.setCatcode(c, value, global);
-        }
     }
 
     /**
@@ -355,28 +288,15 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.count.Count)
+     * @see de.dante.extex.interpreter.context.impl.Group#getCode(
+     *      de.dante.extex.scanner.Token)
      */
-    public void setCount(final String name, final Count value) {
+    public Code getCode(final Token token) {
 
-        countMap.put(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.count.Count, boolean)
-     */
-    public void setCount(final String name, final Count value,
-            final boolean global) {
-
-        countMap.put(name, value);
-
-        if (global && next != null) {
-            next.setCount(name, value, global);
-        }
+        Code code = (Code) (codeMap.get(token));
+        return (code != null ? code //
+                : next != null ? next.getCode(token) //
+                        : null);
     }
 
     /**
@@ -419,46 +339,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.count.Count, boolean)
-     */
-    public void setDelcode(final UnicodeChar c, final Count code,
-            final boolean global) {
-
-        delcodeMap.put(c, code);
-
-        if (global && next != null) {
-            next.setDelcode(c, code, global);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
-     *      java.lang.String,
-     *         de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setDimen(final String name, final Dimen value) {
-
-        dimenMap.put(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.dimen.Dimen, boolean)
-     */
-    public void setDimen(final String name, final Dimen value,
-            final boolean global) {
-
-        dimenMap.put(name, value);
-
-        if (global && next != null) {
-            next.setDimen(name, value, global);
-        }
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getDimen(
      *      java.lang.String)
      */
@@ -471,7 +351,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
                 dimen = next.getDimen(name);
             } else {
                 dimen = new Dimen();
-                setDimen(name, dimen);
+                dimenMap.put(name, dimen);
             }
         }
 
@@ -494,44 +374,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setFont(
-     *      java.lang.String, de.dante.extex.interpreter.type.font.Font, boolean)
-     */
-    public void setFont(final String name, final Font font, final boolean global) {
-
-        fontMap.put(name, font);
-
-        if (global && next != null) {
-            next.setFont(name, font, global);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setIf(
-     *      java.lang.String,
-     *         boolean)
-     */
-    public void setIf(final String name, final boolean value) {
-
-        ifMap.put(name, (value ? Boolean.TRUE : Boolean.FALSE));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setIf(
-     *      java.lang.String,
-     *      boolean, boolean)
-     */
-    public void setIf(final String name, final boolean value,
-            final boolean global) {
-
-        ifMap.put(name, (value ? Boolean.TRUE : Boolean.FALSE));
-
-        if (global && next != null) {
-            next.setIf(name, value, global);
-        }
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getIf(
      *      java.lang.String)
      */
@@ -549,129 +391,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public InFile getInFile(final String name) {
 
         return (InFile) (inFileMap.get(name));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.InFile)
-     */
-    public void setInFile(final String name, final InFile file) {
-
-        inFileMap.put(name, file);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.InFile, boolean)
-     */
-    public void setInFile(final String name, final InFile file,
-            final boolean global) {
-
-        inFileMap.put(name, file);
-
-        if (global && next != null) {
-            next.setInFile(name, file, global);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(
-     *      de.dante.util.UnicodeChar)
-     */
-    public Count getMathcode(final UnicodeChar c) {
-
-        Count mathcode = (Count) (mathcodeMap.get(c));
-
-        if (mathcode == null) {
-            if (next != null) {
-                return next.getMathcode(c);
-            } else if (c.isDigit()) {
-                return new Count(c.getCodePoint() + 0x7000);
-            } else if (c.isLetter()) {
-                return new Count(c.getCodePoint() + 0x7100);
-            } else {
-                return new Count(c.getCodePoint());
-            }
-        }
-
-        return mathcode;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(
-     *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.count.Count, boolean)
-     */
-    public void setMathcode(final UnicodeChar c, final Count code,
-            final boolean global) {
-
-        mathcodeMap.put(c, code);
-
-        if (global && next != null) {
-            next.setMathcode(c, code, global);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getOutFile(
-     *      java.lang.String)
-     */
-    public OutFile getOutFile(final String name) {
-
-        OutFile file = (OutFile) (outFileMap.get(name));
-
-        return file;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.OutFile, boolean)
-     */
-    public void setOutFile(final String name, final OutFile file,
-            final boolean global) {
-
-        outFileMap.put(name, file);
-
-        if (global && next != null) {
-            next.setOutFile(name, file, global);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.OutFile)
-     */
-    public void setOutFile(final String name, final OutFile file) {
-
-        outFileMap.put(name, file);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(
-     *      de.dante.extex.interpreter.Interaction)
-     */
-    public void setInteraction(final Interaction aInteraction) {
-
-        this.interaction = aInteraction;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(
-     *      de.dante.extex.interpreter.Interaction,
-     *      boolean)
-     */
-    public void setInteraction(final Interaction aInteraction,
-            final boolean global) {
-
-        this.interaction = aInteraction;
-
-        if (global && next != null) {
-            next.setInteraction(interaction, global);
-        }
     }
 
     /**
@@ -707,6 +426,305 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public Count getMathcode(final UnicodeChar c) {
+
+        Count mathcode = (Count) (mathcodeMap.get(c));
+
+        if (mathcode == null) {
+            if (next != null) {
+                return next.getMathcode(c);
+            } else if (c.isDigit()) {
+                return new Count(c.getCodePoint() + 0x7000);
+            } else if (c.isLetter()) {
+                return new Count(c.getCodePoint() + 0x7100);
+            } else {
+                return new Count(c.getCodePoint());
+            }
+        }
+
+        return mathcode;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getMuskip(
+     *      java.lang.String)
+     */
+    public Muskip getMuskip(final String name) {
+
+        Muskip muskip = (Muskip) (muskipMap.get(name));
+        return muskip != null ? muskip : next != null ? next.getMuskip(name)
+                : new Muskip();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getNext()
+     */
+    public Group getNext() {
+
+        return next;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getOutFile(
+     *      java.lang.String)
+     */
+    public OutFile getOutFile(final String name) {
+
+        OutFile file = (OutFile) (outFileMap.get(name));
+
+        return file;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getSfcode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public Count getSfcode(final UnicodeChar c) {
+
+        Count sfcode = (Count) (sfcodeMap.get(c));
+
+        if (sfcode != null) {
+            return sfcode;
+        } else if (next != null) {
+            return next.getSfcode(c);
+        }
+
+        // Fallback for predefined sfcodes
+        if (c.isLetter()) {
+            return SFCODE_LETTER;
+        }
+        return SFCODE_DEFAULT;
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getSkip(
+     *      java.lang.String)
+     */
+    public Glue getSkip(final String name) {
+
+        Glue skip = (Glue) (skipMap.get(name));
+        return skip != null ? skip : next != null ? next.getSkip(name)
+                : new Glue(0);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getToks(
+     *      java.lang.String)
+     */
+    public Tokens getToks(final String name) {
+
+        Tokens toks = (Tokens) (toksMap.get(name));
+        return toks != null ? toks : next != null ? next.getToks(name)
+                : new Tokens();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getTypesettingContext()
+     */
+    public TypesettingContext getTypesettingContext() {
+
+        TypesettingContext context = typesettingContext;
+        return context != null //
+                ? context //
+                : next != null ? next.getTypesettingContext()
+                        : new TypesettingContextImpl();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getUccode(
+     *      de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getUccode(final UnicodeChar uc) {
+
+        UnicodeChar value = (UnicodeChar) uccodeMap.get(uc);
+
+        if (value != null) {
+            return value;
+        } else if (next != null) {
+            return next.getLccode(uc);
+        }
+
+        // Fallback for predefined lccodes
+        if (uc.isLetter()) {
+            value = new UnicodeChar(uc.toUpperCase());
+            // the value is stored to avoid constructing UnicodeChars again
+            lccodeMap.put(uc, value);
+            return value;
+        }
+        return UnicodeChar.NULL;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#runAfterGroup(
+     *      de.dante.util.observer.Observable,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void runAfterGroup(final Observable observable,
+            final Typesetter typesetter) throws GeneralException {
+
+        afterGroupObservers.update(observable, typesetter);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setBox(
+     *      java.lang.String, de.dante.extex.interpreter.type.box.Box, boolean)
+     */
+    public void setBox(final String name, final Box value, final boolean global) {
+
+        boxMap.put(name, value);
+
+        if (global && next != null) {
+            next.setBox(name, value, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.scanner.Catcode, boolean)
+     */
+    public void setCatcode(final UnicodeChar uc, final Catcode code,
+            final boolean global) {
+
+        catcodeMap.put(uc, code);
+
+        if (global && next != null) {
+            next.setCatcode(uc, code, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setCode(
+     *      de.dante.extex.scanner.Token,
+     *      de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setCode(final Token token, final Code code, final boolean global) {
+
+        codeMap.put(token, code);
+
+        if (global && next != null) {
+            next.setCode(token, code, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.count.Count)
+     */
+    public void setCount(final String name, final Count value) {
+
+        countMap.put(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
+     */
+    public void setCount(final String name, final Count value,
+            final boolean global) {
+
+        countMap.put(name, value);
+
+        if (global && next != null) {
+            next.setCount(name, value, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
+     */
+    public void setDelcode(final UnicodeChar c, final Count code,
+            final boolean global) {
+
+        delcodeMap.put(c, code);
+
+        if (global && next != null) {
+            next.setDelcode(c, code, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.dimen.Dimen, boolean)
+     */
+    public void setDimen(final String name, final Dimen value,
+            final boolean global) {
+
+        dimenMap.put(name, value);
+
+        if (global && next != null) {
+            next.setDimen(name, value, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setFont(
+     *      java.lang.String, de.dante.extex.interpreter.type.font.Font, boolean)
+     */
+    public void setFont(final String name, final Font font, final boolean global) {
+
+        fontMap.put(name, font);
+
+        if (global && next != null) {
+            next.setFont(name, font, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setIf(
+     *      java.lang.String,
+     *      boolean, boolean)
+     */
+    public void setIf(final String name, final boolean value,
+            final boolean global) {
+
+        ifMap.put(name, (value ? Boolean.TRUE : Boolean.FALSE));
+
+        if (global && next != null) {
+            next.setIf(name, value, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.file.InFile, boolean)
+     */
+    public void setInFile(final String name, final InFile file,
+            final boolean global) {
+
+        inFileMap.put(name, file);
+
+        if (global && next != null) {
+            next.setInFile(name, file, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(
+     *      de.dante.extex.interpreter.Interaction,
+     *      boolean)
+     */
+    public void setInteraction(final Interaction aInteraction,
+            final boolean global) {
+
+        this.interaction = aInteraction;
+
+        if (global && next != null) {
+            next.setInteraction(interaction, global);
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setLccode(
      *      de.dante.util.UnicodeChar,
      *      de.dante.util.UnicodeChar)
@@ -717,38 +735,18 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMacro(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.Code)
+     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
-    public void setMacro(final String name, final Code code) {
-
-        macroMap.put(name, code);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMacro(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.Code, boolean)
-     */
-    public void setMacro(final String name, final Code value,
+    public void setMathcode(final UnicodeChar c, final Count code,
             final boolean global) {
 
-        macroMap.put(name, value);
+        mathcodeMap.put(c, code);
 
         if (global && next != null) {
-            next.setMacro(name, value, global);
+            next.setMathcode(c, code, global);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getMacro(
-     *      java.lang.String)
-     */
-    public Code getMacro(final String name) {
-
-        Code value = (Code) macroMap.get(name);
-        return (value == null && next != null ? next.getMacro(name) : value);
     }
 
     /**
@@ -777,44 +775,28 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getMuskip(
-     *      java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.OutFile)
      */
-    public Muskip getMuskip(final String name) {
+    public void setOutFile(final String name, final OutFile file) {
 
-        Muskip muskip = (Muskip) (muskipMap.get(name));
-        return muskip != null ? muskip : next != null ? next.getMuskip(name)
-                : new Muskip();
+        outFileMap.put(name, file);
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getNext()
+     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
+     *       java.lang.String,
+     *       de.dante.extex.interpreter.type.file.OutFile, boolean)
      */
-    public Group getNext() {
+    public void setOutFile(final String name, final OutFile file,
+            final boolean global) {
 
-        return next;
-    }
+        outFileMap.put(name, file);
 
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getSfcode(
-     *      de.dante.util.UnicodeChar)
-     */
-    public Count getSfcode(final UnicodeChar c) {
-
-        Count sfcode = (Count) (sfcodeMap.get(c));
-
-        if (sfcode != null) {
-            return sfcode;
-        } else if (next != null) {
-            return next.getSfcode(c);
+        if (global && next != null) {
+            next.setOutFile(name, file, global);
         }
-
-        // Fallback for predefined sfcodes
-        if (c.isLetter()) {
-            return SFCODE_LETTER;
-        }
-        return SFCODE_DEFAULT;
-
     }
 
     /**
@@ -858,17 +840,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getSkip(
-     *      java.lang.String)
-     */
-    public Glue getSkip(final String name) {
-
-        Glue skip = (Glue) (skipMap.get(name));
-        return skip != null ? skip : next != null ? next.getSkip(name)
-                : new Glue(0);
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setToks(
      *      java.lang.String,
      *         de.dante.extex.interpreter.type.tokens.Tokens)
@@ -894,14 +865,12 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getToks(
-     *      java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(
+     *      de.dante.extex.interpreter.context.TypesettingContext)
      */
-    public Tokens getToks(final String name) {
+    public void setTypesettingContext(final TypesettingContext context) {
 
-        Tokens toks = (Tokens) (toksMap.get(name));
-        return toks != null ? toks : next != null ? next.getToks(name)
-                : new Tokens();
+        typesettingContext = context;
     }
 
     /**
@@ -917,84 +886,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         if (global && next != null) {
             next.setTypesettingContext(context, global);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(
-     *      de.dante.extex.interpreter.context.TypesettingContext)
-     */
-    public void setTypesettingContext(final TypesettingContext context) {
-
-        typesettingContext = context;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getTypesettingContext()
-     */
-    public TypesettingContext getTypesettingContext() {
-
-        TypesettingContext context = typesettingContext;
-        return context != null //
-                ? context //
-                : next != null ? next.getTypesettingContext()
-                        : new TypesettingContextImpl();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
-     *      de.dante.extex.scanner.Token)
-     */
-    public void afterGroup(final Token t) {
-
-        if (afterGroup == null) {
-            afterGroup = new Tokens();
-        }
-
-        afterGroup.add(t);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
-     *      de.dante.util.observer.Observer)
-     */
-    public void afterGroup(final Observer observer) {
-
-        afterGroupObservers.add(observer);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#runAfterGroup(
-     *      de.dante.util.Observable,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void runAfterGroup(final Observable source,
-            final Typesetter typesetter) throws GeneralException {
-
-        afterGroupObservers.update(source, typesetter);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getUccode(
-     *      de.dante.util.UnicodeChar)
-     */
-    public UnicodeChar getUccode(final UnicodeChar uc) {
-
-        UnicodeChar value = (UnicodeChar) uccodeMap.get(uc);
-
-        if (value != null) {
-            return value;
-        } else if (next != null) {
-            return next.getLccode(uc);
-        }
-
-        // Fallback for predefined lccodes
-        if (uc.isLetter()) {
-            value = new UnicodeChar(uc.toUpperCase());
-            // the value is stored to avoid constructing UnicodeChars again
-            lccodeMap.put(uc, value);
-            return value;
-        }
-        return UnicodeChar.NULL;
     }
 
     /**

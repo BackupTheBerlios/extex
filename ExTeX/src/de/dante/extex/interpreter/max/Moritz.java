@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -76,7 +76,6 @@ public abstract class Moritz implements TokenSource, Observable {
      * character code. In original TeX this value would be 255.
      */
     private static final long MAX_CHAR_CODE = Integer.MAX_VALUE;
-
     //TODO: find a good value
 
     /**
@@ -100,6 +99,14 @@ public abstract class Moritz implements TokenSource, Observable {
     private ObserverList observersEOF = new ObserverList();
 
     /**
+     * The field <tt>observersLogMessage</tt> contains the observer list is used
+     * for the observers which are registered to receive notifications when a
+     * log message is send from another component. This message shuld be made
+     * accessible to the user in some way, e.g. in the log file.
+     */
+    private ObserverList observersLogMessage = new ObserverList();
+
+    /**
      * The field <tt>observersMessage</tt> contains the observer list is used
      * for the observers which are registered to receive notifications when a
      * message is send from another component. This message shuld be made
@@ -107,14 +114,6 @@ public abstract class Moritz implements TokenSource, Observable {
      * file.
      */
     private ObserverList observersMessage = new ObserverList();
-
-    /**
-     * The field <tt>observersLogMessage</tt> contains the observer list is used
-     * for the observers which are registered to receive notifications when a
-     * log message is send from another component. This message shuld be made
-     * accessible to the user in some way, e.g. in the log file.
-     */
-    private ObserverList observersLogMessage = new ObserverList();
 
     /**
      * The field <tt>observersPop</tt> contains the observer list is used for
@@ -133,18 +132,18 @@ public abstract class Moritz implements TokenSource, Observable {
     private ObserverList observersPush = new ObserverList();
 
     /**
-     * The field <tt>streamStack</tt> contains the stack of streams to read
-     * from except of the current one which is stored in the variable
-     * <code>stream</code>.
-     */
-    private ArrayList streamStack = new ArrayList();
-
-    /**
      * The field <tt>stream</tt> contains the current stream to read tokens
      * from. For efficiency this stream is kept in a variable instead of
      * accessing the streamStack each time it is needed.
      */
     private TokenStream stream = null;
+
+    /**
+     * The field <tt>streamStack</tt> contains the stack of streams to read
+     * from except of the current one which is stored in the variable
+     * <code>stream</code>.
+     */
+    private ArrayList streamStack = new ArrayList();
 
     /**
      * The field <tt>tokenStreamFactory</tt> contains the factory for new
@@ -163,6 +162,109 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
+     * Put a given stream on top of the stream stack. The reading occurs on
+     * this new stream before resorting to the previous streams.
+     *
+     * @param theStream the new stream to read from
+     */
+    public void addStream(final TokenStream theStream) {
+
+        streamStack.add(this.stream);
+        this.stream = theStream;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#closeAllStreams()
+     */
+    public void closeAllStreams() throws GeneralException {
+
+        while (stream != null) {
+            observersCloseStream.update(this, stream);
+            int last = streamStack.size() - 1;
+            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream()
+     */
+    public void closeNextFileStream() throws GeneralException {
+
+        while (stream != null) {
+            observersCloseStream.update(this, stream);
+            if (stream.isFileStream()) {
+                int last = streamStack.size() - 1;
+                stream = (last >= 0 ? (TokenStream) streamStack.remove(last)
+                        : null);
+                return;
+            }
+            int last = streamStack.size() - 1;
+            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#getBox(
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Box getBox(final Typesetter typesetter) throws GeneralException {
+
+        Token t = getToken();
+        if (t == null || !(t instanceof CodeToken)) {
+            throw new GeneralHelpingException("TTP.BoxExpected");
+        }
+        Code code = context.getCode(t);
+        if (code == null || !(code instanceof Boxable)) {
+            throw new GeneralHelpingException("TTP.BoxExpected");
+        }
+        Box box = ((Boxable) code).getBox(context, this, typesetter);
+
+        return box;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#getContext()
+     */
+    public Context getContext() {
+
+        return context;
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    public Token getControlSequence() throws GeneralException {
+
+        Token t = getToken();
+
+        if (t == null) {
+            push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
+                                                       "inaccessible ",
+                                                       context.getNamespace()));
+
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        } else if (t instanceof CodeToken) {
+            Code code = context.getCode(t);
+            if (code != null && code instanceof CsConvertible) {
+                t = ((CsConvertible) code).convertCs(context, this);
+            }
+
+        } else {
+            push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
+                                                       "inaccessible ",
+                                                       context.getNamespace()));
+            push(t);
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        }
+
+        return t;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.TokenSource#getFont()
      */
     public Font getFont() throws GeneralException {
@@ -177,6 +279,32 @@ public abstract class Moritz implements TokenSource, Observable {
         }
 
         return ((FontConvertible) code).convertFont(context, this);
+    }
+
+    /**
+     * Scan the input stream for tokens making up an integer, this is a number
+     * optionally preceeded by a sign (+ or -). The number can be preceeded by
+     * optional whitespace. Whitespace is also ignored between the sign and the
+     * number. All non-whitespace characters must have the catcode OTHER.
+     *
+     * @return the value of the integer scanned
+     *
+     * @throws GeneralException in case that no number is found or the end of
+     *             file has been reached before an integer could be acquired
+     */
+    public long getInteger() throws GeneralException {
+
+        Token t = getNonSpace();
+
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.MissingNumber");
+        } else if (t.equals(Catcode.OTHER, "-")) {
+            return -scanNumber();
+        } else if (!t.equals(Catcode.OTHER, "+")) {
+            stream.put(t);
+        }
+
+        return scanNumber();
     }
 
     /**
@@ -203,6 +331,141 @@ public abstract class Moritz implements TokenSource, Observable {
         }
 
         return null;
+    }
+
+    /**
+     * Scan a number with a given first token.
+     *
+     * @param token the first token to consider
+     *
+     * @return the value of the integer scanned
+     *
+     * @throws GeneralException in case that no number is found or the end of
+     *             file has been reached before an integer could be acquired
+     */
+    public long getNumber(final Token token) throws GeneralException {
+
+        long n = 0;
+        Token t;
+
+        if (token != null && token.isa(Catcode.OTHER)) {
+            switch (token.getValue().charAt(0)) {
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    n = token.getValue().charAt(0) - '0';
+
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-9]"); //
+                    t = getToken()) {
+                        n = n * 10 + t.getValue().charAt(0) - '0';
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+
+                case '`':
+                    t = getToken();
+
+                    if (t != null) {
+                        return t.getValue().charAt(0);
+                    }
+                    // fall through to error handling
+                    break;
+
+                case '\'':
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-7]"); //
+                    t = getToken()) {
+                        n = n * 8 + t.getValue().charAt(0) - '0';
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+
+                case '"':
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-9a-fA-F]"); //
+                    t = getToken()) {
+                        switch (t.getValue().charAt(0)) {
+                            case '0':
+                            case '1':
+                            case '2':
+                            case '3':
+                            case '4':
+                            case '5':
+                            case '6':
+                            case '7':
+                            case '8':
+                            case '9':
+                                n = n * 16 + t.getValue().charAt(0) - '0';
+                                break;
+                            case 'a':
+                            case 'b':
+                            case 'c':
+                            case 'd':
+                            case 'e':
+                            case 'f':
+                                n = n * 16 + t.getValue().charAt(0) - 'a' + 10;
+                                break;
+                            case 'A':
+                            case 'B':
+                            case 'C':
+                            case 'D':
+                            case 'E':
+                            case 'F':
+                                n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
+                                break;
+                            default:
+                                throw new GeneralPanicException(
+                                        "this can't happen");
+                        }
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+
+                default:
+                    // fall through to error handling
+            }
+        }
+
+        throw new GeneralHelpingException("TTP.MissingNumber");
+    }
+
+    /**
+     * Skip spaces and if the next non-space character is an equal sign skip it
+     * as well and all spaces afterwards.
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void getOptionalEquals() throws GeneralException {
+
+        Token t = getNonSpace();
+
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.MissingNumber");
+        } else if (t.equals(Catcode.OTHER, "=")) {
+            stream.put(getNonSpace());
+        } else {
+            stream.put(t);
+        }
     }
 
     /**
@@ -247,10 +510,8 @@ public abstract class Moritz implements TokenSource, Observable {
 
         if (token == null) {
             throw new GeneralHelpingException("EOF");
-            //TODO: handle EOF
         } else if (!token.isa(Catcode.LEFTBRACE)) {
             throw new GeneralHelpingException("TTP.MissingLeftBrace");
-            //TODO call the error handler
         }
 
         int balance = 1;
@@ -270,74 +531,6 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#getBox(
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public Box getBox(final Typesetter typesetter) throws GeneralException {
-
-        Token t = getToken();
-        if (t == null || !(t instanceof CodeToken)) {
-            throw new GeneralHelpingException("TTP.BoxExpected");
-        }
-        Code code = context.getCode(t);
-        if (code == null || !(code instanceof Boxable)) {
-            throw new GeneralHelpingException("TTP.BoxExpected");
-        }
-        Box box = ((Boxable) code).getBox(context, this, typesetter);
-
-        return box;
-    }
-
-    /**
-     * ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    public Token getControlSequence() throws GeneralException {
-
-        Token t = getToken();
-
-        if (t == null) {
-            push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
-                                                       "inaccessible "));
-
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        } else if (t instanceof CodeToken) {
-            Code code = context.getCode(t);
-            if (code != null && code instanceof CsConvertible) {
-                t = ((CsConvertible) code).convertCs(context, this);
-            }
-
-        } else {
-            push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
-                                                       "inaccessible "));
-            push(t);
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        }
-
-        return t;
-    }
-
-    /**
-     * Getter for the typesetter.
-     *
-     * @return the typesetter
-     */
-    public abstract Typesetter getTypesetter();
-
-    /**
-     * Setter for the token stream factory.
-     *
-     * @param factory the token stream factory
-     */
-    public void setTokenStreamFactory(final TokenStreamFactory factory) {
-
-        tokenStreamFactory = factory;
-    }
-
-    /**
      * Getter for the token stream factory.
      *
      * @return the token stream factory
@@ -348,46 +541,11 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * Put a given stream on top of the stream stack. The reading occurs on
-     * this new stream before resorting to the previous streams.
+     * Getter for the typesetter.
      *
-     * @param theStream the new stream to read from
+     * @return the typesetter
      */
-    public void addStream(final TokenStream theStream) {
-
-        streamStack.add(this.stream);
-        this.stream = theStream;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#closeAllStreams()
-     */
-    public void closeAllStreams() throws GeneralException {
-
-        while (stream != null) {
-            observersCloseStream.update(this, stream);
-            int last = streamStack.size() - 1;
-            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream()
-     */
-    public void closeNextFileStream() throws GeneralException {
-
-        while (stream != null) {
-            observersCloseStream.update(this, stream);
-            if (stream.isFileStream()) {
-                int last = streamStack.size() - 1;
-                stream = (last >= 0 ? (TokenStream) streamStack.remove(last)
-                        : null);
-                return;
-            }
-            int last = streamStack.size() - 1;
-            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
-        }
-    }
+    public abstract Typesetter getTypesetter();
 
     /**
      * Push back a token onto the input stream for subsequent reading.
@@ -530,32 +688,6 @@ public abstract class Moritz implements TokenSource, Observable {
      * @throws GeneralException in case that no number is found or the end of
      *             file has been reached before an integer could be acquired
      */
-    public long getInteger() throws GeneralException {
-
-        Token t = getNonSpace();
-
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
-        } else if (t.equals(Catcode.OTHER, "-")) {
-            return -scanNumber();
-        } else if (!t.equals(Catcode.OTHER, "+")) {
-            stream.put(t);
-        }
-
-        return scanNumber();
-    }
-
-    /**
-     * Scan the input stream for tokens making up an integer, this is a number
-     * optionally preceeded by a sign (+ or -). The number can be preceeded by
-     * optional whitespace. Whitespace is also ignored between the sign and the
-     * number. All non-whitespace characters must have the catcode OTHER.
-     *
-     * @return the value of the integer scanned
-     *
-     * @throws GeneralException in case that no number is found or the end of
-     *             file has been reached before an integer could be acquired
-     */
     public long scanInteger() throws GeneralException {
 
         Token t = scanNonSpace();
@@ -598,6 +730,19 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.TokenSource#scanKeyword(java.lang.String,
+     *      boolean)
+     */
+    public boolean scanKeyword(final String s, final boolean space)
+            throws GeneralException {
+
+        if (space) {
+            skipSpace();
+        }
+        return scanKeyword(s);
+    }
+
+    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
@@ -614,59 +759,6 @@ public abstract class Moritz implements TokenSource, Observable {
         }
 
         return null;
-    }
-
-    /**
-     * Expand tokens from the input stream until an unexpandable token is
-     * found. This unexpandable token is returned.
-     *
-     * @return the next unexpandable token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public Token scanToken() throws GeneralException {
-
-        return expand(getToken());
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanTokens()
-     */
-    public Tokens scanTokens() throws GeneralException {
-
-        Tokens toks = new Tokens();
-        Token token = getNonSpace();
-
-        if (token == null) {
-            //TODO: handle EOF
-            throw new RuntimeException("unimplemented");
-        } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new GeneralHelpingException("TTP.MissingLeftBrace");
-            //TODO call the error handler
-        }
-
-        int balance = 1;
-
-        for (token = scanToken(); token != null; token = scanToken()) {
-
-            if (token.isa(Catcode.LEFTBRACE)) {
-                ++balance;
-            } else if (token.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
-                break;
-            }
-
-            toks.add(token);
-        }
-
-        return toks;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString()
-     */
-    public String scanTokensAsString() throws GeneralException {
-
-        return scanTokens().toText();
     }
 
     /**
@@ -828,122 +920,6 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * Scan a number with a given first token.
-     *
-     * @param token the first token to consider
-     *
-     * @return the value of the integer scanned
-     *
-     * @throws GeneralException in case that no number is found or the end of
-     *             file has been reached before an integer could be acquired
-     */
-    public long getNumber(final Token token) throws GeneralException {
-
-        long n = 0;
-        Token t;
-
-        if (token != null && token.isa(Catcode.OTHER)) {
-            switch (token.getValue().charAt(0)) {
-                case '0':
-                case '1':
-                case '2':
-                case '3':
-                case '4':
-                case '5':
-                case '6':
-                case '7':
-                case '8':
-                case '9':
-                    n = token.getValue().charAt(0) - '0';
-
-                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                                         && t.getValue().matches("[0-9]"); //
-                    t = getToken()) {
-                        n = n * 10 + t.getValue().charAt(0) - '0';
-                    }
-
-                    if (t != null) {
-                        stream.put(t);
-                    }
-                    skipSpace();
-                    return n;
-
-                case '`':
-                    t = getToken();
-
-                    if (t != null) {
-                        return t.getValue().charAt(0);
-                    }
-                    // fall through to error handling
-                    break;
-
-                case '\'':
-                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                                         && t.getValue().matches("[0-7]"); //
-                    t = getToken()) {
-                        n = n * 8 + t.getValue().charAt(0) - '0';
-                    }
-
-                    if (t != null) {
-                        stream.put(t);
-                    }
-                    skipSpace();
-                    return n;
-
-                case '"':
-                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                                         && t.getValue().matches("[0-9a-fA-F]"); //
-                    t = getToken()) {
-                        switch (t.getValue().charAt(0)) {
-                            case '0':
-                            case '1':
-                            case '2':
-                            case '3':
-                            case '4':
-                            case '5':
-                            case '6':
-                            case '7':
-                            case '8':
-                            case '9':
-                                n = n * 16 + t.getValue().charAt(0) - '0';
-                                break;
-                            case 'a':
-                            case 'b':
-                            case 'c':
-                            case 'd':
-                            case 'e':
-                            case 'f':
-                                n = n * 16 + t.getValue().charAt(0) - 'a' + 10;
-                                break;
-                            case 'A':
-                            case 'B':
-                            case 'C':
-                            case 'D':
-                            case 'E':
-                            case 'F':
-                                n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
-                                break;
-                            default:
-                                throw new GeneralPanicException(
-                                        "this can't happen");
-                        }
-                    }
-
-                    if (t != null) {
-                        stream.put(t);
-                    }
-                    skipSpace();
-                    return n;
-
-                default:
-                    // fall through to error handling
-            }
-        }
-
-        throw new GeneralHelpingException("TTP.MissingNumber");
-    }
-
-    /**
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      *
@@ -963,20 +939,75 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * Skip spaces and if the next non-space character is an equal sign skip it
-     * as well and all spaces afterwards.
+     * Expand tokens from the input stream until an unexpandable token is
+     * found. This unexpandable token is returned.
+     *
+     * @return the next unexpandable token
      *
      * @throws GeneralException in case of an error
      */
-    public void getOptionalEquals() throws GeneralException {
+    public Token scanToken() throws GeneralException {
+
+        return expand(getToken());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#scanTokens()
+     */
+    public Tokens scanTokens() throws GeneralException {
+
+        Tokens toks = new Tokens();
+        Token token = getNonSpace();
+
+        if (token == null) {
+            //TODO: handle EOF
+            throw new RuntimeException("unimplemented");
+        } else if (!token.isa(Catcode.LEFTBRACE)) {
+            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            //TODO call the error handler
+        }
+
+        int balance = 1;
+
+        for (token = scanToken(); token != null; token = scanToken()) {
+
+            if (token.isa(Catcode.LEFTBRACE)) {
+                ++balance;
+            } else if (token.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
+                break;
+            }
+
+            toks.add(token);
+        }
+
+        return toks;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString()
+     */
+    public String scanTokensAsString() throws GeneralException {
+
+        return scanTokens().toText();
+    }
+
+    /**
+     * Setter for the token stream factory.
+     *
+     * @param factory the token stream factory
+     */
+    public void setTokenStreamFactory(final TokenStreamFactory factory) {
+
+        tokenStreamFactory = factory;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#skipSpace()
+     */
+    public void skipSpace() throws GeneralException {
 
         Token t = getNonSpace();
-
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
-        } else if (t.equals(Catcode.OTHER, "=")) {
-            stream.put(getNonSpace());
-        } else {
+        if (t != null) {
             stream.put(t);
         }
     }
@@ -995,37 +1026,6 @@ public abstract class Moritz implements TokenSource, Observable {
         } else {
             throw new NotObservableException(name);
         }
-    }
-
-    /**
-     * Tries to expand a token. If the given token is expandable then it is
-     * recursively expanded and the result is pushed.  The first not-expandable
-     * token is returned.
-     *
-     * @param token the Token to expand
-     *
-     * @return the next non-expandable token or <code>null</code>
-     *
-     * @throws GeneralException in case of an error
-     */
-    protected abstract Token expand(final Token token) throws GeneralException;
-
-    /**
-     * Setter for the context.
-     *
-     * @param theContext the context to use
-     */
-    protected void setContext(final Context theContext) {
-
-        context = theContext;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Interpreter#getContext()
-     */
-    public Context getContext() {
-
-        return context;
     }
 
     /**
@@ -1059,27 +1059,26 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#skipSpace()
+     * Tries to expand a token. If the given token is expandable then it is
+     * recursively expanded and the result is pushed.  The first not-expandable
+     * token is returned.
+     *
+     * @param token the Token to expand
+     *
+     * @return the next non-expandable token or <code>null</code>
+     *
+     * @throws GeneralException in case of an error
      */
-    public void skipSpace() throws GeneralException {
-
-        Token t = getNonSpace();
-        if (t != null) {
-            stream.put(t);
-        }
-    }
+    protected abstract Token expand(final Token token) throws GeneralException;
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanKeyword(java.lang.String,
-     *      boolean)
+     * Setter for the context.
+     *
+     * @param theContext the context to use
      */
-    public boolean scanKeyword(final String s, final boolean space)
-            throws GeneralException {
+    protected void setContext(final Context theContext) {
 
-        if (space) {
-            skipSpace();
-        }
-        return scanKeyword(s);
+        context = theContext;
     }
 
 }

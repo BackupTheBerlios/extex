@@ -37,7 +37,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GroupFactory {
 
@@ -64,6 +64,7 @@ public class GroupFactory {
      */
     public GroupFactory(final Configuration config)
             throws ConfigurationException {
+
         super();
 
         String classname = config.getAttribute(CLASS_ATTRIBUTE);
@@ -73,8 +74,8 @@ public class GroupFactory {
         }
 
         try {
-            constructor = Class.forName(classname).getConstructor(
-                    new Class[]{Group.class});
+            constructor = Class.forName(classname)
+                    .getConstructor(new Class[]{Group.class});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
