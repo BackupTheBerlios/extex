@@ -18,14 +18,13 @@
  */
 package de.dante.extex.scanner;
 
-import de.dante.util.GeneralException;
 import junit.framework.TestCase;
 
 /*
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CatcodeTest extends TestCase implements CatcodeVisitor {
 
@@ -183,7 +182,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
      */
     public void testToCatcodeFail1() throws Exception {
         try {
-            Catcode cc = Catcode.toCatcode(-1);
+            Catcode.toCatcode(-1);
             assertFalse("Test succeeded unexpectedly",true);
         } catch (CatcodeException e) {
             assertTrue(true);
@@ -194,7 +193,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
      */
     public void testToCatcodeFail2() throws Exception {
         try {
-            Catcode cc = Catcode.toCatcode(16);
+            Catcode.toCatcode(16);
             assertFalse("Test succeeded unexpectedly",true);
         } catch (CatcodeException e) {
             assertTrue(true);
@@ -319,7 +318,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object, java.lang.Object)
      */
-    public Object visitActive(Object arg1, Object arg2) throws GeneralException {
+    public Object visitActive(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 13;
@@ -328,8 +327,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object, java.lang.Object)
      */
-    public Object visitComment(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitComment(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 14;
@@ -338,7 +336,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object, java.lang.Object)
      */
-    public Object visitCr(Object arg1, Object arg2) throws GeneralException {
+    public Object visitCr(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 5;
@@ -347,7 +345,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object, java.lang.Object)
      */
-    public Object visitEscape(Object arg1, Object arg2) throws GeneralException {
+    public Object visitEscape(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 0;
@@ -356,7 +354,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object, java.lang.Object)
      */
-    public Object visitIgnore(Object arg1, Object arg2) throws GeneralException {
+    public Object visitIgnore(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 9;
@@ -365,8 +363,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object, java.lang.Object)
      */
-    public Object visitInvalid(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitInvalid(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 15;
@@ -375,8 +372,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object, java.lang.Object)
      */
-    public Object visitLeftBrace(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitLeftBrace(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 1;
@@ -385,7 +381,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object, java.lang.Object)
      */
-    public Object visitLetter(Object arg1, Object arg2) throws GeneralException {
+    public Object visitLetter(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 11;
@@ -394,8 +390,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object, java.lang.Object)
      */
-    public Object visitMacroParam(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitMacroParam(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 6;
@@ -404,8 +399,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object, java.lang.Object)
      */
-    public Object visitMathShift(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitMathShift(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 3;
@@ -414,7 +408,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object, java.lang.Object)
      */
-    public Object visitOther(Object arg1, Object arg2) throws GeneralException {
+    public Object visitOther(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 12;
@@ -423,8 +417,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(java.lang.Object, java.lang.Object)
      */
-    public Object visitRightBrace(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitRightBrace(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 2;
@@ -433,7 +426,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object, java.lang.Object)
      */
-    public Object visitSpace(Object arg1, Object arg2) throws GeneralException {
+    public Object visitSpace(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 10;
@@ -442,8 +435,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object, java.lang.Object)
      */
-    public Object visitSubMark(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitSubMark(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 8;
@@ -452,8 +444,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object, java.lang.Object)
      */
-    public Object visitSupMark(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitSupMark(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 7;
@@ -462,8 +453,7 @@ public class CatcodeTest extends TestCase implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object, java.lang.Object)
      */
-    public Object visitTabMark(Object arg1, Object arg2)
-            throws GeneralException {
+    public Object visitTabMark(Object arg1, Object arg2) {
         assertEquals("1",arg1);
         assertEquals("2",arg2);
         visited = 4;

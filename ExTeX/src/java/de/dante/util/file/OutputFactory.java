@@ -25,7 +25,6 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 import java.util.Iterator;
 
@@ -38,7 +37,7 @@ import de.dante.util.configuration.ConfigurationMissingException;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OutputFactory {
 
@@ -94,8 +93,7 @@ public class OutputFactory {
      *             opened
      */
     public Writer newInstance(final String name, final String type)
-        throws FileNotFoundException, UnsupportedEncodingException,
-        ConfigurationException {
+        throws FileNotFoundException, ConfigurationException {
         return newInstance(name, type, config.getAttribute(ENCODING_ATTRIBUTE));
     }
 
@@ -115,7 +113,7 @@ public class OutputFactory {
      */
     public Writer newInstance(final String name, final String type,
         final String encoding) throws FileNotFoundException,
-        UnsupportedEncodingException, ConfigurationException {
+        ConfigurationException {
 
         String filename = name + "." + type;
         String dir;
@@ -154,12 +152,8 @@ public class OutputFactory {
      * @param enc the encoding to use
      * 
      * @return ...
-     * 
-     * @throws UnsupportedEncodingException in case that the given encoding is
-     *             not supported
      */
-    private Writer openFile(final File file, final String enc)
-        throws UnsupportedEncodingException {
+    private Writer openFile(final File file, final String enc) {
 
         Writer os = null;
 

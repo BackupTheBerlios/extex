@@ -24,7 +24,7 @@ import de.dante.extex.i18n.Messages;
  * This is the factory for configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationFactory {
     /**
@@ -33,6 +33,7 @@ public class ConfigurationFactory {
      * @throws ConfigException in case that something went wrong
      */
     public ConfigurationFactory() throws ConfigurationException {
+        super();
     }
 
     /**

@@ -28,7 +28,7 @@ import de.dante.extex.logging.Logger;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NullLogger implements Logger {
 
@@ -45,102 +45,119 @@ public class NullLogger implements Logger {
      * @see de.dante.extex.logging.Logger#config(java.lang.String)
      */
     public void config(String arg0) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#entering(java.lang.String, java.lang.String)
      */
     public void entering(String arg0, String arg1) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#entering(java.lang.String, java.lang.String, java.lang.Object)
      */
     public void entering(String arg0, String arg1, Object arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#entering(java.lang.String, java.lang.String, java.lang.Object[])
      */
     public void entering(String arg0, String arg1, Object[] arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#exiting(java.lang.String, java.lang.String)
      */
     public void exiting(String arg0, String arg1) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#exiting(java.lang.String, java.lang.String, java.lang.Object)
      */
     public void exiting(String arg0, String arg1, Object arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#fine(java.lang.String)
      */
     public void fine(String arg0) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#finer(java.lang.String)
      */
     public void finer(String arg0) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#finest(java.lang.String)
      */
     public void finest(String arg0) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#info(java.lang.String)
      */
     public void info(String arg0) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#log(java.util.logging.Level, java.lang.String)
      */
     public void log(Level arg0, String arg1) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#log(java.util.logging.Level, java.lang.String, java.lang.Object)
      */
     public void log(Level arg0, String arg1, Object arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#log(java.util.logging.Level, java.lang.String, java.lang.Object[])
      */
     public void log(Level arg0, String arg1, Object[] arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#log(java.util.logging.Level, java.lang.String, java.lang.Throwable)
      */
     public void log(Level arg0, String arg1, Throwable arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#severe(java.lang.String)
      */
     public void severe(String arg0) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#throwing(java.lang.String, java.lang.String, java.lang.Throwable)
      */
     public void throwing(String arg0, String arg1, Throwable arg2) {
+        // nothing to do
     }
 
     /**
      * @see de.dante.extex.logging.Logger#warning(java.lang.String)
      */
     public void warning(String arg0) {
+        // nothing to do
     }
 
 }

@@ -36,15 +36,13 @@ import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.test.logging.NullLogger;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Max1 extends TestCase {
 
@@ -180,19 +178,21 @@ public class Max1 extends TestCase {
         /**
          */
         public void setDocumentWriter(DocumentWriter doc) {
+            // nothing to do
         }
 
         /**
          * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
          */
-        public void configure(Configuration config)
-                throws ConfigurationException {
+        public void configure(Configuration config) {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.Typesetter#add(de.dante.extex.interpreter.type.node.CharNode)
          */
         public void add(Node c) {
+            // nothing to do
         }
 
         /**
@@ -213,6 +213,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#open()
          */
         public void open() {
+            // nothing to do
         }
 
         /**
@@ -220,42 +221,49 @@ public class Max1 extends TestCase {
          *      java.lang.String)
          */
         public void add(TypesettingContext font, UnicodeChar symbol) {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.Typesetter#finish()
          */
         public void finish(Context context) {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
          */
         public void toggleDisplaymath() {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#toggleMath()
          */
         public void toggleMath() {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
          */
-        public void setSpacefactor(Count f) throws GeneralException {
+        public void setSpacefactor(Count f) {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
          */
-        public void setPrevDepth(Dimen pd) throws GeneralException {
+        public void setPrevDepth(Dimen pd) {
+            // nothing to do
         }
 
         /**
          * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.NodeList)
          */
-        public void shipout(Box nodes) throws GeneralException {
+        public void shipout(Box nodes) {
+            // nothing to do
         }
     }
 

@@ -28,7 +28,7 @@ import de.dante.extex.logging.Logger;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BufferLogger implements Logger {
 
@@ -158,6 +158,7 @@ public class BufferLogger implements Logger {
      * @see de.dante.extex.logging.Logger#config(java.lang.String)
      */
     public void config(String arg0) {
+        // nothing to do
     }
 
     /**

@@ -20,6 +20,7 @@ package de.dante.extex.scanner.stream.impl;
 
 import java.util.Iterator;
 
+import junit.framework.TestCase;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
@@ -27,30 +28,25 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl;
-import de.dante.extex.scanner.stream.impl.TokenStreamBuffersImpl;
 import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
-
-import junit.framework.TestCase;
 
 /**
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamStringImplTest extends TestCase {
     /**
      */
-    public TokenStreamStringImplTest(String name) {
+    public TokenStreamStringImplTest(final String name) {
         super(name);
     }
 
     /**
      */
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         junit.textui.TestRunner.run(TokenStreamStringImplTest.class);
     }
     
@@ -250,59 +246,57 @@ public class TokenStreamStringImplTest extends TestCase {
         public MockConfiguration() {
             super();
         }
-        public MockConfiguration(String cn) {
+        public MockConfiguration(final String cn) {
             super();
             classname = cn;
         }
         /**
          * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
          */
-        public String getAttribute(String name) throws ConfigurationException {
+        public String getAttribute(final String name) {
             return classname;
         }
         /**
          * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String, java.lang.String)
          */
-        public Configuration getConfiguration(String key, String attribute)
-                throws ConfigurationException {
+        public Configuration getConfiguration(final String key, final String attribute) {
             return null;
         }
         /**
          * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String)
          */
-        public Configuration getConfiguration(String key)
-                throws ConfigurationException {
+        public Configuration getConfiguration(final String key) {
             return new MockConfiguration("de.dante.extex.interpreter.context.impl.GroupImpl");
         }
         /**
          * @see de.dante.util.configuration.Configuration#getValue()
          */
-        public String getValue() throws ConfigurationException {
+        public String getValue() {
             return null;
         }
         /**
          * @see de.dante.util.configuration.Configuration#getValue(java.lang.String)
          */
-        public String getValue(String key) throws ConfigurationException {
+        public String getValue(final String key) {
             return null;
         }
         /**
-         * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String, int)
+         * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String,
+         *      int)
          */
-        public int getValueAsInteger(String key, int defaultValue)
-                throws ConfigurationException {
+        public int getValueAsInteger(final String key, final int defaultValue) {
             return 0;
         }
         /**
          * @see de.dante.util.configuration.Configuration#getValues(java.lang.String)
          */
-        public StringList getValues(String key) throws ConfigurationException {
+        public StringList getValues(final String key) {
             return null;
         }
         /**
          * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
          */
-        public Iterator iterator(String key) throws ConfigurationException {
+        public Iterator iterator(final String key) {
             return null;
         }
 }
