@@ -30,8 +30,10 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeVisitor;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Mode;
@@ -52,7 +54,7 @@ import de.dante.util.configuration.ConfigurationMissingException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Max extends Moritz implements CatcodeVisitor,
                                            Interpreter,
@@ -255,8 +257,8 @@ public class Max extends Moritz implements CatcodeVisitor,
             //TODO: use new exception
         }
 
-        for (Token current = getNextToken(); current != null;
-                 current = getNextToken()) {
+        for (Token current = getToken(); current != null;
+                 current = getToken()) {
             observersExpand.update(this, current);
 
             try {
@@ -402,7 +404,7 @@ public class Max extends Moritz implements CatcodeVisitor,
             return null;
         }
 
-        Token next = getNextToken();
+        Token next = getToken();
 
         if (next == null) {
             // throw new GeneralException("Missing $ inserted");
@@ -573,17 +575,26 @@ public class Max extends Moritz implements CatcodeVisitor,
         return null;
     }
     
-	/**
-	 * @see de.dante.extex.interpreter.Moritz#expand(de.dante.extex.scanner.Token)
-	 */
-	protected Token expand(Token token, Code code) throws GeneralException {
-        if (code == null) {
-            return token;
+    /**
+     * @see de.dante.extex.interpreter.Moritz#expand(de.dante.extex.scanner.Token)
+     */
+    protected Token expand(Token token) throws GeneralException {
+        Code code;
+
+        while (token == null) {
+            if (token instanceof ControlSequenceToken) {
+                code = context.getMacro(token.getValue());
+            } else if (token instanceof ActiveCharacterToken) {
+                code = context.getMacro(token.getValue());
+            } else {
+                return token;
+            }
+            if (!code.expand(prefix, context, this, typesetter)) { 
+                return token;
+            }
+            token = getToken();
         }
-
-        code.expand(prefix, context, this, typesetter);
-
-		return null;
-	}
+        return token;
+    }
 
 }
