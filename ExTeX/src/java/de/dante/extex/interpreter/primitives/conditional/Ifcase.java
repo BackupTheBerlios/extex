@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,10 +20,10 @@
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -106,7 +106,7 @@ public class Ifcase extends AbstractIf {
                 return true;
 
             } else {
-                throw new PanicException("this can't happen");
+                throw new ImpossibleException("impossible tag encountered");
 
             }
         }
@@ -190,7 +190,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     protected static final class Tag {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,9 +22,9 @@ package de.dante.extex.interpreter.primitives.arithmetic;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.CantUseAfterException;
-import de.dante.extex.interpreter.exception.EofException;
-import de.dante.extex.interpreter.exception.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.exception.helping.CantUseAfterException;
+import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
@@ -80,7 +80,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Multiply extends AbstractAssignment {
 
