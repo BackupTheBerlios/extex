@@ -29,7 +29,6 @@ import java.util.logging.Logger;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
@@ -45,7 +44,6 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.CrToken;
@@ -64,7 +62,6 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Switch;
@@ -86,7 +83,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class Max extends Moritz
         implements
