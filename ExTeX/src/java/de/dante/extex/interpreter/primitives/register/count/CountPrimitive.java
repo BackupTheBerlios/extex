@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CountPrimitive extends AbstractCount implements ExpandableCode,
         Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
@@ -197,9 +197,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
             throws GeneralException {
 
         String key = getKey(source, context.getNamespace());
-        String s = context.getCount(key).toString();
-        Tokens toks = new Tokens(context, s);
-        return toks;
+        return new Tokens(context, context.getCount(key).toString());
     }
 
 }
