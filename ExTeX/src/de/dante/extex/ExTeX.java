@@ -83,7 +83,7 @@ import de.dante.util.file.FileFinderPathImpl;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ExTeX {
 	/**
@@ -390,7 +390,6 @@ public class ExTeX {
 		try {
 			Configuration config = new ConfigurationFactory().newInstance(properties.getProperty("extex.config"));
 
-			// FileFinder
 			FileFinderList finder = new FileFinderList(new FileFinderDirect(new StringList(":tex", ":")));
 			String path = properties.getProperty("extex.texinputs", "");
 			if (!path.equals("")) {
