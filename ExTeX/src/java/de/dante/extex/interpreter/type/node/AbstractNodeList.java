@@ -32,7 +32,7 @@ import java.util.List;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -181,6 +181,15 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 		sb.append(")x");
 		sb.append(getWidth().toString());
 
+		// TODO delte after test
+		sb.append(" (");
+		sb.append(getHeight().toPT());
+		sb.append("+");
+		sb.append(getDepth().toPT());
+		sb.append(")x");
+		sb.append(getWidth().toPT());
+		
+		
 		if (shift.getValue() != 0) {
 			sb.append(", shifted ");
 			sb.append(shift.toString());

@@ -24,7 +24,7 @@ import de.dante.extex.typesetter.Node;
  * Language-whatsis-node (set with <code>\setlanguge</code>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LanguageNode extends WhatsItNode implements Node {
 
@@ -47,12 +47,4 @@ public class LanguageNode extends WhatsItNode implements Node {
 	public int getLanguage() {
 		return language;
 	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "language";
-	}
-
 }

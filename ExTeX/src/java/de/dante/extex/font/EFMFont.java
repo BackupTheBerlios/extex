@@ -46,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -209,10 +209,10 @@ public class EFMFont extends XMLFont implements Font {
 					}
 
 				} catch (JDOMException e) {
-					throw new GeneralHelpingException("EFM.jdomerror",e.getMessage());
+					throw new GeneralHelpingException("EFM.jdomerror", e.getMessage());
 				} catch (IOException e) {
 					e.printStackTrace();
-					throw new GeneralHelpingException("EFM.ioerror",e.getMessage());
+					throw new GeneralHelpingException("EFM.ioerror", e.getMessage());
 				}
 
 			} else {
@@ -411,6 +411,8 @@ public class EFMFont extends XMLFont implements Font {
 				// do nothing, return ZERO_PT
 			}
 		}
+		//		System.err.println("glyph " + c.toString() + "  h:" + rglyph.getHeight() + " (" + rglyph.getHeight().toPT() + ") d:"  + rglyph.getDepth() + " (" + rglyph.getDepth().toPT() + ")   w:" + rglyph.getWidth() + " (" + rglyph.getWidth().toPT() + ")" );
+
 		return rglyph;
 	}
 

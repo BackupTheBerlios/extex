@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Box extends AbstractNodeList implements Serializable, NodeList {
 
@@ -50,13 +50,6 @@ public class Box extends AbstractNodeList implements Serializable, NodeList {
 	 */
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		throw new GeneralException("unimplemented"); //TODO incomplete
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "box";
 	}
 
 	/**

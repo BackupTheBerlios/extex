@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [143]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LigatureNode extends AbstractNode implements Node {
 
@@ -64,12 +64,4 @@ public class LigatureNode extends AbstractNode implements Node {
 	public Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException {
 		return visitor.visitLigature(value, value2);
 	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "ligature";
-	}
-
 }

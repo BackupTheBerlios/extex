@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -68,6 +68,16 @@ public class Dimen extends GlueComponent implements Serializable {
 		super(value);
 	}
 
+	/**
+	 * Creates a new object.
+	 * 
+	 * @param value the value as <code>Dimen</code>
+	 */
+	public Dimen(final Dimen value) {
+		super(value.getValue());
+	}
+	
+	
     /**
      * Creates a new object.
      *
@@ -128,43 +138,6 @@ public class Dimen extends GlueComponent implements Serializable {
         return (getValue() <= d.getValue());
     }
     
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 */
-	public String toString() {
-		return Long.toString(getValue()) + "sp";
-	}
-
-	/**
-	 * ...
-	 *
-	 * @param sb
-	 */
-	public void toString(final StringBuffer sb) {
-		sb.append(Long.toString(getValue()));
-		sb.append("sp");
-	}
-
-	/**
-	 * Return a String with the Dimen-value in pt 
-	 * @return a String with the Dimen-value in pt
-	 */
-	public String toPT() {
-		return String.valueOf(round((double)getValue() / ONE)) + "pt";
-	}
-
-	/** 
-	 * Rounds a floating-point number to nearest whole number.
-	 * It uses exactly the same algorithm as web2c implementation of TeX.
-	 * @param	d	number to be rounded
-	 * @return	rounded value
-	 */
-	private long round(double d) { 
-		return (long) ((d >= 0.0) ? d + 0.5 : d - 0.5); 
-	}
-
 	/**
 	 * ...
 	 *

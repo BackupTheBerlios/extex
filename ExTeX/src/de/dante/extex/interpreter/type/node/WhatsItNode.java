@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [146]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class WhatsItNode extends AbstractNode implements Node {
 
@@ -53,12 +53,4 @@ public class WhatsItNode extends AbstractNode implements Node {
 	public Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException {
 		return visitor.visitWhatsIt(value, value2);
 	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "whatsit";
-	}
-
 }

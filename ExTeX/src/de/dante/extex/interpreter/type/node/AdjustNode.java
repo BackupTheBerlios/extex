@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
@@ -71,10 +71,4 @@ public class AdjustNode extends AbstractNode implements Node {
 		return visitor.visitAdjust(value, value2);
 	}
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "adjust";
-	}
 }

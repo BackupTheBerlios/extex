@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
@@ -56,12 +56,4 @@ public class CenteredLeadersNode extends GlueNode implements Node {
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitCenteredLeaders(value, value2);
 	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "centeredleaders";
-	}
-
 }

@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [137]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -66,13 +66,6 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
 	 */
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitVerticalList(value, value2);
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "verticallist";
 	}
 
 	/**

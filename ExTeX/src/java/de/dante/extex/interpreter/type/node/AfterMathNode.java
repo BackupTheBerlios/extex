@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [147]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AfterMathNode extends AbstractNode implements Node, Discartable {
 
@@ -68,10 +68,4 @@ public class AfterMathNode extends AbstractNode implements Node, Discartable {
 		return visitor.visitAfterMath(value, value2);
 	}
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#getType()
-	 */
-	public String getType() {
-		return "aftermath";
-	}
 }

@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Node {
 
@@ -104,10 +104,5 @@ public interface Node {
 	 * @throws GeneralException in case of an error
 	 */
 	Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException;
-
-	/**
-	 * Return the type of the node as <code>String</code>
-	 */
-	String getType();
 
 }
