@@ -16,8 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.logging;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintWriter;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
@@ -26,7 +29,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LogFormatter extends Formatter {
 
@@ -56,6 +59,11 @@ public class LogFormatter extends Formatter {
      */
     public String format(final LogRecord record) {
 
+        Throwable t = record.getThrown();
+        if (t != null) {
+            return format(t);
+        }
+
         StringBuffer msg = new StringBuffer(record.getMessage());
 
         if (msg.length() == 0) {
@@ -76,11 +84,26 @@ public class LogFormatter extends Formatter {
         }
 
         if (col >= LINE_LENGTH) {
-            //TODO improve
+            //TODO improve formatting
             msg.append('\n');
             col = 0;
         }
 
         return msg.toString();
+    }
+
+    /**
+     * Format any throwable into a printable format.
+     *
+     * @param t the throwable to log
+     * @return the printed stack trace
+     */
+    private String format(final Throwable t) {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PrintWriter writer = new PrintWriter(os);
+        t.printStackTrace(writer);
+        writer.flush();
+        return "\n" + os.toString() + "\n";
     }
 }
