@@ -35,7 +35,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -70,7 +70,7 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#get()
+     * @see de.dante.extex.token.InputFilter#get()
      */
     public Token get(TokenFactory factory, Tokenizer tokenizer)
             throws GeneralException {
@@ -80,7 +80,7 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#put(Token)
+     * @see de.dante.extex.token.InputFilter#put(Token)
      */
     public void put(Token token) {
 
@@ -90,7 +90,7 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#put(Tokens)
+     * @see de.dante.extex.token.InputFilter#put(Tokens)
      */
     public void put(Tokens toks) {
 

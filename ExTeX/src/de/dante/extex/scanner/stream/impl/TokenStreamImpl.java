@@ -20,8 +20,6 @@
 package de.dante.extex.scanner.stream.impl;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -37,6 +35,7 @@ import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -52,16 +51,18 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
-public class TokenStreamImpl extends TokenStreamBaseImpl implements
-        TokenStream, CatcodeVisitor {
+public class TokenStreamImpl extends TokenStreamBaseImpl
+        implements
+            TokenStream,
+            CatcodeVisitor {
 
     /**
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private static final class State {
 
@@ -83,7 +84,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     /**
      * The constant <tt>CARET_LIMIT</tt> contains the ...
      */
-    private static final int CARET_LIMIT = 0100;    // 0100 = 64
+    private static final int CARET_LIMIT = 0100; // 0100 = 64
 
     /**
      * The constant <tt>CR</tt> contains the ...
@@ -143,17 +144,22 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * Creates a new object.
-     *
      * @param config the configuration object for this instance; This
      * configuration is ignored in this implementation.
-     * @param file the file to read
+     * @param options ignored here
+     * @param theSource the description of the information source; e.g. the
+     *   file name
      * @param encoding the encoding to use
+     * @param stream the input stream to read
      *
      * @throws ConfigurationException in case of an error in the configuration
      * @throws IOException in case of an IO error
      */
-    public TokenStreamImpl(final Configuration config, final File file,
-            final String encoding) throws IOException, ConfigurationException {
+    public TokenStreamImpl(final Configuration config,
+            final TokenStreamOptions options, final InputStream stream,
+            final String theSource, final String encoding)
+            throws IOException,
+                ConfigurationException {
 
         super(false);
 
@@ -163,19 +169,20 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
             try {
                 bufferSize = Integer.parseInt(size);
             } catch (NumberFormatException e) {
-                throw new ConfigurationSyntaxException(e.getMessage(),
-                        config.toString() + "#" + BUFFERSIZE_ATTRIBUTE);
+                throw new ConfigurationSyntaxException(e.getMessage(), config
+                        .toString()
+                        + "#" + BUFFERSIZE_ATTRIBUTE);
             }
         }
 
-        InputStream inputStream = new FileInputStream(file);
+        InputStream inputStream = stream;
         if (bufferSize > 0) {
             inputStream = new BufferedInputStream(inputStream, bufferSize);
         } else if (bufferSize < 0) {
             inputStream = new BufferedInputStream(inputStream);
         }
 
-        this.source = file.getName();
+        this.source = theSource;
         this.in = new LineNumberReader(new InputStreamReader(inputStream,
                 encoding));
 
@@ -186,13 +193,15 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      *
      * @param config the configuration object for this instance; This
      * configuration is ignored in this implementation.
+     * @param options ignored here
      * @param reader the reader
      * @param isFile indicator for file streams
      * @param theSource the description of the input source
      *
      * @throws IOException in case of an IO error
      */
-    public TokenStreamImpl(final Configuration config, final Reader reader,
+    public TokenStreamImpl(final Configuration config,
+            final TokenStreamOptions options, final Reader reader,
             final Boolean isFile, final String theSource) throws IOException {
 
         super(isFile.booleanValue());
@@ -205,12 +214,14 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      *
      * @param config the configuration object for this instance; This
      * configuration is ignored in this implementation.
+     * @param options ignored here
      * @param theLine the string to use as source for characters
      * @param theSource the description of the input source
      *
      * @throws IOException in case of an IO error
      */
-    public TokenStreamImpl(final Configuration config, final String theLine,
+    public TokenStreamImpl(final Configuration config,
+            final TokenStreamOptions options, final String theLine,
             final String theSource) throws IOException {
 
         super(false);
@@ -245,7 +256,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
             try {
                 t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
-                                                           tokenizer, uc);
+                        tokenizer, uc);
             } catch (Exception e) {
                 throw new GeneralException(e);
             }
@@ -264,8 +275,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         Token t = ((TokenFactory) oFactory).newInstance(Catcode.ACTIVE,
-                                                        (UnicodeChar) uc,
-                                                        namespace);
+                (UnicodeChar) uc, namespace);
         return t;
     }
 
@@ -330,7 +340,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
                 if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
                     pointer = savedPointer;
                     return factory.newInstance(Catcode.ESCAPE, sb.toString(),
-                                               namespace);
+                            namespace);
                 }
                 sb.append((char) (uc.getCodePoint()));
                 savedPointer = pointer;
@@ -378,8 +388,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.LEFTBRACE,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -392,8 +401,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.LETTER,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -406,8 +414,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -420,8 +427,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.MATHSHIFT,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -434,8 +440,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.OTHER,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -448,8 +453,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -480,8 +484,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.SUBMARK,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -494,8 +497,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.SUPMARK,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -508,8 +510,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.TABMARK,
-                                                     (UnicodeChar) uc,
-                                                     namespace);
+                (UnicodeChar) uc, namespace);
     }
 
     /**
@@ -596,9 +597,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
                     }
                 } else if (c != null) {
                     hexHigh = c.getCodePoint();
-                    uc = new UnicodeChar(
-                            ((hexHigh < CARET_LIMIT) ? hexHigh + CARET_LIMIT
-                                    : hexHigh - CARET_LIMIT));
+                    uc = new UnicodeChar(((hexHigh < CARET_LIMIT) ? hexHigh
+                            + CARET_LIMIT : hexHigh - CARET_LIMIT));
                 }
             } else {
                 pointer = savePointer;

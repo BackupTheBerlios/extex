@@ -44,7 +44,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -85,7 +85,7 @@ public abstract class TokenStreamBaseImpl32
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#get()
+     * @see de.dante.extex.token.InputFilter#get()
      */
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
             throws GeneralException {
@@ -95,7 +95,7 @@ public abstract class TokenStreamBaseImpl32
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#put(Token)
+     * @see de.dante.extex.token.InputFilter#put(Token)
      */
     public void put(final Token token) {
 
@@ -105,7 +105,7 @@ public abstract class TokenStreamBaseImpl32
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#put(Tokens)
+     * @see de.dante.extex.token.InputFilter#put(Tokens)
      */
     public void put(final Tokens toks) {
 
