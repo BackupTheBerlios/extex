@@ -33,7 +33,7 @@ import de.dante.util.configuration.ConfigurationException;
  * <code>\input</code>. It use the standardencoding (see
  * <code>\inputencoding</code> and <code>extex.encoding</code>.
  *
- * <doc>
+ * <doc name="input">
  * <h3>The Primitive <tt>\input</tt></h3>
  * <p>
  *  ...
@@ -48,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Input extends AbstractFileCode {
 

@@ -33,10 +33,28 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\romannumeral</code>.
  *
+ * <doc name="romannumeral">
+ * <h3>The Primitive <tt>\romannumeral</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\romannumeral</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \romannumeral ...  </pre>
+ * </p>
+ * </doc>
+ *
+ *
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
@@ -79,7 +97,6 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
         long n = source.scanInteger();
         Tokens toks = new Tokens();
         TokenFactory factory = context.getTokenFactory();
-        //String magic = "m2d5c2l5x2v5i";
         char[] magic = {'m', '2', 'd', '5', 'c', '2', 'l', '5', 'x', '2', 'v',
                 '5', 'i'};
         int j = 0;

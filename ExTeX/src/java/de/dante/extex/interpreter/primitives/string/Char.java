@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
 /**
  * This class provides an implementation for the primitive <code>\char</code>.
  *
- * <doc>
+ * <doc name="char">
  * <h3>The Primitive <tt>\char</tt></h3>
  * <p>
  *  ...
@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 

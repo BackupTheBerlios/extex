@@ -31,10 +31,23 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\closein</code>.
  *
- * <doc>
+ * <doc name="closein">
  * <h3>The Primitive <tt>\closein</tt></h3>
  * <p>
- *  ...
+ *  The primitive takes one expanded integer argument. This argument denotes a
+ *  read register which will be closed if it is currently assigned to a file.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\closein</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \closein5  </pre>
+ *  <pre class="TeXSample">
+ *    \closein\count120  </pre>
  * </p>
  * </doc>
  *
@@ -44,7 +57,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Closein extends AbstractCode {
 

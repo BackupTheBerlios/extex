@@ -22,11 +22,11 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.CsConvertible;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.CsConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\csname</code>.
  *
- * <doc>
+ * <doc name="csname">
  * <h3>The Primitive <tt>\csname</tt></h3>
  * <p>
  *  ...
@@ -58,7 +58,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Csname extends AbstractCode implements ExpandableCode,
         CsConvertible {
@@ -105,7 +105,7 @@ public class Csname extends AbstractCode implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.CsConvertible#convertCs(
+     * @see de.dante.extex.interpreter.type.CsConvertible#convertCs(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

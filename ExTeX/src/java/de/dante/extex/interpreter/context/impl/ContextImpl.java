@@ -62,6 +62,7 @@ import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
+import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
@@ -84,7 +85,7 @@ import de.dante.util.observer.ObserverList;
  * Several operations have to be dealt with:
  * </p>
  * <ul>
- * <li>For each new group a new instance of a {@link Group Group}is created
+ * <li>For each new group a new instance of a {@link Group Group} is created
  * with the old one as next group.</li>
  * <li>If a group is closed then the next group is used as current group and
  * the formerly current group is discarted.</li>
@@ -109,7 +110,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class ContextImpl implements Context, TypesetterOptions, Observable, Serializable {
 
@@ -142,7 +143,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
      * The field <tt>codeChangeObservers</tt> contains the list of observers
      * registered for change event on the code.
      */
-    private Map codeChangeObservers = new HashMap();
+    private transient Map codeChangeObservers = new HashMap();
 
     /**
      * The field <tt>conditionalStack</tt> contains the  stack for conditionals.
@@ -197,7 +198,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
      * maginification value. This is initialized to MAGNIFICATION_MAX and
      * may be overwritten from within the configuration.
      */
-    private long magnificationMax = MAGNIFICATION_MAX;
+    private transient long magnificationMax = MAGNIFICATION_MAX;
 
     /**
      * The field <tt>namespace</tt> contains the current namespace.
@@ -210,13 +211,18 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
      * when the interaction is changed. The argument is the new interaction
      * mode.
      */
-    private ObserverList observersInteraction = new ObserverList();
+    private transient ObserverList observersInteraction = new ObserverList();
+
+    /**
+     * The field <tt>standardTokenStream</tt> contains the ...
+     */
+    private transient TokenStream standardTokenStream = null;
 
     /**
      * The field <tt>tcFactory</tt> contains the factory to acquire new
      * instances of a TypesettingContext.
      */
-    private TypesettingContextFactory tcFactory;
+    private transient TypesettingContextFactory tcFactory;
 
     /**
      * The token factory implementation to use.
@@ -238,7 +244,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
         super();
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
-        group = groupFactory.newInstance(group);
+        openGroup();
 
         Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
@@ -588,6 +594,7 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     public void openGroup() throws ConfigurationException {
 
         group = groupFactory.newInstance(group);
+        group.setStandardTokenStream(standardTokenStream);
     }
 
     /**
@@ -919,6 +926,17 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
     }
 
     /**
+     * Setter for standardTokenStream.
+     *
+     * @param standardTokenStream the standardTokenStream to set.
+     */
+    public void setStandardTokenStream(TokenStream standardTokenStream) {
+
+        this.standardTokenStream = standardTokenStream;
+        group.setStandardTokenStream(standardTokenStream);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
      *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
      */
@@ -1022,5 +1040,4 @@ public class ContextImpl implements Context, TypesetterOptions, Observable, Seri
 
         return group;
     }
-
 }

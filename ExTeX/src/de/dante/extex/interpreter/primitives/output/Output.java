@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\output</code>.
  *
- * <doc>
+ * <doc name="output">
  * <h3>The Primitive <tt>\output</tt></h3>
  * <p>
  *  ...
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Output extends AbstractCode {
 

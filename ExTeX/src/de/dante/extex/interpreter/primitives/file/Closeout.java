@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\closeout</code>.
  *
- * <doc>
+ * <doc name="closeout">
  * <h3>The Primitive <tt>\closeout</tt></h3>
  * <p>
  *  ...
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Closeout extends AbstractCode {
 

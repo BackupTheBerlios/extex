@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\the</code>.
  *
- * <doc>
+ * <doc name="the">
  * <h3>The Primitive <tt>\the</tt></h3>
  * <p>
  *  ...
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 

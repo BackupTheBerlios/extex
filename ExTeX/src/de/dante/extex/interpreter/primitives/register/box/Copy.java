@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\copy</code>.
  *
- * <doc>
+ * <doc name="copy">
  * <h3>The Primitive <tt>\copy</tt></h3>
  * <p>
  *  ...
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Copy extends NumberedBox implements Boxable, Serializable {
 

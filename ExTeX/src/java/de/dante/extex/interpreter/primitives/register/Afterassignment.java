@@ -30,10 +30,13 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\afterassignment</code>.
  *
- * <doc>
+ * <doc name="afterassignment">
  * <h3>The Primitive <tt>\afterassignment</tt></h3>
  * <p>
- *  ...
+ *  The primitive <tt>\afterassignment</tt> registers the token to be inserted
+ *  after the next assignment. Note that there is at most one token to be
+ *  inserted after the next assignment. Thus the primitive may overwrite any
+ *  previously registered token.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -53,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Afterassignment extends AbstractCode {
 
@@ -63,6 +66,7 @@ public class Afterassignment extends AbstractCode {
      * @param name the name for tracing and debugging
      */
     public Afterassignment(final String name) {
+
         super(name);
     }
 

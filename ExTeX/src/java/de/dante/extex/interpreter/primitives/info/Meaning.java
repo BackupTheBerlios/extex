@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\meaning</code>.
  *
- * <doc>
+ * <doc name="meaning">
  * <h3>The Primitive <tt>\meaning</tt></h3>
  * <p>
  *  ...
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Meaning extends Show {
 

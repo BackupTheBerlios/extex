@@ -32,8 +32,26 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\number</code>.
  *
+ *
+ * <doc name="number">
+ * <h3>The Primitive <tt>\number</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\number</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \number ...  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Number extends AbstractCode implements ExpandableCode {
 

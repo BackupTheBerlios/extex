@@ -1,25 +1,26 @@
 /*
  * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.extex.interpreter.type.file;
 
 import java.io.File;
+import java.io.InputStream;
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InFile implements Serializable {
 
@@ -54,18 +55,6 @@ public class InFile implements Serializable {
     private TokenStream stream = null;
 
     /**
-     * The field <tt>factory</tt> contains the token factory to use for making
-     * new tokens.
-     */
-    private TokenFactory factory = null;
-
-    /**
-     * The field <tt>tokenizer</tt> contains the tokenizer for categorizing
-     * characters for new tokens.
-     */
-    private Tokenizer tokenizer = null;
-
-    /**
      * The field <tt>lookahead</tt> contains the lokk-ahead token.
      */
     private Token lookahead = null;
@@ -82,17 +71,30 @@ public class InFile implements Serializable {
     }
 
     /**
+     * Creates a new object.
+     *
+     * @param inStream the token stream to read from
+     */
+    public InFile(final TokenStream inStream) {
+
+        super();
+        this.file = null;
+        this.stream = inStream;
+    }
+
+    /**
      * Checks whether this InFile is at end of file.
      *
      * @return <code>true</code> iff no further token can be read.
      */
     public boolean ifEof() {
 
+        //TODO incorrect and incomplete
         return (lookahead == null);
     }
 
     /**
-     * Check whether this InFile is ciurretly open for reading.
+     * Check whether this InFile is curretly opened for reading.
      *
      * @return <tt>true</tt> iff the input stream has still a stream assigned
      * to it.
@@ -114,11 +116,14 @@ public class InFile implements Serializable {
     /**
      * Read a line of characters into a tokens list.
      *
+     * @param cs ...
+     *
      * @return the tokens read
      *
      * @throws GeneralException in case of an error
      */
-    public Tokens read() throws GeneralException {
+    public Tokens read(final TokenFactory factory, final Tokenizer tokenizer,
+            final Token cs) throws GeneralException {
 
         if (stream == null) {
             if (file == null) {

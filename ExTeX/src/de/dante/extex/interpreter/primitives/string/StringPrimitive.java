@@ -34,10 +34,28 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\string</code>.
  *
+ * <doc name="string">
+ * <h3>The Primitive <tt>\string</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\string</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \string ...  </pre>
+ * </p>
+ * </doc>
+ *
+ *
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 

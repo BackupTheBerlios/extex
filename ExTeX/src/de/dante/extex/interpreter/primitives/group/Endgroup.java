@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\endgroup</code>.
  *
- * <doc>
+ * <doc name="endgroup">
  * <h3>The Primitive <tt>\endgroup</tt></h3>
  * <p>
  *  ...
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Endgroup extends AbstractCode {
 

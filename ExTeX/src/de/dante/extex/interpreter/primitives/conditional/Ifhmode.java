@@ -27,15 +27,29 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\ifhmode</code>.
  *
- * <doc>
+ * <doc name="ifhmode">
  * <h3>The Primitive <tt>\ifhmode</tt></h3>
  * <p>
- *  ...
+ *  The primitive does not take any further arguments.
+ *  The conditional is true iff the typesetter is in a horizontal mode. This is
+ *  either the restricted horizontal vertical mode or the horizontal mode.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ifhmode</tt> &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\ifhmode</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ifhmode abc \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Ifhmode extends AbstractIf {
     /**

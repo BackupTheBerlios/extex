@@ -26,15 +26,28 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifodd</code>.
  *
- * <doc>
+ * <doc name="ifodd">
  * <h3>The Primitive <tt>\ifodd</tt></h3>
  * <p>
- *  ...
+ *  The primitive takes one expanded integer argument.
+ *  The conditional is true iff the argument is odd.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ifodd</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\ifodd</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ifodd\count0 abc \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Ifodd extends AbstractIf {
     /**

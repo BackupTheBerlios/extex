@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifcase</code>.
  *
- * <doc>
+ * <doc name="ifcase">
  * <h3>The Primitive <tt>\ifcase</tt></h3>
  * <p>
  *  ...
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -180,7 +180,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     protected static final class Tag {
 

@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\end</code>.
  *
- * <doc>
+ * <doc name="end">
  * <h3>The Primitive <tt>\end</tt></h3>
  * <p>
  *  ...
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class End extends AbstractCode {
     /**

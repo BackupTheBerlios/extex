@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\or</code>.
  *
- * <doc>
+ * <doc name="or">
  * <h3>The Primitive <tt>\or</tt></h3>
  * <p>
  *  ...
@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Or extends AbstractIf {
 

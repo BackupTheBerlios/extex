@@ -24,9 +24,9 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Showable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.LeftBraceToken;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
@@ -309,7 +309,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     }
 
     /**
-     * @see de.dante.extex.interpreter.Showable#show(
+     * @see de.dante.extex.interpreter.type.Showable#show(
      *      de.dante.extex.interpreter.context.Context)
      */
     public Tokens show(final Context context) throws GeneralException {

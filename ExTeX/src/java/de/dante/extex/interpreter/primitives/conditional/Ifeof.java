@@ -28,15 +28,28 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifeof</code>.
  *
- * <doc>
+ * <doc name="ifeof">
  * <h3>The Primitive <tt>\ifeof</tt></h3>
  * <p>
- *  ...
+ *  This primitive tests for end of file on the given read register. The read
+ *  register is specified as a (expanded) number.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ifeof</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\ifeof</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ifeof 3 -E-O-F- \else ready \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Ifeof extends AbstractIf {
 

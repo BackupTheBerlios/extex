@@ -34,8 +34,26 @@ import de.dante.util.UnicodeChar;
 /**
  * This class provides an implementation for the primitive <code>\lccode</code>.
  *
+ * <doc name="lccode">
+ * <h3>The Primitive <tt>\lccode</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\lccode</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \lccode ...  </pre>
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Lccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {

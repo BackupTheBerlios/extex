@@ -20,6 +20,7 @@ package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -29,17 +30,28 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\fi</code>.
  *
- * <doc>
+ * <doc name="fi">
  * <h3>The Primitive <tt>\fi</tt></h3>
  * <p>
- *  ...
+ *  This primitive indicates the end of an conditional. As such it can not
+ *  appear alone but only in combination with a preceeding <tt>\if*</tt>.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\fi</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Fi extends AbstractCode {
+public class Fi extends AbstractCode implements ExpandableCode {
 
     /**
      * Creates a new object.
@@ -47,11 +59,21 @@ public class Fi extends AbstractCode {
      * @param name the name for debugging
      */
     public Fi(final String name) {
+
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * Executes the primitive.
+     * <p>
+     *  This primitive can only be seen when a conditional has been opened
+     *  before for which the else branch is expanded. Thus only the conditional
+     *  stack has to be updated. If the conditional stack is already empty then
+     *  an exception is raised. 
+     * </p>
+     *
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -67,4 +89,28 @@ public class Fi extends AbstractCode {
         prefix.clear();
     }
 
+    /**
+     * Expands the primitive.
+     * <p>
+     *  This primitive can only be seen when a conditional has been opened
+     *  before for which the else branch is expanded. Thus only the conditional
+     *  stack has to be updated. If the conditional stack is already empty then
+     *  an exception is raised. 
+     * </p>
+     *
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        if (context.popConditional() == null) {
+            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+                    printableControlSequence(context));
+        }
+    }
 }

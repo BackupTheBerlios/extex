@@ -29,15 +29,25 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\else</code>.
  *
- * <doc>
+ * <doc name="else">
  * <h3>The Primitive <tt>\else</tt></h3>
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\else</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \else ...  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Else extends AbstractIf {
 
@@ -52,6 +62,15 @@ public class Else extends AbstractIf {
     }
 
     /**
+     * Executes the primitive.
+     * <p>
+     *  This primitive can only be seen when a conditional has been opened
+     *  before for which the then branch is expanded. Thus the else branch
+     *  has to be skipped. Additioonally the conditional stack has to be
+     *  updated. If the conditional stack is already empty then an exception
+     *  is raised. 
+     * </p>
+     *
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -72,6 +91,15 @@ public class Else extends AbstractIf {
     }
 
     /**
+     * Expands the primitive.
+     * <p>
+     *  This primitive can only be seen when a conditional has been opened
+     *  before for which the then branch is expanded. Thus the else branch
+     *  has to be skipped. Additioonally the conditional stack has to be
+     *  updated. If the conditional stack is already empty then an exception
+     *  is raised. 
+     * </p>
+     *
      * @see de.dante.extex.interpreter.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,

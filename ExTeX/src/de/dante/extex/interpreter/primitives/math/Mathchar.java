@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\mathchar</code>.
  *
- * <doc>
+ * <doc name="mathchar">
  * <h3>The Primitive <tt>\mathchar</tt></h3>
  * <p>
  *  ...
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathchar extends AbstractCode {
 

@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\endcsname</code>.
  *
- * <doc>
+ * <doc name="endcsname">
  * <h3>The Primitive <tt>\endcsname</tt></h3>
  * <p>
  *  The macro <tt>\endcsname</tt> is used in combination with the macro
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Endcsname extends AbstractCode {
     /**

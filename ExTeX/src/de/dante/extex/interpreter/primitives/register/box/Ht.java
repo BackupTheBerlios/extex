@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ht</code>.
  *
-  * <doc>
+  * <doc name ="ht">
  * <h3>The Primitive <tt>\ht</tt></h3>
  * <p>
  *  ...
@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     CountConvertible, DimenConvertible {

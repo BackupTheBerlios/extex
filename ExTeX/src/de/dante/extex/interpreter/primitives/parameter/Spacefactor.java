@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\spacefactor</code>.
  *
- * <doc>
+ * <doc name="spacefactor">
  * <h3>The Primitive <tt>\spacefactor</tt></h3>
  * <p>
  *  ...
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Spacefactor extends AbstractCode {
     /**

@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractFileCode extends AbstractCode {
 
@@ -43,6 +44,7 @@ public abstract class AbstractFileCode extends AbstractCode {
      * @param name the name for debugging
      */
     public AbstractFileCode(final String name) {
+
         super(name);
     }
 
@@ -57,7 +59,7 @@ public abstract class AbstractFileCode extends AbstractCode {
             throws GeneralException;
 
     /**
-     * Return the encoding for the AbstractFileCodefile
+     * Return the encoding for the AbstractFileCode file.
      * <p>
      * First of all, <code>\AbstractFileCodeencoding</code> is used,
      * if there is no
@@ -70,6 +72,7 @@ public abstract class AbstractFileCode extends AbstractCode {
      * @return the encoding for the AbstractFileCodefile
      */
     protected String getEncoding(final Context context) {
+
         String encoding = context.getToks("fileencoding").toText().trim();
         if (encoding.length() == 0) {
             String enc = System.getProperty("extex.encoding");

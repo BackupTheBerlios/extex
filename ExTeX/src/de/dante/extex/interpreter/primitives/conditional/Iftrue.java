@@ -25,15 +25,28 @@ import de.dante.extex.typesetter.Typesetter;
 /**
  * This class provides an implementation for the primitive <code>\iftrue</code>.
  *
- * <doc>
+ * <doc name="iftrue">
  * <h3>The Primitive <tt>\iftrue</tt></h3>
  * <p>
- *  ...
+ *  The primitive does not take any further arguments.
+ *  The conditional is always true. Thus only the then branch is expanded.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\iftrue</tt> &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\ifture</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \iftrue abc \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Iftrue extends AbstractIf {
 

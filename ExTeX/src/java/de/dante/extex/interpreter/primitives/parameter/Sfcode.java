@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive
  * <code>\sfcode</code>.
  *
- * <doc>
+ * <doc name="sfcode">
  * <h3>The Primitive <tt>\sfcode</tt></h3>
  * <p>
  *  ...
@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Sfcode extends AbstractAssignment {
 

@@ -36,10 +36,37 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\dp</code>.
  *
- * <doc>
+ * <doc name="dp">
  * <h3>The Primitive <tt>\dp</tt></h3>
  * <p>
- *  ...
+ *  The primitive <tt>\dp</tt> refers to the depth of a box register.
+ *  It can be used in various contexts.
+ * </p>
+ *
+ * <h4>Execution of the Primitive</h4>
+ * <p>
+ *  If the primitive is used in a context it initiated an assignment to the
+ *  actual depth of the box register. This has an effect only in  the case that
+ *  the box register is not void.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\dp</tt> &lang;8-bit number&rang; = &lang;dimen&rang;</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \dp42 = 12mm  </pre>
+ *  <pre class="TeXSample">
+ *    \dp42 = \dimen3  </pre>
+ * </p>
+ *
+ * <h4>Expansion of the Primitive</h4>
+ * <p>
+ *  In an expansion context the primitive results in the the currentr depth of
+ *  the given box register. In case that the box register is empty the result
+ *  is 0pt.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -49,18 +76,23 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \dp42  </pre>
+ *    \dimen0 = \dp42  </pre>
+ * </p>
+ *
+ * <h4>Conversion to a Count</h4>
+ * <p>
+ *  ...
+ * </p>
+ *
+ * <h4>Interaction with <tt>\the</tt></h4>
+ * <p>
+ *  ...
  * </p>
  * </doc>
  *
  *
- * <pre>
- *  \advance\dimen12 \dp0
- *  \dp12=123pt
- * </pre>
- *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Dp extends Setbox implements Serializable, ExpandableCode,
     Theable, CountConvertible, DimenConvertible {

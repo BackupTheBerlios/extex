@@ -28,15 +28,29 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\if</code>.
  *
- * <doc>
+ * <doc name="if">
  * <h3>The Primitive <tt>\if</tt></h3>
  * <p>
- *  ...
+ *  The primitive expands the tokens following it until two unexpandable tokens
+ *  are found. The conditional is true iff the character codes of the two tokens
+ *  agree.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \else ...  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class If extends AbstractIf {
 

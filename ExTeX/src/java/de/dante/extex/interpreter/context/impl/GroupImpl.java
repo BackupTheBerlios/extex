@@ -40,6 +40,7 @@ import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -54,7 +55,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -84,7 +85,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>afterGroupObservers</tt> contains the listr of observers
      * to be invoked after the group has been closed.
      */
-    private ObserverList afterGroupObservers = new ObserverList();
+    private transient ObserverList afterGroupObservers = new ObserverList();
 
     /**
      * The field <tt>boxMap</tt> contains the map for the boxes.
@@ -174,6 +175,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>skipMap</tt> contains the map for the skip registers
      */
     private Map skipMap = new HashMap();
+
+    /**
+     * The field <tt>standardTokenStream</tt> contains the ...
+     */
+    private transient TokenStream standardTokenStream = null;
 
     /**
      * The field <tt>toksMap</tt> contains the map for the toks registers.
@@ -390,7 +396,14 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      */
     public InFile getInFile(final String name) {
 
-        return (InFile) (inFileMap.get(name));
+        InFile inFile = (InFile) (inFileMap.get(name));
+
+        if (null != inFile) {
+            return inFile;
+        }
+
+        return (next != null ? next.getInFile(name) : new InFile(
+                standardTokenStream));
     }
 
     /**
@@ -800,6 +813,15 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setStandardTokenStream(
+     *      de.dante.extex.scanner.stream.TokenStream)
+     */
+    public void setStandardTokenStream(final TokenStream standardTokenStream) {
+
+        this.standardTokenStream = standardTokenStream;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setToks(
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
@@ -847,5 +869,4 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
         uccodeMap.put(uc, lc);
     }
-
 }

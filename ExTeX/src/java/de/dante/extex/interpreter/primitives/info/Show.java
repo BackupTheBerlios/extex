@@ -22,9 +22,9 @@ package de.dante.extex.interpreter.primitives.info;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Showable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\show</code>.
  *
- * <doc>
+ * <doc name="show">
  * <h3>The Primitive <tt>\show</tt></h3>
  * <p>
  *  ...
@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Show extends AbstractCode {
 

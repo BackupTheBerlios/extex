@@ -36,7 +36,7 @@ import de.dante.util.observer.Observable;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -111,8 +111,10 @@ public interface Interpreter extends TokenSource, Observable {
      * to acquire them.
      *
      * @param factory the token stream factory
+     *
+     * @throws ConfigurationException ...
      */
-    void setTokenStreamFactory(TokenStreamFactory factory);
+    void setTokenStreamFactory(TokenStreamFactory factory) throws ConfigurationException;
 
     /**
      * Setter for the typesetter.

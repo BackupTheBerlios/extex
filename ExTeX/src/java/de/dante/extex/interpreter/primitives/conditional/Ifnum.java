@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifnum</code>.
  *
- * <doc>
+ * <doc name="ifnum">
  * <h3>The Primitive <tt>\ifnum</tt></h3>
  * <p>
  *  ...
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Ifnum extends AbstractIf {
     /**

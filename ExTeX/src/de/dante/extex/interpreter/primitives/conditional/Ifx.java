@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifx</code>.
  *
- * <doc>
+ * <doc name="ifx">
  * <h3>The Primitive <tt>\ifx</tt></h3>
  * <p>
  *  ...
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ifx extends AbstractIf {
 

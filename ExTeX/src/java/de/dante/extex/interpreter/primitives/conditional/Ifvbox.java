@@ -27,15 +27,31 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifvbox</code>.
  *
- * <doc>
+ * <doc name="ifvbox">
  * <h3>The Primitive <tt>\ifvbox</tt></h3>
  * <p>
- *  ...
+ *  The primitive takes one expanded integer argument.
+ *  The conditional is true iff the box denoted by the argument is a vertical
+ *  box.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ifvbox</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\ifvbox</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ifvbox255 abc \fi  </pre>
+ *  <pre class="TeXSample">
+ *    \ifvbox\count120 abc \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Ifvbox extends AbstractIf {
     /**

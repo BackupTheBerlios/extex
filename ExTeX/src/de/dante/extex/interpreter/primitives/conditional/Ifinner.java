@@ -27,15 +27,30 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\ifinner</code>.
  *
- * <doc>
+ * <doc name="ifinner">
  * <h3>The Primitive <tt>\ifinner</tt></h3>
  * <p>
- *  ...
+ *  The primitive does not take any further arguments.
+ *  The conditional is true iff the typesetter is in an internal mode. This is
+ *  either the internal vertical mode, the restricted horizontal mode, or the
+ *  math mode (non-display).
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ifinner</tt> &lang;true text&rang; <tt>\fi</tt>
+ *
+ *    <tt>\ifinner</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ifinner abc \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Ifinner extends AbstractIf {
     /**

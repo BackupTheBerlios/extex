@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\endinput</code>.
  *
- * <doc>
+ * <doc name="endinput">
  * <h3>The Primitive <tt>\endinput</tt></h3>
  * <p>
  *  ...
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Endinput extends AbstractCode {
 

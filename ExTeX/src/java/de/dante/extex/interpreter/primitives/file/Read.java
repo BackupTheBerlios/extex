@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -34,7 +35,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\read</code>.
  *
- * <doc>
+ * <doc name="read">
  * <h3>The Primitive <tt>\read</tt></h3>
  * <p>
  *  ...
@@ -47,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Read extends AbstractCode {
 
@@ -80,12 +81,11 @@ public class Read extends AbstractCode {
         InFile file = context.getInFile(Long.toString(no));
         Tokens toks;
 
-        if (file != null && file.isOpen()) {
-            toks = file.read();
-        } else {
-            throw new RuntimeException("unimplemented");
+        if (file == null) {
+            throw new GeneralPanicException("TTP.Confusion");
         }
 
+        toks = file.read(context.getTokenFactory(), context.getTokenizer(), cs);
         context.setCode(cs, new MacroCode(cs.getValue(), prefix, Tokens.EMPTY,
                 toks), prefix.isGlobal());
 

@@ -34,10 +34,28 @@ import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\ uppercase</code>.
+ * <code>&#5c;uppercase</code>.
+ *
+ * <doc name="uppercase">
+ * <h3>The Primitive <tt>&#5c;uppercase</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>&#5c;uppercase</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    &#5c;uppercase ...  </pre>
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Uppercase extends AbstractCode {
 

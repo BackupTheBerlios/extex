@@ -32,10 +32,29 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for the primitive <code>\ uccode</code>.
+ * This class provides an implementation for the primitive
+ * <code>&#5c;uccode</code>.
+ *
+ * <doc name="uccode">
+ * <h3>The Primitive <tt>&#5c;uccode</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>&#5c;uccode</tt> &lang;...&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    &#5c;uccode ...  </pre>
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {

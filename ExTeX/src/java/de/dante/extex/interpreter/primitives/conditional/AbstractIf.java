@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -50,6 +50,10 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
     }
 
     /**
+     * The ifs are characterized by the return value <code>true</code> of this
+     * method. Thus the overwritten method returning the constant is provided
+     * in this abstract base class.
+     *
      * @see de.dante.extex.interpreter.Code#isIf()
      */
     public boolean isIf() {
@@ -95,6 +99,9 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
 
     /**
      * This method computes the boolean value of the conditional.
+     * If the result is <code>true</code> then the then branch is expanded and
+     * the else branch is skipped. Otherwise the then branch is skipped and the
+     * else branch is expanded.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
@@ -111,6 +118,10 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
     /**
      * Skip to the next matching <tt>\fi</tt> or <tt>\else</tt> Token
      * counting the intermediate <tt>\if</tt>s and <tt>\fi</tt>s.
+     *
+     * <p>
+     *  This method implements to the absorbtion of tokens at high speed.
+     * </p>
      *
      * @param context the interpreter context
      * @param source the source for new tokens

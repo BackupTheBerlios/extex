@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\let</code>.
  *
- * <doc>
+ * <doc name="let">
  * <h3>The Primitive <tt>\let</tt></h3>
  * <p>
  *  ...
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Let extends AbstractAssignment implements CatcodeVisitor {
 
