@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.util;
+package de.dante.extex.font.type;
 
 /**
  * Class for a fixed point format (32 bit).
@@ -83,7 +83,7 @@ public class Fixed32 {
      */
     private double convert(final int fpvalue) {
 
-        return ((double) fpvalue) / FRACTION;
+        return fpvalue / FRACTION;
     }
 
     /**

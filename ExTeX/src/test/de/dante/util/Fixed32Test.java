@@ -19,6 +19,7 @@
 
 package de.dante.util;
 
+import de.dante.extex.font.type.Fixed32;
 import junit.framework.TestCase;
 
 /**
@@ -26,7 +27,7 @@ import junit.framework.TestCase;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Fixed32Test extends TestCase {
 
