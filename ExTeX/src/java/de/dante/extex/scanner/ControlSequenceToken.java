@@ -30,9 +30,9 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class ControlSequenceToken extends AbstractToken implements Token {
+public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
     /**
      * Creates a new object.
