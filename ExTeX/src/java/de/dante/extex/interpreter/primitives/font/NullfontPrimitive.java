@@ -49,17 +49,10 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements FontConvertible {
-
-    /**
-     * The field <tt>theFont</tt> contains the font returned by this
-     * primitive. It is not a static constant since several incarnations might
-     * exist which should be independently mutable.
-     */
-    private Font theFont = new NullFont();
 
     /**
      * Creates a new object.
@@ -79,7 +72,7 @@ public class NullfontPrimitive extends AbstractCode
     public Font convertFont(final Context context, final TokenSource source)
             throws GeneralException {
 
-        return theFont;
+        return new NullFont();
     }
 
 }
