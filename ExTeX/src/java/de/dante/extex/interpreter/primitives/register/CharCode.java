@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -32,10 +32,15 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for ...
+ * This class provides an implementation for a Code which represents a single
+ * character.
+ * The code is executable, expandable, and convertible into a
+ * count register.
+ * The token returned by expansion depends on the catcode at the time of
+ * expansion.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class CharCode extends AbstractCode
         implements
@@ -85,9 +90,8 @@ public class CharCode extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Catcode cc = context.getTokenizer().getCatcode(character);
-        Token t = context.getTokenFactory().createToken(cc, character,
-                context.getNamespace());
+        Token t = context.getTokenFactory().createToken(Catcode.OTHER,
+                character, context.getNamespace());
         source.push(t);
     }
 
