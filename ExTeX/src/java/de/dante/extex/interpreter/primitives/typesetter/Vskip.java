@@ -41,7 +41,6 @@ import de.dante.util.GeneralException;
  * The formal description of this primitive is the following:
  *
  * <pre class="syntax">
- *
  *     &amp;langvskip&amp;rang
  *         &rarr; <tt>\vskip</tt> &lang;Glue&rang;
  * </pre>
@@ -59,7 +58,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Vskip extends AbstractCode {
 
