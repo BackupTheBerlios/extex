@@ -63,9 +63,14 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Accent extends AbstractCode {
+
+    /**
+     * The constant <tt>UNIT</tt> contains the ...
+     */
+    private static final int UNIT = 65536;
 
     /**
      * Creates a new object.
@@ -138,7 +143,7 @@ public class Accent extends AbstractCode {
                         node = n;
                     }
                     // compute delta TTP [1125]
-                    long delta = (w - a) / 2 + (h - x) * s / 65536;
+                    long delta = (w - a) / 2 + (h - x) * s / UNIT;
                     d.set(delta);
                     typesetter.add(new AccentKernNode(d));
                     typesetter.add(node);
@@ -156,7 +161,7 @@ public class Accent extends AbstractCode {
         } else if (token.isa(Catcode.LEFTBRACE)) {
             source.push(token);
 
-            throw new RuntimeException("unimplemented"); //TODO unimplemented 
+            throw new RuntimeException("unimplemented"); //TODO unimplemented
 
         } else {
             throw new RuntimeException("unimplemented"); //TODO unimplemented
