@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.primitives.arithmetic;
 
 import de.dante.extex.i18n.CantUseAfterHelpingException;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -79,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Divide extends AbstractAssignment {
 
@@ -118,6 +118,8 @@ public class Divide extends AbstractAssignment {
                 throw new UndefinedControlSequenceHelpingException(//
                         printable(context, cs));
             }
+        } else if (cs == null) {
+            throw new EofHelpingException(printableControlSequence(context));
         }
         throw new CantUseAfterHelpingException(cs.toText(),
                 printableControlSequence(context));
