@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  * Test for the primitive <tt>jobname</tt>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class JobnameTest extends TestCase {
 
@@ -37,7 +37,7 @@ public class JobnameTest extends TestCase {
 	/*
 	 */
 	public void testCount01() {
-		assertTrue(TestTeX.test("testdata/jobnametest", "testdata/jobname.testtxt"));
+		assertTrue(TestTeX.test("jujobnametest", "testdata/jujobname.testtxt"));
 	}
 
 }
