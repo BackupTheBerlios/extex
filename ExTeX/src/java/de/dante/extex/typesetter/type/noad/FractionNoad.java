@@ -18,14 +18,39 @@
  */
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
+
 
 /**
  * ...
  *
+ * @see "TTP [683]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class FractionNoad extends AbstractNoad {
+public class FractionNoad implements Noad {
+
+    /**
+     * The field <tt>denominator</tt> contains the denominator part.
+     */
+    private MathList denominator;
+
+    /**
+     * The field <tt>nominator</tt> contains the numerator part.
+     */
+    private MathList numerator;
+
+    /**
+     * The field <tt>thickness</tt> contains the thickness of the fraction rule.
+     * The value <code>null</code> indicates that the default rule thickness of
+     * the current size.
+     */
+    private Dimen thickness = null;
+
+    //TODO left/right delimiter
 
     /**
      * Creates a new object.
@@ -34,6 +59,15 @@ public class FractionNoad extends AbstractNoad {
     public FractionNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     */
+    public NodeList typeset(final MathContext mathContext) {
+
+        // TODO unimplemented
+        return null;
     }
 
 }

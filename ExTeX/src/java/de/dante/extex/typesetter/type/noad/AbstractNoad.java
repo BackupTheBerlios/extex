@@ -27,9 +27,9 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class AbstractNoad implements Noad {
+public abstract class AbstractNoad implements Noad {
 
     /**
      * The field <tt>nucleus</tt> contains the nuclues noads.

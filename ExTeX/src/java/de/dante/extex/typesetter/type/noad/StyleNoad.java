@@ -19,13 +19,17 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
+
 /**
- * ...
+ * This Noad indicates a change in the style to be used for the further
+ * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class StyleNoad extends AbstractNoad {
+public final class StyleNoad implements Noad {
 
     /**
      * The constant <tt>DISPLAYSTYLE</tt> contains the value for the display
@@ -53,12 +57,22 @@ public class StyleNoad extends AbstractNoad {
 
     /**
      * Creates a new object.
-     *
-     * @param theStyle the encapsulated style
+     * This constructor is private since nobody is supposed to use it to create
+     * new instances. The constants defined in this class should be usesd
+     * instead.
      */
-    protected StyleNoad() {
+    private StyleNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     */
+    public NodeList typeset(final MathContext mathContext) {
+
+        mathContext.setStyle(this);
+        return null;
     }
 
 }

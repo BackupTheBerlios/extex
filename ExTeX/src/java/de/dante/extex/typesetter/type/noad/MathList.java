@@ -23,7 +23,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.typesetter.Node;
+import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.type.Knot;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
  * This class provides a container for Noads and Nodes.
@@ -31,7 +33,7 @@ import de.dante.extex.typesetter.type.Knot;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathList implements Noad {
 
@@ -104,4 +106,14 @@ public class MathList implements Noad {
 
         return list.size();
     }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     */
+    public NodeList typeset(final MathContext mathContext) {
+
+        // TODO unimplemented
+        return null;
+    }
+
 }

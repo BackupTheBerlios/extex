@@ -18,7 +18,9 @@
  */
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.type.Knot;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 
 /**
@@ -26,9 +28,17 @@ import de.dante.extex.typesetter.type.Knot;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Noad extends Knot {
 
+    /**
+     * Translate a Noad into a NodeList.
+     *
+     * @param mathContext the context to consider
+     *
+     * @return the typeset instance
+     */
+    NodeList typeset(MathContext mathContext);
 
 }

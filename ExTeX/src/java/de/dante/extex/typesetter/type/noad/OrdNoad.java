@@ -18,12 +18,17 @@
  */
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
+
 
 /**
  * ...
  *
+ * @see "TTP [682]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OrdNoad extends AbstractNoad {
 
@@ -34,6 +39,15 @@ public class OrdNoad extends AbstractNoad {
     public OrdNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     */
+    public NodeList typeset(final MathContext mathContext) {
+
+        // TODO unimplemented
+        return null;
     }
 
 }

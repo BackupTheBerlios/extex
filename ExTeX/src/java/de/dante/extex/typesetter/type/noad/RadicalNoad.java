@@ -18,12 +18,15 @@
  */
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
+
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RadicalNoad extends AbstractNoad {
 
@@ -34,6 +37,15 @@ public class RadicalNoad extends AbstractNoad {
     public RadicalNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     */
+    public NodeList typeset(final MathContext mathContext) {
+
+        // TODO unimplemented
+        return null;
     }
 
 }
