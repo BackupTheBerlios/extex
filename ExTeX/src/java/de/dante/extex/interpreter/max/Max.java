@@ -25,6 +25,7 @@ import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.HelpingException;
@@ -76,6 +77,8 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationWrapperException;
+import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -89,12 +92,13 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Max extends Moritz
         implements
             Interpreter,
             TokenSource,
+            LogEnabled,
             Observable,
             TokenVisitor {
 
@@ -153,6 +157,12 @@ public class Max extends Moritz
      * nothing should be inserted.
      */
     private Configuration everyRun = null;
+
+    /**
+     * The field <tt>logger</tt> contains the logger or
+     * <code>null</code> if none has been set yet.
+     */
+    private Logger logger = null;
 
     /**
      * The field <tt>maxErrors</tt> contains the number of errors after which
@@ -233,11 +243,8 @@ public class Max extends Moritz
         Iterator iterator = configuration.iterator("primitives");
 
         while (iterator.hasNext()) {
-            Configuration cfg = (Configuration) iterator.next();
-            definePrimitives(cfg, tokenFactory);
+            definePrimitives((Configuration) iterator.next(), tokenFactory);
         }
-
-        definePrimitives(configuration, tokenFactory);
 
         context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
         context.setCount("month", calendar.get(Calendar.MONTH), true);
@@ -249,7 +256,7 @@ public class Max extends Moritz
     }
 
     /**
-     * Scan a configuration and define primitives found.
+     * Scan a configuration and define the primitives found.
      *
      * @param configuration the configuration to scan
      * @param tokenFactory the token factory to use
@@ -292,6 +299,12 @@ public class Max extends Moritz
                 if (code instanceof InitializableCode) {
                     ((InitializableCode) code).init(context, cfg.getValue());
                 }
+                if (code instanceof LogEnabled) {
+                    ((LogEnabled) code).enableLogging(logger);
+                }
+                if (code instanceof Configurable) {
+                    ((Configurable) code).configure(cfg);
+                }
             } catch (IllegalArgumentException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (SecurityException e) {
@@ -309,11 +322,25 @@ public class Max extends Moritz
             } catch (NoSuchMethodException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname, configuration);
+                throw new ConfigurationClassNotFoundException(classname,
+                        configuration);
             } catch (GeneralException e) {
                 throw new ConfigurationWrapperException(e);
             }
         }
+    }
+
+    /**
+     * Setter for the logger.
+     *
+     * @param logger the new logger
+     *
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *         java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
     }
 
     /**
@@ -367,16 +394,11 @@ public class Max extends Moritz
      */
     protected Token expand(final Token token) throws GeneralException {
 
-        Code code;
         Token t = token;
 
-        while (t != null) { //TODO ???
-            if (t instanceof CodeToken) {
-                observersMacro.update(this, t);
-                code = context.getCode((CodeToken) t);
-            } else {
-                return t;
-            }
+        while (t instanceof CodeToken) {
+            observersMacro.update(this, t);
+            Code code = context.getCode((CodeToken) t);
             if (code instanceof ExpandableCode) {
                 ((ExpandableCode) code).expand(prefix, context, this,
                         typesetter);
@@ -438,7 +460,8 @@ public class Max extends Moritz
      * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.io.InputStream)
      */
     public void loadFormat(final InputStream stream)
-            throws IOException, LoaderException {
+            throws IOException,
+                LoaderException {
 
         SerialLoader loader = new SerialLoader();
         Context newContext = loader.load(stream);
@@ -571,16 +594,6 @@ public class Max extends Moritz
     }
 
     /**
-     * Setter for the file finder.
-     *
-     * @param fileFinder the new file finder
-     */
-    public void setResourceFinder(final ResourceFinder fileFinder) {
-
-        //finder = fileFinder;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.Interpreter#setFontFactory(
      *      de.dante.extex.font.FontFactory)
      */
@@ -608,6 +621,16 @@ public class Max extends Moritz
     public void setJobname(final String jobname) throws GeneralException {
 
         context.setToks("jobname", new Tokens(context, jobname), true);
+    }
+
+    /**
+     * Setter for the file finder.
+     *
+     * @param fileFinder the new file finder
+     */
+    public void setResourceFinder(final ResourceFinder fileFinder) {
+
+        //finder = fileFinder;
     }
 
     /**
