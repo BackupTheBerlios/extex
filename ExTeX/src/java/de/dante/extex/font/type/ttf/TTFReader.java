@@ -19,70 +19,56 @@
 
 package de.dante.extex.font.type.ttf;
 
-import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.RandomAccessFile;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.batik.svggen.font.table.CmapFormat;
-import org.apache.batik.svggen.font.table.CmapTable;
-import org.apache.batik.svggen.font.table.FeatureTags;
-import org.apache.batik.svggen.font.table.GlyfTable;
-import org.apache.batik.svggen.font.table.GlyphDescription;
-import org.apache.batik.svggen.font.table.HeadTable;
-import org.apache.batik.svggen.font.table.HheaTable;
-import org.apache.batik.svggen.font.table.HmtxTable;
-import org.apache.batik.svggen.font.table.KernSubtable;
-import org.apache.batik.svggen.font.table.KernTable;
-import org.apache.batik.svggen.font.table.LocaTable;
-import org.apache.batik.svggen.font.table.MaxpTable;
-import org.apache.batik.svggen.font.table.NameTable;
-import org.apache.batik.svggen.font.table.Os2Table;
-import org.apache.batik.svggen.font.table.PostTable;
-import org.apache.batik.svggen.font.table.ScriptTags;
-import org.apache.batik.svggen.font.table.Table;
-import org.apache.batik.svggen.font.table.TableDirectory;
-import org.apache.batik.svggen.font.table.TableFactory;
 import org.jdom.Element;
 
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.util.GeneralException;
+import de.dante.util.file.random.RandomAccessInputStream;
 
 /**
  * This class read a TTF-file.
  * <p>
- * It use the ttf-font-code from the batik-project
- * <p>
  * For more information use <tt>TrueType 1.0 Font Files</tt>
  * Technical Specification, Revision 1.66, November 1995
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
+public class TTFReader implements FontMetric {
 
     /**
-     * init
-     * @param file <code>File</code> for reading
-     * @throws IOException ...
-     */
-    public TTFReader(final File file) throws IOException {
-
-        fontid = file.getName().replaceAll(".ttf", "");
-
-        in = new RandomAccessFile(file, "r");
-        readTTF();
-        in.close();
-
-        createEfmElement();
-    }
-
-    /**
-     * max glyphnumber
+     * max glyphs
      */
     private static final int MAXGLYPH = 0xffff;
+
+    /**
+     * Create a new object.
+     *
+     * @param instream  inputstream for reading
+     * @param fontname  the fontname
+     * @throws IOException if an IO-error occurs
+     * @throws GeneralException if a ttf-table does not exists
+     */
+    public TTFReader(final InputStream instream, final String fontname)
+            throws IOException, GeneralException {
+
+        fontid = fontname;
+
+        RandomAccessInputStream in = new RandomAccessInputStream(instream);
+
+        TTFFont font = new TTFFont(in);
+
+        createEfmElement(font);
+    }
 
     /**
      * fontid
@@ -91,19 +77,20 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
     /**
      * Create the efm-element
+     * @param  ttffont    the TTF-Font
      * @throws IOException ...
      */
-    private void createEfmElement() throws IOException {
+    private void createEfmElement(final TTFFont ttffont) throws IOException {
 
         efmelement = new Element("fontgroup");
 
-        String fontFamily = name.getRecord(Table.nameFontFamilyName);
-        short unitsPerEm = head.getUnitsPerEm();
-        //String panose = os2.getPanose().toString();
-        //short ascent = hhea.getAscender();
-        //short descent = hhea.getDescender();
-        //int baseline = 0; // bit 0 of head.flags will indicate if this is true
-
+        String fontFamily = ttffont.getFontFamilyName();
+        short unitsPerEm = ttffont.getHeadTable().getUnitsPerEm();
+        String panose = ttffont.getOS2Table().getPanose().toString();
+        int ascent = ttffont.getAscent();
+        int descent = ttffont.getDescent();
+        //        //int baseline = 0; // bit 0 of head.flags will indicate if this is true
+        //
         efmelement.setAttribute("name", fontFamily);
         efmelement.setAttribute("id", fontid);
         efmelement.setAttribute("default-size", "12");
@@ -119,37 +106,36 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
         font.setAttribute("font-family", fontFamily);
         font.setAttribute("type", "ttf");
 
-        // Decide upon a cmap table to use for our character to glyph look-up
-        CmapFormat cmapFmt = null;
         // The default behaviour is to use the Unicode cmap encoding
-        cmapFmt = cmap
-                .getCmapFormat(Table.platformMicrosoft, Table.encodingUGL);
+        TTFTableCMAP.Format cmapFmt = ttffont.getCmapTable().getFormat(
+                TTFTableCMAP.PLATFORM_MICROSOFT, TTFTableCMAP.ENCODING_UGL);
         if (cmapFmt == null) {
             // This might be a symbol font, so we'll look for an "undefined" encoding
-            cmapFmt = cmap.getCmapFormat(Table.platformMicrosoft,
-                    Table.encodingUndefined);
+            cmapFmt = ttffont.getCmapTable().getFormat(
+                    TTFTableCMAP.PLATFORM_MICROSOFT,
+                    TTFTableCMAP.ENCODING_UNDEFINED);
         }
         if (cmapFmt == null) {
             throw new IOException("Cannot find a suitable cmap table");
         }
 
         // Output kerning pairs from the requested range
-        KernTable kern = (KernTable) getTable(Table.kern);
+        TTFTableKERN kern = (TTFTableKERN) ttffont.getTable(TTFFont.KERN);
         ArrayList kernlist = new ArrayList();
         if (kern != null) {
-            KernSubtable kst = kern.getSubtable(0);
-            PostTable posttable = (PostTable) getTable(Table.post);
-            for (int i = 0; i < kst.getKerningPairCount(); i++) {
+            TTFTableKERN.KernSubtable kst = kern.getTable(0);
+            TTFTablePOST posttable = ttffont.getPostTable();
+            for (int i = 0; i < kst.getKerningCount(); i++) {
 
                 Kerning kp = new Kerning();
-                kp.setIdleft(String.valueOf(kst.getKerningPair(i).getLeft()));
+                kp.setIdleft(String.valueOf(kst.getKerning(i).getLeft()));
                 kp.setNameleft(String.valueOf(posttable.getGlyphName(kst
-                        .getKerningPair(i).getLeft())));
-                kp.setId(String.valueOf(kst.getKerningPair(i).getRight()));
+                        .getKerning(i).getLeft())));
+                kp.setId(String.valueOf(kst.getKerning(i).getRight()));
                 kp.setName(String.valueOf(posttable.getGlyphName(kst
-                        .getKerningPair(i).getRight())));
+                        .getKerning(i).getRight())));
                 // SVG kerning values are inverted from TrueType's.
-                kp.setSize(new Dimen(-kst.getKerningPair(i).getValue()));
+                kp.setSize(new Dimen(-kst.getKerning(i).getValue()));
                 kernlist.add(kp);
             }
         }
@@ -179,22 +165,31 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
                 glyph.setAttribute("ID", String.valueOf(i));
                 glyph.setAttribute("glyph-number", String.valueOf(glyphIndex));
-                glyph.setAttribute("glyph-name", post.getGlyphName(glyphIndex));
 
-                GlyphDescription gd = glyf.getDescription(glyphIndex);
+                String tmp = ttffont.getPostTable().getGlyphName(glyphIndex);
+                System.out.println(glyphIndex + "   xxx " + tmp + " "
+                        + ttffont.getPostTable().getNumGlyphs());
+                for (int ii = 0; ii < tmp.length(); ii++) {
+                    System.out.print((int) tmp.charAt(ii) + " ");
+                }
+                System.out.println();
+                glyph.setAttribute("glyph-name", tmp);
+
+                TTFTableGLYF.Descript gd = ((TTFTableGLYF) ttffont
+                        .getTable(TTFFont.GLYF)).getDescription(glyphIndex);
 
                 if (gd != null) {
-                    glyph.setAttribute("width", String.valueOf(gd.getXMinimum()
-                            + gd.getXMaximum()));
-                    if (gd.getYMinimum() < 0) {
+                    glyph.setAttribute("width", String.valueOf(gd.getXMin()
+                            + gd.getXMax()));
+                    if (gd.getYMin() < 0) {
                         glyph.setAttribute("depth", String.valueOf(-gd
-                                .getYMinimum()));
+                                .getYMin()));
                     } else {
                         glyph.setAttribute("depth", "0");
                     }
-                    if (gd.getYMaximum() > 0) {
+                    if (gd.getYMax() > 0) {
                         glyph.setAttribute("height", String.valueOf(gd
-                                .getYMaximum()));
+                                .getYMax()));
                     } else {
                         glyph.setAttribute("height", "0");
                     }
@@ -222,153 +217,6 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
     }
 
-    //    /**
-    //     * container for KerningPair
-    //     */
-    //    private class KernPairs {
-    //
-    //        /**
-    //         * idpre
-    //         */
-    //        int idpre;
-    //
-    //        /**
-    //         * char pre
-    //         */
-    //        String charpre;
-    //
-    //        /**
-    //         * id post
-    //         */
-    //        int idpost;
-    //
-    //        /**
-    //         * char post
-    //         */
-    //        String charpost;
-    //
-    //        /**
-    //         * size
-    //         */
-    //        int size;
-    //    }
-
-    /**
-     * RandomAccessFile for reading
-     */
-    private RandomAccessFile in;
-
-    /**
-     * all tables in the ttf-file
-     */
-    private Table[] tables;
-
-    /**
-     * TableDirectory
-     */
-    private TableDirectory tableDirectory = null;
-
-    /**
-     * OS/2 and Windows specific metrics
-     */
-    private Os2Table os2;
-
-    /**
-     * character tp glyph mapping
-     */
-    private CmapTable cmap;
-
-    /**
-     * glyph data
-     */
-    private GlyfTable glyf;
-
-    /**
-     * font header
-     */
-    private HeadTable head;
-
-    /**
-     * horizontal header
-     */
-    private HheaTable hhea;
-
-    /**
-     * horizonzal metrics
-     */
-    private HmtxTable hmtx;
-
-    /**
-     * index to location
-     */
-    private LocaTable loca;
-
-    /**
-     * maximum profile
-     */
-    private MaxpTable maxp;
-
-    /**
-     * naming table
-     */
-    private NameTable name;
-
-    /**
-     * PostScript information
-     * <p>
-     * The <code>PostTable</code> do not return the italicangle.
-     */
-    private PostTable post;
-
-    /**
-     * read the ttf-file
-     * @throws IOException ...
-     */
-    private void readTTF() throws IOException {
-
-        tableDirectory = new TableDirectory(in);
-        tables = new Table[tableDirectory.getNumTables()];
-
-        // load each of the tables
-        for (int i = 0; i < tableDirectory.getNumTables(); i++) {
-            tables[i] = TableFactory.create(tableDirectory.getEntry(i), in);
-        }
-
-        // Get references to commonly used tables
-        os2 = (Os2Table) getTable(Table.OS_2);
-        cmap = (CmapTable) getTable(Table.cmap);
-        glyf = (GlyfTable) getTable(Table.glyf);
-        head = (HeadTable) getTable(Table.head);
-        hhea = (HheaTable) getTable(Table.hhea);
-        hmtx = (HmtxTable) getTable(Table.hmtx);
-        loca = (LocaTable) getTable(Table.loca);
-        maxp = (MaxpTable) getTable(Table.maxp);
-        name = (NameTable) getTable(Table.name);
-        post = (PostTable) getTable(Table.post);
-
-        // Initialize the tables that require it
-        hmtx.init(hhea.getNumberOfHMetrics(), maxp.getNumGlyphs()
-                - hhea.getNumberOfHMetrics());
-        loca.init(maxp.getNumGlyphs(), head.getIndexToLocFormat() == 0);
-        glyf.init(maxp.getNumGlyphs(), loca);
-
-    }
-
-    /**
-     * Return the table with the spezial tabletype
-     * @param tableType the tabletype
-     * @return the table
-     */
-    private Table getTable(final int tableType) {
-
-        for (int i = 0; i < tables.length; i++) {
-            if ((tables[i] != null) && (tables[i].getType() == tableType)) {
-                return tables[i];
-            }
-        }
-        return null;
-    }
-
     /**
      * efm-element
      */
@@ -380,5 +228,17 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
     public Element getFontMetric() {
 
         return efmelement;
+    }
+
+    /**
+     * only for test
+     * @param args co   commandline
+     * @throws Exception if an error occured
+     */
+    public static void main(final String[] args) throws Exception {
+
+        InputStream in = new FileInputStream("src/font/Gara.ttf");
+
+        new TTFReader(in, "Gara");
     }
 }
