@@ -19,8 +19,8 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -39,18 +39,18 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      * The field <tt>noBreak</tt> contains the Tokens to be inserted in case
      * of no line breaking at this position.
      */
-    private Tokens noBreak;
+    private NodeList noBreak;
 
     /**
      * The field <tt>postBreak</tt> contains the Tokens to be inserted at the
      * beginning of the next line in case of a line breaking at this position.
      */
-    private Tokens postBreak;
+    private NodeList postBreak;
     /**
      * The field <tt>preBreak</tt> contains the Tokens to be inserted at the
      * end of the line in case of a line breaking at this position.
      */
-    private Tokens preBreak;
+    private NodeList preBreak;
 
     /**
      * Creates a new object.
@@ -62,8 +62,8 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      * @param no the Tokens to be inserted in case of no line breaking at this
      *  position.
      */
-    public DiscretionaryNode(final Tokens pre, final Tokens post,
-            final Tokens no) {
+    public DiscretionaryNode(final NodeList pre, final NodeList post,
+            final NodeList no) {
 
         super();
         preBreak = pre;
@@ -76,7 +76,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      *
      * @return the noBreak.
      */
-    public Tokens getNoBreak() {
+    public NodeList getNoBreak() {
 
         return noBreak;
     }
@@ -86,7 +86,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      *
      * @return the postBreak.
      */
-    public Tokens getPostBreak() {
+    public NodeList getPostBreak() {
 
         return postBreak;
     }
@@ -96,7 +96,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      *
      * @return the preBreak.
      */
-    public Tokens getPreBreak() {
+    public NodeList getPreBreak() {
 
         return preBreak;
     }
@@ -124,31 +124,29 @@ public class DiscretionaryNode extends AbstractNode implements Node {
     public void toString(final StringBuffer sb, final String prefix) {
 
         String pre = prefix + ".";
-        sb.append("\\discretionary");
+        sb.append("\\discretionary{");
         if (preBreak != null) {
-            sb.append("\n");
-            sb.append(pre);
-            preBreak.toString(sb);
+            preBreak.toText(sb, pre);
         }
+        sb.append("}{");
         if (postBreak != null) {
-            sb.append("\n");
-            sb.append(pre);
-            postBreak.toString(sb);
+            postBreak.toText(sb, pre);
         }
+        sb.append("}{");
         if (noBreak != null) {
-            sb.append("\n");
-            sb.append(pre);
-            noBreak.toString(sb);
+            noBreak.toText(sb, pre);
         }
+        sb.append("}");
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     * @see de.dante.extex.typesetter.type.Node#toText(
+     *      java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toText(StringBuffer sb, String prefix) {
+    public void toText(final StringBuffer sb, final String prefix) {
 
-        // TODO gene: toText unimplemented
-
+        sb.append("-");
     }
 
     /**

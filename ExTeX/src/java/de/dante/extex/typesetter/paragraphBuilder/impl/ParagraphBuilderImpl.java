@@ -147,7 +147,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -608,7 +608,7 @@ public class ParagraphBuilderImpl
 
                 node.addWidthTo(wd);
                 breakList.add(new BreakPoint(i, w, wd,
-                        (((DiscretionaryNode) node).getPreBreak().length() != 0
+                        (((DiscretionaryNode) node).getPreBreak() != null
                                 ? hyphenpenalty
                                 : exhyphenpenalty)));
                 i = discartNodes(i, len, nodes, wd);

@@ -19,14 +19,26 @@
 
 package de.dante.extex.interpreter.primitives.hyphen;
 
+import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
+import de.dante.extex.typesetter.listMaker.HorizontalListMaker;
+import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
 
 /**
@@ -47,12 +59,13 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \discretionary{}{}{-}  </pre>
+ *    \discretionary{f-}{fi}{ffi}
+ *    \discretionary{-}{}{}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -80,10 +93,140 @@ public class Discretionary extends AbstractCode {
         Tokens pre = source.getTokens(context);
         Tokens post = source.getTokens(context);
         Tokens nobreak = source.getTokens(context);
+        CharNodeFactory cnf = new CharNodeFactory();
+        TypesettingContext tc = context.getTypesettingContext();
+
         try {
-            typesetter.add(new DiscretionaryNode(pre, post, nobreak));
+            typesetter.add(new DiscretionaryNode(fill(pre, tc, typesetter,
+                    context), //
+                    fill(post, tc, typesetter, context), //
+                    fill(nobreak, tc, typesetter, context)));
         } catch (GeneralException e) {
             throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * This method creates a Node list for a list of tokens.
+     *
+     * @param tokens the tokens to put into a NodeList
+     * @param tc the typesetting context
+     * @param typesetter the typesetter
+     * @param context the interpreter context
+     *
+     * @return the node list or <code>null</code> if there are no tokens to
+     *  put into the list
+     *
+     * @throws TypesetterException in case of an error
+     */
+    private NodeList fill(final Tokens tokens, final TypesettingContext tc,
+            final Typesetter typesetter, final Context context)
+            throws TypesetterException {
+
+        if (tokens.length() == 0) {
+            return null;
+        }
+        ListManager man = new Manager(typesetter.getCharNodeFactory());
+        ListMaker hlist = new HorizontalListMaker(man);
+        NodeList nodes = new HorizontalListNode();
+
+        for (int i = 0; i < tokens.length(); i++) {
+            hlist.letter(context, tc, tokens.get(i).getChar());
+        }
+        return hlist.complete((TypesetterOptions) context);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.12 $
+     */
+    private class Manager implements ListManager {
+
+        /**
+         * The field <tt>charNodeFactory</tt> contains the ...
+         */
+        private CharNodeFactory charNodeFactory;
+
+        /**
+         * Creates a new object.
+         */
+        public Manager(final CharNodeFactory cnf) {
+
+            super();
+            charNodeFactory = cnf;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
+         */
+        public void endParagraph() throws TypesetterException {
+
+            // TODO gene: endParagraph unimplemented
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#getCharNodeFactory()
+         */
+        public CharNodeFactory getCharNodeFactory() {
+
+            return charNodeFactory;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#getDocumentWriter()
+         */
+        public DocumentWriter getDocumentWriter() {
+
+            // TODO gene: getDocumentWriter unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#getLigatureBuilder()
+         */
+        public LigatureBuilder getLigatureBuilder() {
+
+            // TODO gene: getLigatureBuilder unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#getOptions()
+         */
+        public TypesetterOptions getOptions() {
+
+            // TODO gene: getOptions unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#getParagraphBuilder()
+         */
+        public ParagraphBuilder getParagraphBuilder() {
+
+            // TODO gene: getParagraphBuilder unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#pop()
+         */
+        public ListMaker pop() throws TypesetterException {
+
+            // TODO gene: pop unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.ListManager#push(de.dante.extex.typesetter.ListMaker)
+         */
+        public void push(ListMaker listMaker) throws TypesetterException {
+
+            // TODO gene: push unimplemented
+
         }
     }
 }

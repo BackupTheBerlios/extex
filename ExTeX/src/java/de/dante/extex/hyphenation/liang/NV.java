@@ -19,8 +19,9 @@
 
 package de.dante.extex.hyphenation.liang;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.AdjustNode;
@@ -29,6 +30,7 @@ import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
 import de.dante.extex.typesetter.type.node.BeforeMathNode;
 import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
 import de.dante.extex.typesetter.type.node.GlueNode;
@@ -48,7 +50,7 @@ import de.dante.util.GeneralException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 class NV implements NodeVisitor {
 
@@ -60,10 +62,10 @@ class NV implements NodeVisitor {
     private boolean[] isHyph;
 
     /**
-     * The field <tt>hyphen</tt> contains the tokens to insert at a hyphenation
+     * The field <tt>hyphen</tt> contains the token to insert at a hyphenation
      * position into the discretionary.
      */
-    private Tokens hyphen;
+    private Token hyphen;
 
     /**
      * The field <tt>nodes</tt> contains the node list to add the current
@@ -72,32 +74,25 @@ class NV implements NodeVisitor {
     private NodeList nodes;
 
     /**
+     * The field <tt>tc</tt> contains the typesetting context for the hyphen.
+     */
+    private TypesettingContext tc;
+
+    /**
      * Creates a new object.
      *
      * @param nodes the list of nodes to add the current node to
-     * @param hyphen the tokens to insert into the discretionary
+     * @param hyphen the token to insert into the discretionary
+     * @param tc the typesetting context for the hyphen
      * @param hyph the indocator for allowed hyphenation positions
      */
-    public NV(final NodeList nodes, final Tokens hyphen, final boolean[] hyph) {
+    public NV(final NodeList nodes, final Token hyphen,
+            final TypesettingContext tc, final boolean[] hyph) {
 
         super();
         this.nodes = nodes;
         this.hyphen = hyphen;
         this.isHyph = hyph;
-    }
-
-    /**
-     * This method uniformly handles any node lists.
-     *
-     * @param list the node list to process
-     * @param index the index in the word to start with
-     */
-    private final void processNodeList(final NodeList list, final Count index) {
-
-        this.nodes.add(list);
-
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -170,9 +165,9 @@ class NV implements NodeVisitor {
 
         Count index = (Count) value;
         if (isHyph[(int) index.getValue()]) {
-            nodes
-                    .add(new DiscretionaryNode(Tokens.EMPTY, hyphen,
-                            Tokens.EMPTY));
+            CharNodeFactory cnf = new CharNodeFactory();
+            nodes.add(new DiscretionaryNode(null, new HorizontalListNode(cnf
+                    .newInstance(tc, hyphen.getChar())), null));
         }
         nodes.add(node);
         index.add(1);
@@ -223,8 +218,11 @@ class NV implements NodeVisitor {
     public final Object visitHorizontalList(final HorizontalListNode node,
             final Object value) throws GeneralException {
 
-        processNodeList(node, (Count) value);
-        return null;
+        this.nodes.add(node);
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+        //return null;
     }
 
     /**
@@ -338,7 +336,7 @@ class NV implements NodeVisitor {
     public final Object visitVerticalList(final VerticalListNode node,
             final Object value) throws GeneralException {
 
-        processNodeList(node, (Count) value);
+        nodes.add(node);
         return null;
     }
 
