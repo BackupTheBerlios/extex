@@ -67,6 +67,7 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -112,7 +113,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class ContextImpl
         implements
@@ -220,6 +221,11 @@ public class ContextImpl
      * mode.
      */
     private transient ObserverList observersInteraction = new ObserverList();
+
+    /**
+     * The field <tt>parshape</tt> contains the ...
+     */
+    private ParagraphShape parshape = null;
 
     /**
      * The field <tt>standardTokenStream</tt> contains the standard token
@@ -508,6 +514,15 @@ public class ContextImpl
     public OutFile getOutFile(final String name) {
 
         return group.getOutFile(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getParshape()
+     */
+    public ParagraphShape getParshape() {
+
+        //TODO: How does \parshape interact with groups?
+        return this.parshape;
     }
 
     /**
@@ -891,6 +906,13 @@ public class ContextImpl
             final boolean global) {
 
         group.setOutFile(name, file, global);
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setParshape(de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
+     */
+    public void setParshape(final ParagraphShape shape) {
+
+        this.parshape = shape;
     }
 
     /**

@@ -43,6 +43,7 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -55,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public interface Context extends Serializable {
 
@@ -258,6 +259,14 @@ public interface Context extends Serializable {
      * @return the output file descriptor
      */
     OutFile getOutFile(String name);
+
+    /**
+     * Getter fot the paragraph shape.
+     *
+     * @return the paragraph shape or <code>null</code> if no special shape
+     *   is present
+     */
+    ParagraphShape getParshape();
 
     /**
      * Getter for the spacefactor code of a character.
@@ -571,6 +580,13 @@ public interface Context extends Serializable {
      *            groups; otherwise the current group is affected only
      */
     void setOutFile(String name, OutFile file, boolean global);
+
+    /**
+     * Setter for the paragraph shape.
+     *
+     * @param shape the new paragraph shape
+     */
+    void setParshape(ParagraphShape shape);
 
     /**
      * Setter for the spece factor code in the specified groups.
