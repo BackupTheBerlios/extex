@@ -1,0 +1,166 @@
+/*
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
+ *
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
+ *
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ *
+ */
+
+package de.dante.extex.hyphenation.liang;
+
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import de.dante.extex.hyphenation.exception.DuplicateHyphenationException;
+import de.dante.util.UnicodeChar;
+
+/**
+ * <h2>Data Structures for Liangs Algorithm</h2>
+ *
+ * TODO gene: missing JavaDoc.
+ *
+ * The value <code>null</code> as character is interpretes as the left
+ * or right word boundary.
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.1 $
+ */
+class HyphenTree implements Serializable {
+
+    /**
+     * The field <tt>hc</tt> contains the hyphenation code for the position
+     * left of the character represented by this instance.
+     */
+    private char[] hc;
+
+    /**
+     * The field <tt>nextTree</tt> contains the map for the next characters.
+     */
+    private Map nextTree = null;
+
+    /**
+     * Creates a new object.
+     *
+     * @param hc the hyphenation code to start with
+     */
+    public HyphenTree(final char[] hc) {
+
+        super();
+        this.hc = hc;
+    }
+
+    /**
+     * Getter for hyphenation code.
+     *
+     * @return the hyphenation code
+     */
+    public char[] getHc() {
+
+        return this.hc;
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param chars the array of characters to analyze
+     * @param start the start index in chars to begin with
+     *
+     * @return ...
+     */
+    public char[] get(final UnicodeChar[] chars, final int start) {
+
+        HyphenTree tree = this;
+        char[] hyph = null;
+
+        if (chars.length == 0) {
+            return tree.getHc();
+        }
+
+        for (int i = start; i < chars.length; i++) {
+            char[] code = tree.getHc();
+            if (code != null) {
+                hyph = code;
+            }
+            tree = tree.getNext(chars[i]);
+            if (tree == null) {
+                return hyph;
+            }
+        }
+
+        return hyph;
+    }
+
+    /**
+     * Getter for the next tree.
+     *
+     * @param uc the unicode character to get the tree for
+     *
+     * @return the next tree
+     */
+    public HyphenTree getNext(final UnicodeChar uc) {
+
+        return (HyphenTree) this.nextTree.get(uc);
+    }
+
+    /**
+     * Create a new branch in the HyphenTree for a given character.
+     * The hyphenation code is stored if the branch is new. If the branch exists
+     * already then the hyphenation code is stored in the branch after it has
+     * been checked for an existing value. An existing value leads to an
+     * exception.
+     *
+     * @param uc the Unicode character to insert
+     * @param hyph the hyphenation code to insert
+     *
+     * @return the next branch associated with the character
+     *
+     * @throws DuplicateHyphenationException in case that the hyphen code
+     *  is already set
+     */
+    public HyphenTree insert(final UnicodeChar uc, final char[] hyph)
+            throws DuplicateHyphenationException {
+
+        if (nextTree == null) {
+            nextTree = new HashMap(5);
+        }
+        HyphenTree tree = (HyphenTree) nextTree.get(uc);
+        if (tree != null) {
+            tree.setHc(hyph);
+        } else {
+            tree = new HyphenTree(hyph);
+            nextTree.put(uc, tree);
+        }
+        //TODO gene: superimpose on existing entries
+        return tree;
+    }
+
+    /**
+     * Setter for hc.
+     *
+     * @param hc the hc to set
+     *
+     * @throws DuplicateHyphenationException in case that the hyphen code
+     *  is already set
+     */
+    public void setHc(final char[] hc) throws DuplicateHyphenationException {
+
+        if (hc != null) {
+            if (this.hc != null) {
+                throw new DuplicateHyphenationException(null);
+            }
+            this.hc = hc;
+        }
+    }
+}
