@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -49,7 +50,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -66,18 +67,19 @@ public class Box implements BoxOrRule, Serializable {
 
     /**
      * Creates a new object.
-     *
      * @param context the processor context
      * @param source the source for new tokens
      * @param typesetter the typesetter stack
      * @param isHorizontal indicator whether a <tt>\hbox</tt> should be
-     *     constructed. The alternative is a <tt>\vbox</tt>.
+     *  constructed. The alternative is a <tt>\vbox</tt>.
+     * @param insert tokens to insert at the beginning or <code>null</code>
+     *  for none
      *
      * @throws GeneralException in case of an error
      */
     public Box(final Context context, final TokenSource source,
-            final Typesetter typesetter, final boolean isHorizontal)
-            throws GeneralException {
+            final Typesetter typesetter, final boolean isHorizontal,
+            final Tokens insert) throws GeneralException {
 
         super();
 
@@ -103,8 +105,9 @@ public class Box implements BoxOrRule, Serializable {
             throw new GeneralException(e);
         }
 
+        source.push(insert);
         source.executeGroup();
-        nodes = typesetter.close((TypesetterOptions) context);
+        nodes = typesetter.complete((TypesetterOptions) context);
     }
 
     /**

@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Insert extends AbstractBox {
 
@@ -80,7 +80,7 @@ public class Insert extends AbstractBox {
             throw new HelpingException(getLocalizer(), "???");
         }
         long index = source.scanNumber(context);
-        Box b = new Box(context, source, typesetter, false);
+        Box b = new Box(context, source, typesetter, false, null);
 
         //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
