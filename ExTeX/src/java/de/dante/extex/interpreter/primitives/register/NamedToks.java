@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedToks extends AbstractCode implements Theable {
 
@@ -62,15 +62,16 @@ public class NamedToks extends AbstractCode implements Theable {
 		return context.getToks(getName());
 	}
 
-	/**
-	 * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags,
-	 *         de.dante.extex.interpreter.context.Context,
-	 *         de.dante.extex.interpreter.TokenSource,
-	 *         de.dante.extex.typesetter.Typesetter)
-	 */
-	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		expand(prefix, context, source, getName());
-	}
+    /**
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
+        expand(prefix, context, source, getName());
+    }
 
 	/**
 	 * Set the value for the register
@@ -115,7 +116,7 @@ public class NamedToks extends AbstractCode implements Theable {
 	 *                 ...
 	 */
 	protected void expand(Flags prefix, Context context, TokenSource source, String key) throws GeneralException {
-		Tokens toks = source.getNextTokens();
+		Tokens toks = source.getTokens();
 		context.setToks(key, toks, prefix.isGlobal());
 		prefix.clear();
 	}

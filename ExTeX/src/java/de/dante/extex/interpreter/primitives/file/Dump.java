@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Dump extends AbstractCode {
     /**
@@ -54,30 +54,31 @@ public class Dump extends AbstractCode {
     }
 
     /**
-     *
      * @see "TeX -- The Program [1303,1304]"
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-        if (!context.isGlobalGroup()) {
-            throw new GeneralHelpingException("TTP.DumpInGroup");
-        }
+    public void execute(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
+        if (!context.isGlobalGroup()) { throw new GeneralHelpingException(
+                "TTP.DumpInGroup"); }
 
         Calendar calendar = Calendar.getInstance();
-
 
         //TODO @see "TeX -- The Program [1328]"
 
         try {
-            String format         = "xxx"; //TODO: replace by jobname
-            ObjectOutputStream os = new ObjectOutputStream(new FileOutputStream(format +
-                                                                                "fmt"));
+            String format = "xxx"; //TODO: replace by jobname
+            ObjectOutputStream os = new ObjectOutputStream(
+                    new FileOutputStream(format + "fmt"));
             os.writeChars("#!extex");
             os.writeObject("1.0");
             os.writeObject(format + " " + //
-                           calendar.get(Calendar.YEAR) + "." +
-                           calendar.get(Calendar.MONTH) + "." +
-                           calendar.get(Calendar.DAY_OF_MONTH));
+                           calendar.get(Calendar.YEAR) + "."
+                           + calendar.get(Calendar.MONTH) + "."
+                           + calendar.get(Calendar.DAY_OF_MONTH));
             os.writeObject(context);
             //@see "TeX -- The Program [1329]"
             os.close();

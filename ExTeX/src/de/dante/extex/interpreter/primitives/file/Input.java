@@ -45,7 +45,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Input extends AbstractCode {
 
@@ -59,28 +59,30 @@ public class Input extends AbstractCode {
 		super(name);
 	}
 
-	/**
-	 * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags,
-	 *         de.dante.extex.interpreter.context.Context,
-	 *         de.dante.extex.interpreter.TokenSource,
-	 *         de.dante.extex.typesetter.Typesetter)
-	 */
-	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		String name = scanFileName(source);
-		TokenStreamFactory factory = source.getTokenStreamFactory();
-		String encoding = getEncoding(context);
+    /**
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
+        String name = scanFileName(source);
+        TokenStreamFactory factory = source.getTokenStreamFactory();
+        String encoding = getEncoding(context);
 
-		try {
-			source.addStream(factory.newInstance(factory.findFile(name, "tex"), encoding));
-		} catch (FileNotFoundException e) {
-			throw new GeneralException(e);
-		} catch (ConfigurationException e) {
-			throw new GeneralException(e);
-		} catch (IOException e) {
-			throw new GeneralException(e);
-		}
-		prefix.clear();
-	}
+        try {
+            source.addStream(factory.newInstance(factory.findFile(name, "tex"),
+                                                 encoding));
+        } catch (FileNotFoundException e) {
+            throw new GeneralException(e);
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
+        } catch (IOException e) {
+            throw new GeneralException(e);
+        }
+        prefix.clear();
+    }
 
 	/**
 	 * Return the encoding for the inputfile
@@ -118,7 +120,7 @@ public class Input extends AbstractCode {
 	 *                 in case of an error
 	 */
 	protected String scanFileName(TokenSource source) throws GeneralException {
-		Token t = source.scanNextNonSpace();
+		Token t = source.scanNonSpace();
 
 		if (t == null) {
 			throw new GeneralHelpingException("EOF"); //TODO
@@ -126,7 +128,7 @@ public class Input extends AbstractCode {
 
 		StringBuffer sb = new StringBuffer(t.getValue());
 
-		for (t = source.scanNextToken(); t != null && !(t instanceof SpaceToken); t = source.scanNextToken()) {
+		for (t = source.scanToken(); t != null && !(t instanceof SpaceToken); t = source.scanToken()) {
 			sb.append(t.getValue());
 		}
 

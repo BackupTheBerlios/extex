@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ifx</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Ifx extends AbstractIf {
 
@@ -47,8 +47,8 @@ public class Ifx extends AbstractIf {
      */
     protected boolean conditional(Context context, TokenSource source, Typesetter typesetter)
                            throws GeneralException {
-        Token t1 = source.getNextToken();
-        Token t2 = source.getNextToken();
+        Token t1 = source.getToken();
+        Token t2 = source.getToken();
 
         if (t1 == null || t2 == null) {
             throw new GeneralException("unexpected EOF");//TODO: i18n

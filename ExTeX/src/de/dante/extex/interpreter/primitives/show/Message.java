@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Michael Niedermair
+ * Copyright (C) 2003-2004 Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\message</code>.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Message extends AbstractCode {
 
@@ -44,20 +44,21 @@ public class Message extends AbstractCode {
 		super(name);
 	}
 
-	/**
-	 * Show the content from <code>{</code> to <code>}</code> in the
-	 * LOG-file.
-	 * 
-	 * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags,
-	 *         de.dante.extex.interpreter.context.Context,
-	 *         de.dante.extex.interpreter.TokenSource,
-	 *         de.dante.extex.typesetter.Typesetter)
-	 */
-	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		
-		Tokens toks = source.scanNextTokens();
-		System.err.println("\nMESSAGE " + toks.toText()); 
-		// TODO Ausgabe in LOG fehlt  noch und expand
-		prefix.clear();
-	}
+    /**
+     * Show the content from <code>{</code> to <code>}</code> in the
+     * LOG-file.
+     * 
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
+
+        Tokens toks = source.scanTokens();
+        System.err.println("\nMESSAGE " + toks.toText());
+        // TODO Ausgabe in LOG fehlt noch und expand
+        prefix.clear();
+    }
 }

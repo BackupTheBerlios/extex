@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,90 +35,81 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Code {
 
-	/**
-	 * This simple little method distinguishes the conditionals from the other
-	 * primitives. This is necessary for the processing of all \if* primitives.
-	 * 
-	 * @return <code>true</code> iff this is some sort if \if
-	 */
-	public abstract boolean isIf();
+    /**
+     * This simple little method distinguishes the conditionals from the other
+     * primitives. This is necessary for the processing of all \if* primitives.
+     * 
+     * @return <code>true</code> iff this is some sort if \if
+     */
+    public abstract boolean isIf();
 
-	/**
-	 * Setter for the name of this primitive.
-	 * 
-	 * @param name
-	 *                 the name
-	 */
-	public abstract void setName(String name);
+    /**
+     * Setter for the name of this primitive.
+     * 
+     * @param name the name
+     */
+    public abstract void setName(String name);
 
-	/**
-	 * Getter for the name.
-	 * 
-	 * @return the name
-	 */
-	public abstract String getName();
+    /**
+     * Getter for the name.
+     * 
+     * @return the name
+     */
+    public abstract String getName();
 
-	/**
-	 * This method takes the first token and executes it. The result is placed
-	 * on the stack. This operation might have side effects. To execute a token
-	 * it might be necessary to consume further tokens.
-	 * <p>
-	 * For expandable primitives the execution is identical to expansion.
-	 * </p>
-	 * 
-	 * @param prefix
-	 *                 the prefix controlling the execution
-	 * @param context
-	 *                 the interpreter context
-	 * @param source
-	 *                 the token source
-	 * @param typesetter
-	 *                 the typesetter
-	 * 
-	 * @return the updated prefix
-	 * 
-	 * @throws GeneralException
-	 *                 in case of an error
-	 */
-	public abstract void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException;
+    /**
+     * This method takes the first token and executes it. The result is placed
+     * on the stack. This operation might have side effects. To execute a token
+     * it might be necessary to consume further tokens.
+     * <p>
+     * For expandable primitives the execution is identical to expansion.
+     * </p>
+     * 
+     * @param prefix the prefix controlling the execution
+     * @param context the interpreter context
+     * @param source the token source
+     * @param typesetter the typesetter
+     * 
+     * @return the updated prefix
+     * 
+     * @throws GeneralException in case of an error
+     */
+    public abstract void execute(Flags prefix, Context context,
+            TokenSource source, Typesetter typesetter) throws GeneralException;
 
-	/**
-	 * This method takes the first token and expands it. The result is placed
-	 * on the stack. To expand a token it might be necessary to consume further
-	 * tokens.
-	 * <p>
-	 * Several primitives are not expandable. In this case an exception is
-	 * thrown.
-	 * </p>
-	 * 
-	 * @param prefix
-	 *                 the prefix flags controlling the expansion
-	 * @param context
-	 *                 the interpreter context
-	 * @param source
-	 *                 the token source
-	 * 
-	 * @return the updated prefix
-	 * 
-	 * @throws GeneralException
-	 *                 in case of an error
-	 */
-	public abstract void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException;
+    /**
+     * This method takes the first token and expands it. The result is placed
+     * on the stack. To expand a token it might be necessary to consume further
+     * tokens. In this case <code>true</code> is returned. 
+     * <p>
+     * This means that expandable code does one step of expansion, puts the
+     * result on the stack, and returns <code>true</code>.
+     * Non-expandable code simply return <code>false</code>.
+     * </p>
+     * 
+     * @param prefix the prefix flags controlling the expansion
+     * @param context the interpreter context
+     * @param source the token source
+     * 
+     * @return <code>true</code> iff the token could be expanded
+     * 
+     * @throws GeneralException in case of an error
+     */
+    public abstract boolean expand(Flags prefix, Context context,
+            TokenSource source, Typesetter typesetter) throws GeneralException;
 
-	/**
-	 * ...
-	 * 
-	 * @param context
-	 *                 the interpreter context
-	 * @param value
-	 *                 ...
-	 * 
-	 * @throws GeneralException
-	 *                 in case of an error
-	 */
-	public abstract void set(Context context, String value) throws GeneralException;
+    /**
+     * ...
+     * 
+     * @param context the interpreter context
+     * @param value ...
+     * 
+     * @throws GeneralException in case of an error
+     */
+    public abstract void set(Context context, String value)
+            throws GeneralException;
 }

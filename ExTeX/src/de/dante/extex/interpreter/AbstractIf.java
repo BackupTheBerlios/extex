@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractIf extends AbstractCode {
 
@@ -50,14 +50,18 @@ public abstract class AbstractIf extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    public void execute(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
         if (conditional(context, source, typesetter)) {
-            context.ifPush(source.getLocator(),true);
+            context.ifPush(source.getLocator(), true);
         } else {
             if (skipToElseOrFi(context, source)) {
-                context.ifPush(source.getLocator(),true);
+                context.ifPush(source.getLocator(), true);
             }
         }
 
@@ -93,7 +97,7 @@ public abstract class AbstractIf extends AbstractCode {
         Code code;
         int n = 1;
 
-        for (Token t = source.getNextToken(); t != null; t = source.getNextToken()) {
+        for (Token t = source.getToken(); t != null; t = source.getToken()) {
             if (t instanceof ControlSequenceToken) {
                 String name = t.getValue();
 

@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Hrule extends AbstractCode {
     /** ... */
@@ -47,10 +47,10 @@ public class Hrule extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
      * @see "TeX -- The Program [463]"
      */
-    public void expand(Flags prefix, Context context,
+    public void execute(Flags prefix, Context context,
                        TokenSource source, Typesetter typesetter)
                 throws GeneralException {
         Dimen width  = new Dimen(0);

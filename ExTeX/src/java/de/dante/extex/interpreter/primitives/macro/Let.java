@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Let extends AbstractCode implements CatcodeVisitor {
     /**
@@ -51,10 +51,14 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-        Token t = source.getNextToken();
+    public void execute(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
+        Token t = source.getToken();
 
         if (t == null) {
             throw new GeneralException(); //TODO
@@ -65,27 +69,25 @@ public class Let extends AbstractCode implements CatcodeVisitor {
         } else {
             source.push(t);
             source.push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
-                                                              "inaccessible "));
+                    "inaccessible "));
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
 
-        Token t2 = source.getNextNonSpace();
+        Token t2 = source.getNonSpace();
 
         if (t2 != null && t2.equals(Catcode.OTHER, '=')) {
-            t2 = source.getNextNonSpace();
+            t2 = source.getNonSpace();
         }
 
-        if (t2 == null) {
-            throw new GeneralException(); //TODO
+        if (t2 == null) { throw new GeneralException(); //TODO
         }
 
-        Code code = (Code) (t2.getCatcode().visit(this, t2.getValue(),
-                                                  context));
+        Code code = (Code) (t2.getCatcode().visit(this, t2.getValue(), context));
 
         if (t instanceof ControlSequenceToken) {
-            context.setMacro(t.getValue(), code,prefix.isGlobal());
+            context.setMacro(t.getValue(), code, prefix.isGlobal());
         } else if (t instanceof ActiveCharacterToken) {
-                context.setActive(t.getValue(), code, prefix.isGlobal());
+            context.setActive(t.getValue(), code, prefix.isGlobal());
         } else {
             throw new GeneralHelpingException("TTP.Confusion", "");
         }
