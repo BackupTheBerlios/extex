@@ -39,7 +39,7 @@ import de.dante.extex.scanner.type.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -257,7 +257,8 @@ public class Tokens implements Serializable, FixedTokens {
                 if (esc >= 0) {
                     toks.add(factory.createToken(Catcode.OTHER, (char) (esc),
                             Namespace.DEFAULT_NAMESPACE));
-                }                toks.add(factory, t.toString());
+                }
+                toks.add(factory, t.toString());
             } else if (t instanceof MacroParamToken) {
                 toks.add(factory.createToken(Catcode.OTHER, '#',
                         Namespace.DEFAULT_NAMESPACE));
