@@ -32,7 +32,7 @@ import junit.framework.Assert;
  * Test for ExTeX.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class TestTeX {
 
@@ -70,7 +70,7 @@ public final class TestTeX {
         String linetxt, linetesttxt;
         while ((linetxt = intxt.readLine()) != null) {
             linetesttxt = intesttxt.readLine();
-            Assert.assertEquals(linetxt, linetesttxt);
+            Assert.assertEquals(linetesttxt, linetxt);
         }
         intxt.close();
         intesttxt.close();
