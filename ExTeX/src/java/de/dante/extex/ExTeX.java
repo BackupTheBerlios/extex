@@ -83,7 +83,7 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class ExTeX {
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
@@ -184,7 +184,7 @@ public class ExTeX {
      * </tr>
      * <tr>
      * <td>extex.config</td>
-     * <td>config/extex.xml</td>
+     * <td>extex.xml</td>
      * <td>This parameter contains the name of the configuration file to use.
      * This configuration file is sought on the classpath.</td>
      * </tr>
@@ -247,7 +247,7 @@ public class ExTeX {
         propertyDefault(PROP_OUTPUTDIR, ".");
         propertyDefault(PROP_TEXINPUTS, "");
         propertyDefault(PROP_ENCODING, "ISO-8859-1");
-        propertyDefault(PROP_CONFIG, "config/extex.xml");
+        propertyDefault(PROP_CONFIG, "extex.xml");
         propertyDefault(PROP_LOGGER, "de.dante.extex.logging.LoggerImpl");
         propertyDefault(PROP_LOGGER_TEMPLATE, "config/logger");
         propertyDefault(PROP_NOBANNER, "");
