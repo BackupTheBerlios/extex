@@ -1,4 +1,4 @@
-<table width="100%" class="head" cellspacing="0">
+<table width="100%" class="head" cellspacing="0" cellpadding="0">
  <tr>
   <td colspan="10" class="head">
    <a href="&top;index.html"><img src="&top;image/ExTeX-small.gif" alt="ExTeX" border="0"/></a>
@@ -6,7 +6,7 @@
  </tr>
  <tr>
   <tabs/>
-  <td width="100%"> </td>
+  <td width="90%">&nbsp;</td>
  </tr>
 </table>
 <div class="tabSep"><br/></div>
@@ -15,4 +15,4 @@
   <td width="20%" valign="top">
    <navigation/>
   </td>
-  <td width="80%" class="text">
+  <td width="60%" class="text">
