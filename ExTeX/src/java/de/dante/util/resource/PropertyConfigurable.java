@@ -22,17 +22,18 @@ import java.util.Properties;
 
 
 /**
- * ...
+ * This interface describes the possibility to take properties for
+ * configaration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public interface PropertiesTaker {
+public interface PropertyConfigurable {
 
     /**
-     * ...
+     * Setter for the properties.
      *
-     * @param properties ...
+     * @param properties zthe properties to use for configuration
      */
     void setProperties(Properties properties);
 }
