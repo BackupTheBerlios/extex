@@ -83,7 +83,7 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class ExTeX {
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
@@ -105,7 +105,7 @@ public class ExTeX {
     private static final String PROP_JOBNAME = "extex.jobname";
 
     /**
-     * The constant <tt>COPYRIGHT_YEAR</tt> contains the stating year of
+     * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
      * development for the copyright message.
      */
     private static final int COPYRIGHT_YEAR = 2003;
@@ -209,7 +209,7 @@ public class ExTeX {
      * <td>extex.fmt</td>
      * <td></td>
      * <td>This parameter contains the name of the format to read. An empty
-     * string denotes that no formal should be read.</td>
+     * string denotes that no format should be read.</td>
      * </tr>
      * <tr>
      * <td>extex.encoding</td>
@@ -253,14 +253,15 @@ public class ExTeX {
         propertyDefault(PROP_NOBANNER, "");
         propertyDefault(PROP_TRACE_TOKENIZER, "");
         propertyDefault(PROP_TRACE_MACROS, "");
-        
-        useLogger("extex.initial.log", "");
     }
 
     /**
      * This is the main method which is invoked to run the whole engine from
-     * the command line. It creates a new ExTeX object and invokes run() on it.
+     * the command line. It creates a new ExTeX object and invokes
+     * <tt>{@link #run(String[]) run()}</tt> on it.
+     * <p>
      * The return value is used as the exit status.
+     * </p>
      *
      * @param args the list of command line arguments
      */
@@ -271,10 +272,10 @@ public class ExTeX {
             ExTeX extex = new ExTeX(System.getProperties());
             status = extex.run(args);
         } catch (MainException e) {
-            System.err.println("*** " + e.getMessage() + "\n");
+            System.err.println("\n*** " + e.getMessage() + "\n");
             status = e.getCode();
         } catch (Throwable e) {
-            System.err.println("*** " + e.getMessage() + "\n");
+            System.err.println("\n*** " + e.getMessage() + "\n");
             status = EXIT_INTERNAL_ERROR;
         }
 
@@ -283,7 +284,8 @@ public class ExTeX {
 
     /**
      * This class provides access to the whole functionality of ExTeX on the
-     * command line. The exception is that this method does not call <code>{@link System#exit(int) System.exit()}</code>
+     * command line. The exception is that this method does not call
+     * <code>{@link System#exit(int) System.exit()}</code>
      * but returns the exit status as result.
      * 
      * @param args the list of command line arguments
@@ -293,8 +295,10 @@ public class ExTeX {
     public int run(final String[] args) {
         boolean onceMore = true;
         int returnCode = EXIT_OK;
-
+        
         try {
+            useLogger("extex.initial.log", "");
+            
             for (int i = 0; onceMore && i < args.length; i++) {
                 String arg = args[i];
 
@@ -377,14 +381,11 @@ public class ExTeX {
                 run();
             }
         } catch (MainException e) {
-            returnCode = e.getCode();
+            showBanner();
             logger.severe(e.getMessage());
+            returnCode = e.getCode();
         } catch (Throwable e) {
-            if (showBanner) {
-                logger.info(Messages.format("ExTeX.Version", properties
-                    .getProperty(PROP_PROGNAME), VERSION, properties
-                    .getProperty("java.version")));
-            }
+            showBanner();
 
             String msg = e.getMessage();
             logger.severe(Messages
@@ -423,14 +424,6 @@ public class ExTeX {
         showBanner = !Boolean.valueOf(properties.getProperty(PROP_NOBANNER))
             .booleanValue();
 
-        useLogger("extex.log", properties.getProperty(PROP_INTERACTION));
-        if (showBanner) {
-            logger.info(Messages.format("ExTeX.Version", properties
-                .getProperty(PROP_PROGNAME), VERSION, properties
-                .getProperty("java.version")));
-            showBanner = false;
-        }
-
         try {
             Configuration config = new ConfigurationFactory()
                 .newInstance(properties.getProperty(PROP_CONFIG));
@@ -439,6 +432,9 @@ public class ExTeX {
                 .getConfiguration("Output"), new String[]{
                     properties.getProperty(PROP_OUTPUTDIR),
                     properties.getProperty("extex.FallbackOutputdir")});
+
+            useLogger("extex.log", properties.getProperty(PROP_INTERACTION));
+            showBanner();
 
             FileFinderList finder = new FileFinderList(new FileFinderDirect(
                 new StringList(":tex", ":")));
@@ -466,9 +462,10 @@ public class ExTeX {
             }
             if (Boolean.valueOf(properties.getProperty(PROP_TRACE_MACROS))
                 .booleanValue()) {
-                interpreter.registerObserver("macro", new TraceObserver(logger));
+                interpreter
+                    .registerObserver("macro", new TraceObserver(logger));
             }
-            
+
             TokenStreamFactory factory = new TokenStreamFactory(config
                 .getConfiguration("Reader"));
 
@@ -482,7 +479,7 @@ public class ExTeX {
             initializeStreams(interpreter);
 
             Typesetter typesetter = new TypesetterFactory(config
-                .getConfiguration("Typesetter")).newInstance(interpreter.getContext());
+                .getConfiguration("Typesetter")).newInstance();
 
             DocumentWriter docWriter = new DocumentWriterFactory(config
                 .getConfiguration("DocumentWriter")).newInstance();
@@ -507,19 +504,15 @@ public class ExTeX {
                 : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname, Integer
                 .toString(pages)));
         } catch (ConfigurationException e) {
-        	e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainConfigurationException(e);
         } catch (CharacterCodingException e) {
-			e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainCodingException(e);
         } catch (IOException e) {
-			e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainIOException(e);
         } catch (GeneralException e) {
-			e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
         }
@@ -529,6 +522,22 @@ public class ExTeX {
          */
         logger.info(Messages.format("ExTeX.Logfile", properties
             .getProperty(PROP_JOBNAME)));
+    }
+
+    /**
+     * Print the program banner to the logger stream and remember that this has
+     * been done already to avoid repeating.
+     */
+    private void showBanner() {
+        if (showBanner) {
+            logger.info(Messages.format("ExTeX.Version", //
+                                        properties
+                                            .getProperty(PROP_PROGNAME),
+                                        VERSION, //
+                                        properties
+                                            .getProperty("java.version")));
+            showBanner = false;
+        }
     }
 
     /**
