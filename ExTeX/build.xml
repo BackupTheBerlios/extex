@@ -52,10 +52,10 @@
     </path>
 
     <taskdef resource="checkstyletask.properties"
-           classpath="lib.develop/checkstyle-all-3.4.jar"/>
+             classpath="lib.develop/checkstyle-all-3.4.jar"/>
 
     <target name="compile"
-          description="Compile the Java files (without tests)">
+            description="Compile the Java files (without tests)">
         <!-- create empty output directory for classes if not present -->
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
@@ -74,7 +74,7 @@
     </target>
 
     <target name="compile.tests"
-          description="Compile the Java files (with tests)">
+            description="Compile the Java files (with tests)">
         <!-- create empty output directory for classes if not present -->
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
@@ -114,8 +114,8 @@
 
     <!-- make a jar from the classes matching magic testcase identifiers-->
     <target name="jar.tests"
-          depends="compile.tests"
-          description="Create testsuite jar file">
+            depends="compile.tests"
+            description="Create testsuite jar file">
         <mkdir dir="${deploy.lib}"/>
         <jar jarfile="${deploy.lib}/${testsuitejarfile}.jar">
             <fileset dir="${classes}">
@@ -132,7 +132,7 @@
     </target>
 
     <target name="tests" depends="jar,jar.tests"
-          description="Run JUnit tests">
+            description="Run JUnit tests">
         <!-- create output directories for test reports -->
         <delete dir="${tmp.tests}"/>
         <mkdir dir="${tmp.tests}"/>
@@ -152,7 +152,7 @@
     </target>
 
     <target name="checkstyle"
-          description="Generates a report of code convention violations.">
+            description="Generates a report of violations of the coding conventions.">
         <checkstyle config=".checkstyle.cfg"
                     failureProperty="checkstyle.failure"
                     failOnViolation="false">
@@ -162,12 +162,12 @@
     </target>
 
     <target name="dist"
-          depends="deploy"
-          description="This is just an alias for old make freaks;-)" />
+            depends="deploy"
+            description="This is just an alias for old make freaks;-)" />
 
     <target name="deploy"
-          depends="jar"
-          description="Create jar file with the compiled classes">
+            depends="jar"
+            description="Create jar file with the compiled classes">
         <copy todir="${deploy.lib}">
             <fileset dir="lib">
                 <include name="**/*.jar"/>
@@ -187,7 +187,7 @@
     </target>
 
     <target name="clean"
-            description="Remove unneccesary files and directories">
+            description="Remove unneccesary files and directories.">
         <delete dir="${classes}"/>
         <delete dir="${deploy}"/>
         <delete dir="${tmp.tests}"/>
@@ -201,12 +201,13 @@
         </target>
 
     <target name="javadoc"
-                  description="Create javadoc HTML pages">
+            description="Create JavaDoc HTML pages.">
         <mkdir dir="${javadoc}" />
         <javadoc 
              destdir="${javadoc}"
-             overview="src/overview.html"
+             overview="${src}/overview.html"
              stylesheetfile="src/javadoc/stylesheet.css"
+        	 excludepackagenames="de.dante.tools.doclet,de.dante.tools.plugin,de.dante.tools.xml"
              author="true"
              version="true"
              use="true"
@@ -220,7 +221,7 @@
             <packageset dir="${src}" defaultexcludes="yes"/>
         </javadoc>
         <copy todir="${javadoc}">
-            <fileset dir="src/java">
+            <fileset dir="${src}">
                 <include name="**/*.gif"/>
                 <include name="**/*.png"/>
             </fileset>
@@ -228,7 +229,7 @@
     </target>
 
     <target name="javadocxml"
-                  description="Create javadoc XML pages">
+            description="Create javadoc XML pages">
         <mkdir dir="${javadocxml}" />
         <property name="doc.params" value="-outdir ${javadocxml}"/>
         <javadoc 
@@ -263,9 +264,9 @@
         </copy>
         <property name="doc.params" value="-properties doc/dbdoclet-extex.properties"/>
         <javadoc 
-                maxmemory="256m"
-                destdir="${dbdoclet}"
-                author="true"
+            maxmemory="256m"
+            destdir="${dbdoclet}"
+            author="true"
             version="true"
             splitindex="true"
             notree="false"
@@ -273,8 +274,8 @@
             noindex="false"
             nodeprecatedlist="false"
             nodeprecated="false"
-                doclet="org.dbdoclet.doclet.docbook.DocBookDoclet"
-                additionalparam="${doc.params}">
+            doclet="org.dbdoclet.doclet.docbook.DocBookDoclet"
+            additionalparam="${doc.params}">
             <classpath refid="main.class.path"/>
             <classpath refid="test.class.path"/>
             <packageset dir="${src}" defaultexcludes="yes"/>
@@ -288,7 +289,7 @@
         </java>
     </target>
 
-    <target name="maketar"
+    <target name="tar"
             description="create a tar file with all source files, ...">
         <tar destfile="${tmp}/extex.tar.bz2" compression="bzip2" basedir="./" >
             <include name="doc/**/*"/>
