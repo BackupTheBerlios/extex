@@ -612,7 +612,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.74 $
+ * @version $Revision: 1.75 $
  */
 public class ExTeX {
 
@@ -893,6 +893,11 @@ public class ExTeX {
 
         System.exit(status);
     }
+
+    /**
+     * The field <tt>errorHandler</tt> contains the ...
+     */
+    private ErrorHandler errorHandler = null;
 
     /**
      * The field <tt>interactionObserver</tt> contains the observer called
@@ -1430,12 +1435,15 @@ public class ExTeX {
         interpreterFactory.enableLogging(logger);
 
         Interpreter interpreter = interpreterFactory.newInstance();
-        ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(
-                config.getConfiguration(TAG_ERRORHANDLER));
-        errorHandlerFactory.enableLogging(logger);
-        ErrorHandler errorHandler = errorHandlerFactory.newInstance(properties
-                .getProperty(PROP_ERROR_HANDLER));
-        interpreter.setErrorHandler(errorHandler);
+        ErrorHandler errHandler = errorHandler;
+        if (errHandler == null) {
+            ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(
+                    config.getConfiguration(TAG_ERRORHANDLER));
+            errorHandlerFactory.enableLogging(logger);
+            errHandler = errorHandlerFactory.newInstance(properties
+                    .getProperty(PROP_ERROR_HANDLER));
+        }
+        interpreter.setErrorHandler(errHandler);
         interpreter.setResourceFinder(finder);
         factory.setOptions((TokenStreamOptions) interpreter.getContext());
         interpreter.setTokenStreamFactory(factory);
@@ -1844,6 +1852,16 @@ public class ExTeX {
     public void setLogger(final Logger aLogger) {
 
         this.logger = aLogger;
+    }
+
+    /**
+     * Setter for errorHandler.
+     *
+     * @param handler the errorHandler to set.
+     */
+    public void setErrorHandler(final ErrorHandler handler) {
+
+        this.errorHandler = handler;
     }
 
     /**
