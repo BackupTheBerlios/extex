@@ -24,7 +24,7 @@ package de.dante.extex.scanner;
  * with the ability to retrieve a namespace.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface CodeToken extends Token {
 
@@ -34,5 +34,12 @@ public interface CodeToken extends Token {
      * @return the namespace
      */
     String getNamespace();
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    Token cloneInDefaultNamespace();
 
 }

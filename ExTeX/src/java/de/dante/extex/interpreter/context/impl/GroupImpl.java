@@ -39,6 +39,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Typesetter;
@@ -55,7 +56,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -74,6 +75,13 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>SFCODE_LETTER</tt> contains the default sfcode for letters.
      */
     private static final Count SFCODE_LETTER = new ImmutableCount(999);
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACES</tt> contains the indicator that
+     * namespaces should be honoured. In this case the lookup for Code is
+     * also performed in the default namespace if not found in the current one.
+     */
+    private static boolean SUPPORT_NAMESPACES = true;
 
     /**
      * The field <tt>afterGroup</tt> contains the tokens to be inserted after
@@ -300,9 +308,19 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public Code getCode(final Token token) {
 
         Code code = (Code) (codeMap.get(token));
-        return (code != null ? code //
-                : next != null ? next.getCode(token) //
-                        : null);
+        if (code != null) {
+            return code;
+        }
+        if (next != null) {
+            return next.getCode(token);
+        }
+        if (SUPPORT_NAMESPACES) {
+            Token t = ((CodeToken) token).cloneInDefaultNamespace();
+            if (t != token) {
+                return getCode(t);
+            }
+        }
+        return null;
     }
 
     /**
@@ -386,7 +404,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public boolean getIf(final String name) {
 
         Boolean b = (Boolean) (ifMap.get(name));
-        return b != null ? b.booleanValue() : next != null ? next.getIf(name)
+        return b != null ? b.booleanValue() : next != null
+                ? next.getIf(name)
                 : false;
     }
 
@@ -468,7 +487,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public Muskip getMuskip(final String name) {
 
         Muskip muskip = (Muskip) (muskipMap.get(name));
-        return muskip != null ? muskip : next != null ? next.getMuskip(name)
+        return muskip != null ? muskip : next != null
+                ? next.getMuskip(name)
                 : new Muskip();
     }
 
@@ -520,7 +540,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public Glue getSkip(final String name) {
 
         Glue skip = (Glue) (skipMap.get(name));
-        return skip != null ? skip : next != null ? next.getSkip(name)
+        return skip != null ? skip : next != null
+                ? next.getSkip(name)
                 : new Glue(0);
     }
 
@@ -531,7 +552,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     public Tokens getToks(final String name) {
 
         Tokens toks = (Tokens) (toksMap.get(name));
-        return toks != null ? toks : next != null ? next.getToks(name)
+        return toks != null ? toks : next != null
+                ? next.getToks(name)
                 : new Tokens();
     }
 
@@ -543,7 +565,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         TypesettingContext context = typesettingContext;
         return context != null //
                 ? context //
-                : next != null ? next.getTypesettingContext()
+                : next != null
+                        ? next.getTypesettingContext()
                         : new TypesettingContextImpl();
     }
 

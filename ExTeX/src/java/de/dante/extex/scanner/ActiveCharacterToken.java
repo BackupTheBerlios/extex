@@ -19,6 +19,7 @@
 package de.dante.extex.scanner;
 
 import de.dante.extex.i18n.Messages;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.util.UnicodeChar;
 
 
@@ -33,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
@@ -53,6 +54,17 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
         super(uc);
         namespace = theNamespace;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.CodeToken#cloneInDefaultNamespace()
+     */
+    public Token cloneInDefaultNamespace() {
+
+        if (Namespace.DEFAULT_NAMESPACE.equals(namespace)) {
+            return this;
+        }
+        return new ActiveCharacterToken(getChar(), Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
