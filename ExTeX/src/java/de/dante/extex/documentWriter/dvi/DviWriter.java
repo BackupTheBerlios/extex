@@ -26,11 +26,13 @@ package de.dante.extex.documentWriter.dvi;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.RuleNode;
 import de.dante.extex.interpreter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.Mode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import java.io.OutputStream;
@@ -46,23 +48,9 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviWriter {
-    /**
-     * Value for horizontal state.  Needed for {@link
-     * #writeGlueNode(GlueNode, int) writeGlueNode}
-     *
-     */
-    public static final int STATE_HORIZONTAL = 1;
-
-    /**
-     * Value for vertical state.  Needed for {@link
-     * #writeGlueNode(GlueNode, int) writeGlueNode}
-     *
-     */
-    public static final int STATE_VERTICAL = 2;
-
 
     /**
      * Typeset character and move right.
@@ -377,6 +365,14 @@ public class DviWriter {
 
 
     /**
+     * Default magnication.  Used if the class could not get the
+     * magnification of the document.
+     *
+     */
+    private static final int MAGNIFICATION_DEFAULT = 1000;
+
+
+    /**
      * Number of count-register in ExTeX.
      *
      */
@@ -423,14 +419,6 @@ public class DviWriter {
      *
      */
     private DocumentWriterOptions documentWriterOptions;
-
-
-    /**
-     * Default magnication.  Used if the class could not get the
-     * magnification of the document.
-     *
-     */
-    private final int MAGNIFICATION_DEFAULT = 1000;
 
 
     /**
@@ -731,7 +719,7 @@ public class DviWriter {
         // TODO: perhaps the kerning should do the typesetter (TE)
         try {
             if (lastGlyph != null) {
-                Dimen kerning = lastGlyph.getKerning(unicodeChar);
+                FixedDimen kerning = lastGlyph.getKerning(unicodeChar);
                 if (!Dimen.ZERO_PT.eq(kerning)) {
                     writeHorizontalSpace(kerning);
                 }
@@ -758,31 +746,28 @@ public class DviWriter {
     }
 
 
-
     /**
      * Write a glue node to the dvi-file.
      *
      * @param node the <code>GlueNode</code>
-     * @param state <code>{@link DviWriter#STATE_HORIZONTAL
-     *   DviWriter.STATE_HORIZONTAL}</code> or <code>{@link
-     *   DviWriter#STATE_VERTICAL DviWriter.STATE_VERTICAL}</code>
+     * @param mode current mode
      * @exception GeneralException if an error occurs
+     * @deprecated Use {@link
+     * #writeSpace(de.dante.extex.interpreter.type.dimen.FixedDimen,
+     * de.dante.extex.typesetter.Mode) writeSpace(FixedDimen, Mode)}
+     * instead}.
      */
-    public void writeGlueNode(final GlueNode node, final int state)
+    public void writeGlueNode(final GlueNode node, final Mode mode)
         throws GeneralException {
 
         lastGlyph = null;
 
-        switch (state) {
-        case STATE_HORIZONTAL:
+        if (mode == Mode.HORIZONTAL) {
             writeHorizontalSpace(node.getWidth());
-            break;
-
-        case STATE_VERTICAL:
+        } else  if (mode == Mode.VERTICAL) {
             writeVerticalSpace(node.getWidth());
-            break;
-        default:
-            throw new GeneralException("unknown State");
+        } else {
+            throw new GeneralException("unknown Mode");
         }
     }
 
@@ -828,12 +813,34 @@ public class DviWriter {
 
 
     /**
+     * Write space to the the dvi-file.
+     *
+     * @param space the space
+     * @param mode current Mode
+     * @exception GeneralException if an error occurs
+     */
+    public void writeSpace(final FixedDimen space, final Mode mode)
+        throws GeneralException {
+
+        lastGlyph = null;
+
+        if (mode == Mode.HORIZONTAL) {
+            writeHorizontalSpace(space);
+        } else  if (mode == Mode.VERTICAL) {
+            writeVerticalSpace(space);
+        } else {
+            throw new GeneralException("unknown Mode");
+        }
+    }
+
+
+    /**
      * Write horizontal space to dvi-file.
      *
      * @param space space size
      * @exception GeneralException if an error occurs
      */
-    public void writeHorizontalSpace(final Dimen space)
+    public void writeHorizontalSpace(final FixedDimen space)
         throws GeneralException {
 
         writeRight(convertToInt(space.getValue()));
@@ -846,7 +853,7 @@ public class DviWriter {
      * @param space space size
      * @exception GeneralException if an error occurs
      */
-    public void writeVerticalSpace(final Dimen space) throws GeneralException {
+    public void writeVerticalSpace(final FixedDimen space) throws GeneralException {
         writeDown(convertToInt(space.getValue()));
     }
 

@@ -25,8 +25,10 @@ import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
+import de.dante.extex.interpreter.type.node.KernNode;
 import de.dante.extex.interpreter.type.node.RuleNode;
 import de.dante.extex.interpreter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
@@ -43,13 +45,13 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviDocumentWriter implements DocumentWriter {
     // TODO: docu (TE)
     /*
      * TODO:
-     * - perhaps it is better to put the state in the visitor-argument
+     * - perhaps it is better to put the mode in the visitor-argument
      * - handle first vertical box special
      * (TE)
      */
@@ -106,12 +108,13 @@ public class DviDocumentWriter implements DocumentWriter {
 
 
     /**
-     * Current state (<code>{@link DviWriter#STATE_VERTICAL
-     * DviWriter.STATE_VERTICAL}</code> or <code>{@link
-     * DviWriter#STATE_HORIZONTAL DviWriter.STATE_HORIZONTAL}</code>).
+     * Current mode (<code>{@link
+     * de.dante.extex.typesetter.Mode#VERTICAL Mode.VERTICAL}</code>
+     * or <code>{@link de.dante.extex.typesetter.Mode#HORIZONTAL
+     * Mode.HORIZONTAL}</code>).
      *
      */
-    private int state = DviWriter.STATE_VERTICAL;
+    private Mode mode = Mode.VERTICAL;
 
 
     /**
@@ -251,7 +254,7 @@ public class DviDocumentWriter implements DocumentWriter {
 
             GlueNode node = (GlueNode) value;
 
-            dviWriter.writeGlueNode(node, state);
+            dviWriter.writeSpace(node.getWidth(), mode);
 
             return null;
         }
@@ -262,14 +265,14 @@ public class DviDocumentWriter implements DocumentWriter {
             throws GeneralException {
 
             NodeList nodes = (NodeList) value;
-            int oldState = state;
+            Mode oldMode = mode;
 
 
-            state = DviWriter.STATE_HORIZONTAL;
+            mode = Mode.HORIZONTAL;
 
             writeNodes(nodes);
 
-            state = oldState;
+            mode = oldMode;
             return null;
         }
 
@@ -285,7 +288,10 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitKern(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
+            KernNode node = (KernNode) value;
+
+            dviWriter.writeSpace(node.getWidth(), mode);
+
             return null;
         }
 
@@ -335,14 +341,14 @@ public class DviDocumentWriter implements DocumentWriter {
             throws GeneralException {
 
             NodeList nodes = (NodeList) value;
-            int oldState = state;
+            Mode oldMode = mode;
 
-            state = DviWriter.STATE_VERTICAL;
+            mode = Mode.VERTICAL;
 
             writeNodes(nodes);
 
 
-            state = oldState;
+            mode = oldMode;
             return null;
         }
 
@@ -442,7 +448,7 @@ public class DviDocumentWriter implements DocumentWriter {
 
         currentFont = null;
 
-        state = DviWriter.STATE_VERTICAL;
+        mode = Mode.VERTICAL;
         dviWriter.beginPage();
 
         nodes.visit(visitor, nodes, null);
