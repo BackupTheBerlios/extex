@@ -47,6 +47,7 @@ import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.LetterToken;
 import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.RightBraceToken;
 import de.dante.extex.scanner.type.SpaceToken;
@@ -78,7 +79,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public abstract class Moritz
         implements
@@ -546,9 +547,9 @@ public abstract class Moritz
                     return n;
 
                 case '"':
-                    boolean om = true;
 
-                    for (t = getToken(context); om && t instanceof OtherToken; //
+                    for (t = getToken(context); //
+                    t instanceof OtherToken || t instanceof LetterToken; //
                     t = getToken(context)) {
                         int no = t.getChar().getCodePoint();
                         switch (no) {
@@ -581,7 +582,9 @@ public abstract class Moritz
                                 n = n * 16 + no - 'A' + 10;
                                 break;
                             default:
-                                om = false;
+                                stream.put(t);
+                                skipSpaces = true;
+                                return n;
                         }
                     }
 
@@ -1015,7 +1018,8 @@ public abstract class Moritz
      * @throws InterpreterException in case that no number is found or the
      *  end of file has been reached before an integer could be acquired
      *
-     * @see de.dante.extex.interpreter.TokenSource#scanNumber(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.TokenSource#scanNumber(
+     *      de.dante.extex.scanner.Token)
      */
     public long scanNumber(final Context context, final Token token)
             throws InterpreterException,
@@ -1081,10 +1085,9 @@ public abstract class Moritz
                         return n;
 
                     case '"':
-                        boolean om = true;
 
-                        for (t = scanToken(context); om
-                                && t instanceof OtherToken; //
+                        for (t = scanToken(context); //
+                        t instanceof OtherToken || t instanceof LetterToken; //
                         t = scanToken(context)) {
                             int no = t.getChar().getCodePoint();
                             switch (no) {
@@ -1117,7 +1120,9 @@ public abstract class Moritz
                                     n = n * 16 + no - 'A' + 10;
                                     break;
                                 default:
-                                    om = false;
+                                    stream.put(t);
+                                    skipSpaces = true;
+                                    return n;
                             }
                         }
 
