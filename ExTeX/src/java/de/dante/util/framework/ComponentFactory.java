@@ -45,7 +45,7 @@ import de.dante.util.framework.component.Component;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ComponentFactory {
 
@@ -84,34 +84,29 @@ public class ComponentFactory {
      *
      * @return a new typesetter
      *
-     * @throws ConfigurationMissingAttributeException in case that a needed
-     *  attribute was not proveided
-     * @throws ConfigurationInvalidResourceException in case that the given
-     *  resource name is nullor empty
-     * @throws ConfigurationNotFoundException in case that the named path does
-     *  not lead to a resource
-     * @throws ConfigurationSyntaxException in case that the resource contains
-     *  syntax errors
-     * @throws ConfigurationIOException in case of an IO exception while
-     *  reading the resource
-     * @throws ConfigurationClassNotFoundException in case that the given
-     *  class could not be found
-     * @throws ConfigurationInstantiationException in cas of an exception
-     *  during instantiation
-     * @throws ConfigurationNoSuchMethodException in case that the expected
-     *  constructor could not be found
-     * @throws ConfigurationException in case of an error in the constructor
+     * @throws ConfigurationException in case of an error in the constructor.
+     * Especially the following Exceptions are thrown:
+     * <ul>
+     *  <li> ConfigurationMissingAttributeException in case that a needed
+     *  attribute was not proveided.</li>
+     *  <li> ConfigurationInvalidResourceException in case that the given
+     *  resource name is nullor empty.</li>
+     *  <li> ConfigurationNotFoundException in case that the named path does
+     *  not lead to a resource.</li>
+     *  <li> ConfigurationSyntaxException in case that the resource contains
+     *  syntax errors.</li>
+     *  <li> ConfigurationIOException in case of an IO exception while
+     *  reading the resource.</li>
+     *  <li> ConfigurationClassNotFoundException in case that the given
+     *  class could not be found.</li>
+     *  <li> ConfigurationInstantiationException in cas of an exception
+     *  during instantiation.</li>
+     *  <li> ConfigurationNoSuchMethodException in case that the expected
+     *  constructor could not be found.</li>
+     * </ul>
      */
     public Component createComponent(final String type)
-            throws ConfigurationMissingAttributeException,
-                ConfigurationInvalidResourceException,
-                ConfigurationNotFoundException,
-                ConfigurationSyntaxException,
-                ConfigurationIOException,
-                ConfigurationClassNotFoundException,
-                ConfigurationInstantiationException,
-                ConfigurationNoSuchMethodException,
-                ConfigurationException {
+            throws ConfigurationException {
 
         Configuration cfg = config.findConfiguration(type != null ? type : "");
         if (cfg == null) {
