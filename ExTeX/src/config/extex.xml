@@ -120,7 +120,7 @@
     <Define name="futurelet" class=""/>
     <define name="gdef" class="de.dante.extex.interpreter.primitives.macro.Gdef"/>
     <define name="global" class="de.dante.extex.interpreter.primitives.prefix.Global"/>
-    <Define name="globaldefs" class=""/>
+    <define name="globaldefs" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="halign" class=""/>
     <Define name="hangafter" class=""/>
     <define name="hangindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
