@@ -23,7 +23,6 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jdom.Comment;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -55,7 +54,7 @@ import de.dante.util.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -144,14 +143,17 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
             // write to xml-file
             XMLOutputter xmlout = new XMLOutputter();
             xmlout.setEncoding(encoding);
-            xmlout.setIndent("   ");
-            xmlout.setNewlines(true);
-            xmlout.setTrimAllWhite(true);
+            if (debug) {
+                xmlout.setIndent("   ");
+                xmlout.setNewlines(true);
+                xmlout.setTrimAllWhite(true);
+            } else {
+                xmlout.setIndent("");
+                xmlout.setNewlines(false);
+                xmlout.setTrimAllWhite(false);
+            }
             BufferedOutputStream bout = new BufferedOutputStream(out);
             Document doc = new Document();
-            if (debug) {
-                doc.addContent(new Comment("incomplete !!!!"));
-            }
             doc.setDocType(new DocType("svg", "//W3C//DTD SVG 1.1//EN",
                     "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"));
             doc.setRootElement(root);
