@@ -25,8 +25,14 @@ import de.dante.extex.interpreter.type.node.CharNode;
 /**
  * This interface describes the features of a linear collection of nodes.
  *
+ * <p>
+ * <img src="doc-files/NodeList.png" />
+ * </p>
+ *
+ * @see de.dante.extex.interpreter.type.box.Box
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface NodeList extends Node {
 
@@ -71,6 +77,9 @@ public interface NodeList extends Node {
 
     /**
      * Getter for the move value of the node list.
+     * The move parameter describes how far from its original position the box
+     * is moved leftwards or rightwards. Positive values indicate a move
+     * rightwards.
      *
      * @return the move value
      */
@@ -78,6 +87,8 @@ public interface NodeList extends Node {
 
     /**
      * Getter for the shift value of the node list.
+     * The shift parameter describes how far from its original position the box
+     * is shifted up or down. Positive values indicate a move upwards.
      *
      * @return the shift value
      */
@@ -101,6 +112,9 @@ public interface NodeList extends Node {
 
     /**
      * Setter for the move value of the node list.
+     * The move parameter describes how far from its original position the box
+     * is moved leftwards or rightwards. Positive values indicate a move
+     * rightwards.
      *
      * @param d the move value
      */
@@ -108,6 +122,8 @@ public interface NodeList extends Node {
 
     /**
      * Setter for the shift value of the node list.
+     * The shift parameter describes how far from its original position the box
+     * is shifted up or down. Positive values indicate a move upwards.
      *
      * @param d the amount to be shifted
      */
