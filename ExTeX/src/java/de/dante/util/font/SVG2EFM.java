@@ -35,7 +35,7 @@ import de.dante.extex.font.SVGReader;
  * Convert a SVG-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SVG2EFM {
 
@@ -54,8 +54,8 @@ public class SVG2EFM {
             JDOMException {
 
         if (args.length != 3) {
-            System.err
-                    .println("java de.dante.util.font.SVG2EFM <svg-file> <efm-file> <default-size>");
+            System.err.println("java de.dante.util.font.SVG2EFM "
+                    + "<svg-file> <efm-file> <default-size>");
             System.exit(1);
         }
 

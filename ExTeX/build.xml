@@ -13,6 +13,7 @@
     <property name="classes" location="tmp/classes"/>
     <property name="javadoc" location="doc/javadoc"/>
     <property name="javadocxml" location="doc/javadocxml"/>
+    <property name="dbdoclet" location="doc/javadocdb"/>
     <property name="tmp" location="tmp"/>
     <property name="deploy" location="tmp/ExTeX"/>
     <!-- classpath for the application -->
@@ -175,6 +176,36 @@
             </fileset>
         </copy>
     </target>
+
+    <target name="dbdoclet" description="Create dbjavadoc">
+        <mkdir dir="${dbdoclet}" />
+        <property name="doc.params" value="-properties .dbdoclet-extex.properties"/>
+        <javadoc 
+        	maxmemory="256m"
+        	destdir="${dbdoclet}"
+	        author="true"
+            version="true"
+            use="true"
+            splitindex="true"
+            notree="false"
+            nonavbar="false"
+            noindex="false"
+            nodeprecatedlist="false"
+            nodeprecated="false"
+	    	doclet="org.dbdoclet.doclet.docbook.DocBookDoclet"
+    		additionalparam="${doc.params}">
+            <classpath refid="main.class.path"/>
+            <classpath refid="test.class.path"/>
+            <packageset dir="${src}" defaultexcludes="yes"/>
+        </javadoc>
+        <copy todir="${dbdoclet}">
+            <fileset dir="src">
+                <include name="**/*.gif"/>
+                <include name="**/*.png"/>
+            </fileset>
+        </copy>
+    </target>
+
 
     <target name="gcview"
             description="Show the logfile from the GC in the gcviewer"

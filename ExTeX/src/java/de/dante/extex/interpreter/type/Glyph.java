@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * Glyph
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Glyph {
 
@@ -70,6 +70,16 @@ public class Glyph {
      * The ligature for the glyph
      */
     private HashMap ligature = null;
+
+    /**
+     * Is the glyph used?
+     */
+    private boolean isused = false;
+
+    /**
+     * The external fontfile or null, if no exists
+     */
+    private FontFile externalfile = null;
 
     /**
      * Create a new object.
@@ -321,4 +331,35 @@ public class Glyph {
         return liguc;
     }
 
+    /**
+     * @return Returns <code>true</code>, it the glyph is used.
+     */
+    public boolean isUsed() {
+
+        return isused;
+    }
+
+    /**
+     * Set the flag, that the glyph is used.
+     */
+    public void setUsed() {
+
+        isused = true;
+    }
+
+    /**
+     * @return Returns the externalfile.
+     */
+    public FontFile getExternalFile() {
+
+        return externalfile;
+    }
+
+    /**
+     * @param file The externalfile to set.
+     */
+    public void setExternalFile(final FontFile file) {
+
+        externalfile = file;
+    }
 }

@@ -31,6 +31,7 @@ import org.jdom.JDOMException;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.FontFile;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.interpreter.type.Kerning;
@@ -44,7 +45,7 @@ import de.dante.util.file.FileFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class EFMFont implements Font {
 
@@ -56,7 +57,7 @@ public abstract class EFMFont implements Font {
     /**
      * the external fontfile
      */
-    private File externalfile;
+    private FontFile externalfile;
 
     /**
      * the em-size for the font
@@ -149,6 +150,16 @@ public abstract class EFMFont implements Font {
             // get glyph-list
             Element font = scanForElement(fontgroup, "font");
             if (font != null) {
+
+                // exernal fontfile
+                String efile = font.getAttributeValue("filename");
+
+                if (efile != null) {
+                    efile = efile.replaceAll(".pfb", "");
+                    externalfile = getFontFile(fileFinder
+                            .findFile(efile, "pfb"));
+                }
+
                 List glyphlist = font.getChildren("glyph");
                 Element e;
 
@@ -159,6 +170,7 @@ public abstract class EFMFont implements Font {
                         Glyph gv = new Glyph();
                         gv.setNumber(e.getAttributeValue("glyph-number"));
                         gv.setName(e.getAttributeValue("glyph-name"));
+                        gv.setExternalFile(externalfile);
                         gv.setWidth(e.getAttributeValue("width"), em,
                                 unitsperem);
                         gv.setDepth(e.getAttributeValue("depth"), em,
@@ -197,18 +209,17 @@ public abstract class EFMFont implements Font {
                 }
             }
 
-            // exernal fontfile
-            String efile = font.getAttributeValue("filename");
-
-            if (efile != null) {
-                efile = efile.replaceAll(".pfb", "");
-                externalfile = fileFinder.findFile(efile, "pfb");
-            }
-
         } catch (JDOMException e) {
             throw new GeneralHelpingException("EFM.jdomerror", e.getMessage());
         }
     }
+
+    /**
+     * Return the FontFile
+     * @param file  the file
+     * @return  the FontFile
+     */
+    protected abstract FontFile getFontFile(final File file);
 
     /**
      * initsize for the hashmap
@@ -363,6 +374,7 @@ public abstract class EFMFont implements Font {
             g.setHeight(getEx());
             // TODO incomplete: use glyph-symbol
         }
+        g.setUsed();
         return g;
     }
 
@@ -375,90 +387,9 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * Return the kerning between c1 and c2.
-     * @see de.dante.extex.interpreter.type.Font#kern(
-     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-     * @deprecated use glyph.getKerning()
-     */
-    public Dimen kern(final UnicodeChar c1, final UnicodeChar c2) {
-
-        //        Dimen rt = new Dimen(0);
-        //
-        //        GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c1
-        //                .getCodePoint()));
-        //        if (gv != null) {
-        //            KerningValues kv = (KerningValues) gv.kerning.get(String.valueOf(c2
-        //                    .getCodePoint()));
-        //            try {
-        //                float size = Float.parseFloat(kv.size);
-        //                rt = new Dimen((long) (size * em.getValue() / unitsperem));
-        //            } catch (Exception e) {
-        //                // do nothing, use default
-        //            }
-        //        }
-        //        return rt;
-        return null;
-    }
-
-    /**
-     * Return the ligature as <code>UnicodeChar</code>,
-     * or <code>null</code>, if no ligature exists.
-     *
-     * If you get a ligature-character, then you MUST call the
-     * method <code>ligature()</code> twice, if a ligature with
-     * more then two characters exist.
-     * (e.g. f - ff - ffl)
-     * @see de.dante.extex.interpreter.type.Font#ligature(
-     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-     * @deprecated use glyph.getLigature()
-     */
-    public UnicodeChar ligature(final UnicodeChar c1, final UnicodeChar c2) {
-
-        //        UnicodeChar rt = null;
-        //
-        //        GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c1
-        //                .getCodePoint()));
-        //        if (gv != null) {
-        //            LigatureValues lv = (LigatureValues) gv.ligature.get(String
-        //                    .valueOf(c2.getCodePoint()));
-        //            try {
-        //                int id = Integer.parseInt(lv.ligid);
-        //                rt = new UnicodeChar(id);
-        //            } catch (Exception e) {
-        //                // do nothing, use default
-        //            }
-        //        }
-        //        return rt;
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getExternalFile()
-     */
-    public File getExternalFile() {
-
-        return externalfile;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Font#getExternalID()
-     */
-    public String getExternalID(final UnicodeChar c) {
-
-        String rt = null;
-        if (externalfile != null) {
-            Glyph gv = (Glyph) glyphmap.get(String.valueOf(c.getCodePoint()));
-            if (gv != null) {
-                rt = gv.getNumber();
-            }
-        }
-        return rt;
-    }
-
-    /**
      * hyphen-char
      */
-    private UnicodeChar hyphenchar;
+    private UnicodeChar hyphenchar = new UnicodeChar('-');
 
     /**
      * @see de.dante.extex.interpreter.type.Font#setHyphenChar(de.dante.util.UnicodeChar)
@@ -479,7 +410,7 @@ public abstract class EFMFont implements Font {
     /**
      * skew-char
      */
-    private UnicodeChar skewchar;
+    private UnicodeChar skewchar = new UnicodeChar('-');
 
     /**
      * @see de.dante.extex.interpreter.type.Font#setSkewChar(de.dante.util.UnicodeChar)

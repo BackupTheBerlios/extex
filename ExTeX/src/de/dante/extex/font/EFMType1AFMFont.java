@@ -19,10 +19,14 @@
 
 package de.dante.extex.font;
 
+import java.io.File;
+
 import org.jdom.Document;
 
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.FontFile;
+import de.dante.extex.interpreter.type.PfbFontFile;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
@@ -34,7 +38,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EFMType1AFMFont extends EFMFont implements Font {
 
@@ -60,14 +64,18 @@ public class EFMType1AFMFont extends EFMFont implements Font {
      */
     public String toString() {
 
-        return "<fontname (EFMType1AFM): "
-                + getFontName()
-                + (getExternalFile() != null
-                        ? " (" + getExternalFile() + ")"
-                        : "") + " with size " + getEmsize().toString()
-                + " unitsperem = " + getUnitsperem() + " ex = " + getEx()
-                + " em = " + getEm().toString() + " (with " + getEmpr() + "%)"
-                + " number of glyphs = " + getGylphMapSize() + " >";
+        return "<fontname (EFMType1AFM): " + getFontName() + " with size "
+                + getEmsize().toString() + " unitsperem = " + getUnitsperem()
+                + " ex = " + getEx() + " em = " + getEm().toString()
+                + " (with " + getEmpr() + "%)" + " number of glyphs = "
+                + getGylphMapSize() + " >";
     }
 
+    /**
+     * @see de.dante.extex.font.EFMFont#getFontFile(java.io.File)
+     */
+    protected FontFile getFontFile(final File file) {
+
+        return new PfbFontFile(file);
+    }
 }

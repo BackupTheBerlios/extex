@@ -31,7 +31,7 @@ import org.jdom.input.SAXBuilder;
  * This class read a SVG-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 // TODO incomplete
 public class SVGReader implements FontMetric {
@@ -49,16 +49,16 @@ public class SVGReader implements FontMetric {
     /**
      * init
      * @param svgin        Stream for Reading the afm-file
-     * @param efmname      the name of the efmfile
-     * @param defaultsize  the defaultsize of the font
+     * @param aefmname      the name of the efmfile
+     * @param adefaultsize  the defaultsize of the font
      * @throws IOException ...
      * @throws JDOMException ...
      */
-    public SVGReader(final InputStream svgin, final String efmname,
-            final String defaultsize) throws IOException, JDOMException {
+    public SVGReader(final InputStream svgin, final String aefmname,
+            final String adefaultsize) throws IOException, JDOMException {
 
-        this.efmname = efmname;
-        this.defaultsize = defaultsize;
+        this.efmname = aefmname;
+        this.defaultsize = adefaultsize;
 
         readSVGFile(svgin);
         svgin.close();
@@ -68,6 +68,7 @@ public class SVGReader implements FontMetric {
      * reads the svg-file and create e efm-element
      * @param in    the inputstream
      * @throws IOException ...
+     * @throws JDOMException ...
      */
     private void readSVGFile(final InputStream in) throws IOException,
             JDOMException {

@@ -19,6 +19,7 @@
 
 package de.dante.extex.font;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ import org.jdom.Element;
  * This class read a TFM-file. <p>See for more information TFtoPL
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TFMReader implements FontMetric {
 
@@ -39,14 +40,22 @@ public class TFMReader implements FontMetric {
     private InputStream in;
 
     /**
+     * the pfb-file
+     */
+    private String pfbFile;
+
+    /**
      * Create e new object.
      *
      * @param ins the InputStream for reading
+     * @param pfbfile   the pfb-file
      * @throws IOException ...
      */
-    public TFMReader(final InputStream ins) throws IOException {
+    public TFMReader(final InputStream ins, final String pfbfile)
+            throws IOException {
 
         in = ins;
+        pfbFile = pfbfile;
 
         // read ...
         readLengths();
@@ -642,8 +651,9 @@ public class TFMReader implements FontMetric {
 
         charCount = lastChar + 1 - firstCharCode;
 
-        if (charCount == 0)
+        if (charCount == 0) {
             firstCharCode = 0;
+        }
 
         if (widthCount == 0 || heightCount == 0 || depthCount == 0
                 || italicCount == 0) {
@@ -717,7 +727,7 @@ public class TFMReader implements FontMetric {
      * Reads 16 bit length value from the tfm file.
      *
      * @return the lenght value
-     * @throws IOException
+     * @throws IOException ...
      */
     private short readLength() throws IOException {
 
@@ -792,8 +802,9 @@ public class TFMReader implements FontMetric {
                     if (--rest > 0) {
                         headerRest = new int[rest];
                         restIndex = headerLength - rest;
-                        for (int i = 0; i < rest; i++)
+                        for (int i = 0; i < rest; i++) {
                             headerRest[i] = readWord();
+                        }
                     }
                 }
             }
@@ -1044,12 +1055,12 @@ public class TFMReader implements FontMetric {
          * during translation of the original raw lig/kern table in the tfm
          * file.
          */
-        int ligkernstart;
+        private int ligkernstart;
 
         /**
          * Tells if the character of this <code>AuxCharInfo</code> exists in
          * the font.
-         * 
+         *
          * @return <code>true</code> if the character exists.
          */
         boolean exists() {
@@ -1274,7 +1285,7 @@ public class TFMReader implements FontMetric {
          * Tells the position of the next lig/kern program instruction given
          * the position of this <code>AuxLigKern</code> in the lig/kern
          * table.
-         *
+         * @param pos the pos
          * @return index to the <code>ligAuxTab</code> of the next lig/kern
          * instruction.
          */
@@ -1439,7 +1450,7 @@ public class TFMReader implements FontMetric {
         /**
          * The flag determining the status of this lig/kern instruction.
          */
-        byte activity = UNREACHABLE;
+        private byte activity = UNREACHABLE;
 
     }
 
@@ -1564,12 +1575,13 @@ public class TFMReader implements FontMetric {
     private void checkDimens(final FixWord[] table, int beg, int end,
             final String what) throws IOException {
 
-        for (; beg < end; beg++)
+        for (; beg < end; beg++) {
             if (!(table[beg].lessThan(16) && table[beg].moreThan(-16))) {
                 throw new IOException("WARNING: " + what + ' ' + beg
                         + " is too big;\nI have set it to zero.");
                 //table[beg] = FixWord.ZERO;
             }
+        }
     }
 
     /**
@@ -1801,8 +1813,8 @@ public class TFMReader implements FontMetric {
          * instruction in the lig/kern program.
          *
          * @param skip the skip amount to the next instruction. <code>0</code>
-         * means the folowing instruction is the next, a number <code>< 0</code>
-         * means that there is no next instruction (this is the last).
+         *        means the folowing instruction is the next, a number <code>< 0</code>
+         *        means that there is no next instruction (this is the last).
          * @param next the code of the next character.
          */
         public LigKern(final int skip, final short next) {
@@ -2079,7 +2091,7 @@ public class TFMReader implements FontMetric {
             AuxLigKern alk = ligAuxTab[start];
             if (alk.meansRestart()) {
                 start = alk.restartIndex();
-                if (start < ligAuxLen && alk.activity == AuxLigKern.UNREACHABLE){
+                if (start < ligAuxLen && alk.activity == AuxLigKern.UNREACHABLE) {
                     alk.activity = AuxLigKern.PASSTHROUGH;
                 }
             }
@@ -2300,7 +2312,8 @@ public class TFMReader implements FontMetric {
         /**
          * init
          *
-         * @param val the values as num and den
+         * @param num   the num
+         * @param den   the den
          */
         public FixWord(final int num, final int den) {
 
@@ -2458,6 +2471,9 @@ public class TFMReader implements FontMetric {
                 break;
         }
 
+        // filename
+        font.setAttribute("filename", filenameWithoutPath(pfbFile));
+
         for (int i = 0; i < charTable.length; i++) {
 
             // get char
@@ -2531,6 +2547,21 @@ public class TFMReader implements FontMetric {
             }
         }
         return root;
+    }
+
+    /**
+     * remove the path, if exists
+     * @param  file the filename
+     * @return  the filename without the path
+     */
+    private String filenameWithoutPath(final String file) {
+
+        String rt = file;
+        int i = rt.lastIndexOf(File.separator);
+        if (i > 0) {
+            rt = rt.substring(i + 1);
+        }
+        return rt;
     }
 
     /**

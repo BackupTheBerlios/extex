@@ -16,9 +16,8 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.type;
 
-import java.io.File;
+package de.dante.extex.interpreter.type;
 
 import de.dante.util.UnicodeChar;
 
@@ -27,53 +26,26 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface Font {
 
     /**
      * Return the Glyph of a <code>UnicodeChar</code>, or
-     * <code>null</code>, if the character is not defined.
+     * a empty symbol-glyph, if the character is not defined.
      *
-     * @param c ...
-     * @return ...
+     * @param c the unicodechar
+     * @return the <code>Glyph</code>
      */
     Glyph getGlyph(UnicodeChar c);
 
     /**
      * Check, if the <code>UnicodeChar</code> is defined in the font.
      *
-     * @param c ...
-     * @return ...
+     * @param c the unicodechar
+     * @return <code>true</code>, if the glyph exists, otherwise <code>false</code>
      */
     boolean isDefined(UnicodeChar c);
-
-    /**
-     * Return the kerning between c1 und c2.
-     *
-     * @param c1    the first character
-     * @param c2    the second character
-     *
-     * @return    the kerning
-     */
-    Dimen kern(UnicodeChar c1, UnicodeChar c2);
-
-    /**
-     * Return the ligature as <code>UnicodeChar</code>,
-     * or <code>null</code>, if no ligature exists.
-     *
-     * If you get a ligature character, then you MUST call the
-     * method <code>ligature()</code> twice, if a ligature with
-     * more then two characters exist.
-     * (e.g. f - ff - ffl)
-     *
-     * @param c1    the first character
-     * @param c2    the second character
-     *
-     * @return    the ligature character as <code>UnicodeChar</code>, or
-     *             <code>null</code>, if none exists
-     */
-    UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2);
 
     /**
      * ...
@@ -137,8 +109,6 @@ public interface Font {
      *
      * @param key ...
      * @param value ...
-     *
-     * @return ...
      */
     void setFontDimen(String key, Dimen value);
 
@@ -148,22 +118,5 @@ public interface Font {
      * @return ...
      */
     String getFontName();
-
-    /**
-     * Return the <code>File</code> object of a external font file or
-     * <code>null</code>, if no such file exists.
-     *
-     * @return ...
-     */
-    File getExternalFile();
-
-    /**
-     * Return the external ID to find the glyph in the external file.
-     *
-     * @param uc ...
-     *
-     * @return the external ID, or <code>null</code>, if none exists.
-     */
-    String getExternalID(UnicodeChar uc);
 
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <fontgroup name="CMR" id="CMR" default-size="12.0" empr="100" units-per-em="1000" SLANT="0" SPACE="326" STRETCH="163" SHRINK="108" XHEIGHT="430" QUAD="979" EXTRASPACE="108">
-   <font font-name="CMR" font-family="CMR" type="tfm-normal">
+   <font font-name="CMR" font-family="CMR" type="tfm-normal" filename="cmr12.pfb">
       <glyph ID="0" glyph-number="0" width="611" height="683" depth="0" italic="0" />
       <glyph ID="1" glyph-number="1" width="815" height="683" depth="0" italic="0" />
       <glyph ID="2" glyph-number="2" width="761" height="683" depth="0" italic="0" />
