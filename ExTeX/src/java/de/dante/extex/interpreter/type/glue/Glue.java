@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -149,17 +149,6 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Subtract a dimen to this one glue.
-     * The subtraction is performed indepentently on the components.
-     *
-     * @param g the glue to add
-     */
-    public void subtract(final FixedGlueComponent g) {
-
-        this.length.subtract(g);
-    }
-
-    /**
      * Make a copy of this object.
      *
      * @return a new instance with the same internal values
@@ -205,6 +194,17 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
+     * ...
+     *
+     * @param x ..
+     *
+     * @return ..
+     */
+    public boolean gt(final FixedGlueComponent x) {
+        return this.length.gt(x);
+    }
+
+    /**
      * Multiply the normal size by an integer fraction.
      * <p>
      *  <i>length</i> = <i>length</i> * <i>nom</i> / <i>denom</i>
@@ -244,6 +244,27 @@ public class Glue implements Serializable, FixedGlue {
     public void multiplyStretch(final long nom, final long denom) {
 
         this.length.multiply(nom, denom);
+    }
+
+    /**
+     * ...
+     *
+     * @param theLength ...
+     */
+    public void set(final FixedDimen theLength) {
+
+        this.length = theLength.copy();
+    }
+
+    /**
+     * Subtract a dimen to this one glue.
+     * The subtraction is performed indepentently on the components.
+     *
+     * @param g the glue to add
+     */
+    public void subtract(final FixedGlueComponent g) {
+
+        this.length.subtract(g);
     }
 
     /**
