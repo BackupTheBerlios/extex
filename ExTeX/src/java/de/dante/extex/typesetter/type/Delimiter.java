@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Delimiter {
 
@@ -118,6 +118,18 @@ public class Delimiter {
     public MathGlyph getSmallChar() {
 
         return this.smallChar;
+    }
+
+    /**
+     * Append the printable representation of the  current instance to the
+     * string buffer.
+     *
+     * @param sb the target string buffer
+     */
+    public void toString(final StringBuffer sb) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
 }
