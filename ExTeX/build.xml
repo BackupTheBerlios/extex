@@ -7,14 +7,16 @@
     </target>
 
     <!-- configure the directories -->
-    <property name="jarfile" value="extex"/>
+    <property name="extexjarfile" value="extex"/>
+    <property name="testsuitejarfile" value="testsuite"/>
     <property name="src" location="src"/>
-    <property name="src.test" location="test"/>
+    <property name="src.tests" location="test"/>
     <property name="classes" location="target/classes"/>
     <property name="javadoc" location="doc/javadoc"/>
     <property name="javadocxml" location="doc/javadocxml"/>
     <property name="dbdoclet" location="doc/javadocdb"/>
     <property name="tmp" location="tmp"/>
+    <property name="tmp.tests" location="tmp/tests"/>
     <property name="deploy" location="tmp/ExTeX"/>
     <!-- classpath for the application -->
     <path id="main.class.path">
@@ -35,8 +37,11 @@
         </fileset>
     </path>
 
+    <taskdef resource="checkstyletask.properties"
+           classpath="lib.develop/checkstyle-all-3.4.jar"/>
+
     <target name="compile"
-       	  description="Compile the Java files (without tests)">
+          description="Compile the Java files (without tests)">
         <!-- create empty output directory for classes if not present -->
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
@@ -54,17 +59,12 @@
         </copy>
     </target>
 
-    <target name="compile.test"
-       	  description="Compile the Java files (with tests)">
+    <target name="compile.tests"
+          description="Compile the Java files (with tests)">
         <!-- create empty output directory for classes if not present -->
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
-        <javac srcdir="${src}" 
-           destdir="${classes}"
-           debug="on">
-            <classpath refid="main.class.path"/>
-        </javac>
-        <javac srcdir="${src.test}" 
+        <javac srcdir="${src.tests}" 
            destdir="${classes}"
            debug="on">
             <classpath refid="main.class.path"/>
@@ -79,14 +79,18 @@
         </copy>
     </target>
 
-    <!-- make a jar from the compiled classes -->
-    <!-- the test classes are not included    -->
+    <!-- make a jar from the classes not matching magic testcase identifiers-->
     <target name="jar"
           depends="compile"
-          description="Create jar file with the compiled classes">
+          description="Create extex jar file">
         <mkdir dir="${deploy}"/>
-        <jar jarfile="${deploy}/${jarfile}.jar">
-            <fileset dir="${classes}"/>
+        <jar jarfile="${deploy}/${extexjarfile}.jar">
+            <fileset dir="${classes}">
+                <patternset>
+                    <exclude name="**/*Test.class"/>
+                    <exclude name="**/AllTests.class"/>
+                </patternset>
+            </fileset>
             <manifest>
                 <attribute name="Built-By" value="${user.name}"/>
                 <attribute name="Main-Class" value="de.dante.extex.ExTeX"/>
@@ -94,6 +98,54 @@
         </jar>
     </target>
 
+    <!-- make a jar from the classes matching magic testcase identifiers-->
+    <target name="jar.tests"
+          depends="compile.tests"
+          description="Create testsuite jar file">
+        <mkdir dir="${deploy}"/>
+        <jar jarfile="${deploy}/${testsuitejarfile}.jar">
+            <fileset dir="${classes}">
+                <patternset>
+                    <include name="**/*Test.class"/>
+                    <include name="**/AllTests.class"/>
+                </patternset>
+            </fileset>
+            <manifest>
+                <attribute name="Built-By" value="${user.name}"/>
+                <!-- attribute name="Main-Class" value="de.dante.extex.ExTeX"/ -->
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="tests" depends="jar,jar.tests"
+          description="Run JUnit tests">
+        <!-- create output directories for test reports -->
+        <delete dir="${tmp.tests}"/>
+        <mkdir dir="${tmp.tests}"/>
+        <!-- Performing tests:                                         -->
+        <!-- Run all classes "*Test.java" in the folder "${src.tests}" -->
+        <junit printsummary="yes" haltonfailure="yes">
+            <classpath>
+                <pathelement path="${classes}"/>
+            </classpath>
+            <formatter type="plain"/>
+            <batchtest fork="yes" todir="${tmp.tests}">
+                <fileset dir="${src.tests}">
+                    <include name="**/*Test.java"/>
+                </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="checkstyle"
+          description="Generates a report of code convention violations.">
+        <checkstyle config=".checkstyle.cfg"
+                    failureProperty="checkstyle.failure"
+                    failOnViolation="false">
+            <formatter type="plain" tofile="${tmp}/checkstyle.txt"/>
+            <fileset dir="src" includes="**/*.java"/>
+        </checkstyle>
+    </target>
 
     <target name="dist"
           depends="deploy"
@@ -125,20 +177,21 @@
 
 
     <target name="clean"
-  		  description="Remove unneccesary files and directories">
+                  description="Remove unneccesary files and directories">
         <delete dir="${classes}"/>
         <delete dir="${deploy}"/>
+        <delete dir="${tmp.tests}"/>
         <delete dir="${javadoc}"/>
-    	<delete>
-    	<fileset dir="testdata">   
-    		<include name="*.log*" />  
-    		<include name="*.out" />  
-		</fileset>
-    	</delete>
- 	</target>
+        <delete>
+        <fileset dir="testdata">   
+                <include name="*.log*" />  
+                <include name="*.out" />  
+                </fileset>
+        </delete>
+        </target>
 
     <target name="javadoc"
-  		  description="Create javadoc HTML pages">
+                  description="Create javadoc HTML pages">
         <mkdir dir="${javadoc}" />
         <javadoc 
              destdir="${javadoc}"
@@ -164,12 +217,12 @@
     </target>
 
     <target name="javadocxml"
-  		  description="Create javadoc XML pages">
+                  description="Create javadoc XML pages">
         <mkdir dir="${javadocxml}" />
         <property name="doc.params" value="-outdir ${javadocxml}"/>
         <javadoc 
-	    	doclet="de.dante.tools.doclet.XMLDoclet1"
-    		additionalparam="${doc.params}">
+                doclet="de.dante.tools.doclet.XMLDoclet1"
+                additionalparam="${doc.params}">
             <classpath refid="main.class.path"/>
             <classpath refid="test.class.path"/>
             <packageset dir="${src}" defaultexcludes="yes"/>
@@ -198,9 +251,9 @@
         </copy>
         <property name="doc.params" value="-properties doc/dbdoclet-extex.properties"/>
         <javadoc 
-        	maxmemory="256m"
-        	destdir="${dbdoclet}"
-	        author="true"
+                maxmemory="256m"
+                destdir="${dbdoclet}"
+                author="true"
             version="true"
             splitindex="true"
             notree="false"
@@ -208,8 +261,8 @@
             noindex="false"
             nodeprecatedlist="false"
             nodeprecated="false"
-	    	doclet="org.dbdoclet.doclet.docbook.DocBookDoclet"
-    		additionalparam="${doc.params}">
+                doclet="org.dbdoclet.doclet.docbook.DocBookDoclet"
+                additionalparam="${doc.params}">
             <classpath refid="main.class.path"/>
             <classpath refid="test.class.path"/>
             <packageset dir="${src}" defaultexcludes="yes"/>
@@ -225,48 +278,46 @@
     </target>
 
     <target name="maketar" description="create a tar-file with all source-file, ...">
-		<tar destfile="${tmp}/extex.tar.bz2" compression="bzip2" basedir="./" >
-			<include name="doc/**/*"/>
-	        <exclude name="doc/javadocdb/**/*"/>
-    	    <exclude name="doc/javadocxml/**/*"/>
-        	<exclude name="doc/javadoc/**/*"/>
-	        <include name="lib/**/*"/>
-    	    <include name="lib.develop/**/*"/>
-        	<include name="src/**/*"/>
-        	<include name="font/**/*"/>
-	        <include name="test/**/*"/>
-    	    <include name="testdata/**/*"/>
-        	<include name="util/**/*"/>
-	        <include name="www/**/*"/>
-    	    <include name=".*"/>
-        	<include name="extex"/>
-	        <include name="build.xml"/>
-    	    <include name="build"/>
-        	<include name="install-extex"/>
-		</tar>
+        <tar destfile="${tmp}/extex.tar.bz2" compression="bzip2" basedir="./" >
+            <include name="doc/**/*"/>
+            <exclude name="doc/javadocdb/**/*"/>
+            <exclude name="doc/javadocxml/**/*"/>
+            <exclude name="doc/javadoc/**/*"/>
+            <include name="lib/**/*"/>
+            <include name="lib.develop/**/*"/>
+            <include name="src/**/*"/>
+            <include name="font/**/*"/>
+            <include name="test/**/*"/>
+            <include name="testdata/**/*"/>
+            <include name="util/**/*"/>
+            <include name="www/**/*"/>
+            <include name=".*"/>
+            <include name="extex"/>
+            <include name="build.xml"/>
+            <include name="build"/>
+            <include name="install-extex"/>
+        </tar>
     </target>
 
-
     <!-- <target name="extex" description="Run ExTeX">
-		<java fork="true" classname="de.dante.extex.ExTeX">
-			<jvmarg value="-Xms64m"/> 
-			<jvmarg value="-Xmx128m"/> 
-			<jvmarg value="-Xloggc:gc.log"/> 
-		</java>
-	</target> -->
-	
+                <java fork="true" classname="de.dante.extex.ExTeX">
+                        <jvmarg value="-Xms64m"/> 
+                        <jvmarg value="-Xmx128m"/> 
+                        <jvmarg value="-Xloggc:gc.log"/> 
+                </java>
+    </target> -->
+        
     <target name="extex32" depends="compile" description="Create a extex32.xml config-file">
-		<java fork="true" classname="de.dante.tools.plugin.CreateConfig">
-			<arg value="src/config/extex.xml"/>
-			<arg value="src/config/extex-ext.xml"/>
-			<arg value="src/config/extex32.xml"/>
-		</java>
-        <copy todir="bin/config">
+                <java fork="true" classname="de.dante.tools.plugin.CreateConfig">
+                        <arg value="src/config/extex.xml"/>
+                        <arg value="src/config/extex-ext.xml"/>
+                        <arg value="src/config/extex32.xml"/>
+                </java>
+        <copy todir="target/classes/config">
             <fileset dir="src/config">
                 <include name="*"/>
             </fileset>
         </copy>
-	</target>
-		
+        </target>
 
 </project>
