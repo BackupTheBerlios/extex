@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.type;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
