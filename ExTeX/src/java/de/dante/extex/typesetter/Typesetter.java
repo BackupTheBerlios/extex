@@ -29,10 +29,14 @@ import de.dante.util.GeneralException;
 
 /**
  * This interface describes the capabilities of a typesetter.
+ * The typesetter is a contaner for a stack of list makers which perform the
+ * task of assembling node lists of the appropriate type and structure.
+ * The typesetter acts as proxy. Most requests are simply forwarded to the
+ * current list maker.
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface Typesetter extends ListMaker {
 

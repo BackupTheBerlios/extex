@@ -24,10 +24,12 @@ import de.dante.extex.interpreter.context.color.RgbColor;
 import de.dante.extex.interpreter.type.font.Font;
 
 /**
- * ...
+ * This implementation of a typesetting context provides the required
+ * functionality for the container or attributes describing the
+ * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -152,9 +154,9 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(
      *      HyphenationTable)
      */
-    public void setLanguage(final HyphenationTable language) {
+    public void setLanguage(final HyphenationTable table) {
 
-        this.hyphenation = language;
+        this.hyphenation = table;
     }
 
     /**

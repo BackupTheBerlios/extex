@@ -28,7 +28,7 @@ import java.io.Serializable;
  * that additional directions are defined.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class Direction implements Serializable {
 
@@ -54,6 +54,9 @@ public final class Direction implements Serializable {
      * Creates a new object.
      * This constructor is private since only a very limited set of instances
      * of this class is allowed. Those are provided as constants.
+     *
+     * @param isLR indicator for the direction; <code>true</code> denotes
+     *  left to right
      */
     private Direction(final boolean isLR) {
 
