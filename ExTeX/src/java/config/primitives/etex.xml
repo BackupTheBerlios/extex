@@ -26,41 +26,124 @@
     -->
   <define name="TeXXeTstate" 
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
-  <Define name="beginL" class=""/>
-  <Define name="beginR" class=""/>
-  <Define name="botmarks" class=""/>
-  <define name="currentgrouplevel" class="de.dante.extex.interpreter.primitives.group.Currentgrouplevel"/>
-  <Define name="currentgrouptype" class=""/>
-  <Define name="detokenize" class=""/>
+  <Define name="beginL"
+          class=""/>
+  <Define name="beginR"
+          class=""/>
+  <Define name="botmarks"
+          class=""/>
+  <Define name="clubpenalties"
+          class=""/>
+  <define name="currentgrouplevel"
+          class="de.dante.extex.interpreter.primitives.group.Currentgrouplevel"/>
+  <Define name="currentgrouptype"
+          class=""/>
+  <Define name="currentifbranch"
+          class=""/>
+  <Define name="currentiflevel"
+          class=""/>
+  <Define name="currentiftype"
+          class=""/>
+  <Define name="detokenize"
+          class=""/>
+  <Define name="dimenexpr"
+          class=""/>
+  <Define name="displaywidowpenalties"
+          class=""/>
   <define name="eTeXrevision"
           class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter">.141592</define>
   <define name="eTeXversion"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">3</define>
-  <Define name="endL" class=""/>
-  <Define name="endR" class=""/>
-  <Define name="everyeof"
+  <Define name="endL"
+          class=""/>
+  <Define name="endR"
+          class=""/>
+  <define name="everyeof"
           class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
-  <Define name="firstmarks" class=""/>
-  <Define name="ifcsname" class=""/>
-  <define name="ifdefined" class="de.dante.extex.interpreter.primitives.conditional.Ifdefined"/>
-  <Define name="interactionmode" class=""/>
-  <define name="lastnodetype" class="de.dante.extex.interpreter.primitives.register.count.Lastnodetype"/>
-  <Define name="marks" class=""/>
-  <Define name="middle" class=""/>
-  <Define name="predisplaydirection" class=""/>
-  <define name="protected" class="de.dante.extex.interpreter.primitives.prefix.Protected"/>
-  <Define name="readline" class=""/>
-  <Define name="scantokens" class=""/>
-  <Define name="showgroups" class=""/>
-  <Define name="showtokens" class=""/>
-  <Define name="splitbotmarks" class=""/>
-  <Define name="splitfirstmarks" class=""/>
-  <Define name="topmarks" class=""/>
-  <Define name="tracingassigns" class=""/>
-  <Define name="tracingcommands" class=""/>
-  <Define name="tracinggroups" class=""/>
-  <Define name="tracingifs" class=""/>
-  <Define name="tracingscantokens" class=""/>
-  <Define name="unexpanded" class=""/>
-  <define name="unless" class="de.dante.extex.interpreter.primitives.conditional.Unless"/>
+  <Define name="firstmarks"
+          class=""/>
+  <define name="fontchardp"
+          class="de.dante.extex.interpreter.primitives.font.Fontchardp"/>
+  <define name="fontcharht"
+          class="de.dante.extex.interpreter.primitives.font.Fontcharht"/>
+  <Define name="fontcharic"
+          class=""/>
+  <define name="fontcharwd"
+          class="de.dante.extex.interpreter.primitives.font.Fontcharwd"/>
+  <Define name="glueexpr"
+          class=""/>
+  <Define name="gluestretch"
+          class=""/>
+  <Define name="gluestretchorder"
+          class=""/>
+  <Define name="glueshrink"
+          class=""/>
+  <Define name="glueshrinkorder"
+          class=""/>
+  <Define name="ifcsname"
+          class=""/>
+  <define name="ifdefined"
+          class="de.dante.extex.interpreter.primitives.conditional.Ifdefined"/>
+  <define name="interactionmode"
+          class="de.dante.extex.interpreter.primitives.interaction.Interactionmode"/>
+  <Define name="interlinepenalties"
+          class=""/>
+  <Define name="lastlinefit"
+          class=""/>
+  <define name="lastnodetype"
+          class="de.dante.extex.interpreter.primitives.register.count.Lastnodetype"/>
+  <Define name="marks"
+          class=""/>
+  <Define name="middle"
+          class=""/>
+  <Define name="muexpr"
+          class=""/>
+  <Define name="numexpr"
+          class=""/>
+  <Define name="parshapedimen"
+          class=""/>
+  <Define name="parshapeindent"
+          class=""/>
+  <Define name="parshapelength"
+          class=""/>
+  <Define name="predisplaydirection"
+          class=""/>
+  <define name="protected"
+          class="de.dante.extex.interpreter.primitives.prefix.Protected"/>
+  <Define name="readline"
+          class=""/>
+  <Define name="savinghyphcodes"
+          class=""/>
+  <Define name="savingvdiscarts"
+          class=""/>
+  <Define name="scantokens"
+          class=""/>
+  <Define name="showgroups"
+          class=""/>
+  <Define name="showtokens"
+          class=""/>
+  <Define name="splitbotmarks"
+          class=""/>
+  <Define name="splitfirstmarks"
+          class=""/>
+  <Define name="topmarks"
+          class=""/>
+  <define name="tracingassigns"
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+  <define name="tracingcommands"
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+  <define name="tracinggroups"
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+  <define name="tracingifs"
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+  <define name="tracingnesting"
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+  <define name="tracingscantokens"
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
+  <Define name="unexpanded"
+          class=""/>
+  <define name="unless"
+          class="de.dante.extex.interpreter.primitives.conditional.Unless"/>
+  <Define name="widowpenalties"
+          class=""/>
 </primitives>
