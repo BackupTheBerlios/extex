@@ -42,7 +42,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 
@@ -75,7 +75,8 @@ public class Message extends AbstractCode implements LogEnabled {
      * log. In fact only the source is informed that there is something to
      * write out. This is done using the observer pattern.
      *
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -84,7 +85,6 @@ public class Message extends AbstractCode implements LogEnabled {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //source.update("message", source.scanTokens().toText());
         logger.severe("\n" + source.scanTokens().toText() + "\n");
         return true;
     }
