@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -52,7 +52,7 @@ public class ConfigurationXMLImpl implements Configuration {
     private static final String[] EXTENSIONS = {"", ".xml"};
 
     /**
-     * The field <tt>path</tt> contains  path to use when searching for
+     * The field <tt>path</tt> contains the path to use when searching for
      * configuration files.
      */
     private static final String[] PATHS = {"", "config/"};
@@ -253,7 +253,9 @@ public class ConfigurationXMLImpl implements Configuration {
      * Search for a configuration file taking into account a list of prefixes
      * (path) and postfixes (ext)
      *
-     * @param name the basename of the configuration to find.
+     * @param name the base name of the configuration to find. The path
+     *  elements and extensions are attached in turn to build the complete
+     *  name.
      *
      * @return an input stream to the requested configuration or
      * <code>null</code> if none could be opened.
