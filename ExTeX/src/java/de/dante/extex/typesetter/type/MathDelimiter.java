@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,6 +22,15 @@ package de.dante.extex.typesetter.type;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.MissingNumberException;
+import de.dante.extex.interpreter.primitives.math.delimiter.Delimiter;
+import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.Token;
+import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.noad.MathGlyph;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -31,9 +40,15 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathDelimiter {
+
+    /**
+     * The constant <tt>CLASS_MAX</tt> contains the maximum number for a
+     * math class.
+     */
+    private static final int CLASS_MAX = 0xf;
 
     /**
      * The constant <tt>CHAR_MASK</tt> contains the character mask.
@@ -54,6 +69,44 @@ public class MathDelimiter {
      * The field <tt>smallChar</tt> contains the code of the small character.
      */
     private MathGlyph smallChar;
+
+    /**
+     * Creates a new object.
+     *
+     * @param context the interpreter context
+     * @param source the token source to read from
+     *
+     * @throws GeneralException in case of an error
+     */
+    public MathDelimiter(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        super();
+        Token t = source.getToken(context);
+        try {
+            if (t == null) {
+                throw new EofException("???");
+            } else if (!(t instanceof CodeToken)) {
+                long del = context.getDelcode(t.getChar()).getValue();
+                if (del < 0) {
+                    source.push(t);
+                    del = source.scanNumber(context);
+                    init(del);
+                    return;
+                }
+            } else if (context.getCode(t) instanceof Delimiter) {
+                long del = source.scanNumber(context);
+                init(del);
+                return;
+
+            }
+        } catch (MissingNumberException e) {
+            // fall through to error. the exception is remapped!
+        }
+        throw new HelpingException(LocalizerFactory
+                .getLocalizer(MathDelimiter.class.getName()),
+                "TTP.MissingDelim");
+    }
 
     /**
      * Creates a new object from the TeX encoding.
@@ -81,31 +134,7 @@ public class MathDelimiter {
     protected MathDelimiter(final long delcode) throws GeneralException {
 
         super();
-        int classCode = (int) ((delcode >> 24));
-        if (classCode > 0xf) {
-            throw new HelpingException(LocalizerFactory
-                    .getLocalizer(MathDelimiter.class.getName()),
-                    "TTP.BadDelimiterCode", "\"" + Long.toHexString(delcode));
-        }
-        mathClass = MathClass.getMathClass(classCode);
-        smallChar = new MathGlyph((int) ((delcode >> 20) & 0xf),
-                new UnicodeChar((int) ((delcode >> 12) & CHAR_MASK)));
-        largeChar = new MathGlyph((int) ((delcode >> 8) & 0xf),
-                new UnicodeChar((int) (delcode & CHAR_MASK)));
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param context the interpreter context
-     * @param source the token source to read from
-     *
-     * @throws GeneralException in case of an error
-     */
-    public MathDelimiter(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        this(source.scanNumber(context));
+        init(delcode);
     }
 
     /**
@@ -139,6 +168,28 @@ public class MathDelimiter {
     }
 
     /**
+     * Initialize the state of this instance from a TeX encoded delimiter code.
+     *
+     * @param delcode
+     * @throws HelpingException in case of an error
+     */
+    private void init(final long delcode) throws HelpingException {
+
+        int classCode = (int) ((delcode >> 24));
+
+        if (delcode < 0 || classCode > CLASS_MAX) {
+            throw new HelpingException(LocalizerFactory
+                    .getLocalizer(MathDelimiter.class.getName()),
+                    "TTP.BadDelimiterCode", "\"" + Long.toHexString(delcode));
+        }
+        mathClass = MathClass.getMathClass(classCode);
+        smallChar = new MathGlyph((int) ((delcode >> 20) & 0xf),
+                new UnicodeChar((int) ((delcode >> 12) & CHAR_MASK)));
+        largeChar = new MathGlyph((int) ((delcode >> 8) & 0xf),
+                new UnicodeChar((int) (delcode & CHAR_MASK)));
+    }
+
+    /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
@@ -161,4 +212,24 @@ public class MathDelimiter {
         smallChar.toString(sb);
         largeChar.toString(sb);
     }
+
+    /**
+     * Produce the nodes for s math delimiter.
+     *
+     * @param list the hbox to add nodes to
+     * @param mathContext the mathematical context
+     * @param context the typesetting options
+     *
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
 }
