@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Accent extends AbstractCode {
 
@@ -124,7 +124,7 @@ public class Accent extends AbstractCode {
 
             if (glyph != null) {
                 if (g == null) {
-                    typesetter.add(tc, accent);
+                    typesetter.treatLetter(tc, accent);
                 } else {
                     Node node = typesetter.getCharNodeFactory().newInstance(tc,
                             accent);
@@ -144,10 +144,10 @@ public class Accent extends AbstractCode {
                     typesetter.add(node);
                     d.set(-a - delta);
                     typesetter.add(new AccentKernNode(d));
-                    typesetter.add(tc, c);
+                    typesetter.treatLetter(tc, c);
                 }
             } else if (g != null) {
-                typesetter.add(tc, c);
+                typesetter.treatLetter(tc, c);
             } else {
                 //TODO letter and accent are undefined
                 throw new RuntimeException("unimplemented");
