@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.MathDelimiter;
-import de.dante.extex.typesetter.type.noad.LeftNoad;
 import de.dante.util.GeneralException;
 
 /**
@@ -51,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Left extends AbstractMathCode {
 
@@ -79,7 +78,6 @@ public class Left extends AbstractMathCode {
         NoadConsumer nc = getListMaker(context, typesetter);
         MathDelimiter del = new MathDelimiter(context, source);
         nc.left(del);
-        typesetter.add(new LeftNoad(del));
         return true;
     }
 
