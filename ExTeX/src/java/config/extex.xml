@@ -503,6 +503,7 @@
     -->
   <DocumentWriter default="out">
     <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
     <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
