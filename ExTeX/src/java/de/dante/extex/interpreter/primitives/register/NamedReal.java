@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedReal extends AbstractCode implements Theable {
 
@@ -64,7 +64,8 @@ public class NamedReal extends AbstractCode implements Theable {
 		source.scanOptionalEquals();
 
 		Real value = scanReal(context, source);
-		context.setReal(key, value, prefix.isGlobal());
+		//TODO: use new interface and cast
+	//	context.setReal(key, value, prefix.isGlobal());
 		prefix.clear();
 		doAfterAssignment(context, source);
 	}
@@ -76,7 +77,8 @@ public class NamedReal extends AbstractCode implements Theable {
 	 * @param value ...
 	 */
 	public void set(Context context, Real value) {
-		context.setReal(getName(), value);
+	    //TODO: use new interface and cast
+	//	context.setReal(getName(), value);
 	}
 
 	/**
@@ -86,7 +88,8 @@ public class NamedReal extends AbstractCode implements Theable {
 	 * @param value ...
 	 */
 	public void set(Context context, String value) throws GeneralException {
-		context.setReal(getName(), new Real(value));
+	    //TODO: use new interface and cast
+	//	context.setReal(getName(), new Real(value));
 	}
 
 	/**
@@ -94,9 +97,11 @@ public class NamedReal extends AbstractCode implements Theable {
 	 */
 	public Tokens the(Context context, TokenSource source) throws GeneralException {
 		String key = getKey(source);
-		String s = context.getReal(key).toString();
-		Tokens toks = new Tokens(context, s);
-		return toks;
+		//TODO: use new interface and cast
+	//	String s = context.getReal(key).toString();
+	//	Tokens toks = new Tokens(context, s);
+	//	return toks;
+		return null;
 	}
 
 	/**
