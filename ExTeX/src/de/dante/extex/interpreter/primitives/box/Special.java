@@ -42,7 +42,10 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\special</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanTokens() &lang;general text&rang;}  </pre>
+ *    &lang;special&rang;
+ *        := <tt>\special</tt> {@linkplain
+ *           de.dante.extex.interpreter.TokenSource#scanTokens()
+ *           &lang;general text&rang;}  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -60,7 +63,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Special extends AbstractCode {
 

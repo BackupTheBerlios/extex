@@ -37,19 +37,43 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The contents of the toks register <tt>\everyvbox</tt> is inserted at the
+ *  beginning of the vertical material of the box.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;vbox&rang;
+ *    := <tt>\vbox</tt> &lang;box specification&rang; <tt>{</tt> &lang;vertical material&rang; <tt>{</tt>
+ *
+ *    &lang;box specification&rang;
+ *        :=
+ *         | <tt>to</tt> &lang;rule dimension&rang;
+ *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \vbox{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \vbox to 120pt{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \vbox spread 12pt{abc}  </pre>
+ * </p>
  * </doc>
  *
+ * <doc type="parameter" name="everyvbox">
+ * <h3>The Tokens Parameter <tt>\everyvbox</tt></h3>
  * <p>
- * Examples
+ *  The tokens parameter is used in <tt>/vbox</tt>. The tokens contained are
+ *  inserted at the beginnig of the vertical material of the vbox.
  * </p>
- * <pre>
- *  \vbox{abc}
- *  \vbox to 120pt {abc}
- *  \vbox spread 12pt {abc}
- * </pre>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Vbox extends AbstractCode implements Boxable {
 
@@ -63,7 +87,8 @@ public class Vbox extends AbstractCode implements Boxable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

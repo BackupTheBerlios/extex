@@ -40,7 +40,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\moveleft</tt> &lang;dimen&rang; {@linkplain
+ *    <&lang;moveleft&rang;
+ *        := tt>\moveleft</tt> &lang;dimen&rang; {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getBox() &lang;box&rang;}  </pre>
  * </p>
  * <p>
@@ -56,7 +57,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Moveleft extends AbstractCode implements Boxable {
 

@@ -37,19 +37,43 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The contents of the toks register <tt>\everyhbox</tt> is inserted at the
+ *  beginning of the horizontal material of the box.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;hbox&rang;
+ *    := <tt>\hbox</tt> &lang;box specification&rang; <tt>{</tt> &lang;horizontal material&rang; <tt>{</tt>
+ *
+ *    &lang;box specification&rang;
+ *        :=
+ *         | <tt>to</tt> &lang;rule dimension&rang;
+ *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \hbox{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \hbox to 120pt{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \hbox spread 12pt{abc}  </pre>
+ * </p>
  * </doc>
  *
+ * <doc type="parameter" name="everyhbox">
+ * <h3>The Tokens Parameter <tt>\everyhbox</tt></h3>
  * <p>
- * Examples
+ *  The tokens parameter is used in <tt>/hbox</tt>. The tokens contained are
+ *  inserted at the beginnig of the horizontal material of the hbox.
  * </p>
- * <pre>
- *  \hbox{abc}
- *  \hbox to 120pt {abc}
- *  \hbox spread 12pt {abc}
- * </pre>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -63,7 +87,8 @@ public class Hbox extends AbstractCode implements Boxable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

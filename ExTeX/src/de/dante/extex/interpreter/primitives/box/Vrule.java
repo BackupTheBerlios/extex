@@ -41,10 +41,12 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\vrule</tt>&lang;rule specification&rang;
+ *    &lang;vrule&rang;
+ *        := <tt>\vrule</tt>&lang;rule specification&rang;
  *
  *    &lang;rule specification&rang;
- *        := {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace() &lang;optional spaces&rang;}
+ *        := {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace()
+ *            &lang;optional spaces&rang;}
  *         |  &lang;rule dimension&rang; &lang;rule specification&rang;
  *
  *    &lang;rule dimension&rang;
@@ -69,7 +71,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Vrule extends AbstractCode {
 

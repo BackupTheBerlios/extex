@@ -41,10 +41,13 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\hrule</tt>&lang;rule specification&rang;
+ *    &lang;hrule&rang;
+ *        := <tt>\hrule</tt> &lang;rule specification&rang;
  *
  *    &lang;rule specification&rang;
- *        := {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace() &lang;optional spaces&rang;}
+ *        := {@linkplain
+ *            de.dante.extex.interpreter.TokenSource#skipSpace()
+ *            &lang;optional spaces&rang;}
  *         |  &lang;rule dimension&rang; &lang;rule specification&rang;
  *
  *    &lang;rule dimension&rang;
@@ -53,7 +56,7 @@ import de.dante.util.GeneralException;
  *         |  <tt>depth</tt> &lang;dimen&rang;  </pre>
  * </p>
  * <p>
- *  The color from the typographic context is taken as foregroud color for the
+ *  The color from the typographic context is taken as foreground color for the
  *  rule. The default color is black.
  * </p>
  * <p>
@@ -69,7 +72,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Hrule extends AbstractCode {
 
