@@ -30,7 +30,7 @@
       <extension></extension>
       <extension>.tex</extension>
       <path>.</path>
-      <path>test/data</path>
+      <path>src/test/data</path>
     </tex>
   </File>
 
