@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,18 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.pageBuilder;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 
-
 /**
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface PageBuilder {
 
@@ -53,22 +53,23 @@ public interface PageBuilder {
     void flush(NodeList nodes) throws GeneralException;
 
     /**
-     * Setter for the document writer.
-     * This has to be provided before the page builder can be active.
-     *
-     * @param docWriter the new document writer to use
-     */
-    void setDocumentWriter(DocumentWriter docWriter);
-
-    /**
      * This is the entry point for the page builder. Here it receives a
      * complete node list to be sent to the output writer. It can be assumed
      * that all values for width, height, and depth of the node lists are
-     * properly filled.
+     * properly filled. The nodes might be sent partially or in total. The nodes
+     * sent to the document writer are removed from the NodeList.
      *
      * @param nodes the nodes to send
      *
      * @throws GeneralException in case of an error
      */
     void inspectAndBuild(NodeList nodes) throws GeneralException;
+
+    /**
+     * Setter for the document writer.
+     * This has to be provided before the page builder can be active.
+     *
+     * @param docWriter the new document writer to use
+     */
+    void setDocumentWriter(DocumentWriter docWriter);
 }
