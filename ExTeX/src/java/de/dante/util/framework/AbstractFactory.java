@@ -44,17 +44,17 @@ import de.dante.util.framework.logger.LogEnabled;
  * <p>
  * The abstract factory supports utility events:
  * <ul>
- * <li>If the instanciated class implements the interface
+ * <li>If the instantiated class implements the interface
  *   {@link de.dante.util.framework.configuration.Configurable Configurable}
  *   then the associated method is used to pass on the configuration to the new
  *   instance.
  * </li>
- * <li>If the instanciated class implements the interface
+ * <li>If the instantiated class implements the interface
  *   {@link de.dante.util.framework.logger.LogEnabled LogEnabled}
  *   then the associated method is used to pass on the logger to the new
  *   instance.
  * </li>
- * <li>If the instanciated class implements the interface
+ * <li>If the instantiated class implements the interface
  *   {@link de.dante.util.framework.i18n.Localizable Localizable}
  *   then the associated method is used to pass on the localizer to the new
  *   instance. The localizer is acquired from the
@@ -65,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
