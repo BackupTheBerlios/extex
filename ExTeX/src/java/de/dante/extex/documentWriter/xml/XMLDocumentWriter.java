@@ -64,7 +64,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -77,35 +77,6 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
      * DIN-A4 height
      */
     private static final double DINA4HEIGHT = 29.7d;
-
-    /**
-     * State
-     */
-    private static class State {
-
-        /**
-         * Create a new object.
-         */
-        public State() {
-
-            super();
-        }
-    }
-
-    /**
-     * in horizontal mode
-     */
-    private static final State HORIOZONTAL = new State();
-
-    /**
-     * in vertical mode
-     */
-    private static final State VERTICAL = new State();
-
-    /**
-     * the current mode
-     */
-    private State state = VERTICAL;
 
     /**
      * The field <tt>out</tt> ...
@@ -487,26 +458,6 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         }
     }
 
-    /**
-     * Set the y-position for the baseline
-     * @param nodelist  the horizontal nodelist
-     */
-    private void setBaseline(final HorizontalListNode nodelist) {
-
-        Dimen maxd = new Dimen();
-
-        NodeIterator it = nodelist.iterator();
-        while (it.hasNext()) {
-            Node node = it.next();
-            if (maxd.le(node.getDepth())) {
-                maxd.set(node.getDepth());
-            }
-        }
-        currentY.add(nodelist.getHeight());
-        currentY.add(nodelist.getDepth());
-        currentY.subtract(maxd);
-    }
-
     // ----------------------------------------------
     // ----------------------------------------------
     // ----------------------------------------------
@@ -649,14 +600,14 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         Element element = new Element("horizontallist");
         HorizontalListNode node = (HorizontalListNode) value;
         addNodeAttributes(node, element);
-        setBaseline(node);
+        //        element.setAttribute("x_depth",String.valueOf(node.getDepth()));
+        //        setBaseline(node);
 
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
         NodeIterator it = node.iterator();
         while (it.hasNext()) {
-            state = HORIOZONTAL;
             Node newnode = it.next();
             Object o = newnode.visit(this, node);
             if (o instanceof Element) {
@@ -785,7 +736,6 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
 
         NodeIterator it = node.iterator();
         while (it.hasNext()) {
-            state = VERTICAL;
             Node newnode = it.next();
 
             Object o = newnode.visit(this, node);

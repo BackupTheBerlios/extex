@@ -29,12 +29,12 @@ import org.jdom.Element;
 import org.jdom.Namespace;
 import org.jdom.output.XMLOutputter;
 
-import com.ibm.icu.text.DecimalFormat;
-
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.SpaceNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
@@ -50,7 +50,7 @@ import de.dante.util.configuration.Configuration;
  * At the moment, only one page!!!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -63,35 +63,6 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
      * DIN-A4 height
      */
     private static final double DINA4HEIGHT = 29.7d;
-
-    /**
-     * State
-     */
-    private static class State {
-
-        /**
-         * Create a new object.
-         */
-        public State() {
-
-            super();
-        }
-    }
-
-    /**
-     * in horizontal mode
-     */
-    private static final State HORIOZONTAL = new State();
-
-    /**
-     * in vertical mode
-     */
-    private static final State VERTICAL = new State();
-
-    /**
-     * the current mode
-     */
-    private State state = VERTICAL;
 
     /**
      * The field <tt>out</tt> ...
@@ -258,8 +229,10 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
                 paperwidth = Unit.createDimenFromCM(DINA4WIDTH);
                 paperheight = Unit.createDimenFromCM(DINA4HEIGHT);
             }
-            setDimenLength(root, "width", paperwidth);
-            setDimenLength(root, "height", paperheight);
+            //            setDimenLength(root, "width", paperwidth);
+            //            setDimenLength(root, "height", paperheight);
+            root.setAttribute("width", "20cm");
+            root.setAttribute("height", "6cm");
 
             // set start point
             currentX.set(Dimen.ONE_INCH);
@@ -288,53 +261,7 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
         if (dimen == null) {
             d = new Dimen();
         }
-        element.setAttribute(name, format.format(Unit.getDimenAsMM(d)) + "mm");
-    }
-
-    /**
-     * only for test
-     */
-    private static final DecimalFormat format = new DecimalFormat("#0.00");
-
-    /**
-     * return the node element
-     * @param node      the node
-     * @return Returns the node-element
-     */
-    private Element getNodeElement(final Node node) {
-
-        Element element = null;
-        try {
-            Object o = node.visit(this, node);
-            if (o != null) {
-                if (o instanceof Element) {
-                    element = (Element) o;
-                }
-            }
-        } catch (GeneralException e) {
-            e.printStackTrace();
-        }
-        return element;
-    }
-
-    /**
-     * Set the y-position for the baseline
-     * @param nodelist  the horizontal nodelist
-     */
-    private void setBaseline(final HorizontalListNode nodelist) {
-
-        Dimen maxd = new Dimen();
-
-        NodeIterator it = nodelist.iterator();
-        while (it.hasNext()) {
-            Node node = it.next();
-            if (maxd.le(node.getDepth())) {
-                maxd.set(node.getDepth());
-            }
-        }
-        currentY.add(nodelist.getHeight());
-        currentY.add(nodelist.getDepth());
-        currentY.subtract(maxd);
+        element.setAttribute(name, String.valueOf(Unit.getDimenAsMM(d)) + "mm");
     }
 
     // ----------------------------------------------
@@ -403,10 +330,28 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     public Object visitChar(final Object value, final Object value2) {
 
+        Element rect = new Element("rect", SVGNAMESPACE);
+        CharNode node = (CharNode) value;
+
+        setDimenLength(rect, "x", currentX);
+        Dimen y = new Dimen(currentY);
+        y.subtract(node.getHeight());
+        setDimenLength(rect, "y", y);
+        setDimenLength(rect, "width", node.getWidth());
+        Dimen h = new Dimen(node.getHeight());
+        h.add(node.getDepth());
+        setDimenLength(rect, "height", h);
+        rect.setAttribute("fill", "none");
+        rect.setAttribute("stroke", "blue");
+        rect.setAttribute("strike-width", "1pt");
+
+        parent.addContent(rect);
+
+        // ---------------------------------------------
         //        Element element = new Element("char");
         //        CharNode node = (CharNode) value;
         //        UnicodeChar uc = node.getCharacter();
-        //        currentX.add(node.getWidth());
+        currentX.add(node.getWidth());
         return null;
     }
 
@@ -453,25 +398,53 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
     public Object visitHorizontalList(final Object value, final Object value2)
             throws GeneralException {
 
-        Element element = new Element("horizontallist");
+        Element rect = new Element("rect", SVGNAMESPACE);
         HorizontalListNode node = (HorizontalListNode) value;
-        setBaseline(node);
 
+        setDimenLength(rect, "x", currentX);
+        setDimenLength(rect, "y", currentY);
+        setDimenLength(rect, "width", node.getWidth());
+        Dimen rH = new Dimen(node.getHeight());
+        rH.add(node.getDepth());
+        setDimenLength(rect, "height", rH);
+        rect.setAttribute("fill", "none");
+        rect.setAttribute("stroke", "red");
+        rect.setAttribute("strike-width", "1pt");
+
+        parent.addContent(rect);
+
+        // ------------------------------------------
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
+        // set x to baseline
+        currentY.add(node.getHeight());
+
+        // baseline
+        if (node.getDepth().getValue() != 0) {
+
+            Element line = new Element("line", SVGNAMESPACE);
+            setDimenLength(line, "x1", currentX);
+            setDimenLength(line, "y1", currentY);
+            Dimen x2 = new Dimen(currentX);
+            x2.add(node.getWidth());
+            setDimenLength(line, "x2", x2);
+            setDimenLength(line, "y2", currentY);
+            line.setAttribute("stroke", "red");
+            line.setAttribute("strike-width", "1pt");
+
+            parent.addContent(line);
+        }
+
         NodeIterator it = node.iterator();
         while (it.hasNext()) {
-            state = HORIOZONTAL;
             Node newnode = it.next();
-            Object o = newnode.visit(this, node);
-            if (o instanceof Element) {
-                element.addContent((Element) o);
-            }
+            newnode.visit(this, node);
         }
         currentX.set(saveX);
         currentY.set(saveY);
-        currentX.add(node.getWidth());
+        currentY.add(node.getHeight());
+        currentY.add(node.getDepth());
 
         return null;
     }
@@ -563,8 +536,22 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     public Object visitSpace(final Object value, final Object value2) {
 
-        //        Element element = new Element("space");
-        //        SpaceNode node = (SpaceNode) value;
+        Element rect = new Element("rect", SVGNAMESPACE);
+        SpaceNode node = (SpaceNode) value;
+
+        setDimenLength(rect, "x", currentX);
+        Dimen y = new Dimen(currentY);
+        y.subtract(new Dimen(2 * Dimen.ONE));
+        setDimenLength(rect, "y", y);
+        setDimenLength(rect, "width", node.getWidth());
+        rect.setAttribute("height", "2pt");
+        rect.setAttribute("fill", "green");
+
+        parent.addContent(rect);
+
+        // ------------------------------------------
+        currentX.add(node.getWidth());
+
         return null;
     }
 
@@ -575,22 +562,29 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
     public Object visitVerticalList(final Object value, final Object value2)
             throws GeneralException {
 
-        Element element = new Element("verticallist");
+        Element rect = new Element("rect", SVGNAMESPACE);
         VerticalListNode node = (VerticalListNode) value;
 
+        setDimenLength(rect, "x", currentX);
+        setDimenLength(rect, "y", currentY);
+        setDimenLength(rect, "width", node.getWidth());
+        Dimen rH = new Dimen(node.getHeight());
+        rH.add(node.getDepth());
+        setDimenLength(rect, "height", rH);
+        rect.setAttribute("fill", "none");
+        rect.setAttribute("stroke", "yellow");
+        rect.setAttribute("strike-width", "2pt");
+
+        parent.addContent(rect);
+
+        // ------------------------------------------
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
         NodeIterator it = node.iterator();
         while (it.hasNext()) {
-            state = VERTICAL;
             Node newnode = it.next();
-
-            Object o = newnode.visit(this, node);
-
-            if (o instanceof Element) {
-                element.addContent((Element) o);
-            }
+            newnode.visit(this, node);
         }
         currentX.set(saveX);
         currentY.set(saveY);
