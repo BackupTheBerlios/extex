@@ -19,11 +19,11 @@
 
 package de.dante.extex.font;
 
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.FontFileList;
-import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Glyph;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -31,17 +31,17 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NullFont implements Font {
 
     /**
-     * The field <tt>hyphen</tt> contains the ...
+     * The field <tt>hyphen</tt> contains the hyphen char for this font.
      */
     private UnicodeChar hyphen = new UnicodeChar('-');
 
     /**
-     * The field <tt>skew</tt> contains the ...
+     * The field <tt>skew</tt> contains the skew char for this font
      */
     private UnicodeChar skew = new UnicodeChar('-');
 
@@ -70,7 +70,8 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setHyphenChar(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.Font#setHyphenChar(
+     *      de.dante.util.UnicodeChar)
      */
     public void setHyphenChar(final UnicodeChar ahyphen) {
 
@@ -78,7 +79,8 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setSkewChar(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.Font#setSkewChar(
+     *      de.dante.util.UnicodeChar)
      */
     public void setSkewChar(final UnicodeChar askew) {
 
@@ -134,7 +136,8 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.Font#isDefined(
+     *      de.dante.util.UnicodeChar)
      */
     public boolean isDefined(final UnicodeChar c) {
 
@@ -142,7 +145,8 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getGlyph(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.Font#getGlyph(
+     *      de.dante.util.UnicodeChar)
      */
     public Glyph getGlyph(final UnicodeChar c) {
 
