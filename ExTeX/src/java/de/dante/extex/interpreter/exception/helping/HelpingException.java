@@ -80,7 +80,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HelpingException extends InterpreterException {
 
@@ -278,6 +278,9 @@ public class HelpingException extends InterpreterException {
      */
     public String getLocalizedMessage() {
 
+        if (localizer == null) {
+            return "???";
+        }
         return localizer.format(tag, arg1, arg2, arg3);
     }
 
