@@ -44,7 +44,7 @@
   <Define name="marks" class=""/>
   <Define name="middle" class=""/>
   <Define name="predisplaydirection" class=""/>
-  <Define name="protected" class=""/>
+  <define name="protected" class="de.dante.extex.interpreter.primitives.prefix.Protected"/>
   <Define name="readline" class=""/>
   <Define name="scantokens" class=""/>
   <Define name="showgroups" class=""/>
