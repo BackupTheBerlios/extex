@@ -95,7 +95,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class ExTeX {
 
@@ -205,6 +205,12 @@ public class ExTeX {
      * property for the output directory.
      */
     private static final String PROP_OUTPUTDIR = "extex.outputdir";
+
+    /**
+     * The field <tt>PROP_POOL</tt> contains the name of the property for the
+     * messages resource.
+     */
+    private static final String PROP_POOL = "extex.pool";
 
     /**
      * The field <tt>PROP_PROGNAME</tt> contains the name of the
@@ -379,6 +385,7 @@ public class ExTeX {
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT, "pdf");
         propertyDefault(PROP_OUTPUTDIR, ".");
+        propertyDefault(PROP_POOL, "config.extexMessage");
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
         propertyDefault(PROP_TRACE_MACROS, "");
@@ -595,8 +602,9 @@ public class ExTeX {
                     } else if ("--".equals(arg)) {
                         useArg(PROP_CONFIG, args, ++i);
                     } else {
-                        properties.setProperty(PROP_CONFIG, arg.substring(1));
+                        //properties.setProperty(PROP_CONFIG, arg.substring(1));
                         //throw new MainUnknownOptionException(arg);
+                        properties.load(new FileInputStream(arg.substring(1)));
                     }
                 } else if (arg.startsWith("&")) {
                     properties.setProperty(PROP_FMT, arg.substring(1));
@@ -797,19 +805,23 @@ public class ExTeX {
     private void applyLanguage() {
 
         String lang = (String) properties.get(PROP_LANG);
+        String bundle = (String) properties.get(PROP_POOL);
+
         if (lang != null) {
             if (lang.matches("..")) {
-                Messages.configure(new Locale(lang));
+                Messages.configure(bundle, new Locale(lang));
                 return;
             } else if (lang.matches("..[_-]..")) {
-                Messages.configure(new Locale(lang.substring(0, 2), //
+                Messages.configure(bundle, new Locale(lang.substring(0, 2), //
                         lang.substring(3, 5)));
                 return;
             } else if (lang.matches("..[_-]..[_-]..")) {
-                Messages.configure(new Locale(lang.substring(0, 2), //
+                Messages.configure(bundle, new Locale(lang.substring(0, 2), //
                         lang.substring(3, 5), lang.substring(6, 8)));
                 return;
             }
+        } else {
+            Messages.configure(bundle);
         }
     }
 
