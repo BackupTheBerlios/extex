@@ -34,6 +34,14 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive
  * <code>\fontvalue</code>.
+ *
+ * <doc>
+ * <h3>The Primitive <tt>\fontvalue</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * <p>
  * Example:
  * <pre>
@@ -43,16 +51,16 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
-public class FontValue extends AbstractAssignment implements Theable {
+public class Fontvalue extends AbstractAssignment implements Theable {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public FontValue(final String name) {
+    public Fontvalue(final String name) {
 
         super(name);
     }
@@ -76,7 +84,7 @@ public class FontValue extends AbstractAssignment implements Theable {
             throw new GeneralHelpingException("FONT.fontkeynotfound");
         }
 
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         Dimen size = new Dimen(context, source);
         font.setFontDimen(key, size);
         prefix.clear();
