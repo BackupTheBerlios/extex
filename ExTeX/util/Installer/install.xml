@@ -25,7 +25,7 @@
   </locale>
 
   <resources>
-    <res id="LicencePanel.licence" src="$basedir/LICENSE.txt"/>
+    <res id="LicencePanel.licence" src="../../LICENSE.txt"/>
     <res id="HTMLInfoPanel.info_eng" src="README.en"/>
     <res id="HTMLInfoPanel.info_deu" src="README.de"/>
     <res id="installer.langsel.img" src="ExTeX-splash.png" />
@@ -50,24 +50,24 @@
   <packs>
     <pack name="Core" id="core" required="yes">
       <description/>
-      <file src="$basedir/LICENSE.txt" targetdir="$INSTALL_PATH"/>
+      <file src="../../LICENSE.txt" targetdir="$INSTALL_PATH"/>
       <file src="extex" targetdir="$INSTALL_PATH"/>
       <parsable targetfile="$INSTALL_PATH/extex"/>
       <executable targetfile="$INSTALL_PATH/extex" stage="never"/>
-      <file src="$basedir/target/lib/extex.jar" targetdir="$INSTALL_PATH/lib"/>
+      <file src="../../target/lib/extex.jar" targetdir="$INSTALL_PATH/lib"/>
       <file src=".extex" targetdir="$INSTALL_PATH"/>
     </pack>
 
     <pack name="Libraries" id="libs" required="yes">
       <description/>
-      <fileset dir="$basedir/lib" targetdir="$INSTALL_PATH/lib">
+      <fileset dir="../../lib" targetdir="$INSTALL_PATH/lib">
         <exclude name="js.jar"/>
       </fileset>
     </pack>
 
     <pack name="Fonts" id="fonts" required="yes">
       <description/>
-      <fileset dir="$basedir/src/font" targetdir="$INSTALL_PATH/font">
+      <fileset dir="../../src/font" targetdir="$INSTALL_PATH/font">
       </fileset>
     </pack>
 
@@ -80,7 +80,7 @@
       <description>The JavaDoc pack contains the documentation
       of the classes and interfaces in the extex.jar file.
       </description>
-      <file src="$basedir/target/javadoc" targetdir="$INSTALL_PATH"/>
+      <file src="../../target/javadoc" targetdir="$INSTALL_PATH"/>
     </pack>
 -->
   </packs>
