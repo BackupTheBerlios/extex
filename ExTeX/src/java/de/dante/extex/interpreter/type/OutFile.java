@@ -28,14 +28,14 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class OutFile implements Serializable {
 
     /**
      * The constant <tt>MAX_FILE_NO</tt> contains the ...
      */
-    public static int MAX_FILE_NO = 15;
+    public static final int MAX_FILE_NO = 15;
 
     /**
      * The field <tt>file</tt> contains the ...
@@ -55,29 +55,29 @@ public class OutFile implements Serializable {
     /**
      * ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public void open() throws GeneralException {
-        
+
     }
 
     /**
      * ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public void close() throws GeneralException {
-        
+
     }
 
     /**
      * ...
      *
      * @param t ...
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public void write(final Token t) throws GeneralException {
-        
+
     }
 
 }

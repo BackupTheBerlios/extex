@@ -31,14 +31,14 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InFile implements Serializable {
 
     /**
      * The constant <tt>MAX_FILE_NO</tt> contains the ...
      */
-    public static int MAX_FILE_NO = 15;
+    public static final int MAX_FILE_NO = 15;
 
     /**
      * The field <tt>filename</tt> contains the ...
@@ -68,11 +68,11 @@ public class InFile implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param file
+     * @param theFile ...
      */
-    public InFile(final File file) {
+    public InFile(final File theFile) {
         super();
-        this.file = file;
+        this.file = theFile;
     }
 
     /**
@@ -89,7 +89,7 @@ public class InFile implements Serializable {
      *
      * @return ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public boolean open() throws GeneralException {
         return false; // TODO
@@ -117,8 +117,10 @@ public class InFile implements Serializable {
         if (stream == null) {
             if (file == null) {
                 //TODO: error
+                throw new RuntimeException("unimplemented");
             } else if (!open()) {
                 //TODO: error
+                throw new RuntimeException("unimplemented");
             }
         }
         Token t = lookahead;
