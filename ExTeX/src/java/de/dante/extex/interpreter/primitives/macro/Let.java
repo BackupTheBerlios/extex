@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -25,9 +25,22 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.CatcodeVisitor;
+import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.CrToken;
+import de.dante.extex.scanner.LeftBraceToken;
+import de.dante.extex.scanner.LetterToken;
+import de.dante.extex.scanner.MacroParamToken;
+import de.dante.extex.scanner.MathShiftToken;
+import de.dante.extex.scanner.OtherToken;
+import de.dante.extex.scanner.RightBraceToken;
+import de.dante.extex.scanner.SpaceToken;
+import de.dante.extex.scanner.SubMarkToken;
+import de.dante.extex.scanner.SupMarkToken;
+import de.dante.extex.scanner.TabMarkToken;
 import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -60,9 +73,9 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class Let extends AbstractAssignment implements CatcodeVisitor {
+public class Let extends AbstractAssignment implements TokenVisitor {
 
     /**
      * Creates a new object.
@@ -85,7 +98,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getControlSequence();
+        CodeToken cs = source.getControlSequence();
         source.getOptionalEquals();
         Token t = source.getNonSpace();
 
@@ -104,7 +117,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
      * @throws GeneralException in case of an error
      */
     protected void let(final Flags prefix, final Context context,
-            final Token cs, final Token t) throws GeneralException {
+            final CodeToken cs, final Token t) throws GeneralException {
 
         if (t == null) {
             throw new HelpingException("UnexpectedEOF",
@@ -113,191 +126,220 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
 
         Code code;
         try {
-            code = (Code) (t.getCatcode().visit(this, t, context,
-                                                null));
+            code = (Code) t.visit(this, context, null);
+        } catch (GeneralException e) {
+            throw e;
         } catch (Exception e) {
             throw new GeneralException(e);
         }
-        if (cs instanceof CodeToken) {
-            context.setCode(cs, code, prefix.isGlobal());
-        } else {
-            throw new HelpingException("TTP.Confusion", //
-                    getClass().getName() + "#assign()");
-        }
+        context.setCode(cs, code, prefix.isGlobal());
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,
-     *       java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public Object visitActive(final Object oToken, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public Object visitActive(final ActiveCharacterToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
 
         Context context = (Context) oContext;
-        Code code = context.getCode((Token) oToken);
+        Code code = context.getCode(token);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken",
-                    ((Token) oToken).toString());
+            throw new HelpingException("TTP.UndefinedToken", token.toString());
         }
 
         return code;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitComment(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
-
-        throw new HelpingException("TTP.Confusion", "");
-    }
-
-    /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public final Object visitCr(final Object oName, final Object oContext,
+    public final Object visitCr(final CrToken token, final Object oContext,
             final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitEscape(final Object oToken, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public final Object visitEscape(final ControlSequenceToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
 
         Context context = (Context) oContext;
-        Code code = context.getCode((Token) oToken);
+        Code code = context.getCode(token);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken",
-                    ((Token) oToken).toString());
+            throw new HelpingException("TTP.UndefinedToken", (token).toString());
         }
 
         return code;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitIgnore(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
-
-        throw new HelpingException("TTP.Confusion", "");
-    }
-
-    /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public final Object visitInvalid(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
-
-        throw new HelpingException("TTP.Confusion", "");
-    }
-
-    /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public final Object visitLeftBrace(final Object oName,
+    public final Object visitLeftBrace(final LeftBraceToken token,
             final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitLetter(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public final Object visitMacroParam(final Object oName,
+    public final Object visitLetter(final LetterToken token,
             final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(
-     *     java.lang.Object, java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitMathShift(final Object oName,
+    public final Object visitMacroParam(final MacroParamToken token,
             final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitOther(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public final Object visitRightBrace(final Object oName,
+    public final Object visitMathShift(final MathShiftToken token,
             final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitSpace(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public final Object visitOther(final OtherToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitSubMark(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public final Object visitRightBrace(final RightBraceToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitSupMark(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public final Object visitSpace(final SpaceToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
      */
-    public final Object visitTabMark(final Object oName, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public final Object visitSubMark(final SubMarkToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
+     */
+    public final Object visitSupMark(final SupMarkToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * ...
+     *
+     * @param token the token to find the code for
+     * @param oContext the interpreter context
+     * @param ignore this parameter is ignored
+     * @return the code associated to the token
+     * @throws GeneralException in case of an error
+     */
+    public final Object visitTabMark(final TabMarkToken token,
+            final Object oContext, final Object ignore) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
