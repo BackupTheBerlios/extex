@@ -39,17 +39,39 @@ import de.dante.util.GeneralException;
  * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
+ * <doc name="count">
+ * <h3>The Primitive <tt>\count</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\count</tt> {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *      &lang;equals&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanInteger()
+ *      &lang;number&rang;}</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \count23=-456  </pre>
+ * </p>
+ * </doc>
  *
- * <p>Example</p>
- * <pre>
- * \count12=345
- * </pre>
+ * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
+ * @see de.dante.extex.interpreter.type.arithmetic.Divideable
+ * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
+ * @see de.dante.extex.interpreter.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class NumberedCount extends AbstractCount implements ExpandableCode,
+public class CountPrimitive extends AbstractCount implements ExpandableCode,
         Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
 
     /**
@@ -57,7 +79,7 @@ public class NumberedCount extends AbstractCount implements ExpandableCode,
      *
      * @param name the name for debugging
      */
-    public NumberedCount(final String name) {
+    public CountPrimitive(final String name) {
 
         super(name);
     }
