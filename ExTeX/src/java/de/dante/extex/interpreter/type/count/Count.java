@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.type.count;
 import java.io.Serializable;
 
 import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
@@ -39,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -80,8 +81,7 @@ public class Count implements Serializable, FixedCount {
         Token t = source.getNonSpace();
 
         if (t == null) {
-            // TODO report eof?
-            return 0;
+            throw new EofHelpingException(null);
         }
 
         if (t instanceof CodeToken) {
