@@ -28,7 +28,7 @@ import java.util.Stack;
  * @version $Revision: 1.1 $
  */
 
-public class DVIStack {
+public class DviStack {
 
     /**
      * the stack
@@ -38,7 +38,7 @@ public class DVIStack {
     /**
      * Create a new object
      */
-    public DVIStack() {
+    public DviStack() {
 
         stack = new Stack();
 
@@ -58,9 +58,9 @@ public class DVIStack {
      * returns that object as the value of this function.
      * @return Returns the <code>DVIValues</code> at the top of this stack.
      */
-    public DVIValues pop() {
+    public DviValues pop() {
 
-        return (DVIValues) stack.pop();
+        return (DviValues) stack.pop();
     }
 
     /**
@@ -68,8 +68,16 @@ public class DVIStack {
      * @param item the item to be pushed onto this stack.
      * @return Returns the item argument.
      */
-    public DVIValues push(final DVIValues item) {
+    public DviValues push(final DviValues item) {
 
-        return (DVIValues) stack.push(item);
+        return (DviValues) stack.push(item);
+    }
+
+    /**
+     * Clear the stack.
+     */
+    public void clear() {
+
+        stack.removeAllElements();
     }
 }

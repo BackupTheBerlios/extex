@@ -36,7 +36,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviXml implements DviInterpreter {
@@ -1765,9 +1765,12 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("identifies", String.valueOf(rar
                     .readByteAsInt()));
-            element.setAttribute("num", String.valueOf(rar.readInt()));
-            element.setAttribute("den", String.valueOf(rar.readInt()));
-            element.setAttribute("mag", String.valueOf(rar.readInt()));
+            num = rar.readInt();
+            den = rar.readInt();
+            mag = rar.readInt();
+            element.setAttribute("num", String.valueOf(num));
+            element.setAttribute("den", String.valueOf(den));
+            element.setAttribute("mag", String.valueOf(mag));
             int k = rar.readByteAsInt();
             StringBuffer buf = new StringBuffer();
             for (int i = 0; i < k; i++) {
@@ -1899,6 +1902,21 @@ public class DviXml implements DviInterpreter {
     };
 
     /**
+     * the mag
+     */
+    private int mag;
+
+    /**
+     * the num
+     */
+    private int num;
+
+    /**
+     * the den
+     */
+    private int den;
+
+    /**
      * @see de.dante.extex.format.dvi.DVIInterpreter#interpret(
      *      de.dante.util.file.random.RandomAccessR)
      */
@@ -1907,7 +1925,6 @@ public class DviXml implements DviInterpreter {
 
         while (rar.getPointer() < rar.length()) {
             int opcode = rar.readByteAsInt();
-            //     System.out.println("fp " + rar.getPointer() + " oc: " + opcode);
             opcodearray[opcode].interpret(rar, opcode);
         }
     }

@@ -59,12 +59,12 @@ package de.dante.extex.format.dvi;
  * @version $Revision: 1.1 $
  */
 
-public class DVIValues {
+public class DviValues {
 
     /**
      * Create a new object.
      */
-    public DVIValues() {
+    public DviValues() {
 
         clear();
     }
@@ -240,7 +240,7 @@ public class DVIValues {
      * set the values (without f!)
      * @param val   the new values
      */
-    public void setValues(final DVIValues val) {
+    public void setValues(final DviValues val) {
 
         h = val.h;
         v = val.v;
