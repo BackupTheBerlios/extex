@@ -138,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breakes separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
@@ -400,7 +400,9 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
         } else {
             long line = lineWidth.getLength().getValue();
             long shortfall = line - width.getLength().getValue();
+
             if (shortfall > 7230584) {
+
             } else if (shortfall > 0) { //TTP [852]
                 if (line < 1663497) {
                     badness = INF_PENALTY;
