@@ -19,6 +19,21 @@
   -->
 <ExTeX>
 
+  <File>
+    <tex>
+      <extension></extension>
+      <extension>.tex</extension>
+      <path>.</path>
+      <path>testdata</path>
+    </tex>
+  </File>
+
+  <Output encoding="ISO-8859-1">
+  </Output>
+ 
+  <Scanner class="de.dante.extex.scanner.stream.impl.TokenStreamImpl">
+  </Scanner>
+
   <Interpreter class="de.dante.extex.interpreter.max.Max">
 
     <maxErrors>100</maxErrors>
@@ -55,7 +70,7 @@
     <define name="brokenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="catcode" class="de.dante.extex.interpreter.primitives.register.CatcodePrimitive"/>
     <define name="char" class="de.dante.extex.interpreter.primitives.string.Char"/>
-    <Define name="chardef" class=""/>
+    <define name="chardef" class="de.dante.extex.interpreter.primitives.register.Chardef"/>
     <Define name="cleaders" class=""/>
     <define name="closein" class="de.dante.extex.interpreter.primitives.file.Closein"/>
     <define name="closeout" class="de.dante.extex.interpreter.primitives.file.Closeout"/>
@@ -63,8 +78,6 @@
     <Define name="copy" class=""/>
     <define name="count" class="de.dante.extex.interpreter.primitives.register.NumberedCount"/>
     <define name="countdef" class="de.dante.extex.interpreter.primitives.register.Countdef"/>
-    <TRASH name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal" extension="yes"/>
-    <TRASH name="realdef" class="" extension="yes"/>
     <Define name="cr" class=""/>
     <Define name="crcr" class=""/>
     <Define name="csname" class=""/>
@@ -119,7 +132,6 @@
     <define name="floatingpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="font" class="de.dante.extex.interpreter.primitives.font.DefFont"/>
     <define name="fontdimen" class="de.dante.extex.interpreter.primitives.font.FontDimen"/>
-    <TRASH name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
     <define name="fontname" class="de.dante.extex.interpreter.primitives.font.FontName"/>
     <Define name="futurelet" class=""/>
     <define name="gdef" class="de.dante.extex.interpreter.primitives.macro.Gdef"/>
@@ -165,9 +177,6 @@
     <define name="immediate" class="de.dante.extex.interpreter.primitives.prefix.Immediate"/>
     <Define name="indent" class=""/>
     <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
-    <TRASH name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks" extension="yes">ISO8859-1</TRASH>
-    <TRASH name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile" extension="yes"/>
-    <TRASH name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding" extension="yes"/>
     <Define name="inputlineno" class=""/>
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>
@@ -183,7 +192,6 @@
     <Define name="leaders" class=""/>
     <Define name="left" class=""/>
     <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.LeftHyphenmin"/>
-    <TRASH name="hyphenactive" class="de.dante.extex.interpreter.primitives.hyphen.HyphenActive" extension="yes"/>
     <define name="leftskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="leqno" class=""/>
     <define name="let" class="de.dante.extex.interpreter.primitives.macro.Let"/>
@@ -284,7 +292,7 @@
     <Define name="scriptstyle" class=""/>
     <define name="scrollmode" class="de.dante.extex.interpreter.primitives.interaction.Scrollmode"/>
     <Define name="setbox" class=""/>
-    <TRASH name="setlanguage" class="de.dante.extex.interpreter.primitives.hyphen.SetLanguage"/>
+    <Define name="setlanguage" class=""/>
     <Define name="sfcode" class=""/>
     <Define name="shipout" class=""/>
     <Define name="show" class=""/>
@@ -309,8 +317,6 @@
     <Define name="textfont" class=""/>
     <Define name="textstyle" class=""/>
     <define name="the" class="de.dante.extex.interpreter.primitives.info.The"/>
-    <TRASH name="tosp" class="de.dante.extex.interpreter.primitives.info.ToSP"/>
-    <TRASH name="printformat" class="de.dante.extex.interpreter.primitives.info.PrintFormat"/>
     <define name="thickmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
     <define name="thinmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -363,8 +369,6 @@
     <define name="xspaceskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
 
-    <TRASH name="linebreaker" class="de.dante.extex.interpreter.primitives.register.NamedToks" extension="yes"/>
-
     <Context class="de.dante.extex.interpreter.context.impl.ContextImpl">
 
       <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
@@ -405,22 +409,4 @@
     <text class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
   </DocumentWriter>
 
-  <Scanner>
-	<String class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl"/>
-	<File class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl"/>
-    <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl"/>
-  </Scanner>
-
-  <File>
-    <tex>
-      <extension></extension>
-      <extension>.tex</extension>
-      <path>.</path>
-      <path>testdata</path>
-    </tex>
-   </File>
-
-   <Output encoding="ISO-8859-1">
-   </Output>
- 
 </ExTeX>
