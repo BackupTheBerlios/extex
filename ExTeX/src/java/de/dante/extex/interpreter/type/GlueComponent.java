@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class GlueComponent implements Serializable {
 
@@ -60,7 +60,7 @@ public class GlueComponent implements Serializable {
     /**
      * The field <tt>order</tt> contains the order of infinity.
      * In case of an order 0 the value holds the absolute value; otherwise
-     * value holde the factor of the order.
+     * value holds the factor of the order.
      */
     private int order = 0;
 

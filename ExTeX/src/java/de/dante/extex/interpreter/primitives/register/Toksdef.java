@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -53,7 +54,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "toks#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Toksdef extends AbstractAssignment {
 
@@ -63,6 +64,7 @@ public class Toksdef extends AbstractAssignment {
      * @param name the name for debugging
      */
     public Toksdef(final String name) {
+
         super(name);
     }
 
@@ -78,22 +80,17 @@ public class Toksdef extends AbstractAssignment {
 
         Token cs = source.scanToken();
 
-        if (cs instanceof ControlSequenceToken) {
+        if (cs instanceof ControlSequenceToken || //
+            cs instanceof ActiveCharacterToken) {
+
             source.scanOptionalEquals();
             //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "toks#" + Long.toString(Count.scanCount(context, source));
-            context.setMacro(cs.getValue(), new NamedToks(key), prefix.isGlobal());
-            return;
+            String key = "toks#"
+                         + Long.toString(Count.scanCount(context, source));
+            context.setCode(cs, new NamedToks(key), prefix.isGlobal());
 
-        } else if (cs instanceof ActiveCharacterToken) {
-            source.scanOptionalEquals();
-            //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "toks#" + Long.toString(Count.scanCount(context, source));
-            context.setActive(cs.getValue(), new NamedToks(key), prefix.isGlobal());
-            return;
-
+        } else {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
-
-        throw new GeneralHelpingException("TTP.MissingCtrlSeq");
     }
 }

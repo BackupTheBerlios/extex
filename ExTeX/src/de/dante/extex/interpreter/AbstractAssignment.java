@@ -24,17 +24,17 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This is the base class for assignemnts.
+ * This is the base class for assignments.
  * The assignments are implemented like any Code with the exception that the
  * method <tt>assign</tt> is used instead of the method <tt>execute</tt>.
  *
  * <p>
- * This abstract clas takes care of the tratment of the \afterassign token
+ * This abstract class takes care of the treatment of the \afterassign token
  * and the \globaldefs declaration.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 

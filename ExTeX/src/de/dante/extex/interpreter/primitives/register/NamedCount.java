@@ -48,8 +48,8 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.17 $
  */
 public class NamedCount extends AbstractAssignment implements ExpandableCode,
     Advanceable, Multiplyable, Divideable, Theable, CountConvertable {

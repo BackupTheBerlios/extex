@@ -97,7 +97,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class ExTeX {
 
@@ -467,17 +467,17 @@ public class ExTeX {
      */
     public OutputStream getOutStream() {
 
-        return outStream;
+        return this.outStream;
     }
 
     /**
      * Setter for outStream.
      *
-     * @param outStream the outStream to set.
+     * @param outputStream the outStream to set.
      */
-    public void setOutStream(final OutputStream outStream) {
+    public void setOutStream(final OutputStream outputStream) {
 
-        this.outStream = outStream;
+        this.outStream = outputStream;
     }
 
     /**
