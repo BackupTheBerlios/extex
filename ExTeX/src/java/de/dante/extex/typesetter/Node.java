@@ -20,6 +20,7 @@ package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.typesetter.type.Knot;
 import de.dante.util.GeneralException;
 
 /**
@@ -35,9 +36,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public interface Node {
+public interface Node extends Knot {
 
     /**
      * Getter for the width of the node.
@@ -109,17 +110,31 @@ public interface Node {
     void toString(StringBuffer sb, String prefix);
 
     /**
-     * This method provides an enty point for the visitor pattern.
+     * This method provides an entry point for the visitor pattern.
      *
      * @param visitor the visitor to apply
      * @param value  the first argument for the visitor
-     * @param value2 the second argiument for the visitor
+     * @param value2 the second argument for the visitor
+     *
+     * @return the result of the method invocation of the visitor
+     *
+     * @throws GeneralException in case of an error
+     * @deprecated use the other visit method instead
+     */
+    Object visit(NodeVisitor visitor, Object value, Object value2)
+        throws GeneralException;
+
+    /**
+     * This method provides an entry point for the visitor pattern.
+     *
+     * @param visitor the visitor to apply
+     * @param value the argument for the visitor
      *
      * @return the result of the method invocation of the visitor
      *
      * @throws GeneralException in case of an error
      */
-    Object visit(NodeVisitor visitor, Object value, Object value2)
+    Object visit(NodeVisitor visitor, Object value)
         throws GeneralException;
 
 }
