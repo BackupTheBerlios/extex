@@ -28,15 +28,21 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
 
 /**
- * This class implements a efm-type1-font
- * (create from a AFM-file).
- *
- * TODO at the moment only one font per fontgroup
+ * This class implements a efm-type1-font (math-syml)
+ * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class EFMType1AFMFont extends EFMFont implements Font {
+public class EFMType1TFMMathsymlFont extends EFMType1TFMNOFont implements Font {
+
+    /**
+     * names for the parameter
+     */
+    public static final String[] PARAM = {"SLANT", "SPACE", "STRETCH",
+            "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "NUM1", "NUM2", "NUM3",
+            "DENOM1", "DENOM2", "SUP1", "SUP2", "SUP3", "SUB1", "SUB2",
+            "SUPDROP", "SUBDROP", "DELIM1", "DELIM2", "AXISHEIGHT"};
 
     /**
      * Creates a new object.
@@ -47,7 +53,7 @@ public class EFMType1AFMFont extends EFMFont implements Font {
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
-    public EFMType1AFMFont(final Document doc, final String fontname,
+    public EFMType1TFMMathsymlFont(final Document doc, final String fontname,
             final Dimen size, final FileFinder filefinder)
             throws GeneralException, ConfigurationException {
 
@@ -60,7 +66,7 @@ public class EFMType1AFMFont extends EFMFont implements Font {
      */
     public String toString() {
 
-        return "<fontname (EFMType1AFM): "
+        return "<fontname (EFMType1TFMMathsyml): "
                 + getFontName()
                 + (getExternalFile() != null
                         ? " (" + getExternalFile() + ")"

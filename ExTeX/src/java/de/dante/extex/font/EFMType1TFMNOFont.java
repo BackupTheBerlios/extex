@@ -28,15 +28,19 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
 
 /**
- * This class implements a efm-type1-font
- * (create from a AFM-file).
- *
- * TODO at the moment only one font per fontgroup
+ * This class implements a efm-type1-font (normal)
+ * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class EFMType1AFMFont extends EFMFont implements Font {
+public class EFMType1TFMNOFont extends EFMFont implements Font {
+
+    /**
+     * names for the parameter
+     */
+    public static final String[] PARAM = {"SLANT", "SPACE", "STRETCH",
+            "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE"};
 
     /**
      * Creates a new object.
@@ -47,11 +51,53 @@ public class EFMType1AFMFont extends EFMFont implements Font {
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
-    public EFMType1AFMFont(final Document doc, final String fontname,
+    public EFMType1TFMNOFont(final Document doc, final String fontname,
             final Dimen size, final FileFinder filefinder)
             throws GeneralException, ConfigurationException {
 
         super(doc, fontname, size, filefinder);
+    }
+
+    /**
+     * Return the <code>Dimen</code>-value for a key-entry.
+     * If no key exists, ZERO-<code>Dimen</code> is returned.
+     *
+     * @see de.dante.extex.interpreter.type.Font#getFontDimen(String)
+     */
+    public Dimen getFontDimen(final String key) {
+
+        return super.getFontDimen(getKey(key));
+    }
+
+    /**
+     * Set the <code>Dimen</code>-value for a key-entry.
+     *
+     * @see de.dante.extex.interpreter.type.Font#setFontDimen(String, Dimen)
+     */
+    public void setFontDimen(final String key, final Dimen value) {
+
+        super.setFontDimen(getKey(key), value);
+    }
+
+    /**
+     * Return the key for a fontparameter.
+     * If the key is '#nr' and the number is in the range of
+     * 0 and PARAM.length, the parametername is used instead.
+     * @param key   the key
+     * @return  the fontkey
+     */
+    private String getKey(final String key) {
+
+        String paramkey = key;
+        if (key.startsWith("#")) {
+            try {
+                paramkey = PARAM[Integer.parseInt(key.substring(1))];
+            } catch (Exception e) {
+                // no special number!
+                paramkey = key;
+            }
+        }
+        return paramkey;
     }
 
     /**
@@ -60,7 +106,7 @@ public class EFMType1AFMFont extends EFMFont implements Font {
      */
     public String toString() {
 
-        return "<fontname (EFMType1AFM): "
+        return "<fontname (EFMType1TFMNO): "
                 + getFontName()
                 + (getExternalFile() != null
                         ? " (" + getExternalFile() + ")"
