@@ -19,14 +19,13 @@
 package de.dante.util;
 
 import com.ibm.icu.lang.UCharacter;
-import com.ibm.icu.text.UTF16;
 
 /**
  * UnicodeChar
  * 
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class UnicodeChar {
 
@@ -83,32 +82,12 @@ public class UnicodeChar {
 	}
 
 	/**
-	 * Return the count of char16 of the code.
-	 * 
-	 * @return the count of char16 for this code
-	 * @deprecated
-	 */
-	public int getCharCount() {
-		return UTF16.getCharCount(code);
-	}
-
-	/**
 	 * Returns the Unicode name of the code.
 	 * 
 	 * @return unicodename of the code
 	 */
 	public String getUnicodeName() {
 		return UCharacter.getName(code);
-	}
-
-	/**
-	 * Returns the ISO comment of the code.
-	 * 
-	 * @return ISO comment of the code
-	 * @deprecated
-	 */
-	public String getIsoComment() {
-		return UCharacter.getISOComment(code);
 	}
 
 	/**
@@ -137,55 +116,21 @@ public class UnicodeChar {
 	 * Compares a <code>UnicodeChar</code> character with the value of this
 	 * object.
 	 * 
-	 * @param texchar the character (\code{TeXChar}) to be compared with the stored one
-	 * @return Are the characters equal (\code{true}) or not (\code{false})?
+	 * @param unicodechar	the character to compare
+	 * @return <code>true</code>, if the characters are equals, otherwise <code>false</code>
 	 */
 	public boolean equals(UnicodeChar unicodechar) {
-		return (unicodechar.equals(code));
+		return (code == unicodechar.getCodePoint());
 	}
-
-	/**
-	 * Compares a <code>char32</code> character with the value of this
-	 * object.
-	 * 
-	 * @param char32 the character to be compared with the stored one
-	 * @return Are the characters equal (<code>true</code>) or not (<code>false</code>)?
-	 * @deprecated
-	 */
-	public boolean equals(int char32) {
-		return (char32 == code);
-	}
-
-	/**
-	 * Compares a <code>char</code> character with the value of this object.
-	 * 
-	 * @param char16 the character to be compared with the stored one
-	 * @return Are the characters equal (<code>true</code>) or not (<code>false</code>)?
-	 * @deprecated
-	 */
-	public boolean equals(char char16) {
-		return (code == UCharacter.getCodePoint(char16));
-	}
-
-    /**
-     * Compares the stored character value with an object.
-     * 
-     * @param o object to be compared with the stored character
-     * @return Is the object a <code>UnicodeChar</code> with the same value (
-     *         <code>true</code>) or not (<code>false</code>)?
-	 * @deprecated
-     */
-    public boolean equals(Object o) {
-        return (o != null && //
-                o instanceof UnicodeChar && //
-        ((UnicodeChar) o).equals(code));
-    }
 
 	/**
 	 * Returns the bidirection property of the character.
 	 * 
 	 * @return the bidirection property
-	 * @deprecated
+	 *             MGN das muss drinbleiben, 
+	 *             da es Zeichen gibt, die die Schreibrichtung umstellen. 
+	 *             Wird vom TypeSetter benötigt, wenn die die etex bzw. 
+	 *             Omega Funktionen einbauen.
 	 */
 	public int getDirection() {
 		return UCharacter.getDirection(code);
@@ -239,75 +184,12 @@ public class UnicodeChar {
 		return UCharacter.isLetterOrDigit(code);
 	}
 
-    /**
-     * Test, of the code is printable.
-     * 
-     * @return <code>true</code>, if the code is printable, otherwise <code>false</code>
-     */
-    public boolean isPrintable() {
-        return UCharacter.isPrintable(code);
-    }
-
 	/**
-	 * UnicodeChar with value -1
-	 * @deprecated
-	 */
-	public static final UnicodeChar NOT_DEFINED = new UnicodeChar(-1);
-
-	/**
-	 * UnicodeChar for '0'
-	 * @deprecated
-	 */
-	public static final UnicodeChar C_0 = new UnicodeChar('0');
-
-	/**
-	 * Unicode for '9'
-	 * @deprecated
-	 */
-	public static final UnicodeChar C_9 = new UnicodeChar('9');
-
-	/**
-	 * UnicodeChar for 'a'
-	 * @deprecated
-	 */
-	public static final UnicodeChar C_a = new UnicodeChar('a');
-
-	/**
-	 * UnicodeChar for 'f'
-	 * @deprecated
-	 */
-	public static final UnicodeChar C_f = new UnicodeChar('f');
-
-	/**
-	 * Check, if the character is a hexdigit (only lowercaseletter)
+	 * Test, of the code is printable.
 	 * 
-	 * @return <code>true</code>, if the character is a hexdigit, otherwise
-	 *            <code>false</code>
-	 * @deprecated
+	 * @return <code>true</code>, if the code is printable, otherwise <code>false</code>
 	 */
-	public boolean isHexDigit() {
-		return (C_0.getCodePoint() <= code && code <= C_9.getCodePoint() || C_a.getCodePoint() <= code && code <= C_f.getCodePoint());
-	}
-
-	/**
-	 * Convert a hexdigit to an int value.
-	 * <p>
-	 * (there is no chekc, if the character is a hexdigit, use <code>isHexDigit()</code>!)
-	 * 
-	 * @return the int value of the hexdigit
-	 * @deprecated
-	 */
-	public int getHexDigit() {
-		return (code <= C_9.getCodePoint()) ? code - C_0.getCodePoint() : code - C_a.getCodePoint() + 10;
-	}
-
-	/**
-	 * Return the ASCII char of the character (if possible)
-	 * 
-	 * @return ASCII char
-	 * @deprecated
-	 */
-	public char getASCIIChar() {
-		return toString().charAt(0);
+	public boolean isPrintable() {
+		return UCharacter.isPrintable(code);
 	}
 }
