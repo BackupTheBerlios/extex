@@ -24,7 +24,7 @@ import de.dante.extex.hyphenation.HyphenationTable;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EmptyHyphenation implements HyphenationTable {
 
@@ -34,5 +34,13 @@ public class EmptyHyphenation implements HyphenationTable {
     public EmptyHyphenation() {
         super();
     }
+
+	/**
+	 * @see de.dante.extex.hyphenation.HyphenationTable#add(java.lang.String)
+	 */
+	public void add(String word) {
+		// TODO Auto-generated method stub
+
+	}
 
 }

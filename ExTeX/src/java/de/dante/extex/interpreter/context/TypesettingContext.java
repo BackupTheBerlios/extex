@@ -18,13 +18,14 @@
  */
 package de.dante.extex.interpreter.context;
 
+import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.type.Font;
 
 /**
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TypesettingContext {
     
@@ -34,8 +35,8 @@ public interface TypesettingContext {
     public abstract void setDirection(Direction direction);
     public abstract Direction getDirection();
 
-    public abstract void setLanguage(String language);
-    public abstract String getLanguage();
+    public abstract void setLanguage(HyphenationTable language);
+    public abstract HyphenationTable getLanguage();
 
     public abstract void setColor(Color color);
     public abstract Color getColor();

@@ -30,7 +30,7 @@ import de.dante.util.Locator;
  * provided here as well.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TokenSource {
     /**
@@ -45,7 +45,7 @@ public interface TokenSource {
      * @throws CodeEOFException in case that the end of file has been reached
      * before an integer could be acquired
      */
-    public abstract int scanInteger()
+    public abstract long scanInteger()
                             throws GeneralException;
 
     /**
@@ -77,9 +77,10 @@ public interface TokenSource {
     public abstract Token scanNextToken() throws GeneralException;
 
     /**
-     * Scan the input stream for tokens making up a number, i.e. a sequence of
-     * digits with catcode <tt>OTHER</tt>. The number can be preceeded by 
+     * Scan the input stream for tokens making up a number, this is a sequence 
+     * of digits with catcode <tt>OTHER</tt>. The number can be preceeded by 
      * optional whitespace.
+     * Alternate representations for an integer exist.
      *
      * @return the value of the integer scanned
      *
@@ -87,8 +88,24 @@ public interface TokenSource {
      * @throws CodeEOFException in case that the end of file has been reached
      * before an integer could be acquired
      */
-    public abstract int scanNumber()
+    public abstract long scanNumber()
                            throws GeneralException;
+
+    /**
+     * Scan the input stream for tokens making up a character code,
+     * this is a sequence of digits with catcode <tt>OTHER</tt>. 
+     * The number can be preceeded by optional whitespace.
+     * Alternate representations for an character code exist.
+     *
+     * @return the value of the integer scanned
+     *
+     * @throws CodeNumberFormatException in case that no number is found
+     * @throws CodeEOFException in case that the end of file has been reached
+     * before an integer could be acquired
+     */
+    public abstract long scanCharacterCode()
+                           throws GeneralException;
+
 
     /**
      * Scan the input stream for tokens making up a number, i.e. a sequence of
@@ -103,7 +120,7 @@ public interface TokenSource {
      * @throws CodeEOFException in case that the end of file has been reached
      * before an integer could be acquired
      */
-    public abstract int scanNumber(Token t)
+    public abstract long scanNumber(Token t)
                            throws GeneralException;
 
     /**

@@ -20,6 +20,7 @@ package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.ListMaker;
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DisplaymathListMaker extends AbstractListMaker implements ListMaker {
     /** ... */
@@ -41,10 +42,10 @@ public class DisplaymathListMaker extends AbstractListMaker implements ListMaker
     /**
      * Creates a new object.
      *
-     * @param parent ...
+     * @param manager the manager to ask for global changes
      */
-    public DisplaymathListMaker(Manager parent) {
-        super(parent);
+    public DisplaymathListMaker(Manager manager) {
+        super(manager);
     }
 
     /**
@@ -64,7 +65,7 @@ public class DisplaymathListMaker extends AbstractListMaker implements ListMaker
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
      */
-    public void addSpace(TypesettingContext typesettingContext) throws GeneralException {
+    public void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException {
         // TODO Auto-generated method stub
 
     }

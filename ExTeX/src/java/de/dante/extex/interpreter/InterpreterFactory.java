@@ -18,7 +18,6 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.util.configuration.Configurable;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
@@ -26,26 +25,20 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class InterpreterFactory implements Configurable {
+public class InterpreterFactory {
     /** the configuration for this factory */
-    private Configuration config = null;
+    private Configuration config;
 
+	private String classname;
     /**
      * Creates a new object.
      */
-    public InterpreterFactory(Configuration config) {
+    public InterpreterFactory(Configuration config) throws ConfigurationException {
         super();
         this.config = config;
-    }
-
-    /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
-     */
-    public void configure(Configuration config)
-                   throws ConfigurationException {
-        this.config = config;
+        classname = config.getAttribute("class");
     }
 
     /**
@@ -58,13 +51,14 @@ public class InterpreterFactory implements Configurable {
         Interpreter interpreter;
 
         try {
-            interpreter = (Interpreter) Class.forName(config.getAttribute("class"))
-                                         .newInstance();
+			interpreter = (Interpreter) (Class.forName(classname).getConstructor(new Class[] {
+																			Configuration.class
+																		}).newInstance(new Object[] {
+																						   config
+																					   }));
         } catch (Exception e) {
             throw new ConfigurationException("InterpreterFactory", e);
         }
-
-        interpreter.configure(config);
 
         return interpreter;
     }

@@ -18,27 +18,24 @@
  */
 package de.dante.extex.interpreter;
 
+import java.io.IOException;
+
 import de.dante.extex.logging.Logger;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 import de.dante.util.Observable;
-import de.dante.util.configuration.Configurable;
 import de.dante.util.configuration.ConfigurationException;
-
-import java.io.IOException;
 
 /**
  * ...
  *
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Interpreter extends TokenSource,
-                                     Configurable,
                                      Observable {
     /**
      * Setter for the error handler.

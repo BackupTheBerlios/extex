@@ -40,7 +40,7 @@ import de.dante.util.configuration.ConfigurationException;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Context extends Configurable, Serializable {
     /**
@@ -82,6 +82,20 @@ public interface Context extends Configurable, Serializable {
      * @throws GeneralHelpingException in case of an error
      */
     public abstract void setCatcode(char c, Catcode cc)
+                             throws GeneralHelpingException;
+
+    /**
+     * Setter for the catcode of a character in the specified groups.
+     *
+     * @param c the character to assign a catcode for
+     * @param cc the catcode of the character
+     * @param global the indicator for the scope;
+     * <code>true</code> means all groups;
+     * otherwise the current group is affected only
+     *
+     * @throws GeneralHelpingException in case of an error
+     */
+    public abstract void setCatcode(String c, Catcode cc, boolean global)
                              throws GeneralHelpingException;
 
     /**
@@ -192,14 +206,15 @@ public interface Context extends Configurable, Serializable {
     public abstract void setTypesettingContext(TypesettingContext context, boolean global);
 
     /**
-     * ...
+     * Getter for the typesetting context.
      *
-     * @return ...
+     * @return the typesetting context
      */
     public abstract TypesettingContext getTypesettingContext();
 
     /**
-     * Test whether this group is the first one, i.e. there is no group before.
+     * Test whether this group is the first one, which means that there is 
+     * no group before and closing this group would fail.
      *
      * @return <code>true</code> iff this is the first group
      */
@@ -209,10 +224,11 @@ public interface Context extends Configurable, Serializable {
      * Getter for the hyphenation record for a given language.
      * The language is used to find the hyphenation table.
      * If the language is not known an attempt is made to load it.
+     * Otherwise the default hyphenation table is returned.
      *
      * @param language the name of the language to use
      *
-     * @return ...
+     * @return the hyphenation table for the requested language
      *
      * @throws GeneralException in case of an error
      */

@@ -20,6 +20,7 @@ package de.dante.extex.typesetter;
 
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.util.GeneralException;
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ListMaker {
     
@@ -38,7 +39,7 @@ public interface ListMaker {
 
     public abstract void add(TypesettingContext typesettingContext, String symbol) throws GeneralException;
 
-    public abstract void addSpace(TypesettingContext typesettingContext) throws GeneralException;
+    public abstract void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException;
 
     public abstract void addGlue(Glue g) throws GeneralException;
 
@@ -48,7 +49,7 @@ public interface ListMaker {
 
     public abstract void toggleDisplaymath() throws GeneralException;
 
-    public abstract void setSpacefactor(int f) throws GeneralException;
+    public abstract void setSpacefactor(Count f) throws GeneralException;
 
     public abstract void setPrevDepth(Dimen pd) throws GeneralException;
 

@@ -20,6 +20,7 @@ package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.typesetter.ListMaker;
@@ -32,17 +33,17 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractListMaker implements ListMaker {
-    /** ...
+    /** The manager to ask for global changes.
      */
     protected Manager manager;
 
     /**
      * Creates a new object.
      *
-     * @param manager ...
+     * @param manager the manager to ask for global changes
      */
     public AbstractListMaker(Manager manager) {
         super();
@@ -57,7 +58,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
      */
-    public void setSpacefactor(int f) throws GeneralException {
+    public void setSpacefactor(Count f) throws GeneralException {
         throw new GeneralHelpingException("TTP.ImproperSForPD",
                                           "spacefactor");
     }
@@ -81,7 +82,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
      */
-    public abstract void addSpace(TypesettingContext typesettingContext) throws GeneralException;
+    public abstract void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException;
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#close()

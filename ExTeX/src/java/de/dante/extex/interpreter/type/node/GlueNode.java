@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.type.node;
  
+import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
@@ -27,16 +28,27 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GlueNode extends AbstractNode implements Node {
-    
+
+    private Glue size;
     /**
      * Creates a new object.
      * 
      */
     public GlueNode() {
         super();
+        this.size = null;
+    }
+
+    /**
+     * Creates a new object.
+     * 
+     */
+    public GlueNode(Glue size) {
+        super();
+        this.size = size;
     }
 
     /**
@@ -46,14 +58,14 @@ public class GlueNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [186]"
      */
     public String toString() {
-        return "glue "; //TODO
+        return " "; //TODO
     }
     
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
     public void toString(StringBuffer sb) {
-        sb.append("glue "); //TODO
+        sb.append(" "); //TODO
     }
 
     /**

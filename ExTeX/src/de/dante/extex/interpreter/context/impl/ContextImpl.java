@@ -18,9 +18,6 @@
  */
 package de.dante.extex.interpreter.context.impl;
 
-import java.io.Serializable;
-import java.util.Stack;
-
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationManagerImpl;
 import de.dante.extex.hyphenation.HyphenationTable;
@@ -38,14 +35,19 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
+
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
+import java.io.Serializable;
+
+import java.util.Stack;
+
 /**
- * This is a simple implementation for an interpreter context.
- * 
+ * This is a reference implementation for an interpreter context.
+ *
  * The groups are implemented as a linked list of single groups. In contrast to
  * the Knuthian implementation in TeX no undo stack is used.
  * <p>
@@ -54,14 +56,14 @@ import de.dante.util.configuration.ConfigurationException;
  * <ul>
  *  <li>
  *   For each new group a new instance of a {@link Group Group} is created with
- *   the old one as next group. 
+ *   the old one as next group.
  *  </li>
  *  <li>
  *   If a group is closed then the next group is used as current group and the
  *   formerly current group is discarted.
  *  </li>
  *  <li>
- *   If a value has to be found in a group then the next chain has to be 
+ *   If a value has to be found in a group then the next chain has to be
  *   traced down until the value is found.
  *   <br />
  *   An implementation variant might want to insert the value found into the
@@ -90,7 +92,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </ul>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ContextImpl implements Context, Serializable {
     /** The saved configuration */
@@ -103,6 +105,9 @@ public class ContextImpl implements Context, Serializable {
 
     /** The factory to acquire a new group */
     private transient GroupFactory groupFactory;
+
+    /** ... */
+    private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
     /** The interaction mode to use */
     private Interaction interaction = null;
@@ -123,8 +128,6 @@ public class ContextImpl implements Context, Serializable {
     /** the magnification for the whole document in permille */
     private long magnification = 1000;
 
-    private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
-    
     /**
      * Creates a new object.
      */
@@ -162,10 +165,18 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(java.lang.String, de.dante.extex.scanner.Catcode, boolean)
+     */
+    public void setCatcode(String c, Catcode cc, boolean global)
+                    throws GeneralHelpingException {
+        group.setCatcode(c, cc, global);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String, long)
      */
     public void setCount(String name, long value) {
-        Count count = new Count(name, value);
+        Count count = new Count(value);
         group.setCount(name, count);
 
         //TODO: use existing Register instead of making a new one
@@ -175,8 +186,8 @@ public class ContextImpl implements Context, Serializable {
      * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String, long, boolean)
      */
     public void setCount(String name, long value, boolean global) {
-        Count count = new Count(name, value);
-        group.setCount(name, count,global);
+        Count count = new Count(value);
+        group.setCount(name, count, global);
 
         //TODO: use existing Register instead of making a new one
     }
@@ -217,7 +228,7 @@ public class ContextImpl implements Context, Serializable {
      */
     public void setDimen(String name, long value, boolean global) {
         Dimen dimen = new Dimen(value);
-        group.setDimen(name, dimen,global);
+        group.setDimen(name, dimen, global);
 
         //TODO: use existing Register instead of making a new one
     }
@@ -237,6 +248,14 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getHyphenation(int)
+     */
+    public HyphenationTable getHyphenationTable(int language)
+                                         throws GeneralException {
+        return hyphenationManager.getHyphenationTable(Integer.toString(language));
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction)
      */
     public void setInteraction(Interaction interaction) {
@@ -247,7 +266,7 @@ public class ContextImpl implements Context, Serializable {
      * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction, boolean)
      */
     public void setInteraction(Interaction interaction, boolean global) {
-        group.setInteraction(interaction,global);
+        group.setInteraction(interaction, global);
     }
 
     /**
@@ -268,7 +287,7 @@ public class ContextImpl implements Context, Serializable {
      * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String, de.dante.extex.interpreter.Code, boolean)
      */
     public void setMacro(String name, Code code, boolean global) {
-        group.setMacro(name, code,global);
+        group.setMacro(name, code, global);
     }
 
     /**
@@ -281,13 +300,12 @@ public class ContextImpl implements Context, Serializable {
     /**
      * Setter for the magnification.
      * The magnification is a global value which can be assigned at most once.
-     * It contains the magnification factor in permille. The default value is 
+     * It contains the magnification factor in permille. The default value is
      * 1000.
      * It can only take positive numbers as values.
-     * The maximal value is taken from the configuration option 
-     * <tt>maximalMaginification</tt>. The default value for the maximal 
+     * The maximal value is taken from the configuration option
+     * <tt>maximalMaginification</tt>. The default value for the maximal
      * magnification is 32768.
-
      * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
      */
     public void setMagnification(long mag)
@@ -342,6 +360,43 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
+     * Setter for the typesetting context in the current group.
+     *
+     * @param context the new context to use
+     */
+    public void setTypesettingContext(TypesettingContext context) {
+        group.setTypesettingContext(context);
+    }
+
+    /**
+     * Setter for the typesetting context in the specified groups.
+     *
+     * @param context the new context to use
+     * @param global if <code>true</code> then the new value is set in all
+     * groups, otherwise only in the current group.
+     */
+    public void setTypesettingContext(TypesettingContext context,
+                                      boolean global) {
+        group.setTypesettingContext(context, global);
+    }
+
+    /**
+     * Getter for the typesetting context.
+     *
+     * @return the typesetting context
+     */
+    public TypesettingContext getTypesettingContext() {
+        return group.getTypesettingContext();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
+     */
+    public void afterGroup(Token t) throws GeneralException {
+        group.afterGroup(t);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#closeGroup()
      */
     public void closeGroup() throws GeneralException {
@@ -352,7 +407,8 @@ public class ContextImpl implements Context, Serializable {
         } else {
             Tokens toks = group.getAfterGroup();
             group = next;
-            if ( toks != null ) {
+
+            if (toks != null) {
                 //TODO execute aftergroup
             }
         }
@@ -392,50 +448,4 @@ public class ContextImpl implements Context, Serializable {
     public void openGroup() throws ConfigurationException {
         group = groupFactory.newInstance(group);
     }
-    
-    /**
-     * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
-     */
-    public void afterGroup(Token t) throws GeneralException {
-        group.afterGroup(t);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenation(java.lang.String)
-     */
-    public HyphenationTable getHyphenationTable(int language)
-        throws GeneralException {
-        return hyphenationManager.getHyphenationTable(language);
-    }
-
-    /**
-     * ...
-     * 
-     * @return
-     */
-    public TypesettingContext getTypesettingContext() {
-        return group.getTypesettingContext();
-    }
-
-    /**
-     * ...
-     * 
-     * @param context
-     */
-    public void setTypesettingContext(TypesettingContext context) {
-        group.setTypesettingContext(context);
-    }
-
-    /**
-     * ...
-     * 
-     * @param context
-     * @param global
-     */
-    public void setTypesettingContext(
-        TypesettingContext context,
-        boolean global) {
-        group.setTypesettingContext(context, global);
-    }
-
 }

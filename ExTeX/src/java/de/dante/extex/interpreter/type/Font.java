@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.type;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Font {
     
@@ -39,4 +39,7 @@ public interface Font {
     public abstract Dimen getEm();
     public abstract Dimen getEx();
 
+	public abstract Dimen getFontDimen(long index);
+
+	public abstract String getFontName();
 }

@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedDimen extends AbstractCode implements Advanceable {
     /**
@@ -83,7 +83,7 @@ public class NamedDimen extends AbstractCode implements Advanceable {
                     throws GeneralException {
         source.scanKeyword("by");
 
-        int val     = source.scanInteger();
+        long val     = source.scanInteger();//TODO: incorrect
         Dimen dimen = context.getDimen(key);
         dimen.set(dimen.getValue() + val);
 

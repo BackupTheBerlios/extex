@@ -18,19 +18,31 @@
  */
 package de.dante.extex.interpreter.type;
 
-import java.io.Serializable;
-
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Token;
+
 import de.dante.util.GeneralException;
 
+import java.io.Serializable;
+
 /**
- * ...
+ * This class provides a means to store floating numbers with an order.
+ *
+ * <p>Examples</p>
+ * <pre>
+ * 123 pt
+ * -123 pt
+ * 123.456 pt
+ * 123.pt
+ * .465 pt
+ * -.456pt
+ * +456pt
+ * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GlueComponent implements Serializable {
     /** This constant contains the internal representation for 1pt
@@ -38,11 +50,11 @@ public class GlueComponent implements Serializable {
      */
     public static final long ONE = 1 << 16;
 
-    /** the integer representatation of the dimen register */
-    protected long value = 0;
-
     /** ... */
-    protected GlueOrder order = GlueOrder.NONE;
+    protected int order = 0;
+
+    /** The integer representatation of the dimen register */
+    protected long value = 0;
 
     /**
      * Creates a new object.
@@ -52,7 +64,9 @@ public class GlueComponent implements Serializable {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with a fixed width.
+     *
+     * @param value the fixed value
      */
     public GlueComponent(long value) {
         super();
@@ -60,15 +74,22 @@ public class GlueComponent implements Serializable {
     }
 
     /**
-     * ...
+     * Creates a new object with a width with a possibly higher order.
      *
-     * 123 pt
-     * -123 pt
-     * 123.456 pt
-     * 123.pt
-     * .465 pt
-     * -.456pt
-     * +456pt
+     * @param value the fixed width or the factor
+     * @param order the order
+     */
+    public GlueComponent(long value, int order) {
+        super();
+        this.value = value;
+        this.order = order;
+    }
+
+    /**
+     * Creates a new object from a TokenStream.
+     *
+     * @param source the source for new tokens
+     * @param context the iterpreter context
      *
      * @throws GeneralException in case of an error
      */
@@ -84,7 +105,7 @@ public class GlueComponent implements Serializable {
      * @param context the interpreter context
      * @param fixed if <code>true</code> then no glue order is allowed
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      * @throws GeneralHelpingException ...
      */
     public GlueComponent(TokenSource source, Context context,
@@ -103,6 +124,15 @@ public class GlueComponent implements Serializable {
     }
 
     /**
+     * ...
+     *
+     * @return ...
+     */
+    public GlueComponent copy() {
+        return new GlueComponent(value, order);
+    }
+
+    /**
      * Setter for the value in terms of the internal representation.
      *
      * @param l the new value
@@ -118,7 +148,7 @@ public class GlueComponent implements Serializable {
      */
     public void set(Dimen d) {
         value = d.getValue();
-        order = GlueOrder.NONE;
+        order = 0;
     }
 
     /**
@@ -127,7 +157,7 @@ public class GlueComponent implements Serializable {
      * @param source ...
      * @param context ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     public void set(TokenSource source, Context context)
              throws GeneralException {
@@ -141,20 +171,22 @@ public class GlueComponent implements Serializable {
      * @param context ...
      * @param fixed ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      * @throws GeneralHelpingException ...
      */
     public void set(TokenSource source, Context context, boolean fixed)
              throws GeneralException {
         value = source.scanFloat();
 
-        Token t = source.scanNextNonSpace();
+        {
+            Token t = source.scanNextNonSpace();
 
-        if (t == null) {
-            throw new GeneralHelpingException("xxx"); //TODO
+            if (t == null) {
+                throw new GeneralHelpingException("xxx"); //TODO
+            }
+
+            source.push(t);
         }
-
-        source.push(t);
 
         long mag = 1000;
 
@@ -186,11 +218,17 @@ public class GlueComponent implements Serializable {
         } else if (source.scanKeyword("em")) {
             //TODO em unimplemented
         } else if (fixed && source.scanKeyword("fil")) {
-            order = GlueOrder.FIL;
-        } else if (fixed && source.scanKeyword("fill")) {
-            order = GlueOrder.FILL;
-        } else if (fixed && source.scanKeyword("filll")) {
-            order = GlueOrder.FILLL;
+            order = 1;
+
+            Token t;
+
+            for (t = source.getNextToken();
+                     (t != null && (t.equals('l') || t.equals('L')));
+                     t = source.getNextToken()) {
+                order++;
+            }
+
+            source.push(t);
         } else { // cf. TTP [459]
             throw new GeneralHelpingException("TTP.IllegalUnit");
         }

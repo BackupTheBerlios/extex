@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NumberedDimen extends NamedDimen {
 
@@ -54,7 +54,7 @@ public class NumberedDimen extends NamedDimen {
      */
     public void expand(Flags prefix, Context context, TokenSource source,
                       Typesetter typesetter) throws GeneralException {
-        String key = Integer.toString(source.scanNumber());
+        String key = Long.toString(source.scanNumber());
 
         super.expand(prefix, context, source, key);
     }
@@ -64,7 +64,7 @@ public class NumberedDimen extends NamedDimen {
      */
     public void advance(Flags prefix, Context context, TokenSource source)
         throws GeneralException {
-        String key = Integer.toString(source.scanNumber());
+        String key = Long.toString(source.scanNumber());
         super.advance(prefix, context, source, key);
     }
 

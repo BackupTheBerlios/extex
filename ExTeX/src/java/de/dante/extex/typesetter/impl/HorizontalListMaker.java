@@ -19,20 +19,23 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
+import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
+
 import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -47,15 +50,15 @@ public class HorizontalListMaker extends AbstractListMaker
     /** ...
      * @see "TeX -- The Program [212]"
      */
-    private int spacefactor = 1000;
+    private long spacefactor = 1000;
 
     /**
      * Creates a new object.
      *
-     * @param parent ...
+     * @param manager the manager to ask for global changes
      */
-    public HorizontalListMaker(Manager parent) {
-        super(parent);
+    public HorizontalListMaker(Manager manager) {
+        super(manager);
     }
 
     /**
@@ -68,8 +71,8 @@ public class HorizontalListMaker extends AbstractListMaker
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
      */
-    public void setSpacefactor(int f) throws GeneralException {
-        spacefactor = f;
+    public void setSpacefactor(Count f) throws GeneralException {
+        spacefactor = f.getValue();
     }
 
     /**
@@ -77,13 +80,15 @@ public class HorizontalListMaker extends AbstractListMaker
      */
     public void add(Node c) throws GeneralException {
         nodes.add(c);
+        spacefactor = 1000;
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
      * @see "The TeXbook [p.76]"
      */
-    public void add(TypesettingContext context, String symbol) throws GeneralException {
+    public void add(TypesettingContext context, String symbol)
+             throws GeneralException {
         CharNode c = manager.getCharNodeFactory()
                             .newInstance(context, symbol);
         nodes.add(c);
@@ -99,14 +104,45 @@ public class HorizontalListMaker extends AbstractListMaker
      * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(Glue g) throws GeneralException {
-        // TODO Auto-generated method stub
+        nodes.add(new GlueNode(g)); // TODO: use factory?
+        spacefactor = 1000;
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace()
      */
-    public void addSpace(TypesettingContext context) throws GeneralException {
-        // TODO Auto-generated method stub
+    public void addSpace(TypesettingContext context, Count sfCount)
+                  throws GeneralException {
+        long sf    = (sfCount != null ? sfCount.getValue() : spacefactor);
+        Glue space = context.getFont()
+                            .getSpace();
+
+        // gene: maybe my interpretation of the TeXbook is slightly wrong
+        if (sf == 1000) { // normal case handled first
+        } else if (sf == 0) {
+            return;
+        } else if (sf >= 2000) {
+            Glue xspaceskip = null; //TODO
+            Glue spaceskip  = null; //TODO
+
+            if (xspaceskip != null) {
+                space = xspaceskip.copy();
+            } else if (spaceskip != null) {
+                space = xspaceskip.copy()
+                                  .multiplyStretch(sf, 1000)
+                                  .multiplyShrink(1000, sf);
+            } else {
+                space = space.copy()
+                             .multiplyStretch(sf, 1000)
+                             .multiplyShrink(1000, sf);
+            }
+        } else {
+            space = space.copy()
+                         .multiplyStretch(sf, 1000)
+                         .multiplyShrink(1000, sf);
+        }
+
+        addGlue(space);
     }
 
     /**
@@ -130,5 +166,4 @@ public class HorizontalListMaker extends AbstractListMaker
     public void par() throws GeneralException {
         manager.closeTopList();
     }
-
 }

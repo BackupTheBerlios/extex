@@ -18,10 +18,6 @@
  */
 package de.dante.extex.interpreter.context.impl;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
-
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
@@ -35,15 +31,19 @@ import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 
+import java.io.Serializable;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * This is a simple implementation for a group. The whole stack of group is implemented as
  * a linked list. The list itself is mixed with the pure elements of the linked list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
-
     /** The next group in the linked list */
     private Group next = null;
 
@@ -216,7 +216,7 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
             if (next == null) {
                 count = next.getCount(name);
             } else {
-                count = new Count(name);
+                count = new Count(0);
                 setCount(name, count);
             }
         }

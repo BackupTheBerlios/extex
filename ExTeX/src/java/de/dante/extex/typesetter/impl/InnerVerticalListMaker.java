@@ -23,16 +23,16 @@ import de.dante.extex.typesetter.Mode;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class InnerVerticalListMaker
-    extends VerticalListMaker
+public class InnerVerticalListMaker extends VerticalListMaker
     implements ListMaker {
-
     /**
      * Creates a new object.
+     *
+     * @param manager the manager to ask for global changes
      */
     public InnerVerticalListMaker(Manager manager) {
         super(manager);
@@ -44,5 +44,4 @@ public class InnerVerticalListMaker
     public Mode getMode() {
         return Mode.INNER_VERTICAL;
     }
-
 }

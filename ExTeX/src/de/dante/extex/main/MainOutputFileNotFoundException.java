@@ -25,13 +25,13 @@ import de.dante.extex.i18n.Messages;
  * and is not able to perform this operation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MainOutputFileNotFoundException extends MainException {
     /**
      * Creates a new object.
      *
-     * @param message the name of the missing argument
+     * @param filename the name of the file to open
      */
     public MainOutputFileNotFoundException(String filename) {
         super(-15, filename);

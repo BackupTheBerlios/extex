@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.Glue;
  * This class implements a dummy font which does not contain any characters.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DummyFont implements Font {
 
@@ -99,5 +99,19 @@ public class DummyFont implements Font {
     public Dimen getEx() {
         return new Dimen(6*Dimen.ONE);
     }
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
+	 */
+	public Dimen getFontDimen(long index) {
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getFontName()
+	 */
+	public String getFontName() {
+		return "dummy";
+	}
 
 }

@@ -20,7 +20,6 @@ package de.dante.extex.interpreter.type;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
@@ -28,38 +27,29 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Count extends AbstractCode implements Serializable {
+public class Count implements Serializable {
 
-    public static final Count ZERO = new Count("0",0);
-    public static final Count ONE  = new Count("1",1);
+    public static final Count ZERO = new Count(0);
+    public static final Count ONE  = new Count(1);
 
     /** ... */
     private long value = 0;
 
     /**
      * Creates a new object.
-     *
-     * @param name the name for debugging
      */
-    public Count(String name) {
-        super(name);
-    }
-
-    /**
-     * Creates a new object.
-     */
-    public Count(String name, long value) {
-        super(name);
+    public Count(long value) {
+        super();
         this.value = value;
     }
 
     /**
      * Creates a new object.
      */
-    public Count(String name, TokenSource source) throws GeneralException {
-        super(name);
+    public Count(TokenSource source) throws GeneralException {
+        super();
         value = source.scanInteger();
     }
 

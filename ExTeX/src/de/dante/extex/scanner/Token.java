@@ -29,7 +29,7 @@ package de.dante.extex.scanner;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Token {
     /**
@@ -74,6 +74,16 @@ public interface Token {
      * @return <code>true</code> iff the tokens are equal
      */
     public abstract boolean equals(Catcode cc, String s);
+
+    /**
+     * Compare the current token with a character value.
+     * They are the same if the values are the same.
+     *
+     * @param c the value
+     *
+     * @return <code>true</code> iff the tokens are equal
+     */
+    public abstract boolean equals(char c);
 
     /**
      * Compare the current token with a pair of catcode and character value.

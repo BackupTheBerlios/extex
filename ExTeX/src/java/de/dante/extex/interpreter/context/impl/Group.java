@@ -18,8 +18,6 @@
  */
 package de.dante.extex.interpreter.context.impl;
 
-import java.io.Serializable;
-
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
@@ -32,6 +30,8 @@ import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 
+import java.io.Serializable;
+
 /**
  * This is the implementation of a group object.
  * A group is the container for all data which might have group local values.
@@ -42,7 +42,7 @@ import de.dante.extex.scanner.Token;
  * find the one containing the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Group extends Tokenizer, Serializable {
     /**
@@ -65,33 +65,6 @@ public interface Group extends Tokenizer, Serializable {
     public abstract void setActive(String name, Code code,
                                    boolean global);
 
-    public abstract void afterGroup(Token t);
-    public abstract Tokens getAfterGroup();
-
-    /**
-     * ...
-     *
-     * @param context ...
-     */
-    public abstract void setTypesettingContext(TypesettingContext context);
-
-    /**
-     * ...
-     *
-     * @param context ...
-     * @param global the indicator for the scope;
-     * <code>true</code> means all groups;
-     * otherwise the current group is affected only
-     */
-    public abstract void setTypesettingContext(TypesettingContext context, boolean global);
-
-    /**
-     * ...
-     *
-     * @return ...
-     */
-    public abstract TypesettingContext getTypesettingContext();
-
     /**
      * Getter for the definition of an active character.
      * In fact the name is assumed to be a string containing a single character
@@ -105,6 +78,13 @@ public interface Group extends Tokenizer, Serializable {
     public abstract Code getActive(String name);
 
     /**
+     * ...
+     *
+     * @return ...
+     */
+    public abstract Tokens getAfterGroup();
+
+    /**
      * Setter for the catcode of a character in the current group.
      *
      * @param c the character
@@ -113,10 +93,13 @@ public interface Group extends Tokenizer, Serializable {
     public abstract void setCatcode(char c, Catcode code);
 
     /**
-     * Setter for the catcode of a character in all groups.
+     * Setter for the catcode of a character in the specified groups.
      *
-     * @param name the name of the catcode to set
-     * @param value the new catcode
+     * @param name the character
+     * @param code the catcode
+     * @param global the indicator for the scope;
+     * <code>true</code> means all groups;
+     * otherwise the current group is affected only
      */
     public abstract void setCatcode(String name, Catcode value,
                                     boolean global);
@@ -392,4 +375,36 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the toks register or its default
      */
     public abstract Tokens getToks(String name);
+
+    /**
+     * Setter for the typesetting context in the current group.
+     *
+     * @param context the new typesetting context
+     */
+    public abstract void setTypesettingContext(TypesettingContext context);
+
+    /**
+     * Setter for the typesetting context in the specified groups.
+     *
+     * @param context the new typesetting context
+     * @param global the indicator for the scope;
+     * <code>true</code> means all groups;
+     * otherwise the current group is affected only
+     */
+    public abstract void setTypesettingContext(TypesettingContext context,
+                                               boolean            global);
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public abstract TypesettingContext getTypesettingContext();
+
+    /**
+     * ...
+     *
+     * @param t ...
+     */
+    public abstract void afterGroup(Token t);
 }

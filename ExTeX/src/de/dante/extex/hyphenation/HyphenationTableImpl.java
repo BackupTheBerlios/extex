@@ -23,7 +23,7 @@ package de.dante.extex.hyphenation;
  * ...
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HyphenationTableImpl implements HyphenationTable {
     /**
@@ -32,4 +32,13 @@ public class HyphenationTableImpl implements HyphenationTable {
     public HyphenationTableImpl() {
         super();
     }
+
+	/**
+	 * @see de.dante.extex.hyphenation.HyphenationTable#add(java.lang.String)
+	 */
+	public void add(String word) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

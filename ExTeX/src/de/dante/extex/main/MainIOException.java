@@ -25,13 +25,13 @@ import de.dante.extex.i18n.Messages;
  * into a MainException with an appropriate exit status. 
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainIOException extends MainException {
     /**
      * Creates a new object.
      *
-     * @param message the name of the missing argument
+     * @param cause the root of all evil
      */
     public MainIOException(Throwable cause) {
         super(-1, cause);

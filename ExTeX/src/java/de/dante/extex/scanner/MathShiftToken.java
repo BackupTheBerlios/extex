@@ -23,12 +23,12 @@ package de.dante.extex.scanner;
  * This class represents a math shift token.
  * <p>
  * This class has a protected constructor only. Use the factory 
- * {@link de.dante.extex.scanner.TokenFactoryIml TokenFactoryImpl}
+ * {@link de.dante.extex.scanner.stream.TokenFactoryIml TokenFactoryImpl}
  * to get an instance of this class.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathShiftToken extends AbstractToken implements Token {
     /**

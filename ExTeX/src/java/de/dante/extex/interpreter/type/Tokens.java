@@ -29,13 +29,13 @@ import java.util.List;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Tokens implements Serializable {
-    /** this constant is the empty toks register */
+    /** This constant is the empty toks register */
     public static final Tokens EMPTY = new Tokens();
 
-    /** the internal list of tokens */
+    /** The internal list of tokens */
     private List tokens = new ArrayList();
 
     /**
@@ -46,9 +46,9 @@ public class Tokens implements Serializable {
     }
 
     /**
-     * ...
+     * Add another token to the end of the Tokens.
      *
-     * @param t ...
+     * @param t The token to add
      */
     public void add(Token t) {
         tokens.add(t);
@@ -68,7 +68,8 @@ public class Tokens implements Serializable {
     }
 
     /**
-     * Getter for the length of the toks register, i.e. the number of elements.
+     * Getter for the length of the toks register, this is the number of 
+     * elements contained.
      *
      * @return the number of elements in the toks register
      */

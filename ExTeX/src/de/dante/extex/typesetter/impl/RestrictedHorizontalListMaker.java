@@ -25,7 +25,7 @@ import de.dante.extex.typesetter.Mode;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RestrictedHorizontalListMaker
     extends HorizontalListMaker
@@ -34,7 +34,7 @@ public class RestrictedHorizontalListMaker
     /**
      * Creates a new object.
      * 
-     * @param parent
+     * @param manager the manager to ask for global changes
      */
     public RestrictedHorizontalListMaker(Manager manager) {
         super(manager);

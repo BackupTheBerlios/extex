@@ -18,27 +18,32 @@
  */
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.hyphenation.HyphenationManager;
+import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.type.Font;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
-    /** ... */
+    /** This is the color to use. The effect depends on the object to be colored.
+     *  E.g.
+     *  in a CharNode it is the color of the text (background is always transparent)
+     *  in a RuleNode it is the color of the rule
+     *  in a HListNode or VListNode it is the background color
+     */
     private Color color;
 
     /** ... */
-    private Direction direction     = Direction.LR;
+    private Direction direction = Direction.LR;
 
     /** ... */
     private Font font;
 
     /** ... */
-    private HyphenationManager hyphenation;
+    private HyphenationTable hyphenation;
 
     /** ... */
     private int angle;
@@ -56,30 +61,28 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#setAngle(int)
      */
     public void setAngle(int angle) {
-        // TODO Auto-generated method stub
+        this.angle = angle;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#getAngle()
      */
     public int getAngle() {
-        // TODO Auto-generated method stub
-        return 0;
+        return angle;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setColor(de.dante.extex.interpreter.context.Color)
      */
     public void setColor(Color color) {
-        // TODO Auto-generated method stub
+        this.color = color;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#getColor()
      */
     public Color getColor() {
-        // TODO Auto-generated method stub
-        return null;
+        return color;
     }
 
     /**
@@ -101,7 +104,7 @@ public class TypesettingContextImpl implements TypesettingContext {
      */
     public void setFont(Font font) {
         this.font = font;
-            }
+    }
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#getFont()
@@ -111,17 +114,16 @@ public class TypesettingContextImpl implements TypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(java.lang.String)
+     * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(HyphenationTable)
      */
-    public void setLanguage(String language) {
-        // TODO Auto-generated method stub
+    public void setLanguage(HyphenationTable language) {
+		hyphenation = language;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#getLanguage()
      */
-    public String getLanguage() {
-        // TODO Auto-generated method stub
-        return null;
+    public HyphenationTable getLanguage() {
+        return hyphenation;
     }
 }

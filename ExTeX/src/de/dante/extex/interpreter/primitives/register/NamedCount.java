@@ -18,10 +18,13 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Multiplyable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Count;
@@ -45,9 +48,11 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedCount extends AbstractCode implements Advanceable,
+                                                        Multiplyable,
+                                                        Divideable,
                                                         CountConvertable {
     /**
      * Creates a new object.
@@ -87,31 +92,6 @@ public class NamedCount extends AbstractCode implements Advanceable,
     /**
      * ...
      *
-     * @param prefix ...
-     * @param context ...
-     * @param source ...
-     * @param key ...
-     *
-     * @throws GeneralException ...
-     */
-    public void advance(Flags prefix, Context context,
-                        TokenSource source, String key)
-                 throws GeneralException {
-        source.scanKeyword("by");
-
-		long value = scanCount(context,source);
-
-        Count count = context.getCount(key);
-        count.setValue(count.getValue() + value);
-
-        if (prefix.isGlobal()) {
-            context.setCount(key, count.getValue() + value, true);
-        }
-    }
-
-    /**
-     * ...
-     *
      * @param context ...
      * @param source ...
      *
@@ -125,12 +105,28 @@ public class NamedCount extends AbstractCode implements Advanceable,
     }
 
     /**
+     * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public void divide(Flags prefix, Context context, TokenSource source)
+                throws GeneralException {
+        divide(prefix, context, source, getName());
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
      */
     public void expand(Flags prefix, Context context,
                        TokenSource source, Typesetter typesetter)
                 throws GeneralException {
         expand(prefix, context, source, getName());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public void multiply(Flags prefix, Context context,
+                         TokenSource source) throws GeneralException {
+        multiply(prefix, context, source, getName());
     }
 
     /**
@@ -154,6 +150,65 @@ public class NamedCount extends AbstractCode implements Advanceable,
         context.setCount(getName(),
                          (value.equals("") ? 0 : Long.parseLong(value)));
     }
+
+    /**
+     * ...
+     *
+     * @param prefix ...
+     * @param context ...
+     * @param source ...
+     * @param key ...
+     *
+     * @throws GeneralException ...
+     */
+    protected void advance(Flags prefix, Context context,
+                           TokenSource source, String key)
+                    throws GeneralException {
+        source.scanKeyword("by");
+
+        long value = scanCount(context, source);
+
+        Count count = context.getCount(key);
+        count.setValue(count.getValue() + value);
+
+        if (prefix.isGlobal()) {
+            context.setCount(key, count.getValue() + value, true);
+        }
+    }
+
+	protected void multiply(Flags prefix, Context context,
+						   TokenSource source, String key)
+					throws GeneralException {
+		source.scanKeyword("by");
+
+		long value = scanCount(context, source);
+
+		Count count = context.getCount(key);
+		count.setValue(count.getValue() * value);
+
+		if (prefix.isGlobal()) {
+			context.setCount(key, count.getValue() + value, true);
+		}
+	}
+
+	protected void divide(Flags prefix, Context context,
+						   TokenSource source, String key)
+					throws GeneralException {
+		source.scanKeyword("by");
+
+		long value = scanCount(context, source);
+
+		if ( value == 0 ) {
+			throw new GeneralHelpingException("divide by 0"); //TODO
+		}
+
+		Count count = context.getCount(key);
+		count.setValue(count.getValue() / value);
+
+		if (prefix.isGlobal()) {
+			context.setCount(key, count.getValue() + value, true);
+		}
+	}
 
     /**
      * ...
@@ -185,7 +240,7 @@ public class NamedCount extends AbstractCode implements Advanceable,
                    throws GeneralException {
         source.scanOptionalEquals();
 
-        long value = scanCount(context,source);
+        long value = scanCount(context, source);
         context.setCount(key, value, prefix.isGlobal());
         prefix.clear();
     }

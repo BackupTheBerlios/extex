@@ -18,9 +18,6 @@
  */
 package de.dante.extex.interpreter;
 
-import java.util.Calendar;
-import java.util.Iterator;
-
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.FontFactoryImpl;
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -37,6 +34,7 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
+
 import de.dante.util.GeneralException;
 import de.dante.util.NotObservableException;
 import de.dante.util.Observable;
@@ -47,11 +45,14 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
+import java.util.Calendar;
+import java.util.Iterator;
+
 /**
  * This is a reference implementation for a MAcro eXpander.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Max extends Moritz implements CatcodeVisitor,
                                            Interpreter,
@@ -77,11 +78,11 @@ public class Max extends Moritz implements CatcodeVisitor,
     private Flags prefix = new Flags();
 
     /** ... */
-    private FontFactory fontFactory = new FontFactoryImpl();
+    private FontFactory fontFactory = new FontFactoryImpl(); //TODO configure and set in main
 
     /** This is the logger for any kind of informative messages.
      */
-    private Logger logger;
+    private Logger logger; //TODO eliminiate since not used
 
     /** This observer list is used for the observers which are registered
      *  to receive a notification when an error occurs. The
@@ -99,20 +100,25 @@ public class Max extends Moritz implements CatcodeVisitor,
      */
     private Typesetter typesetter = null;
 
-    /** the count for the number of errors already encountered
+    /** The count for the number of errors already encountered
      */
     private int errorCount = 0;
 
-    /** the number of errors after which the run is terminated.
+    /** The number of errors after which the run is terminated.
      *  This value might be overwritten in the configuration.
      */
     private int maxErrors = 100;
 
     /**
      * Creates a new object.
+     *
+     * @param config the configuration object to take into account
+     *
+     * @throws ConfigurationException in case of an error
      */
-    public Max() {
-        super();
+    public Max(Configuration config) throws ConfigurationException {
+        super(config);
+        configure(config);
     }
 
     /**
@@ -176,61 +182,6 @@ public class Max extends Moritz implements CatcodeVisitor,
      */
     public void setTypesetter(Typesetter typesetter) {
         this.typesetter = typesetter;
-    }
-
-    /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
-     */
-    public void configure(Configuration config)
-                   throws ConfigurationException {
-        //long t = System.currentTimeMillis();
-        context = new ContextFactory(config.getConfiguration("Context")).newInstance();
-        setContext(context);
-        context.setInteraction(Interaction.ERRORSTOPMODE);
-        TypesettingContext typesettingContext = new TypesettingContextImpl();
-        typesettingContext.setFont(fontFactory.getInstance(config.getValue("Font")));
-        typesettingContext.setLanguage(config.getValue("Language"));
-        context.setTypesettingContext(typesettingContext);
-
-        maxErrors = config.getValueAsInteger("maxErrors", 100);
-
-        Iterator iterator = config.iterator("define");
-
-        while (iterator.hasNext()) {
-            Configuration c = (Configuration) iterator.next();
-            String name     = c.getAttribute("name");
-
-            if (name == null || name.equals("")) {
-                throw new ConfigurationMissingAttributeException("name");
-            }
-
-            String classname = c.getAttribute("class");
-
-            if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException("classname");
-            }
-
-            try {
-                Code code = (Code) (Class.forName(classname).getConstructor(new Class[] {
-                                                                                String.class
-                                                                            }).newInstance(new Object[] {
-                                                                                               name
-                                                                                           }));
-                code.set(context, c.getValue());
-                context.setMacro(name, code);
-            } catch (Exception e) {
-                throw new ConfigurationInstantiationException(e);
-            }
-        }
-
-        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH));
-        context.setCount("month", calendar.get(Calendar.MONTH));
-        context.setCount("year", calendar.get(Calendar.YEAR));
-        context.setCount("time",
-                         calendar.get(Calendar.HOUR_OF_DAY) * 60 +
-                         calendar.get(Calendar.MINUTE));
-
-        //System.err.println("init: "+Long.toString(System.currentTimeMillis()-t)+"ms");
     }
 
     /**
@@ -304,10 +255,7 @@ public class Max extends Moritz implements CatcodeVisitor,
                     throw new GeneralPanicException("TTP.ErrorLimitReached",
                                                     Integer.toString(maxErrors));
                 } else if (errorHandler != null) {
-                    errorHandler.handleError((e instanceof GeneralHelpingException
-                                              ? (GeneralHelpingException) e
-                                              : new GeneralHelpingException(e)),
-                                             current, this, context);
+                    errorHandler.handleError(e, current, this, context);
                 } else {
                     throw e;
                 }
@@ -441,8 +389,7 @@ public class Max extends Moritz implements CatcodeVisitor,
         Token next = getNextToken();
 
         if (next == null) {
-            
-        // throw new GeneralException("Missing $ inserted");
+            // throw new GeneralException("Missing $ inserted");
         } else if (next.isa(Catcode.MATHSHIFT)) {
             typesetter.toggleDisplaymath();
         } else {
@@ -479,14 +426,15 @@ public class Max extends Moritz implements CatcodeVisitor,
      */
     public Object visitSpace(Object oToken, Object ignore)
                       throws GeneralException {
-        typesetter.addSpace(context.getTypesettingContext());
+        typesetter.addSpace(context.getTypesettingContext(), null);
         return null;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSubMark(Object oToken, Object ignore) throws GeneralException {
+    public Object visitSubMark(Object oToken, Object ignore)
+                        throws GeneralException {
         Token token = (Token) oToken;
         System.err.println(token.toString());
 
@@ -497,7 +445,8 @@ public class Max extends Moritz implements CatcodeVisitor,
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSupMark(Object oToken, Object ignore) throws GeneralException {
+    public Object visitSupMark(Object oToken, Object ignore)
+                        throws GeneralException {
         Token token = (Token) oToken;
         System.err.println(token.toString());
 
@@ -508,11 +457,76 @@ public class Max extends Moritz implements CatcodeVisitor,
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitTabMark(Object oToken, Object ignore) throws GeneralException {
+    public Object visitTabMark(Object oToken, Object ignore)
+                        throws GeneralException {
         Token token = (Token) oToken;
         System.err.println(token.toString());
+
         //TODO unimplemented
         throw new GeneralException("unimplemented");
+    }
+
+    /**
+     * ...
+     *
+     * @param config ...
+     *
+     * @throws ConfigurationException ...
+     * @throws ConfigurationMissingAttributeException ...
+     * @throws ConfigurationInstantiationException ...
+     */
+    private void configure(Configuration config)
+                    throws ConfigurationException {
+        //long t = System.currentTimeMillis();
+        context = new ContextFactory(config.getConfiguration("Context")).newInstance();
+        setContext(context);
+        context.setInteraction(Interaction.ERRORSTOPMODE);
+
+        TypesettingContext typesettingContext = new TypesettingContextImpl();
+        typesettingContext.setFont(fontFactory.getInstance(config.getValue("Font")));
+
+        //typesettingContext.setLanguage(config.getValue("Language"));
+        context.setTypesettingContext(typesettingContext);
+
+        maxErrors = config.getValueAsInteger("maxErrors", 100);
+
+        Iterator iterator = config.iterator("define");
+
+        while (iterator.hasNext()) {
+            Configuration cfg = (Configuration) iterator.next();
+            String name       = cfg.getAttribute("name");
+
+            if (name == null || name.equals("")) {
+                throw new ConfigurationMissingAttributeException("name");
+            }
+
+            String classname = cfg.getAttribute("class");
+
+            if (classname == null || classname.equals("")) {
+                throw new ConfigurationMissingAttributeException("classname");
+            }
+
+            try {
+                Code code = (Code) (Class.forName(classname).getConstructor(new Class[] {
+                                                                                String.class
+                                                                            }).newInstance(new Object[] {
+                                                                                               name
+                                                                                           }));
+                code.set(context, cfg.getValue());
+                context.setMacro(name, code);
+            } catch (Exception e) {
+                throw new ConfigurationInstantiationException(e);
+            }
+        }
+
+        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH));
+        context.setCount("month", calendar.get(Calendar.MONTH));
+        context.setCount("year", calendar.get(Calendar.YEAR));
+        context.setCount("time",
+                         calendar.get(Calendar.HOUR_OF_DAY) * 60 +
+                         calendar.get(Calendar.MINUTE));
+
+        //System.err.println("init: "+Long.toString(System.currentTimeMillis()-t)+"ms");
     }
 
     /**

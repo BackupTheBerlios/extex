@@ -43,12 +43,12 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ErrorHandlerImpl implements ErrorHandler {
     /** The logger to write a protocol of the interaction to.
      *  Note that the error has already been logged when this handler is
-     *  invoked.
+     *  invoked. 
      */
     private Logger logger;
 
@@ -64,9 +64,9 @@ public class ErrorHandlerImpl implements ErrorHandler {
 
 
     /**
-     * @see de.dante.extex.interpreter.ErrorHandler#handleError(de.dante.extex.i18n.GeneralHelpingException, de.dante.extex.scanner.Token, de.dante.extex.interpreter.TokenSource, de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.interpreter.ErrorHandler#handleError(de.dante.extex.i18n.GeneralException, de.dante.extex.scanner.Token, de.dante.extex.interpreter.TokenSource, de.dante.extex.interpreter.context.Context)
      */
-    public boolean handleError(GeneralHelpingException e, Token t,
+    public boolean handleError(GeneralException e, Token t,
                                TokenSource source, Context context)
                         throws GeneralException {
         Interaction interaction = context.getInteraction();

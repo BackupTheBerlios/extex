@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Glue implements Serializable {
     /** ... */
@@ -48,6 +48,13 @@ public class Glue implements Serializable {
         this.length = new Dimen(length);
     }
 
+    public Glue(GlueComponent length, GlueComponent stretch, GlueComponent shrink ) {
+        super();
+        this.length = length;
+        this.stretch = stretch;
+        this.shrink = shrink;
+    }
+
     /**
      * Creates a new object.
      */
@@ -61,7 +68,31 @@ public class Glue implements Serializable {
             this.shrink = new GlueComponent(source,context,true);
         }
     }
+    
+    public Glue copy() {
+        return new Glue(length.copy(),stretch.copy(),shrink.copy());
+    }
+    
+    public Glue add(Glue g) {
+        //TODO
+        return this;
+    }
 
+    public Glue multiply(long nom, long denom) {
+        //TODO
+        return this;
+    }
+
+    public Glue multiplyStretch(long nom, long denom) {
+        //TODO
+        return this;
+    }
+
+    public Glue multiplyShrink(long nom, long denom) {
+        //TODO
+        return this;
+    }
+    
     /**
      * ...
      *

@@ -19,6 +19,7 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /** This value contains the previous depth for baseline calculations.
@@ -48,7 +49,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /**
      * Creates a new object.
      *
-     * @param parent ...
+     * @param manager the manager to ask for global changes
      */
     public VerticalListMaker(Manager manager) {
         super(manager);
@@ -87,7 +88,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
      */
-    public void addSpace(TypesettingContext typesettingContext) throws GeneralException {
+    public void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException {
         // TODO Auto-generated method stub
     }
 

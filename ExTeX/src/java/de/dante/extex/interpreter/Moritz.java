@@ -18,11 +18,8 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.util.configuration.Configurable;
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.context.*;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.ControlSequenceToken;
@@ -30,12 +27,14 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.NotObservableException;
 import de.dante.util.Observable;
 import de.dante.util.Observer;
 import de.dante.util.ObserverList;
+import de.dante.util.configuration.Configuration;
 
 import java.util.Stack;
 
@@ -43,22 +42,26 @@ import java.util.Stack;
  * This class provides the layer above the input streams and the tokenizer.
  * It has additional methods for parsing.
  * The details of the token streams are mostly hidden.
- * 
+ *
  * <p>
- * This class is the companion to Max. 
+ * This class is the companion to Max.
  * (The name is a joke for friends of Wilhelm Busch)
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Moritz implements TokenSource,
-                               Configurable,
-                               Observable {
-    /** the interpreter context.
+public class Moritz implements TokenSource, Observable {
+    /** ... */
+    private static final long MAX_CHAR_CODE = 0x7fff; //TODO: find a good value
+
+    /** The interpreter context.
      *  well, the two of them are more closely linked than I like it.
      */
     private Context context;
+
+    /** ... */
+    private ObserverList observersCloseStream = new ObserverList();
 
     /** This observer list is used for the observers which are registered
      *  to receive a notification when all streams are at their end. The
@@ -78,8 +81,6 @@ public class Moritz implements TokenSource,
      */
     private ObserverList observersPush = new ObserverList();
 
-    private ObserverList observersCloseStream = new ObserverList();
-
     /** This is the stack of streams to read from except of the current one
      *  which is stored in the variable <code>stream</code>.
      */
@@ -91,13 +92,13 @@ public class Moritz implements TokenSource,
      */
     private TokenStream stream = null;
 
-    /** the factory for new token streams */
+    /** The factory for new token streams */
     private TokenStreamFactory tokenStreamFactory = null;
 
     /**
      * Creates a new object.
      */
-    public Moritz() {
+    public Moritz(Configuration config) {
         super();
     }
 
@@ -106,6 +107,21 @@ public class Moritz implements TokenSource,
      */
     public Locator getLocator() {
         return (stream == null ? null : stream.getLocator());
+    }
+
+    /**
+     * Get the next token which has not the catcode SPACE.
+     *
+     * @return the next non-space token or <code>null</code> at EOF
+     */
+    public Token getNextNonSpace() throws GeneralException {
+        for (Token t = getNextToken(); t != null; t = getNextToken()) {
+            if (!(t.isa(Catcode.SPACE))) {
+                return t;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -184,13 +200,6 @@ public class Moritz implements TokenSource,
     }
 
     /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
-     */
-    public void configure(Configuration config)
-                   throws ConfigurationException {
-    }
-
-    /**
      * Push back a token onto the input stream for subsequent reading.
      *
      * @param token the token to push
@@ -242,7 +251,83 @@ public class Moritz implements TokenSource,
     }
 
     /**
-     * Scan the input stream for tokens making up an integer, i.e. a number
+     * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode()
+     */
+    public long scanCharacterCode() throws GeneralException {
+        long cc = scanNumber();
+
+        if (cc < 0 || cc > MAX_CHAR_CODE) {
+            throw new GeneralHelpingException("TTP.BadCharCode",
+                                              Long.toString(cc), "0",
+                                              Long.toString(MAX_CHAR_CODE));
+        }
+
+        return cc;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#scanFloat()
+     */
+    public long scanFloat() throws GeneralException {
+        long value  = 0;
+        boolean neg = false;
+        int post    = 0;
+        Token t     = scanNextNonSpace();
+
+        if (t == null) {
+        } else if (t.equals(Catcode.OTHER, "-")) {
+            neg = true;
+            t   = scanNextNonSpace();
+        } else if (t.equals(Catcode.OTHER, "+")) {
+            t = scanNextNonSpace();
+        }
+
+        if (t != null &&
+                !t.equals(Catcode.OTHER, ".") &&
+                !t.equals(Catcode.OTHER, ",")) {
+            value = scanNumber(t);
+            t     = getNextToken();
+        }
+
+        if (t != null &&
+                (t.equals(Catcode.OTHER, ".") ||
+                t.equals(Catcode.OTHER, ","))) {
+            // @see "TeX -- The Program [102]"
+            int[] dig = new int[17];
+            int k     = 0;
+
+            for (t = getNextToken();
+                     t != null && t.isa(Catcode.OTHER) &&
+                     t.getValue()
+                          .matches("[0-9]"); t = scanNextToken()) {
+                if (k < 17) {
+                    dig[k++] = t.getValue()
+                                .charAt(0) - '0';
+                }
+            }
+
+            if (k < 17) {
+                k = 17;
+            }
+
+            post = 0;
+
+            while (k-- > 0) {
+                post = (post + dig[k] * (1 << 17)) / 10;
+            }
+
+            post = (post + 1) / 2;
+        }
+
+        push(t);
+
+        value = value << 16 | post;
+
+        return (neg ? -value : value);
+    }
+
+    /**
+     * Scan the input stream for tokens making up an integer, this is a number
      * optionally preceeded by a sign (+ or -). The number can be preceeded
      * by optional whitespace. Whitespace is also ignored between the sign and
      * the number. All non-whitespace characters must have the catcode OTHER.
@@ -253,8 +338,7 @@ public class Moritz implements TokenSource,
      * @throws CodeEOFException in case that the end of file has been reached
      * before an integer could be acquired
      */
-    public int scanInteger()
-                    throws GeneralException {
+    public long scanInteger() throws GeneralException {
         Token t = scanNextNonSpace();
 
         if (t == null) {
@@ -301,23 +385,6 @@ public class Moritz implements TokenSource,
     }
 
     /**
-     * Get the next token which has not the catcode SPACE.
-     *
-     * @return the next non-space token or <code>null</code> at EOF
-     */
-    public Token getNextNonSpace() throws GeneralException {
-        for (Token t = getNextToken(); t != null;
-                 t = getNextToken()) {
-            if (!(t.isa(Catcode.SPACE))) {
-                return t;
-            }
-        }
-
-        return null;
-    }
-
-
-    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
@@ -355,9 +422,10 @@ public class Moritz implements TokenSource,
     }
 
     /**
-     * Scan the input stream for tokens making up a number, i.e. a sequence of
-     * digits with catcode OTHER. The number can be preceeded by optional
-     * whitespace.
+     * Scan the input stream for tokens making up a number, this means a
+     * sequence of digits with catcode OTHER.
+     * Alternative notations for a number may exist.
+     * The number can be preceeded by optional whitespace.
      *
      * @return the value of the integer scanned
      *
@@ -365,13 +433,12 @@ public class Moritz implements TokenSource,
      * @throws CodeEOFException in case that the end of file has been reached
      * before an integer could be acquired
      */
-    public int scanNumber()
-                   throws GeneralException {
+    public long scanNumber() throws GeneralException {
         return scanNumber(scanNextNonSpace());
     }
 
     /**
-     * ...
+     * Scan a number with a given first token.
      *
      * @param t the first token to consider
      *
@@ -381,9 +448,8 @@ public class Moritz implements TokenSource,
      * @throws CodeEOFException in case that the end of file has been reached
      * before an integer could be acquired
      */
-    public int scanNumber(Token t)
-                   throws GeneralException {
-        int n = 0;
+    public long scanNumber(Token t) throws GeneralException {
+        long n = 0;
 
         if (t == null) {
             throw new GeneralHelpingException("TTP.MissingNumber");
@@ -400,24 +466,30 @@ public class Moritz implements TokenSource,
                               .matches("[0-9]"));
 
             stream.put(t);
-        } else if (t.isa(Catcode.OTHER) && t.getValue().equals("'")) {
-            
+        } else if (t.isa(Catcode.OTHER) && t.getValue()
+                                                .equals("'")) {
             while (t != null &&
-                        t.isa(Catcode.OTHER) &&
-                        t.getValue()
-                             .matches("[0-7]")) {
+                       t.isa(Catcode.OTHER) &&
+                       t.getValue()
+                            .matches("[0-7]")) {
                 n = n * 8 + t.getValue()
-                              .charAt(0) - '0';
+                             .charAt(0) - '0';
                 t = scanNextToken();
             }
+
             stream.put(t);
-        } else if (t.isa(Catcode.OTHER) && t.getValue().equals("`")) {
+        } else if (t.isa(Catcode.OTHER) && t.getValue()
+                                                .equals("`")) {
             t = getNextToken();
-            if ( t == null ) {
+
+            if (t == null) {
                 throw new GeneralHelpingException("TTP.MissingNumber");
             }
-            n = t.getValue().charAt(0);
-        } else if (t.isa(Catcode.OTHER) && t.getValue().equals("\"")) {
+
+            n = t.getValue()
+                 .charAt(0);
+        } else if (t.isa(Catcode.OTHER) && t.getValue()
+                                                .equals("\"")) {
             //TODO parse hex numbers
         } else {
             stream.put(t);
@@ -431,8 +503,7 @@ public class Moritz implements TokenSource,
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      */
-    public void scanOptionalEquals()
-                            throws GeneralException {
+    public void scanOptionalEquals() throws GeneralException {
         Token t = scanNextNonSpace();
 
         if (t == null) {
@@ -456,10 +527,10 @@ public class Moritz implements TokenSource,
     /**
      * ...
      *
-     * @param s ...
-     * @param i ...
+     * @param s the string to use as reference
+     * @param i the index in s to start working at
      *
-     * @return ...
+     * @return <code>true</code> iff the keyword has been found
      *
      * @throws GeneralException in case of an error
      */
@@ -470,69 +541,14 @@ public class Moritz implements TokenSource,
 
             if (t == null) {
                 return false;
-            } else if (!t.equals(Catcode.LETTER, s.charAt(i)) ||
+            } else if (!(t.equals(Catcode.LETTER, s.charAt(i)) ||
+                           t.equals(Catcode.OTHER, s.charAt(i))) ||
                            !scanKeyword(s, i + 1)) {
                 stream.put(t);
                 return false;
             }
         }
+
         return true;
     }
-    
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanFloat()
-     */
-    public long scanFloat() throws GeneralException {
-        long value = 0;
-        boolean neg = false;
-        int post    = 0;
-        Token t     = scanNextNonSpace();
-
-        if (t == null) {
-        } else if (t.equals(Catcode.OTHER, "-")) {
-            neg = true;
-            t   = scanNextNonSpace();
-        } else if (t.equals(Catcode.OTHER, "+")) {
-            t = scanNextNonSpace();
-        }
-
-        if (t != null &&
-                !t.equals(Catcode.OTHER, ".") &&
-                !t.equals(Catcode.OTHER, ",")) {
-            value = scanNumber(t);
-            t     = getNextToken();
-        }
-
-        if (t != null &&
-                (t.equals(Catcode.OTHER, ".") ||
-                t.equals(Catcode.OTHER, ","))) {
-            // @see "TeX -- The Program [102]"
-
-            int[] dig = new int[17];
-            int k     = 0;
-
-            for (t = getNextToken();
-                     t != null && t.isa(Catcode.OTHER) &&
-                     t.getValue()
-                          .matches("[0-9]");
-                     t = scanNextToken()) {
-                if (k < 17) {
-                    dig[k++] = t.getValue()
-                                .charAt(0) - '0';
-                }
-            }
-            if ( k<17 ) k = 17;
-            post = 0;
-            while (k-->0) {
-                post = (post+dig[k]*(1<<17))/10;
-            }
-            post = (post+1) / 2;
-        }
-        push(t);
-        
-        value = value<<16 | post;
-
-        return (neg? -value:value);
-    }
-
 }

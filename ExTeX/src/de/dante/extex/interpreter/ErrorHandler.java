@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * can be continued.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ErrorHandler {
     /**
@@ -44,7 +44,7 @@ public interface ErrorHandler {
      *
      * @throws InterpreterException in case of a problem
      */
-    public abstract boolean handleError(GeneralHelpingException e,
+    public abstract boolean handleError(GeneralException e,
                                         Token t, TokenSource source,
                                         Context context)
                                  throws GeneralException;
