@@ -24,21 +24,23 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents a Noad with vertically centered material.
  *
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class VCenterNoad extends AbstractNoad {
+public class VCenterNoad extends AbstractNucleusNoad {
 
     /**
      * Creates a new object.
+     *
+     * @param nucleus the nucleus to be underlined
      */
-    public VCenterNoad() {
+    public VCenterNoad(final Noad nucleus) {
 
-        super();
+        super(nucleus);
     }
 
     /**
@@ -46,17 +48,7 @@ public class VCenterNoad extends AbstractNoad {
      */
     protected String stringName() {
 
-        //TODO gene: unimplemented
         return "vcenter";
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb) {
-
-        //TODO gene: unimplemented
-
     }
 
     /**

@@ -21,10 +21,13 @@ package de.dante.extex.interpreter.primitives.register.box;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -52,9 +55,9 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public class Setbox extends BoxParameter implements Code, Serializable {
+public class Setbox extends AbstractBox implements Code, Serializable {
 
     /**
      * Creates a new object.
@@ -67,25 +70,21 @@ public class Setbox extends BoxParameter implements Code, Serializable {
     }
 
     /**
-     * Return the key (the number) for the box register.
-     *
-     * @param source the source for new tokens
-     * @param context the interpreter context to use
-     *
-     * @return the key for the box register
-     *
-     * @throws GeneralException in case of an error
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    protected String getKey(final TokenSource source, final Context context)
+    public boolean execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String name = source.scanRegisterName();
-
-        if (Namespace.SUPPORT_NAMESPACE_BOX) {
-            return context.getNamespace() + "box#" + name;
-        } else {
-            return "box#" + name;
-        }
+        String key = getKey(source, context);
+        source.getOptionalEquals();
+        Box box = source.getBox(typesetter);
+        context.setBox(key, box, prefix.isGlobal());
+        return true;
     }
 
 }

@@ -22,10 +22,11 @@ package de.dante.extex.interpreter.type.math;
 import de.dante.util.UnicodeChar;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents a mathematical character. It consists of a class, a
+ * family and a character code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathCode {
 

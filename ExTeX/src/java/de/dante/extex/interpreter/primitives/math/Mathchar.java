@@ -54,7 +54,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -90,6 +90,10 @@ public class Mathchar extends AbstractMathCode {
         if (t == null) {
             throw new EofHelpingException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
+            source.push(t);
+            String mclass = source.scanTokensAsString();
+            String glyph = source.scanTokensAsString();
+
             //TODO gene: extension unimplemented
             throw new RuntimeException("unimplemented");
         } else {

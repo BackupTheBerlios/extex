@@ -23,13 +23,13 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This node type represents the extension node from the perspective of TeX.
  *
  * @see "TeX -- The Program [146]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class WhatsItNode extends AbstractNode {
 

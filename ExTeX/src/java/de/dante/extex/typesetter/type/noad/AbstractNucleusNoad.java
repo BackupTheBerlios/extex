@@ -20,10 +20,10 @@
 package de.dante.extex.typesetter.type.noad;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This abstract noad represents a Noad with a nucleus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractNucleusNoad extends AbstractNoad {
 

@@ -19,19 +19,36 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.util.GeneralException;
 
 /**
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class DisplaymathListMaker extends MathListMaker {
+public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
+
+    /**
+     * The field <tt>eqno</tt> contains the math list for the equation number.
+     * It is <code>null</code> if no equation number is set.
+     */
+    private MathList eqno = null;
+
+    /**
+     * The field <tt>leq</tt> contains the indicator for the side of the
+     * equation number. A value of <code>true</code> indicates an equation
+     * number on the left side.
+     */
+    private boolean leq = false;
 
     /**
      * Creates a new object.
@@ -51,7 +68,43 @@ public class DisplaymathListMaker extends MathListMaker {
         HorizontalListNode list = new HorizontalListNode();
 
         getNoades().typeset(list, new MathContext(StyleNoad.DISPLAYSTYLE),
-                context); //TODO gene: ???
+                context);
+
+        if (eqno != null) {
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
         return list;
     }
+
+    /**
+     * This method switches the collection of material to the target "equation
+     * number".
+     *
+     * @param left the indicator on which side to produce the equation number.
+     *  A value <code>true</code> indicates that the left side should be used.
+     *
+     * @throws GeneralException in case on an error
+     *
+     * @see de.dante.extex.typesetter.listMaker.EqConsumer#switchToNumber(boolean)
+     */
+    public void switchToNumber(final boolean left) throws GeneralException {
+
+        if (eqno != null) {
+            throw new CantUseHelpingException(null, null);
+        }
+
+        leq = left;
+        eqno = new MathList();
+        setInsertionPoint(eqno);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getMode()
+     */
+    public Mode getMode() {
+
+        return Mode.DISPLAYMATH;
+    }
+
 }

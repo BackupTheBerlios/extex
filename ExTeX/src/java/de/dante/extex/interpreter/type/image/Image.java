@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.type.image;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes the capabilities of an image.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Image {
 

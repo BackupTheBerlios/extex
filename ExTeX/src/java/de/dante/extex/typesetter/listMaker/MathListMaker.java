@@ -49,12 +49,18 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
-     * The field <tt>cnf</tt> contains the char noad factory.
+     * The field <tt>insertionPoint</tt> contains the the MathList to which
+     * the next noads should be added.
+     */
+    private MathList insertionPoint;
+
+    /**
+     * The field <tt>noadFactory</tt> contains the noad factory.
      */
     private NoadFactory noadFactory = new NoadFactory();
 
@@ -62,7 +68,12 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
      * instance.
      */
-    private MathList noads = new MathList();
+    private MathList noads;
+
+    /**
+     * The field <tt>fraction</tt> contains the ...
+     */
+    private Noad fraction = null;
 
     /**
      * Creates a new object.
@@ -72,15 +83,8 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public MathListMaker(final ListManager manager) {
 
         super(manager);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.type.noad.Noad)
-     */
-    public void add(final Noad noad) throws GeneralException {
-
-        noads.add(noad);
+        noads = new MathList();
+        insertionPoint = noads;
     }
 
     /**
@@ -92,6 +96,26 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             throws GeneralException {
 
         add(noadFactory.getNoad(mclass, mg));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     *      de.dante.extex.interpreter.type.muskip.Muskip)
+     */
+    public void add(final Muskip glue) throws GeneralException {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
+        insertionPoint.add(noad);
     }
 
     /**
@@ -115,7 +139,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * Spaces are ignored in math mode.
+     * Spaces are ignored in math mode. Thus this method is a noop.
      *
      * @param typesettingContext the typesetting context for the space
      * @param spacefactor the spacefactor to use for this space or
@@ -243,6 +267,16 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
+     * Setter for insertionPoint.
+     *
+     * @param insertionPoint the insertionPoint to set
+     */
+    protected void setInsertionPoint(final MathList insertionPoint) {
+
+        this.insertionPoint = insertionPoint;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
@@ -300,15 +334,5 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
         Count mcode = context.getMathcode(symbol);
         noads.add(noadFactory.getNoad((mcode == null ? 0 : mcode.getValue())));
-    }
-    /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
-     *      de.dante.extex.interpreter.type.muskip.Muskip)
-     */
-    public void add(final Muskip glue) throws GeneralException {
-
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
-
     }
 }

@@ -26,13 +26,15 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class represents a Node which holds a penalty value. It is used during
+ * the paragraph breaking or page breaking to control the algorithm. This node
+ * should be ignored by the DocumentWriter.
  *
  * @see "TeX -- The Program [157]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discartable {
 
