@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -211,6 +211,9 @@ public class ExTeXLauncher extends TestCase {
             main.run();
         } catch (MainException e) {
             errorP = true;
+        } catch (Throwable e) {
+            e.printStackTrace();
+            assertTrue(false);
         }
 
         handler.close();
