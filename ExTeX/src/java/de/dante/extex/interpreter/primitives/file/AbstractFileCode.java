@@ -20,23 +20,33 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.Configurable;
 
 /**
  * This abstract class provides some common methods for primitives dealing with
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public abstract class AbstractFileCode extends AbstractCode {
+public abstract class AbstractFileCode extends AbstractCode
+        implements
+            Configurable {
+
+    /**
+     * The field <tt>strictTeX</tt> contains the boolean indicating whether or
+     * not to adhere strictly to the rules of TeX for file name parsing.
+     */
+    private boolean strictTeX = false;
 
     /**
      * Creates a new object.
@@ -49,14 +59,21 @@ public abstract class AbstractFileCode extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     * ...
+     *
+     * @param config the configuration to use
+     *
+     * @throws ConfigurationException in case of an error
+     *
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.configuration.Configuration)
      */
-    public abstract boolean execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException;
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
+        String strict = config.getAttribute("strict");
+        strictTeX = (strict != null && Boolean.getBoolean(strict));
+    }
 
     /**
      * Return the encoding for the AbstractFileCode file.
@@ -86,7 +103,23 @@ public abstract class AbstractFileCode extends AbstractCode {
     }
 
     /**
-     * Scan the file name until a <code>SpaceToken</code> is found.
+     * Scan the file name.
+     *
+     * <doc type="syntax" name="filename">
+     * This method parses the following syntactic entity:
+     * <pre class="syntax">
+     *   &lang;filename&rang; </pre>
+     *
+     * The scanning is performed in one of two ways:
+     * <ul>
+     * <li>If the first token is a left brace then a block is read until the
+     *   matching right brace is found. On the way the tokens are expanded.
+     * </li>
+     * <li>Otherwise tokens are read until a space token is encountered.
+     * </li>
+     * </ul>
+     *
+     * </doc>
      *
      * @param source the source for new tokens
      * @param context the processing context
@@ -105,15 +138,25 @@ public abstract class AbstractFileCode extends AbstractCode {
                     printableControlSequence(context));
         }
 
-        StringBuffer sb = new StringBuffer(t.getValue());
+        if (strictTeX && t.isa(Catcode.LEFTBRACE)) {
+            source.push(t);
+            String name = source.scanTokensAsString();
+            if (name == null) {
+                throw new HelpingException("UnexpectedEOF",
+                        printableControlSequence(context));
+            }
+            return name;
 
-        for (t = source.scanToken(); //
-        t != null && !(t instanceof SpaceToken); //
-        t = source.scanToken()) {
-            sb.append(t.getValue());
+        } else {
+            StringBuffer sb = new StringBuffer(t.getValue());
+
+            for (t = source.getToken(); //
+            t != null && !(t instanceof SpaceToken); //
+            t = source.getToken()) {
+                sb.append(t.getValue());
+            }
+
+            return sb.toString();
         }
-
-        return sb.toString();
     }
-
 }
