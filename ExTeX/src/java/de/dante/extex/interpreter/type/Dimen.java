@@ -27,9 +27,21 @@ import de.dante.util.GeneralException;
 /**
  * This class implements the dimen value.
  *
+ * <table border="1">
+ * 	<tr><td>1 pt     </td><td>=</td><td>65536 sp</td></tr>
+ * 	<tr><td>1 pc     </td><td>=</td><td>12 pt   </td></tr>
+ *  <tr><td>1 in     </td><td>=</td><td>72,27 pt</td></tr>
+ *  <tr><td>72 bp    </td><td>=</td><td>1 in    </td></tr>
+ *  <tr><td>2,54 cm  </td><td>=</td><td>1 in    </td></tr>
+ *  <tr><td>10 mm    </td><td>=</td><td>1 cm    </td></tr>
+ *  <tr><td>1157 dd  </td><td>=</td><td>1238 pt </td></tr>
+ *  <tr><td>1 cc     </td><td>=</td><td>12 dd   </td></tr>
+ *  <tr><td>65536 sp </td><td>=</td><td>1 pt    </td></tr> 
+ * </table>
+
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -151,4 +163,13 @@ public class Dimen extends GlueComponent implements Serializable {
 	public boolean le(final Dimen d) {
 		return (getValue() <= d.getValue());
 	}
+	
+	/**
+	 * Return the <code>Dimen</code>-value in bp
+	 * @return	the value in bp
+	 */
+	public double toBP() {
+		return ((double) getValue() * 7200) / (7227 << 16);
+	}
+	
 }
