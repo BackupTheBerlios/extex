@@ -19,6 +19,7 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -32,7 +33,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -58,9 +59,16 @@ public class CharNode extends AbstractNode implements Node {
         typesettingContext = context;
         character = uc;
         Glyph glyph = context.getFont().getGlyph(uc);
-        setWidth(glyph.getWidth());
-        setHeight(glyph.getHeight());
-        setDepth(glyph.getDepth());
+
+        if (glyph != null) {
+            setWidth(glyph.getWidth());
+            setHeight(glyph.getHeight());
+            setDepth(glyph.getDepth());
+        } else {
+            setWidth(new Dimen(0));
+            setHeight(new Dimen(0));
+            setDepth(new Dimen(0));
+        }
     }
 
     /**
