@@ -19,55 +19,115 @@
 
 package de.dante.extex.typesetter.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.Token;
+import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
             AlignmentList {
 
     /**
+     * The field <tt>col</tt> contains the indicator for the current column.
+     */
+    private int col = 0;
+
+    /**
+     * The field <tt>line</tt> contains the ...
+     */
+    private Object[] line;
+
+    /**
+     * The field <tt>preamble</tt> contains the ...
+     */
+    private List preamble;
+
+    /**
+     * The field <tt>rows</tt> contains the ...
+     */
+    private List rows = new ArrayList();
+
+    /**
      * Creates a new object.
      *
      * @param manager the manager
-     * @param align ...
+     * @param thePreamble the list of preamble items
+     * @param width the target width or <code>null</code> if the natural width
+     *  should be used
      */
-    public HAlignListMaker(final Manager manager, final Align align) {
+    public HAlignListMaker(final Manager manager, final List thePreamble,
+            final Dimen width) {
 
         super(manager);
+        preamble = thePreamble;
+        line = new Object[preamble.size()];
+    }
+
+    /**
+     * Clear all entries of the current line.
+     */
+    private void clearLine() {
+
+        for (int i = 0; i < line.length; i++) {
+            line[i] = null;
+        }
+        col = 0;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#close()
+     */
+    public NodeList close() throws GeneralException {
+
+        // TODO unimplemented
+        return null;
     }
 
     /**
      * @see de.dante.extex.typesetter.impl.AlignmentList#cr()
      */
-    public void cr() {
+    public void cr() throws GeneralException {
 
         // TODO unimplemented
-
+        clearLine();
     }
 
     /**
      * @see de.dante.extex.typesetter.impl.AlignmentList#crcr()
      */
-    public void crcr() {
+    public void crcr() throws GeneralException {
+
+        // TODO unimplemented
+        clearLine();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.AlignmentList#omit()
+     */
+    public void omit() throws GeneralException {
 
         // TODO unimplemented
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.AlignmentList#omit()
+     * @see de.dante.extex.typesetter.impl.AlignmentList#span()
      */
-    public void omit() {
+    public void span() throws GeneralException {
 
         // TODO unimplemented
+        col++;
 
     }
 
@@ -80,7 +140,5 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
             throws GeneralException {
 
         // TODO unimplemented
-        super.treatTabMark(context, token);
     }
-
 }
