@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -178,7 +178,8 @@ public class DimenPrimitive extends AbstractDimen
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new HelpingException("TTP.ArithOverflow");
+            throw new ArithmeticOverflowHelpingException(
+                    printableControlSequence(context));
         }
 
         Dimen d = new Dimen(context.getDimen(key).getValue() / value);

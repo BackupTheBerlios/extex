@@ -23,7 +23,7 @@ package de.dante.util.configuration;
  * This exception is thrown when a dynamically loaded class could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ConfigurationClassNotFoundException extends ConfigurationException {
 
@@ -60,7 +60,7 @@ public class ConfigurationClassNotFoundException extends ConfigurationException 
 
     /**
      * Getter for the text prefix of this ConfigException.
-     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
      * under the key <tt>ConfigurationClassNotFoundException.Text</tt>. The
      * argument {0} is replaced by the name of the missing class as passed
      * to the constructor, or the message of the cause if no class name is

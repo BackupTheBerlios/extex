@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.BadFileNumberHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Closein extends AbstractCode {
 
@@ -86,8 +86,8 @@ public class Closein extends AbstractCode {
         long no = source.scanInteger();
         String key = Long.toString(no);
         if (no < 0 || no > InFile.MAX_FILE_NO) {
-            throw new HelpingException("TTP.BadFileNum", key, "0",
-                Integer.toString(InFile.MAX_FILE_NO));
+            throw new BadFileNumberHelpingException(key, "0",
+                    Integer.toString(InFile.MAX_FILE_NO));
         }
         InFile file = context.getInFile(key);
         if (file != null) {

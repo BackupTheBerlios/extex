@@ -24,7 +24,7 @@ package de.dante.util.configuration;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationInvalidResourceException
         extends
@@ -41,7 +41,7 @@ public class ConfigurationInvalidResourceException
 
     /**
      * Getter for the text prefix of this ConfigException.
-     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
      * under the key <tt>ConfigurationInvalidResourceException.Text</tt>.
      *
      * @return the text

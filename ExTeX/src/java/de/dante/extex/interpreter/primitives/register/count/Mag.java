@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Mag extends AbstractCount
         implements
@@ -158,7 +158,8 @@ public class Mag extends AbstractCount
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new HelpingException(getLocalizer(), "TTP.ArithOverflow");
+            throw new ArithmeticOverflowHelpingException(
+                    printableControlSequence(context));
         }
 
         value = context.getMagnification() / value;

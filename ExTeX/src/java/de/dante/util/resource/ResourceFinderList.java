@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
@@ -32,9 +31,9 @@ import de.dante.util.configuration.ConfigurationException;
  * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class ResourceFinderList implements ResourceFinder {
+public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
 
     /**
      * The field <tt>list</tt> the internal list of file finders which are
@@ -43,67 +42,18 @@ public class ResourceFinderList implements ResourceFinder {
     private List list = new ArrayList();
 
     /**
+     * The field <tt>parent</tt> contains the ...
+     */
+    private ResourceFinder parent = null;
+
+    /**
      * Creates a new object.
      * Initially the list is empty.
      */
     public ResourceFinderList() {
 
         super();
-    }
-
-    /**
-     * Creates a new object.
-     * Initially the list is empty.
-     *
-     * @param configuration the configuration is ignored in this class
-     */
-    public ResourceFinderList(final Configuration configuration) {
-
-        super();
-    }
-
-    /**
-     * Creates a new object.
-     * Initially the list contans the one file finder given as argument.
-     *
-     * @param finder the file finder to store in initially
-     */
-    public ResourceFinderList(final ResourceFinder finder) {
-
-        super();
-        add(finder);
-    }
-
-    /**
-     * Creates a new object.
-     * Initially the list contans the two file finders given as argument.
-     *
-     * @param finder1 the first file finder to store in initially
-     * @param finder2 the second file finder to store in initially
-     */
-    public ResourceFinderList(final ResourceFinder finder1,
-            final ResourceFinder finder2) {
-
-        super();
-        add(finder1);
-        add(finder2);
-    }
-
-    /**
-     * Creates a new object.
-     * Initially the list contans the three file finders given as argument.
-     *
-     * @param finder1 the first file finder to store in initially
-     * @param finder2 the second file finder to store in initially
-     * @param finder3 the third file finder to store in initially
-     */
-    public ResourceFinderList(final ResourceFinder finder1,
-            final ResourceFinder finder2, final ResourceFinder finder3) {
-
-        super();
-        add(finder1);
-        add(finder2);
-        add(finder3);
+        parent = this;
     }
 
     /**
@@ -114,6 +64,10 @@ public class ResourceFinderList implements ResourceFinder {
     public void add(final ResourceFinder finder) {
 
         list.add(finder);
+
+        if (finder instanceof RecursiveFinder) {
+            ((RecursiveFinder) finder).setParent(parent);
+        }
     }
 
     /**
@@ -144,6 +98,24 @@ public class ResourceFinderList implements ResourceFinder {
         }
 
         return null;
+    }
+
+    /**
+     * ...
+     *
+     * @param parent the parent finder for recursive invocation
+     *
+     * @see de.dante.util.resource.RecursiveFinder#setParent(de.dante.util.resource.ResourceFinder)
+     */
+    public void setParent(final ResourceFinder parent) {
+
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            ResourceFinder finder = (ResourceFinder) iterator.next();
+            if (finder instanceof RecursiveFinder) {
+                ((RecursiveFinder) finder).setParent(parent);
+            }
+        }
     }
 
 }

@@ -23,19 +23,41 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.logging.Logger;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.resource.FileFinder;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
+import de.dante.util.framework.logger.LogEnabled;
+import de.dante.util.resource.RecursiveFinder;
+import de.dante.util.resource.ResourceFinder;
 
 /**
- * This ResourceFinder queries the user for the nameof the file to use and tries
- * to find it via its super class.
+ * This ResourceFinder queries the user for the name of the file to use and
+ * tries to find it via its super class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class ResourceFinderImpl extends FileFinder {
+public class ResourceFinderImpl
+        implements
+            ResourceFinder,
+            RecursiveFinder,
+            LogEnabled {
+
+    /**
+     * The field <tt>configuration</tt> contains the ...
+     */
+    private Configuration configuration;
+
+    /**
+     * The field <tt>logger</tt> contains the ...
+     */
+    private Logger logger = null;
+
+    /**
+     * The field <tt>parent</tt> contains the ...
+     */
+    private ResourceFinder parent = null;
 
     /**
      * Creates a new object.
@@ -47,7 +69,31 @@ public class ResourceFinderImpl extends FileFinder {
     public ResourceFinderImpl(final Configuration configuration)
             throws ConfigurationException {
 
-        super(configuration);
+        super();
+        this.configuration = configuration;
+    }
+
+    /**
+     * ...
+     *
+     * @param logger
+     *
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
+    }
+
+    /**
+     * ...
+     *
+     * @param flag
+     *
+     * @see de.dante.util.resource.ResourceFinder#enableTrace(boolean)
+     */
+    public void enableTrace(final boolean flag) {
+
     }
 
     /**
@@ -57,30 +103,35 @@ public class ResourceFinderImpl extends FileFinder {
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
+        String skip = configuration.findConfiguration(type)
+                .getAttribute("skip");
+        if (skip != null && Boolean.valueOf(skip).booleanValue()) {
+            return null;
+        }
+
         String line = name;
-        Logger logger = getLogger();
+        Localizer localizer = LocalizerFactory
+                .getLocalizer(ResourceFinderImpl.class.getName());
 
         for (;;) {
             if (!line.equals("")) {
                 logger.severe("\n! "
-                        + Messages.format("CLI.FileNotFound", name));
+                        + localizer.format("CLI.FileNotFound", name, type));
             }
 
-            logger.severe(Messages.format("CLI.PromptFile"));
+            logger.severe(localizer.format("CLI.PromptFile"));
             line = readLine();
 
-            if (line == null) {
+            if (line == null || line.equals("")) {
                 return null;
             }
-            if (!line.equals("")) {
-                if (line.charAt(0) == '\\') {
-                    //TODO make use of the line read
-                    throw new RuntimeException("unimplemented");
-                } else {
-                    InputStream stream = super.findResource(line, type);
-                    if (stream != null) {
-                        return stream;
-                    }
+            if (line.charAt(0) == '\\') {
+                //TODO make use of the line read
+                throw new RuntimeException("unimplemented");
+            } else {
+                InputStream stream = parent.findResource(line, type);
+                if (stream != null) {
+                    return stream;
                 }
             }
         }
@@ -97,11 +148,10 @@ public class ResourceFinderImpl extends FileFinder {
         StringBuffer sb = new StringBuffer();
 
         try {
-            for (int c = System.in.read(); c > 0; c = System.in.read()) {
-                if (c == '\n') {
-                    sb.append((char) c);
-                    return sb.toString();
-                } else if (c != ' ' || sb.length() > 0) {
+            for (int c = System.in.read(); c > 0 && c != '\n'; c = System.in
+                    .read()) {
+
+                if (c != ' ' || sb.length() > 0) {
                     sb.append((char) c);
                 }
             }
@@ -110,6 +160,19 @@ public class ResourceFinderImpl extends FileFinder {
         }
 
         return (sb.length() > 0 ? sb.toString() : null);
+    }
+
+    /**
+     * ...
+     *
+     * @param parent ...
+     *
+     * @see de.dante.util.resource.RecursiveFinder#setParent(
+     *      de.dante.util.resource.ResourceFinder)
+     */
+    public void setParent(final ResourceFinder parent) {
+
+        this.parent = parent;
     }
 
 }

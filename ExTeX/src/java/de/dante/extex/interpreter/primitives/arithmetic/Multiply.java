@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.arithmetic;
 
+import de.dante.extex.i18n.CantUseAfterHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -79,7 +80,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Multiply extends AbstractAssignment {
 
@@ -107,8 +108,8 @@ public class Multiply extends AbstractAssignment {
         Token cs = source.getToken();
 
         if (!(cs instanceof ControlSequenceToken)) {
-            throw new HelpingException(getLocalizer(), "TTP.CantUseAfter", //
-                    cs.toString(), printableControlSequence(context));
+            throw new CantUseAfterHelpingException(cs.toString(),
+                    printableControlSequence(context));
         }
 
         Code code = context.getCode((CodeToken) cs);
@@ -119,8 +120,8 @@ public class Multiply extends AbstractAssignment {
         } else if (code instanceof Multiplyable) {
             ((Multiplyable) code).multiply(prefix, context, source);
         } else {
-            throw new HelpingException(getLocalizer(), "TTP.CantUseAfter", //
-                    cs.toString(), printableControlSequence(context));
+            throw new CantUseAfterHelpingException(cs.toString(),
+                    printableControlSequence(context));
         }
     }
 }

@@ -20,10 +20,11 @@ package de.dante.extex.interpreter.primitives.file;
 
 import java.io.File;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.BadFileNumberHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -45,7 +46,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -71,8 +72,8 @@ public class Openout extends AbstractFileCode {
         long no = source.scanInteger();
         String key = Long.toString(no);
         if (no < 0 || no > OutFile.MAX_FILE_NO) {
-            throw new HelpingException("TTP.BadFileNum", key, "0",
-                    Integer.toString(OutFile.MAX_FILE_NO));
+            throw new BadFileNumberHelpingException(key, "0",
+                    Integer.toString(InFile.MAX_FILE_NO));
         }
 
         source.getOptionalEquals();

@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -57,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Show extends AbstractCode {
 

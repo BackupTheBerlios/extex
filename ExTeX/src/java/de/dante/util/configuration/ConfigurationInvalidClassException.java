@@ -24,7 +24,7 @@ package de.dante.util.configuration;
  * the expected interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ConfigurationInvalidClassException extends ConfigurationException {
 
@@ -61,7 +61,7 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
 
     /**
      * Getter for the text prefix of this ConfigException.
-     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
      * under the key <tt>ConfigurationInvalidClassException.Text</tt>. The
      * argument {0} is replaced by the name of the missing class as passed
      * to the constructor, or the message of the cause if no class name is

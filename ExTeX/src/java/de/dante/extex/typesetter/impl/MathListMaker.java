@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -38,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -184,7 +185,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     public void par() throws GeneralException {
 
         getManager().endParagraph();
-        throw new HelpingException(getLocalizer(), "TTP.MissingDollar");
+        throw new MathHelpingException();
     }
 
     /**

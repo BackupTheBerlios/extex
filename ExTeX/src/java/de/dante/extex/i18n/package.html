@@ -17,9 +17,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-  " />
+   " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.7 $" />
+  <meta name="version" content="$Revision: 1.8 $" />
  </head>
  <body>
   This package contains some support for internationalization (i18n). 
@@ -27,17 +27,27 @@
 
   <h2>Messages</h2>
   <p>
-   All messages of ExTeX are provided by the class 
-   {@link de.dante.extex.i18n.Messages Messages}. This class has a
-   set of static methods to format a message. The messages are referred to by
-   symbolic names. Those names are resolved in the properties file
-   <i>config/extexMessage.properties</i> or one of its localized versions.
+   All messages of ExTeX are provided by resource bundles. Thus it is
+   possible to translate the messages without touching the source
+   files and recompiling. The central role is played by the interface
+   {@link de.dante.extex.framework.i18n.Localizer Localizer}. This
+   interface provides means to format messages in various ways.
   </p>
   <p>
-   The class Messages and the properties file take the place of the ancient
-   TeX pool file. Since the properties are usually contained in the jar file
-   and the references use symbolic names instead of indices the chance that
-   something goes wrong are much smaller than for the original TeX approach.
+   Usually the properties file has the same name as the class using it
+   or related to it. The classes managed by a factory may receive a
+   localizer from the factory following this rule. Some of the
+   exception classes require a localizer to be passed to them. Most
+   exceptions handle the aquireing of a localizer themself. Those
+   exceptions are always associated with a properties file containing
+   the format specifiers and texts.
+  </p>
+  <p>
+   The interface Localizer and the properties files take the place of
+   the ancient TeX pool file. Since the properties are usually
+   contained in the jar file and the references use symbolic names
+   instead of indices the chance that something goes wrong are much
+   smaller than for the original TeX approach.
   </p>
 
   <h2>Error Concept</h2>

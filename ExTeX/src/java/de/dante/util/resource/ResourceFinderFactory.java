@@ -36,7 +36,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ResourceFinderFactory {
 
@@ -57,7 +57,8 @@ public class ResourceFinderFactory {
      *
      * @return ...
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in cse of an error in the configuration
+     *  or during instantiation
      */
     public ResourceFinder createResourceFinder(final Configuration config,
             final Logger logger, final Properties properties)

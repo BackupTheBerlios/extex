@@ -19,8 +19,6 @@
 
 package de.dante.extex.typesetter.impl;
 
-import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -35,7 +33,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -77,7 +75,17 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void setSpacefactor(final Count f) throws GeneralException {
 
-        throw new HelpingException("TTP.ImproperSForPD", "spacefactor");
+        throw new GeneralException();
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    protected Localizer getMyLocalizer() {
+
+        return LocalizerFactory.getLocalizer(AbstractListMaker.class.getName());
     }
 
     /**
@@ -86,8 +94,7 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void add(final Noad noad) throws GeneralException {
 
-        throw new PanicException("TTP.Confusion", //
-                Messages.format("ListMaker.Noad.unexpected"));
+        throw new PanicException(getMyLocalizer(), "UnexpectedNoad");
     }
 
     /**
@@ -114,7 +121,7 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
 
-        throw new HelpingException("TTP.ImproperSForPD", "prevdepth");
+        throw new GeneralException();
     }
 
     /**
@@ -123,7 +130,7 @@ public abstract class AbstractListMaker implements ListMaker {
      * @return ...
      */
     protected Localizer getLocalizer() {
-        
+
         return LocalizerFactory.getLocalizer(this.getClass().getName());
     }
 }

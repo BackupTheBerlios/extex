@@ -19,11 +19,8 @@
 
 package de.dante.extex.scanner;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.util.UnicodeChar;
-import de.dante.util.framework.i18n.Localizable;
-import de.dante.util.framework.i18n.Localizer;
 
 /**
  * This class represents an active character token.
@@ -36,7 +33,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 

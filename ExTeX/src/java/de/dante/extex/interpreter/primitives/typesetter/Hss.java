@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Hss extends AbstractCode {
 
@@ -86,7 +86,8 @@ public class Hss extends AbstractCode {
 
         Mode mode = typesetter.getMode();
         if (mode == Mode.VERTICAL || mode == Mode.INNER_VERTICAL) {
-            throw new HelpingException("TTP.MissingInserted", "}");
+            throw new HelpingException(getLocalizer(), "TTP.MissingInserted",
+            "}");
         }
         typesetter.addGlue(HSS);
         return true;

@@ -57,7 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -92,7 +92,7 @@ public class FontPrimitive extends AbstractAssignment
 
         Token t = source.getControlSequence();
         source.getOptionalEquals();
-        String fontname = scanFontName(source);
+        String fontname = scanFontName(context, source);
         int size = getFontSize(fontname);
         Dimen fontsize = null;
 
@@ -193,20 +193,20 @@ public class FontPrimitive extends AbstractAssignment
 
     /**
      * scan the filename until a <code>SpaceToken</code>.
-     *
+     * @param context TODO
      * @param source the source for new tokens
-     *
      * @return the file name as string
      *
      * @throws GeneralException in case of an error
      */
-    private String scanFontName(final TokenSource source)
+    private String scanFontName(Context context, final TokenSource source)
             throws GeneralException {
 
         Token t = source.scanNonSpace();
 
         if (t == null) {
-            throw new HelpingException(getLocalizer(), "TTP.EOFinDef", "font");
+            throw new HelpingException(getLocalizer(), "TTP.EOFinDef",
+                    printableControlSequence(context));
         }
 
         StringBuffer sb = new StringBuffer(t.getValue());

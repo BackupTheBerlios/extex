@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.i18n.HelpingException;
@@ -66,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 
@@ -76,6 +77,7 @@ public class CatcodePrimitive extends AbstractAssignment {
      * @param name the name for debugging
      */
     public CatcodePrimitive(final String name) {
+
         super(name);
     }
 
@@ -95,11 +97,11 @@ public class CatcodePrimitive extends AbstractAssignment {
 
         try {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),
-                               prefix.isGlobal());
+                    prefix.isGlobal());
         } catch (CatcodeException e) {
-            throw new HelpingException("TTP.CodeOutOfRange", Long
-                    .toString(ccNumber), Integer.toString(Catcode
-                    .getCatcodeMax()));
+            throw new HelpingException(getLocalizer(), "TTP.CodeOutOfRange",
+                    Long.toString(ccNumber), Integer.toString(Catcode
+                            .getCatcodeMax()));
         }
 
     }

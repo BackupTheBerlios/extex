@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.primitives.box;
 
 import de.dante.extex.font.Glyph;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Accent extends AbstractCode {
 
@@ -116,8 +116,7 @@ public class Accent extends AbstractCode {
 
         if (token == null) {
 
-            throw new HelpingException(getLocalizer(), "UnexpectedEOF",
-                    printableControlSequence(context));
+            throw new EofHelpingException(printableControlSequence(context));
 
         } else if (token.isa(Catcode.LETTER) || token.isa(Catcode.OTHER)) {
             UnicodeChar c = token.getChar();

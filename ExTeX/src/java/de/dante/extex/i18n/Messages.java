@@ -18,7 +18,6 @@
  */
 package de.dante.extex.i18n;
 
-import java.io.PrintStream;
 import java.text.MessageFormat;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -41,8 +40,10 @@ import java.util.ResourceBundle;
  * This has to change!!
  * </p>
  *
+ * @deprecated use Localizer instead
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public final class Messages {
     //TODO: This class is a mess. Integrate the localized messages into the components.
@@ -68,42 +69,6 @@ public final class Messages {
     }
 
     /**
-     * Getter for the value of a format string associated to a given key.
-     *
-     * @param key the key in the resource bundle to search for
-     *
-     * @return the resource string or <code>null</code>this.
-     *
-     * @deprecated use the localizer instead
-     */
-    public static String getFormat(final String key) {
-
-        try {
-            return bundle.getString(key);
-        } catch (MissingResourceException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Getter for the value of a format string associated to a given key.
-     *
-     * @param key the key in the resource bundle to search for
-     * @return the resource string or the String
-     * <tt>???</tt><i>key</i><tt>???</tt> if none is found
-     *
-     * @deprecated use the localizer instead
-     */
-    public static String format(final String key) {
-
-        try {
-            return bundle.getString(key);
-        } catch (MissingResourceException e) {
-            return "???" + key + "???";
-        }
-    }
-
-    /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key. The argument object's value of toString()
      * replaces the substring <tt>'{0}'</tt> in the format.
@@ -117,157 +82,13 @@ public final class Messages {
      */
     public static String format(final String fmt, final Object a) {
 
-        return MessageFormat.format(format(fmt), new Object[]{a});
-    }
-
-    /**
-     * Apply the given argument to the format string stored in the resource
-     * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt> and <tt>'{1}'</tt> in the
-     * format.
-     *
-     * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     *
-     * @return the expanded format string
-     *
-     * @deprecated use the localizer instead
-     */
-    public static String format(final String fmt, final Object a,
-            final Object b) {
-
-        return MessageFormat.format(format(fmt), new Object[]{a, b});
-    }
-
-    /**
-     * Apply the given argument to the format string stored in the resource
-     * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>, and <tt>'{2}'</tt>
-     * in the format.
-     *
-     * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
-     *
-     * @return the expanded format string
-     *
-     * @deprecated use the localizer instead
-     */
-    public static String format(final String fmt, final Object a,
-            final Object b, final Object c) {
-
-        return MessageFormat.format(format(fmt), new Object[]{a, b, c});
-    }
-
-    /**
-     * Apply the given argument to the format string stored in the resource
-     * bundle under the given key. The argument object's value of toString()
-     * replaces the substring <tt>'{0}'</tt>,<tt>'{1}'</tt>,<tt>'{2}'</tt>,
-     * and <tt>'{3}'</tt> in the format.
-     *
-     * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
-     * @param d the Object used for the substring <tt>{3}</tt>
-     *
-     * @return the expanded format string
-     *
-     * @deprecated use the localizer instead
-     */
-    public static String format(final String fmt, final Object a,
-            final Object b, final Object c, final Object d) {
-
-        return MessageFormat.format(format(fmt), new Object[]{a, b, c, d});
-    }
-
-    /**
-     * Initialize the messages with a given bundle name and the default
-     * locale.
-     * This method should be called early in the application and not called
-     * again. Otherwise the change in the language might confuse the user.
-     *
-     * @param bundleName the name of the resource bundle to use
-     *
-     * @deprecated use the localizer instead
-     */
-    public static void configure(final String bundleName) {
-
-        bundle = ResourceBundle.getBundle(bundleName);
-    }
-
-    /**
-     * Get the value of a format string associated to a given key in the
-     * resource bundle and print it to the given writer.
-     *
-     * @param writer the target output writer
-     * @param fmt the key in the resource bundle to search for
-     *
-     * @deprecated use the localizer instead
-     */
-    public static void message(final PrintStream writer, final String fmt) {
-
-        writer.println(format(fmt));
-    }
-
-    /**
-     * Apply the given argument to the format string stored in the resource
-     * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt> in the format.
-     *
-     * @param writer the target output writer
-     * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     *
-     * @deprecated use the localizer instead
-     */
-    public static void message(final PrintStream writer, final String fmt,
-            final Object a) {
-
-        writer.println(MessageFormat.format(format(fmt), new Object[]{a}));
-    }
-
-    /**
-     * Apply the given argument to the format string stored in the resource
-     * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt> and <tt>'{1}'</tt> in the format.
-     *
-     * @param writer the target output writer
-     * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     *
-     * @deprecated use the localizer instead
-     */
-    public static void message(final PrintStream writer, final String fmt,
-            final Object a, final Object b) {
-
-        writer.println(MessageFormat.format(format(fmt), new Object[]{a, b}));
-    }
-
-    /**
-     * Apply the given argument to the format string stored in the resource
-     * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
-     *
-     * @param writer the target output writer
-     * @param fmt the key in the resource bundle to search for
-     * @param a the Object used for the substring <tt>{0}</tt>
-     * @param b the Object used for the substring <tt>{1}</tt>
-     * @param c the Object used for the substring <tt>{2}</tt>
-     *
-     * @deprecated use the localizer instead
-     */
-    public static void message(final PrintStream writer, final String fmt,
-        final Object a, final Object b, final Object c) {
-
-        writer.println(MessageFormat.format(format(fmt),
-            new Object[]{a, b, c}));
+        String format;
+        try {
+            format = bundle.getString(fmt);
+        } catch (MissingResourceException e) {
+            format = "???" + fmt + "???";
+        }
+        return MessageFormat.format(format, new Object[]{a});
     }
 
 }

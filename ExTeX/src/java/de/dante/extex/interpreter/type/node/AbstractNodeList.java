@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
@@ -33,7 +32,7 @@ import de.dante.extex.typesetter.NodeList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
     /**

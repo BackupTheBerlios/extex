@@ -39,7 +39,6 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
-import java.util.ResourceBundle;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -52,8 +51,6 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interaction;
@@ -509,13 +506,6 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Command line:
  *    <a href="#-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a> </dd>
  *
- *   <dt><a name="extex.pool"/><tt>extex.pool</tt></dt>
- *   <dd>
- *    This parameter can be used to overrule the base name of the resource
- *    containing the messages.
- *   </dd>
- *   <dd>Default: <tt>config.extexMessages</tt></dd>
- *
  *   <dt><a name="extex.progname"/><tt>extex.progname</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
@@ -622,7 +612,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.72 $
+ * @version $Revision: 1.73 $
  */
 public class ExTeX {
 
@@ -760,12 +750,6 @@ public class ExTeX {
     private static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
 
     /**
-     * The field <tt>PROP_POOL</tt> contains the name of the property for the
-     * messages resource.
-     */
-    private static final String PROP_POOL = "extex.pool";
-
-    /**
      * The field <tt>PROP_PROGNAME</tt> contains the name of the
      * property for the program name used in usage messages.
      */
@@ -855,7 +839,7 @@ public class ExTeX {
     private static void logException(final Logger logger, final String text,
             final Throwable e) {
 
-        logger.severe(text);
+        logger.severe(text == null ? "" : text);
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         PrintWriter writer = new PrintWriter(os);
@@ -975,7 +959,6 @@ public class ExTeX {
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT_TYPE, "");
         propertyDefault(PROP_OUTPUTDIR, ".");
-        propertyDefault(PROP_POOL, Messages.class.getName());
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
         propertyDefault(PROP_TOKEN_STREAM, "base");
@@ -1052,7 +1035,7 @@ public class ExTeX {
     }
 
     /**
-     * Try to determine which language to use and configure the Messages
+     * Try to determine which language to use and configure the localizer
      * accordingly.
      */
     private void applyLanguage() {
@@ -1074,13 +1057,7 @@ public class ExTeX {
             }
         }
 
-        String bundle = (String) properties.get(PROP_POOL);
-
-        if (bundle != null) {
-            HelpingException.setResource(ResourceBundle.getBundle(bundle));
-            Messages.configure(bundle); //TODO eliminate
-            localizer = LocalizerFactory.getLocalizer(ExTeX.class.getName());
-        }
+        localizer = LocalizerFactory.getLocalizer(ExTeX.class.getName());
     }
 
     /**
@@ -1202,7 +1179,14 @@ public class ExTeX {
     }
 
     /**
-     * Load a format if a name of a format is given.
+     * The field <tt>FORMAT_FALLBACK</tt> contains the fallback to be tried if
+     * the specified format can not be loaded. If it is <code>null</code> then
+     * none is tried.
+     */
+    private static final String FORMAT_FALLBACK = "tex";
+
+    /**
+     * Load a format if a non-empty name of a format is given.
      *
      * @param interpreter the interpreter to delegate the loading to
      * @param finder  the resource finder to use for locating the format file
@@ -1219,25 +1203,30 @@ public class ExTeX {
                 GeneralException,
                 ConfigurationException {
 
+        String format = fmt;
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                 DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
-        if (fmt != null && !fmt.equals("")) {
+        if (format != null && !format.equals("")) {
             InputStream stream = finder.findResource(fmt, "fmt");
 
-            if (stream == null && !fmt.equals("tex")) {
-                logger.info(localizer.format("xxxxxx", fmt)); //TODO i18n
-                stream = finder.findResource("tex", "fmt");
+            if (stream == null && !format.equals(FORMAT_FALLBACK)) {
+                logger.warning(localizer.format("FormatSubstituted", format,
+                        FORMAT_FALLBACK));
+                format = FORMAT_FALLBACK;
+                stream = finder.findResource(FORMAT_FALLBACK, "fmt");
             }
             if (stream == null) {
-                throw new PanicException("file not found"); //TODO i18n
+                throw new MainException(42, localizer.format("FormatNotFound",
+                        format));
             }
             try {
                 interpreter.loadFormat(stream);
             } catch (LoaderException e) {
-                throw new PanicException("TTP.FormatFileError");
+                throw new PanicException(localizer, "TTP.FormatFileError",
+                        format);
             }
-            logger.config(localizer.format("ExTeX.FormatDate", fmt, time));
+            logger.config(localizer.format("ExTeX.FormatDate", format, time));
         } else {
             logger.config(localizer.format("ExTeX.NoFormatDate", time));
         }
@@ -1647,6 +1636,9 @@ public class ExTeX {
         } catch (IOException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainIOException(e);
+        } catch (MainException e) {
+            logger.throwing(this.getClass().getName(), "run", e);
+            throw e;
         } catch (GeneralException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);

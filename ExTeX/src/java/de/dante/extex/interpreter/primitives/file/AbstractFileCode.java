@@ -19,10 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
@@ -36,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -134,18 +136,13 @@ public abstract class AbstractFileCode extends AbstractCode
         Token t = source.scanNonSpace();
 
         if (t == null) {
-            throw new HelpingException("UnexpectedEOF",
-                    printableControlSequence(context));
-        }
-
-        if (strictTeX && t.isa(Catcode.LEFTBRACE)) {
+            // Fall through to error
+        } else if (strictTeX && t.isa(Catcode.LEFTBRACE)) {
             source.push(t);
             String name = source.scanTokensAsString();
-            if (name == null) {
-                throw new HelpingException("UnexpectedEOF",
-                        printableControlSequence(context));
+            if (name != null) {
+                return name;
             }
-            return name;
 
         } else {
             StringBuffer sb = new StringBuffer(t.getValue());
@@ -158,5 +155,8 @@ public abstract class AbstractFileCode extends AbstractCode
 
             return sb.toString();
         }
+
+        throw new EofHelpingException(printableControlSequence(context));
     }
+
 }

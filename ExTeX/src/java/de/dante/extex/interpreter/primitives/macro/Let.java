@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
@@ -75,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -123,8 +124,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
             final CodeToken cs, final Token t) throws GeneralException {
 
         if (t == null) {
-            throw new HelpingException("UnexpectedEOF",
-                    printableControlSequence(context));
+            throw new EofHelpingException(printableControlSequence(context));
         }
 
         Code code;
@@ -156,7 +156,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
         Code code = context.getCode(token);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", token.toString());
+            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken",
+                    token.toString());
         }
 
         return code;
@@ -198,7 +199,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
         Code code = context.getCode(token);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", token.toString());
+            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken",
+                    token.toString());
         }
 
         return code;

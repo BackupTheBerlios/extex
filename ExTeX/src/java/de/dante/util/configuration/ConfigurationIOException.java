@@ -25,7 +25,7 @@ package de.dante.util.configuration;
  * some other kind of configuration information is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationIOException extends ConfigurationException {
 
@@ -63,7 +63,7 @@ public class ConfigurationIOException extends ConfigurationException {
 
     /**
      * Getter for the text prefix of this Exception.
-     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
      * under the key <tt>ConfigurationIOException.Text</tt>.
      *
      * @return the text

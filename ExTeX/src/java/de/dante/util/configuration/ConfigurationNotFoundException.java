@@ -23,7 +23,7 @@ package de.dante.util.configuration;
  * This Exception is thrown when a configuration could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ConfigurationNotFoundException extends ConfigurationException {
 
@@ -48,7 +48,7 @@ public class ConfigurationNotFoundException extends ConfigurationException {
     /**
      * Getter for the text prefix of this
      * {@link de.dante.util.configuration.ConfigurationException ConfigurationException}.
-     * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}
+     * The text is taken from the resource bundle <tt>ConfigurationEception</tt>
      * under the key <tt>ConfigurationNotFoundException.Text</tt>. The argument
      * {0} is replaced by the name of the missing configuration as passed to the
      * constructor.

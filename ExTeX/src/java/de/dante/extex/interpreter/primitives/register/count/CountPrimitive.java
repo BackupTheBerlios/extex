@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.ArithmeticOverflowHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -170,7 +170,8 @@ public class CountPrimitive extends AbstractCount
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new HelpingException("TTP.ArithOverflow");
+            throw new ArithmeticOverflowHelpingException(
+                    printableControlSequence(context));
         }
 
         value = context.getCount(key).getValue() / value;

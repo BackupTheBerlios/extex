@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -209,7 +209,8 @@ public interface Context extends Tokenizer, Serializable {
     String getId();
 
     /**
-     * Getter for a input file register.
+     * Getter for a input file register.  In the case that the named
+     * descriptor doe not exist yet a new one is returned.
      *
      * @param name the name or the number of the file register
      *

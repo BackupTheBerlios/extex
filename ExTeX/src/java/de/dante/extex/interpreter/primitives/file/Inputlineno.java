@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Inputlineno extends AbstractCode
         implements
@@ -86,9 +86,8 @@ public class Inputlineno extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn",
-                printableControlSequence(context), typesetter.getMode()
-                        .toString());
+        throw new CantUseHelpingException(printableControlSequence(context),
+                typesetter.getMode().toString());
     }
 
     /**

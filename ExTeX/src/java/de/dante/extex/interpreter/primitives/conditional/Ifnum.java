@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.HelpingException;
@@ -62,15 +63,17 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Ifnum extends AbstractIf {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Ifnum(final String name) {
+
         super(name);
     }
 
@@ -81,27 +84,27 @@ public class Ifnum extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
-        long x = source.scanInteger();
+        long value = source.scanInteger();
         Token rel = source.getToken();
         if (rel == null) {
             throw new GeneralException(); // TODO: eof
         }
         if (rel.getCatcode() == Catcode.OTHER) {
             switch (rel.getChar().getCodePoint()) {
-            case '<':
-                return (x < source.scanInteger());
-            case '=':
-                return (x == source.scanInteger());
-            case '>':
-                return (x > source.scanInteger());
-            default:
+                case '<':
+                    return (value < source.scanInteger());
+                case '=':
+                    return (value == source.scanInteger());
+                case '>':
+                    return (value > source.scanInteger());
+                default:
             // fall-through
             }
         }
         //TODO pushback the tokens read
-        throw new HelpingException("TTP.IllegalIfnumOp");
+        throw new HelpingException(getLocalizer(), "TTP.IllegalIfnumOp");
     }
 }

@@ -36,6 +36,8 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a means to store floating numbers with an order.
@@ -53,7 +55,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -320,6 +322,16 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
+     * ...
+     *
+     * @return ...
+     */
+    protected Localizer getLocalizer() {
+
+        return LocalizerFactory.getLocalizer(GlueComponent.class.getName());
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.glue.FixedGlueComponent#getOrder()
      */
     public int getOrder() {
@@ -423,14 +435,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         Token t = source.scanNonSpace();
         if (t == null) {
-            throw new HelpingException("TTP.IllegalUnit");
+            throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
         }
 
         value = scanFloat(source, t);
 
         t = source.getNonSpace();
         if (t == null) {
-            throw new HelpingException("TTP.IllegalUnit");
+            throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
         }
 
         source.push(t);
@@ -480,13 +492,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                             * ((DimenConvertible) code).convertDimen(context,
                                     source, typesetter) / ONE;
                 } else {
-                    throw new HelpingException("TTP.IllegalUnit");
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.IllegalUnit");
                 }
             } else {
-                throw new HelpingException("TTP.IllegalUnit");
+                throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
             }
         } else { // cf. TTP [459]
-            throw new HelpingException("TTP.IllegalUnit");
+            throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
         }
 
         if (mag != 1000) {
@@ -711,8 +724,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 toks.add(factory.createToken(Catcode.LETTER, 'l', ""));
             }
         } else {
-            //TODO i18n
-            throw new PanicException("TTP.Confusion", "negative order found");
+            throw new PanicException(getLocalizer(), "Illegal.Order", Long
+                    .toString(order));
         }
     }
 

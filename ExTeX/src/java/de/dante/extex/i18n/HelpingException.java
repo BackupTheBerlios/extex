@@ -32,14 +32,15 @@ import de.dante.util.framework.i18n.Localizer;
  * first level is the message and the second level is the additional help.
  * <p>
  * Both information strings are mapped via the
- * {@link de.dante.extex.i18n.Messages Messages} apparatus. The key provided
- * to this Exception is used as a key to find the format in the resource bundle.
- * For the message it is used plain and for the help the string ".help" is
- * appended.
+ * {@link de.dante.extex.framework.i18n.Localizer Localizer} apparatus.
+ * The key provided to this Exception is used as a key to find the format in
+ * the resource bundle. For the localized message of the exception it is used
+ * plain and for the help the string ".help" is appended.
  * </p>
  * <h3>Example</h3>
  * <p>
- * Consider the following lines in the messages file:
+ * Consider the following lines in the resource (properties) file for the
+ * localizer:
  * </p>
  * <pre>
  * abc.def = This is the message
@@ -48,15 +49,41 @@ import de.dante.util.framework.i18n.Localizer;
  * </pre>
  * Then the following instruction can savely be used:
  * <pre>
- *     throw new HelpingException("abc.def");
+ *     throw new HelpingException(localizer, "abc.def");
  * </pre>
  * <p>
  * With this exception up to three arguments can be used. The String value of
  * those arguments are inserted into the message string for the placeholders
- * {0}, {1}, and {2}.
+ * {0}, {1}, and {2}. Consider the following format definition in the resource
+ * of the localizer:
+ * </p>
+ * <pre>
+ * ghi = This is the {0} message: {2}
+ * </pre>
+ * Then the instruction
+ * <pre>
+ *     new HelpingException(localizer, "ghi", "first", "second", "third");
+ * </pre>
+ * will produce an exception with the following localized message:
+ * <pre>
+ * This is the first message: third
+ * </pre>
+ * </p>
+ * <p>
+ * Note that some special rules hold for strings in resource bundles:
+ * <ul>
+ * <li>The character <tt>\</tt> acts as escape character. In the combination
+ *  <tt>\n</tt> it produces a newline.</li>
+ * <li>If the character <tt>\</tt> is the last character of a line then the
+ *  format is continued in the next line. The leading whitespace in the
+ *  continuing line is silently removed.</li>
+ * <li>The character <tt>'</tt> also has a special meaning. Thi usually means
+ *  that you have to double a single quote in your format.</li>
+ * </ul>
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class HelpingException extends GeneralException {
 
@@ -106,6 +133,14 @@ public class HelpingException extends GeneralException {
      * The field <tt>tag</tt> contains the name of the message to show.
      */
     private String tag = "GeneralDetailedException.help";
+
+    /**
+     * Creates a new object.
+     */
+    protected HelpingException() {
+
+        super();
+    }
 
     /**
      * Creates a new object without variable arguments.
@@ -194,7 +229,7 @@ public class HelpingException extends GeneralException {
      * @param messageTag the message
      * @param a1 the first argument
      *
-     * deprecated use the method with the explicit resource bundle instead.
+     * @deprecated use the method with the explicit resource bundle instead.
      */
     public HelpingException(final String messageTag, final String a1) {
 
@@ -211,7 +246,7 @@ public class HelpingException extends GeneralException {
      * @param a1 the first argument
      * @param a2 the second argument
      *
-     * deprecated use the method with the explicit resource bundle instead.
+     * @deprecated use the method with the explicit resource bundle instead.
      */
     public HelpingException(final String messageTag, final String a1,
             final String a2) {
@@ -231,7 +266,7 @@ public class HelpingException extends GeneralException {
      * @param a2 the second argument
      * @param a3 the third argument
      *
-     * deprecated use the method with the explicit resource bundle instead.
+     * @deprecated use the method with the explicit resource bundle instead.
      */
 
     public HelpingException(final String messageTag, final String a1,

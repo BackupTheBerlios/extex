@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * primitive.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractReadonlyCount extends AbstractCode
         implements
@@ -52,7 +52,6 @@ public abstract class AbstractReadonlyCount extends AbstractCode
         super(name);
     }
 
-
     /**
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -64,9 +63,8 @@ public abstract class AbstractReadonlyCount extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn",
-                printableControlSequence(context), typesetter.getMode()
-                        .toString());
+        throw new CantUseHelpingException(printableControlSequence(context),
+                typesetter.getMode().toString());
     }
 
     /**

@@ -16,9 +16,10 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Token;
@@ -56,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Ifx extends AbstractIf {
 
@@ -66,6 +67,7 @@ public class Ifx extends AbstractIf {
      * @param name the name for debugging
      */
     public Ifx(final String name) {
+
         super(name);
     }
 
@@ -83,8 +85,7 @@ public class Ifx extends AbstractIf {
         Token t2 = source.getToken();
 
         if (t1 == null || t2 == null) {
-            throw new HelpingException("UnexpectedEOF",
-                    printableControlSequence(context));
+            throw new EofHelpingException(printableControlSequence(context));
         }
 
         return t1.equals(t2);

@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Hskip extends AbstractCode {
 
@@ -79,7 +79,8 @@ public class Hskip extends AbstractCode {
 
         Mode mode = typesetter.getMode();
         if (mode == Mode.VERTICAL || mode == Mode.INNER_VERTICAL) {
-            throw new HelpingException("TTP.MissingInserted", "}");
+            throw new HelpingException(getLocalizer(), "TTP.MissingInserted",
+            "}");
         }
         Glue g = new Glue(source, context);
         typesetter.addGlue(g);

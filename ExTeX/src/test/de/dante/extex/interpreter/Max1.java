@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import junit.framework.TestCase;
@@ -44,7 +45,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class Max1 extends TestCase {
 
@@ -52,6 +53,7 @@ public class Max1 extends TestCase {
      * Inner class to collect the things the typesetter sees.
      */
     private static class TestTypesetter implements Typesetter {
+
         /**
          */
         private StringBuffer sb = new StringBuffer();
@@ -61,6 +63,7 @@ public class Max1 extends TestCase {
          *      de.dante.extex.typesetter.type.noad.Noad)
          */
         public void add(final Noad noad) {
+
             // nothing to do
         }
 
@@ -69,6 +72,7 @@ public class Max1 extends TestCase {
          *      de.dante.extex.interpreter.type.node.CharNode)
          */
         public void add(final Node c) {
+
             // nothing to do
         }
 
@@ -77,8 +81,8 @@ public class Max1 extends TestCase {
          *      de.dante.extex.interpreter.type.font.Font,
          *      java.lang.String)
          */
-        public void add(final TypesettingContext font,
-                final UnicodeChar symbol) {
+        public void add(final TypesettingContext font, final UnicodeChar symbol) {
+
             // nothing to do
         }
 
@@ -87,6 +91,7 @@ public class Max1 extends TestCase {
          *      de.dante.extex.interpreter.type.glue.Glue)
          */
         public void addGlue(final Glue g) {
+
             sb.append(g.toString());
         }
 
@@ -97,6 +102,7 @@ public class Max1 extends TestCase {
          */
         public void addSpace(final TypesettingContext typesettingContext,
                 final Count spacefactor) {
+
             sb.append(" ");
         }
 
@@ -104,6 +110,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#close()
          */
         public NodeList close() {
+
             return null;
         }
 
@@ -112,6 +119,7 @@ public class Max1 extends TestCase {
          *      de.dante.util.configuration.Configuration)
          */
         public void configure(final Configuration config) {
+
             // nothing to do
         }
 
@@ -119,6 +127,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#finish()
          */
         public void finish() {
+
             // nothing to do
         }
 
@@ -126,6 +135,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
          */
         public CharNodeFactory getCharNodeFactory() {
+
             return null;
         }
 
@@ -141,6 +151,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#getMode()
          */
         public Mode getMode() {
+
             return null;
         }
 
@@ -148,6 +159,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#open()
          */
         public void open() {
+
             // nothing to do
         }
 
@@ -171,6 +183,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#par()
          */
         public void par() {
+
             sb.append("\n\\par\n");
         }
 
@@ -188,6 +201,7 @@ public class Max1 extends TestCase {
          *      de.dante.extex.documentWriter.DocumentWriter)
          */
         public void setDocumentWriter(final DocumentWriter doc) {
+
             // nothing to do
         }
 
@@ -203,12 +217,14 @@ public class Max1 extends TestCase {
             // TODO unimplemented
 
         }
+
         /**
          * @see de.dante.extex.typesetter.Typesetter#setOptions(de.dante.extex.typesetter.TypesetterOptions)
          */
         public void setOptions(final TypesetterOptions options) {
 
         }
+
         /**
          * ...
          *
@@ -221,6 +237,7 @@ public class Max1 extends TestCase {
             // TODO unimplemented
 
         }
+
         /**
          * ...
          *
@@ -233,6 +250,7 @@ public class Max1 extends TestCase {
             // TODO unimplemented
 
         }
+
         /**
          * @see de.dante.extex.typesetter.Typesetter#setParshape(
          *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
@@ -247,6 +265,7 @@ public class Max1 extends TestCase {
          *      de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setPrevDepth(final Dimen pd) {
+
             // nothing to do
         }
 
@@ -254,6 +273,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
          */
         public void setSpacefactor(final Count f) {
+
             // nothing to do
         }
 
@@ -262,6 +282,7 @@ public class Max1 extends TestCase {
          *      de.dante.extex.typesetter.NodeList)
          */
         public void shipout(final NodeList nodes) {
+
             // nothing to do
         }
 
@@ -269,6 +290,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
          */
         public void toggleDisplaymath() {
+
             // nothing to do
         }
 
@@ -276,6 +298,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#toggleMath()
          */
         public void toggleMath() {
+
             // nothing to do
         }
 
@@ -283,6 +306,7 @@ public class Max1 extends TestCase {
          * @see java.lang.Object#toString()
          */
         public String toString() {
+
             return sb.toString();
         }
     }
@@ -292,6 +316,7 @@ public class Max1 extends TestCase {
      * @param args the arguments
      */
     public static void main(final String[] args) {
+
         junit.textui.TestRunner.run(Max1.class);
     }
 
@@ -301,6 +326,7 @@ public class Max1 extends TestCase {
      * @param arg0 the name
      */
     public Max1(final String arg0) {
+
         super(arg0);
     }
 
@@ -319,8 +345,9 @@ public class Max1 extends TestCase {
                 .newInstance("config/extex.xml");
 
         // TODO FileFinder
-        Interpreter interpreter = new InterpreterFactory(config
-                .getConfiguration("Interpreter")).newInstance();
+        InterpreterFactory interpreterFactory = new InterpreterFactory();
+        interpreterFactory.configure(config.getConfiguration("Interpreter"));
+        Interpreter interpreter = interpreterFactory.newInstance();
         TokenStreamFactory factory = new TokenStreamFactory(config
                 .getConfiguration("Reader"), "base");
         interpreter.setTokenStreamFactory(factory);
@@ -339,6 +366,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testEmpty() throws Exception {
+
         assertEquals("", doTest(""));
     }
 
@@ -346,6 +374,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testMacro1() throws Exception {
+
         assertEquals("", doTest("\\relax"));
     }
 
@@ -353,6 +382,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testMacro2() throws Exception {
+
         assertEquals("\n\\par\n", doTest("\\par"));
     }
 
@@ -360,6 +390,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testSingle1() throws Exception {
+
         assertEquals("a", doTest("a"));
     }
 
@@ -367,6 +398,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testSingle2() throws Exception {
+
         assertEquals("A", doTest("A"));
     }
 
@@ -374,6 +406,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testSingle3() throws Exception {
+
         assertEquals("2", doTest("2"));
     }
 
@@ -381,6 +414,7 @@ public class Max1 extends TestCase {
      * @throws Exception in case of an error
      */
     public void testSingle4() throws Exception {
+
         assertEquals(".", doTest("."));
     }
 

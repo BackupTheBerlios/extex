@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.group;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -56,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Aftergroup extends AbstractCode {
 
@@ -66,6 +67,7 @@ public class Aftergroup extends AbstractCode {
      * @param name the name for debugging
      */
     public Aftergroup(final String name) {
+
         super(name);
     }
 
@@ -81,8 +83,7 @@ public class Aftergroup extends AbstractCode {
 
         Token t = source.getToken();
         if (t == null) {
-            throw new HelpingException("UnexpectedEOF",
-                    printableControlSequence(context));
+            throw new EofHelpingException(printableControlSequence(context));
         }
         context.afterGroup(t);
 

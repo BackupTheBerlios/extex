@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -52,13 +52,14 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Lastkern extends AbstractCode
         implements
             CountConvertible,
             DimenConvertible,
             Theable {
+
     /**
      * Creates a new object.
      *
@@ -78,9 +79,8 @@ public class Lastkern extends AbstractCode
             final Typesetter typesetter) throws GeneralException {
 
         Node node = typesetter.getLastNode();
-        return (node instanceof KernNode
-                ? ((KernNode) node).getWidth().getValue()
-                : 0);
+        return (node instanceof KernNode ? ((KernNode) node).getWidth()
+                .getValue() : 0);
     }
 
     /**
@@ -93,9 +93,8 @@ public class Lastkern extends AbstractCode
             final Typesetter typesetter) throws GeneralException {
 
         Node node = typesetter.getLastNode();
-        return (node instanceof KernNode
-                ? ((KernNode) node).getWidth().getValue()
-                : 0);
+        return (node instanceof KernNode ? ((KernNode) node).getWidth()
+                .getValue() : 0);
     }
 
     /**
@@ -109,9 +108,8 @@ public class Lastkern extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn",
-                printableControlSequence(context), typesetter.getMode()
-                        .toString());
+        throw new CantUseHelpingException(printableControlSequence(context),
+                typesetter.getMode().toString());
     }
 
     /**

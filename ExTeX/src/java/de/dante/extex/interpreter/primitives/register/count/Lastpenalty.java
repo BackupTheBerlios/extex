@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.CantUseHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Lastpenalty extends AbstractCode
         implements
@@ -91,9 +91,8 @@ public class Lastpenalty extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn",
-                printableControlSequence(context), typesetter.getMode()
-                        .toString());
+        throw new CantUseHelpingException(printableControlSequence(context),
+                typesetter.getMode().toString());
     }
 
     /**
