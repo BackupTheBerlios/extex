@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * <code>\endgroup</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Endgroup extends AbstractCode {
 
@@ -53,7 +53,7 @@ public class Endgroup extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        context.closeGroup(typesetter);
+        context.closeGroup(typesetter, source);
         prefix.clear();
     }
 

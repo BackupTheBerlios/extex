@@ -29,6 +29,7 @@ import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -100,7 +101,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -111,7 +112,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
 
     /**
-     * The field <tt>FILE_TAG</tt> ...
+     * The constant <tt>FILE_TAG</tt> ...
      */
     private static final String FILE_TAG = "File";
 
@@ -721,10 +722,11 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#closeGroup(de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.context.Context#closeGroup(de.dante.extex.typesetter.Typesetter,
+     *     de.dante.extex.interpreter.TokenSource)
      */
-    public void closeGroup(final Typesetter typesetter)
-            throws GeneralException {
+    public void closeGroup(final Typesetter typesetter,
+            final TokenSource source) throws GeneralException {
 
         Group next = group.getNext();
 
@@ -742,7 +744,7 @@ public class ContextImpl implements Context, Observable, Serializable {
         group = next;
 
         if (toks != null) {
-            //TODO execute aftergroup
+            source.push(toks);
         }
     }
 
