@@ -28,7 +28,8 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.7 $
  */
 public class Glue implements Serializable {
     /** ... */
@@ -65,6 +66,16 @@ public class Glue implements Serializable {
         this.shrink = shrink;
     }
 
+    /**
+     * Creates a new object.
+     * 
+     * @param length ...
+     */
+    public Glue(final Dimen length) {
+        super();
+        this.length = length;
+    }
+    
     /**
      * Creates a new object.
      * 

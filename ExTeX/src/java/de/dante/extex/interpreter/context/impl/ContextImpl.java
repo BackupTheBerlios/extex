@@ -89,7 +89,7 @@ import de.dante.util.file.FileFinderList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -103,6 +103,11 @@ public class ContextImpl implements Context, Serializable {
      * The constant <tt>DEFAULT_ATTRIBUTE</tt> ...
      */
     private static final String DEFAULT_ATTRIBUTE = "default";
+
+	/**
+	 * The constant <tt>DEFAULT_SIZE</tt> ...
+	 */
+	private static final String DEFAULT_SIZE = "size";
 
     /**
      * The constant <tt>FONT_TAG</tt> ...
@@ -211,7 +216,10 @@ public class ContextImpl implements Context, Serializable {
         } catch (Exception e) {
             throw new ConfigurationInstantiationException(e);
         }
-        String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
+
+        // default font and size
+		String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
+        String size = fontConfiguration.getAttribute(DEFAULT_SIZE);
 
         if (defaultFont == null || defaultFont.equals("")) {
             throw new ConfigurationMissingAttributeException(DEFAULT_ATTRIBUTE,
@@ -225,10 +233,18 @@ public class ContextImpl implements Context, Serializable {
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
                     config.toString());
         }
+        
+        Dimen fontsize = null;
+        try {
+        	float f = Float.parseFloat(size);
+        	fontsize = new Dimen((long)(Dimen.ONE * f));
+        } catch (NumberFormatException e) {
+			fontsize = new Dimen(Dimen.ONE * 12);
+		}
 
         tcFactory = new TypesettingContextFactory(typesettingConfig);
         TypesettingContext typesettingContext = tcFactory.newInstance();
-        typesettingContext.setFont(fontFactory.getInstance(defaultFont));
+        typesettingContext.setFont(fontFactory.getInstance(defaultFont,fontsize));
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
 
