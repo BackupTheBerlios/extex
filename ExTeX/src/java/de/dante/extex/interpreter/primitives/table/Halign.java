@@ -26,13 +26,17 @@ import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
+import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.impl.Align;
 import de.dante.extex.typesetter.impl.HAlignListMaker;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\halign</code>.
@@ -56,9 +60,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class Halign extends AbstractAlign {
+public class Halign extends AbstractAlign implements Boxable {
 
     /**
      * Creates a new object.
@@ -81,6 +85,50 @@ public class Halign extends AbstractAlign {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
+        typesetter.add(getNodes(context, source, typesetter));
+
+        return true;
+    }
+
+    /**
+     * ...
+     *
+     * @param context the interpreter context
+     * @param source the token source
+     * @param typesetter the typesetter
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see de.dante.extex.interpreter.type.box.Boxable#getBox(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Box getBox(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        return new Box(getNodes(context, source, typesetter));
+    }
+
+    /**
+     * ...
+     *
+     * @param context the interpreter context
+     * @param source the token source
+     * @param typesetter the typesetter
+     *
+     * @return the list of nodes gathered
+     *
+     * @throws GeneralException in case of an error
+     * @throws EofHelpingException ...
+     * @throws MissingLeftBraceHelpingException ...
+     */
+    private NodeList getNodes(final Context context, final TokenSource source,
+            final Typesetter typesetter)
+            throws GeneralException {
+
         Dimen width = null;
 
         if (source.getKeyword("to")) {
@@ -98,7 +146,14 @@ public class Halign extends AbstractAlign {
                     printableControlSequence(context));
         }
 
-        return true;
+        try {
+            context.openGroup();
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
+        }
+
+        source.executeGroup();
+        return typesetter.close();
     }
 
 }
