@@ -29,10 +29,9 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [140]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InsertionNode extends AbstractNode implements Node {
-
     /**
      * Creates a new object.
      */
@@ -64,6 +63,15 @@ public class InsertionNode extends AbstractNode implements Node {
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("insert"); //TODO gene: incomplete
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     */
+    public void toText(StringBuffer sb, String prefix) {
+
+        // TODO gene: toText unimplemented
+
     }
 
     /**

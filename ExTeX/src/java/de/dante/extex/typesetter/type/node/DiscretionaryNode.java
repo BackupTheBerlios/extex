@@ -31,27 +31,26 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
-
-    /**
-     * The field <tt>preBreak</tt> contains the Tokens to be inserted at the
-     * end of the line in case of a line breaking at this position.
-     */
-    private Tokens preBreak;
-
-    /**
-     * The field <tt>postBreak</tt> contains the Tokens to be inserted at the
-     * beginning of th next ine in case of a line breaking at this position.
-     */
-    private Tokens postBreak;
 
     /**
      * The field <tt>noBreak</tt> contains the Tokens to be inserted in case
      * of no line breaking at this position.
      */
     private Tokens noBreak;
+
+    /**
+     * The field <tt>postBreak</tt> contains the Tokens to be inserted at the
+     * beginning of th next ine in case of a line breaking at this position.
+     */
+    private Tokens postBreak;
+    /**
+     * The field <tt>preBreak</tt> contains the Tokens to be inserted at the
+     * end of the line in case of a line breaking at this position.
+     */
+    private Tokens preBreak;
 
     /**
      * Creates a new object.
@@ -125,6 +124,15 @@ public class DiscretionaryNode extends AbstractNode implements Node {
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("discretionary"); //TODO gene: incomplete
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     */
+    public void toText(StringBuffer sb, String prefix) {
+
+        // TODO gene: toText unimplemented
+
     }
 
     /**

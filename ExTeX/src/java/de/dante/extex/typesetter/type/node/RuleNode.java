@@ -32,10 +32,9 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RuleNode extends AbstractNode implements Node {
-
     /**
      * The field <tt>context</tt> the typographic context.
      */
@@ -105,6 +104,15 @@ public class RuleNode extends AbstractNode implements Node {
         x = getWidth();
         String w = (x == null ? "*" : x.toString());
         sb.append(getLocalizer().format("RuleNode.Text", h, d, w));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer, java.lang.String)
+     */
+    public void toText(StringBuffer sb, String prefix) {
+
+        // TODO gene: toText unimplemented
+
     }
 
     /**
