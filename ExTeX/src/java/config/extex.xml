@@ -75,7 +75,7 @@
       -  The attribute "name" can be used to specify the font name. Default: nullfont
       -  The attribute "size" can be used to specify the size. Default: design size.
       -->
-    <Font name="cmr12"/>
+    <Font name=""/>
 
     <!-- The configuration of the token factory.
       -->
