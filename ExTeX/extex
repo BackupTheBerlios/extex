@@ -43,26 +43,17 @@ if $cygwin ; then
     sep=';'
 fi
 
-LOCALCLASSPATH=.
-#LOCALCLASSPATH=$JAVA_HOME/lib/tools.jar
-#LOCALCLASSPATH=$LOCALCLASSPATH$sep$JAVA_HOME/lib/classes.zip
-
 EXTEX_HOME=`dirname $0`
 LIBDIR="$EXTEX_HOME/lib"
+LOCALCLASSPATH=$EXTEX_HOME/target/classes
 
 for i in $LIBDIR/*.jar ; do
     LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
 done
 
-# lib.develop contains development tools, not needed for the end user
-#for i in lib.develop/*.jar ; do
-#        LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
-#done
 for i in tmp/ExTeX/*.jar ; do
     LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
 done
-
-LOCALCLASSPATH=$LOCALCLASSPATH$sep$EXTEX_HOME/target/classes
 
 exec java -classpath "$LOCALCLASSPATH$sep." de.dante.extex.ExTeX $*
   
