@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -110,11 +110,7 @@ public class Fontdimen extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long idx = source.scanInteger();
-        source.skipSpace();
-        Font font = source.getFont();
-        Dimen size = font.getFontDimen("#" + Long.toString(idx));
-        source.push(size.toToks(context.getTokenFactory()));
+        source.push(the(context, source, typesetter));
     }
 
     /**
@@ -125,11 +121,13 @@ public class Fontdimen extends AbstractAssignment
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        int idx = (int) source.scanInteger();
+        long idx = source.scanInteger();
         source.skipSpace();
         Font font = source.getFont();
-        Dimen size = font.getFontDimen("#" + String.valueOf(idx));
-
+        Dimen size = font.getFontDimen("#" + Long.toString(idx));
+        if (null == size) {
+            size = Dimen.ZERO_PT;
+        }
         return size.toToks(context.getTokenFactory());
     }
 
