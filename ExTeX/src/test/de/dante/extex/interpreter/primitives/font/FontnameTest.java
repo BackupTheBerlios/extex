@@ -24,10 +24,10 @@ import java.util.Properties;
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\kern</tt>.
+ * This is a test suite for the primitive <tt>\fontname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontnameTest extends ExTeXLauncher {
 
@@ -93,18 +93,14 @@ public class FontnameTest extends ExTeXLauncher {
      */
     public void testFontname1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.output", "dump");
-
-        runCode(properties,
-                //--- input code ---
-                "\\font\\x=cmr12"
+        runCode(//--- input code ---
+                "\\font\\x=cmtt12"
                 + "\\fontname\\x "
                 + "\\end ",
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "cmr12"); //TODO correct?
+                "cmtt12\n");
     }
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\cr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CrTest extends ExTeXLauncher {
 
@@ -58,7 +58,7 @@ public class CrTest extends ExTeXLauncher {
                 //--- log message ---
                 "Misplaced \\cr",
                 //--- output channel ---
-                null);
+                "");
     }
 
 }

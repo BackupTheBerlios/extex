@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\kern</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class KernTest extends ExTeXLauncher {
 
@@ -71,16 +71,12 @@ public class KernTest extends ExTeXLauncher {
      */
     public void testEof1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.output", "dump");
-
-        runCode(properties,
-                //--- input code ---
+        runCode(//--- input code ---
                 "x\\kern ",
                 //--- log message ---
                 "Illegal unit of measure (pt inserted)",
                 //--- output channel ---
-                null);
+                "");
     }
 
 }

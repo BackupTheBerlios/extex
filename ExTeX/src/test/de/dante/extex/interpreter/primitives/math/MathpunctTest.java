@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\mathpunct</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathpunctTest extends ExTeXLauncher {
 
@@ -50,7 +50,7 @@ public class MathpunctTest extends ExTeXLauncher {
                 //--- log message ---
                 "Missing $ inserted",
                 //--- output channel ---
-                null);
+                "");
     }
 
 }

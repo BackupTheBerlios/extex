@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hbox</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HboxTest extends ExTeXLauncher {
 
@@ -56,7 +56,7 @@ public class HboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "Missing `{' inserted",
                 //--- output channel ---
-                null);
+                "");
     }
 
     /**
@@ -76,7 +76,7 @@ public class HboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "Missing `{' inserted",
                 //--- output channel ---
-                null);
+                "");
     }
 
     /**
@@ -96,7 +96,7 @@ public class HboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "Missing `{' inserted",
                 //--- output channel ---
-                null);
+                "");
     }
 
     /**
@@ -114,7 +114,7 @@ public class HboxTest extends ExTeXLauncher {
                 //--- log message ---
                 "Unexpected end of file while processing \\hbox",
                 //--- output channel ---
-                null);
+                "");
     }
 
 }

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MessageTest extends ExTeXLauncher {
 
@@ -55,7 +55,7 @@ public class MessageTest extends ExTeXLauncher {
                 //--- log message ---
                 "Missing `{' inserted",
                 //--- output channel ---
-                null);
+                "");
     }
 
     /**
@@ -72,7 +72,7 @@ public class MessageTest extends ExTeXLauncher {
                 //--- log message ---
                 "Missing `{' inserted",
                 //--- output channel ---
-                null);
+                "");
     }
 
     /**
