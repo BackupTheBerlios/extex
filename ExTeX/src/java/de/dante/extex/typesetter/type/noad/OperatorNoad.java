@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class OperatorNoad extends AbstractNucleusNoad {
 
@@ -85,13 +85,13 @@ public class OperatorNoad extends AbstractNucleusNoad {
      */
     public void toString(final StringBuffer sb) {
 
-        final char esc ='\\';
+        final char esc = '\\';
         sb.append(esc);
         sb.append("mathop");
         if (limits == Boolean.TRUE) {
             sb.append(esc);
             sb.append("limits");
-        } else if (limits == Boolean.TRUE) {
+        } else if (limits == Boolean.FALSE) {
             sb.append(esc);
             sb.append("nolimits");
         }

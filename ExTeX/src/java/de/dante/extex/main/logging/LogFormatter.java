@@ -29,7 +29,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LogFormatter extends Formatter {
 
@@ -102,8 +102,10 @@ public class LogFormatter extends Formatter {
 
         ByteArrayOutputStream os = new ByteArrayOutputStream();
         PrintWriter writer = new PrintWriter(os);
+        writer.write("\n");
         t.printStackTrace(writer);
+        writer.write("\n");
         writer.flush();
-        return "\n" + os.toString() + "\n";
+        return os.toString();
     }
 }

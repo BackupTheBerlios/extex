@@ -52,7 +52,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -224,7 +224,7 @@ public class MacroCode extends AbstractCode
     }
 
     /**
-     * match a single parameter.
+     * Match a single parameter.
      *
      * @param context the processor context
      * @param source the source for new tokens
@@ -240,11 +240,11 @@ public class MacroCode extends AbstractCode
             final Tokens[] args, final int len, final int i)
             throws InterpreterException {
 
-        if (i + 1 >= len) {
+        int pi = i + 1;
+        if (pi >= len) {
             throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
                     printableControlSequence(context));
         }
-        int pi = i + 1;
         Token ti = pattern.get(pi);
         if (ti instanceof MacroParamToken) {
             Token t = source.getToken(context);
