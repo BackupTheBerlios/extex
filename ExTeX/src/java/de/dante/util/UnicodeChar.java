@@ -25,14 +25,14 @@ import com.ibm.icu.lang.UCharacter;
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class UnicodeChar {
 
     /**
      * The codepoint of the unicode char (32 bit)
      */
-    private int code = 0;
+    private int code;
 
     /**
      * init with a 32 bit int value
@@ -117,13 +117,29 @@ public class UnicodeChar {
     /**
      * Compares a <code>UnicodeChar</code> character with the value of this
      * object.
-     *
-     * @param unicodechar the character to compare
+     * <p>
+     * The general signature for comparison to an arbitray object is required
+     * for the implementation of HahshMap and friends.
+     * </p>
+     * 
+     * @param unicodeChar the character to compare
      * @return <code>true</code>, if the characters are equals, otherwise
      *         <code>false</code>
      */
-    public boolean equals(final UnicodeChar unicodechar) {
-        return (code == unicodechar.getCodePoint());
+    public boolean equals(final Object unicodeChar) {
+        return ((unicodeChar instanceof UnicodeChar) && //
+        code == ((UnicodeChar) unicodeChar).getCodePoint());
+    }
+
+    /**
+     * Computes the hash code for the character. The hash code of equal objects
+     * must be equal, but the hash code of different object need not to be
+     * different. This is needed for the implementations of HashMap and friends.
+     * 
+     * @return the hash code
+     */
+    public int hashCode() {
+        return code;
     }
 
     /**
