@@ -36,7 +36,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface TokenStream {
 
@@ -83,8 +83,8 @@ public interface TokenStream {
 
     /**
      * Push back a token into the stream.
-     * If the token is <code>null</code> then nothing happens; a null token is
-     * not pushed!
+     * If the token is <code>null</code> then nothing happens:
+     * a <code>null</code> token is not pushed!
      * <p>
      * Note that it is up to the implementation to accept tokens not produced
      * with the token factory for push back. In general the behaviour in such a
