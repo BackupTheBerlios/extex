@@ -186,7 +186,7 @@
   <define name="expandafter"
           class="de.dante.extex.interpreter.primitives.macro.Expandafter"/>
   <define name="fam"
-          class="de.dante.extex.interpreter.primitives.register.count.Fam"/>
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="fi"
           class="de.dante.extex.interpreter.primitives.conditional.Fi"/>
   <define name="finalhyphendemerits"
@@ -435,7 +435,7 @@
   <define name="outer"
           class="de.dante.extex.interpreter.primitives.prefix.Outer"/>
   <define name="output"
-          class="de.dante.extex.interpreter.primitives.typesetter.output.Output"/>
+          class="de.dante.extex.interpreter.primitives.register.toks.ToksParameter"/>
   <define name="outputpenalty"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="over"
