@@ -16,22 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.main.observer;
 
 import java.util.logging.Handler;
 import java.util.logging.Level;
 
 import de.dante.extex.interpreter.Interaction;
-import de.dante.util.observer.Observable;
-import de.dante.util.observer.Observer;
+import de.dante.extex.interpreter.context.ContextInternals;
+import de.dante.extex.interpreter.context.observer.InteractionObserver;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This observer is used to transport the interaction mode changes to the
+ * logger. Thus it is guaranteed that only the appropriate messages are shown.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class InteractionObserver implements Observer {
+public class InteractionModeObserver implements InteractionObserver {
 
     /**
      * The field <tt>handler</tt> contains the {@link java.util.logging.Handler
@@ -44,18 +46,21 @@ public class InteractionObserver implements Observer {
      *
      * @param theHandler the target handler
      */
-    public InteractionObserver(final Handler theHandler) {
+    public InteractionModeObserver(final Handler theHandler) {
+
         super();
         this.handler = theHandler;
     }
 
     /**
-     * @see de.dante.util.observer.Observer#update(
-     *      de.dante.util.observer.Observable, java.lang.Object)
+     * @see de.dante.extex.interpreter.context.observer.InteractionObserver#receiveInteractionChange(
+     *      de.dante.extex.interpreter.context.ContextInternals,
+     *      de.dante.extex.interpreter.Interaction)
      */
-    public void update(final Observable observable, final Object item) {
+    public void receiveInteractionChange(final ContextInternals context,
+            final Interaction mode) throws Exception {
 
-        handler.setLevel((Interaction) item == Interaction.BATCHMODE //
+        handler.setLevel((Interaction) mode == Interaction.BATCHMODE //
                 ? Level.SEVERE : Level.INFO);
     }
 
