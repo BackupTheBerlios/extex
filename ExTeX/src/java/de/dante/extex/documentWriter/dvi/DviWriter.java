@@ -46,7 +46,7 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DviWriter {
 
@@ -430,13 +430,6 @@ public class DviWriter {
 
 
     /**
-     * Last seen Glyph.
-     *
-     */
-    private Glyph lastGlyph = null;
-
-
-    /**
      * Fonts defined in the dvi-file.
      *
      */
@@ -656,7 +649,6 @@ public class DviWriter {
      * @exception GeneralException if an error occurs
      */
     public void beginPage() throws GeneralException {
-        lastGlyph = null;
         int position = dviOutputStream.getStreamPosition();
 
         pages++;
@@ -779,35 +771,6 @@ public class DviWriter {
                                               DVI_SET_CHAR, characterNumber);
         currentPositions.addToH(convertToInt(glyph.getWidth().getValue()));
         updateMaximumPageWidth();
-
-        lastGlyph = node.getGlyph();
-
-    }
-
-
-    /**
-     * Write a glue node to the dvi-file.
-     *
-     * @param node the <code>GlueNode</code>
-     * @param mode current mode
-     * @exception GeneralException if an error occurs
-     * @deprecated Use {@link
-     * #writeSpace(de.dante.extex.interpreter.type.dimen.FixedDimen,
-     * de.dante.extex.typesetter.Mode) writeSpace(FixedDimen, Mode)}
-     * instead}.
-     */
-    public void writeGlueNode(final GlueNode node, final Mode mode)
-        throws GeneralException {
-
-        lastGlyph = null;
-
-        if (mode == Mode.HORIZONTAL) {
-            writeHorizontalSpace(node.getWidth());
-        } else  if (mode == Mode.VERTICAL) {
-            writeVerticalSpace(node.getWidth());
-        } else {
-            throw new GeneralException("unknown Mode");
-        }
     }
 
 
@@ -862,8 +825,6 @@ public class DviWriter {
      */
     public void writeSpace(final FixedDimen space, final Mode mode)
         throws GeneralException {
-
-        lastGlyph = null;
 
         if (mode == Mode.HORIZONTAL) {
             writeHorizontalSpace(space);
