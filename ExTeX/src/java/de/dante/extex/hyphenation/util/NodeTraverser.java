@@ -47,29 +47,29 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NodeTraverser implements NodeVisitor {
 
     /**
-     * The field <tt>count</tt> contains the ...
+     * The field <tt>pointer</tt> contains the pointer to the next item.
      */
-    private int count = 0;
+    private int pointer = 0;
 
     /**
-     * The field <tt>node</tt> contains the ...
+     * The field <tt>node</tt> contains the node to traverse.
      */
     private Node node;
 
     /**
-     * The field <tt>nt</tt> contains the ...
+     * The field <tt>nt</tt> contains the traverser for sub-nodes.
      */
     private NodeTraverser nt = null;
 
     /**
      * Creates a new object.
      *
-     * @param node
+     * @param node the node to traverse
      */
     public NodeTraverser(final Node node) {
 
@@ -78,7 +78,7 @@ public class NodeTraverser implements NodeVisitor {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the next character or <code>null</code> if none is present.
      *
      * @return the next character
      */
@@ -100,7 +100,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.AdjustNode,
      *      java.lang.Object)
      */
-    public Object visitAdjust(final AdjustNode node, final Object value) {
+    public Object visitAdjust(final AdjustNode n, final Object value) {
 
         return null;
     }
@@ -110,7 +110,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.AfterMathNode,
      *      java.lang.Object)
      */
-    public Object visitAfterMath(final AfterMathNode node, final Object value) {
+    public Object visitAfterMath(final AfterMathNode n, final Object value) {
 
         return null;
     }
@@ -120,7 +120,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.AlignedLeadersNode,
      *      java.lang.Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode node,
+    public Object visitAlignedLeaders(final AlignedLeadersNode n,
             final Object value) {
 
         return null;
@@ -131,7 +131,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.BeforeMathNode,
      *      java.lang.Object)
      */
-    public Object visitBeforeMath(final BeforeMathNode node, final Object value) {
+    public Object visitBeforeMath(final BeforeMathNode n, final Object value) {
 
         return null;
     }
@@ -141,7 +141,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.CenteredLeadersNode,
      *      java.lang.Object)
      */
-    public Object visitCenteredLeaders(final CenteredLeadersNode node,
+    public Object visitCenteredLeaders(final CenteredLeadersNode n,
             final Object value) {
 
         return null;
@@ -152,11 +152,11 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.CharNode,
      *      java.lang.Object)
      */
-    public Object visitChar(final CharNode node, final Object value) {
+    public Object visitChar(final CharNode n, final Object value) {
 
-        if (count == 0) {
-            count++;
-            return node.getCharacter();
+        if (pointer == 0) {
+            pointer++;
+            return n.getCharacter();
         }
         return null;
     }
@@ -166,7 +166,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.DiscretionaryNode,
      *      java.lang.Object)
      */
-    public Object visitDiscretionary(final DiscretionaryNode node,
+    public Object visitDiscretionary(final DiscretionaryNode n,
             final Object value) throws GeneralException {
 
         return null;
@@ -177,7 +177,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.ExpandedLeadersNode,
      *      java.lang.Object)
      */
-    public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+    public Object visitExpandedLeaders(final ExpandedLeadersNode n,
             final Object value) {
 
         return null;
@@ -188,7 +188,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.GlueNode,
      *      java.lang.Object)
      */
-    public Object visitGlue(final GlueNode node, final Object value) {
+    public Object visitGlue(final GlueNode n, final Object value) {
 
         return null;
     }
@@ -198,7 +198,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.HorizontalListNode,
      *      java.lang.Object)
      */
-    public Object visitHorizontalList(final HorizontalListNode node,
+    public Object visitHorizontalList(final HorizontalListNode n,
             final Object value) {
 
         if (nt != null) {
@@ -207,8 +207,8 @@ public class NodeTraverser implements NodeVisitor {
                 return uc;
             }
         }
-        while (count < node.size()) {
-            nt = new NodeTraverser(node.get(count++));
+        while (pointer < n.size()) {
+            nt = new NodeTraverser(n.get(pointer++));
             UnicodeChar uc = nt.next();
             if (uc != null) {
                 return uc;
@@ -223,7 +223,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.InsertionNode,
      *      java.lang.Object)
      */
-    public Object visitInsertion(final InsertionNode node, final Object value) {
+    public Object visitInsertion(final InsertionNode n, final Object value) {
 
         return null;
     }
@@ -233,7 +233,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.KernNode,
      *      java.lang.Object)
      */
-    public Object visitKern(final KernNode node, final Object value) {
+    public Object visitKern(final KernNode n, final Object value) {
 
         return null;
     }
@@ -243,7 +243,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.LigatureNode,
      *      java.lang.Object)
      */
-    public Object visitLigature(final LigatureNode node, final Object value) {
+    public Object visitLigature(final LigatureNode n, final Object value) {
 
         UnicodeChar uc;
 
@@ -253,18 +253,18 @@ public class NodeTraverser implements NodeVisitor {
                 return uc;
             }
         }
-        switch (count) {
+        switch (pointer) {
             case 0:
-                count++;
-                nt = new NodeTraverser(node.getLeft());
+                pointer++;
+                nt = new NodeTraverser(n.getLeft());
                 uc = nt.next();
                 if (uc != null) {
                     return uc;
                 }
             // continue with the second part
             case 1:
-                count++;
-                nt = new NodeTraverser(node.getRight());
+                pointer++;
+                nt = new NodeTraverser(n.getRight());
                 uc = nt.next();
                 if (uc != null) {
                     return uc;
@@ -280,7 +280,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.MarkNode,
      *      java.lang.Object)
      */
-    public Object visitMark(final MarkNode node, final Object value) {
+    public Object visitMark(final MarkNode n, final Object value) {
 
         return null;
     }
@@ -290,7 +290,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.PenaltyNode,
      *      java.lang.Object)
      */
-    public Object visitPenalty(final PenaltyNode node, final Object value) {
+    public Object visitPenalty(final PenaltyNode n, final Object value) {
 
         return null;
     }
@@ -300,7 +300,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.RuleNode,
      *      java.lang.Object)
      */
-    public Object visitRule(final RuleNode node, final Object value) {
+    public Object visitRule(final RuleNode n, final Object value) {
 
         return null;
     }
@@ -310,7 +310,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.SpaceNode,
      *      java.lang.Object)
      */
-    public Object visitSpace(final SpaceNode node, final Object value) {
+    public Object visitSpace(final SpaceNode n, final Object value) {
 
         return new UnicodeChar(' ');
     }
@@ -320,7 +320,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.VerticalListNode,
      *      java.lang.Object)
      */
-    public Object visitVerticalList(final VerticalListNode node,
+    public Object visitVerticalList(final VerticalListNode n,
             final Object value) {
 
         if (nt != null) {
@@ -329,8 +329,8 @@ public class NodeTraverser implements NodeVisitor {
                 return uc;
             }
         }
-        while (count < node.size()) {
-            nt = new NodeTraverser(node.get(count++));
+        while (pointer < n.size()) {
+            nt = new NodeTraverser(n.get(pointer++));
             UnicodeChar uc = nt.next();
             if (uc != null) {
                 return uc;
@@ -345,7 +345,7 @@ public class NodeTraverser implements NodeVisitor {
      *      de.dante.extex.typesetter.type.node.WhatsItNode,
      *      java.lang.Object)
      */
-    public Object visitWhatsIt(final WhatsItNode node, final Object value) {
+    public Object visitWhatsIt(final WhatsItNode n, final Object value) {
 
         return null;
     }
