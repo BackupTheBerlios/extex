@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.count;
 
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -49,10 +50,10 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedCount extends AbstractAssignment implements ExpandableCode,
-    Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
+        Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
 
     /**
      * Creates a new object.
@@ -60,6 +61,7 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
      * @param name the name for debugging
      */
     public NamedCount(final String name) {
+
         super(name);
     }
 
@@ -169,7 +171,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
 
         try {
             context.setCount(getName(), //
-                             (value.equals("") ? 0 : Long.parseLong(value)));
+                             (value.equals("") ? 0 : Long.parseLong(value)),
+                             true);
         } catch (NumberFormatException e) {
             throw new GeneralException(e); //TODO
         }

@@ -16,14 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.dimen;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.CountConvertable;
-import de.dante.extex.interpreter.DimenConvertable;
+import de.dante.extex.interpreter.DimenConvertible;
 import de.dante.extex.interpreter.Divideable;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Multiplyable;
 import de.dante.extex.interpreter.Theable;
@@ -46,10 +48,11 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedDimen extends AbstractAssignment implements Advanceable,
-        CountConvertable, DimenConvertable, Multiplyable, Divideable, Theable {
+        ExpandableCode, CountConvertable, DimenConvertible, Multiplyable,
+        Divideable, Theable {
 
     /**
      * Creates a new object.
@@ -57,6 +60,7 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
      * @param name the name for debugging
      */
     public NamedDimen(final String name) {
+
         super(name);
     }
 
@@ -94,14 +98,26 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
     }
 
     /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        String key = getKey(source);
+        Tokens toks = context.getDimen(key).toToks(context.getTokenFactory());
+        source.push(toks);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void assign(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         String key = getKey(source);
         source.scanOptionalEquals();
@@ -111,18 +127,24 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
     }
 
     /**
-     * ...
+     * Setter for the value fron a given String.
+     * The emty string is interpreted as 0.
      *
      * @param context the interpreter context
-     * @param value ...
+     * @param value the string containing the value
      *
      * @throws GeneralException in case of an error
      */
     public void set(final Context context, final String value)
-             throws GeneralException {
-                 //TODO
-//        context.setDimen(getName(),
-//                         (value.equals("") ? 0 : ...));
+            throws GeneralException {
+
+        if (value.equals("")) {
+            context.setDimen(getName(), 0, true);
+        } else {
+            //Dimen d = new Dimen(context, new StringSource(context.getTo(), value));
+            //TODO
+            throw new RuntimeException("unimplemented");
+        }
     }
 
     /**
@@ -138,7 +160,7 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.DimenConvertable#convertDimen(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.DimenConvertible#convertDimen(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertDimen(final Context context, final TokenSource source)
@@ -148,7 +170,9 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
@@ -163,7 +187,8 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
@@ -182,6 +207,7 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
 
         prefix.clear();
     }
+
     /**
      * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)

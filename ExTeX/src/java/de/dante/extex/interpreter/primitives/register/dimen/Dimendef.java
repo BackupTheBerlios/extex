@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.dimen;
 
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -24,8 +25,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Dimendef extends AbstractAssignment {
 
@@ -63,6 +63,7 @@ public class Dimendef extends AbstractAssignment {
      * @param name the name for debugging
      */
     public Dimendef(final String name) {
+
         super(name);
     }
 
@@ -78,23 +79,16 @@ public class Dimendef extends AbstractAssignment {
 
         Token cs = source.scanToken();
 
-        if (cs instanceof ControlSequenceToken) {
+        if (cs instanceof CodeToken) {
             source.scanOptionalEquals();
             //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "dimen#" + Long.toString(Count.scanCount(context, source));
-            context.setMacro(cs.getValue(), new NamedDimen(key), prefix.isGlobal());
-            return;
+            String key = "dimen#"
+                         + Long.toString(Count.scanCount(context, source));
+            context.setCode(cs, new NamedDimen(key), prefix.isGlobal());
+        } else {
 
-        } else if (cs instanceof ActiveCharacterToken) {
-            source.scanOptionalEquals();
-            //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "dimen#" + Long.toString(Count.scanCount(context, source));
-            context.setActive(cs.getValue(), new NamedDimen(key), prefix.isGlobal());
-            return;
-
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
-
-        throw new GeneralHelpingException("TTP.MissingCtrlSeq");
     }
 
 }
