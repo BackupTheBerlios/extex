@@ -142,7 +142,6 @@
     <Define name="hss" class=""/>
     <define name="ht" class="de.dante.extex.interpreter.primitives.register.Ht"/>
     <define name="hyphenation" class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
-    <define name="hyphenactive" class="de.dante.extex.interpreter.primitives.hyphen.HyphenActive"/>
     <Define name="hyphenchar" class=""/>
     <Define name="hyphenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="if" class=""/>
@@ -184,6 +183,7 @@
     <Define name="leaders" class=""/>
     <Define name="left" class=""/>
     <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.LeftHyphenmin"/>
+    <TRASH name="hyphenactive" class="de.dante.extex.interpreter.primitives.hyphen.HyphenActive" extension="yes"/>
     <define name="leftskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="leqno" class=""/>
     <define name="let" class="de.dante.extex.interpreter.primitives.macro.Let"/>
@@ -384,12 +384,6 @@
             <path>.</path>
             <path>font</path>
    	      </pfb>
-   	      <ttf>
-            <extension>.ttf</extension>
-            <path>.</path>
-            <path>font</path>
-   	      </ttf>
-   	      
         </File>
       </Font>
 
