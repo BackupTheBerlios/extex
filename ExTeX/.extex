@@ -1,6 +1,9 @@
+# ExTeX user properties file
+#------------------------------------------------------------------------------
 #
 #extex.config    = tex.xml
 extex.output    = tmp
 extex.texinputs = src/test/data
 extex.fonts     = src/font
+#extex.token.stream=base32
 #
