@@ -32,4 +32,5 @@ h1 { font-size: 145% }
 .TeXSample        { background-color:#eeffee; border-style:solid; border-width:1pt; border-color:#999999; margin-top:3pt; margin-bottom:3pt }
 .CLISample        { background-color:#ffeeee; border-style:solid; border-width:1pt; border-color:#999999; margin-top:3pt; margin-bottom:3pt }
 pre.syntax        { font-family: Helvetica, sans-serif; background-color:#eeeeff; border-style:solid; border-width:1pt; border-color:#000099; margin-top:3pt; margin-bottom:3pt }
+pre.CLIsyntax     { font-family: Courier; background-color:#eeeeff; border-style:solid; border-width:1pt; border-color:#000099; margin-top:3pt; margin-bottom:3pt }
 
