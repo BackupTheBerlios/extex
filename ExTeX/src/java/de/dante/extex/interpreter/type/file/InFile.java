@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InFile implements Serializable {
 
@@ -71,7 +71,7 @@ public class InFile implements Serializable {
             return true;
         }
         //TODO return stream.isEof();
-        return false; // TODO
+        return false;
     }
 
     /**
