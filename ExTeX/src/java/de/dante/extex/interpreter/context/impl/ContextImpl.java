@@ -89,7 +89,7 @@ import de.dante.util.file.FileFinderList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -103,11 +103,6 @@ public class ContextImpl implements Context, Serializable {
      * The constant <tt>DEFAULT_ATTRIBUTE</tt> ...
      */
     private static final String DEFAULT_ATTRIBUTE = "default";
-
-	/**
-	 * The constant <tt>DEFAULT_SIZE</tt> ...
-	 */
-	private static final String DEFAULT_SIZE = "size";
 
     /**
      * The constant <tt>FONT_TAG</tt> ...
@@ -216,10 +211,7 @@ public class ContextImpl implements Context, Serializable {
         } catch (Exception e) {
             throw new ConfigurationInstantiationException(e);
         }
-
-        // default font and size
-		String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
-        String size = fontConfiguration.getAttribute(DEFAULT_SIZE);
+        String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
 
         if (defaultFont == null || defaultFont.equals("")) {
             throw new ConfigurationMissingAttributeException(DEFAULT_ATTRIBUTE,
@@ -233,18 +225,10 @@ public class ContextImpl implements Context, Serializable {
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
                     config.toString());
         }
-        
-        Dimen fontsize = null;
-        try {
-        	float f = Float.parseFloat(size);
-        	fontsize = new Dimen((long)(Dimen.ONE * f));
-        } catch (NumberFormatException e) {
-			fontsize = new Dimen(Dimen.ONE * 12);
-		}
 
         tcFactory = new TypesettingContextFactory(typesettingConfig);
         TypesettingContext typesettingContext = tcFactory.newInstance();
-        typesettingContext.setFont(fontFactory.getInstance(defaultFont,fontsize));
+        typesettingContext.setFont(fontFactory.getInstance(defaultFont));
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
 
@@ -589,8 +573,8 @@ public class ContextImpl implements Context, Serializable {
      *
      * @return ...
      */
-    public boolean ifPop() {
-        return ((Conditional) ifStack.pop()).isValue();
+    public long ifPop() {
+        return ((Conditional) ifStack.pop()).getValue();
     }
 
     /**
@@ -599,7 +583,7 @@ public class ContextImpl implements Context, Serializable {
      * @param value
      *                 the value to push
      */
-    public void ifPush(final Locator locator, final boolean value) {
+    public void ifPush(final Locator locator, final long value) {
         ifStack.add(new Conditional(locator, value));
     }
 

@@ -145,15 +145,15 @@
     <Define name="ifeof" class=""/>
     <define name="iffalse" class="de.dante.extex.interpreter.primitives.conditional.Iffalse"/>
     <Define name="ifhbox" class=""/>
-    <Define name="ifhmode" class="de.dante.extex.interpreter.primitives.conditional.Ifhmode"/>
-    <Define name="ifinner" class="de.dante.extex.interpreter.primitives.conditional.Ifinner"/>
-    <Define name="ifmmode" class="de.dante.extex.interpreter.primitives.conditional.Ifmmode"/>
+    <define name="ifhmode" class="de.dante.extex.interpreter.primitives.conditional.Ifhmode"/>
+    <define name="ifinner" class="de.dante.extex.interpreter.primitives.conditional.Ifinner"/>
+    <define name="ifmmode" class="de.dante.extex.interpreter.primitives.conditional.Ifmmode"/>
     <Define name="ifnum" class=""/>
     <Define name="ifodd" class=""/>
     <define name="iftrue" class="de.dante.extex.interpreter.primitives.conditional.Iftrue"/>
     <Define name="ifvbox" class=""/>
-    <Define name="ifvmode" class="de.dante.extex.interpreter.primitives.conditional.Ifvmode"/>
-    <Define name="ifvoid" class=""/>
+    <define name="ifvmode" class="de.dante.extex.interpreter.primitives.conditional.Ifvmode"/>
+    <define name="ifvoid" class="de.dante.extex.interpreter.primitives.conditional.Ifvoid"/>
     <define name="ifx" class="de.dante.extex.interpreter.primitives.conditional.Ifx"/>
     <Define name="ignorespaces" class=""/>
     <define name="immediate" class="de.dante.extex.interpreter.primitives.prefix.Immediate"/>
@@ -346,7 +346,7 @@
     <Define name="vsplit" class=""/>
     <Define name="vss" class=""/>
     <Define name="vtop" class=""/>
-    <Define name="wd" class=""/>
+    <define name="wd" class="de.dante.extex.interpreter.primitives.register.Wd"/>
     <define name="widowpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="write" class=""/>
     <Define name="xdef" class=""/>
@@ -361,16 +361,12 @@
       <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
 
       <Font class="de.dante.extex.font.FontFactoryImpl"
-                   default="uplr8a" size="12">
+                   default="CMR12">
         <File>
           <efm>
             <extension>.efm</extension>
             <path>./font</path>
    	      </efm>
-          <pfb>
-            <extension>.pfb</extension>
-            <path>./font</path>
-   	      </pfb>
         </File>
       </Font>
 
@@ -396,5 +392,7 @@
     </tex>
    </File>
 
+   <Output encoding="ISO-8859-1">
+   </Output>
  
 </ExTeX>
