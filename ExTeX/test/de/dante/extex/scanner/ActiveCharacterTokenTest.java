@@ -25,11 +25,13 @@ import junit.framework.TestCase;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ActiveCharacterTokenTest extends TestCase {
 
     /**
+     * ...
+     * @param args ...
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(ActiveCharacterTokenTest.class);

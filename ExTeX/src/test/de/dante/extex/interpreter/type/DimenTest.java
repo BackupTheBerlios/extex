@@ -18,13 +18,14 @@
  */
 package de.dante.extex.interpreter.type;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the data type Dimen.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DimenTest extends ExTeXLauncher {
 
@@ -361,7 +362,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd00() {
 
-        Dimen d	= new Dimen(0);
+        Dimen d = new Dimen(0);
         d.add(new Dimen(0));
         assertEquals(0L, d.getValue());
     }
@@ -372,7 +373,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd01() {
 
-        Dimen d	= new Dimen(0);
+        Dimen d = new Dimen(0);
         d.add(new Dimen(1));
         assertEquals(1L, d.getValue());
     }
@@ -383,7 +384,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd02() {
 
-        Dimen d	= new Dimen(0);
+        Dimen d = new Dimen(0);
         d.add(new Dimen(2));
         assertEquals(2L, d.getValue());
     }
@@ -394,7 +395,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd03() {
 
-        Dimen d	= new Dimen(0);
+        Dimen d = new Dimen(0);
         d.add(new Dimen(-1));
         assertEquals(-1L, d.getValue());
     }
@@ -405,7 +406,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd04() {
 
-        Dimen d	= new Dimen(0);
+        Dimen d = new Dimen(0);
         d.add(new Dimen(-2));
         assertEquals(-2L, d.getValue());
     }
@@ -416,7 +417,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd10() {
 
-        Dimen d	= new Dimen(1);
+        Dimen d = new Dimen(1);
         d.add(new Dimen(0));
         assertEquals(1L, d.getValue());
     }
@@ -427,7 +428,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd11() {
 
-        Dimen d	= new Dimen(1);
+        Dimen d = new Dimen(1);
         d.add(new Dimen(1));
         assertEquals(2L, d.getValue());
     }
@@ -438,7 +439,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd12() {
 
-        Dimen d	= new Dimen(1);
+        Dimen d = new Dimen(1);
         d.add(new Dimen(2));
         assertEquals(3L, d.getValue());
     }
@@ -449,7 +450,7 @@ public class DimenTest extends ExTeXLauncher {
      */
     public void testAdd13() {
 
-        Dimen d	= new Dimen(1);
+        Dimen d = new Dimen(1);
         d.add(new Dimen(-1));
         assertEquals(0L, d.getValue());
     }

@@ -20,11 +20,10 @@ package de.dante.extex.interpreter;
 
 import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -39,7 +38,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Max1 extends TestCase {
 
@@ -54,7 +53,7 @@ public class Max1 extends TestCase {
 
     /**
      * ...
-     * @param args
+     * @param args ...
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(Max1.class);
@@ -167,7 +166,8 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+         * @see de.dante.extex.typesetter.ListMaker#addSpace(
+         *      de.dante.extex.interpreter.context.TypesettingContext,
          *      de.dante.extex.interpreter.type.Count)
          */
         public void addSpace(final TypesettingContext typesettingContext,
@@ -190,21 +190,24 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
+         * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
+         *      de.dante.extex.documentWriter.DocumentWriter)
          */
         public void setDocumentWriter(final DocumentWriter doc) {
             // nothing to do
         }
 
         /**
-         * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
+         * @see de.dante.util.configuration.Configurable#configure(
+         *      de.dante.util.configuration.Configuration)
          */
         public void configure(final Configuration config) {
             // nothing to do
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#add(de.dante.extex.interpreter.type.node.CharNode)
+         * @see de.dante.extex.typesetter.Typesetter#add(
+         *      de.dante.extex.interpreter.type.node.CharNode)
          */
         public void add(final Node c) {
             // nothing to do
@@ -232,7 +235,8 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#add(de.dante.extex.interpreter.type.Font,
+         * @see de.dante.extex.typesetter.Typesetter#add(
+         *      de.dante.extex.interpreter.type.Font,
          *      java.lang.String)
          */
         public void add(final TypesettingContext font,
@@ -243,7 +247,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#finish()
          */
-        public void finish(final Context context) {
+        public void finish() {
             // nothing to do
         }
 
@@ -269,14 +273,16 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
+         * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+         *      de.dante.extex.interpreter.type.Dimen)
          */
         public void setPrevDepth(final Dimen pd) {
             // nothing to do
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.NodeList)
+         * @see de.dante.extex.typesetter.Typesetter#shipout(
+         *      de.dante.extex.typesetter.NodeList)
          */
         public void shipout(final NodeList nodes) {
             // nothing to do
@@ -289,6 +295,7 @@ public class Max1 extends TestCase {
 
             // TODO Auto-generated method stub
         }
+
         /**
          * @see de.dante.extex.typesetter.Typesetter#openVbox()
          */
