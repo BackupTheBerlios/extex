@@ -21,14 +21,13 @@ package de.dante.extex.interpreter.primitives.table;
 
 import java.util.Properties;
 
-import de.dante.extex.main.exception.MainException;
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\halign</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HalignTest extends ExTeXLauncher {
 
