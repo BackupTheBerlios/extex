@@ -32,10 +32,10 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class holds an output file onto which tokens can be wrtitten.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class OutFile implements Serializable {
 
@@ -83,15 +83,13 @@ public class OutFile implements Serializable {
     /**
      * Close the current file.
      *
-     * @throws GeneralException in case of an error
+     * @throws IOException in case of an error
      */
-    public void close() throws GeneralException {
+    public void close() throws IOException {
 
         if (writer != null) {
             try {
                 writer.close();
-            } catch (IOException e) {
-                throw new PanicException(e); //TODO ignore?
             } finally {
                 writer = null;
             }
