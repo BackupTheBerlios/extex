@@ -41,6 +41,21 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\lower</tt> &lang;dimen&rang; {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getBox() &lang;box&rang;} </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \lower 2em \hbox{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \lower -1pt \hbox to 120pt {abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \lower 2mm \hbox spread 12pt {abc}  </pre>
+ * </p>
  * </doc>
  *
  * <p>
@@ -53,7 +68,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Lower extends AbstractCode implements Boxable {
 

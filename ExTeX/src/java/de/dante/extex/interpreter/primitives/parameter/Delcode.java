@@ -40,17 +40,23 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\delcode ...</tt>  </pre>
+ *    <tt>\delcode</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#scanNumber()
+ *    &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#scanNumber()
+ *    &lang;8-bit&nbsp;number&rang;}  </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \delcode ...  </pre>
+ *    \delcode`x="123456  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Delcode extends AbstractAssignment {
 

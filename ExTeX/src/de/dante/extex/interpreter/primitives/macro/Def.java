@@ -45,9 +45,15 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\def</tt> {@linkplain
+ *    &lang;prefix&rang; <tt>\def</tt> {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getControlSequence()
- *    &lang;control sequence&rang;} ... </pre>
+ *    &lang;control sequence&rang;} &lang;parameter text&rang; <tt>{</tt> &lang;replacement text&rang; <tt>}</tt>
+ *
+ *    &lang;prefix&rang;
+ *      := 
+ *       | <tt>\global</tt> &lang;prefix&rang;
+ *       | <tt>\long</tt> &lang;prefix&rang;
+ *       | <tt>\outer</tt> &lang;prefix&rang;</pre>
  * </p>
  * <p>
  *  Examples:
@@ -57,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Def extends AbstractAssignment {
 

@@ -69,7 +69,7 @@ import de.dante.util.observer.SwitchObserver;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Max extends Moritz
 		implements
@@ -168,13 +168,10 @@ public class Max extends Moritz
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param config
-	 *            the configuration object to take into account
+	 * @param config the configuration object to take into account
 	 * 
-	 * @throws ConfigurationException
-	 *             in case of an error
-	 * @throws GeneralException
-	 *             in case of another error
+	 * @throws ConfigurationException in case of an error
+	 * @throws GeneralException in case of another error
 	 */
 	public Max(final Configuration config) throws ConfigurationException,
 			GeneralException {
@@ -255,31 +252,32 @@ public class Max extends Moritz
 	/**
 	 * This method can be used to register observers for certain events.
 	 * 
-	 * The following events are currently supported: <table>
-	 * <tr>
-	 * <th>Name</th>
-	 * <th>Description</th>
-	 * </tr>
-	 * <tr>
-	 * <td>error</td>
-	 * <td>...</td>
-	 * </tr>
-	 * <tr>
-	 * <td>expand</td>
-	 * <td>...</td>
-	 * </tr>
-	 * <tr>
-	 * <td>pop</td>
-	 * <td>inherited from the super class</td>
-	 * </tr>
-	 * <tr>
-	 * <td>push</td>
-	 * <td>inherited from the super class</td>
-	 * </tr>
-	 * <tr>
-	 * <td>EOF</td>
-	 * <td>inherited from the super class</td>
-	 * </tr>
+	 * The following events are currently supported:
+	 * <table>
+	 *  <tr>
+	 *   <th>Name</th>
+	 *   <th>Description</th>
+	 *  </tr>
+	 *  <tr>
+	 *   <td>error</td>
+	 *   <td>...</td>
+	 *  </tr>
+	 *  <tr>
+	 *   <td>expand</td>
+	 *   <td>...</td>
+	 *  </tr>
+	 *  <tr>
+	 *   <td>pop</td>
+	 *   <td>inherited from the super class</td>
+	 *  </tr>
+	 *  <tr>
+	 *   <td>push</td>
+	 *   <td>inherited from the super class</td>
+	 *  </tr>
+	 *  <tr>
+	 *   <td>EOF</td>
+	 *   <td>inherited from the super class</td>
+	 *  </tr>
 	 * </table>
 	 * 
 	 * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,

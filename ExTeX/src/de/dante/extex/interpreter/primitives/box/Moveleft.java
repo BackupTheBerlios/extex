@@ -19,17 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.box;
 
-import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -41,19 +37,26 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\moveleft</tt> &lang;dimen&rang; {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getBox() &lang;box&rang;}  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \moveleft 2em \hbox{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \moveleft -1pt \hbox to 120pt {abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \moveleft 2mm \hbox spread 12pt {abc}  </pre>
+ * </p>
  * </doc>
  *
- * <p>
- * Examples
- * </p>
- * <pre>
- *  \moveleft 2em \hbox{abc}
- *  \moveleft -1pt \hbox to 120pt {abc}
- *  \moveleft 2mm \hbox spread 12pt {abc}
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Moveleft extends AbstractCode implements Boxable {
 
@@ -91,19 +94,11 @@ public class Moveleft extends AbstractCode implements Boxable {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        Dimen amount = new Dimen(context, source);
-        Token t = source.getToken();
-        if (t == null || !(t instanceof CodeToken)) {
-            throw new GeneralHelpingException("TTP.BoxExpected");
-        }
-        Code code = context.getCode(t);
-        if (code == null || !(code instanceof Boxable)) {
-            throw new GeneralHelpingException("TTP.BoxExpected");
-        }
-        Box box = ((Boxable) code).getBox(context, source, typesetter);
-
-        amount.subtract(box.getShift());
-        box.setMove(amount);
+        Dimen move = new Dimen(context, source);
+        Box box = source.getBox(typesetter);
+        move.negate();
+        move.add(box.getMove());
+        box.setMove(move);
         return box;
     }
 

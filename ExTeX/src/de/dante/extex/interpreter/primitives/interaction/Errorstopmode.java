@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.interaction;
 
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
@@ -50,9 +50,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Errorstopmode extends AbstractCode {
+public class Errorstopmode extends AbstractAssignment {
 
     /**
      * Creates a new object.
@@ -64,16 +64,16 @@ public class Errorstopmode extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         context.setInteraction(Interaction.ERRORSTOPMODE, prefix.isGlobal());
-        prefix.clear();
     }
 }

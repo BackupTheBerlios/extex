@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.Typesetter;
  * It does simply nothing, but as a side effect the prefix <i>GLOBAL</i> is
  * added to the prefixes.
  *
- * <doc name="tt">
+ * <doc name="global">
  * <h3>The Prefix Primitive <tt>\global</tt></h3>
  * <p>
  *  ...
@@ -47,7 +47,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Global extends AbstractCode {
     /**

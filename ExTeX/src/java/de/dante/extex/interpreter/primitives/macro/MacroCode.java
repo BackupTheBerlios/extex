@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for any macro code bound to a
  * control sequence or active character.
  *
- * <doc>
+ * <doc name="macros" type="hotwo">
  * <h3>The Macro Code</h3>
  * <p>
  *  ...
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 

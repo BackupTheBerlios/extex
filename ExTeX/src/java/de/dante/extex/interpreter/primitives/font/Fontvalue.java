@@ -35,12 +35,6 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\fontvalue</code>.
  *
- * <doc name="fontvalue">
- * <h3>The Primitive <tt>\fontvalue</tt></h3>
- * <p>
- *  ...
- * </p>
- * </doc>
  *
  * <p>
  * Example:
@@ -51,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Fontvalue extends AbstractAssignment implements Theable {
 

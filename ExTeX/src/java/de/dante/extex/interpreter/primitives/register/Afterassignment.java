@@ -42,7 +42,8 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    <tt>\afterassignment</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource &lang;token&rang;} </pre>
+ *      de.dante.extex.interpreter.TokenSource#getToken()
+ *      &lang;token&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -56,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Afterassignment extends AbstractCode {
 

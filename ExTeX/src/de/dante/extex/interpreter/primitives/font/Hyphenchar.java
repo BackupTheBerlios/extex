@@ -40,10 +40,24 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\hyphenchar</tt> &lang;font&rang; {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#scanNumber()
+ *    &lang;8-bit&nbsp;number&rang;} </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \hyphenchar\font=132  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Hyphenchar extends AbstractCode implements ExpandableCode {
 

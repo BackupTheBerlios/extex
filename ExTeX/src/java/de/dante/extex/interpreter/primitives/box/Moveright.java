@@ -37,19 +37,30 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\moveright</tt> &lang;dimen&rang; {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getBox() &lang;box&rang;}  </pre>
+ * </p>
+ * <p>
+ *  The color from the typographic context is taken as foregroud color for the
+ *  rule. The default color is black.
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \moveright 2em \hbox{abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \moveright -1pt \hbox to 120pt {abc}  </pre>
+ *  <pre class="TeXSample">
+ *    \moveright 2mm \hbox spread 12pt {abc}  </pre>
+ * </p>
  * </doc>
  *
- * <p>
- * Examples
- * </p>
- * <pre>
- *  \moveright 2em \hbox{abc}
- *  \moveright -1pt \hbox to 120pt {abc}
- *  \moveright 2mm \hbox spread 12pt {abc}
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Moveright extends AbstractCode implements Boxable {
 
@@ -87,11 +98,10 @@ public class Moveright extends AbstractCode implements Boxable {
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        Dimen amount = new Dimen(context, source);
+        Dimen move = new Dimen(context, source);
         Box box = source.getBox(typesetter);
-
-        amount.add(box.getShift());
-        box.setMove(amount);
+        move.add(box.getMove());
+        box.setMove(move);
         return box;
     }
 

@@ -38,9 +38,15 @@ import de.dante.util.GeneralException;
  *  the page builder is also invoked.
  * </p>
  * <p>
+ *  A penalty of 10000 or more will inhibit a break at this position. A penalty
+ *  of -10000 or less will force a break at this position.
+ * </p>
+ * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\penalty</tt> &lang;number&rang;  </pre>
+ *    <tt>\penalty</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#scanNumber()
+ *    &lang;8-bit&nbsp;number&rang;}  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -55,7 +61,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Penalty extends AbstractCode {
 

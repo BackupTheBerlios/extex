@@ -19,7 +19,7 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.6 $" />
+  <meta name="version" content="$Revision: 1.7 $" />
  </head>
  <body>
   This package contains classes for the primitives which are mapped to
@@ -31,7 +31,7 @@
   configuration file or a format file.
   </p>
 
-  <doc>
+  <doc name="primitives" type="howto">
   <h3>Writing New Primitives</h3>
   <p>
    The core primitives of ExTeX are written in Java and bound to
@@ -139,19 +139,19 @@
    used by ExTeX. For example the default file is located in the
    package <tt>config</tt> and named <tt>extex.xml</tt>. There you can
    find lines like the following one:
-   <pre style="background:#eeeeff;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="Sample">
      <b>&lt;define</b> name="def" class="de.dante.extex.interpreter.primitives.macro.Def"<b>/&gt;</b></pre>
   </p>
   <p>
    To add another primitive to ExTeX you should make a copy of this
    configuration file under a different name and add a line like the
    one shown above:
-   <pre style="background:#eeeeff;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="Sample">
      <b>&lt;define</b> name="myPrim" class="my.package.MyPrimitive"<b>/&gt;</b></pre>
    Now you can invoke ExTeX on the command line with the parameter
    <tt>-configuration</tt> or add a line <tt>extex.config</tt> to your
    <tt>.extex</tt> file pointing ExTeX to your new configuration file:
-   <pre style="background:#eeffee;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="CLISample">
      extex -configuration config/myExTeX.xml</pre>
    This is enough. In the instance of ExTeX with these settings the
    new macro <tt>\myPrim</tt> is defined and points to your code for
@@ -382,7 +382,7 @@
    </tr>
    <tr>
     <td><tt>\show</tt></td>
-    <td>{@link de.dante.extex.interpreter.Showable Showable}</td>
+    <td>{@link de.dante.extex.interpreter.type.Showable Showable}</td>
    </tr>
    <tr>
     <td><tt>\showthe</tt></td>
@@ -395,7 +395,6 @@
   </table>
 
   </doc>
-
 
  </body>
 </html>

@@ -40,18 +40,28 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\fontdimen</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#scanNumber()
+ *    &lang;8-bit&nbsp;number&rang;}  {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} &lang;dimen&rang;  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \fontdimen13\ff=5pt  </pre>
+ *  <pre class="TeXSample">
+ *    \the\fontdimen13\ff  </pre>
+ * </p>
  * </doc>
  *
- * <p>
- * Example:
- * <pre>
- * \fontdimen13\ff=5pt
- * \the\fontdimen13\ff
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Fontdimen extends AbstractAssignment implements ExpandableCode,
         Theable {

@@ -27,15 +27,15 @@ import de.dante.util.GeneralException;
  *
  * <p>
  * Each primitive has a name which is used for debugging purposes. Since an
- * arbitrary sequence of \let and \def operations might have taken place it is
- * in general not possible to determine the current name under which the
- * primitive has been called. Thus an initial value is stored in it for this
- * purpose.
+ * arbitrary sequence of <tt>\let</tt> and <tt>\def</tt> operations might have
+ * taken place it is in general not possible to determine the current name
+ * under which the primitive has been called. Thus an initial value is stored
+ * in it for this purpose.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Code {
 

@@ -35,7 +35,15 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\edef ...</tt>  </pre>
+ *    &lang;prefix&rang; <tt>\edef</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} &lang;parameter text&rang; <tt>{</tt> &lang;replacement text&rang; <tt>}</tt>
+ *
+ *    &lang;prefix&rang;
+ *      := 
+ *       | <tt>\global</tt> &lang;prefix&rang;
+ *       | <tt>\long</tt> &lang;prefix&rang;
+ *       | <tt>\outer</tt> &lang;prefix&rang;</pre>
  * </p>
  * <p>
  *  Examples:
@@ -45,7 +53,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Edef extends Def {
     /**

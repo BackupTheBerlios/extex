@@ -36,18 +36,46 @@ import de.dante.util.GeneralException;
  * <doc name="divide">
  * <h3>The Primitive <tt>\divide</tt></h3>
  * <p>
- *  ...
+ *  This primitive implements an assignment. The variable given as next tokens
+ *  is divided by the quantity given after the optional <tt>by</tt>.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\divide</tt> &lang;dividable&rang; 
+ *
+ *   &lang;dividable&rang;
+ *     := &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *      |  &lang;glue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *
+ *   &lang;optional <tt>by</tt>&rang;
+ *     := [by]
+ *      |  &lang;optional spaces&rang;
+ *   </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \divide\count12 345  </pre>
+ *  <pre class="TeXSample">
+ *    \divide\count12 by -345  </pre>
  * </p>
  * </doc>
  *
- * Example
- * <pre>
- * \divide\count12 345
- * \divide\count12 by -345
- * </pre>
  *
+ * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Divide extends AbstractAssignment {
     /**

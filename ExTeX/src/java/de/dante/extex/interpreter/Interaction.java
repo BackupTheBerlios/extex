@@ -25,11 +25,11 @@ import de.dante.util.GeneralException;
 import java.io.Serializable;
 
 /**
- * This class provides a ztype-save enumeration of the interactions styles of
+ * This class provides a type-save enumeration of the interactions styles of
  * ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -113,7 +113,7 @@ public abstract class Interaction implements Serializable {
     public static Interaction get(final String mode)
             throws MainUnknownInteractionException {
 
-        if (mode == null || mode.equals("")) {
+        if (mode == null || "".equals(mode)) {
             throw new MainUnknownInteractionException("");
         } else if ("batchmode".startsWith(mode) || mode.equals("0")) {
             return BATCHMODE;
@@ -150,7 +150,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class BatchMode extends Interaction {
 
@@ -172,7 +172,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -194,7 +194,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -216,7 +216,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class ErrorstopMode extends Interaction {
 

@@ -37,18 +37,46 @@ import de.dante.util.GeneralException;
  * <doc name="multiply">
  * <h3>The Primitive <tt>\advance</tt></h3>
  * <p>
- *  ...
+ *  This primitive implements an assignment. The variable given as next tokens
+ *  is multiplied by the quantity given after the optional <tt>by</tt>.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\multiply</tt> &lang;multiplyable&rang; 
+ *
+ *   &lang;multiplyable&rang;
+ *     := &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *      |  &lang;glue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}
+ *
+ *   &lang;optional <tt>by</tt>&rang;
+ *     := [by]
+ *      |  &lang;optional spaces&rang;
+ *   </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \multiply\count12 345  </pre>
+ *  <pre class="TeXSample">
+ *    \multiply\count12 by -345  </pre>
  * </p>
  * </doc>
  *
- * Example
- * <pre>
- * \multiply\count12 345
- * \multiply\count12 by -345
- * </pre>
  *
+ * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Multiply extends AbstractAssignment {
     /**
