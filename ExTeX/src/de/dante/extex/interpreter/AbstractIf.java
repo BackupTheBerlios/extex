@@ -16,11 +16,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.interpreter.primitives.conditional.Else;
+import de.dante.extex.interpreter.primitives.conditional.Fi;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -29,9 +32,9 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public abstract class AbstractIf extends AbstractCode {
+public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
     /**
      * Creates a new object.
@@ -39,6 +42,7 @@ public abstract class AbstractIf extends AbstractCode {
      * @param name the name for debugging
      */
     public AbstractIf(final String name) {
+
         super(name);
     }
 
@@ -46,6 +50,7 @@ public abstract class AbstractIf extends AbstractCode {
      * @see de.dante.extex.interpreter.Code#isIf()
      */
     public boolean isIf() {
+
         return true;
     }
 
@@ -60,14 +65,29 @@ public abstract class AbstractIf extends AbstractCode {
             throws GeneralException {
 
         if (conditional(context, source, typesetter)) {
-            context.pushConditional(source.getLocator(), 1);
-        } else {
-            if (skipToElseOrFi(context, source)) {
-                context.pushConditional(source.getLocator(), 1);
-            }
+            context.pushConditional(source.getLocator(), true);
+        } else if (skipToElseOrFi(context, source)) {
+            context.pushConditional(source.getLocator(), true);
         }
 
         prefix.clear();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        if (conditional(context, source, typesetter)) {
+            context.pushConditional(source.getLocator(), true);
+        } else if (skipToElseOrFi(context, source)) {
+            context.pushConditional(source.getLocator(), true);
+        }
     }
 
     /**
@@ -87,7 +107,7 @@ public abstract class AbstractIf extends AbstractCode {
 
     /**
      * Skip to the next matching <tt>\fi</tt> or <tT>\else</tt> Token
-     * counting the intermediate <tt>\if</tt> s and <tt>\fi</tt>s.
+     * counting the intermediate <tt>\if</tt>s and <tt>\fi</tt>s.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
@@ -102,22 +122,20 @@ public abstract class AbstractIf extends AbstractCode {
             final TokenSource source) throws GeneralException {
 
         Code code;
-        int n = 1;
+        int n = 0;
 
         for (Token t = source.getToken(); t != null; t = source.getToken()) {
-            if (t instanceof ControlSequenceToken) {
-                String name = t.getValue();
 
-                if (name.equals("fi")) {
-                    if (--n < 1) {
+            if (t instanceof CodeToken && (code = context.getCode(t)) != null) {
+                if (code instanceof Fi) {
+                    if (--n < 0) {
                         return false;
                     }
-                } else if (name.equals("else")) {
-                    if (n < 1) {
+                } else if (code instanceof Else) {
+                    if (n <= 0) {
                         return true;
                     }
-                } else if ((code = context.getMacro(name)) != null
-                           && code.isIf()) {
+                } else if (code.isIf()) {
                     n++;
                 }
             }
