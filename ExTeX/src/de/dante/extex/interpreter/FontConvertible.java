@@ -27,9 +27,9 @@ import de.dante.util.GeneralException;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface FontConvertable {
+public interface FontConvertible {
 
     /**
      * ...
