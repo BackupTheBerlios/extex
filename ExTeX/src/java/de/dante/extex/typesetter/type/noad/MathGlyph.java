@@ -17,12 +17,10 @@
  *
  */
 
-package de.dante.extex.typesetter.type;
+package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.extex.typesetter.type.noad.NoadVisitor;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.UnicodeChar;
 
@@ -30,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public class MathGlyph implements Noad {
 
@@ -168,19 +166,6 @@ public class MathGlyph implements Noad {
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * This is the entry point for the visitor pattern.
-     *
-     * @param visitor the visitor to invoke
-     *
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *       de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        visitor.visitGlyph(this);
     }
 
 }
