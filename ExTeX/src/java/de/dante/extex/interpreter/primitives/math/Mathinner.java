@@ -45,12 +45,12 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \mathinner { ... }  </pre>
+ *    \mathinner{a^b}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathinner extends AbstractMathCode {
 
@@ -75,7 +75,7 @@ public class Mathinner extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        NoadConsumer nc = getListMaker(typesetter);
+        NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(context, source);
         nc.add(new InnerNoad(noad));
         return true;
