@@ -77,12 +77,6 @@ hr                { clear:both; }
                     border-color:black;
                     text-align:center;
                     margin:3pt }
-doc               { background-color:#ffffcc;
-                    border-style:solid;
-                    border-width:1pt;
-                    border-color:#990000;
-                    margin-top:3pt;
-                    margin-bottom:3pt }
 .TeXbook          { font-size:90%;
                     background-color:#ffff99;
                     border-style:solid;
