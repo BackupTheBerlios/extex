@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,9 +35,14 @@ import de.dante.extex.font.SVGReader;
  * Convert a SVG-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SVG2EFM {
+
+    /**
+     * filebuffer
+     */
+    private static final int FILEBUFFER = 0x8000;
 
     /**
      * main
@@ -55,13 +60,13 @@ public class SVG2EFM {
         }
 
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-                args[0]), 0x8000);
+                args[0]), FILEBUFFER);
         SVGReader svgreader = new SVGReader(in, args[1], args[2]);
 
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);
         BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(args[2]), 0x8000);
+                new FileOutputStream(args[2]), FILEBUFFER);
         Document doc = new Document(svgreader.getFontMetric());
         xmlout.output(doc, out);
         out.close();

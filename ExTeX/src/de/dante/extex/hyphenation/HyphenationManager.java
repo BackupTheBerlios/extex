@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,24 +16,25 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.hyphenation;
 
 /**
  * Interface for a <code>HyphernationManager</code>.
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface HyphenationManager {
 
     /**
      * Return the <code>HyphernationTable</code> with the index.
-     * <p> 
+     * <p>
      * The index is based on the language-number.
      *
      * @param index the index
      * @return the <code>HyphernationTable</code>
      */
-    HyphenationTable getHyphenationTable(String index);
+    HyphenationTable getHyphenationTable(final String index);
 }

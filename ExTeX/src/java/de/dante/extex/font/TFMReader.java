@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ import org.jdom.Element;
  * This class read a TFM-file. <p>See for more information TFtoPL
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TFMReader implements FontMetric {
 
@@ -41,11 +41,12 @@ public class TFMReader implements FontMetric {
     /**
      * Create e new object.
      *
-     * @param in the InputStream for reading
+     * @param ins the InputStream for reading
      * @throws IOException ...
      */
-    public TFMReader(final InputStream in) throws IOException {
-        this.in = in;
+    public TFMReader(final InputStream ins) throws IOException {
+
+        in = ins;
 
         // read ...
         readLengths();
@@ -80,6 +81,7 @@ public class TFMReader implements FontMetric {
          */
         public CharInfo(final FixWord w, final FixWord h, final FixWord d,
                 final FixWord i) {
+
             width = w;
             height = h;
             depth = d;
@@ -110,6 +112,7 @@ public class TFMReader implements FontMetric {
          * @return the character width.
          */
         public FixWord getWidth() {
+
             return width;
         }
 
@@ -117,6 +120,7 @@ public class TFMReader implements FontMetric {
          * @return the character height.
          */
         public FixWord getHeight() {
+
             return height;
         }
 
@@ -124,6 +128,7 @@ public class TFMReader implements FontMetric {
          * @return the character depth.
          */
         public FixWord getDepth() {
+
             return depth;
         }
 
@@ -131,6 +136,7 @@ public class TFMReader implements FontMetric {
          * @return the character italic correction.
          */
         public FixWord getItalic() {
+
             return italic;
         }
 
@@ -139,6 +145,7 @@ public class TFMReader implements FontMetric {
          * if it has no lig/kern program associated.
          */
         public int ligKernStart() {
+
             return NOINDEX;
         }
 
@@ -147,6 +154,7 @@ public class TFMReader implements FontMetric {
          * there is no larger character.
          */
         public short nextChar() {
+
             return NOCHARCODE;
         }
 
@@ -157,6 +165,7 @@ public class TFMReader implements FontMetric {
          * there is no top part or the character is not extensible.
          */
         public short extTop() {
+
             return NOCHARCODE;
         }
 
@@ -167,6 +176,7 @@ public class TFMReader implements FontMetric {
          * if there is no middle part or the character is not extensible.
          */
         public short extMid() {
+
             return NOCHARCODE;
         }
 
@@ -177,6 +187,7 @@ public class TFMReader implements FontMetric {
          * if there is no bottom part or the character is not extensible.
          */
         public short extBot() {
+
             return NOCHARCODE;
         }
 
@@ -187,6 +198,7 @@ public class TFMReader implements FontMetric {
          * if there is no repeatable part or the character is not extensible.
          */
         public short extRep() {
+
             return NOCHARCODE;
         }
     }
@@ -208,6 +220,7 @@ public class TFMReader implements FontMetric {
          */
         public LigCharInfo(final FixWord w, final FixWord h, final FixWord d,
                 final FixWord i, final int s) {
+
             super(w, h, d, i);
             start = s;
         }
@@ -221,6 +234,7 @@ public class TFMReader implements FontMetric {
          * @return start index of lig/kern program.
          */
         public int ligKernStart() {
+
             return start;
         }
     }
@@ -242,6 +256,7 @@ public class TFMReader implements FontMetric {
          */
         public ListCharInfo(final FixWord w, final FixWord h, final FixWord d,
                 final FixWord i, final short n) {
+
             super(w, h, d, i);
             next = n;
         }
@@ -255,6 +270,7 @@ public class TFMReader implements FontMetric {
          * @return next larger character code.
          */
         public short nextChar() {
+
             return next;
         }
     }
@@ -279,6 +295,7 @@ public class TFMReader implements FontMetric {
         public ExtCharInfo(final FixWord w, final FixWord h, final FixWord d,
                 final FixWord i, final short t, final short m, final short b,
                 final short r) {
+
             super(w, h, d, i);
             top = t;
             mid = m;
@@ -311,6 +328,7 @@ public class TFMReader implements FontMetric {
          * there is no top part.
          */
         public short extTop() {
+
             return top;
         }
 
@@ -319,6 +337,7 @@ public class TFMReader implements FontMetric {
          * if there is no middle part.
          */
         public short extMid() {
+
             return mid;
         }
 
@@ -327,6 +346,7 @@ public class TFMReader implements FontMetric {
          * if there is no bottom part.
          */
         public short extBot() {
+
             return bot;
         }
 
@@ -335,6 +355,7 @@ public class TFMReader implements FontMetric {
          * if there is no repeatable part.
          */
         public short extRep() {
+
             return rep;
         }
     }
@@ -346,6 +367,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException when some error stops loading.
      */
     private void makeCharTable() throws IOException {
+
         charTable = new CharInfo[charCount];
         for (int i = 0; i < charCount; i++) {
             charTable[i] = (charAuxTab[i].exists()) ? makeCharInfo(i) : null;
@@ -361,6 +383,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException when some error stops loading.
      */
     private CharInfo makeCharInfo(final int pos) throws IOException {
+
         AuxCharInfo aci = charAuxTab[pos];
         FixWord wd = takeDimen(widthTable, aci.widthIndex(), pos, WD);
         FixWord ht = takeDimen(heightTable, aci.heightIndex(), pos, HT);
@@ -379,11 +402,9 @@ public class TFMReader implements FontMetric {
                     AuxExtRecipe aer = extAuxTab[aci.extenIndex()];
                     return new ExtCharInfo(wd, ht, dp, ic, (aer.top != 0)
                             ? aer.top
-                            : NOCHARCODE, (aer.mid != 0)
-                            ? aer.mid
-                            : NOCHARCODE, (aer.bot != 0)
-                            ? aer.bot
-                            : NOCHARCODE, aer.rep);
+                            : NOCHARCODE,
+                            (aer.mid != 0) ? aer.mid : NOCHARCODE,
+                            (aer.bot != 0) ? aer.bot : NOCHARCODE, aer.rep);
                 } else {
                     rangeerror(pos, "Extensible");
                 }
@@ -403,6 +424,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException when some error stops loading.
      */
     private boolean validCharList(final int pos) throws IOException {
+
         AuxCharInfo aci = charAuxTab[pos];
         short next = aci.biggerChar();
         if (!charExists(next)) {
@@ -438,6 +460,7 @@ public class TFMReader implements FontMetric {
      */
     private FixWord takeDimen(final FixWord[] table, final int i,
             final int pos, final String what) throws IOException {
+
         if (i < table.length) {
             return table[i];
         }
@@ -452,7 +475,9 @@ public class TFMReader implements FontMetric {
      * @param what identification for error messages.
      * @throws IOException if recoverable errors stop loading.
      */
-    private void rangeerror(final int pos, final String what) throws IOException {
+    private void rangeerror(final int pos, final String what)
+            throws IOException {
+
         throw new IOException("WARNING: " + what + " index for character '"
                 + octCharNum(pos) + " is too large;\nso I reset it to zero.");
     }
@@ -463,6 +488,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException when some error stops loading.
      */
     private void checkExtens() throws IOException {
+
         for (int i = 0; i < extAuxCnt; i++) {
             AuxExtRecipe aer = extAuxTab[i];
             if (aer.top != 0) {
@@ -485,6 +511,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException when some error stops loading.
      */
     private void checkExt(final short c) throws IOException {
+
         if (!charExists(c)) {
             badchar(c, "Extensible recipe involves the");
         }
@@ -644,6 +671,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException ...
      */
     private int readFileLength() throws IOException {
+
         int i = readByte();
         if (i < 0) {
             throw new IOException("The input file is empty!");
@@ -676,7 +704,8 @@ public class TFMReader implements FontMetric {
      * @return the positive value of the read byte.
      * @throws IOException ...
      */
-    private short readByte() throws IOException, IOException {
+    private short readByte() throws IOException {
+
         int i = in.read();
         if (i < 0) {
             throw new IOException("The file has fewer bytes than it claims!");
@@ -691,6 +720,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException
      */
     private short readLength() throws IOException {
+
         short i = readByte();
         if ((i & 0x80) != 0) {
             throw new IOException("One of the subfile sizes is negative!");
@@ -741,7 +771,7 @@ public class TFMReader implements FontMetric {
 
     /**
      * Reads the header information and sets the actual font metric type.
-     * 
+     *
      * @throws IOException if an I/O error ocurrs
      */
     private void readHeader() throws IOException {
@@ -784,11 +814,12 @@ public class TFMReader implements FontMetric {
     /**
      * Reads four bytes (32 bits) from the tfm file and returns them in an
      * <code>int</code> in BigEndian order.
-     * 
+     *
      * @return the integer value in BigEndian byte order.
      * @throws IOException if an I/O error occurs
      */
     private int readWord() throws IOException {
+
         int i = readByte();
         i = (i << 8) + readByte();
         i = (i << 8) + readByte();
@@ -796,26 +827,32 @@ public class TFMReader implements FontMetric {
     }
 
     /**
+     * fixdominator
+     */
+    private static final int FIXWORDDENOMINATOR = 0x100000;
+
+    /**
      * Reads four bytes from the tfm file and interpretes them as a <code>FixWord</code>
      * fraction.
-     * 
+     *
      * @return the resulting fraction.
      * @throws IOException if an I/O error occurs or if the end of file is
      * reached.
      */
-    private final FixWord readFixWord() throws IOException {
-        final int FIXWORDDENOMINATOR = 0x100000;
+    private FixWord readFixWord() throws IOException {
+
         return new FixWord(readWord(), FIXWORDDENOMINATOR);
     }
 
     /**
      * Determines the actual font metric type based on character string value
      * of coding scheme.
-     * 
+     *
      * @param s the coding scheme.
      * @return the font metric type.
      */
     private byte getFontType(final String s) {
+
         if (s.startsWith("TEX MATH SY")) {
             return MATHSY;
         } else if (s.startsWith("TEX MATH EX")) {
@@ -828,12 +865,13 @@ public class TFMReader implements FontMetric {
      * Reads a character string from the header given the size of appropriate
      * area. The string is stored as its length in first byte then the string
      * and the rest of area is not used.
-     * 
+     *
      * @param size the size of string area in the header.
      * @return the read character string.
      * @throws IOException if an I/O error ocurrs
      */
     private String readBCPL(int size) throws IOException {
+
         int len = readByte();
         if (len >= size) {
             throw new IOException(
@@ -852,8 +890,9 @@ public class TFMReader implements FontMetric {
                 throw new IOException(
                         "WARNING: Nonstandard ASCII code has been blotted out.");
                 //c = '?';
-            } else
+            } else {
                 c = Character.toUpperCase(c);
+            }
             buf.append(c);
         }
         in.skip(size);
@@ -907,7 +946,7 @@ public class TFMReader implements FontMetric {
 
     /**
      * Reads all the tables from tfm file.
-     * 
+     *
      * @throws IOException if an I/O error ocurrs
      */
     private void readTables() throws IOException {
@@ -947,15 +986,17 @@ public class TFMReader implements FontMetric {
      * Reads an array of <code>FixWords</code> from the tfm file. It reports
      * fatal error message (and throws exception) if the end of file is
      * reached.
-     * 
+     *
      * @param count the number of fractions to be read.
      * @return the array of fractions.
      * @throws IOException if an I/O error occurs
      */
-    private FixWord[] readFixWords(int count) throws IOException {
+    private FixWord[] readFixWords(final int count) throws IOException {
+
         FixWord[] table = new FixWord[count];
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++) {
             table[i] = readFixWord();
+        }
         return table;
     }
 
@@ -967,11 +1008,11 @@ public class TFMReader implements FontMetric {
         /**
          * Creates <code>AuxCharInfo</code> by reading four bytes from the
          * tfm file.
-         * 
-         * @param in the tfm byte input stream.
+         *
          * @throws IOException if an I/O error occures
          */
         AuxCharInfo() throws IOException {
+
             widthindex = (byte) readByte();
             heightdepthindex = (byte) readByte();
             italicindextag = (byte) readByte();
@@ -1012,51 +1053,57 @@ public class TFMReader implements FontMetric {
          * @return <code>true</code> if the character exists.
          */
         boolean exists() {
+
             return widthindex != 0;
         }
 
         /**
          * Gives the index to the width table from the tfm file.
-         * 
+         *
          * @return the index to <code>widthTable</code>.
          */
         int widthIndex() {
+
             return widthindex & 0xff;
         }
 
         /**
          * Gives the index to the height table from the tfm file.
-         * 
+         *
          * @return the index to <code>heightTable</code>.
          */
         int heightIndex() {
+
             return heightdepthindex >> 4 & 0x0f;
         }
 
         /**
          * Gives the index to the depth table from the tfm file.
-         * 
+         *
          * @return the index to <code>depthTable</code>.
          */
         int depthIndex() {
+
             return heightdepthindex & 0x0f;
         }
 
         /**
          * Gives the index to the italic correction table from the tfm file.
-         * 
+         *
          * @return the index to <code>italicTable</code>.
          */
         int italicIndex() {
+
             return italicindextag >> 2 & 0x3f;
         }
 
         /**
          * Gives the tag field of the character information data.
-         * 
+         *
          * @return the tag value.
          */
         byte tag() {
+
             return (byte) (italicindextag & 0x03);
         }
 
@@ -1064,36 +1111,40 @@ public class TFMReader implements FontMetric {
          * Resets the tag field to NOTAG (zero) value.
          */
         void resetTag() {
+
             italicindextag &= ~0x03;
         }
 
         /**
          * Gives the value of remainder which meaning is dependent on the tag
          * field value.
-         * 
+         *
          * @return the uninterpreted tag.
          */
         private short remainder() {
+
             return (short) (remainder & 0xff);
         }
 
         /**
          * Gives the remainder value interpreted as the index to the raw
          * lig/kern table from tfm file.
-         * 
+         *
          * @return starting of the lig/kern program in <code>ligAuxTab</code>.
          */
         int ligStart() {
+
             return remainder();
         }
 
         /**
          * Gives the remainder value interpreted as the code of next character
          * in the chain of larger characters.
-         * 
+         *
          * @return the next larger character.
          */
         short biggerChar() {
+
             return remainder();
         }
 
@@ -1104,6 +1155,7 @@ public class TFMReader implements FontMetric {
          * @return the index to the <code>extAuxTab</code>.
          */
         int extenIndex() {
+
             return remainder();
         }
     }
@@ -1154,28 +1206,31 @@ public class TFMReader implements FontMetric {
 
         /**
          * Gives the unsigned value of the <code>skipbyte</code>.
-         * 
+         *
          * @return the amount of skip or the stop or boundary flag.
          */
         private short skipbyte() {
+
             return (short) (skipbyte & 0xff);
         }
 
         /**
          * Gives the unsigned value of the <code>opbyte</code>.
-         * 
+         *
          * @return the encoded ligature or kern operation.
          */
         private short opbyte() {
+
             return (short) (opbyte & 0xff);
         }
 
         /**
          * Gives the unsigned value of uninterpreted remainder.
-         * 
+         *
          * @return the remainder which meaning depends on the value of <code>opbyte()</code>.
          */
         private short remainder() {
+
             return (short) (remainder & 0xff);
         }
 
@@ -1183,10 +1238,11 @@ public class TFMReader implements FontMetric {
          * Tells whether this <code>AuxLigKern</code> contains information
          * about boundary (it must be also first or last in the lig/kern
          * table).
-         * 
+         *
          * @return <code>true</code> if it contains boundary information.
          */
         boolean meansBoundary() {
+
             return (skipbyte() == BOUNDARYFLAG);
         }
 
@@ -1194,21 +1250,23 @@ public class TFMReader implements FontMetric {
          * Tells whether this <code>AuxLigKern</code> redirects the actual
          * start of a lig/kern program to some other instruction (it must be
          * also the first instruction of some lig/kern program).
-         * 
+         *
          * @return <code>true</code> if it is a restart instruction.
          */
         boolean meansRestart() {
+
             return (skipbyte() > STOPFLAG);
         }
 
         /**
          * Tells whether this <code>AuxLigKern</code> is the last instruction
          * of a lig/kern program.
-         * 
+         *
          * @return <code>true</code> if this is the last instruction of a
          * lig/kern program.
          */
         boolean meansStop() {
+
             return (skipbyte() >= STOPFLAG);
         }
 
@@ -1216,11 +1274,12 @@ public class TFMReader implements FontMetric {
          * Tells the position of the next lig/kern program instruction given
          * the position of this <code>AuxLigKern</code> in the lig/kern
          * table.
-         * 
+         *
          * @return index to the <code>ligAuxTab</code> of the next lig/kern
          * instruction.
          */
-        int nextIndex(int pos) {
+        int nextIndex(final int pos) {
+
             return pos + skipbyte() + 1;
         }
 
@@ -1229,86 +1288,95 @@ public class TFMReader implements FontMetric {
          * a lig/kern program.
          */
         void makeStop() {
+
             skipbyte = (byte) STOPFLAG;
         }
 
         /**
          * Gives the code of the character which must be next to the current
          * character if this instruction has to be activated.
-         * 
+         *
          * @return the next character code.
          */
         short nextChar() {
+
             return (short) (nextchar & 0xff);
         }
 
         /**
          * Forces this <code>AuxLigKern</code> to have particular value of
          * <code>nextChar()</code>.
-         * 
+         *
          * @param c the forced value of <code>nextChar()</code>.
          */
-        void setNextChar(int c) {
+        void setNextChar(final int c) {
+
             nextchar = (byte) c;
         }
 
         /**
          * Gives actual starting index of the lig/kern program for restart
          * instruction.
-         * 
+         *
          * @return the actual start of lig/kern program.
          */
         int restartIndex() {
+
             return (opbyte() << 8) + remainder();
         }
 
         /**
          * Tells whether this <code>AuxLigKern</code> is a kerning
          * instruction.
-         * 
+         *
          * @return <code>true</code> for kerning instruction.
          */
         boolean meansKern() {
+
             return opbyte() >= KERNFLAG;
         }
 
         /**
          * Gives the index to the kern table from tfm file for kerning
          * instruction.
-         * 
+         *
          * @return the index to the <code>kernTable</code>.
          */
         int kernIndex() {
+
             return (opbyte() - KERNFLAG << 8) + remainder();
         }
 
         /**
          * Tells whether the current character should be left in place when
          * executing this ligature instructions.
-         * 
+         *
          * @return <code>true</code> if the current character should be left.
          */
         boolean leaveLeft() {
+
             return (opbyte() & 0x02) != 0;
         }
 
         /**
          * Tells whether the next character should be left in place when
          * executing this ligature instructions.
-         * 
+         *
          * @return <code>true</code> if the next character should be left.
          */
         boolean leaveRight() {
+
             return (opbyte() & 0x01) != 0;
         }
 
         /**
          * Tells how many character should be skipped over after executing this
          * ligature instruction.
-         * 
+         *
          * @return the number of characters to be skipped.
          */
         byte stepOver() {
+
             return (byte) (opbyte() >>> 2);
         }
 
@@ -1316,29 +1384,32 @@ public class TFMReader implements FontMetric {
          * Gives the code of charcter which should be inserted between the
          * current and the next characters when executing this ligature
          * instruction.
-         * 
+         *
          * @return the code of the character to be inserted.
          */
         short ligChar() {
+
             return remainder();
         }
 
         /**
          * Forces the <code>ligChar()</code> to have particular value.
-         * 
+         *
          * @param c the forced value of <code>ligChar()</code>.
          */
-        void setLigChar(short c) {
+        void setLigChar(final short c) {
+
             remainder = (byte) c;
         }
 
         /**
          * Creates <code>AuxLigKern</code> by reading four bytes from the tfm
          * file.
-         * 
+         *
          * @throws IOException if an I/O error occures
          */
         AuxLigKern() throws IOException {
+
             skipbyte = (byte) readByte();
             nextchar = (byte) readByte();
             opbyte = (byte) readByte();
@@ -1380,10 +1451,11 @@ public class TFMReader implements FontMetric {
         /**
          * Creates <code>AuxExtRecipe</code> by reading four bytes from the
          * tfm file.
-         * 
+         *
          * @throws IOException if an I/O error occures
          */
         AuxExtRecipe() throws IOException {
+
             top = readByte();
             mid = readByte();
             bot = readByte();
@@ -1429,8 +1501,8 @@ public class TFMReader implements FontMetric {
     /**
      * Checks all the tables readed from tfm file for inconsistency or
      * malformation.
-     * 
-     * @throws TMFException when some error stops loading.
+     *
+     * @throws IOException when some error stops loading.
      */
     private void checkTables() throws IOException {
 
@@ -1450,10 +1522,11 @@ public class TFMReader implements FontMetric {
 
     /**
      * Checks the font dimension parameter table for malformation.
-     * 
+     *
      * @throws IOException when some error stops loading.
      */
     private void checkParams() throws IOException {
+
         checkDimens(paramTable, 1, paramCount, "Parameter");
 
         switch (fontType) {
@@ -1481,15 +1554,16 @@ public class TFMReader implements FontMetric {
      * dimension in tfm file must be less than 16 in its absolute value. The
      * only two exceptions are <code>designSize</code> and <code>parmTable[0]</code>
      * --- the <code>slant</code> parameter. See TFtoPL[62].
-     * 
+     *
      * @param table the table of dimensions.
      * @param beg the starting index of checked dimensions.
      * @param end the index after the checked dimensions.
      * @param what identification for error messages.
      * @throws IOException when some error stops loading.
      */
-    private void checkDimens(FixWord[] table, int beg, int end, String what)
-            throws IOException {
+    private void checkDimens(final FixWord[] table, int beg, int end,
+            final String what) throws IOException {
+
         for (; beg < end; beg++)
             if (!(table[beg].lessThan(16) && table[beg].moreThan(-16))) {
                 throw new IOException("WARNING: " + what + ' ' + beg
@@ -1500,13 +1574,14 @@ public class TFMReader implements FontMetric {
 
     /**
      * Checks whether the first element of dimension table is zero.
-     * 
+     *
      * @param table the checked dimension table.
      * @param what identification for error messages.
      * @throws IOException when some error stops loading.
      */
-    private void checkZeroDimen(FixWord[] table, String what)
+    private void checkZeroDimen(final FixWord[] table, final String what)
             throws IOException {
+
         if (table[0].getValue() != 0) {
             throw new IOException(what + "[0] should be zero.");
         } else {
@@ -1517,10 +1592,11 @@ public class TFMReader implements FontMetric {
     /**
      * Converts the lig/kern table information read from tfm file to a form
      * suitable for metric object and check for errors.
-     * 
-     * @throws TFMxception when some error stops loading.
+     *
+     * @throws IOxception when some error stops loading.
      */
     private void makeLigTable() throws IOException {
+
         if (ligAuxLen > 0) {
             setupBoundary();
         }
@@ -1532,10 +1608,11 @@ public class TFMReader implements FontMetric {
     /**
      * Fills in the blank <code>ligKernTable</code> by the final version of
      * lig/kern instructions.
-     * 
+     *
      * @throws IOException when some error stops loading.
      */
     private void buildLigKernTable() throws IOException {
+
         int currIns = 0;
         for (int i = 0; i < ligAuxLen; i++) {
             setLigStarts(i, currIns);
@@ -1557,13 +1634,16 @@ public class TFMReader implements FontMetric {
 
     /**
      * Creates a final version of ligature instruction after validity checks.
-     * 
+     *
      * @param alk the original version of lig/kern instruction.
      * @param skip the offset of next lig/kern instruction in the final version
      * of the lig/kern program.
+     * @return ligkern
      * @throws IOException when some error stops loading.
      */
-    private LigKern makeLig(AuxLigKern alk, int skip) throws IOException {
+    private LigKern makeLig(final AuxLigKern alk, final int skip)
+            throws IOException {
+
         if (!charExists(alk.ligChar())) {
             badchar(alk.ligChar(), "Ligature step produces the");
             alk.setLigChar(firstCharCode);
@@ -1583,13 +1663,16 @@ public class TFMReader implements FontMetric {
 
     /**
      * Creates a final version of kerning instruction after validity checks.
-     * 
+     *
      * @param alk the original version of lig/kern instruction.
      * @param skip the offset of next lig/kern instruction in the final version
      * of the lig/kern program.
+     * @return ligkern
      * @throws IOException when some error stops loading.
      */
-    private LigKern makeKern(AuxLigKern alk, int skip) throws IOException {
+    private LigKern makeKern(final AuxLigKern alk, final int skip)
+            throws IOException {
+
         int kernIdx = alk.kernIndex();
         FixWord kern;
         if (kernIdx < kernTable.length) {
@@ -1605,12 +1688,13 @@ public class TFMReader implements FontMetric {
      * Gets the offset of next lig/kern instruction in a program based on
      * counting only those intervene instructions which will be converted to
      * final lig/kern program.
-     * 
+     *
      * @param pos the position of current lig/kern instruction in <code>ligAuxTable</code>.
      * @return the skip amount of the next instruction in the final version of
      * lig/kern program.
      */
     private int getSkip(int pos) {
+
         AuxLigKern alk = ligAuxTab[pos];
         if (alk.meansStop()) {
             return -1;
@@ -1628,11 +1712,12 @@ public class TFMReader implements FontMetric {
     /**
      * Performs validity checks which are common to both (lig and kern) types
      * of lig/kern instructions in tfm file.
-     * 
+     *
      * @param alk the checked lig/kern instruction.
      * @throws IOException when some error stops loading.
      */
-    private void checkLigKern(AuxLigKern alk) throws IOException {
+    private void checkLigKern(final AuxLigKern alk) throws IOException {
+
         if (!charExists(alk.nextChar()) && alk.nextChar() != boundaryChar) {
             badchar(alk.nextChar(), ((alk.meansKern()) ? "Kern" : "Ligature")
                     + " step for");
@@ -1642,23 +1727,25 @@ public class TFMReader implements FontMetric {
 
     /**
      * Reports a reference to a nonexistent character.
-     * 
+     *
      * @param c the checked character code.
      * @param s identification for error messages.
      * @throws IOException if recoverable errors stop loading.
      */
-    private void badchar(short c, String s) throws IOException {
+    private void badchar(final short c, final String s) throws IOException {
+
         throw new IOException("WARNING: " + s + " nonexistent character '"
                 + Integer.toOctalString(c) + '.');
     }
 
     /**
      * Check the existence of particular character in the font.
-     * 
+     *
      * @param c the checked character code.
      * @return <code>true</code> if the character is present.
      */
     private boolean charExists(short c) {
+
         return ((c -= firstCharCode) >= 0 && c < charCount && charAuxTab[c]
                 .exists());
     }
@@ -1667,20 +1754,22 @@ public class TFMReader implements FontMetric {
      * Records the starting indexes of final lig/kern program in <code>ligKernTable</code>
      * to auxiliary character information field <code>ligkernstart</code>
      * of <code>AuxCharInfo</code>.
-     * 
+     *
      * @param pos the position of currently processed instruction in original
      * tfm lig/kern table <code>ligAuxTab</code>.
      * @param start the position of corresponding instruction in final lig/kern
      * table <code>LigKernTable</code>.
      */
-    private void setLigStarts(int pos, int start) {
+    private void setLigStarts(final int pos, final int start) {
+
         IndexMultimap.Enum lab = labels.forKey(pos);
         while (lab.hasMore()) {
             int c = lab.next();
-            if (c == BOUNDARYLABEL)
+            if (c == BOUNDARYLABEL) {
                 boundaryStart = start;
-            else
+            } else {
                 charAuxTab[c].ligkernstart = start;
+            }
         }
     }
 
@@ -1710,30 +1799,33 @@ public class TFMReader implements FontMetric {
         /**
          * Constructs a lig/kern instruction with given skip amount to the next
          * instruction in the lig/kern program.
-         * 
+         *
          * @param skip the skip amount to the next instruction. <code>0</code>
          * means the folowing instruction is the next, a number <code>< 0</code>
          * means that there is no next instruction (this is the last).
          * @param next the code of the next character.
          */
-        public LigKern(int skip, short next) {
+        public LigKern(final int skip, final short next) {
+
             this.skip = skip;
             nextChar = next;
         }
 
         public FixWord getKern() {
+
             return FixWord.NULL;
         }
 
         /**
          * Tells the index to the ligtable of the next instruction of lig/kern
          * program for given index of this instruction.
-         * 
+         *
          * @param pos the index of this instruction.
          * @return the index of the next instruction or <code>NOINDEX</code>
          * if this is the last instruction of the lig/kern program.
          */
-        public int nextIndex(int pos) {
+        public int nextIndex(final int pos) {
+
             return (skip < 0) ? NOINDEX : pos + skip + 1;
         }
 
@@ -1747,7 +1839,7 @@ public class TFMReader implements FontMetric {
         /**
          * Makes new ligature instruction. See |LigKern| constructor for the
          * details of the two first parameters.
-         * 
+         *
          * @param skip the skip amount to the next instruction.
          * @param next the code of the next character.
          * @param a character code of ligature character to be inserted.
@@ -1759,6 +1851,7 @@ public class TFMReader implements FontMetric {
          */
         public Ligature(int skip, short next, short a, boolean l, boolean r,
                 byte s) {
+
             super(skip, next);
             addingChar = a;
             keepLeft = l;
@@ -1805,13 +1898,14 @@ public class TFMReader implements FontMetric {
         /**
          * Makes new ligature instruction. See <code>LigKern</code>
          * constructor for the details of the two first parameters.
-         * 
+         *
          * @param skip the skip amount to the next instruction.
          * @param next the code of the next character.
          * @param k the amount of kerning between the current and the next
          * characters.
          */
-        public Kerning(int skip, short next, FixWord k) {
+        public Kerning(final int skip, final short next, final FixWord k) {
+
             super(skip, next);
             kern = k;
         }
@@ -1822,6 +1916,7 @@ public class TFMReader implements FontMetric {
         private FixWord kern;
 
         public FixWord getKern() {
+
             return kern;
         }
     }
@@ -1833,27 +1928,29 @@ public class TFMReader implements FontMetric {
      * <code>activity</code> field of <code>AuxLigKern</code> for marking
      * the activity. It supposes that the first instructions of programs are
      * already marked active.
-     * 
+     *
      * @throws IOException when some error stops loading.
      */
     private void promoteActivity() throws IOException {
+
         int ligKernLength = 0;
         for (int i = 0; i < ligAuxLen; i++) {
             AuxLigKern alk = ligAuxTab[i];
             if (alk.activity == AuxLigKern.ACCESSIBLE) {
                 if (!alk.meansStop()) {
                     int next = alk.nextIndex(i);
-                    if (next < ligAuxLen)
+                    if (next < ligAuxLen) {
                         ligAuxTab[next].activity = AuxLigKern.ACCESSIBLE;
-                    else {
+                    } else {
                         throw new IOException("WARNING: Ligature/kern step "
                                 + i + " skips too far;\nI made it stop.");
                         //alk.makeStop();
                     }
                 }
             }
-            if (alk.activity != AuxLigKern.PASSTHROUGH)
+            if (alk.activity != AuxLigKern.PASSTHROUGH) {
                 ligKernLength++;
+            }
         }
         ligKernTable = new LigKern[ligKernLength];
     }
@@ -1892,7 +1989,7 @@ public class TFMReader implements FontMetric {
     /**
      * Tries to find the information about lig/kerns for word boundaries in tfm
      * lig/kern table and checks for errors.
-     * 
+     *
      * @throws IOException when some error stops loading.
      */
     private void setupBoundary() throws IOException {
@@ -1950,6 +2047,7 @@ public class TFMReader implements FontMetric {
      * @throws IOException when some error stops loading.
      */
     private void buildLabels() throws IOException {
+
         for (int i = 0; i < charCount; i++) {
             if (charAuxTab[i].tag() == LIGTAG) {
                 int start = ligAuxStart(charAuxTab[i].ligStart());
@@ -1970,12 +2068,13 @@ public class TFMReader implements FontMetric {
     /**
      * Finds out the actual starting index of lig/kern program in case there is
      * a restart instructions and checks for validity.
-     * 
+     *
      * @param start the starting index of lig/kern program given in a character
      * info.
      * @return the actual starting index.
      */
     private int ligAuxStart(int start) {
+
         if (start < ligAuxLen) {
             AuxLigKern alk = ligAuxTab[start];
             if (alk.meansRestart()) {
@@ -1989,11 +2088,12 @@ public class TFMReader implements FontMetric {
 
     /**
      * Error message identification of character given its position in <code>charTable</code>.
-     * 
+     *
      * @param pos the position of referenced character info in <code>charTable</code>.
      * @return the string representation of character for error messages.
      */
-    private String octCharNum(int pos) {
+    private String octCharNum(final int pos) {
+
         return Integer.toOctalString(pos + firstCharCode);
     }
 
@@ -2010,6 +2110,7 @@ public class TFMReader implements FontMetric {
          * init
          */
         KeyInt(int k, int v) {
+
             key = k;
             val = v;
         }
@@ -2030,41 +2131,45 @@ public class TFMReader implements FontMetric {
 
         /**
          * The number of (key, value) pairs kept.
-         * 
+         *
          * @return the number of stored pairs.
          */
         protected int size() {
+
             return data.size();
         }
 
         /**
          * (key, value) pair at given position.
-         * 
+         *
          * @param i the position of pair to be examined.
          * @return the pair at given position.
          */
         protected KeyInt at(int i) {
+
             return (KeyInt) data.get(i);
         }
 
         /**
          * Insert a (key, value) pair at the given position.
-         * 
-         * @param i the pair to be inserted.
+         *
+         * @param p the pair to be inserted.
          * @param i the position to be inserted to.
          */
-        protected void insert(KeyInt p, int i) {
+        protected void insert(final KeyInt p, final int i) {
+
             data.add(i, p);
         }
 
         /**
          * Gives the position where a (key, value) pair with given key is
          * stored or where it should be stored if there is no such pair.
-         * 
+         *
          * @param key the key searched for.
          * @return the position.
          */
-        protected int search(int key) {
+        protected int search(final int key) {
+
             int beg = 0;
             int end = size();
             while (beg < end) {
@@ -2083,11 +2188,12 @@ public class TFMReader implements FontMetric {
 
         /**
          * Adds a new (key, value) pair.
-         * 
+         *
          * @param key the key of the new pair.
          * @param val the value of the new pair.
          */
-        public void add(int key, int val) {
+        public void add(final int key, final int val) {
+
             synchronized (data) {
                 int pos = search(key);
                 while (pos < size() && at(pos).key == key) {
@@ -2115,14 +2221,15 @@ public class TFMReader implements FontMetric {
 
             /**
              * Makes new |Enum| for given key.
-             * 
+             *
              * @param k the key for which the values are required.
              */
             /*
              * The constructor is private so only the enclosing class can
              * instantiate it.
              */
-            private Enum(int k) {
+            private Enum(final int k) {
+
                 synchronized (data) {
                     key = k;
                     pos = search(key);
@@ -2133,31 +2240,34 @@ public class TFMReader implements FontMetric {
 
             /**
              * Tests if there is another associated value.
-             * 
+             *
              * @return <code>true</code> if next value is available,
              * otherwise <code>false</code>.
              */
             public boolean hasMore() {
+
                 return (pos < size() && at(pos).key == key);
             }
 
             /**
              * Gives the next value from the sequence of associated values.
-             * 
+             *
              * @return the next value.
              */
             public final int next() {
+
                 return at(pos++).val;
             }
         }
 
         /**
          * Gives the sequence of all keys associated to the given key.
-         * 
+         *
          * @param key the given key.
          * @return the object representing the sequence of associated values.
          */
-        public Enum forKey(int key) {
+        public Enum forKey(final int key) {
+
             return new Enum(key);
         }
     }
@@ -2178,19 +2288,21 @@ public class TFMReader implements FontMetric {
 
         /**
          * init
-         * 
+         *
          * @param val the values as int
          */
-        public FixWord(int val) {
+        public FixWord(final int val) {
+
             value = val << POINTSHIFT;
         }
 
         /**
          * init
-         * 
+         *
          * @param val the values as num and den
          */
-        public FixWord(int num, int den) {
+        public FixWord(final int num, final int den) {
+
             value = ((long) num << POINTSHIFT) / den;
         }
 
@@ -2206,42 +2318,46 @@ public class TFMReader implements FontMetric {
 
         /**
          * Return the internal value
-         * 
+         *
          * @return the internal value
          */
         public long getValue() {
+
             return value;
         }
 
         /**
          * less than
-         * 
+         *
          * @param num the value to compare
          * @return <code>true</code>, if the internal values is lesser,
          * otherwise <code>false</code>
          */
-        public boolean lessThan(int num) {
+        public boolean lessThan(final int num) {
+
             return (value < (num << POINTSHIFT));
         }
 
         /**
          * more than
-         * 
+         *
          * @param num the value to compare
          * @return <code>true</code>, if the internal values are more,
          * otherwise <code>false</code>
          */
-        public boolean moreThan(int num) {
+        public boolean moreThan(final int num) {
+
             return (value > (num << POINTSHIFT));
         }
 
         /**
          * Return the value as String in units. <p>It devide the value by
          * 1000.
-         * 
+         *
          * @return the value as String in units
          */
         public String toStringUnits() {
+
             if (value > 0) {
                 return String.valueOf((value * 1000) >>> POINTSHIFT);
             }
@@ -2250,10 +2366,11 @@ public class TFMReader implements FontMetric {
 
         /**
          * Return the values as String
-         * 
+         *
          * @return the values as String
          */
         public String toString() {
+
             StringBuffer buf = new StringBuffer();
             long v = value;
             final int UNITY = 1 << POINTSHIFT;
@@ -2267,8 +2384,9 @@ public class TFMReader implements FontMetric {
             v = 10 * (v & MASK) + 5;
             int delta = 10;
             do {
-                if (delta > UNITY)
+                if (delta > UNITY) {
                     v += UNITY / 2 - delta / 2;
+                }
                 buf.append(Character.forDigit((int) (v >>> POINTSHIFT), 10));
                 v = 10 * (v & MASK);
             } while (v > (delta *= 10));
@@ -2317,7 +2435,7 @@ public class TFMReader implements FontMetric {
                             "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE",
                             "DEFAULTRULETHICKNESS", "BIGOPSPACING1",
                             "BIGOPSPACING2", "BIGOPSPACING3", "BIGOPSPACING4",
-                            "BIGOPSPACING5",};
+                            "BIGOPSPACING5"};
                     for (int i = 0; i < paramTable.length; i++) {
                         root.setAttribute(paramLabel[i], paramTable[i]
                                 .toStringUnits());
@@ -2422,6 +2540,7 @@ public class TFMReader implements FontMetric {
      * not exists
      */
     private CharInfo getCharInfo(short idx) {
+
         return (0 <= (idx -= firstCharCode) && idx < charTable.length)
                 ? charTable[idx]
                 : null;

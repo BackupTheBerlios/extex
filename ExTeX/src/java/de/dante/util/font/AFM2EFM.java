@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,10 +34,15 @@ import de.dante.extex.font.AFMReader;
  * Convert a AFM-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AFM2EFM {
 
+    /**
+     * filebuffer
+     */
+    private static final int FILEBUFFER = 0x8000;
+    
     /**
      * main
      * @param args the commandlinearguments
@@ -52,13 +57,13 @@ public class AFM2EFM {
         }
 
         BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-                args[0]), 0x8000);
+                args[0]), FILEBUFFER);
         AFMReader afmreader = new AFMReader(in, args[1], args[2], args[3]);
 
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);
         BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(args[2]), 0x8000);
+                new FileOutputStream(args[2]), FILEBUFFER);
         Document doc = new Document(afmreader.getFontMetric());
         xmlout.output(doc, out);
         out.close();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ import org.jdom.Element;
  * This class read a AFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 // TODO incomplete
 public class AFMReader implements FontMetric {
@@ -57,18 +57,18 @@ public class AFMReader implements FontMetric {
 
     /**
      * init
-     * @param afmin        Stream for Reading the afm-file
-     * @param pfbname    the name of the pfbfile
-     * @param efmname    the name of the efmfile
-     * @param defaultsize    the defaultsize for the font
+     * @param afmin          Stream for Reading the afm-file
+     * @param pfbName        the name of the pfbfile
+     * @param efmName        the name of the efmfile
+     * @param defaultSize    the defaultsize for the font
      * @throws IOException ...
      */
-    public AFMReader(final BufferedInputStream afmin, final String pfbname,
-            final String efmname, final String defaultsize) throws IOException {
+    public AFMReader(final BufferedInputStream afmin, final String pfbName,
+            final String efmName, final String defaultSize) throws IOException {
 
-        this.pfbname = pfbname;
-        this.efmname = efmname;
-        this.defaultsize = defaultsize;
+        pfbname = pfbName;
+        efmname = efmName;
+        defaultsize = defaultSize;
 
         // create a Reader (AFM use US_ASCII)
         BufferedReader reader = new BufferedReader(new InputStreamReader(afmin,
@@ -116,24 +116,29 @@ public class AFMReader implements FontMetric {
     private String afmCharacterSet = "";
 
     /**
+     * not init
+     */
+    private static final int NOTINIT = -9999;
+
+    /**
      * The llx of the FontBox.
      */
-    private int afmllx = -9999;
+    private int afmllx = NOTINIT;
 
     /**
      * The lly of the FontBox.
      */
-    private int afmlly = -9999;
+    private int afmlly = NOTINIT;
 
     /**
      * The lurx of the FontBox.
      */
-    private int afmurx = -9999;
+    private int afmurx = NOTINIT;
 
     /**
      * The ury of the FontBox.
      */
-    private int afmury = -9999;
+    private int afmury = NOTINIT;
 
     /**
      * The underline position.
@@ -185,19 +190,24 @@ public class AFMReader implements FontMetric {
     private int afmStdVW = 0;
 
     /**
+     * initsize for the ArrayList
+     */
+    private static final int ARRAYLISTINITSIZE = 256;
+
+    /**
      * Represents the section CharMetrics in the AFM file.
      */
-    private ArrayList afmCharMetrics = new ArrayList(256);
+    private ArrayList afmCharMetrics = new ArrayList(ARRAYLISTINITSIZE);
 
     /**
      * Represents the section KerningPairs in the AFM file.
      */
-    private ArrayList afmKerningPairs = new ArrayList(256);
+    private ArrayList afmKerningPairs = new ArrayList(ARRAYLISTINITSIZE);
 
     /**
      * Char-Name - Char-Number
      */
-    private HashMap afmCharNameNumber = new HashMap(256);
+    private HashMap afmCharNameNumber = new HashMap(ARRAYLISTINITSIZE);
 
     /**
      * Read the AFM-File
@@ -408,6 +418,7 @@ public class AFMReader implements FontMetric {
      * @return the string without a ','
      */
     private String removeComma(final String s) {
+
         if (s != null) {
             return s.replaceAll(",", "");
         }
@@ -448,7 +459,7 @@ public class AFMReader implements FontMetric {
         /**
          * WX
          */
-        int WX = -9999;
+        int WX = NOTINIT;
 
         /**
          * Name
@@ -458,13 +469,13 @@ public class AFMReader implements FontMetric {
         /**
          * B
          */
-        int Bllx = -9999;
+        int Bllx = NOTINIT;
 
-        int Blly = -9999;
+        int Blly = NOTINIT;
 
-        int Burx = -9999;
+        int Burx = NOTINIT;
 
-        int Bury = -9999;
+        int Bury = NOTINIT;
 
         /**
          * Ligatur
@@ -477,6 +488,7 @@ public class AFMReader implements FontMetric {
          * @param lig        the ligature
          */
         public void addL(final String letter, final String lig) {
+
             if (L == null) {
                 L = new HashMap();
             }
@@ -488,7 +500,8 @@ public class AFMReader implements FontMetric {
          * @return the String with infos
          */
         public String toString() {
-            StringBuffer buf = new StringBuffer(100);
+
+            StringBuffer buf = new StringBuffer();
 
             buf.append("   C          : " + C + LF);
             buf.append("   WX         : " + WX + LF);
@@ -519,6 +532,7 @@ public class AFMReader implements FontMetric {
      * @return the String with infos
      */
     public String toString() {
+
         StringBuffer buf = new StringBuffer(1024);
 
         buf.append("FontName            : " + afmFontName + LF);
@@ -555,6 +569,7 @@ public class AFMReader implements FontMetric {
      * @return the filename without extension and path
      */
     private String filenameWithoutExtensionAndPath(final String file) {
+
         String rt = file;
         int i = file.lastIndexOf(".");
         if (i > 0) {
@@ -573,6 +588,7 @@ public class AFMReader implements FontMetric {
      * @return  the filename without the path
      */
     private String filenameWithoutPath(final String file) {
+
         String rt = file;
         int i = rt.lastIndexOf(File.separator);
         if (i > 0) {
@@ -587,6 +603,7 @@ public class AFMReader implements FontMetric {
      * @return the id
      */
     private String getIDforName(final String name) {
+
         int id = -1;
 
         String n = name;
@@ -664,7 +681,7 @@ public class AFMReader implements FontMetric {
             glyph.setAttribute("glyph-number", String.valueOf(cm.C));
             glyph.setAttribute("glyph-name", cm.N);
 
-            if (cm.WX != -9999) {
+            if (cm.WX != NOTINIT) {
                 glyph.setAttribute("width", String.valueOf(cm.WX));
             } else {
                 // calculate with from bbox
@@ -674,7 +691,7 @@ public class AFMReader implements FontMetric {
                 }
             }
 
-            if (cm.Bllx != -9999) {
+            if (cm.Bllx != NOTINIT) {
                 if (cm.Blly < 0) {
                     glyph.setAttribute("depth", String.valueOf(-cm.Blly));
                 } else {
@@ -730,6 +747,7 @@ public class AFMReader implements FontMetric {
      * @see de.dante.util.font.FontMetric#getFontMetric()
      */
     public Element getFontMetric() {
+
         return efmelement;
     }
 }

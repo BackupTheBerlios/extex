@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.hyphenation.impl;
 
 import java.util.HashMap;
@@ -26,9 +27,9 @@ import de.dante.extex.hyphenation.HyphenationTable;
 /**
  * This class store the values for hyphenations.
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HyphenationTableImpl implements HyphenationTable {
 
@@ -36,6 +37,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * Creates a new object.
      */
     public HyphenationTableImpl() {
+
         super();
     }
 
@@ -48,6 +50,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#addHyphenation(java.lang.String, java.lang.String)
      */
     public void addHyphenation(final String word, final String hyphword) {
+
         hypmap.put(word, hyphword);
     }
 
@@ -60,6 +63,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#addPattern(java.lang.String, java.lang.String)
      */
     public void addPattern(final String word, final String pattern) {
+
         patmap.put(word, pattern);
     }
 
@@ -72,6 +76,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#getLeftHyphenmin()
      */
     public int getLeftHyphenmin() {
+
         return lefthyphnemin;
     }
 
@@ -79,6 +84,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#setLeftHyphenmin(int)
      */
     public void setLeftHyphenmin(final int left) {
+
         lefthyphnemin = left;
     }
 
@@ -91,6 +97,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#getRightHyphenmin()
      */
     public int getRightHyphenmin() {
+
         return righthyphenmin;
     }
 
@@ -98,6 +105,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#setRightHyphenmin(int)
      */
     public void setRightHyphenmin(final int right) {
+
         righthyphenmin = right;
     }
 
@@ -110,6 +118,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#isHyphenActive()
      */
     public boolean isHyphenActive() {
+
         return hyphenactive;
     }
 
@@ -117,6 +126,7 @@ public class HyphenationTableImpl implements HyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#setHyphenActive(boolean)
      */
     public void setHyphenActive(final boolean active) {
+
         hyphenactive = active;
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FontName extends AbstractCode {
 
@@ -49,6 +49,7 @@ public class FontName extends AbstractCode {
      * @param name the name for debugging
      */
     public FontName(final String name) {
+
         super(name);
     }
 
@@ -61,8 +62,9 @@ public class FontName extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Token tok = source.getNonSpace();
 

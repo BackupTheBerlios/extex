@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michel Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
@@ -27,17 +28,18 @@ import de.dante.util.GeneralException;
  * This is an interface which describes the feature to be convertibe into a real.
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
-  * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface RealConvertable {
 
-	/**
+    /**
      * Convert to a real.
      *
-     * @param context		 the interpreter context
-     * @param source		 the source for new tokens
+     * @param context   the interpreter context
+     * @param source    the source for new tokens
      * @return the converted value
      * @throws GeneralException in case of an error
      */
-    Real convertReal(Context context, TokenSource source) throws GeneralException;
+    Real convertReal(Context context, TokenSource source)
+            throws GeneralException;
 }

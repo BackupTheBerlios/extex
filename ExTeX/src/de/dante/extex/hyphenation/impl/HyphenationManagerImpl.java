@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.hyphenation.impl;
 
 import java.util.HashMap;
@@ -23,46 +24,46 @@ import java.util.Map;
 
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.hyphenation.impl.HyphenationTableImpl;
 
 /**
  * This class managed the <code>HyphernationTable</code>.
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.3 $
  */
 public class HyphenationManagerImpl implements HyphenationManager {
 
-	/**
-	 * The field <tt>tables</tt> ...
-	 */
-	private Map tables = new HashMap();
+    /**
+     * The field <tt>tables</tt> ...
+     */
+    private Map tables = new HashMap();
 
-	/**
-	 * Creates a new object.
-	 */
-	public HyphenationManagerImpl() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     */
+    public HyphenationManagerImpl() {
 
-	/**
-	 * Return the <code>HyphernationTable</code>.
-	 * <p>
-	 * If there is no table stored in the hash with the index-key,
-	 * a new one ist created.
-	 * <p> 
-	 * The index is the language-number as <code>String</code>.
-	 * 
-	 * @see de.dante.extex.hyphenation.HyphenationManager#getHyphenationTable(java.lang.String)
-	 * @return new <code>HyphernationTable</code>
-	 */
-	public HyphenationTable getHyphenationTable(final String index) {
-		HyphenationTable table = (HyphenationTable) (tables.get(index));
-		if (table == null) {
-			table = new HyphenationTableImpl();
-			tables.put(index, table);
-		}
-		return table;
-	}
+        super();
+    }
+
+    /**
+     * Return the <code>HyphernationTable</code>.
+     * <p>
+     * If there is no table stored in the hash with the index-key,
+     * a new one ist created.
+     * <p>
+     * The index is the language-number as <code>String</code>.
+     *
+     * @see de.dante.extex.hyphenation.HyphenationManager#getHyphenationTable(java.lang.String)
+     */
+    public HyphenationTable getHyphenationTable(final String index) {
+
+        HyphenationTable table = (HyphenationTable) (tables.get(index));
+        if (table == null) {
+            table = new HyphenationTableImpl();
+            tables.put(index, table);
+        }
+        return table;
+    }
 }

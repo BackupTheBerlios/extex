@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.impl;
 
 import java.io.IOException;
@@ -31,95 +32,107 @@ import de.dante.util.UnicodeChar;
  * Reader.
  * <p>
  * The class ignore the encoding in <tt>\inputencoding</tt>!
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TokenStreamReaderImpl extends AbstractTokenStreamImpl implements TokenStream, CatcodeVisitor {
-	
-	/**
-	 * the source
-	 */
-	private String source;
-	
-	/**
-	 * the reader
-	 */
-	private LineNumberReader in;
+public class TokenStreamReaderImpl extends AbstractTokenStreamImpl
+        implements
+            TokenStream,
+            CatcodeVisitor {
 
-	/**
-	 * the line
-	 */
-	private String line;
+    /**
+     * the source
+     */
+    private String source;
 
-	/**
-	 * Creates a new object.
-	 * @param	reader	the reader 
-	 */
-	public TokenStreamReaderImpl(final Reader reader) throws IOException {
-		super();
-		in = new LineNumberReader(reader);
-		this.source = reader.toString();
-		refill();
-	}
+    /**
+     * the reader
+     */
+    private LineNumberReader in;
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
-	 */
-	protected int bufferLength() {
-		return line.length();
-	}
+    /**
+     * the line
+     */
+    private String line;
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
-	 */
-	protected UnicodeChar getSingleChar() {
-		return new UnicodeChar(line,pointer);
-	}
+    /**
+     * Creates a new object.
+     * @param   reader  the reader
+     * @throws IOException ...
+     */
+    public TokenStreamReaderImpl(final Reader reader) throws IOException {
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return line;
-	}
+        super();
+        in = new LineNumberReader(reader);
+        this.source = reader.toString();
+        refill();
+    }
 
-	/**
-	 * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
-	 */
-	public boolean isFileStream() {
-		return true;
-	}
+    /**
+     * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
+     */
+    protected int bufferLength() {
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 */
-	protected String getSource() {
-		return source;
-	}
+        return line.length();
+    }
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
-	 */
-	protected boolean refill() throws IOException {
-		super.refill();
-		if (in == null) {
-			return false;
-		}
-		if ((line = in.readLine()) == null) {
-			in.close();
-			in = null;
-			return false;
-		}
-		return true;
-	}
-	
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#getLineno()
-	 */
-	protected int getLineno() {
-		return (in == null ? 0 : in.getLineNumber());
-	}		
+    /**
+     * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
+     */
+    protected UnicodeChar getSingleChar() {
+
+        return new UnicodeChar(line, pointer);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return line;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
+     */
+    public boolean isFileStream() {
+
+        return true;
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    protected String getSource() {
+
+        return source;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
+     */
+    protected boolean refill() throws IOException {
+
+        super.refill();
+        if (in == null) {
+            return false;
+        }
+        if ((line = in.readLine()) == null) {
+            in.close();
+            in = null;
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#getLineno()
+     */
+    protected int getLineno() {
+
+        return (in == null ? 0 : in.getLineNumber());
+    }
 }

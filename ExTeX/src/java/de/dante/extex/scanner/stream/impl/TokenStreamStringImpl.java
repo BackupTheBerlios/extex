@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.impl;
 
 import de.dante.extex.scanner.CatcodeVisitor;
@@ -27,47 +28,53 @@ import de.dante.util.UnicodeChar;
  * String.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TokenStreamStringImpl extends AbstractTokenStreamImpl implements TokenStream, CatcodeVisitor {
+public class TokenStreamStringImpl extends AbstractTokenStreamImpl
+        implements
+            TokenStream,
+            CatcodeVisitor {
 
     /**
      * the line
      */
     private String line;
-    
-    
+
     /**
      * Creates a new object.
-     * @param	line	the line for the tokenizer 
+     * @param   l    the line for the tokenizer
      */
-    public TokenStreamStringImpl(final String line) {
+    public TokenStreamStringImpl(final String l) {
+
         super();
-        if (line != null) {
-        	this.line = line;
+        if (l != null) {
+            line = l;
         } else {
-        	this.line="";
+            this.line = "";
         }
     }
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
-	 */
-	protected int bufferLength() {
-		return line.length();
-	}
+    /**
+     * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#bufferLength()
+     */
+    protected int bufferLength() {
 
-	/**
-	 * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
-	 */
-	protected UnicodeChar getSingleChar() {
-		return new UnicodeChar(line,pointer);
-	}
+        return line.length();
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return line;
-	}
+    /**
+     * @see de.dante.extex.scanner.stream.impl.AbstractTokenStreamImpl#getSingleChar()
+     */
+    protected UnicodeChar getSingleChar() {
+
+        return new UnicodeChar(line, pointer);
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return line;
+    }
 }

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
@@ -24,19 +25,19 @@ import de.dante.extex.typesetter.impl.Manager;
 /**
  * Interface for a linebreakerclass.
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface LineBreaker {
 
-	/**
-	 * Break a paragraph in lines.
-	 *
-	 * @param nodes 	the horizontalnodelist (paragraph)
-	 * @param manager	the manager for the nodelists
-	 *
-	 * @return the <code>Nodelist</code> with broken lines
-	 */
-	NodeList breakLines(HorizontalListNode nodes, Manager manager);
+    /**
+     * Break a paragraph in lines.
+     *
+     * @param nodes     the horizontalnodelist (paragraph)
+     * @param manager   the manager for the nodelists
+     *
+     * @return the <code>Nodelist</code> with broken lines
+     */
+    NodeList breakLines(HorizontalListNode nodes, Manager manager);
 }

@@ -35,7 +35,7 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -54,6 +54,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @param cfg the configuration
      */
     public TextDocumentWriter(final Configuration cfg) {
+
         super();
     }
 
@@ -61,6 +62,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
+
         return shippedPages;
     }
 
@@ -68,6 +70,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
+
         return "txt";
     }
 
@@ -75,6 +78,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
      */
     public void setOutputStream(final OutputStream outStream) {
+
         out = outStream;
     }
 
@@ -82,6 +86,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
      */
     public void shipout(final NodeList nodes) throws IOException {
+
         processNodes(nodes);
         out.write('\n');
         out.flush();
@@ -94,6 +99,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @throws IOException ...
      */
     private void processNodes(final NodeList nodes) throws IOException {
+
         NodeIterator it = nodes.iterator();
         showNode(nodes);
         while (it.hasNext()) {
@@ -112,6 +118,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @throws IOException ...
      */
     private void showNode(final Node node) throws IOException {
+
         try {
             Object o = node.visit(this, node, null);
             if (o != null) {
@@ -128,6 +135,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
     public void close() {
+
         // nothing to do
     }
 
@@ -136,6 +144,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitAdjust(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -144,6 +153,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitAfterMath(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -152,6 +162,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitAlignedLeaders(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -160,6 +171,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitBeforeMath(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -168,6 +180,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitCenteredLeaders(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -176,6 +189,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitChar(final Object value, final Object value2) {
+
         CharNode node = (CharNode) value;
         return node.toString();
     }
@@ -185,6 +199,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitDiscretionary(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -193,6 +208,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitExpandedLeaders(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -201,6 +217,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitGlue(final Object value, final Object value2) {
+
         return " ";
     }
 
@@ -209,6 +226,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitHorizontalList(final Object value, final Object value2) {
+
         return "\n";
     }
 
@@ -217,6 +235,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitInsertion(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -225,6 +244,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitKern(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -233,6 +253,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitLigature(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -241,6 +262,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitMark(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -249,6 +271,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitPenalty(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -257,6 +280,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitRule(final Object value, final Object value2) {
+
         return "\n---------------------------------------------------------------------";
     }
 
@@ -265,6 +289,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitSpace(final Object value, final Object value2) {
+
         return " ";
     }
 
@@ -273,6 +298,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitVerticalList(final Object value, final Object value2) {
+
         return null;
     }
 
@@ -281,6 +307,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * java.lang.Object)
      */
     public Object visitWhatsIt(final Object value, final Object value2) {
+
         return null;
     }
 }

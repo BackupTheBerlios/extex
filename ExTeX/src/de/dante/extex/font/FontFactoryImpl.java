@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -33,7 +33,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -53,6 +53,7 @@ public class FontFactoryImpl implements FontFactory {
      * @param fileFinder ...
      */
     public FontFactoryImpl(final FileFinder fileFinder) {
+
         super();
         finder = fileFinder;
     }

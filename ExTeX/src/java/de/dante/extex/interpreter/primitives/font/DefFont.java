@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -46,9 +46,19 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DefFont extends AbstractCode {
+
+    /**
+     * Default-Font-size
+     */
+    private static final int DEFAULTSIZE = 10;
+
+    /**
+     * Default-Scale-factor
+     */
+    private static final int DEFAULTSCALEFACTOR = 1000;
 
     /**
      * Creates a new object.
@@ -56,6 +66,7 @@ public class DefFont extends AbstractCode {
      * @param name the name for debugging
      */
     public DefFont(final String name) {
+
         super(name);
     }
 
@@ -65,15 +76,16 @@ public class DefFont extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Token tok = source.getNonSpace();
         source.scanOptionalEquals();
         String filename = scanFileName(source);
         int size = getFontSize(filename);
         if (size < 0) {
-            size = 10;
+            size = DEFAULTSIZE;
         }
         Dimen fontsize = new Dimen(Dimen.ONE * size);
 
@@ -88,7 +100,8 @@ public class DefFont extends AbstractCode {
                 // \font\magnifiedfiverm=cmr5 scaled 2000
                 source.skipSpace();
                 long scale = source.scanInteger();
-                fontsize = new Dimen(Dimen.ONE * size * scale / 1000);
+                fontsize = new Dimen(Dimen.ONE * size * scale
+                        / DEFAULTSCALEFACTOR);
             }
         } catch (Exception e) {
             // do nothing, use default
@@ -121,6 +134,7 @@ public class DefFont extends AbstractCode {
      * @return the fontsize or -1, if no digits are found
      */
     private int getFontSize(final String filename) {
+
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < filename.length(); i++) {
             UnicodeChar uc = new UnicodeChar(filename, i);
@@ -144,7 +158,9 @@ public class DefFont extends AbstractCode {
      * @return the file name as string
      * @throws GeneralException in case of an error
      */
-    private String scanFileName(final TokenSource source) throws GeneralException {
+    private String scanFileName(final TokenSource source)
+            throws GeneralException {
+
         Token t = source.scanNonSpace();
 
         if (t == null) {

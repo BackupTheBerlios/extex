@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -15,6 +15,7 @@
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  */
+
 package de.dante.util;
 
 import java.util.ArrayList;
@@ -23,54 +24,59 @@ import java.util.ArrayList;
  * This class implements a <code>ArrayList</code> for <code>UnicodeChar</code>s.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UnicodeCharList {
 
-	/**
-	 * the internal <code>ArrayList</code>
-	 */
-	private ArrayList list;
+    /**
+     * the internal <code>ArrayList</code>
+     */
+    private ArrayList list;
 
-	/**
-	 * Create a new object.
-	 */
-	public UnicodeCharList() {
-		super();
-		list = new ArrayList();
-	}
+    /**
+     * Create a new object.
+     */
+    public UnicodeCharList() {
 
-	/**
-	 * Create a new object.
-	 * @param	initsize	initsize for the <code>ArrayList</code>
-	 */
-	public UnicodeCharList(final int initsize) {
-		super();
-		list = new ArrayList(initsize);
-	}
+        super();
+        list = new ArrayList();
+    }
 
-	/**
-	 * Add a new Element.
-	 * @param uc	the <code>UnicodeChar</code> to add
-	 */
-	public void add(final UnicodeChar uc) {
-		list.add(uc);
-	}
+    /**
+     * Create a new object.
+     * @param   initsize    initsize for the <code>ArrayList</code>
+     */
+    public UnicodeCharList(final int initsize) {
 
-	/**
-	 * Return the <code>UnicodeChar</code> at index idx.
-	 * @param idx	the index
-	 * @return	the <code>UnicodeChar</code> at index idx.
-	 */
-	public UnicodeChar get(int idx) {
-		return (UnicodeChar) list.get(idx);
-	}
+        super();
+        list = new ArrayList(initsize);
+    }
 
-	/**
-	 * Return the size of the list.
-	 * @return	the size of the list
-	 */
-	public int size() {
-		return list.size();
-	}
+    /**
+     * Add a new Element.
+     * @param uc    the <code>UnicodeChar</code> to add
+     */
+    public void add(final UnicodeChar uc) {
+
+        list.add(uc);
+    }
+
+    /**
+     * Return the <code>UnicodeChar</code> at index idx.
+     * @param idx   the index
+     * @return  the <code>UnicodeChar</code> at index idx.
+     */
+    public UnicodeChar get(final int idx) {
+
+        return (UnicodeChar) list.get(idx);
+    }
+
+    /**
+     * Return the size of the list.
+     * @return  the size of the list
+     */
+    public int size() {
+
+        return list.size();
+    }
 }

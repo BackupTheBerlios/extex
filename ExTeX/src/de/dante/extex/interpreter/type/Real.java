@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type;
 
 import java.io.Serializable;
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Real implements Serializable {
 
@@ -58,11 +59,12 @@ public class Real implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param value    init with double-value
+     * @param val    init with double-value
      */
-    public Real(final double value) {
+    public Real(final double val) {
+
         super();
-        this.value = value;
+        value = val;
     }
 
     /**
@@ -72,6 +74,7 @@ public class Real implements Serializable {
      *
      * @param context ...
      * @param source the token source
+     * @throws GeneralException ...
      */
     public Real(final Context context, final TokenSource source)
             throws GeneralException {
@@ -95,7 +98,7 @@ public class Real implements Serializable {
     private Real scanReal(final Context context, final TokenSource source)
             throws GeneralException {
 
-        long value = 0;
+        long val = 0;
         boolean neg = false;
 
         // get number
@@ -111,10 +114,10 @@ public class Real implements Serializable {
             Code code = context.getMacro(t.getValue());
             if (code != null && code instanceof CountConvertable) {
                 return new Real(((CountConvertable) code).convertCount(context,
-                                                                       source));
+                        source));
             } else if (code != null && code instanceof DimenConvertable) {
                 return new Real(((DimenConvertable) code).convertDimen(context,
-                                                                       source));
+                        source));
             } else if (code != null && code instanceof RealConvertable) {
                 return ((RealConvertable) code).convertReal(context, source);
             }
@@ -126,42 +129,49 @@ public class Real implements Serializable {
         }
 
         if (t != null && !t.equals(Catcode.OTHER, ".")
-            && !t.equals(Catcode.OTHER, ",")) {
-            value = source.scanNumber(t);
+                && !t.equals(Catcode.OTHER, ",")) {
+            val = source.scanNumber(t);
             t = source.getToken();
         }
 
-        sb.append(Long.toString(value));
+        sb.append(Long.toString(val));
         sb.append('.');
-        value = 0;
+        val = 0;
 
         if (t != null
-            && (t.equals(Catcode.OTHER, ".") || t.equals(Catcode.OTHER, ","))) {
+                && (t.equals(Catcode.OTHER, ".") || t
+                        .equals(Catcode.OTHER, ","))) {
             value = source.scanNumber();
         }
-        sb.append(Long.toString(value));
+        sb.append(Long.toString(val));
 
         return new Real(sb.toString());
     }
 
     /**
      * Creates a new object.
+     * @param val   the value
      */
     public Real(final Real val) {
+
         value = val.getValue();
     }
 
     /**
      * Creates a new object.
+     * @param val   tha value as float
      */
     public Real(final float val) {
+
         value = val;
     }
 
     /**
      * Creates a new object.
+     * @param l the value as long
      */
     public Real(final long l) {
+
         if (l > MAX_VALUE.getLong()) {
             value = MAX_VALUE.getLong();
         } else {
@@ -171,16 +181,20 @@ public class Real implements Serializable {
 
     /**
      * Creates a new object.
+     * @param   i   the value as int
      */
     public Real(final int i) {
+
         value = i;
     }
 
     /**
      * Creates a new object.<p>
      * If a error is throws, the value is set to zero
+     * @param s     the value as String
      */
     public Real(final String s) {
+
         try {
             value = Double.valueOf(s).doubleValue();
         } catch (NumberFormatException e) {
@@ -196,6 +210,7 @@ public class Real implements Serializable {
      * @param d the new value
      */
     public void setValue(final double d) {
+
         value = d;
     }
 
@@ -205,6 +220,7 @@ public class Real implements Serializable {
      * @return the value
      */
     public double getValue() {
+
         return value;
     }
 
@@ -214,6 +230,7 @@ public class Real implements Serializable {
      * @param val ...
      */
     public void add(final double val) {
+
         value += val;
     }
 
@@ -223,6 +240,7 @@ public class Real implements Serializable {
      * @param real ...
      */
     public void add(final Real real) {
+
         value += real.getValue();
     }
 
@@ -234,6 +252,7 @@ public class Real implements Serializable {
      * @throws GeneralException in case of a division by zero
      */
     public void divide(final double val) throws GeneralException {
+
         if (val == 0.0d) {
             throw new GeneralHelpingException("TTP.ArithOverflow");
         }
@@ -249,6 +268,7 @@ public class Real implements Serializable {
      * @throws GeneralException in case of a division by zero
      */
     public void divide(final Real val) throws GeneralException {
+
         divide(val.getValue());
     }
 
@@ -258,6 +278,7 @@ public class Real implements Serializable {
      * @param val ...
      */
     public void multiply(final double val) {
+
         value *= val;
     }
 
@@ -267,6 +288,7 @@ public class Real implements Serializable {
      * @param val ...
      */
     public void multiply(final Real val) {
+
         value *= val.getValue();
     }
 
@@ -276,6 +298,7 @@ public class Real implements Serializable {
      * @return ...
      */
     public long getLong() {
+
         return (long) value;
     }
 
@@ -285,6 +308,7 @@ public class Real implements Serializable {
      * @return the value as <code>String</code>
      */
     public String toString() {
+
         return Double.toString(value);
     }
 }

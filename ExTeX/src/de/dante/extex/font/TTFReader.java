@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -55,7 +55,7 @@ import org.jdom.Element;
  * Technical Specification, Revision 1.66, November 1995
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
@@ -129,14 +129,14 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
         ArrayList kernlist = new ArrayList();
         if (kern != null) {
             KernSubtable kst = kern.getSubtable(0);
-            PostTable post = (PostTable) getTable(Table.post);
+            PostTable posttable = (PostTable) getTable(Table.post);
             for (int i = 0; i < kst.getKerningPairCount(); i++) {
 
                 KernPairs kp = new KernPairs();
                 kp.idpre = kst.getKerningPair(i).getLeft();
-                kp.charpre = post.getGlyphName(kst.getKerningPair(i).getLeft());
+                kp.charpre = posttable.getGlyphName(kst.getKerningPair(i).getLeft());
                 kp.idpost = kst.getKerningPair(i).getRight();
-                kp.charpost = post.getGlyphName(kst.getKerningPair(i)
+                kp.charpost = posttable.getGlyphName(kst.getKerningPair(i)
                         .getRight());
                 // SVG kerning values are inverted from TrueType's.
                 kp.size = -kst.getKerningPair(i).getValue();
@@ -146,7 +146,8 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
         // hash   glyph-number <-> id
         HashMap glyphnumber = new HashMap();
-        for (int i = 0; i <= 0xffff; i++) { // TODO range okay???
+        for (int i = 0; i <= 0xffff; i++) {
+            // TODO range okay???
             int glyphIndex = cmapFmt.mapCharCode(i);
             if (glyphIndex > 0) {
                 if (!glyphnumber.containsKey(String.valueOf(glyphIndex))) {
@@ -156,7 +157,8 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
         }
 
         // Include our requested range
-        for (int i = 0; i <= 0xffff; i++) { // TODO range okay???
+        for (int i = 0; i <= 0xffff; i++) {
+            // TODO range okay???
             int glyphIndex = cmapFmt.mapCharCode(i);
             //        ps.println(String.valueOf(i) + " -> " + String.valueOf(glyphIndex));
             //      if (font.getGlyphs()[glyphIndex] != null)
@@ -348,6 +350,7 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
      * @return the table
      */
     private Table getTable(final int tableType) {
+
         for (int i = 0; i < tables.length; i++) {
             if ((tables[i] != null) && (tables[i].getType() == tableType)) {
                 return tables[i];
@@ -365,6 +368,7 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
      * @see de.dante.extex.font.FontMetric#getFontMetric()
      */
     public Element getFontMetric() {
+
         return efmelement;
     }
 }

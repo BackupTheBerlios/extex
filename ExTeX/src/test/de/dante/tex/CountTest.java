@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Michael Niedermair
+ * Copyright (C) 2004  The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,28 +16,35 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.tex;
 
 import junit.framework.TestCase;
 
-/*
+/**
  * Test for the register <tt>count</tt>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CountTest extends TestCase {
 
-	/*
-	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(CountTest.class);
-	}
+    /**
+     * main
+     * @param  args commandlineargs
+     */
+    public static void main(final String[] args) {
 
-	/*
-	 */
-	public void testCount01() {
-		assertTrue(TestTeX.test("testdata/jucount01", "testdata/jucount01.testtxt"));
-	}
+        junit.textui.TestRunner.run(CountTest.class);
+    }
+
+    /**
+     * count01
+     */
+    public void testCount01() {
+
+        assertTrue(TestTeX.test("testdata/jucount01",
+                "testdata/jucount01.testtxt"));
+    }
 
 }

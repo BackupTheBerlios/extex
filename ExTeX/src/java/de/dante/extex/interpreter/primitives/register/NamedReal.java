@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.AbstractCode;
@@ -35,7 +36,7 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the real valued primitives. 
+ * This class provides an implementation for the real valued primitives.
  * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
@@ -45,17 +46,23 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public class NamedReal extends AbstractCode implements Theable, Advanceable,
-        Multiplyable, Divideable, RealConvertable {
+public class NamedReal extends AbstractCode
+        implements
+            Theable,
+            Advanceable,
+            Multiplyable,
+            Divideable,
+            RealConvertable {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NamedReal(String name) {
+    public NamedReal(final String name) {
+
         super(name);
     }
 
@@ -65,7 +72,8 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         if (context instanceof ContextExtension) {
 
@@ -86,9 +94,11 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
      * set the value
      *
      * @param context    the interpreter context
-     * @param value         the new value as Real
+     * @param value      the new value as Real
+     * @throws GeneralException ...
      */
-    public void set(Context context, Real value) throws GeneralException {
+    public void set(final Context context, final Real value) throws GeneralException {
+
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             contextextex.setReal(getName(), value);
@@ -101,9 +111,11 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
      * Set the value
      *
      * @param context    the interpreter context
-     * @param value         the new value as String
+     * @param value      the new value as String
+     * @throws GeneralException ...
      */
-    public void set(Context context, String value) throws GeneralException {
+    public void set(final Context context, final String value) throws GeneralException {
+
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             contextextex.setReal(getName(), new Real(value));
@@ -115,7 +127,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
     /**
      * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(Context context, TokenSource source) throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source)
+            throws GeneralException {
+
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
@@ -130,17 +144,20 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
      * Return the key (the name of the primitive) for the register.
      *
      * @param source ...
-     *
-     * @return ...
+     * @return the key
+     * @throws GeneralException ...
      */
     protected String getKey(final TokenSource source) throws GeneralException {
+
         return getName();
     }
 
     /**
      * @see de.dante.extex.interpreter.Advanceable#advance(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public void advance(Flags prefix, Context context, TokenSource source) throws GeneralException {
+    public void advance(final Flags prefix, final Context context, final TokenSource source)
+            throws GeneralException {
+
         if (context instanceof ContextExtension) {
 
             ContextExtension contextextex = (ContextExtension) context;
@@ -160,7 +177,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
     /**
      * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public void multiply(Flags prefix, Context context, TokenSource source) throws GeneralException {
+    public void multiply(final Flags prefix, final Context context, final TokenSource source)
+            throws GeneralException {
+
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
@@ -179,7 +198,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
     /**
      * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public void divide(Flags prefix, Context context, TokenSource source) throws GeneralException {
+    public void divide(final Flags prefix, final Context context, final TokenSource source)
+            throws GeneralException {
+
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
@@ -198,7 +219,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable,
     /**
      * @see de.dante.extex.interpreter.RealConvertable#convertReal(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public Real convertReal(Context context, TokenSource source) throws GeneralException {
+    public Real convertReal(final Context context, final TokenSource source)
+            throws GeneralException {
+
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
 import java.lang.reflect.Constructor;
@@ -37,9 +38,9 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  *  &lt;/Typesetter&gt;
  * </pre>
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TypesetterFactory {
 
@@ -64,13 +65,14 @@ public class TypesetterFactory {
     /**
      * Creates a new object.
      *
-     * @param config the configuration for this factory
+     * @param conf the configuration for this factory
+     * @throws ConfigurationException ...
      */
-    public TypesetterFactory(final Configuration config)
+    public TypesetterFactory(final Configuration conf)
             throws ConfigurationException {
 
         super();
-        this.config = config;
+        config = conf;
 
         String classname = config.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
@@ -79,10 +81,8 @@ public class TypesetterFactory {
         }
 
         try {
-            constructor = Class.forName(classname)
-                    .getConstructor(
-                                    new Class[]{Configuration.class,
-                                            Context.class});
+            constructor = Class.forName(classname).getConstructor(
+                    new Class[]{Configuration.class, Context.class});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
@@ -94,9 +94,8 @@ public class TypesetterFactory {
 
     /**
      * Get an instance of a typesetter.
-     *
+     * @param   context the context
      * @return a new typesetter
-     *
      * @throws ConfigurationException in case of an configuration error
      */
     public Typesetter newInstance(final Context context)
@@ -105,8 +104,7 @@ public class TypesetterFactory {
         Typesetter typesetter;
 
         try {
-            typesetter = (Typesetter) constructor.newInstance(new Object[]{
-                    config, context});
+            typesetter = (Typesetter) constructor.newInstance(new Object[]{config, context});
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (InstantiationException e) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontDimen extends AbstractCode implements Theable {
 
@@ -85,11 +85,11 @@ public class FontDimen extends AbstractCode implements Theable {
         //gene: this should be deduced from the font class (instanceof)
         /*
         if (font.getFontType().equals("tfm-normal")) {
-            setDimenValue(font, idx, size, paramLabel_normal);
+            setDimenValue(font, idx, size, paramLabelnormal);
         } else if (font.getFontType().equals("tfm-mathext")) {
-            setDimenValue(font, idx, size, paramLabel_mathext);
+            setDimenValue(font, idx, size, paramLabelmathext);
         } else if (font.getFontType().equals("tfm-mathsyml")) {
-            setDimenValue(font, idx, size, paramLabel_mathsyml);
+            setDimenValue(font, idx, size, paramLabelmathsyml);
         } else {
             throw new GeneralHelpingException("FONT.wrongtype");
         }
@@ -147,15 +147,15 @@ public class FontDimen extends AbstractCode implements Theable {
         }
         Font font = ((FontCode) code).getFont();
 
-        Dimen size = Dimen.ZERO_PT;
+        Dimen size = new Dimen(0);
         //gene: this should be deduced from the font class (instanceof)
         /*
          if (font.getFontType().equals("tfm-normal")) {
-         size = getDimenValue(font, idx, paramLabel_normal);
+         size = getDimenValue(font, idx, paramLabelnormal);
          } else if (font.getFontType().equals("tfm-mathext")) {
-         size = getDimenValue(font, idx, paramLabel_mathext);
+         size = getDimenValue(font, idx, paramLabelmathext);
          } else if (font.getFontType().equals("tfm-mathsyml")) {
-         size = getDimenValue(font, idx, paramLabel_mathsyml);
+         size = getDimenValue(font, idx, paramLabelmathsyml);
          } else {
          throw new GeneralHelpingException("FONT.wrongtype");
          }
@@ -166,13 +166,13 @@ public class FontDimen extends AbstractCode implements Theable {
     /**
      * normal paramter names
      */
-    private final static String[] paramLabel_normal = {"SLANT", "SPACE",
+    private static final String[] paramLabelnormal = {"SLANT", "SPACE",
             "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE"};
 
     /**
      * mathext parameter names
      */
-    private final static String[] paramLabel_mathext = {"SLANT", "SPACE",
+    private static final String[] paramLabelmathext = {"SLANT", "SPACE",
             "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE",
             "DEFAULTRULETHICKNESS", "BIGOPSPACING1", "BIGOPSPACING2",
             "BIGOPSPACING3", "BIGOPSPACING4", "BIGOPSPACING5",};
@@ -180,7 +180,7 @@ public class FontDimen extends AbstractCode implements Theable {
     /**
      * mathsyml-parameternames
      */
-    private final static String[] paramLabel_mathsyml = {"SLANT", "SPACE",
+    private static final String[] paramLabelmathsyml = {"SLANT", "SPACE",
             "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE", "NUM1",
             "NUM2", "NUM3", "DENOM1", "DENOM2", "SUP1", "SUP2", "SUP3", "SUB1",
             "SUB2", "SUPDROP", "SUBDROP", "DELIM1", "DELIM2", "AXISHEIGHT"};

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context.impl.extension;
 
 import java.io.Serializable;
@@ -31,10 +32,14 @@ import de.dante.extex.interpreter.type.Real;
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class GroupExtensionImpl extends GroupImpl implements Tokenizer,
-         Group, GroupExtension, Serializable {
+public class GroupExtensionImpl extends GroupImpl
+        implements
+            Tokenizer,
+            Group,
+            GroupExtension,
+            Serializable {
 
     /**
      * The map for the real registers
@@ -55,13 +60,14 @@ public class GroupExtensionImpl extends GroupImpl implements Tokenizer,
     public GroupExtensionImpl(final Group next) {
 
         super(next);
-        nextext = (GroupExtension)next; // TODO test with instanceof -> throw Exception
+        nextext = (GroupExtension) next; // TODO test with instanceof -> throw Exception
     }
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#getReal(java.lang.String)
      */
     public Real getReal(final String name) {
+
         Real real = (Real) (realMap.get(name));
 
         if (real == null) {
@@ -80,7 +86,9 @@ public class GroupExtensionImpl extends GroupImpl implements Tokenizer,
      * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String,
      *      de.dante.extex.interpreter.type.Real, boolean)
      */
-    public void setReal(final String name, final Real value, final boolean global) {
+    public void setReal(final String name, final Real value,
+            final boolean global) {
+
         setReal(name, value);
 
         if (global && nextext != null) {
@@ -93,6 +101,7 @@ public class GroupExtensionImpl extends GroupImpl implements Tokenizer,
      *      de.dante.extex.interpreter.type.Real)
      */
     public void setReal(final String name, final Real value) {
+
         realMap.put(name, value);
     }
 }
