@@ -34,20 +34,20 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LigatureNode extends CharNode implements Node {
 
     /**
-     * The field <tt>first</tt> contains the first node combined in the
+     * The field <tt>left</tt> contains the first node combined in the
      * ligature.
      */
-    private Node first;
+    private CharNode left;
 
     /**
      * The field <tt>second</tt> contains the node combined in the ligature.
      */
-    private Node second;
+    private CharNode right;
 
     /**
      * The field <tt>chars</tt> contains the ...
@@ -73,11 +73,11 @@ public class LigatureNode extends CharNode implements Node {
      * @see "TeX -- The Program [144]"
      */
     public LigatureNode(final TypesettingContext context, final UnicodeChar uc,
-            final Node left, final Node right) {
+            final CharNode left, final CharNode right) {
 
         super(context, uc);
-        this.first = left;
-        this.second = right;
+        this.left = left;
+        this.right = right;
         UnicodeChar[] uc1 = left.getChars();
         UnicodeChar[] uc2 = right.getChars();
         chars = new UnicodeChar[uc1.length + uc2.length];
@@ -98,23 +98,23 @@ public class LigatureNode extends CharNode implements Node {
     }
 
     /**
-     * Getter for first node.
+     * Getter for left node.
      *
-     * @return the first node
+     * @return the left node
      */
-    public Node getFirst() {
+    public CharNode getLeft() {
 
-        return this.first;
+        return this.left;
     }
 
     /**
-     * Getter for second node.
+     * Getter for right node.
      *
-     * @return the second node
+     * @return the right node
      */
-    public Node getSecond() {
+    public CharNode getRight() {
 
-        return this.second;
+        return this.right;
     }
 
     /**
@@ -128,7 +128,7 @@ public class LigatureNode extends CharNode implements Node {
      */
     public String toString() {
 
-        return " (ligature " + first.toString() + " " + second.toString() + ")";
+        return " (ligature " + left.toString() + " " + right.toString() + ")";
         //TODO gene: toString() incomplete
     }
 

@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -85,18 +85,19 @@ public class LigatureBuilderImpl implements LigatureBuilder {
 
         int i = index;
         int size = theSize;
-        UnicodeChar uc1 = ((CharNode) node).getCharacter();
+        UnicodeChar uc1 = node.getCharacter();
         UnicodeChar uc2;
-        Font font1 = ((CharNode) node).getTypesettingContext().getFont();
+        Font font1 = node.getTypesettingContext().getFont();
         Font font2;
-        Node n1 = node;
-        Node n2;
+        CharNode n1 = node;
+        CharNode n2;
 
         for (i++; i < size; i++) {
-            n2 = list.get(i);
-            if (!(n2 instanceof CharNode)) {
+            Node n = list.get(i);
+            if (!(n instanceof CharNode)) {
                 return i;
             }
+            n2 = (CharNode) n;
             font2 = ((CharNode) n2).getTypesettingContext().getFont();
             uc2 = ((CharNode) n2).getCharacter();
 
@@ -114,8 +115,8 @@ public class LigatureBuilderImpl implements LigatureBuilder {
 
             UnicodeChar lig = g.getLigature(uc2);
             if (lig != null) {
-                Node ligNode = new LigatureNode(node.getTypesettingContext(),
-                        lig, n1, n2);
+                CharNode ligNode = new LigatureNode(node
+                        .getTypesettingContext(), lig, n1, n2);
                 list.remove(i);
                 list.remove(--i);
                 list.add(i, ligNode);

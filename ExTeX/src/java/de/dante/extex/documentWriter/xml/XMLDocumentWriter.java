@@ -66,7 +66,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class XMLDocumentWriter
         implements
@@ -652,8 +652,8 @@ public class XMLDocumentWriter
 
         Element element = new Element("ligature");
         addNodeAttributes(node, element);
-        Node first = node.getFirst();
-        Node second = node.getSecond();
+        Node first = node.getLeft();
+        Node second = node.getRight();
         if (first != null) {
             Element e = getNodeElement(first);
             if (e != null) {
