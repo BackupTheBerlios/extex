@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This class holds an output file onto which tokens can be wrtitten.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class OutFile implements Serializable {
 
@@ -121,7 +121,8 @@ public class OutFile implements Serializable {
         int len = toks.length();
 
         for (int i = 0; i < len; i++) {
-            writer.write(toks.get(i).getValue());
+            writer.write(toks.get(i).getChar().getCodePoint());
+            //TODO gene: check whether cs can arrive here
         }
     }
 
