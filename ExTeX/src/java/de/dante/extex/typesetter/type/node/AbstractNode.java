@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -35,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -55,6 +54,58 @@ public abstract class AbstractNode implements Node {
      *  The height is the extend of the node above the baseline.
      */
     private Dimen height;
+
+    /**
+     * The field <tt>move</tt> contains the offset of the reference point in
+     * horizontal direction.
+     */
+    private Dimen move = new Dimen(0);
+
+    /**
+     * The field <tt>shift</tt> contains the offset of the reference point in
+     * vertical direction.
+     */
+    private Dimen shift = new Dimen(0);
+
+    /**
+     * Getter for move.
+     *
+     * @return the move
+     */
+    public Dimen getMove() {
+
+        return this.move;
+    }
+
+    /**
+     * Getter for shift.
+     *
+     * @return the shift
+     */
+    public Dimen getShift() {
+
+        return this.shift;
+    }
+
+    /**
+     * Setter for move.
+     *
+     * @param move the move to set
+     */
+    public void setMove(Dimen move) {
+
+        this.move = move;
+    }
+
+    /**
+     * Setter for shift.
+     *
+     * @param shift the shift to set
+     */
+    public void setShift(Dimen shift) {
+
+        this.shift = shift;
+    }
 
     /**
      * The field <tt>localizer</tt> contains the localizer.
