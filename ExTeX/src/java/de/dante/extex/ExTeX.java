@@ -93,7 +93,7 @@ import de.dante.util.file.OutputFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class ExTeX {
 
@@ -114,29 +114,25 @@ public class ExTeX {
      */
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
     /**
-     * The field <tt>PROP_OUTPUT</tt> contains the ...
+     * The field <tt>PROP_OUTPUT</tt> contains the name of the property for the
+     * ...
      */
     private static final String PROP_OUTPUT = "extex.output";
     /**
-     * The field <tt>PROP_INI</tt> contains the name of the
-     * property for the ...
+     * The field <tt>PROP_INI</tt> contains the name of the property for the
+     * ...
      */
     private static final String PROP_INI = "extex.ini";
     /**
-     * The field <tt>PROP_FILE</tt> contains the name of the
-     * property for the ...
+     * The field <tt>PROP_FILE</tt> contains the name of the property for the
+     * ...
      */
     private static final String PROP_FILE = "extex.file";
     /**
-     * The field <tt>PROP_NOBANNER</tt> contains the name of the
-     * property for the ...
+     * The field <tt>PROP_NOBANNER</tt> contains the name of the property for
+     * the ...
      */
     private static final String PROP_NOBANNER = "extex.nobanner";
-    /**
-     * The field <tt>PROP_LOGGER</tt> contains the name of the
-     * property for the ...
-     */
-    private static final String PROP_LOGGER = "extex.logger";
     /**
      * The field <tt>PROP_CONFIG</tt> contains the name of the
      * property for the ...
@@ -183,8 +179,8 @@ public class ExTeX {
      */
     private static final String PROP_TRACE_TOKENIZER = "extex.traceTokenizer";
     /**
-     * The field <tt>PROP_FMT</tt> contains the name of the
-     * property for the ...
+     * The field <tt>PROP_FMT</tt> contains the name of the property for the
+     * name of the format file to use.
      */
     private static final String PROP_FMT = "extex.fmt";
 
@@ -493,7 +489,7 @@ public class ExTeX {
                 String arg = args[i];
 
                 if (arg.startsWith("-")) {
-                    if (arg.equals("-")) {
+                    if ("-".equals(arg)) {
                         runWithFile(args, i + 1);
                         onceMore = false;
                     } else if ("-configuration".startsWith(arg)) {
@@ -555,10 +551,11 @@ public class ExTeX {
                         useArg("extex.fallbackOutputdir", args, ++i);
                     } else if ("-debug".startsWith(arg)) {
                         useDebug(args, ++i);
-                    } else if ("-output".startsWith(arg)) {
-                    	useArg(PROP_OUTPUT, args, ++i);
+                    } else if ("--".equals(arg)) {
+                        useArg(PROP_CONFIG, args, ++i);
                     } else {
-                        throw new MainUnknownOptionException(arg);
+                        properties.setProperty(PROP_CONFIG,arg.substring(1));
+                        //throw new MainUnknownOptionException(arg);
                     }
                 } else if (arg.startsWith("&")) {
                     properties.setProperty(PROP_FMT, arg.substring(1));
