@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -50,7 +50,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -106,9 +106,24 @@ public class ExTeXLauncher extends TestCase {
      */
     private static void prepareProperties(final Properties properties) {
 
-        properties.setProperty("extex.output", "text");
-        properties.setProperty("extex.interaction", "batchmode");
-        properties.setProperty("extex.fonts", "src/font");
+        provide(properties, "extex.output", "text");
+        provide(properties, "extex.interaction", "batchmode");
+        provide(properties, "extex.fonts", "src/font");
+    }
+
+    /**
+     * Set a property if it has not been set yet.
+     *
+     * @param properties th properties o modify
+     * @param name the name of the property
+     * @param value the new value
+     */
+    private static void provide(final Properties properties, final String name,
+            final String value) {
+
+        if (properties.getProperty(name) == null) {
+            properties.setProperty(name, value);
+        }
     }
 
     /**
