@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -89,8 +89,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
                 } else if (code.isIf()) {
                     n++;
                 } else if (code.isOuter()) {
-                    // TODO incomplete
-                    throw new RuntimeException("unimplemented");
+                    throw new HelpingException(getMyLocalizer(),
+                            "TTP.OuterInSkipped");
                 }
             }
         }
