@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.dante.extex.hyphenation.impl.BaseHyphenationTable;
+import de.dante.extex.hyphenation.liang.LiangsHyphenationTable;
 import de.dante.util.framework.AbstractFactory;
 
 /**
@@ -31,7 +31,7 @@ import de.dante.util.framework.AbstractFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HyphenationFactory extends AbstractFactory implements Serializable {
 
@@ -66,7 +66,7 @@ public class HyphenationFactory extends AbstractFactory implements Serializable 
 
         HyphenationTable table = (HyphenationTable) (tables.get(index));
         if (table == null) {
-            table = new BaseHyphenationTable();
+            table = new LiangsHyphenationTable();
             tables.put(index, table);
         }
         return table;
