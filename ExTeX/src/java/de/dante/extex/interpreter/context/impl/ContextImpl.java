@@ -114,7 +114,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public class ContextImpl
         implements
@@ -375,6 +375,15 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#esc(de.dante.extex.scanner.Token)
+     */
+    public String esc(final Token token) {
+
+        char esc = (char) (getCount("escapechar").getValue());
+        return token.toText(esc);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#expand(
      *      de.dante.extex.interpreter.type.tokens.Tokens, Typesetter)
      */
@@ -402,7 +411,7 @@ public class ContextImpl
 
          return result;
          */
-        // TODO expand() unimplemented
+        // TODO gene: expand() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

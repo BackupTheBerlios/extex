@@ -50,7 +50,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public interface Context
         extends
@@ -74,6 +74,16 @@ public interface Context
      * @return the control sequence including the escape character
      */
     String esc(String name);
+
+    /**
+     * This method is meant to produce a printable version of a control
+     * sequence for error messages.
+     *
+     * @param token the token
+     *
+     * @return the control sequence including the escape character
+     */
+    String esc(Token token);
 
     /**
      * Expand some tokens.
