@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.main.exception;
 
 import de.dante.extex.i18n.Messages;
@@ -25,7 +26,7 @@ import de.dante.extex.i18n.Messages;
  * error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MainConfigurationException extends MainException {
 
@@ -49,9 +50,11 @@ public class MainConfigurationException extends MainException {
      */
     public String getMessage() {
 
-        String message = super.getMessage();
+        Throwable cause = getCause();
+        String message = (cause != null ? cause.getMessage() : super
+                .getMessage());
         return Messages.format("MainConfigurationException.Message",
-                               (message != null ? message : ""));
+                (message != null ? message : ""));
     }
 
 }
