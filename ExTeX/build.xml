@@ -27,6 +27,8 @@
     <target name="help" description="Displays usage information">
         <echo>Usage: ant &lt;target&gt;
           The following targets are supported:
+          all
+              Build nearly everything
           compile
               Compile all file except the tests.        
           jar
