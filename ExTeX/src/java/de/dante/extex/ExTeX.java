@@ -59,9 +59,14 @@ import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.util.GeneralException;
+import de.dante.util.StringList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.file.FileFinderConfigImpl;
+import de.dante.util.file.FileFinderDirect;
+import de.dante.util.file.FileFinderList;
+import de.dante.util.file.FileFinderPathImpl;
 
 /**
  * This is the command line interface to ExTeX. It does all the horrible things
@@ -78,7 +83,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ExTeX {
     /**
@@ -409,17 +414,24 @@ public class ExTeX {
                     .registerObserver("message", new MessageObserver(logger));
             if (Boolean.valueOf(properties.getProperty("extex.traceTokenizer"))
                     .booleanValue()) {
-                interpreter
-                    .registerObserver("pop", new TokenObserver(logger));
+                interpreter.registerObserver("pop", new TokenObserver(logger));
             }
 
             TokenStreamFactory factory = new TokenStreamFactory(config
                     .getConfiguration("Reader"));
+            FileFinderList finder = new FileFinderList(new FileFinderDirect(
+                    new StringList(":tex", ":")));
             String path = properties.getProperty("extex.texinputs", "");
             if (!path.equals("")) {
-                factory.setPath(path);
+                finder.add(new FileFinderPathImpl(new StringList(path, System
+                        .getProperty("path.separator")), new StringList(":tex",
+                        ":")));
             }
-            factory.setFileFinder(new FileFinderImpl(factory, logger));
+            finder
+                    .add(new FileFinderConfigImpl(config
+                            .getConfiguration("File")));
+            finder.add(new FileFinderImpl(logger));
+            factory.setFileFinder(finder);
             factory.registerObserver("file", new FileOpenObserver(logger));
             interpreter.setTokenStreamFactory(factory);
             interpreter.setInteraction(Interaction.get(properties
@@ -448,17 +460,17 @@ public class ExTeX {
                     .toString(pages)));
         } catch (ConfigurationException e) {
             e.printStackTrace();
-            logger.throwing("de.dante.extex.ExTeX","run",e);
+            logger.throwing("de.dante.extex.ExTeX", "run", e);
             throw new MainConfigurationException(e);
         } catch (CharacterCodingException e) {
-            logger.throwing("de.dante.extex.ExTeX","run",e);
+            logger.throwing("de.dante.extex.ExTeX", "run", e);
             throw new MainCodingException(e);
         } catch (IOException e) {
-            logger.throwing("de.dante.extex.ExTeX","run",e);
+            logger.throwing("de.dante.extex.ExTeX", "run", e);
             throw new MainIOException(e);
         } catch (GeneralException e) {
             e.printStackTrace();
-            logger.throwing("de.dante.extex.ExTeX","run",e);
+            logger.throwing("de.dante.extex.ExTeX", "run", e);
             throw new MainException(e);
         }
 
