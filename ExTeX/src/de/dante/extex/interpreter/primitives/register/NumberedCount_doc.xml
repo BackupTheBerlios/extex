@@ -6,13 +6,13 @@
       <german>
 	<code>\count</code> stellt Registers für Integer zur Verfügug. Die
 	Register werden nummeriert von <code>\count0</code> bis zu
-	<code>\count0</code><it>Integer.Max_VALUE</it>.
+	<code>\count0</code><emph>Integer.Max_VALUE</emph>.
       </german>
 
       <english>
 	<code>\count</code> provides registers for integer values. The
 	registers are numbered from <code>\count0</code> up to
-	<code>\count0</code><it>Integer.Max_VALUE</it>.
+	<code>\count0</code><emph>Integer.Max_VALUE</emph>.
       </english>
 
     </shortDesc>
