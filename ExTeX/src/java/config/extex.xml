@@ -74,21 +74,21 @@
 		<tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
     </Type>
     <Finder>
-    <efm>
-      <extension>.efm</extension>
-      <path>.</path>
-      <path>font</path>
-    </efm>
-    <pfb>
-      <extension>.pfb</extension>
-      <path>.</path>
-      <path>font</path>
-    </pfb>
-    <ttf>
-      <extension>.ttf</extension>
-      <path>.</path>
-      <path>font</path>
-    </ttf>
+      <efm>
+        <extension>.efm</extension>
+        <path>.</path>
+        <path>src/font</path>
+      </efm>
+      <pfb>
+        <extension>.pfb</extension>
+        <path>.</path>
+        <path>src/font</path>
+      </pfb>
+      <ttf>
+        <extension>.ttf</extension>
+        <path>.</path>
+        <path>src/font</path>
+      </ttf>
     </Finder>
   </Fonts>
 
