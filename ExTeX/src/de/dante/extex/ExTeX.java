@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.CharacterCodingException;
 import java.text.DateFormat;
 import java.util.Calendar;
@@ -70,6 +71,7 @@ import de.dante.util.StringList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
 import de.dante.util.file.FileFinderConfigImpl;
 import de.dante.util.file.FileFinderDirect;
 import de.dante.util.file.FileFinderList;
@@ -93,7 +95,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class ExTeX {
 
@@ -641,6 +643,8 @@ public class ExTeX {
         if (jobname == null || jobname.equals("")) {
             jobname = properties.getProperty(PROP_JOBNAME);
         }
+        jobname = new File(jobname).getName();
+
         showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
 
@@ -903,16 +907,19 @@ public class ExTeX {
         String post = properties.getProperty(PROP_CODE);
 
         if (post != null && !post.equals("")) {
-            TokenStream stream = factory.newInstance(post, properties
-                .getProperty(PROP_ENCODING));
+            TokenStream stream = factory.newInstance(post);
             interpreter.addStream(stream);
             notInitialized = false;
         }
 
         if (notInitialized) {
-            TokenStream stream = factory.newInstance(new InputStreamReader(
-                System.in), properties.getProperty(PROP_ENCODING));
-            interpreter.addStream(stream);
+            try {
+                TokenStream stream = factory.newInstance(new InputStreamReader(
+                    System.in, properties.getProperty(PROP_ENCODING)));
+                interpreter.addStream(stream);
+            } catch (UnsupportedEncodingException e) {
+                throw new ConfigurationUnsupportedEncodingException(properties.getProperty(PROP_ENCODING),"???");
+            }
 
         }
     }

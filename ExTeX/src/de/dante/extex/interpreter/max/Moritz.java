@@ -55,7 +55,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class Moritz implements TokenSource, Observable {
     /**
@@ -351,7 +351,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
         if (stream == null) {
             try {
-                stream = getTokenStreamFactory().newInstance("","ISO8859-1");
+                stream = getTokenStreamFactory().newInstance("");
             } catch (ConfigurationException e) {
                 throw new GeneralPanicException(e);
             }
