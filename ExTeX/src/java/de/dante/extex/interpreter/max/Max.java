@@ -62,7 +62,6 @@ import de.dante.extex.scanner.SupMarkToken;
 import de.dante.extex.scanner.TabMarkToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
-import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.TokenVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -77,6 +76,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationWrapperException;
+import de.dante.util.framework.AbstractFactory;
 import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.observer.NotObservableException;
@@ -92,7 +92,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class Max extends Moritz
         implements
@@ -101,6 +101,42 @@ public class Max extends Moritz
             LogEnabled,
             Observable,
             TokenVisitor {
+
+    /**
+     * ...
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.36 $
+     */
+    private class TokenFactoryFactory extends AbstractFactory {
+
+        /**
+         * The field <tt>configuration</tt> contains the ...
+         */
+        private Configuration configuration;
+
+        /**
+         * Creates a new object.
+         */
+        public TokenFactoryFactory(final Configuration configuration) {
+
+            super();
+            this.configuration = configuration;
+        }
+
+        /**
+         * ...
+         *
+         * @return ...
+         *
+         * @throws ConfigurationException ...
+         */
+        public TokenFactory createInstance() throws ConfigurationException {
+
+            return (TokenFactory) createInstanceForConfiguration(configuration,
+                    TokenFactory.class);
+        }
+    }
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
@@ -226,19 +262,24 @@ public class Max extends Moritz
             throw new ConfigurationMissingException("Interpreter");
         }
 
-        context = new ContextFactory(configuration.getConfiguration("Context"))
-                .newInstance(null);
-        context.setTokenFactory(new TokenFactoryImpl()); //TODO I hate Impls in code
+        maxErrors = configuration.getValueAsInteger("maxErrors", maxErrors);
+
+        TokenFactoryFactory tokenFactory2 = new TokenFactoryFactory(
+                configuration.getConfiguration("TokenFactory"));
+        tokenFactory2.enableLogging(logger);
+        TokenFactory tokenFactory = tokenFactory2.createInstance();
+
+        ContextFactory contextFactory = new ContextFactory(configuration
+                .getConfiguration("Context"));
+        contextFactory.enableLogging(logger);
+        context = contextFactory.newInstance(null);
+        context.setTokenFactory(tokenFactory);
 
         try {
             context.setInteraction(Interaction.ERRORSTOPMODE, true);
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
-
-        maxErrors = configuration.getValueAsInteger("maxErrors", maxErrors);
-
-        TokenFactory tokenFactory = context.getTokenFactory();
 
         Iterator iterator = configuration.iterator("primitives");
 
@@ -333,14 +374,14 @@ public class Max extends Moritz
     /**
      * Setter for the logger.
      *
-     * @param logger the new logger
+     * @param theLogger the new logger
      *
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *         java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger theLogger) {
 
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
