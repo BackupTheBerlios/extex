@@ -15,7 +15,7 @@ import de.dante.extex.scanner.stream.impl.TokenStreamImpl;
 /**
  * 
  * @author gene
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DimenRegisterTest extends TestCase {
 

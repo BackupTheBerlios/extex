@@ -1,0 +1,57 @@
+<html>
+ <head>
+  <title>i18n: Internationalization, Messages, and Error Concept</title>
+  <meta name="author">Gerd Neugebauer</meta>
+  <meta name="version">$Revision: 1.1 $</meta>
+  <meta name="copyright">
+   Copyright (C) 2003 Gerd Neugebauer
+
+   This library is free software; you can redistribute it and/or modify it
+   under the terms of the GNU Lesser General Public License as published by
+   the Free Software Foundation; either version 2.1 of the License, or (at
+   your option) any later version.
+
+   This library is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+   for more details.
+
+   You should have received a copy of the GNU Lesser General Public License
+   along with this library; if not, write to the Free Software Foundation,
+   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+   </meta>
+ </head>
+ <body>
+  This package contains some support for internationalization (i18n). 
+  This includes potential messages to the user as well as an error concept.
+
+  <h2>Messages</h2>
+  <p>
+   All messages of ExTeX are provided by the class 
+   {@link de.dante.extex.i18n.Messages Messages}. This class has a
+   set of static methods to format a message. The messages are referred to by
+   symbolic names. Those names are resolved in the properties file
+   <i>config/extexMessage.properties</i> or one of its localized versions.
+  </p>
+  <p>
+   The class Messages and the properties file take the place of the ancient
+   TeX pool file. Since the properties are usually contained in the jar file
+   and the references use symbolic names instead of indices the chance that
+   something goes wrong are much smaller than for the original TeX approach.
+  </p>
+
+  <h2>Error Concept</h2>
+  <p>
+   In the context of ExTeX errors lead to exceptions to be thrown. The
+   exception class {@link de.dante.extex.i18n.GeneralHelpingException GeneralHelpingException}
+   is the base class for all exceptions for which some help might be present.
+  </p>
+  <p>
+   @TODO: incomplete
+  </p>
+
+  
+  @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ </bodY>
+</html>
+ 
