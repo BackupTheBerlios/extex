@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.glue.GlueComponent;
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class Unit {
 
@@ -122,6 +122,16 @@ public final class Unit {
     }
 
     /**
+     * Create a new <code>Dimen</code> from a CM-value
+     * @param cm    the cm-value
+     * @return Returns the new <code>Dimne</code> from cm-value.
+     */
+    public static Dimen createDimenFromCM(final double cm) {
+
+        return new Dimen((long) (cm * (DEN << SHIFT)) / MULCM);
+    }
+
+    /**
      * Round the double-value to a number of decimals.
      * @param value the double-value
      * @param round the number of decimals to round (not round: negative value)
@@ -131,9 +141,8 @@ public final class Unit {
 
         if (round < 0) {
             return value;
-        } else {
-            return Math.round(value * Math.pow(BASIS10, round))
-                    / Math.pow(BASIS10, round);
         }
+        return Math.round(value * Math.pow(BASIS10, round))
+                / Math.pow(BASIS10, round);
     }
 }
