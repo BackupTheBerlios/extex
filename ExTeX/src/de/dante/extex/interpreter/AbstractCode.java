@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class AbstractCode implements Code {
 
@@ -81,11 +81,11 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#setName(java.lang.String)
+     * @see de.dante.extex.interpreter.Code#isOuter()
      */
-    public void setName(final String theName) {
+    public boolean isOuter() {
 
-        this.name = theName;
+        return false;
     }
 
     /**
@@ -104,6 +104,14 @@ public class AbstractCode implements Code {
 
         char esc = (char) (context.getCount("escapechar").getValue());
         return Character.toString(esc) + name;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Code#setName(java.lang.String)
+     */
+    public void setName(final String theName) {
+
+        this.name = theName;
     }
 
 }

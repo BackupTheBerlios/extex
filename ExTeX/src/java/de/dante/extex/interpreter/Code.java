@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface Code {
 
@@ -46,6 +46,13 @@ public interface Code {
      * @return <code>true</code> iff this is some sort if \if
      */
     boolean isIf();
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    boolean isOuter();
 
     /**
      * Setter for the name of this primitive.
