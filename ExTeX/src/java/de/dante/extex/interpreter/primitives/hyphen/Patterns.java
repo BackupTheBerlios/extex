@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.hyphen;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.hyphenation.exception.DuplicateHyphenationException;
 import de.dante.extex.hyphenation.exception.IllegalTokenHyphenationException;
+import de.dante.extex.hyphenation.exception.ImmutableHyphenationException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
@@ -60,7 +61,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Patterns extends AbstractHyphenationCode {
 
@@ -69,7 +70,7 @@ public class Patterns extends AbstractHyphenationCode {
      * argument of the <tt>\pattern</tt> macro.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class TV implements TokenVisitor {
 
@@ -379,6 +380,9 @@ public class Patterns extends AbstractHyphenationCode {
             throw new InterpreterException(getLocalizer().format(
                     "TTP.NonLetter"));
             //TODO gene: map other Exceptions too
+        } catch (ImmutableHyphenationException e) {
+            throw new InterpreterException(getLocalizer().format(
+                    "TTP.LatePatterns"));
         } catch (Exception e) {
             throw new InterpreterException(e);
         }
