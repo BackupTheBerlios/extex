@@ -25,22 +25,31 @@ import de.dante.extex.interpreter.type.glue.FixedGlue;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class BreakPoint {
 
     /**
-     * The field <tt>active</tt> contains the ...
+     * The field <tt>fitness</tt> contains the fitness for the break point.
+     * If this field is <code>null</code> then this break point is not
+     * active.
+     * <p>
+     * When a list of break points has been constructed, the active flag marks
+     * those breakpoints which are currently considered. The passive break
+     * points are silently ignored for the current pass.
+     * </p>
      */
-    private boolean active = false;
+    private Fitness fitness = null;
 
     /**
-     * The field <tt>penalty</tt> contains the ...
+     * The field <tt>penalty</tt> contains the penalty associated to the
+     * break point.
      */
     private int penalty;
 
     /**
-     * The field <tt>pointWidth</tt> contains the ...
+     * The field <tt>pointWidth</tt> contains the width to be added in case
+     * that this break point is not active.
      */
     private FixedGlue pointWidth;
 
@@ -52,28 +61,45 @@ class BreakPoint {
     private int position;
 
     /**
-     * The field <tt>width</tt> contains the ...
+     * The field <tt>width</tt> contains the width of the line from the
+     * previous break point to this one.
      */
     private FixedGlue width;
 
     /**
      * Creates a new object.
-     * @param p the position in the hlist
-     * @param w the width; i.e. the delta since the previous break point
-     * @param penalty TODO
+     *
+     * @param pos the position in the hlist
+     * @param wd the width; i.e. the delta since the previous break point
+     * @param pwd the point width for this break point
+     * @param pen the penmalty for this break point
      */
-    public BreakPoint(final int p, final FixedGlue w, final FixedGlue wd,
-            int penalty) {
+    public BreakPoint(final int pos, final FixedGlue wd, final FixedGlue pwd,
+            final int pen) {
 
         super();
-        this.position = p;
-        this.width = w;
-        this.pointWidth = wd;
-        this.penalty = penalty;
+        this.position = pos;
+        this.width = wd;
+        this.pointWidth = pwd;
+        this.penalty = pen;
+    }
+
+    /**
+     * Getter for fitness.
+     * The fitness is ine of the fitness classes defined in Fitness.
+     * The fitness is <code>null</code> for break pöoints which are not active.
+     *
+     * @return the fitness.
+     */
+    public Fitness getFitness() {
+
+        return this.fitness;
     }
 
     /**
      * Getter for penalty.
+     * The penalty has to be added to the overall penalty in case that this
+     * breakpoint is active.
      *
      * @return the penalty.
      */
@@ -119,7 +145,7 @@ class BreakPoint {
      */
     public boolean isActive() {
 
-        return this.active;
+        return (this.fitness != null);
     }
 
     /**
@@ -127,7 +153,17 @@ class BreakPoint {
      */
     public void setActive() {
 
-        this.active = true;
+        this.fitness = Fitness.DECENT;
+    }
+
+    /**
+     * Setter for fitness.
+     *
+     * @param fitness the fitness to set.
+     */
+    public void setFitness(final Fitness fitness) {
+
+        this.fitness = fitness;
     }
 
     /**
@@ -135,7 +171,7 @@ class BreakPoint {
      */
     public void setPassive() {
 
-        this.active = false;
+        this.fitness = null;
     }
 
     /**
@@ -143,6 +179,8 @@ class BreakPoint {
      */
     public String toString() {
 
-        return Integer.toString(position) + "[" + width.toString() + "]";
+        return "<" + Integer.toString(position) + ": " + width.toString()
+                + " ++ " + pointWidth.toString() + ">";
     }
+
 }
