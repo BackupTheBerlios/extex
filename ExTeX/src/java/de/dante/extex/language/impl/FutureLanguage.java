@@ -34,19 +34,21 @@ import de.dante.util.GeneralException;
  * loading or the creation should be performed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FutureLanguage implements Language {
+
+    /**
+     * The field <tt>creator</tt> contains the ...
+     */
+    private LanguageCreator creator;
 
     /**
      * The field <tt>index</tt> contains the ...
      */
     private String index;
 
-    /**
-     * The field <tt>creator</tt> contains the ...
-     */
-    private LanguageCreator creator;
+    private Language language = null;
 
     /**
      * Creates a new object.
@@ -69,7 +71,7 @@ public class FutureLanguage implements Language {
     public void addHyphenation(final Tokens word, final Context context)
             throws HyphenationException {
 
-        creator.loadLanguageInstance(index).addHyphenation(word, context);
+        load().addHyphenation(word, context);
     }
 
     /**
@@ -78,7 +80,21 @@ public class FutureLanguage implements Language {
      */
     public void addPattern(final Tokens pattern) throws HyphenationException {
 
-        creator.createLanguageInstance(index).addPattern(pattern);
+        create().addPattern(pattern);
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @return
+     * @throws HyphenationException
+     */
+    private Language create() throws HyphenationException {
+
+        if (language == null) {
+            language = creator.createLanguageInstance(index);
+        }
+        return language;
     }
 
     /**
@@ -86,7 +102,7 @@ public class FutureLanguage implements Language {
      */
     public long getLeftHyphenmin() throws HyphenationException {
 
-        return creator.loadLanguageInstance(index).getLeftHyphenmin();
+        return load().getLeftHyphenmin();
     }
 
     /**
@@ -94,7 +110,7 @@ public class FutureLanguage implements Language {
      */
     public long getRightHyphenmin() throws HyphenationException {
 
-        return creator.loadLanguageInstance(index).getRightHyphenmin();
+        return load().getRightHyphenmin();
     }
 
     /**
@@ -106,8 +122,17 @@ public class FutureLanguage implements Language {
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
             final Context context, final Token hyphen) throws GeneralException {
 
-        return creator.loadLanguageInstance(index).hyphenate(nodelist, context,
-                hyphen);
+        return load().hyphenate(nodelist, context, hyphen);
+    }
+
+    /**
+     * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
+     *      de.dante.extex.typesetter.type.NodeList)
+     */
+    public void insertLigatures(final NodeList list)
+            throws HyphenationException {
+
+        load().insertLigatures(list);
     }
 
     /**
@@ -115,15 +140,30 @@ public class FutureLanguage implements Language {
      */
     public boolean isHyphenActive() throws HyphenationException {
 
-        return creator.loadLanguageInstance(index).isHyphenActive();
+        return load().isHyphenActive();
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @return
+     * @throws HyphenationException
+     */
+    private Language load() throws HyphenationException {
+
+        if (language == null) {
+            language = creator.loadLanguageInstance(index);
+        }
+        return language;
     }
 
     /**
      * @see de.dante.extex.language.hyphenation.Hyphenator#setHyphenActive(boolean)
      */
-    public void setHyphenActive(final boolean active) throws HyphenationException {
+    public void setHyphenActive(final boolean active)
+            throws HyphenationException {
 
-        creator.createLanguageInstance(index).setHyphenActive(active);
+        create().setHyphenActive(active);
     }
 
     /**
@@ -131,7 +171,7 @@ public class FutureLanguage implements Language {
      */
     public void setLeftHyphenmin(final long left) throws HyphenationException {
 
-        creator.createLanguageInstance(index).setLeftHyphenmin(left);
+        create().setLeftHyphenmin(left);
     }
 
     /**
@@ -139,16 +179,7 @@ public class FutureLanguage implements Language {
      */
     public void setRightHyphenmin(final long right) throws HyphenationException {
 
-        creator.createLanguageInstance(index).setRightHyphenmin(right);
-    }
-
-    /**
-     * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
-     *      de.dante.extex.typesetter.type.NodeList)
-     */
-    public void insertLigatures(final NodeList list) throws HyphenationException {
-
-        creator.loadLanguageInstance(index).insertLigatures(list);
+        create().setRightHyphenmin(right);
     }
 
 }
