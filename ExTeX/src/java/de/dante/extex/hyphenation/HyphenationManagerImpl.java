@@ -19,6 +19,7 @@
 
 package de.dante.extex.hyphenation;
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -41,14 +42,20 @@ import java.util.Map;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HyphenationManagerImpl extends BaseHyphenationManager
         implements
             Serializable {
 
     /**
-     * TODO gene: missing JavaDoc
+     * The field <tt>TABLE_EXTENSION</tt> contains the ...
+     */
+    private static final String TABLE_EXTENSION = ".hyt";
+
+    /**
+     * This method arranges that the data written out about the tables can be
+     * read back in.
      *
      * @param in the stream to read from
      *
@@ -72,30 +79,47 @@ public class HyphenationManagerImpl extends BaseHyphenationManager
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Try to save the hyphenation table by other means. This can be used to
+     * write the result to another place than the default output stream.
+     * <p>
+     *  The table is not saved if the name is purely numeric. This guarantees
+     *  the backward compatibility with TeX, since TeX uses numerical names for
+     *  hyphenation tables only.
+     * </p>
      *
      * @param key the name of the table
      * @param value the table itself
      *
      * @return <code>true</code> iff the table has been saved
+     *
+     * @throws IOException in case of an IO error
      */
-    private boolean saveTable(final String key, final Object value) {
+    protected boolean saveTable(final String key, final Object value)
+            throws IOException {
 
         if (key.matches("\\d+")) {
             return false;
         }
-        //TODO gene: dump on new file
 
+        String filename = key + TABLE_EXTENSION;
+        FileOutputStream fos = new FileOutputStream(filename);
+        ObjectOutputStream out = new ObjectOutputStream(fos);
+        out.writeObject(value);
+        out.close();
+        getLogger().info("Hyphenation table " + key + //
+                " written to file " + filename);
         return true;
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Write the hyphenation tables to the output stream which can not by saved
+     * separately.
      *
-     * @param out
-     * @throws IOException
+     * @param out the output stream to write on
+     *
+     * @throws IOException in case of an IO error
      */
-    private void writeObject(final ObjectOutputStream out) throws IOException {
+    protected void writeObject(final ObjectOutputStream out) throws IOException {
 
         Map map = new HashMap();
         Iterator iter = getTables().entrySet().iterator();
