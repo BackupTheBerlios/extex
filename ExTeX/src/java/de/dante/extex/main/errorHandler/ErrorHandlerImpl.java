@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.main;
+package de.dante.extex.main.errorHandler;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.InteractionVisitor;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
@@ -47,7 +48,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.1 $
  */
 public class ErrorHandlerImpl
         implements
@@ -60,10 +61,16 @@ public class ErrorHandlerImpl
      * The constant <tt>NL</tt> contains the String with the newline character,
      * since it is needed several times.
      */
-    private static final String NL = "\n";
+    protected static final String NL = "\n";
 
     /**
-     * The field <tt>localizer</tt> contains the ...
+     * The field <tt>editHandler</tt> contains the handler to be invoked upon a
+     * request to edit a file.
+     */
+    private EditHandler editHandler = null;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer.
      */
     private Localizer localizer;
 
@@ -84,16 +91,16 @@ public class ErrorHandlerImpl
     }
 
     /**
-     * ...
+     * Setter for the localizer.
      *
-     * @param localizer
+     * @param theLocalizer the new localizer
      *
      * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
      *      de.dante.util.framework.i18n.Localizer)
      */
-    public void enableLocalization(final Localizer localizer) {
+    public void enableLocalization(final Localizer theLocalizer) {
 
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -120,15 +127,19 @@ public class ErrorHandlerImpl
     }
 
     /**
-     * Read a line of characters from the standard input stream.
-     * Leading spaces are ignored. At end of file <code>null</code> is returned.
+     * Read a line of characters from the standard input stream after a prompt
+     * has been shown.
+     * Leading spaces are ignored. At end of file an exception is thrown.
      *
      * @return the line read or <code>null</code> to signal EOF
      *
      * @throws IOException in case of an error during IO. This is rather
      * unlikely
+     * @throws HelpingException in case of EOF on terminal
      */
-    private String readLine() throws IOException {
+    protected String promptAndReadLine() throws IOException, HelpingException {
+
+        logger.severe(localizer.format("ErrorHandler.Prompt"));
 
         StringBuffer sb = new StringBuffer();
 
@@ -141,17 +152,30 @@ public class ErrorHandlerImpl
             }
         }
 
-        return (sb.length() > 0 ? sb.toString() : null);
+        if (sb.length() > 0) {
+            return sb.toString();
+        }
+
+        throw new HelpingException(localizer, "TTP.EOFonTerm");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.ErrorHandler#setEditHandler(
+     *      de.dante.extex.main.errorHandler.editHandler.EditHandler)
+     */
+    public void setEditHandler(final EditHandler editHandler) {
+
+        this.editHandler = editHandler;
     }
 
     /**
      * This method is invoked to present the current line causing the error.
      *
-     * @param aLogger the logger to use for output
+     * @param theLogger the logger to use for output
      * @param message the error message
      * @param locator the locator for the error position
      */
-    protected void showErrorLine(final Logger aLogger, final String message,
+    protected void showErrorLine(final Logger theLogger, final String message,
             final Locator locator) {
 
         if (locator == null) {
@@ -163,7 +187,7 @@ public class ErrorHandlerImpl
         for (int i = locator.getLinePointer(); i > 0; i--) {
             sb.append('_');
         }
-        aLogger.severe(NL + NL + (file == null ? "" : file) + ":"
+        theLogger.severe(NL + NL + (file == null ? "" : file) + ":"
                 + Integer.toString(locator.getLineno()) + ": " + message + NL
                 + NL + locator.getLine() + NL + sb.toString() + "^" + NL);
     }
@@ -197,12 +221,7 @@ public class ErrorHandlerImpl
             boolean firstHelp = true;
 
             for (;;) {
-                logger.severe(localizer.format("ErrorHandler.Prompt"));
-
-                String line = readLine();
-                if (line == null) {
-                    throw new HelpingException(localizer, "TTP.EOFonTerm");
-                }
+                String line = promptAndReadLine();
                 logger.config(line);
 
                 if (line.equals("")) {
@@ -235,8 +254,18 @@ public class ErrorHandlerImpl
                             throw new RuntimeException("unimplemented");
                         case 'e':
                         case 'E':
-                            //TODO: support edit? TTP[84]
-                            throw new RuntimeException("unimplemented");
+                            // TTP[84]
+                            if (editHandler != null
+                                    && editHandler.edit(localizer, //
+                                            source.getLocator())) {
+
+                                context.setInteraction(Interaction.SCROLLMODE,
+                                        true);
+                                logger.info(localizer
+                                        .format("ErrorHandler.scrollmode")
+                                        + NL);
+                                return true;
+                            }
                         case 'i':
                         case 'I':
                             source.addStream(source.getTokenStreamFactory()
