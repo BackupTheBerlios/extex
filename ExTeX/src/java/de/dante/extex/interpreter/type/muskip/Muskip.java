@@ -22,20 +22,49 @@ package de.dante.extex.interpreter.type.muskip;
 import java.io.Serializable;
 
 import de.dante.extex.i18n.EofHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This class provides a skip value with a variable length of order 0.
+ * The actual length is a multiple of math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Muskip implements Serializable {
+
+    /**
+     * Scan a math unit.
+     *
+     * @param context the processor context
+     * @param source the source for new tokens
+     *
+     * @return the number of scaled points for the mu
+     *
+     * @throws GeneralException in case of an error
+     */
+    public static long scanMu(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        Token t = source.getToken();
+        if (t == null) {
+            throw new EofHelpingException("mu");
+        }
+        long value = GlueComponent.scanFloat(source, t);
+        if (!source.getKeyword("mu")) {
+            throw new HelpingException(//
+                    LocalizerFactory.getLocalizer(Muskip.class.getName()),
+                    "TTP.IllegalMu");
+        }
+        return value;
+    }
 
     /**
      * The field <tt>length</tt> contains the the natural length.
@@ -62,35 +91,7 @@ public class Muskip implements Serializable {
     }
 
     /**
-     * Creates a new object.
-     *
-     * @param theLength the natural length
-     * @param theStretch the stretchability
-     * @param theShrink the shrinkability
-     */
-    public Muskip(final GlueComponent theLength,
-            final GlueComponent theStretch, final GlueComponent theShrink) {
-
-        super();
-        this.length = theLength;
-        this.stretch = theStretch;
-        this.shrink = theShrink;
-    }
-
-    /**
-     * Creates a new object.
-     * Strechablity and shrinkability are 0.
-     *
-     * @param theLength the natural length
-     */
-    public Muskip(final Dimen theLength) {
-
-        super();
-        this.length = theLength;
-    }
-
-    /**
-     * Creates a new object.
+     * Creates a new object and fills it from a token stream.
      *
      * @param context the processor context
      * @param source the source for new tokens
@@ -111,30 +112,31 @@ public class Muskip implements Serializable {
     }
 
     /**
-     * Scan a math unit.
+     * Creates a new object.
+     * Strechablity and shrinkability are 0.
      *
-     * @param context the processor context
-     * @param source the source for new tokens
-     *
-     * @return the number of scaled points for the mu
-     *
-     * @throws GeneralException in case of an error
+     * @param theLength the natural length
      */
-    private long scanMu(final Context context, final TokenSource source)
-            throws GeneralException {
+    public Muskip(final Dimen theLength) {
 
-        Token t = source.getToken();
-        if (t == null) {
-            throw new EofHelpingException("mu");
-        }
-        long value = GlueComponent.scanFloat(source, t);
-        if (!source.getKeyword("mu")) {
-            throw new RuntimeException("unimplemented");
-        }
-        // TODO: use the math family fonts instead
-        Dimen em = context.getTypesettingContext().getFont().getEm();
-        value = value * em.getValue() / GlueComponent.ONE;
-        return value;
+        super();
+        this.length = theLength;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param theLength the natural length
+     * @param theStretch the stretchability
+     * @param theShrink the shrinkability
+     */
+    public Muskip(final GlueComponent theLength,
+            final GlueComponent theStretch, final GlueComponent theShrink) {
+
+        super();
+        this.length = theLength;
+        this.stretch = theStretch;
+        this.shrink = theShrink;
     }
 
     /**
@@ -157,7 +159,26 @@ public class Muskip implements Serializable {
      */
     public String toString() {
 
-        return length.toString() + " "; //TODO incomplete
+        StringBuffer sb = new StringBuffer();
+        toString(sb);
+        return sb.toString();
     }
 
+    /**
+     * Append the string representation of the instance to a string buffer.
+     *
+     * @param sb the target string buffer
+     */
+    public void toString(final StringBuffer sb) {
+
+        length.toString(sb, 'm', 'u');
+        if (stretch.ne(GlueComponent.ZERO)) {
+            sb.append(" plus ");
+            stretch.toString(sb, 'm', 'u');
+        }
+        if (shrink.ne(GlueComponent.ZERO)) {
+            sb.append(" plus ");
+            shrink.toString(sb, 'm', 'u');
+        }
+    }
 }
