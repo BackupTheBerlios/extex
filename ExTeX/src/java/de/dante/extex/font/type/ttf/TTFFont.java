@@ -32,7 +32,6 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.type.ttf.TableDirectory.Entry;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessInputFile;
 import de.dante.util.file.random.RandomAccessInputStream;
@@ -42,7 +41,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TTFFont implements XMLConvertible {
 
@@ -575,6 +574,69 @@ public class TTFFont implements XMLConvertible {
     }
 
     /**
+     * Returns the units per em.
+     * @return Returns the units per em.
+     */
+    public int getUntisPerEm() {
+
+        return head.getUnitsPerEm();
+    }
+
+    /**
+     * Returns the BoundingBox.
+     * <p>0 xmin</p>
+     * <p>1 ymin</p>
+     * <p>2 xmax</p>
+     * <p>3 ymax</p>
+     * @return Returns the BoundingBox.
+     */
+    public int[] getBoundingBox() {
+
+        int[] bb = new int[4];
+        bb[0] = head.getXMin();
+        bb[1] = head.getYMin();
+        bb[2] = head.getXMax();
+        bb[3] = head.getYMax();
+        return bb;
+    }
+
+    /**
+     * Returns the number of glyphs.
+     * @return Returns the number of glyphs.
+     */
+    public int getNumberOfGlyphs() {
+
+        return maxp.getNumGlyphs();
+    }
+
+    /**
+     * Returns the italic angle.
+     * @return Returns the italic angle.
+     */
+    public int getItalicAngle() {
+
+        return post.getItalicAngle();
+    }
+
+    /**
+     * Return the underline position.
+     * @return Return the underline position.
+     */
+    public int getUnderlinePos() {
+
+        return post.getUnderlinePosition();
+    }
+
+    /**
+     * Return the underline thickness.
+     * @return Return the underline thickness.
+     */
+    public int getUnderlineThickness() {
+
+        return post.getUnderlineThickness();
+    }
+
+    /**
      * Returns the numbers of glyphs
      * @return Returns the the numbers of glyphs
      */
@@ -880,6 +942,19 @@ public class TTFFont implements XMLConvertible {
         StringBuffer buf = new StringBuffer("00000000000000000000000000000000");
         buf.append(Integer.toBinaryString(value));
         return buf.substring(buf.length() - 32).toString();
+    }
+
+    /**
+     * Convert a int value in a hex string
+     * @param value the int value
+     * @return Returns the hex string
+     */
+    static String convertIntToHexString(final int value) {
+
+        StringBuffer buf = new StringBuffer("00000000");
+        buf.append(Integer.toHexString(value));
+        return "0x" + buf.substring(buf.length() - 8).toString();
+
     }
 
     /**

@@ -45,7 +45,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TableDirectory implements XMLConvertible {
 
@@ -194,29 +194,6 @@ public class TableDirectory implements XMLConvertible {
             }
         }
         return null;
-    }
-
-    /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("TableDirectory:\n");
-        buf.append("   version : " + String.valueOf(version) + '\n');
-        buf.append("   Number of tables : " + String.valueOf(numTables) + '\n');
-        buf.append("   searchRange : " + String.valueOf(searchRange) + '\n');
-        buf
-                .append("   entrySelector : " + String.valueOf(entrySelector)
-                        + '\n');
-        buf.append("   rangeShift : " + String.valueOf(rangeShift) + '\n');
-
-        for (int i = 0; i < entries.length; i++) {
-            buf.append(entries[i].toString());
-        }
-
-        return buf.toString();
     }
 
     /**
@@ -383,8 +360,7 @@ public class TableDirectory implements XMLConvertible {
     public Element toXML() {
 
         Element td = new Element(TAG_TABLE_DIRECTORY);
-        td.setAttribute("version", String.valueOf(TTFFont
-                .convertVersion(version)));
+        td.setAttribute("version", TTFFont.convertIntToHexString(version));
         td.setAttribute("numberoftables", String.valueOf(numTables));
         td.setAttribute("searchrange", String.valueOf(searchRange));
         td.setAttribute("entryselector", String.valueOf(entrySelector));

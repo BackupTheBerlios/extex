@@ -51,7 +51,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFTableGLYF extends AbstractTTFTable
         implements
@@ -117,7 +117,7 @@ public class TTFTableGLYF extends AbstractTTFTable
             if (len > 0) {
                 bais.reset();
                 bais.skip(loca.getOffset(i));
-                short numberOfContours = (short) (bais.read() << 8 | bais
+                short numberOfContours = (short) (bais.read() << TTFConstants.SHIFT8 | bais
                         .read());
                 if (numberOfContours >= 0) {
                     descript[i] = new SimpleDescript(this, numberOfContours,
@@ -133,7 +133,7 @@ public class TTFTableGLYF extends AbstractTTFTable
             if (len > 0) {
                 bais.reset();
                 bais.skip(loca.getOffset(i));
-                short numberOfContours = (short) (bais.read() << 8 | bais
+                short numberOfContours = (short) (bais.read() << TTFConstants.SHIFT8 | bais
                         .read());
                 if (numberOfContours < 0) {
                     descript[i] = new CompositeDescript(this, bais);
@@ -168,9 +168,10 @@ public class TTFTableGLYF extends AbstractTTFTable
     public Element toXML() {
 
         Element table = new Element("glyf");
-        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("id", TTFFont.convertIntToHexString(getType()));
         for (int i = 0; i < descript.length; i++) {
             Element des = new Element("description");
+            table.addContent(des);
             des.setAttribute("id", String.valueOf(i));
             Descript d = descript[i];
             if (d != null) {
@@ -341,10 +342,10 @@ public class TTFTableGLYF extends AbstractTTFTable
 
             this.parentTable = parentTable;
             this.numberOfContours = numberOfContours;
-            xMin = (short) (bais.read() << 8 | bais.read());
-            yMin = (short) (bais.read() << 8 | bais.read());
-            xMax = (short) (bais.read() << 8 | bais.read());
-            yMax = (short) (bais.read() << 8 | bais.read());
+            xMin = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
+            yMin = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
+            xMax = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
+            yMax = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
         }
 
         /**
@@ -472,16 +473,16 @@ public class TTFTableGLYF extends AbstractTTFTable
          */
         public Element toXML() {
 
-            Element descript = new Element("descript");
-            descript.setAttribute("numberofcontours", String
+            Element des = new Element("descript");
+            des.setAttribute("numberofcontours", String
                     .valueOf(numberOfContours));
-            descript.setAttribute("xmin", String.valueOf(xMin));
-            descript.setAttribute("ymin", String.valueOf(yMin));
-            descript.setAttribute("xmax", String.valueOf(xMax));
-            descript.setAttribute("ymax", String.valueOf(yMax));
+            des.setAttribute("xmin", String.valueOf(xMin));
+            des.setAttribute("ymin", String.valueOf(yMin));
+            des.setAttribute("xmax", String.valueOf(xMax));
+            des.setAttribute("ymax", String.valueOf(yMax));
 
             // TODO incomplete
-            return descript;
+            return des;
         }
 
     }
@@ -585,7 +586,7 @@ public class TTFTableGLYF extends AbstractTTFTable
             } while ((comp.getFlags() & CompositeComp.MORE_COMPONENTS) != 0);
 
             if ((comp.getFlags() & CompositeComp.WE_HAVE_INSTRUCTIONS) != 0) {
-                readInstructions(bais, (bais.read() << 8 | bais.read()));
+                readInstructions(bais, (bais.read() << TTFConstants.SHIFT8 | bais.read()));
             }
         }
 
@@ -862,7 +863,7 @@ public class TTFTableGLYF extends AbstractTTFTable
 
             endPtsOfContours = new int[numberOfContours];
             for (int i = 0; i < numberOfContours; i++) {
-                endPtsOfContours[i] = (bais.read() << 8 | bais.read());
+                endPtsOfContours[i] = (bais.read() << TTFConstants.SHIFT8 | bais.read());
             }
 
             // The last end point index reveals the total number of points
@@ -871,7 +872,7 @@ public class TTFTableGLYF extends AbstractTTFTable
             xCoordinates = new short[count];
             yCoordinates = new short[count];
 
-            int instructionCount = (bais.read() << 8 | bais.read());
+            int instructionCount = (bais.read() << TTFConstants.SHIFT8 | bais.read());
             readInstructions(bais, instructionCount);
             readFlags(count, bais);
             readCoords(count, bais);
@@ -952,7 +953,7 @@ public class TTFTableGLYF extends AbstractTTFTable
                     if ((flags[i] & XSHORTVECTOR) != 0) {
                         x += (short) -((short) bais.read());
                     } else {
-                        x += (short) (bais.read() << 8 | bais.read());
+                        x += (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                     }
                 }
                 xCoordinates[i] = x;
@@ -967,7 +968,7 @@ public class TTFTableGLYF extends AbstractTTFTable
                     if ((flags[i] & YSHORTVECTOR) != 0) {
                         y += (short) -((short) bais.read());
                     } else {
-                        y += (short) (bais.read() << 8 | bais.read());
+                        y += (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                     }
                 }
                 yCoordinates[i] = y;
@@ -1132,13 +1133,13 @@ public class TTFTableGLYF extends AbstractTTFTable
 
             this.firstIndex = firstIndex;
             this.firstContour = firstContour;
-            flags = (short) (bais.read() << 8 | bais.read());
-            glyphIndex = (short) (bais.read() << 8 | bais.read());
+            flags = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
+            glyphIndex = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
 
             // Get the arguments as just their raw values
             if ((flags & ARG_1_AND_2_ARE_WORDS) != 0) {
-                argument1 = (short) (bais.read() << 8 | bais.read());
-                argument2 = (short) (bais.read() << 8 | bais.read());
+                argument1 = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
+                argument2 = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
             } else {
                 argument1 = (short) bais.read();
                 argument2 = (short) bais.read();
@@ -1155,21 +1156,21 @@ public class TTFTableGLYF extends AbstractTTFTable
 
             // Get the scale values (if any)
             if ((flags & WE_HAVE_A_SCALE) != 0) {
-                int i = (short) (bais.read() << 8 | bais.read());
+                int i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 xscale = yscale = (double) i / (double) 0x4000;
             } else if ((flags & WE_HAVE_AN_X_AND_Y_SCALE) != 0) {
-                short i = (short) (bais.read() << 8 | bais.read());
+                short i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 xscale = (double) i / (double) 0x4000;
-                i = (short) (bais.read() << 8 | bais.read());
+                i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 yscale = (double) i / (double) 0x4000;
             } else if ((flags & WE_HAVE_A_TWO_BY_TWO) != 0) {
-                int i = (short) (bais.read() << 8 | bais.read());
+                int i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 xscale = (double) i / (double) 0x4000;
-                i = (short) (bais.read() << 8 | bais.read());
+                i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 scale01 = (double) i / (double) 0x4000;
-                i = (short) (bais.read() << 8 | bais.read());
+                i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 scale10 = (double) i / (double) 0x4000;
-                i = (short) (bais.read() << 8 | bais.read());
+                i = (short) (bais.read() << TTFConstants.SHIFT8 | bais.read());
                 yscale = (double) i / (double) 0x4000;
             }
         }

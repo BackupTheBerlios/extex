@@ -21,7 +21,6 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
-import org.jdom.Comment;
 import org.jdom.Element;
 
 import de.dante.util.XMLConvertible;
@@ -104,7 +103,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableOS2 extends AbstractTTFTable
         implements
@@ -272,6 +271,11 @@ public class TTFTableOS2 extends AbstractTTFTable
     private int ulCodePageRange2;
 
     /**
+     * panose array length
+     */
+    private static final int PANOSELENGTH = 10;
+
+    /**
      * Create a new object.
      *
      * @param tablemap  the tablemap
@@ -300,8 +304,8 @@ public class TTFTableOS2 extends AbstractTTFTable
         yStrikeoutSize = rar.readShort();
         yStrikeoutPosition = rar.readShort();
         sFamilyClass = rar.readShort();
-        byte[] buf = new byte[10];
-        rar.readFully(buf); // mgn rar.read(buf)
+        byte[] buf = new byte[PANOSELENGTH];
+        rar.readFully(buf);
         panose = new Panose(buf);
         ulUnicodeRange1 = rar.readInt();
         ulUnicodeRange2 = rar.readInt();
@@ -623,16 +627,74 @@ public class TTFTableOS2 extends AbstractTTFTable
     public Element toXML() {
 
         Element table = new Element("os2");
-        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
-        Comment c = new Comment("incomplete");
-        table.addContent(c);
+        table.setAttribute("id", TTFFont.convertIntToHexString(getType()));
+        table.setAttribute("version", TTFFont.convertIntToHexString(version));
+        table.setAttribute("xavgcharwidth", String.valueOf(xAvgCharWidth));
+        table.setAttribute("usweightclass", String.valueOf(usWeightClass));
+        table.setAttribute("uswidthclass", String.valueOf(usWidthClass));
+        table.setAttribute("fstype", TTFFont.convertIntToBinaryString(fsType));
+        table.setAttribute("ysubscriptxsize", String.valueOf(ySubscriptXSize));
+        table.setAttribute("ysubscriptysize", String.valueOf(ySubscriptYSize));
+        table.setAttribute("ysubscriptxoffset", String
+                .valueOf(ySubscriptXOffset));
+        table.setAttribute("ysubscriptyoffset", String
+                .valueOf(ySubscriptYOffset));
+        table
+                .setAttribute("ysubscriptxsize", String
+                        .valueOf(ySuperscriptXSize));
+        table
+                .setAttribute("ysubscriptysize", String
+                        .valueOf(ySuperscriptYSize));
+        table.setAttribute("ysuperscriptxoffset", String
+                .valueOf(ySuperscriptXOffset));
+        table.setAttribute("ysuperscriptyoffset", String
+                .valueOf(ySuperscriptYOffset));
+        table.setAttribute("ystrikeoutsize", String.valueOf(yStrikeoutSize));
+        table.setAttribute("ystrikeoutposition", String
+                .valueOf(yStrikeoutPosition));
+        table.setAttribute("sfamilyclass", String.valueOf(sFamilyClass));
+        table.setAttribute("ulunicoderange1", TTFFont
+                .convertIntToBinaryString(ulUnicodeRange1));
+        table.setAttribute("ulunicoderange2", TTFFont
+                .convertIntToBinaryString(ulUnicodeRange2));
+        table.setAttribute("ulunicoderange3", TTFFont
+                .convertIntToBinaryString(ulUnicodeRange3));
+        table.setAttribute("ulunicoderange4", TTFFont
+                .convertIntToBinaryString(ulUnicodeRange4));
+        table.setAttribute("achvendorid", TTFFont
+                .convertIntToHexString(achVendorID));
+        table.setAttribute("fsselection", TTFFont
+                .convertIntToBinaryString(fsSelection));
+        table
+                .setAttribute("usfirstcharindex", String
+                        .valueOf(usFirstCharIndex));
+        table.setAttribute("uslastcharindex", String.valueOf(usLastCharIndex));
+        table.setAttribute("stypoascender", String.valueOf(sTypoAscender));
+        table.setAttribute("stypodescender", String.valueOf(sTypoDescender));
+        table.setAttribute("stypolinegap", String.valueOf(sTypoLineGap));
+        table.setAttribute("uswinAscent", String.valueOf(usWinAscent));
+        table.setAttribute("uswindescent", String.valueOf(usWinDescent));
+        table.setAttribute("ulcodepagerange1", TTFFont
+                .convertIntToBinaryString(ulCodePageRange1));
+        table.setAttribute("ulcodepagerange1", TTFFont
+                .convertIntToBinaryString(ulCodePageRange2));
+        if (panose != null && panose instanceof XMLConvertible) {
+            table.addContent(panose.toXML());
+        }
         return table;
     }
 
     /**
-     * panose
+     * panose.
+     * <p>
+     * This 10 byte series of numbers are used to describe
+     * the visual characteristics of a given typeface.
+     * These characteristics are then used to associate
+     * the font with other fonts of similar appearance
+     * having different names.
+     * </p>
      */
-    public class Panose {
+    public static class Panose implements XMLConvertible {
 
         /**
          * familyType
@@ -640,9 +702,41 @@ public class TTFTableOS2 extends AbstractTTFTable
         private byte familyType = 0;
 
         /**
+         * familytypename
+         */
+        public static final String[] FAMILYTYPENAME = {"Any", // 0
+                "No Fit", // 1
+                "Text and Display", // 2
+                "Script", // 3
+                "Decorative", // 4
+                "Pictorial" // 5
+        };
+
+        /**
          * serifStyle
          */
         private byte serifStyle = 0;
+
+        /**
+         * seriftypename
+         */
+        public static final String[] SERIFSTYLENAME = {"Any", // 0
+                "No Fit", // 1
+                "Cove", // 2
+                "Obtuse Cove", // 3
+                "Square Cove", // 4
+                "Obtuse Square Cove", // 5
+                "Square", // 6
+                "Thin", // 7
+                "Bone", // 8
+                "Exaggerated", // 9
+                "Triangle", // 10
+                "Normal Sans", // 11
+                "Obtuse Sans", // 12
+                "Perp Sans", // 13
+                "Flared", // 14
+                "Rounded" // 15
+        };
 
         /**
          * weight
@@ -650,9 +744,41 @@ public class TTFTableOS2 extends AbstractTTFTable
         private byte weight = 0;
 
         /**
+         * weight name
+         */
+        public static final String[] WEIGHTNAME = {"Any", // 0
+                "No Fit", // 1
+                "Very Light", // 2
+                "Light", // 3
+                "Thin", // 4
+                "Book", // 5
+                "Medium", // 6
+                "Demi", // 7
+                "Bold", // 8
+                "Heavy", // 9
+                "Black", // 10
+                "Nord" // 11
+        };
+
+        /**
          * proportion
          */
         private byte proportion = 0;
+
+        /**
+         * proportionname
+         */
+        public static final String[] PROPORTIONAME = {"Any", // 0
+                "No Fit", // 1
+                "Old Style", // 2
+                "Modern", // 3
+                "Even Width", // 4
+                "Expanded", // 5
+                "Condensed", // 6
+                "Very Expanded", // 7
+                "Very Condensed", // 8
+                "Monospaced" // 9
+        };
 
         /**
          * contrast
@@ -660,9 +786,38 @@ public class TTFTableOS2 extends AbstractTTFTable
         private byte contrast = 0;
 
         /**
+         * contrastname
+         */
+        public static final String[] CONTRASTNAME = {"Any", // 0
+                "No Fit", // 1
+                "None", // 2
+                "Very Low", // 3
+                "Low", // 4
+                "Medium Low", // 5
+                "Medium", // 6
+                "Medium High", // 7
+                "High", // 8
+                "Very High" // 9
+        };
+
+        /**
          * strokeVariation
          */
         private byte strokeVariation = 0;
+
+        /**
+         * strokevariationame
+         */
+        public static final String[] STROKEVARIATIONNAME = {"Any", // 0
+                "No Fit", // 1
+                "Gradual/Diagonal", // 2
+                "Gradual/Transitional", // 3
+                "Gradual/Vertical", // 4
+                "Gradual/Horizontal", // 5
+                "Rapid/Vertical", // 6
+                "Rapid/Horizontal", // 7
+                "Instant/Vertical" // 8
+        };
 
         /**
          * armStyle
@@ -670,9 +825,47 @@ public class TTFTableOS2 extends AbstractTTFTable
         private byte armStyle = 0;
 
         /**
+         * arm style name
+         */
+        public static final String[] ARMSTYLENAME = {"Any", // 0
+                "No Fit", // 1
+                "Straight Arms/Horizontal", // 2
+                "Straight Arms/Wedge", // 3
+                "Straight Arms/Vertical", // 4
+                "Straight Arms/Single Serif", // 5
+                "Straight Arms/Double Serif", // 6
+                "Non-Straight Arms/Horizontal", // 7
+                "Non-Straight Arms/Wedge", // 8
+                "Non-Straight Arms/Vertical", // 9
+                "Non-Straight Arms/Single Serif", // 10
+                "Non-Straight Arms/Double Serif" // 11
+        };
+
+        /**
          * letterform
          */
         private byte letterform = 0;
+
+        /**
+         * letterformname
+         */
+        public static final String[] LETTERFORMNAME = {"Any", // 0
+                "No Fit", // 1
+                "Normal/Contact", // 2
+                "Normal/Weighted", // 3
+                "Normal/Boxed", // 4
+                "Normal/Flattened", // 5
+                "Normal/Rounded", // 6
+                "Normal/Off Center", // 7
+                "Normal/Square", // 8
+                "Oblique/Contact", // 9
+                "Oblique/Weighted", // 10
+                "Oblique/Boxed", // 11
+                "Oblique/Flattened", // 12
+                "Oblique/Rounded", // 13
+                "Oblique/Off Center", // 14
+                "Oblique/Square" // 15
+        };
 
         /**
          * midline
@@ -680,9 +873,41 @@ public class TTFTableOS2 extends AbstractTTFTable
         private byte midline = 0;
 
         /**
+         * midlinename
+         */
+        public static final String[] MIDLINENAME = {"Any", // 0
+                "No Fit", // 1
+                "Standard/Trimmed", // 2
+                "Standard/Pointed", // 3
+                "Standard/Serifed", // 4
+                "High/Trimmed", // 5
+                "High/Pointed", // 6
+                "High/Serifed", // 7
+                "Constant/Trimmed", // 8
+                "Constant/Pointed", // 9
+                "Constant/Serifed", // 10
+                "Low/Trimmed", // 11
+                "Low/Pointed", // 12
+                "Low/Serifed" // 13
+        };
+
+        /**
          * xHeight
          */
         private byte xHeight = 0;
+
+        /**
+         * xheightname
+         */
+        public static final String[] XHEIGHTNAME = {"Any", // 0
+                "No Fit", // 1
+                "Constant/Small", // 2
+                "Constant/Standard", // 3
+                "Constant/Large", // 4
+                "Ducking/Small", // 5
+                "Ducking/Standard", // 6
+                "Ducking/Large" // 7
+        };
 
         /**
          * Position in array: FAMILYTYPE
@@ -754,23 +979,59 @@ public class TTFTableOS2 extends AbstractTTFTable
         }
 
         /**
-         * Returns the info for this class
-         * @return Returns the info for this class
+         * @see de.dante.util.XMLConvertible#toXML()
          */
-        public String toString() {
+        public Element toXML() {
 
-            StringBuffer buf = new StringBuffer();
-            buf.append(String.valueOf(familyType)).append(" ").append(
-                    String.valueOf(serifStyle)).append(" ").append(
-                    String.valueOf(weight)).append(" ").append(
-                    String.valueOf(proportion)).append(" ").append(
-                    String.valueOf(contrast)).append(" ").append(
-                    String.valueOf(strokeVariation)).append(" ").append(
-                    String.valueOf(armStyle)).append(" ").append(
-                    String.valueOf(letterform)).append(" ").append(
-                    String.valueOf(midline)).append(" ").append(
-                    String.valueOf(xHeight));
-            return buf.toString();
+            Element pan = new Element("panose");
+            pan.setAttribute("familytype", String.valueOf(familyType));
+            pan.setAttribute("familytypename",
+                    familyType < FAMILYTYPENAME.length
+                            ? FAMILYTYPENAME[familyType]
+                            : "");
+            pan.setAttribute("serifstyle", String.valueOf(serifStyle));
+            pan.setAttribute("serifstylename",
+                    serifStyle < SERIFSTYLENAME.length
+                            ? SERIFSTYLENAME[serifStyle]
+                            : "");
+            pan.setAttribute("weight", String.valueOf(weight));
+            pan.setAttribute("weigthname", weight < WEIGHTNAME.length
+                    ? WEIGHTNAME[weight]
+                    : "");
+            pan.setAttribute("proportion", String.valueOf(proportion));
+            pan.setAttribute("proportionname",
+                    proportion < PROPORTIONAME.length
+                            ? PROPORTIONAME[proportion]
+                            : "");
+            pan.setAttribute("contrast", String.valueOf(contrast));
+            pan.setAttribute("contrastname", contrast < CONTRASTNAME.length
+                    ? CONTRASTNAME[contrast]
+                    : "");
+            pan
+                    .setAttribute("strokevariation", String
+                            .valueOf(strokeVariation));
+            pan.setAttribute("strokevariationname",
+                    strokeVariation < STROKEVARIATIONNAME.length
+                            ? STROKEVARIATIONNAME[strokeVariation]
+                            : "");
+            pan.setAttribute("armstyle", String.valueOf(armStyle));
+            pan.setAttribute("armstylename", armStyle < ARMSTYLENAME.length
+                    ? ARMSTYLENAME[armStyle]
+                    : "");
+            pan.setAttribute("letterform", String.valueOf(letterform));
+            pan.setAttribute("letterformname",
+                    letterform < LETTERFORMNAME.length
+                            ? LETTERFORMNAME[letterform]
+                            : "");
+            pan.setAttribute("midline", String.valueOf(midline));
+            pan.setAttribute("midlinename", midline < MIDLINENAME.length
+                    ? MIDLINENAME[midline]
+                    : "");
+            pan.setAttribute("xheight", String.valueOf(xHeight));
+            pan.setAttribute("xheightname", xHeight < XHEIGHTNAME.length
+                    ? XHEIGHTNAME[xHeight]
+                    : "");
+            return pan;
         }
 
         /**

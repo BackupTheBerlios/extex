@@ -53,7 +53,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFTableHMTX extends AbstractTTFTable
         implements
@@ -89,7 +89,7 @@ public class TTFTableHMTX extends AbstractTTFTable
         super(tablemap);
         rar.seek(de.getOffset());
         buf = new byte[de.getLength()];
-        rar.readFully(buf); // mgn rar.read(buf)
+        rar.readFully(buf);
 
         // buf !!!
     }
@@ -136,13 +136,15 @@ public class TTFTableHMTX extends AbstractTTFTable
         hMetrics = new int[numberOfHMetrics];
         ByteArrayInputStream bais = new ByteArrayInputStream(buf);
         for (int i = 0; i < numberOfHMetrics; i++) {
-            hMetrics[i] = (bais.read() << 24 | bais.read() << 16
-                    | bais.read() << 8 | bais.read());
+            hMetrics[i] = (bais.read() << TTFConstants.SHIFT24
+                    | bais.read() << TTFConstants.SHIFT16
+                    | bais.read() << TTFConstants.SHIFT8 | bais.read());
         }
         if (lsbCount > 0) {
             leftSideBearing = new short[lsbCount];
             for (int i = 0; i < lsbCount; i++) {
-                leftSideBearing[i] = (short) (bais.read() << 8 | bais.read());
+                leftSideBearing[i] = (short) (bais.read() << TTFConstants.SHIFT8 | bais
+                        .read());
             }
         }
         buf = null;
@@ -159,9 +161,9 @@ public class TTFTableHMTX extends AbstractTTFTable
             return 0;
         }
         if (i < hMetrics.length) {
-            return hMetrics[i] >> 16;
+            return hMetrics[i] >> TTFConstants.SHIFT16;
         } else {
-            return hMetrics[hMetrics.length - 1] >> 16;
+            return hMetrics[hMetrics.length - 1] >> TTFConstants.SHIFT16;
         }
     }
 
@@ -176,7 +178,7 @@ public class TTFTableHMTX extends AbstractTTFTable
             return 0;
         }
         if (i < hMetrics.length) {
-            return (short) (hMetrics[i] & 0xffff);
+            return (short) (hMetrics[i] & TTFConstants.CONSTXFFFF);
         } else {
             return leftSideBearing[i - hMetrics.length];
         }
@@ -197,18 +199,64 @@ public class TTFTableHMTX extends AbstractTTFTable
     public Element toXML() {
 
         Element table = new Element("hmtx");
-        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("id", TTFFont.convertIntToHexString(getType()));
+        Element hmetrics = new Element("hmetrics");
+        table.addContent(hmetrics);
         for (int i = 0; i < hMetricslength; i++) {
-            Element hmetrics = new Element("hmetrics");
-            hmetrics.setAttribute("id", String.valueOf(i));
-            hmetrics.setAttribute("value", String.valueOf(hMetrics[i]));
-            table.addContent(hmetrics);
+            Element hmetric = new Element("hmetric");
+            hmetric.setAttribute("id", String.valueOf(i));
+            hmetric.setAttribute("value", String.valueOf(hMetrics[i]));
+            hmetrics.addContent(hmetric);
         }
+        Element lsbs = new Element("leftsidebearing");
+        table.addContent(lsbs);
         for (int i = 0; i < lsblength; i++) {
-            Element lsb = new Element("leftsidebearing");
+            Element lsb = new Element("lsb");
             lsb.setAttribute("id", String.valueOf(i));
             lsb.setAttribute("value", String.valueOf(leftSideBearing[i]));
-            table.addContent(lsb);
+            lsbs.addContent(lsb);
+        }
+        TTFTableMAXP maxp = (TTFTableMAXP) getTableMap().get(TTFFont.MAXP);
+        TTFTablePOST post = (TTFTablePOST) getTableMap().get(TTFFont.POST);
+        TTFTableGLYF glyf = (TTFTableGLYF) getTableMap().get(TTFFont.GLYF);
+
+        if (maxp != null && post != null && glyf != null) {
+            Element glyphs = new Element("glyphs");
+            table.addContent(glyphs);
+            int numGlyphs = maxp.getNumGlyphs();
+            for (int i = 0; i < numGlyphs; i++) {
+                Element glyph = new Element("glyph");
+                glyphs.addContent(glyph);
+                glyph.setAttribute("id", String.valueOf(i));
+                int aw = getAdvanceWidth(i);
+                glyph.setAttribute("width", String.valueOf(aw));
+                int lsb = getLeftSideBearing(i);
+                glyph.setAttribute("lsb", String.valueOf(lsb));
+                glyph.setAttribute("name", post.getGlyphName(i));
+
+                // For any glyph, xmax and xmin are given in glyf table,
+                // lsb and aw are given in hmtx table.
+                // rsb is calculated as follows: rsb = aw - (lsb + xmax - xmin)
+                TTFTableGLYF.Descript des = glyf.getDescription(i);
+                if (des != null) {
+                    int xmax = des.getXMax();
+                    int xmin = des.getXMin();
+                    int rsb = aw - (lsb + xmax - xmin);
+                    glyph.setAttribute("xmax", String.valueOf(xmax));
+                    glyph.setAttribute("xmin", String.valueOf(xmin));
+                    glyph.setAttribute("rsb", String.valueOf(rsb));
+
+                    // If pp1 and pp2 are phantom points used to control lsb
+                    // and rsb, their initial position in x is calculated
+                    // as follows:
+                    // pp1 = xmin - lsb
+                    // pp2 = pp1 + aw
+                    int pp1 = xmin - lsb;
+                    int pp2 = pp1 + aw;
+                    glyph.setAttribute("pp1", String.valueOf(pp1));
+                    glyph.setAttribute("pp2", String.valueOf(pp2));
+                }
+            }
         }
         return table;
     }

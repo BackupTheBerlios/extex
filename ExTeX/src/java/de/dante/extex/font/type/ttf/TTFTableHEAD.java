@@ -98,7 +98,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TTFTableHEAD extends AbstractTTFTable
         implements
@@ -382,17 +382,14 @@ public class TTFTableHEAD extends AbstractTTFTable
 
         DateFormat dformat = DateFormat.getDateInstance();
         Element table = new Element("head");
-        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
-        table.setAttribute("version", String.valueOf(TTFFont
-                .convertVersion(version)));
+        table.setAttribute("id", TTFFont.convertIntToHexString(getType()));
+        table.setAttribute("version", TTFFont.convertIntToHexString(version));
         table.setAttribute("fontrevision", String.valueOf(fontRevision
                 .getDoubleValue()));
-        table.setAttribute("xxxfontrevision", "0x"
-                + fontRevision.getFixedPoint());
-        table.setAttribute("checksumadjustment", "0x"
-                + Integer.toHexString(checkSumAdjustment));
-        table.setAttribute("magicnumber", "0x"
-                + Integer.toHexString(magicNumber));
+        table.setAttribute("checksumadjustment", TTFFont
+                .convertIntToHexString(checkSumAdjustment));
+        table.setAttribute("magicnumber", TTFFont
+                .convertIntToHexString(magicNumber));
         table.setAttribute("flags", TTFFont.convertIntToBinaryString(flags));
         table.setAttribute("unitsperem", String.valueOf(unitsPerEm));
         table.setAttribute("created", dformat.format(TTFFont
