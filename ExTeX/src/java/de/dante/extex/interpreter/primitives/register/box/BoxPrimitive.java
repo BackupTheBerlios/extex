@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\box</code>.
  *
- * <doc>
+ * <doc name="box">
  * <h3>The Primitive <tt>\box</tt></h3>
  * <p>
  *  ...
@@ -41,7 +41,9 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\box</tt> &lang;8-bit number&rang; </pre>
+ *    <tt>\box</tt> {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -51,16 +53,16 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.3 $
  */
-public class NumberedBox extends AbstractCode implements Boxable, Serializable {
+public class BoxPrimitive extends AbstractCode implements Boxable, Serializable {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NumberedBox(final String name) {
+    public BoxPrimitive(final String name) {
 
         super(name);
     }
