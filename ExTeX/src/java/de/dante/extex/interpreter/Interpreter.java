@@ -43,7 +43,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -74,11 +74,14 @@ public interface Interpreter extends TokenSource, Observable {
      * Load the format from an external source.
      *
      * @param stream stream to read from
+     * @param fmt the nam eof the format to be loaded
      *
      * @throws IOException in case of an IO error
      * @throws LoaderException in case of an error during loading
      */
-    void loadFormat(InputStream stream) throws LoaderException, IOException;
+    void loadFormat(InputStream stream, String fmt)
+            throws LoaderException,
+                IOException;
 
     /**
      * Process the current token streams by repeatedly reading a single token
@@ -92,7 +95,8 @@ public interface Interpreter extends TokenSource, Observable {
      */
     void run()
             throws ConfigurationException,
-                ErrorLimitException, InterpreterException;
+                ErrorLimitException,
+                InterpreterException;
 
     /**
      * Add a token stream and start processing it.
@@ -108,7 +112,8 @@ public interface Interpreter extends TokenSource, Observable {
      */
     void run(TokenStream stream)
             throws ConfigurationException,
-                ErrorLimitException, InterpreterException;
+                ErrorLimitException,
+                InterpreterException;
 
     /**
      * Setter for the error handler.

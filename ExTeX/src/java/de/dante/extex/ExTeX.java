@@ -611,7 +611,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.89 $
+ * @version $Revision: 1.90 $
  */
 public class ExTeX {
 
@@ -1226,7 +1226,7 @@ public class ExTeX {
                         format));
             }
             try {
-                interpreter.loadFormat(stream);
+                interpreter.loadFormat(stream, fmt);
             } catch (LoaderException e) {
                 throw new HelpingException(localizer, "TTP.FormatFileError",
                         format);

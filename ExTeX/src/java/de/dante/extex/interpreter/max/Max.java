@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.max;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.InvalidClassException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -84,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public class Max extends Moritz
         implements
@@ -402,20 +403,27 @@ public class Max extends Moritz
      * Load the format from an external source.
      *
      * @param stream the stream to read the format information from
+     * @param fmt the nam eof the format to be loaded
      *
      * @throws LoaderException in case that a class could not be found
      *  on the class path or a wrong class is contained in the format
      * @throws IOException in case that an IO error occurs during the reading
      *  of the format
      *
-     * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.io.InputStream)
+     * @see de.dante.extex.interpreter.Interpreter#loadFormat(
+     *      java.io.InputStream, java.lang.String)
      */
-    public void loadFormat(final InputStream stream)
+    public void loadFormat(final InputStream stream, final String fmt)
             throws IOException,
                 LoaderException {
 
-        SerialLoader loader = new SerialLoader();
-        Context newContext = loader.load(stream);
+        Context newContext;
+        try {
+            newContext = new SerialLoader().load(stream);
+        } catch (InvalidClassException e) {
+            throw new LoaderException(getLocalizer().format(
+                    "ClassLoaderIncompatibility", fmt, e.getMessage()));
+        }
 
         newContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
         newContext.setCount("month", calendar.get(Calendar.MONTH), true);
@@ -424,7 +432,7 @@ public class Max extends Moritz
                 * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
-        // TODO gene: incomplete?
+        // TODO gene: loadFormat() incomplete
         context = newContext;
     }
 
