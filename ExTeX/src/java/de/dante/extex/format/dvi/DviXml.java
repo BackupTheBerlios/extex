@@ -74,7 +74,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 
 public class DviXml implements DviInterpreter, DviExecuteCommand {
@@ -285,10 +285,116 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
                 execute(cc);
                 continue;
             }
-            System.out.println("mist, einen vergessen opcode:"
-                    + command.getOpcode());
+            //System.out.println("mist, einen vergessen opcode:"
+            //        + command.getOpcode());
 
         }
+    }
+
+    /**
+     * Read the next command as element.
+     * All commands of a 'bop' are collected in one element.
+     * <p>
+     * This method ist for large dvi-files, to read each page in
+     * bop-element separretly.
+     * </p>
+     *
+     * @param rar           the input
+     * @return Returns the Element for the command
+     * @throws IOException   if an IO-error occurs.
+     * @throws DviException  if a DVI-error occurs.
+     * @throws FontException if a font-error occurs.
+     * @throws ConfigurationException from the config systen.
+     */
+    public Element readNextElement(final RandomAccessR rar)
+            throws IOException, DviException, FontException,
+            ConfigurationException {
+
+        // store old parent
+        Element old = parent;
+        parent = null;
+
+        while (!rar.isEOF()) {
+            DviCommand command = DviCommand.getNextCommand(rar);
+
+            if (command instanceof DviChar) {
+                DviChar cc = (DviChar) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviRight) {
+                DviRight cc = (DviRight) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviDown) {
+                DviDown cc = (DviDown) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviW) {
+                DviW cc = (DviW) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviX) {
+                DviX cc = (DviX) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviY) {
+                DviY cc = (DviY) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviZ) {
+                DviZ cc = (DviZ) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviBOP) {
+                DviBOP cc = (DviBOP) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviEOP) {
+                DviEOP cc = (DviEOP) command;
+                execute(cc);
+                break;
+            } else if (command instanceof DviPOP) {
+                DviPOP cc = (DviPOP) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPush) {
+                DviPush cc = (DviPush) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviRule) {
+                DviRule cc = (DviRule) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviXXX) {
+                DviXXX cc = (DviXXX) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviFntDef) {
+                DviFntDef cc = (DviFntDef) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviFntNum) {
+                DviFntNum cc = (DviFntNum) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPost) {
+                DviPost cc = (DviPost) command;
+                execute(cc);
+                break;
+            } else if (command instanceof DviPostPost) {
+                DviPostPost cc = (DviPostPost) command;
+                execute(cc);
+                break;
+            } else if (command instanceof DviPre) {
+                DviPre cc = (DviPre) command;
+                execute(cc);
+                break;
+            }
+        }
+        Element rt = parent;
+        // restore parent
+        parent = old;
+        return rt;
     }
 
     /**
@@ -400,7 +506,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         }
         element.setAttribute("p", String.valueOf(command.getP()));
         element.setAttribute("page", String.valueOf(page));
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
         parentstack.push(parent);
         parent = element;
         val.clear();
@@ -429,7 +539,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         element.setAttribute("char", String.valueOf(command.getCh()));
         setValues(element);
         setFontGlyphInfo(command.getOpcode(), element);
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
         if (!command.isPut()) {
             val.addH((int) width.getValue());
@@ -448,7 +562,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         element.setAttribute("value", String.valueOf(command.getValue()));
         setValues(element);
         val.addV(command.getValue());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -460,7 +578,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         Element element = createElement(command);
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
         if (parentstack.empty()) {
             throw new DviBopEopException();
         }
@@ -478,7 +600,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         Element element = createElement(command);
         addFontAttributes(command, element);
         loadFont(command);
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -491,7 +617,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         element.setAttribute("id", String.valueOf(command.getFont()));
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
         val.setF(command.getFont());
 
     }
@@ -507,7 +637,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         DviValues v = stack.pop();
         val.setValues(v);
         setValues(element);
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -519,7 +653,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         Element element = createElement(command);
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -542,7 +680,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
                 .getStackdepth()));
         element.setAttribute("totalpage", String
                 .valueOf(command.getTotalpage()));
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
         parentstack.push(parent);
         parent = element;
 
@@ -564,7 +706,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         element.setAttribute("q", String.valueOf(command.getPointer()));
         element.setAttribute("identifies", String.valueOf(command
                 .getIdentification()));
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -587,7 +733,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             comment.setText(command.getComment());
             element.addContent(comment);
         }
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -600,7 +750,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         setValues(element);
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
         stack.push(val);
 
     }
@@ -616,7 +770,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         element.setAttribute("value", String.valueOf(command.getValue()));
         setValues(element);
         val.addH(command.getValue());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -634,7 +792,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         if (!command.isPut()) {
             val.addH(command.getWidth());
         }
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -652,7 +814,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             element.setAttribute("value", String.valueOf(command.getValue()));
         }
         val.addH(val.getW());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -670,7 +836,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             element.setAttribute("value", String.valueOf(command.getValue()));
         }
         val.addH(val.getX());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -683,7 +853,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         element.setText(command.getXXXString());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -701,7 +875,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             element.setAttribute("value", String.valueOf(command.getValue()));
         }
         val.addV(val.getY());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 
@@ -719,7 +897,11 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             element.setAttribute("value", String.valueOf(command.getValue()));
         }
         val.addV(val.getZ());
-        parent.addContent(element);
+        if (parent == null) {
+            parent = element;
+        } else {
+            parent.addContent(element);
+        }
 
     }
 

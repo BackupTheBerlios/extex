@@ -56,7 +56,7 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TextDocumentWriter
         implements
@@ -151,7 +151,8 @@ public class TextDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList)
      */
     public void shipout(final NodeList nodes) throws IOException {
 

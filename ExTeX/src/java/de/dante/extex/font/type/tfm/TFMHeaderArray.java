@@ -62,9 +62,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-class TFMHeaderArray implements XMLConvertible, PlFormat, Serializable {
+public class TFMHeaderArray implements XMLConvertible, PlFormat, Serializable {
 
     /**
      * header[0]: checksum

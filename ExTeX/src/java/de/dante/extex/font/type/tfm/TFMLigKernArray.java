@@ -102,7 +102,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
@@ -143,7 +143,7 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
     private short bc;
 
     /**
-     * Calculate lig/kern ...
+     * Calculate lig/kern
      * @param chari     the charinfo
      * @param akern     the kern
      * @param abc       smallest character code in the font
@@ -192,6 +192,7 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
      * <code>activity</code> field of LigKern for marking
      * the activity. It supposes that the first instructions of programs are
      * already marked active.
+     * TFtoPL[70]
      */
     private void promoteActivity() {
 
@@ -204,6 +205,8 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
                     if (next < ligkerncommand.length) {
                         ligkerncommand[next]
                                 .setActivity(TFMLigKernCommand.ACCESSIBLE);
+                    } else {
+                        lkc.makeStop();
                     }
                 }
             }
@@ -249,31 +252,16 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
      */
     private TFMLigKern makeLig(final TFMLigKernCommand lkc, final int skip) {
 
-        //        if (!charExists(lkc.ligChar())) {
-        //            badchar(lkc.ligChar(), "Ligature step produces the");
-        //            alk.setLigChar(firstCharCode);
-        //        }
+        //       if (!charExists(lkc.ligChar())) {
+        //           badchar(lkc.ligChar(), "Ligature step produces the");
+        //           lkc.setLigChar(firstCharCode);
+        //       }
         boolean left = lkc.leaveLeft();
         boolean right = lkc.leaveRight();
         byte step = lkc.stepOver();
-        //        if (step > (left ? 1 : 0) + (right ? 1 : 0)) {
-        //            throw new HelpingException("TFM.nonstandardcode");
-        //        }
         return new TFMLigature(skip, lkc.nextChar(), lkc.ligChar(), left,
                 right, step);
     }
-
-    //    /**
-    //     * Check the existence of particular character in the font.
-    //     *
-    //     * @param c the checked character code.
-    //     * @return <code>true</code> if the character is present.
-    //     */
-    //    private boolean charExists(short c) {
-    //
-    //        return ((c -= bc) >= 0 && c < cc && charAuxTab[c]
-    //                .exists());
-    //    }
 
     /**
      * Creates a final version of kerning instruction after validity checks.
@@ -289,6 +277,8 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
         TFMFixWord kernword = null;
         if (kernIdx < kern.getTable().length) {
             kernword = kern.getTable()[kernIdx];
+        } else {
+            kernword = TFMFixWord.ZERO;
         }
         return new TFMKerning(skip, lkc.nextChar(), kernword);
     }
@@ -346,7 +336,7 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
     /**
      * Tries to find the information about lig/kerns
      * for word boundaries in tfm lig/kern table
-     * and checks for errors.
+     * and checks for errors. TFtoPL[69]
      */
     private void setupBoundary() {
 
@@ -376,7 +366,8 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
      * for remapping later.
      * It also marks the starting instructions of lig/kern
      * programs as active
-     * (using the <code>ctivity</code> field of LigKern).
+     * (using the <code>activity</code> field of LigKern).
+     * TFtoPL[67]
      */
     private void buildLabels() {
 
@@ -385,10 +376,12 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
         for (int i = 0; i < ciw.length; i++) {
             if (ciw[i].getTag() == TFMCharInfoWord.LIG_TAG) {
                 int start = ligStart(ciw[i].getRemainder());
-                if (start < ciw.length) {
+                if (start < ligkerncommand.length) {
                     labels.add(start, i);
                     ligkerncommand[start]
                             .setActivity(TFMLigKernCommand.ACCESSIBLE);
+                } else {
+                    ciw[i].resetTag();
                 }
             }
         }
@@ -397,6 +390,7 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
     /**
      * Finds out the actual starting index of lig/kern program in case there is
      * a restart instructions and checks for validity.
+     * TFtoPL[67]
      *
      * @param start     the starting index of lig/kern program
      *                  given in a character info.
@@ -404,17 +398,18 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
      */
     private int ligStart(final int start) {
 
-        if (start < ligkerncommand.length) {
+        int newstart = start;
+        if (newstart < ligkerncommand.length) {
             TFMLigKernCommand lkc = ligkerncommand[start];
             if (lkc.meansRestart()) {
-                int newstart = lkc.restartIndex();
+                newstart = lkc.restartIndex();
                 if (newstart < ligkerncommand.length
                         && lkc.getActivity() == TFMLigKernCommand.UNREACHABLE) {
                     lkc.setActivity(TFMLigKernCommand.PASSTHROUGH);
                 }
             }
         }
-        return start;
+        return newstart;
     }
 
     /**
@@ -454,7 +449,8 @@ public class TFMLigKernArray implements XMLConvertible, PlFormat, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.PlFormat#toPL(java.io.PrintWriter)
+     * @see de.dante.extex.font.type.PlFormat#toPL(
+     *      de.dante.extex.font.type.PlWriter)
      */
     public void toPL(final PlWriter out) throws IOException {
 

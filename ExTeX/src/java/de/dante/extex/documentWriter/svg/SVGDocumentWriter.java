@@ -71,7 +71,7 @@ import de.dante.util.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class SVGDocumentWriter
         implements
@@ -241,7 +241,8 @@ public class SVGDocumentWriter
     private Dimen currentY = new Dimen();
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(
+     *      de.dante.extex.typesetter.type.NodeList)
      */
     public void shipout(final NodeList nodes) throws IOException,
             GeneralException {

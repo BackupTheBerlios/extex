@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GlyphImpl implements Glyph, Serializable {
 
@@ -248,7 +248,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @see de.dante.extex.font.Glyph#setWidth(
      *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen, int)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setWidth(final TFMFixWord size, final Dimen em) {
 
@@ -265,7 +265,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @see de.dante.extex.font.Glyph#setDepth(
      *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen, int)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setDepth(final TFMFixWord size, final Dimen em) {
 
@@ -283,7 +283,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @see de.dante.extex.font.Glyph#setHeight(
      *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen, int)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setHeight(final TFMFixWord size, final Dimen em) {
 
@@ -301,7 +301,7 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @see de.dante.extex.font.Glyph#setItalicCorrection(
      *      de.dante.extex.font.type.tfm.TFMFixWord,
-     *      de.dante.extex.interpreter.type.dimen.Dimen, int)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setItalicCorrection(final TFMFixWord size, final Dimen em) {
 

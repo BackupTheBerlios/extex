@@ -28,10 +28,10 @@ import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
- * VFCommand: pre
+ * VFCommand: post
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class VFCommandPost extends VFCommand {
@@ -62,5 +62,4 @@ public class VFCommandPost extends VFCommand {
         Element element = new Element("post");
         return element;
     }
-
 }

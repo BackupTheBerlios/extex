@@ -41,7 +41,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TFMParamArray implements XMLConvertible, PlFormat, Serializable {
@@ -177,6 +177,7 @@ public class TFMParamArray implements XMLConvertible, PlFormat, Serializable {
             if (name.length() != 0) {
                 e.setAttribute("name", name);
             }
+            e.setAttribute("value_fw", String.valueOf(table[i].getValue()));
             e.setAttribute("value", table[i].toStringComma());
             element.addContent(e);
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,30 +17,33 @@
  *
  */
 
-package de.dante.extex.font.type;
-
-import java.io.IOException;
+package de.dante.extex.font.type.vf.exception;
 
 import de.dante.extex.font.exception.FontException;
 
 /**
- * Interface for the PL-Format.
- *
- * <p>
- * Convert a Font (e.g. tfm) to a PL-file (property-list).
- * </p>
+ * VF-Font-Exception: pre command not found.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface PlFormat {
+
+public class VFPreNotFoundException extends FontException {
 
     /**
-     * Print all information (jn PL-format) to the writer.
-     *
-     * @param out  the plwriter
-     * @throws IOException if an IO-error occurs.
-     * @throws FontException if a font-error occurs.
+     * Create a new object.
      */
-    void toPL(PlWriter out) throws IOException, FontException;
+    public VFPreNotFoundException() {
+
+        super();
+    }
+
+    /**
+     * Create a new object.
+     * @param message   the message
+     */
+    public VFPreNotFoundException(final String message) {
+
+        super(message);
+    }
 }

@@ -55,7 +55,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable {
@@ -351,6 +351,19 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
                 }
             }
         }
+    }
+
+    /**
+     * Returns the charinfoword for the character.
+     * @param i the position of the character
+     * @return Returns the charinfoword for the character.
+     */
+    public TFMCharInfoWord getCharInfoWord(final int i) {
+
+        if (i >= 0 && i < charinfoword.length) {
+            return charinfoword[i];
+        }
+        return null;
     }
 
     /**

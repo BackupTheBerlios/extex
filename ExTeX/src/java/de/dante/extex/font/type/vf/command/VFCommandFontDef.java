@@ -27,7 +27,11 @@ import org.jdom.Element;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.exception.FontNotFoundException;
+import de.dante.extex.font.type.PlFormat;
+import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMFixWord;
+import de.dante.extex.font.type.tfm.TFMFont;
+import de.dante.extex.font.type.vf.VFFont;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -103,9 +107,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class VFCommandFontDef extends VFCommand {
+public class VFCommandFontDef extends VFCommand implements PlFormat {
 
     /**
      * the font numbers (local number)
@@ -133,20 +137,36 @@ public class VFCommandFontDef extends VFCommand {
     private String fontname;
 
     /**
+     * the map for the fonts
+     */
+    private Map fontmap;
+
+    /**
+     * the tfm font
+     */
+    private TFMFont tfmfont;
+
+    /**
+     * the vf font
+     */
+    private VFFont vffont;
+
+    /**
      * Create e new object.
      *
      * @param rar           the input
      * @param ccode         the command code
      * @param fontfactory   the fontfactory
-     * @param fontmap   the fontmap
+     * @param fmap          the fontmap
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
      */
     public VFCommandFontDef(final RandomAccessR rar, final int ccode,
-            final FontFactory fontfactory, final Map fontmap)
-            throws IOException, FontException {
+            final FontFactory fontfactory, final Map fmap) throws IOException,
+            FontException {
 
         super(ccode);
+        fontmap = fmap;
 
         switch (ccode) {
             case FNT_DEF_1 :
@@ -182,12 +202,34 @@ public class VFCommandFontDef extends VFCommand {
                     .toString())));
             Count scale = new Count((long) (Double.parseDouble(scalefactor
                     .toStringComma())));
-            Font f = fontfactory.getInstance(fontname, fds, scale, new Glue(0),
-                    true, true);
+
+            // a font can be a tfm- or another vf-font
+            Font f = null;
+            tfmfont = fontfactory.readTFMFont(fontname);
+
+            if (tfmfont != null) {
+                f = fontfactory.getInstance(tfmfont, fds, scale, new Glue(0),
+                        true, true);
+            } else {
+                // try vf-font
+                vffont = fontfactory.readVFFont(fontname);
+                if (vffont == null) {
+                    throw new FontNotFoundException(fontname);
+                }
+                f = fontfactory.getInstance(vffont, fds, scale, new Glue(0),
+                        true, true);
+            }
+
             fontmap.put(new Integer(fontnumbers), f);
         } catch (Exception e) {
-            e.printStackTrace();
+            //            e.printStackTrace();
             throw new FontNotFoundException(fontname);
+        }
+        // check the checksum, if zero, use the checksum from tfm
+        if (checksum == 0) {
+            if (tfmfont != null) {
+                checksum = tfmfont.getChecksum();
+            }
         }
     }
 
@@ -223,6 +265,90 @@ public class VFCommandFontDef extends VFCommand {
         element.setAttribute("checksum", String.valueOf(checksum));
         element.setAttribute("scalefactor", String.valueOf(scalefactor));
         element.setAttribute("designsize", String.valueOf(designsize));
+
+        if (tfmfont != null) {
+            element.addContent(tfmfont.toXML());
+        }
+        if (vffont != null) {
+            element.addContent(vffont.toXML());
+        }
         return element;
+    }
+
+    /**
+     * Returns the checksum.
+     * @return Returns the checksum.
+     */
+    public int getChecksum() {
+
+        return checksum;
+    }
+
+    /**
+     * Returns the designsize.
+     * @return Returns the designsize.
+     */
+    public TFMFixWord getDesignsize() {
+
+        return designsize;
+    }
+
+    /**
+     * Returns the fontname.
+     * @return Returns the fontname.
+     */
+    public String getFontname() {
+
+        return fontname;
+    }
+
+    /**
+     * Returns the fontnumbers.
+     * @return Returns the fontnumbers.
+     */
+    public int getFontnumbers() {
+
+        return fontnumbers;
+    }
+
+    /**
+     * Returns the scalefactor.
+     * @return Returns the scalefactor.
+     */
+    public TFMFixWord getScalefactor() {
+
+        return scalefactor;
+    }
+
+    /**
+     * Returns the tfmfont.
+     * @return Returns the tfmfont.
+     */
+    public TFMFont getTfmfont() {
+
+        return tfmfont;
+    }
+
+    /**
+     * Returns the vffont.
+     * @return Returns the vffont.
+     */
+    public VFFont getVffont() {
+
+        return vffont;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.PlFormat#toPL(
+     *      de.dante.extex.font.type.PlWriter)
+     */
+    public void toPL(final PlWriter out) throws IOException, FontException {
+
+        out.plopen("MAPFONT").addDec(getFontnumbers());
+        out.plopen("FONTNAME").addStr(getFontname()).plclose();
+        out.plopen("FONTCHECKSUM").addOct(getChecksum()).plclose();
+        out.plopen("FONTAT").addReal(getScalefactor()).plclose();
+        out.plopen("FONTDSIZE").addReal(getDesignsize()).plclose();
+        out.plclose();
     }
 }

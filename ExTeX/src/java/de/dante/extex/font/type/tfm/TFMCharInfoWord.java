@@ -79,13 +79,13 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
 
     /**
-     * no_tag
+     * no_tag: vanilla character
      */
     public static final Tag NO_TAG = new Tag();
 
@@ -95,7 +95,7 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
     private static final int TAG0 = 0;
 
     /**
-     * lig_tag
+     * lig_tag: character has a ligature/kerning program
      */
     public static final Tag LIG_TAG = new Tag();
 
@@ -105,7 +105,7 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
     private static final int TAG1 = 1;
 
     /**
-     * list_tag
+     * list_tag: character has a successor in a charlist
      */
     public static final Tag LIST_TAG = new Tag();
 
@@ -115,7 +115,7 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
     private static final int TAG2 = 2;
 
     /**
-     * ext_tag
+     * ext_tag: character is extensible
      */
     public static final Tag EXT_TAG = new Tag();
 
@@ -724,10 +724,15 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
         }
         element.setAttribute("tag", s);
         element.setAttribute("remainder", String.valueOf(remainder));
+        element.setAttribute("width_fw", String.valueOf(getWidth().getValue()));
         element.setAttribute("width", getWidth().toStringComma());
-        // element.setAttribute("width_fw", String.valueOf(getWidth().getValue()));
+        element.setAttribute("height_fw", String
+                .valueOf(getHeight().getValue()));
         element.setAttribute("height", getHeight().toStringComma());
+        element.setAttribute("depth_fw", String.valueOf(getDepth().getValue()));
         element.setAttribute("depth", getDepth().toStringComma());
+        element.setAttribute("italic_fw", String
+                .valueOf(getItalic().getValue()));
         element.setAttribute("italic", getItalic().toStringComma());
         if (getTop() != NOCHARCODE) {
             element.setAttribute("top", String.valueOf(getTop()));
@@ -788,6 +793,8 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
                     if (sk != null && sk.trim().length() > 0) {
                         kerning.setAttribute("char", sk.trim());
                     }
+                    kerning.setAttribute("size_fw", String.valueOf(kern
+                            .getKern().getValue()));
                     kerning
                             .setAttribute("size", kern.getKern()
                                     .toStringComma());

@@ -35,7 +35,7 @@ import de.dante.extex.font.type.tfm.TFMFixWord;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PlWriter extends PrintWriter {
 
@@ -140,6 +140,16 @@ public class PlWriter extends PrintWriter {
     public PlWriter addReal(final Object o) {
 
         return out(" R " + o.toString());
+    }
+
+    /**
+     * Prints <code>R</code> prefix and real number.
+     * @param   d    the real number.
+     * @return Return this, reference for subsequent printing.
+     */
+    public PlWriter addReal(final double d) {
+
+        return out(" R " + d);
     }
 
     /**
@@ -259,8 +269,26 @@ public class PlWriter extends PrintWriter {
 
         if (fw != null && fw.getValue() != 0) {
             plopen(name).addReal(fw).plclose();
+        } else {
+            if (printZeroWidth && "CHARWD".equals(name)) {
+                plopen(name).addReal(0.0d).plclose();
+            }
         }
         return this;
+    }
+
+    /**
+     * Print a zero fixpointwidth.
+     */
+    private boolean printZeroWidth = false;
+
+    /**
+     * Print a zero fixpointwidth.
+     * @param pzw   print or not
+     */
+    public void printZeroWidth(final boolean pzw) {
+
+        printZeroWidth = pzw;
     }
 
     /**

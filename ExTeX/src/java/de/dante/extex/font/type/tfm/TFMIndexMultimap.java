@@ -19,17 +19,19 @@
 
 package de.dante.extex.font.type.tfm;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * TFMIndexMultimap can store and retrieve <code>int</code>
  * values associated to particular <code>int</code> key. There can be
  * more values associated to the same key.
+ * TFtoPL[63]
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TFMIndexMultimap {
+public class TFMIndexMultimap implements Serializable {
 
     /**
      * Create a new object
@@ -133,7 +135,7 @@ public class TFMIndexMultimap {
      * Class <code>Enum</code> provides the sequence of all values
      * associated to particular key.
      */
-    public final class Enum {
+    public final class Enum implements Serializable {
 
         /**
          * Create a new object.

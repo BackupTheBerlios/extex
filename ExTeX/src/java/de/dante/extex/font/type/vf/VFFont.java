@@ -29,8 +29,16 @@ import org.jdom.Element;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.type.FontMetric;
+import de.dante.extex.font.type.PlFormat;
+import de.dante.extex.font.type.PlWriter;
+import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.command.VFCommand;
+import de.dante.extex.font.type.vf.command.VFCommandCharacterPackets;
+import de.dante.extex.font.type.vf.command.VFCommandFontDef;
+import de.dante.extex.font.type.vf.exception.VFMasterTFMNotFoundException;
 import de.dante.util.XMLConvertible;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -47,9 +55,14 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class VFFont implements XMLConvertible, Serializable {
+public class VFFont
+        implements
+            XMLConvertible,
+            Serializable,
+            FontMetric,
+            PlFormat {
 
     /**
      * fontname
@@ -67,6 +80,11 @@ public class VFFont implements XMLConvertible, Serializable {
     private Map fontmap;
 
     /**
+     * the master tfm-file for the vf-font
+     */
+    private TFMFont mastertfm;
+
+    /**
      * Create e new object.
      *
      * @param rar       the input
@@ -74,20 +92,28 @@ public class VFFont implements XMLConvertible, Serializable {
      * @param fontfac   the font factory
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
+     * @throws ConfigurationException from the config-system.
      */
     public VFFont(final RandomAccessR rar, final String afontname,
-            final FontFactory fontfac) throws IOException, FontException {
+            final FontFactory fontfac) throws IOException, FontException,
+            ConfigurationException {
 
         fontname = afontname;
         cmds = new ArrayList();
         fontmap = new HashMap();
 
+        // read the master tfm
+        mastertfm = fontfac.readTFMFont(fontname);
+        if (mastertfm == null) {
+            throw new VFMasterTFMNotFoundException(fontname);
+        }
+
         // read ...
         try {
 
             while (true) {
-                VFCommand command = VFCommand
-                        .getInstance(rar, fontfac, fontmap);
+                VFCommand command = VFCommand.getInstance(rar, fontfac,
+                        fontmap, mastertfm);
                 if (command == null) {
                     break;
                 }
@@ -113,16 +139,61 @@ public class VFFont implements XMLConvertible, Serializable {
     }
 
     /**
+     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
+     */
+    public Element getFontMetric() {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
         Element element = new Element("vf");
         element.setAttribute("name", fontname);
+        element.addContent(mastertfm.toXML());
         for (int i = 0; i < cmds.size(); i++) {
             VFCommand command = (VFCommand) cmds.get(i);
             element.addContent(command.toXML());
         }
         return element;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.PlFormat#toPL(
+     *      de.dante.extex.font.type.PlWriter)
+     */
+    public void toPL(final PlWriter out) throws IOException, FontException {
+
+        out.plopen("VTITLE ").plclose();
+        out.plopen("FAMILY").addStr(mastertfm.getFontFamily()).plclose();
+        out.plopen("FACE").addFace(mastertfm.getFace()).plclose();
+        out.plopen("CODINGSCHEME").addStr(
+                mastertfm.getHeader().getCodingscheme()).plclose();
+        out.plopen("DESIGNSIZE").addReal(mastertfm.getDesignSize()).plclose();
+        out.addComment("DESIGNSIZE IS IN POINTS");
+        out.addComment("OTHER SIZES ARE MULTIPLES OF DESIGNSIZE");
+        out.plopen("CHECKSUM").addOct(mastertfm.getChecksum()).plclose();
+        mastertfm.getParam().toPL(out);
+        // print font-info
+        for (int i = 0; i < cmds.size(); i++) {
+            VFCommand command = (VFCommand) cmds.get(i);
+            if (command instanceof VFCommandFontDef) {
+                VFCommandFontDef fd = (VFCommandFontDef) command;
+                fd.toPL(out);
+            }
+        }
+        // ligtable
+        mastertfm.getLigkern().toPL(out);
+        // character
+        for (int i = 0; i < cmds.size(); i++) {
+            VFCommand command = (VFCommand) cmds.get(i);
+            if (command instanceof VFCommandCharacterPackets) {
+                VFCommandCharacterPackets ch = (VFCommandCharacterPackets) command;
+                ch.toPL(out);
+            }
+        }
     }
 }

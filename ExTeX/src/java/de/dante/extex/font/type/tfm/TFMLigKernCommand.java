@@ -52,7 +52,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TFMLigKernCommand implements XMLConvertible {
@@ -60,22 +60,22 @@ public class TFMLigKernCommand implements XMLConvertible {
     /**
      * the skipbyte
      */
-    private short skipbyte;
+    private byte skipbyte;
 
     /**
      * the nextchar
      */
-    private short nextchar;
+    private byte nextchar;
 
     /**
      * the opbyte
      */
-    private short opbyte;
+    private byte opbyte;
 
     /**
      * the remainder
      */
-    private short remainder;
+    private byte remainder;
 
     /**
      * the lig/kern id
@@ -92,10 +92,10 @@ public class TFMLigKernCommand implements XMLConvertible {
             throws IOException {
 
         lkid = id;
-        skipbyte = (short) rar.readByteAsInt();
-        nextchar = (short) rar.readByteAsInt();
-        opbyte = (short) rar.readByteAsInt();
-        remainder = (short) rar.readByteAsInt();
+        skipbyte = rar.readByte();
+        nextchar = rar.readByte();
+        opbyte = rar.readByte();
+        remainder = rar.readByte();
     }
 
     /**

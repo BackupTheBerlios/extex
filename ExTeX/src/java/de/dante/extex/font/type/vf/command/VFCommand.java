@@ -25,6 +25,7 @@ import java.util.Map;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
@@ -33,7 +34,7 @@ import de.dante.util.file.random.RandomAccessR;
  * Abstract class for all vf commands.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class VFCommand implements XMLConvertible, Serializable {
 
@@ -110,14 +111,15 @@ public abstract class VFCommand implements XMLConvertible, Serializable {
      * @param rar           the input
      * @param fontfactory   the font factory
      * @param fontmap       the fontmap
+     * @param mastertfm     the master tfm-font
      * @return Returns the new instance, or <code>null</code>, if
      *         no more data exists.
      * @throws IOException  if a IO-error occurs
      * @throws FontException if a font-error occurs
      */
     public static VFCommand getInstance(final RandomAccessR rar,
-            final FontFactory fontfactory, final Map fontmap)
-            throws IOException, FontException {
+            final FontFactory fontfactory, final Map fontmap,
+            final TFMFont mastertfm) throws IOException, FontException {
 
         // EOF ?
         if (rar.getPointer() >= rar.length()) {
@@ -127,7 +129,8 @@ public abstract class VFCommand implements XMLConvertible, Serializable {
 
         // characters
         if (c >= MIN_CHARACTER && c <= MAX_CHARACTER) {
-            return new VFCommandCharacterPackets(rar, c, fontfactory, fontmap);
+            return new VFCommandCharacterPackets(rar, c, fontfactory, fontmap,
+                    mastertfm);
         }
         switch (c) {
             case PRE :

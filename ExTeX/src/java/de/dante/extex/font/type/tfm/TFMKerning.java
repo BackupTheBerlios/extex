@@ -19,6 +19,7 @@
 
 package de.dante.extex.font.type.tfm;
 
+
 /**
  * TFM-Kerning
  * <p>
@@ -26,7 +27,7 @@ package de.dante.extex.font.type.tfm;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TFMKerning extends TFMLigKern {
 
@@ -56,5 +57,4 @@ public class TFMKerning extends TFMLigKern {
 
         return kern;
     }
-
 }

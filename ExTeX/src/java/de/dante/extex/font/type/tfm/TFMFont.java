@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TFMFont
         implements
@@ -68,7 +68,7 @@ public class TFMFont
 
         fontname = afontname;
 
-        // read ...
+        // read the input
         lengths = new TFMHeaderLengths(rar);
         header = new TFMHeaderArray(rar, lengths.getLh());
         charinfo = new TFMCharInfoArray(rar, lengths.getCc());
@@ -200,6 +200,15 @@ public class TFMFont
     public String getFontname() {
 
         return fontname;
+    }
+
+    /**
+     * Returns the face of the font.
+     * @return Returns the face of the font.
+     */
+    public int getFace() {
+
+        return header.getFace();
     }
 
     /**
@@ -369,7 +378,7 @@ public class TFMFont
         root.setAttribute("id", getFontFamily());
         root.setAttribute("default-size", String.valueOf(getDesignSize()));
         root.setAttribute("empr", "100");
-        root.setAttribute("type","tfm");
+        root.setAttribute("type", "tfm");
 
         Element fontdimen = new Element("fontdimen");
         root.addContent(fontdimen);

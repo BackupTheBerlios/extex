@@ -26,8 +26,13 @@ import org.jdom.Element;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.type.PlFormat;
+import de.dante.extex.font.type.PlWriter;
+import de.dante.extex.font.type.tfm.TFMCharInfoWord;
 import de.dante.extex.font.type.tfm.TFMFixWord;
+import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
+import de.dante.extex.format.dvi.DviPl;
 import de.dante.extex.format.dvi.DviXml;
 import de.dante.util.file.random.RandomAccessInputArray;
 import de.dante.util.file.random.RandomAccessR;
@@ -93,10 +98,10 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
-public class VFCommandCharacterPackets extends VFCommand {
+public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
 
     /**
      * the packet length (pl)
@@ -129,23 +134,30 @@ public class VFCommandCharacterPackets extends VFCommand {
     private Map fontmap;
 
     /**
+     * the master tfm-file
+     */
+    private TFMFont mastertfm;
+
+    /**
      * Create e new object.
      *
      * @param rar           the input
      * @param ccode         the command code
      * @param fontfac       the font factory
      * @param fontm         the fontmap
+     * @param mtfm          the master tfm
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
      */
     public VFCommandCharacterPackets(final RandomAccessR rar, final int ccode,
-            final FontFactory fontfac, final Map fontm) throws IOException,
-            FontException {
+            final FontFactory fontfac, final Map fontm, final TFMFont mtfm)
+            throws IOException, FontException {
 
         super(ccode);
 
         fontfactory = fontfac;
         fontmap = fontm;
+        mastertfm = mtfm;
 
         // check range
         if (ccode < MIN_CHARACTER || ccode > MAX_CHARACTER) {
@@ -218,12 +230,12 @@ public class VFCommandCharacterPackets extends VFCommand {
         element.setAttribute("packetlength", String.valueOf(packetlength));
         element.setAttribute("width", width.toString());
 
-        for (int i = 0; i < dvi.length; i++) {
-            Element d = new Element("dvi-org");
-            d.setAttribute("id", String.valueOf(i));
-            d.setAttribute("value", String.valueOf(dvi[i]));
-            element.addContent(d);
-        }
+        //        for (int i = 0; i < dvi.length; i++) {
+        //            Element d = new Element("dvi-org");
+        //            d.setAttribute("id", String.valueOf(i));
+        //            d.setAttribute("value", String.valueOf(dvi[i]));
+        //            element.addContent(d);
+        //        }
 
         Element d = new Element("dvi");
         element.addContent(d);
@@ -244,5 +256,36 @@ public class VFCommandCharacterPackets extends VFCommand {
             d.addContent(err);
         }
         return element;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.PlFormat#toPL(
+     *      de.dante.extex.font.type.PlWriter)
+     */
+    public void toPL(final PlWriter out) throws IOException, FontException {
+
+        // read the char from ther master-tfm
+        TFMCharInfoWord ciw = mastertfm.getCharinfo().getCharInfoWord(
+                charactercode);
+
+        out.plopen("CHARACTER").addChar((short) charactercode);
+        if (ciw != null) {
+            ciw.toPL(out);
+        }
+
+        // print the map
+        out.plopen("MAP");
+        try {
+            RandomAccessR arar = new RandomAccessInputArray(dvi);
+
+            DviPl pl = new DviPl(out, fontfactory);
+            pl.interpret(arar);
+            arar.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            // TODO mgn inciomplete
+        }
+        out.plclose();
+        out.plclose();
     }
 }

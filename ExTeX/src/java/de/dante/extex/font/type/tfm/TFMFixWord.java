@@ -31,7 +31,7 @@ import java.util.Locale;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TFMFixWord implements Serializable {
 
@@ -83,6 +83,14 @@ public class TFMFixWord implements Serializable {
     public TFMFixWord(final int val) {
 
         value = val << POINTSHIFT;
+    }
+
+    /**
+     * Create a new object
+     */
+    public TFMFixWord() {
+
+        value = 0;
     }
 
     /**
@@ -214,5 +222,14 @@ public class TFMFixWord implements Serializable {
             v = TFMConstants.CONST_10 * (v & mask);
         } while (v > (delta *= TFMConstants.CONST_10));
         return buf.toString();
+    }
+
+    /**
+     * Set the value.
+     * @param v The value to set.
+     */
+    public void setValue(final long v) {
+
+        value = v;
     }
 }
