@@ -58,8 +58,8 @@
     <Define name="copy" class=""/>
     <define name="count" class="de.dante.extex.interpreter.primitives.register.NumberedCount"/>
     <Define name="countdef" class=""/>
-    <define name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal"/>
-    <Define name="realdef" class=""/>
+    <define name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal" extension="yes"/>
+    <Define name="realdef" class="" extension="yes"/>
     <Define name="cr" class=""/>
     <Define name="crcr" class=""/>
     <Define name="csname" class=""/>
@@ -84,7 +84,7 @@
     <define name="doublehyphendemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="dp" class=""/>
     <Define name="dump" class=""/>
-    <Define name="edef" class="de.dante.extex.interpreter.primitives.macro.Edef"/>
+    <define name="edef" class="de.dante.extex.interpreter.primitives.macro.Edef"/>
     <define name="else" class="de.dante.extex.interpreter.primitives.conditional.Else"/>
     <Define name="emergencystretch" class=""/>
     <define name="end" class="de.dante.extex.interpreter.primitives.file.End"/>
@@ -159,13 +159,14 @@
     <define name="immediate" class="de.dante.extex.interpreter.primitives.prefix.Immediate"/>
     <Define name="indent" class=""/>
     <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
-    <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>
+    <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks" extension="yes">ISO8859-1</define>
+    <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile" extension="yes"/>
     <define name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding" extension="yes"/>
     <Define name="inputlineno" class=""/>
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>
     <define name="interlinepenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="jobname" class=""/>
+    <define name="jobname" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
     <define name="kern" class="de.dante.extex.interpreter.primitives.box.Kern"/>
     <define name="language" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lastbox" class=""/>
@@ -178,7 +179,7 @@
     <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="leftskip" class=""/>
     <Define name="leqno" class=""/>
-    <Define name="let" class=""/>
+    <define name="let" class="de.dante.extex.interpreter.primitives.macro.Let"/>
     <Define name="limits" class=""/>
     <define name="linepenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lineskip" class=""/>
@@ -305,7 +306,6 @@
     <Define name="thinmuskip" class=""/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="toks" class="de.dante.extex.interpreter.primitives.register.NumberedToks"/>
-    <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks">ISO8859-1</define>
     <Define name="toksdef" class=""/>
     <define name="tolerance" class="de.dante.extex.interpreter.primitives.register.NamedCount">10000</define>
     <Define name="topmark" class=""/>
@@ -349,7 +349,7 @@
     <define name="wd" class="de.dante.extex.interpreter.primitives.register.Wd"/>
     <define name="widowpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="write" class=""/>
-    <Define name="xdef" class="de.dante.extex.interpreter.primitives.macro.Xdef"/>
+    <define name="xdef" class="de.dante.extex.interpreter.primitives.macro.Xdef"/>
     <Define name="xleaders" class=""/>
     <Define name="xspaceskip" class=""/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
