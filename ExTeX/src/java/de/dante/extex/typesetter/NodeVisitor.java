@@ -18,6 +18,8 @@
  */
 package de.dante.extex.typesetter;
 
+import de.dante.util.GeneralException;
+
 /**
  * This interface implements part of the visitor pattern for nodes.
  * <p>
@@ -135,7 +137,7 @@ package de.dante.extex.typesetter;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface NodeVisitor {
 
@@ -146,8 +148,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitAdjust(Object value, Object value2);
+    Object visitAdjust(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when an AfterMathNode has been encoutered.
@@ -156,8 +160,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitAfterMath(Object value, Object value2);
+    Object visitAfterMath(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when an AlignedLeadersNode has been encoutered.
@@ -166,8 +172,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitAlignedLeaders(Object value, Object value2);
+    Object visitAlignedLeaders(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a BeforeMathNode has been encoutered.
@@ -176,8 +184,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitBeforeMath(Object value, Object value2);
+    Object visitBeforeMath(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a CenteredLeadersNode has been encoutered.
@@ -186,8 +196,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitCenteredLeaders(Object value, Object value2);
+    Object visitCenteredLeaders(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a CharNode has been encoutered.
@@ -196,8 +208,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitChar(Object value, Object value2);
+    Object visitChar(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a DiscretionaryNode has been encoutered.
@@ -206,8 +220,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitDiscretionary(Object value, Object value2);
+    Object visitDiscretionary(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when an ExpandedLeadersNode has been encoutered.
@@ -216,8 +232,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitExpandedLeaders(Object value, Object value2);
+    Object visitExpandedLeaders(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a GlueNode has been encoutered.
@@ -226,8 +244,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitGlue(Object value, Object value2);
+    Object visitGlue(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a HoizontalListNode has been encoutered.
@@ -236,8 +256,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitHorizontalList(Object value, Object value2);
+    Object visitHorizontalList(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when an InstertionNode has been encoutered.
@@ -246,8 +268,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitInsertion(Object value, Object value2);
+    Object visitInsertion(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a KernNode has been encoutered.
@@ -256,8 +280,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitKern(Object value, Object value2);
+    Object visitKern(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a LigatureNode has been encoutered.
@@ -266,8 +292,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitLigature(Object value, Object value2);
+    Object visitLigature(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a MarkNode has been encoutered.
@@ -276,8 +304,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitMark(Object value, Object value2);
+    Object visitMark(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a PenaltyNode has been encoutered.
@@ -286,8 +316,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitPenalty(Object value, Object value2);
+    Object visitPenalty(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a RuleNode has been encoutered.
@@ -296,8 +328,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitRule(Object value, Object value2);
+    Object visitRule(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a SpaceNode has been encoutered.
@@ -306,8 +340,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitSpace(Object value, Object value2);
+    Object visitSpace(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a VerticalListNode has been encoutered.
@@ -316,8 +352,10 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitVerticalList(Object value, Object value2);
+    Object visitVerticalList(Object value, Object value2) throws GeneralException;
 
     /**
      * This method is called when a WhatsitNode has been encoutered.
@@ -326,7 +364,9 @@ public interface NodeVisitor {
      * @param value2 the second parameter for the visitor
      *
      * @return the visitor specific value
+     *
+     * @throws GeneralException in case of an error
      */
-    Object visitWhatsIt(Object value, Object value2);
+    Object visitWhatsIt(Object value, Object value2) throws GeneralException;
 
 }
