@@ -35,9 +35,14 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
+
+    /**
+     * The field <tt>nodes</tt> contains the list of nodes encapsulated.
+     */
+    private VerticalListNode nodes = new VerticalListNode();
 
     /**
      * This value contains the previous depth for baseline calculations. In
@@ -49,25 +54,12 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     private Dimen prevDepth = new Dimen(-1000 * Dimen.ONE);
 
     /**
-     * The field <tt>nodes</tt> contains the list of nodes encapsulated.
-     */
-    private VerticalListNode nodes = new VerticalListNode();
-
-    /**
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
      */
     public VerticalListMaker(final Manager manager) {
         super(manager);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
-     */
-    public Mode getMode() {
-
-        return Mode.VERTICAL;
     }
 
     /**
@@ -119,6 +111,22 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     public final NodeList close() {
 
         return nodes;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
+     */
+    public Node getLastNode() {
+
+        return (nodes.empty() ? null : nodes.get(nodes.size() - 1));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getMode()
+     */
+    public Mode getMode() {
+
+        return Mode.VERTICAL;
     }
 
     /**

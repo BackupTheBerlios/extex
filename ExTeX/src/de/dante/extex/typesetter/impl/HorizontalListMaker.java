@@ -46,7 +46,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -82,28 +82,6 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
     public HorizontalListMaker(final Manager manager) {
 
         super(manager);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
-     */
-    public Mode getMode() {
-
-        return Mode.HORIZONTAL;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.count.Count)
-     */
-    public void setSpacefactor(final Count f) throws GeneralException {
-
-        long sf = f.getValue();
-        if (sf <= 0) {
-            throw new GeneralHelpingException("TTP.BadSpaceFactor", Long
-                    .toString(sf));
-        }
-        spacefactor = sf;
     }
 
     /**
@@ -200,11 +178,41 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
+     */
+    public Node getLastNode() {
+
+        return (nodes.empty() ? null : nodes.get(nodes.size() - 1));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getMode()
+     */
+    public Mode getMode() {
+
+        return Mode.HORIZONTAL;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
 
         getManager().closeTopList();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *      de.dante.extex.interpreter.type.count.Count)
+     */
+    public void setSpacefactor(final Count f) throws GeneralException {
+
+        long sf = f.getValue();
+        if (sf <= 0) {
+            throw new GeneralHelpingException("TTP.BadSpaceFactor", Long
+                    .toString(sf));
+        }
+        spacefactor = sf;
     }
 
 }

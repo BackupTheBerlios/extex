@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface ListMaker {
 
@@ -58,6 +58,15 @@ public interface ListMaker {
         throws GeneralException;
 
     /**
+     * Add a glue node to the list.
+     *
+     * @param g the glue to add
+     *
+     * @throws GeneralException in case of an error
+     */
+    void addGlue(Glue g) throws GeneralException;
+
+    /**
      * Add a space node to the list.
      *
      * @param typesettingContext the typesetting context for the space
@@ -71,13 +80,29 @@ public interface ListMaker {
         throws GeneralException;
 
     /**
-     * Add a glue node to the list.
+     * Close the node list.
      *
-     * @param g the glue to add
+     * @return the node list enclosed in this instance.
      *
      * @throws GeneralException in case of an error
      */
-    void addGlue(Glue g) throws GeneralException;
+    NodeList close() throws GeneralException;
+
+    /**
+     * Access the last node on the list.
+     * 
+     * @return the last node in the current list or <code>null</code> if the
+     *   list is empty
+     */
+    Node getLastNode();
+
+    /**
+     * Getter for the current mode.
+     *
+     * @return the mode which is one of the values defined in
+     * {@link de.dante.extex.typesetter.Mode Mode}.
+     */
+    Mode getMode();
 
     /**
      * ...
@@ -85,29 +110,6 @@ public interface ListMaker {
      * @throws GeneralException in case of an error
      */
     void par() throws GeneralException;
-
-    /**
-     * Toggle the math mode.
-     *
-     * @throws GeneralException in case of an error
-     */
-    void toggleMath() throws GeneralException;
-
-    /**
-     * Toggle the displaymath mode.
-     *
-     * @throws GeneralException in case of an error
-     */
-    void toggleDisplaymath() throws GeneralException;
-
-    /**
-     * Setter for the space factor.
-     *
-     * @param sf the space factor to set
-     *
-     * @throws GeneralException in case of an error
-     */
-    void setSpacefactor(Count sf) throws GeneralException;
 
     /**
      * Setter for the previous depth parameter.
@@ -119,20 +121,26 @@ public interface ListMaker {
     void setPrevDepth(Dimen pd) throws GeneralException;
 
     /**
-     * Getter for the current mode.
+     * Setter for the space factor.
      *
-     * @return the mode which is one of the values defined in
-     * {@link de.dante.extex.typesetter.Mode Mode}.
-     */
-    Mode getMode();
-
-    /**
-     * Close the node list.
-     *
-     * @return the node list enclosed in this instance.
+     * @param sf the space factor to set
      *
      * @throws GeneralException in case of an error
      */
-    NodeList close() throws GeneralException;
+    void setSpacefactor(Count sf) throws GeneralException;
+
+    /**
+     * Toggle the displaymath mode.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void toggleDisplaymath() throws GeneralException;
+
+    /**
+     * Toggle the math mode.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void toggleMath() throws GeneralException;
 
 }

@@ -32,7 +32,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -46,10 +46,27 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *     de.dante.extex.documentWriter.DocumentWriter)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *     de.dante.extex.typesetter.Node)
      */
-    public void setDocumentWriter(final DocumentWriter doc) {
+    public void add(final Node c) {
+        // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *     de.dante.extex.interpreter.context.TypesettingContext,
+     *     de.dante.util.UnicodeChar)
+     */
+    public void add(final TypesettingContext font, final UnicodeChar symbol) {
+        // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *      de.dante.extex.interpreter.type.glue.Glue)
+     */
+    public void addGlue(final Glue g) {
         // nothing to do
     }
 
@@ -64,17 +81,10 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
+     * @see de.dante.extex.typesetter.Typesetter#close()
      */
-    public CharNodeFactory getCharNodeFactory() {
+    public NodeList close() {
         return null;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#par()
-     */
-    public void par() {
-        // nothing to do
     }
 
     /**
@@ -86,17 +96,24 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *     de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void add(final Node c) {
+    public void finish() {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#close()
+     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
      */
-    public NodeList close() {
+    public CharNodeFactory getCharNodeFactory() {
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
+     */
+    public Node getLastNode() {
+
         return null;
     }
 
@@ -106,28 +123,57 @@ public class NullTypesetterImpl implements Typesetter {
     public Mode getMode() {
         return null;
     }
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openHbox()
+     */
+    public void openHbox() {
+
+        // TODO Auto-generated method stub
+    }
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openVbox()
+     */
+    public void openVbox() {
+
+        // TODO Auto-generated method stub
+    }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.glue.Glue)
+     * @see de.dante.extex.typesetter.Typesetter#par()
      */
-    public void addGlue(final Glue g) {
+    public void par() {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *     de.dante.extex.interpreter.context.TypesettingContext,
-     *     de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
+     *     de.dante.extex.documentWriter.DocumentWriter)
      */
-    public void add(final TypesettingContext font, final UnicodeChar symbol) {
+    public void setDocumentWriter(final DocumentWriter doc) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#finish()
+     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+     *     de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void finish() {
+    public void setPrevDepth(final Dimen pd) {
+        // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *     de.dante.extex.interpreter.type.count.Count)
+     */
+    public void setSpacefactor(final Count f) {
+        // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#shipout(
+     *     de.dante.extex.typesetter.NodeList)
+     */
+    public void shipout(final NodeList nodes) {
         // nothing to do
     }
 
@@ -143,44 +189,6 @@ public class NullTypesetterImpl implements Typesetter {
      */
     public void toggleMath() {
         // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *     de.dante.extex.interpreter.type.count.Count)
-     */
-    public void setSpacefactor(final Count f) {
-        // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *     de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setPrevDepth(final Dimen pd) {
-        // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#shipout(
-     *     de.dante.extex.typesetter.NodeList)
-     */
-    public void shipout(final NodeList nodes) {
-        // nothing to do
-    }
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#openHbox()
-     */
-    public void openHbox() {
-
-        // TODO Auto-generated method stub
-    }
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#openVbox()
-     */
-    public void openVbox() {
-
-        // TODO Auto-generated method stub
     }
 
 }

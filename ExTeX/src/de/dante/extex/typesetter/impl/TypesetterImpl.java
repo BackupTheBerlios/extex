@@ -49,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -71,6 +71,9 @@ public class TypesetterImpl implements Typesetter, Manager {
      */
     private DocumentWriter documentWriter;
 
+    /**
+     * The field <tt>ligatureBuilder</tt> contains the ...
+     */
     private LigatureBuilder ligatureBuilder;
 
     /**
@@ -335,4 +338,13 @@ public class TypesetterImpl implements Typesetter, Manager {
         listMaker.toggleMath();
     }
 
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public Node getLastNode() {
+
+        return this.listMaker.getLastNode();
+    }
 }
