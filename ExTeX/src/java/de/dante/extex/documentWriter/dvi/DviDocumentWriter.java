@@ -23,7 +23,6 @@ package de.dante.extex.documentWriter.dvi;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
@@ -33,6 +32,7 @@ import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.interpreter.type.node.RuleNode;
 import de.dante.extex.interpreter.type.node.SpaceNode;
 import de.dante.extex.interpreter.type.node.WhatsItNode;
+import de.dante.extex.typesetter.InspectableNodeVisitor;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
@@ -40,6 +40,8 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.framework.i18n.Localizable;
+import de.dante.util.framework.i18n.Localizer;
 import java.io.IOException;
 import java.io.OutputStream;
 
@@ -50,9 +52,9 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class DviDocumentWriter implements DocumentWriter {
+public class DviDocumentWriter implements DocumentWriter, Localizable {
     // TODO: docu (TE)
     /*
      * TODO:
@@ -102,7 +104,7 @@ public class DviDocumentWriter implements DocumentWriter {
      * Visitor for the nodes.
      *
      */
-    private DebugableNodeVisitor visitor = null;
+    private InspectableNodeVisitor visitor = null;
 
 
     /**
@@ -121,6 +123,12 @@ public class DviDocumentWriter implements DocumentWriter {
      */
     private Mode mode = Mode.VERTICAL;
 
+    /**
+     * Object fo rlcalize strings messages.
+     *
+     */
+    private Localizer localizer = null;
+
 
     /**
      * Internal <code>NodeVisitor</code> of this class.
@@ -128,7 +136,7 @@ public class DviDocumentWriter implements DocumentWriter {
      */
     private final class DviVisitor
         implements NodeVisitor,
-                   DebugableNodeVisitor {
+                   InspectableNodeVisitor {
 
         /**
          * Writer for the dvi code.  The writer knows the dvi format.
@@ -290,8 +298,8 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitInsertion(final Object value, final Object value2)
             throws GeneralException {
 
-            throw new PanicException("TTP.Confusion",
-                Messages.format("ExTeX.DocumentWriterWrongNode", "insertion"));
+            throw new PanicException(localizer, "TTP.Confusion",
+                localizer.format("ExTeX.DocumentWriterWrongNode", "insertion"));
         }
 
 
@@ -320,16 +328,16 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitMark(final Object value, final Object value2)
             throws GeneralException {
 
-            throw new PanicException("TTP.Confusion",
-                Messages.format("ExTeX.DocumentWriterWrongNode", "mark"));
+            throw new PanicException(localizer, "TTP.Confusion",
+                localizer.format("ExTeX.DocumentWriterWrongNode", "mark"));
         }
 
 
         public Object visitPenalty(final Object value, final Object value2)
             throws GeneralException {
 
-            throw new PanicException("TTP.Confusion",
-                Messages.format("ExTeX.DocumentWriterWrongNode", "penalty"));
+            throw new PanicException(localizer, "TTP.Confusion",
+                localizer.format("ExTeX.DocumentWriterWrongNode", "penalty"));
         }
 
 
@@ -490,6 +498,17 @@ public class DviDocumentWriter implements DocumentWriter {
      */
     public void setParameter(final String name, final String value) {
 
-        // there no paramters yes
+        // there no paramters yet
+    }
+
+    /**
+     * Set the <code>Localizer</code> method here.
+     *
+     * @param theLocalizer a <code>Localizer</code> value
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
+     */
+    public void enableLocalization(final Localizer theLocalizer) {
+        localizer = theLocalizer;
     }
 }

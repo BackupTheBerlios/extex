@@ -18,18 +18,16 @@
  */
 
 // created: 2004-07-30
-package de.dante.extex.documentWriter.dvi;
-
-import de.dante.extex.typesetter.NodeVisitor;
+package de.dante.extex.typesetter;
 
 /**
- * This is an interface of a debugable NodeVisitor for debugging.
- * Debugging this way is not very good.
+ * This is an interface of a debugable NodeVisitor for inspecting
+ * NodeVisitors.  Thie can be used for debugging.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
  * @version $Revision: 1.1 $
  */
-public interface DebugableNodeVisitor extends NodeVisitor {
+public interface InspectableNodeVisitor extends NodeVisitor {
     /**
      * Set visitor for nested nodes.
      *
