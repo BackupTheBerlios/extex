@@ -27,7 +27,9 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.impl.Group;
 import de.dante.extex.interpreter.context.impl.GroupImpl;
 import de.dante.extex.interpreter.type.Bool;
+import de.dante.extex.interpreter.type.Pair;
 import de.dante.extex.interpreter.type.Real;
+import de.dante.extex.interpreter.type.Transform;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.util.GeneralException;
 
@@ -35,7 +37,7 @@ import de.dante.util.GeneralException;
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements
@@ -53,6 +55,16 @@ public class GroupExtensionImpl extends GroupImpl
      * The map for the bool registers
      */
     private Map boolMap = new HashMap();
+
+    /**
+     * The map for the pair registers
+     */
+    private Map pairMap = new HashMap();
+
+    /**
+     * The map for the transform registers
+     */
+    private Map transformMap = new HashMap();
 
     /**
      * The next group in the linked list
@@ -150,7 +162,6 @@ public class GroupExtensionImpl extends GroupImpl
         if (global && nextext != null) {
             nextext.setBool(name, value, global);
         }
-
     }
 
     /**
@@ -161,5 +172,98 @@ public class GroupExtensionImpl extends GroupImpl
     public void setBool(final String name, final Bool value) {
 
         boolMap.put(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#getPair(
+     *      java.lang.String)
+     */
+    public Pair getPair(final String name) {
+
+        Pair pair = (Pair) (pairMap.get(name));
+
+        if (pair == null) {
+            if (nextext != null) {
+                pair = nextext.getPair(name);
+            } else {
+                pair = new Pair();
+                setPair(name, pair);
+            }
+        }
+
+        return pair;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setPair(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Pair,
+     *      boolean)
+     */
+    public void setPair(final String name, final Pair value,
+            final boolean global) {
+
+        setPair(name, value);
+
+        if (global && nextext != null) {
+            nextext.setPair(name, value, global);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setPair(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Pair)
+     */
+    public void setPair(final String name, final Pair value) {
+
+        pairMap.put(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#getTransform(
+     *      java.lang.String)
+     */
+    public Transform getTransform(final String name) {
+
+        Transform transform = (Transform) (transformMap.get(name));
+
+        if (transform == null) {
+            if (nextext != null) {
+                transform = nextext.getTransform(name);
+            } else {
+                transform = new Transform();
+                setTransform(name, transform);
+            }
+        }
+
+        return transform;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setTransform(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Transform,
+     *      boolean)
+     */
+    public void setTransform(final String name, final Transform value,
+            final boolean global) {
+
+        setTransform(name, value);
+
+        if (global && nextext != null) {
+            nextext.setTransform(name, value, global);
+        }
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setTransform(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Transform)
+     */
+    public void setTransform(final String name, final Transform value) {
+
+        transformMap.put(name, value);
     }
 }

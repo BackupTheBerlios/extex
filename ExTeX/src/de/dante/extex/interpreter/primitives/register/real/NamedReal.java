@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.primitives.register.real;
 
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
-import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.CountConvertible;
 import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Multiplyable;
-import de.dante.extex.interpreter.RealConvertable;
+import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -55,8 +55,8 @@ public class NamedReal extends AbstractAssignment
             Advanceable,
             Multiplyable,
             Divideable,
-            RealConvertable,
-            CountConvertable {
+            RealConvertible,
+            CountConvertible {
 
     /**
      * Creates a new object.

@@ -35,9 +35,16 @@ import org.jdom.output.XMLOutputter;
  * Format XML-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class XMLBeauty {
+public final class XMLBeauty {
+
+    /**
+     * private: no instance
+     */
+    private XMLBeauty() {
+
+    }
 
     /**
      * filebuffe

@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.primitives.register.bool;
 
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.BoolConvertable;
+import de.dante.extex.interpreter.BoolConvertible;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
@@ -48,12 +48,12 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedBool extends AbstractAssignment
         implements
             Theable,
-            BoolConvertable {
+            BoolConvertible {
 
     /**
      * Creates a new object.

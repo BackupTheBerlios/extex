@@ -23,8 +23,8 @@ import java.io.Serializable;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.CountConvertable;
-import de.dante.extex.interpreter.RealConvertable;
+import de.dante.extex.interpreter.CountConvertible;
+import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.ControlSequenceToken;
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Bool implements Serializable {
 
@@ -94,11 +94,11 @@ public class Bool implements Serializable {
             throw new GeneralHelpingException("TTP.NoBoolValue");
         } else if (tok instanceof ControlSequenceToken) {
             Code code = context.getMacro(tok.getValue());
-            if (code != null && code instanceof CountConvertable) {
-                return (new Bool(((CountConvertable) code).convertCount(
+            if (code != null && code instanceof CountConvertible) {
+                return (new Bool(((CountConvertible) code).convertCount(
                         context, source))).getValue();
-            } else if (code != null && code instanceof RealConvertable) {
-                return (new Bool(((((RealConvertable) code).convertReal(
+            } else if (code != null && code instanceof RealConvertible) {
+                return (new Bool(((((RealConvertible) code).convertReal(
                         context, source)).getLong()))).getValue();
             } else {
                 throw new GeneralHelpingException("TTP.NoBoolValue");

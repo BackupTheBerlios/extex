@@ -25,7 +25,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
 import de.dante.extex.interpreter.type.Bool;
+import de.dante.extex.interpreter.type.Pair;
 import de.dante.extex.interpreter.type.Real;
+import de.dante.extex.interpreter.type.Transform;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -36,7 +38,7 @@ import de.dante.util.configuration.ConfigurationException;
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements
@@ -115,5 +117,67 @@ public class ContextExtensionImpl extends ContextImpl
     public void setBool(final String name, final Bool value) {
 
         ((GroupExtension) getGroup()).setBool(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#getPair(
+     *      java.lang.String)
+     */
+    public Pair getPair(final String name) {
+
+        return ((GroupExtension) getGroup()).getPair(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setPair(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Pair,
+     *      boolean)
+     */
+    public void setPair(final String name, final Pair value,
+            final boolean global) {
+
+        ((GroupExtension) getGroup()).setPair(name, value, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setPair(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Pair)
+     */
+    public void setPair(final String name, final Pair value) {
+
+        ((GroupExtension) getGroup()).setPair(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#getTransform(
+     *      java.lang.String)
+     */
+    public Transform getTransform(final String name) {
+
+        return ((GroupExtension) getGroup()).getTransform(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setTransform(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Transform,
+     *      boolean)
+     */
+    public void setTransform(final String name, final Transform value,
+            final boolean global) {
+
+        ((GroupExtension) getGroup()).setTransform(name, value, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setTransform(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Transform)
+     */
+    public void setTransform(final String name, final Transform value) {
+
+        ((GroupExtension) getGroup()).setTransform(name, value);
     }
 }

@@ -256,12 +256,17 @@
 		</java>
 	</target> -->
 	
-    <target name="extex32" description="Create a extex32.xml config-file">
+    <target name="extex32" depends="compile" description="Create a extex32.xml config-file">
 		<java fork="true" classname="de.dante.extex.plugin.CreateConfig">
 			<arg value="src/config/extex.xml"/>
 			<arg value="src/config/extex-ext.xml"/>
 			<arg value="src/config/extex32.xml"/>
 		</java>
+        <copy todir="bin/config">
+            <fileset dir="src/config">
+                <include name="*"/>
+            </fileset>
+        </copy>
 	</target>
 		
 

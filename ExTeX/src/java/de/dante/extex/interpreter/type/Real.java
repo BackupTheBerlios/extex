@@ -23,9 +23,9 @@ import java.io.Serializable;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.CountConvertable;
-import de.dante.extex.interpreter.DimenConvertable;
-import de.dante.extex.interpreter.RealConvertable;
+import de.dante.extex.interpreter.CountConvertible;
+import de.dante.extex.interpreter.DimenConvertible;
+import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Catcode;
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Real implements Serializable {
 
@@ -108,14 +108,14 @@ public class Real implements Serializable {
             t = source.scanNonSpace();
         } else if (t instanceof ControlSequenceToken) {
             Code code = context.getMacro(t.getValue());
-            if (code != null && code instanceof CountConvertable) {
-                return (new Real(((CountConvertable) code).convertCount(
+            if (code != null && code instanceof CountConvertible) {
+                return (new Real(((CountConvertible) code).convertCount(
                         context, source))).getValue();
-            } else if (code != null && code instanceof DimenConvertable) {
-                return (new Real(((DimenConvertable) code).convertDimen(
+            } else if (code != null && code instanceof DimenConvertible) {
+                return (new Real(((DimenConvertible) code).convertDimen(
                         context, source))).getValue();
-            } else if (code != null && code instanceof RealConvertable) {
-                return (((RealConvertable) code).convertReal(context, source))
+            } else if (code != null && code instanceof RealConvertible) {
+                return (((RealConvertible) code).convertReal(context, source))
                         .getValue();
             }
         }
@@ -139,6 +139,8 @@ public class Real implements Serializable {
                 && (t.equals(Catcode.OTHER, ".") || t
                         .equals(Catcode.OTHER, ","))) {
             val = source.scanNumber();
+        } else {
+            source.push(t);
         }
         sb.append(Long.toString(val));
 

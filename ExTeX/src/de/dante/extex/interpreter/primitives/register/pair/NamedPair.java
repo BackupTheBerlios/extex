@@ -17,57 +17,50 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register.bool;
+package de.dante.extex.interpreter.primitives.register.pair;
 
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.BoolConvertible;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.PairConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
-import de.dante.extex.interpreter.type.Bool;
+import de.dante.extex.interpreter.type.Pair;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the bool valued primitives.
- * It sets the named bool register to the value given,
+ * This class provides an implementation for the pair valued primitives.
+ * It sets the named pair register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
  * <p>Example</p>
  * <pre>
- * \debug=true
- * \debug=false
- * \debug=on
- * \debug=off
- * \debug=0
- * \debug=7
+ * \xy=1.234 3.45
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class NamedBool extends AbstractAssignment
+public class NamedPair extends AbstractAssignment
         implements
             Theable,
-            BoolConvertible {
+            PairConvertible {
 
     /**
      * Creates a new object.
-     *
      * @param name the name for debugging
      */
-    public NamedBool(final String name) {
+    public NamedPair(final String name) {
 
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
-     *      de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -82,8 +75,8 @@ public class NamedBool extends AbstractAssignment
 
             String key = getKey(source);
             source.scanOptionalEquals();
-            Bool value = new Bool(context, source);
-            contextextex.setBool(key, value, prefix.isGlobal());
+            Pair value = new Pair(context, source);
+            contextextex.setPair(key, value, prefix.isGlobal());
 
         } else {
             throw new MainExTeXExtensionException();
@@ -97,12 +90,12 @@ public class NamedBool extends AbstractAssignment
      * @param value      the new value
      * @throws GeneralException ...
      */
-    public void set(final Context context, final Bool value)
+    public void set(final Context context, final Pair value)
             throws GeneralException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            contextextex.setBool(getName(), value);
+            contextextex.setPair(getName(), value);
         } else {
             throw new MainExTeXExtensionException();
         }
@@ -120,7 +113,7 @@ public class NamedBool extends AbstractAssignment
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            contextextex.setBool(getName(), new Bool(value));
+            contextextex.setPair(getName(), new Pair(value));
         } else {
             throw new MainExTeXExtensionException();
         }
@@ -137,7 +130,7 @@ public class NamedBool extends AbstractAssignment
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
-            String s = contextextex.getBool(key).toString();
+            String s = contextextex.getPair(key).toString();
             return new Tokens(context, s);
         } else {
             throw new MainExTeXExtensionException();
@@ -147,7 +140,7 @@ public class NamedBool extends AbstractAssignment
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source ...
+     * @param source  the source
      * @return the key
      * @throws GeneralException ...
      */
@@ -157,20 +150,18 @@ public class NamedBool extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.BoolConvertable#convertBoot(
+     * @see de.dante.extex.interpreter.PairConvertable#convertPair(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Bool convertBoot(final Context context, final TokenSource source)
+    public Pair convertPair(final Context context, final TokenSource source)
             throws GeneralException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-
             String key = getKey(source);
-            Bool value = contextextex.getBool(key);
-            return (value != null ? value : new Bool());
-
+            Pair val = contextextex.getPair(key);
+            return (val != null ? val : new Pair());
         } else {
             throw new MainExTeXExtensionException();
         }

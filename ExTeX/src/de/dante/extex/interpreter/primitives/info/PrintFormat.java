@@ -25,7 +25,7 @@ import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.RealConvertable;
+import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -110,8 +110,8 @@ public class PrintFormat extends AbstractCode implements Theable {
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", cs
                     .toString());
-        } else if (code instanceof RealConvertable) {
-            Real val = ((RealConvertable) code).convertReal(context, source);
+        } else if (code instanceof RealConvertible) {
+            Real val = ((RealConvertible) code).convertReal(context, source);
             DecimalFormat form = new DecimalFormat(pattern);
             Tokens toks = new Tokens(context, form.format(val.getValue()));
             return toks;
