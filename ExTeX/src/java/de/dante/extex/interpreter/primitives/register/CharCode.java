@@ -19,11 +19,11 @@
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.CountConvertible;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -31,12 +31,12 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for the primitive <code>\char</code>.
+ * This class provides an implementation for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class CharFixed extends AbstractCode implements ExpandableCode, CountConvertible {
+public class CharCode extends AbstractCode implements ExpandableCode, CountConvertible {
 
     /**
      * The field <tt>character</tt> contains the ...
@@ -49,14 +49,15 @@ public class CharFixed extends AbstractCode implements ExpandableCode, CountConv
      * @param name the name for tracing and debugging
      * @param uc ...
      */
-    public CharFixed(final String name, final UnicodeChar uc) {
+    public CharCode(final String name, final UnicodeChar uc) {
 
         super(name);
         this.character = uc;
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -69,7 +70,8 @@ public class CharFixed extends AbstractCode implements ExpandableCode, CountConv
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -84,7 +86,8 @@ public class CharFixed extends AbstractCode implements ExpandableCode, CountConv
     }
 
     /**
-     * @see de.dante.extex.interpreter.CountConvertable#convertCount(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertCount(final Context context, final TokenSource source)
