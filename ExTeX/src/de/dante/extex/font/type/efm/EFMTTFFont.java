@@ -38,7 +38,7 @@ import de.dante.util.resource.ResourceFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EFMTTFFont extends EFMFont implements Font {
 
@@ -49,16 +49,17 @@ public class EFMTTFFont extends EFMFont implements Font {
      * @param   size        the emsize of the font
      * @param   ls          the letterspaced
      * @param   lig         ligature on/off
+     * @param   kern        kerning on/off
      * @param   filefinder  the fileFinder-object
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
     public EFMTTFFont(final Document doc, final String fontname,
-            final Dimen size, final Glue ls, final boolean lig,
-            final ResourceFinder filefinder) throws GeneralException,
-            ConfigurationException {
+            final Dimen size, final Glue ls, final Boolean lig,
+            final Boolean kern, final ResourceFinder filefinder)
+            throws GeneralException, ConfigurationException {
 
-        super(doc, fontname, size, ls, lig, filefinder);
+        super(doc, fontname, size, ls, lig, kern, filefinder);
     }
 
     /**

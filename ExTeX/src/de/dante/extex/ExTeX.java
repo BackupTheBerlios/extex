@@ -113,7 +113,7 @@ import de.dante.util.resource.FileFinderPathImpl;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class ExTeX {
 
@@ -576,7 +576,7 @@ public class ExTeX {
                     .newInstance(properties.getProperty(PROP_CONFIG));
 
             OutputFactory outFactory = new OutputFactory(config
-                    .getConfiguration("Output"), new String[]{
+                    .getConfiguration("Output"), new String[] {
                     properties.getProperty(PROP_OUTPUTDIR),
                     properties.getProperty(PROP_FALLBACKOUTPUTDIR)});
 
@@ -1132,8 +1132,8 @@ public class ExTeX {
 
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
-                    .getConstructor(new Class[]{ResourceFinder.class})
-                    .newInstance(new Object[]{fontFinder}));
+                    .getConstructor(new Class[]{Configuration.class, ResourceFinder.class})
+                    .newInstance(new Object[]{config, fontFinder}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (SecurityException e) {
@@ -1176,7 +1176,7 @@ public class ExTeX {
                     .getProperty("path.separator")), new StringList("", ":")));
         }
 
-        finder.add(new FileFinderConfigImpl(config));
+        finder.add(new FileFinderConfigImpl(config.getConfiguration("Finder")));
 
         return finder;
     }
@@ -1230,8 +1230,8 @@ public class ExTeX {
 
         interpreter.setTypesetter(typesetter);
 
-        factory.setOptions((TokenStreamOptions)interpreter.getContext());
-        
+        factory.setOptions((TokenStreamOptions) interpreter.getContext());
+
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
         interpreter.registerObserver("log", new LogMessageObserver(logger));

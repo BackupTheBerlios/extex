@@ -52,11 +52,12 @@ import de.dante.util.configuration.ConfigurationException;
  * \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
  * \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp noligatures
  * \font\myfont=cmr12 at 15pt noligatures
+ * \font\myfont=cmr12 at 15pt noligatures nokerning
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -142,7 +143,7 @@ public class FontPrimitive extends AbstractAssignment
         FontFactory ff = context.getFontFactory();
         Font font;
         try {
-            font = ff.getInstance(fontname, fontsize, letterspaced, ligatures);
+            font = ff.getInstance(fontname, fontsize, letterspaced, ligatures, kerning);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }

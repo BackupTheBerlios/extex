@@ -20,9 +20,9 @@
 package de.dante.extex.font;
 
 import java.io.InputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.Logger;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -30,17 +30,17 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import de.dante.extex.font.type.efm.EFMFont;
-import de.dante.extex.font.type.efm.EFMTTFFont;
-import de.dante.extex.font.type.efm.EFMType1AFMFont;
-import de.dante.extex.font.type.efm.EFMType1TFMMathextFont;
-import de.dante.extex.font.type.efm.EFMType1TFMMathsymlFont;
-import de.dante.extex.font.type.efm.EFMType1TFMNOFont;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.resource.ResourceFinder;
 
 /**
@@ -48,9 +48,21 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class FontFactoryImpl implements FontFactory {
+
+    /**
+     * The field <tt>TAG_TYPE</tt> contains the name of the tag in the
+     * configuration file which contains the specification for the font-type.
+     */
+    private static final String TAG_TYPE = "Type";
+
+    /**
+     * The field <tt>ATTR_DEFAULT</tt> contains the name of the attribut in the
+     * configuration file which contains the specification default-type.
+     */
+    private static final String ATTR_DEFAULT = "default";
 
     /**
      * Fontmap
@@ -63,20 +75,25 @@ public class FontFactoryImpl implements FontFactory {
     private ResourceFinder finder;
 
     /**
-     * the logger
+     * Configuration for <tt>Type</tt>
      */
-    private Logger logger;
+    private Configuration cfgType;
 
     /**
      * Creates a new object.
      *
-     * @param fileFinder the filefinder
+     * @param config    the config-object
+     * @param resourceFinder the filefinder
+     * @throws ConfigurationException in case of an error
      */
-    public FontFactoryImpl(final ResourceFinder fileFinder) {
+    public FontFactoryImpl(final Configuration config,
+            final ResourceFinder resourceFinder) throws ConfigurationException {
 
         super();
-        finder = fileFinder;
-        logger = Logger.getLogger(getClass().getName());
+        finder = resourceFinder;
+
+        cfgType = config.getConfiguration(TAG_TYPE);
+
     }
 
     /**
@@ -91,13 +108,26 @@ public class FontFactoryImpl implements FontFactory {
 
     /**
      * @see de.dante.extex.font.FontFactory#getInstance(
-     *      java.lang.String, Dimen, Glue, boolean)
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.dimen.Dimen,
+     *      de.dante.extex.interpreter.type.glue.Glue,
+     *      boolean)
      */
     public Font getInstance(final String name, final Dimen size,
             final Glue letterspaced, final boolean ligatures)
             throws GeneralException, ConfigurationException {
 
-        // TODO missing kerning
+        return getInstance(name, size, letterspaced, ligatures, true);
+    }
+
+    /**
+     * @see de.dante.extex.font.FontFactory#getInstance(
+     *      java.lang.String, Dimen, Glue, boolean, boolean)
+     */
+    public Font getInstance(final String name, final Dimen size,
+            final Glue letterspaced, final boolean ligatures,
+            final boolean kerning) throws GeneralException,
+            ConfigurationException {
 
         String filename;
         if (name != null) {
@@ -106,106 +136,88 @@ public class FontFactoryImpl implements FontFactory {
             filename = "null";
         }
 
-        FontKey key = new FontKey(filename, size, letterspaced, ligatures);
+        FontKey key = new FontKey(filename, size, letterspaced, ligatures,
+                kerning);
         Font font = (Font) (fontmap.get(key));
         if (font == null) {
 
             Document doc = loadEFMDocument(filename);
-            Type type = getFontType(doc);
 
-            if (type == TYPE1) {
-                font = new EFMType1AFMFont(doc, filename, size, letterspaced,
-                        ligatures, finder);
-            } else if (type == TTF) {
-                font = new EFMTTFFont(doc, filename, size, letterspaced,
-                        ligatures, finder);
-            } else if (type == TFMNORMAL) {
-                font = new EFMType1TFMNOFont(doc, filename, size, letterspaced,
-                        ligatures, finder);
-            } else if (type == TFMMATHEXT) {
-                font = new EFMType1TFMMathextFont(doc, filename, size,
-                        letterspaced, ligatures, finder);
-            } else if (type == TFMMATHSYML) {
-                font = new EFMType1TFMMathsymlFont(doc, filename, size,
-                        letterspaced, ligatures, finder);
-            } else {
-                // UNKNOWN
-                throw new ConfigurationIOException("unknown font-type");
-                // TODO i18n
+            String classname = getFontClass(doc);
+
+            try {
+                font = (Font) (Class.forName(classname).getConstructor(
+                        new Class[]{Document.class, String.class, Dimen.class,
+                                Glue.class, Boolean.class, Boolean.class,
+                                ResourceFinder.class})
+                        .newInstance(new Object[]{doc, filename, size,
+                                letterspaced, new Boolean(ligatures),
+                                new Boolean(kerning), finder}));
+            } catch (IllegalArgumentException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (SecurityException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InstantiationException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (IllegalAccessException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InvocationTargetException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (NoSuchMethodException e) {
+                throw new ConfigurationNoSuchMethodException(e);
+            } catch (ClassNotFoundException e) {
+                throw new ConfigurationClassNotFoundException(classname);
             }
+
         }
         return font;
     }
 
     /**
-     * Return the type of a font
+     * Return the font-class for a font
      * @param doc   the efm-document
-     * @return the type of the font
+     * @return the font-class for a font
+     * @throws ConfigurationException in case off an error
      */
-    private Type getFontType(final Document doc) {
+    private String getFontClass(final Document doc)
+            throws ConfigurationException {
 
         Element root = doc.getRootElement();
         Element font = EFMFont.scanForElement(root, "font");
         Attribute typeattr = font.getAttribute("type");
+
+        String classname = null;
+
         if ("type1".equals(typeattr.getValue().toLowerCase())) {
-            return TYPE1;
+            Configuration cfg = cfgType.getConfiguration("type1");
+            classname = cfg.getAttribute("class");
         } else if ("ttf".equals(typeattr.getValue().toLowerCase())) {
-            return TTF;
+            Configuration cfg = cfgType.getConfiguration("ttf");
+            classname = cfg.getAttribute("class");
         } else if ("tfm-mathsyml".equals(typeattr.getValue().toLowerCase())) {
-            return TFMMATHSYML;
+            Configuration cfg = cfgType.getConfiguration("tfm-mathsyml");
+            classname = cfg.getAttribute("class");
         } else if ("tfm-mathext".equals(typeattr.getValue().toLowerCase())) {
-            return TFMMATHEXT;
+            Configuration cfg = cfgType.getConfiguration("tfm-mathext");
+            classname = cfg.getAttribute("class");
         } else if ("tfm-normal".equals(typeattr.getValue().toLowerCase())) {
-            return TFMNORMAL;
+            Configuration cfg = cfgType.getConfiguration("tfm-normal");
+            classname = cfg.getAttribute("class");
         }
-        return UNKNOWN;
+
+        if (classname == null || classname.trim().length() == 0) {
+            Configuration cfg = cfgType.getConfiguration(cfgType
+                    .getAttribute(ATTR_DEFAULT));
+            classname = cfg.getAttribute("class");
+            if (classname == null || classname.trim().length() == 0) {
+                throw new ConfigurationMissingAttributeException("default",
+                        cfgType);
+            }
+        }
+        return classname;
     }
 
-    /**
-     * type1-font
-     */
-    private static final Type TYPE1 = new Type();
-
-    /**
-     * ttf-font
-     */
-    private static final Type TTF = new Type();
-
-    /**
-     * tfm-normal
-     */
-    private static final Type TFMNORMAL = new Type();
-
-    /**
-     * tfm-mathext
-     */
-    private static final Type TFMMATHEXT = new Type();
-
-    /**
-     * tfm-mathsyml
-     */
-    private static final Type TFMMATHSYML = new Type();
-
-    /**
-     * unknown
-     */
-    private static final Type UNKNOWN = new Type();
-
-    /**
-     * Type of a font
-     */
-    private static class Type {
-
-        /**
-         * Create a new object.
-         */
-        public Type() {
-
-            super();
-        }
-    }
-
-    /**
+     /**
      * EFM-Extension
      */
     private static final String EFMEXTENSION = "efm";
@@ -265,19 +277,26 @@ public class FontFactoryImpl implements FontFactory {
         private boolean ligatures;
 
         /**
+         * kerning on/off
+         */
+        private boolean kerning;
+
+        /**
          * Create a new object.
          * @param n     the name
          * @param s     the size
          * @param ls    the letterspace
          * @param lig   the ligature
+         * @param kern  the kerning
          */
         public FontKey(final String n, final Dimen s, final Glue ls,
-                final boolean lig) {
+                final boolean lig, final boolean kern) {
 
             name = n;
             size = s;
             letterspaced = ls;
             ligatures = lig;
+            kerning = kern;
         }
     }
 }

@@ -19,302 +19,124 @@
 
 package de.dante.extex.interpreter.type.font;
 
-import java.util.HashMap;
-
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.util.UnicodeChar;
 
 /**
- * Glyph
+ * Interface for a Glyph
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Glyph {
+public interface Glyph {
 
     /**
-     * the width of the glyph
-     */
-    private Dimen width = new Dimen(0);
-
-    /**
-     * the height of the glyph
-     */
-    private Dimen height = new Dimen(0);
-
-    /**
-     * the depth of the glyph
-     */
-    private Dimen depth = new Dimen(0);
-
-    /**
-     * the italic of the glyph
-     */
-    private float italic = 0.0f;
-
-    /**
-     * glyph-number
-     */
-    private String number = "";
-
-    /**
-     * glyph-name
-     */
-    private String name = "";
-
-    /**
-     * The kerning for the glyph
-     */
-    private HashMap kerning = null;
-
-    /**
-     * The ligature for the glyph
-     */
-    private HashMap ligature = null;
-
-    /**
-     * Is the glyph used?
-     * @TODO raus
-     */
-    private boolean isused = false;
-
-    /**
-     * The external fontfile or null, if no exists
-     */
-    private FontFile externalfile = null;
-
-    /**
-     * The left space in a glyph
-     */
-    private Dimen leftSpace = new Dimen(0);
-
-    /**
-     * The rigtht space in a glyph
-     */
-    private Dimen rightSpace = new Dimen(0);
-
-    /**
-     * Create a new object.
-     */
-    public Glyph() {
-
-    }
-
-    /**
-     * Create a new object.
-     * @param h  the hight
-     * @param d  the depth
-     * @param w  the width
-     * @param i  the italic
-     */
-    public Glyph(final Dimen h, final Dimen d, final Dimen w, final float i) {
-
-        height = h;
-        depth = d;
-        width = w;
-        italic = i;
-    }
-
-    /**
+     * depth
      * @return Returns the depth.
      */
-    public Dimen getDepth() {
-
-        return depth;
-    }
+    Dimen getDepth();
 
     /**
      * @param d The depth to set.
      */
-    public void setDepth(final Dimen d) {
-
-        depth = d;
-    }
+    void setDepth(Dimen d);
 
     /**
      * @param gsize         The size to set as <code>String</code>.
      * @param em            The em-size.
      * @param unitsperem    The unit per em.
      */
-    public void setDepth(final String gsize, final Dimen em,
-            final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            depth = new Dimen((long) (fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            depth = new Dimen(0);
-        }
-    }
+    void setDepth(String gsize, Dimen em, int unitsperem);
 
     /**
      * @return Returns the height.
      */
-    public Dimen getHeight() {
-
-        return height;
-    }
+    Dimen getHeight();
 
     /**
      * @param h The height to set.
      */
-    public void setHeight(final Dimen h) {
-
-        height = h;
-    }
+    void setHeight(Dimen h);
 
     /**
      * @param gsize         The size to set as <code>String</code>.
      * @param em            The em-size.
      * @param unitsperem    The unit per em.
      */
-    public void setHeight(final String gsize, final Dimen em,
-            final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            height = new Dimen((long) (fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            height = new Dimen(0);
-        }
-    }
+    void setHeight(String gsize, Dimen em, int unitsperem);
 
     /**
-     * @return Returns the italic.
-     * MGN als Dimen zurück
+     * @return the italic correction.
      */
-    public float getItalic() {
-
-        return italic;
-    }
+    Dimen getItalicCorrection();
 
     /**
-     * @param i he italic to set.
+     * @param d the italic correction to set.
      */
-    public void setItalic(final float i) {
-
-        italic = i;
-    }
+    void setItalicCorrection(Dimen d);
 
     /**
      * @param gsize         The size to set as <code>String</code>.
+     * @param em            The em-size.
+     * @param unitsperem    The unit per em.
      */
-    public void setItalic(final String gsize) {
-
-        try {
-            italic = Float.parseFloat(gsize);
-        } catch (Exception e) {
-            // use default
-            italic = 0.0f;
-        }
-    }
+    void setItalicCorrection(String gsize, Dimen em, int unitsperem);
 
     /**
      * @return Returns the width.
      */
-    public Dimen getWidth() {
-
-        return width;
-    }
+    Dimen getWidth();
 
     /**
      * @param w The width to set.
      */
-    public void setWidth(final Dimen w) {
-
-        width = w;
-    }
+    void setWidth(Dimen w);
 
     /**
      * @param gsize         The size to set as <code>String</code>.
      * @param em            The em-size.
      * @param unitsperem    The unit per em.
      */
-    public void setWidth(final String gsize, final Dimen em,
-            final int unitsperem) {
-
-        try {
-            float fsize = Float.parseFloat(gsize);
-            width = new Dimen((long) (fsize * em.getValue() / unitsperem));
-        } catch (Exception e) {
-            // use default
-            width = new Dimen(0);
-        }
-    }
+    void setWidth(String gsize, Dimen em, int unitsperem);
 
     /**
      * @return Returns the name.
      */
-    public String getName() {
-
-        return name;
-    }
+    String getName();
 
     /**
      * @param n The name to set.
      */
-    public void setName(final String n) {
-
-        name = n;
-    }
+    void setName(String n);
 
     /**
      * @return Returns the number.
      */
-    public String getNumber() {
-
-        return number;
-    }
+    String getNumber();
 
     /**
      * @param nr The number to set.
      */
-    public void setNumber(final String nr) {
-
-        number = nr;
-    }
+    void setNumber(String nr);
 
     /**
      * Add kerning for the glyph.
      * @param kern  the kerning
      */
-    public void addKerning(final Kerning kern) {
-
-        if (kerning == null) {
-            kerning = new HashMap();
-        }
-        kerning.put(kern.getId(), kern);
-    }
+    void addKerning(Kerning kern);
 
     /**
      * Return the kerning for the glyph.
      * @param uc    the following character
      * @return  the kerning-size as <code>Dimen</code>
      */
-    public Dimen getKerning(final UnicodeChar uc) {
-
-        Dimen size = new Dimen(0); // default
-        if (kerning != null) {
-            Kerning kv = (Kerning) kerning.get(String
-                    .valueOf(uc.getCodePoint()));
-            size = kv.getSize();
-        }
-        return size;
-    }
+    Dimen getKerning(UnicodeChar uc);
 
     /**
      * Add ligature for the glyph.
      * @param lig  the ligature
      */
-    public void addLigature(final Ligature lig) {
-
-        if (ligature == null) {
-            ligature = new HashMap();
-        }
-        ligature.put(lig.getLetterid(), lig);
-    }
+    void addLigature(Ligature lig);
 
     /**
      * Return the ligature as <code>UnicodeChar</code>,
@@ -327,84 +149,36 @@ public class Glyph {
      * @param uc    the following character
      * @return  the ligature
      */
-    public UnicodeChar getLigature(final UnicodeChar uc) {
-
-        UnicodeChar liguc = null;
-        if (ligature != null) {
-            try {
-                Ligature lig = (Ligature) ligature.get(String.valueOf(uc
-                        .getCodePoint()));
-                int i = Integer.parseInt(lig.getLigid());
-                liguc = new UnicodeChar(i);
-            } catch (Exception e) {
-                // use default
-                liguc = null;
-            }
-        }
-        return liguc;
-    }
-
-    /**
-     * @return Returns <code>true</code>, it the glyph is used.
-     */
-    public boolean isUsed() {
-
-        return isused;
-    }
-
-    /**
-     * Set the flag, that the glyph is used.
-     */
-    public void setUsed() {
-
-        isused = true;
-    }
+    UnicodeChar getLigature(UnicodeChar uc);
 
     /**
      * @return Returns the externalfile.
+     * MGN change FontFile
      */
-    public FontFile getExternalFile() {
-
-        return externalfile;
-    }
+    FontFile getExternalFile();
 
     /**
      * @param file The externalfile to set.
      */
-    public void setExternalFile(final FontFile file) {
-
-        externalfile = file;
-    }
+    void setExternalFile(FontFile file);
 
     /**
      * @return Returns the leftSpace.
      */
-    public Dimen getLeftSpace() {
-
-        return leftSpace;
-    }
+    Dimen getLeftSpace();
 
     /**
      * @param ls The leftSpace to set.
      */
-    public void setLeftSpace(final Dimen ls) {
-
-        leftSpace = ls;
-    }
+    void setLeftSpace(Dimen ls);
 
     /**
      * @return Returns the rightSpace.
      */
-    public Dimen getRightSpace() {
-
-        return rightSpace;
-    }
+    Dimen getRightSpace();
 
     /**
      * @param rs The rightSpace to set.
      */
-    public void setRightSpace(final Dimen rs) {
-
-        rightSpace = rs;
-    }
+    void setRightSpace(Dimen rs);
 }

@@ -33,7 +33,7 @@ import de.dante.util.resource.ResourceFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EFMType1TFMMathextFont extends EFMType1TFMNOFont implements Font {
 
@@ -52,16 +52,17 @@ public class EFMType1TFMMathextFont extends EFMType1TFMNOFont implements Font {
      * @param   size        the emsize of the font
      * @param   ls          the letterspaced
      * @param   lig         ligature on/off
-     * @param   ResourceFinder  the ResourceFinder-object
+     * @param   kern        kerning on/off
+     * @param   filefinder  the ResourceFinder-object
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
     public EFMType1TFMMathextFont(final Document doc, final String fontname,
-            final Dimen size, final Glue ls, final boolean lig,
-            final ResourceFinder filefinder) throws GeneralException,
-            ConfigurationException {
+            final Dimen size, final Glue ls, final Boolean lig,
+            final Boolean kern, final ResourceFinder filefinder)
+            throws GeneralException, ConfigurationException {
 
-        super(doc, fontname, size, ls, lig, filefinder);
+        super(doc, fontname, size, ls, lig, kern, filefinder);
     }
 
     /**

@@ -33,6 +33,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontFile;
 import de.dante.extex.interpreter.type.font.Glyph;
+import de.dante.extex.interpreter.type.font.GlyphImpl;
 import de.dante.extex.interpreter.type.font.Kerning;
 import de.dante.extex.interpreter.type.font.Ligature;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -45,7 +46,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class EFMFont implements Font {
 
@@ -70,6 +71,11 @@ public abstract class EFMFont implements Font {
     private boolean ligatures;
 
     /**
+     * kerning on/off
+     */
+    private boolean kerning;
+
+    /**
      * the em-size for the font
      */
     private Dimen emsize;
@@ -81,13 +87,15 @@ public abstract class EFMFont implements Font {
      * @param   size        the emsize of the font
      * @param   ls          the letterspaced
      * @param   lig         ligature on/off
+     * @param   kern        kerning on/off
      * @param   filefinder  the fileFinder-object
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
     public EFMFont(final Document doc, final String fontname, final Dimen size,
-            final Glue ls, final boolean lig, final ResourceFinder filefinder)
-            throws GeneralException, ConfigurationException {
+            final Glue ls, final Boolean lig, final Boolean kern,
+            final ResourceFinder filefinder) throws GeneralException,
+            ConfigurationException {
 
         super();
         if (fontname != null) {
@@ -96,7 +104,8 @@ public abstract class EFMFont implements Font {
         emsize = new Dimen(size);
         em = new Dimen(size);
         letterspaced = ls;
-        ligatures = lig;
+        ligatures = lig.booleanValue();
+        kerning = kern.booleanValue();
 
         loadFont(doc, filefinder);
     }
@@ -171,12 +180,10 @@ public abstract class EFMFont implements Font {
                 if (efile != null) {
                     if (efile.endsWith(".ttf")) {
                         efile = efile.replaceAll(".ttf", "");
-//                        externalfile = getFontFile(fileFinder.findFile(efile,
-//                                "ttf"));
+                        //  externalfile = getFontFile(fileFinder.findFile(efile,"ttf"));
                     } else if (efile.endsWith(".pfb")) {
                         efile = efile.replaceAll(".pfb", "");
-//                        externalfile = getFontFile(fileFinder.findFile(efile,
-//                                "pfb"));
+                        //  externalfile = getFontFile(fileFinder.findFile(efile,"pfb"));
                     } else {
                         throw new GeneralHelpingException(
                                 "EFM.wrongfileextension", efile);
@@ -190,7 +197,7 @@ public abstract class EFMFont implements Font {
                     e = (Element) glyphlist.get(i);
                     String key = e.getAttributeValue("ID");
                     if (key != null) {
-                        Glyph gv = new Glyph();
+                        Glyph gv = new GlyphImpl();
                         gv.setNumber(e.getAttributeValue("glyph-number"));
                         gv.setName(e.getAttributeValue("glyph-name"));
                         gv.setExternalFile(externalfile);
@@ -200,18 +207,24 @@ public abstract class EFMFont implements Font {
                                 unitsperem);
                         gv.setHeight(e.getAttributeValue("height"), em,
                                 unitsperem);
-                        gv.setItalic(e.getAttributeValue("italic"));
+                        gv.setItalicCorrection(e.getAttributeValue("italic"), em,
+                                unitsperem);
 
                         // kerning
-                        List kerninglist = e.getChildren("kerning");
-                        for (int k = 0; k < kerninglist.size(); k++) {
-                            Element kerning = (Element) kerninglist.get(k);
-                            Kerning kv = new Kerning();
-                            kv.setId(kerning.getAttributeValue("glyph-id"));
-                            kv.setName(kerning.getAttributeValue("glyph-name"));
-                            kv.setSize(kerning.getAttributeValue("size"), em,
-                                    unitsperem);
-                            gv.addKerning(kv);
+                        if (kerning) {
+                            List kerninglist = e.getChildren("kerning");
+                            for (int k = 0; k < kerninglist.size(); k++) {
+                                Element ekerning = (Element) kerninglist.get(k);
+                                Kerning kv = new Kerning();
+                                kv
+                                        .setId(ekerning
+                                                .getAttributeValue("glyph-id"));
+                                kv.setName(ekerning
+                                        .getAttributeValue("glyph-name"));
+                                kv.setSize(ekerning.getAttributeValue("size"),
+                                        em, unitsperem);
+                                gv.addKerning(kv);
+                            }
                         }
 
                         // ligature
@@ -397,12 +410,11 @@ public abstract class EFMFont implements Font {
 
         Glyph g = (Glyph) glyphmap.get(String.valueOf(c.getCodePoint()));
         if (g == null) {
-            g = new Glyph();
+            g = new GlyphImpl();
             g.setWidth(getEm());
             g.setHeight(getEx());
             // TODO incomplete: use glyph-symbol
         }
-        g.setUsed();
         return g;
     }
 

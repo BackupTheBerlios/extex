@@ -16,28 +16,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.tex;
 
 import junit.framework.TestCase;
 
-/*
+/**
  * Test for the primitive <tt>jobname</tt>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class JobnameTest extends TestCase {
 
-	/*
-	 */
-	public static void main(String[] args) {
-		junit.textui.TestRunner.run(JobnameTest.class);
-	}
+    /**
+     * main
+     * @param args commandlineparams
+     */
+    public static void main(final String[] args) {
 
-	/*
-	 */
-	public void testCount01() {
-		assertTrue(TestTeX.test("jujobnametest", "testdata/jujobname.testtxt"));
-	}
+        junit.textui.TestRunner.run(JobnameTest.class);
+    }
+
+    /**
+     * Test 01 for jobname
+     */
+    public void testJobname01() {
+
+        assertTrue(TestTeX.test("jujobnametest", "testdata/jujobname.testtxt"));
+    }
 
 }
