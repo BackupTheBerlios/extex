@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * <doc name="discretionary">
  * <h3>The Primitive <tt>\discretionary</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -46,12 +46,12 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \discretionary ...  </pre>
+ *    \discretionary{}{}{-}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Discretionary extends AbstractCode {
 

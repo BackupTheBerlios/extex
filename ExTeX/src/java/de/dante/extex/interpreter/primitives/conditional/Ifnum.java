@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.conditional;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * <doc name="ifnum">
  * <h3>The Primitive <tt>\ifnum</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -63,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Ifnum extends AbstractIf {
 
@@ -90,7 +91,7 @@ public class Ifnum extends AbstractIf {
         long value = source.scanInteger();
         Token rel = source.getToken();
         if (rel == null) {
-            throw new GeneralException(); // TODO: eof
+            throw new EofHelpingException(printableControlSequence(context));
         }
         if (rel.getCatcode() == Catcode.OTHER) {
             switch (rel.getChar().getCodePoint()) {

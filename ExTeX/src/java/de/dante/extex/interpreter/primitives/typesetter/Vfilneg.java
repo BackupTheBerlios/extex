@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * <doc name="vfil">
  * <h3>The Primitive <tt>\vfilneg</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -53,12 +53,12 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Vfilneg extends AbstractCode {
 
     /**
-     * The field <tt>FIL</tt> contains the ...
+     * The field <tt>FIL</tt> contains the amount of -1 fil.
      */
     private static final Glue FIL_NEG = new Glue(GlueComponent.ZERO,
             GlueComponent.MINUS_ONE_FIL, GlueComponent.ZERO);

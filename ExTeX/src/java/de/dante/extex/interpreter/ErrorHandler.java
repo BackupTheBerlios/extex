@@ -19,6 +19,7 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface ErrorHandler {
 
@@ -49,4 +50,10 @@ public interface ErrorHandler {
     boolean handleError(GeneralException e, Token token, TokenSource source,
             Context context) throws GeneralException;
 
+    /**
+     * ...
+     *
+     * @param editHandler ...
+     */
+    void setEditHandler(EditHandler editHandler);
 }

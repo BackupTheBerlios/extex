@@ -36,7 +36,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class DisplaymathListMaker extends AbstractListMaker
         implements
@@ -134,7 +134,7 @@ public class DisplaymathListMaker extends AbstractListMaker
     public void par() throws GeneralException {
 
         getManager().endParagraph();
-        throw new MathHelpingException();
+        throw new MathHelpingException("\\par"); //TODO other string?
     }
 
     /**

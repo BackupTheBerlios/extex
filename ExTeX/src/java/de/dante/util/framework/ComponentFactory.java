@@ -32,16 +32,12 @@ import de.dante.util.framework.component.Component;
 
 /**
  * This is the factory for instances of
- * {@link de.dante.extex.typesetter.Typesetter Typesetter}.
+ * {@link de.dante.util.framework.component.Component Component}.
  *
- * <pre>
- *  &lt;Typesetter class="the.package.TheClass"&gt;
- *  &lt;/Typesetter&gt;
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ComponentFactory {
 

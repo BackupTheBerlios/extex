@@ -34,7 +34,7 @@ import de.dante.util.configuration.ConfigurationException;
  * <doc name="begingroup">
  * <h3>The Primitive <tt>\begingroup</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -50,7 +50,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Begingroup extends AbstractCode {
 

@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * <doc name="else">
  * <h3>The Primitive <tt>\else</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * This primitive is <emph>not</emph> expandable!
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Else extends AbstractCode {
 

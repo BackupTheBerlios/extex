@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * <doc name="lastnodetype">
  * <h3>The Primitive <tt>\lastnodetype</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  Examples:
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class Lastnodetype extends AbstractReadonlyCount {

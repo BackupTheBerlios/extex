@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * <doc name="vss">
  * <h3>The Primitive <tt>\vss</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -53,12 +53,12 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Vss extends AbstractCode {
 
     /**
-     * The field <tt>VSS</tt> contains the ...
+     * The field <tt>VSS</tt> contains the amount of 0pt plus 1 fil minus 1 fil.
      */
     private static final Glue VSS = new Glue(GlueComponent.ZERO,
             GlueComponent.ONE_FIL, GlueComponent.ONE_FIL);

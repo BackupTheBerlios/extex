@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -185,7 +185,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     public void par() throws GeneralException {
 
         getManager().endParagraph();
-        throw new MathHelpingException();
+        throw new MathHelpingException("\\par"); //TODO other string?
     }
 
     /**

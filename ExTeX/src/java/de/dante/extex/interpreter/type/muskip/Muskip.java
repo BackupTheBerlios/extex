@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.type.muskip;
 
 import java.io.Serializable;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Muskip implements Serializable {
 
@@ -110,7 +111,7 @@ public class Muskip implements Serializable {
     }
 
     /**
-     * ...
+     * Scan a math unit.
      *
      * @param context the processor context
      * @param source the source for new tokens
@@ -124,8 +125,7 @@ public class Muskip implements Serializable {
 
         Token t = source.getToken();
         if (t == null) {
-            // TODO EOF unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new EofHelpingException("mu");//TODO i18n?
         }
         long value = GlueComponent.scanFloat(source, t);
         if (!source.getKeyword("mu")) {

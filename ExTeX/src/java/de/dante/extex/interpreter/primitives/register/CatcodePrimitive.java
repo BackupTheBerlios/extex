@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="catcode">
  * <h3>The Primitive <tt>\catcode</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The assignment is controlled by the modifier <tt>\global</tt> and the
@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 

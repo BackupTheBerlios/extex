@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.arithmetic;
 
 import de.dante.extex.i18n.CantUseAfterHelpingException;
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -78,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Divide extends AbstractAssignment {
 
@@ -105,21 +106,20 @@ public class Divide extends AbstractAssignment {
 
         Token cs = source.getToken();
 
-        if (!(cs instanceof CodeToken)) {
-            throw new CantUseAfterHelpingException(cs.toString(),
-                    printableControlSequence(context));
-        }
+        if (cs instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) cs);
 
-        Code code = context.getCode((CodeToken) cs);
+            if (code instanceof Divideable) {
 
-        if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
-                    cs.toString());
-        } else if (code instanceof Divideable) {
-            ((Divideable) code).divide(prefix, context, source);
-        } else {
-            throw new CantUseAfterHelpingException(cs.toString(),
-                    printableControlSequence(context));
+                ((Divideable) code).divide(prefix, context, source);
+                return;
+
+            } else if (code == null) {
+                throw new UndefinedControlSequenceHelpingException(//
+                        printable(context, cs));
+            }
         }
+        throw new CantUseAfterHelpingException(cs.toText(),
+                printableControlSequence(context));
     }
 }

@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * <doc name="expandafter">
  * <h3>The Primitive <tt>\expandafter</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p class="TeXbook">
  * TeX first reads the token that comes immediately after <tt>\expandafter</tt>,
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Expandafter extends AbstractCode implements ExpandableCode {
 

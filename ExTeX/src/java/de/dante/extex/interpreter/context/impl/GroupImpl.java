@@ -57,7 +57,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -67,17 +67,20 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private static final Count DELCODE_DEFAULT = new ImmutableCount(-1);
 
     /**
-     * The constant <tt>INVALID_CHAR_CODE</tt> contains the ...
+     * The constant <tt>INVALID_CHAR_CODE</tt> contains the code for an
+     * invalid character.
      */
     private static final int INVALID_CHAR_CODE = 127;
 
     /**
-     * The constant <tt>MATHCODE_DIGIT_OFFSET</tt> contains the ...
+     * The constant <tt>MATHCODE_DIGIT_OFFSET</tt> contains the offset for
+     * non-letters when constructing a mathcode.
      */
     private static final int MATHCODE_DIGIT_OFFSET = 0x7000;
 
     /**
-     * The constant <tt>MATHCODE_LETTER_OFFSET</tt> contains the ...
+     * The constant <tt>MATHCODE_LETTER_OFFSET</tt> contains the offset for
+     * letters when constructing a mathcode.
      */
     private static final int MATHCODE_LETTER_OFFSET = 0x7100;
 
@@ -199,7 +202,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map skipMap = new HashMap();
 
     /**
-     * The field <tt>standardTokenStream</tt> contains the ...
+     * The field <tt>standardTokenStream</tt> contains the standard token
+     * stream.
      */
     private transient TokenStream standardTokenStream = null;
 

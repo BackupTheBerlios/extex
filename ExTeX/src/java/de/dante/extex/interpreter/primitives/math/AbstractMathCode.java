@@ -28,10 +28,11 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This is the base class for all math primitives.
+ * It tries to ensure that the primitive is invoked in math mode only.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractMathCode extends AbstractCode {
 
@@ -58,7 +59,7 @@ public abstract class AbstractMathCode extends AbstractCode {
 
         if (!typesetter.getMode().isMath()) {
 
-            throw new MathHelpingException();
+            throw new MathHelpingException(printableControlSequence(context));
         }
         return true;
     }

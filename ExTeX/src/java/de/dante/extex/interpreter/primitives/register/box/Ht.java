@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * <doc name="ht">
  * <h3>The Primitive <tt>\ht</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -67,7 +67,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Ht extends Setbox
         implements

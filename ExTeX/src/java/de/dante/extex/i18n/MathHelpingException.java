@@ -22,10 +22,15 @@ package de.dante.extex.i18n;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This exception is raised when a math macro is encountered outside a math
+ * mode.
+ * <p>
+ * The localization format is taken from the resource bundle of the parent
+ * class under the key <tt>TTP.MissingDollar</tt>.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathHelpingException extends HelpingException {
 
@@ -34,10 +39,10 @@ public class MathHelpingException extends HelpingException {
      *
      * @param macro the name of the macro in which the eof has been encoutered
      */
-    public MathHelpingException() {
+    public MathHelpingException(final String macro) {
 
         super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
-                "TTP.MissingDollar");
+                "TTP.MissingDollar", macro);
     }
 
 }

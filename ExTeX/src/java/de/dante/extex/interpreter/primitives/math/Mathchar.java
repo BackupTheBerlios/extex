@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.math;
 
 import de.dante.extex.interpreter.Flags;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * <doc name="mathchar">
  * <h3>The Primitive <tt>\mathchar</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -48,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Mathchar extends AbstractCode {
 
@@ -58,6 +59,7 @@ public class Mathchar extends AbstractCode {
      * @param name the name for debugging
      */
     public Mathchar(final String name) {
+
         super(name);
     }
 
@@ -80,12 +82,12 @@ public class Mathchar extends AbstractCode {
     /**
      * ...
      *
-     * @param typesetter ...
-     * @param mathchar ...
+     * @param typesetter the typesetter
+     * @param mathchar the math char value
      */
     protected void insert(final Typesetter typesetter, final Count mathchar) {
 
-        // TODO unimplemented
+        //TODO execute() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

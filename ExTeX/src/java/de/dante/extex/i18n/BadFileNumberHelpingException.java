@@ -22,19 +22,23 @@ package de.dante.extex.i18n;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This exception is raised when a illegal file reference has been encoutered.
+ * <p>
+ * The localization format is taken from the resource bundle of the parent
+ * class under the key <tt>TTP.BadFileNumber</tt>.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BadFileNumberHelpingException extends HelpingException {
 
     /**
      * Creates a new object.
      *
-     * @param value ...
-     * @param min ...
-     * @param max ...
+     * @param value the illegal file reference
+     * @param min the minimum for numerical values
+     * @param max the maximum for numerical values
      */
     public BadFileNumberHelpingException(final String value, final String min,
             final String max) {

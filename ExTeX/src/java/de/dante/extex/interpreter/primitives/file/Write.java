@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * <doc name="write">
  * <h3>The Primitive <tt>\write</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * </doc>
  *
@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Write extends AbstractCode {
 
@@ -117,7 +117,7 @@ public class Write extends AbstractCode {
      */
     private void write(final long no, final Tokens toks) {
 
-        // TODO unimplemented
+        //TODO execute() unimplemented
         throw new RuntimeException("unimplemented");
     }
 

@@ -43,12 +43,13 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
     /**
-     * The field <tt>DEVELOP</tt> contains the ...
+     * The field <tt>DEVELOP</tt> contains the indicator that the development
+     * is not finished.
      */
     private static final boolean DEVELOP = true;
 

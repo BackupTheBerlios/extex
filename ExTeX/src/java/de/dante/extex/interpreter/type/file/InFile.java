@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class InFile implements Serializable {
 
@@ -88,6 +88,9 @@ public class InFile implements Serializable {
      */
     public boolean ifEof() {
 
+        if (stream == null) {
+            return true;
+        }
         //TODO incorrect and incomplete
         return (lookahead == null);
     }
@@ -115,16 +118,15 @@ public class InFile implements Serializable {
     /**
      * Read a line of characters into a tokens list.
      *
-     * @param factory ...
-     * @param tokenizer ...
-     * @param cs ...
+     * @param factory the factory to request new tokens from
+     * @param tokenizer the tokenizer to use
      *
      * @return the tokens read
      *
      * @throws GeneralException in case of an error
      */
-    public Tokens read(final TokenFactory factory, final Tokenizer tokenizer,
-            final Token cs) throws GeneralException {
+    public Tokens read(final TokenFactory factory, final Tokenizer tokenizer)
+            throws GeneralException {
 
         if (stream == null) {
             if (file == null) {

@@ -24,6 +24,8 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizable;
@@ -36,12 +38,13 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
     /**
-     * The field <tt>localizer</tt> contains the ...
+     * The field <tt>localizer</tt> contains the localizer or <code>null</code>
+     * if none has been set yet.
      */
     private Localizer localizer = null;
 
@@ -64,14 +67,14 @@ public class AbstractCode implements Code, Localizable, Serializable {
     /**
      * Setter for the localizer.
      *
-     * @param localizer the new value for the localizer
+     * @param theLocalizer the new value for the localizer
      *
      * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
      *      de.dante.util.framework.i18n.Localizer)
      */
-    public void enableLocalization(final Localizer localizer) {
+    public void enableLocalization(final Localizer theLocalizer) {
 
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -136,8 +139,7 @@ public class AbstractCode implements Code, Localizable, Serializable {
      */
     protected String printableControlSequence(final Context context) {
 
-        char esc = (char) (context.getCount("escapechar").getValue());
-        return Character.toString(esc) + name;
+        return printableControlSequence(context, name);
     }
 
     /**
@@ -158,6 +160,23 @@ public class AbstractCode implements Code, Localizable, Serializable {
 
         char esc = (char) (context.getCount("escapechar").getValue());
         return Character.toString(esc) + theName;
+    }
+
+    /**
+     * Return the printable version of a token for error messages.
+     *
+     * @param context the processing context
+     * @param token the token to get a printable representation for
+     *
+     * @return the control sequence including the escape character
+     */
+    protected String printable(final Context context, final Token token) {
+
+        if (token instanceof ControlSequenceToken) {
+            char esc = (char) (context.getCount("escapechar").getValue());
+            return Character.toString(esc) + token.getValue();
+        }
+        return token.getValue();
     }
 
     /**

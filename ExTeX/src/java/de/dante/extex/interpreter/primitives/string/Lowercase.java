@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.string;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -39,7 +40,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="lowercase">
  * <h3>The Primitive <tt>\lowercase</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -56,7 +57,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
@@ -97,12 +98,11 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
             throws GeneralException {
 
         Tokens toks = source.getTokens();
-        String namespace = context.getNamespace();
 
         if (toks == null) {
-            throw new RuntimeException("unimplemented");
-            //TODO unimplemented
+            throw new EofHelpingException(printableControlSequence(context));
         }
+        String namespace = context.getNamespace();
         Token[] result = new Token[toks.length()];
         TokenFactory factory = context.getTokenFactory();
         Token t;

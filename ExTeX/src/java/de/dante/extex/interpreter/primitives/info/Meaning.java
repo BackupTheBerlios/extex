@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.info;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * <doc name="meaning">
  * <h3>The Primitive <tt>\meaning</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Meaning extends Show {
 
@@ -76,8 +77,7 @@ public class Meaning extends Show {
 
         Token t = source.getToken();
         if (t == null) {
-            // TODO unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new EofHelpingException(printableControlSequence(context));
         }
         source.push(meaning(t, context));
         return true;

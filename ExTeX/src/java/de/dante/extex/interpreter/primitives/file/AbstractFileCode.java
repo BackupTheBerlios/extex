@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -61,7 +61,7 @@ public abstract class AbstractFileCode extends AbstractCode
     }
 
     /**
-     * ...
+     * Configure an object according to a given Configuration.
      *
      * @param config the configuration to use
      *

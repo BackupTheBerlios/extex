@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PanicException extends GeneralException {
 
@@ -53,7 +53,7 @@ public class PanicException extends GeneralException {
     private String arg3;
 
     /**
-     * The field <tt>localizer</tt> contains the ...
+     * The field <tt>localizer</tt> contains the localizer.
      */
     private Localizer localizer;
 

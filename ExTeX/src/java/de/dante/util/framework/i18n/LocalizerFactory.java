@@ -30,15 +30,16 @@ import java.util.ResourceBundle;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public final class LocalizerFactory {
 
     /**
-     * ...
+     * This inner class is the one ond only implementation of a Localizer
+     * delived by this factory.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private static class BasicLocalizer implements Localizer {
 
@@ -240,7 +241,9 @@ public final class LocalizerFactory {
     }
 
     /**
-     * The field <tt>cache</tt> contains the ...
+     * The field <tt>cache</tt> contains the map of localizers already
+     * constructed. The localizers are cache to minimize the overhead of
+     * acquiring the same localizer several times.
      */
     private static final Map cache = new HashMap();
 

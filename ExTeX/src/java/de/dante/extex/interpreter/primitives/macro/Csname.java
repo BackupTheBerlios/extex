@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -42,7 +43,7 @@ import de.dante.util.GeneralException;
  * <doc name="csname">
  * <h3>The Primitive <tt>\csname</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -58,7 +59,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Csname extends AbstractCode
         implements
@@ -149,8 +150,8 @@ public class Csname extends AbstractCode
                 Code code = context.getCode((CodeToken) t);
 
                 if (code == null) {
-                    //TODO handle EOF
-                    throw new RuntimeException("unimplemented");
+                    throw new EofHelpingException(
+                            printableControlSequence(context));
                 } else if (code instanceof Endcsname) {
                     return toks;
                 } else if (code instanceof ExpandableCode) {

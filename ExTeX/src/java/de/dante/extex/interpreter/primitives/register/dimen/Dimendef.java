@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * <doc name="dimendef">
  * <h3>The Primitive <tt>\dimendef</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -69,7 +69,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Dimendef extends AbstractDimen {
 

@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * <doc name="fontname">
  * <h3>The Primitive <tt>\fontname</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * </doc>
  *
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 

@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * <doc name="errorstopmode">
  * <h3>The Primitive <tt>\errorstopmode</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Errorstopmode extends AbstractAssignment {
 

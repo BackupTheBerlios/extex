@@ -55,17 +55,19 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
-     * The constant <tt>BP100_PER_IN</tt> contains the ...
+     * The constant <tt>BP100_PER_IN</tt> contains the number of 100 big points
+     * per inch.
      */
     private static final int BP100_PER_IN = 7200;
 
     /**
-     * The constant <tt>CM100_PER_IN</tt> contains the ...
+     * The constant <tt>CM100_PER_IN</tt> contains the number of 100 centimeters
+     * per inch.
      */
     private static final int CM100_PER_IN = 254;
 
@@ -79,7 +81,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     private static final int FLOAT_DIGITS = 17;
 
     /**
-     * The field <tt>MINUS_ONE_FIL</tt> contains the ...
+     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of -1 fil.
      */
     public static final GlueComponent MINUS_ONE_FIL = new GlueComponent(-1, 1);
 
@@ -90,12 +92,12 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public static final long ONE = 1 << 16;
 
     /**
-     * The field <tt>MINUS_ONE_FIL</tt> contains the ...
+     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of 1 fil.
      */
     public static final GlueComponent ONE_FIL = new GlueComponent(1, 1);
 
     /**
-     * The field <tt>ONE_FILL</tt> contains the ...
+     * The constant <tt>MINUS_ONE_FIL</tt> contains the value of 1 fill.
      */
     public static final GlueComponent ONE_FILL = new GlueComponent(1, 2);
 
@@ -322,9 +324,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
-     * ...
+     * Getter for the localizer.
+     * The localizer is associated with the name of the class GlueComponent.
      *
-     * @return ...
+     * @return the localizer
      */
     protected Localizer getLocalizer() {
 
@@ -539,6 +542,9 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
+     * Subtract a Glue component from this glue.
+     * If the order of the other glue component is the same as the current one
+     * then the values are subtracted.
      * ...
      *
      * @param g the GlueCoponent to subtract

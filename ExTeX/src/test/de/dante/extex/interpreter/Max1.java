@@ -45,7 +45,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Max1 extends TestCase {
 
@@ -168,7 +168,7 @@ public class Max1 extends TestCase {
          */
         public void openHbox() {
 
-            // TODO Auto-generated method stub
+            // nothing to do
         }
 
         /**
@@ -176,7 +176,7 @@ public class Max1 extends TestCase {
          */
         public void openVbox() {
 
-            // TODO Auto-generated method stub
+            // nothing to do
         }
 
         /**
@@ -192,8 +192,7 @@ public class Max1 extends TestCase {
          */
         public void removeLastNode() {
 
-            // TODO Auto-generated method stub
-
+            // nothing to do
         }
 
         /**
@@ -206,16 +205,11 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * ...
-         *
-         * @param ligatureBuilder
-         *
          * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
          */
         public void setLigatureBuilder(LigatureBuilder ligatureBuilder) {
 
-            // TODO unimplemented
-
+            // nothing to do
         }
 
         /**
@@ -226,29 +220,19 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * ...
-         *
-         * @param pageBuilder
-         *
          * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(de.dante.extex.typesetter.pageBuilder.PageBuilder)
          */
         public void setPageBuilder(PageBuilder pageBuilder) {
 
-            // TODO unimplemented
-
+            // nothing to do
         }
 
         /**
-         * ...
-         *
-         * @param paragraphBuilder
-         *
          * @see de.dante.extex.typesetter.Typesetter#setParagraphBuilder(de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder)
          */
         public void setParagraphBuilder(ParagraphBuilder paragraphBuilder) {
 
-            // TODO unimplemented
-
+            // nothing to do
         }
 
         /**
@@ -257,7 +241,7 @@ public class Max1 extends TestCase {
          */
         public void setParshape(ParagraphShape parshape) {
 
-            // TODO Auto-generated method stub
+            // nothing to do
         }
 
         /**

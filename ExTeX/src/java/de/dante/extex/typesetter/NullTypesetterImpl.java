@@ -38,7 +38,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -186,15 +186,15 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * ...
+     * Setter for the ligature builder.
+     * Since the ligature builder is not needed this is a noop.
      *
-     * @param ligatureBuilder
+     * @param ligatureBuilder the new ligature builder
      *
-     * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
+     * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(
+     *      de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
      */
-    public void setLigatureBuilder(LigatureBuilder ligatureBuilder) {
-
-        // TODO unimplemented
+    public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
 
     }
 
@@ -205,28 +205,30 @@ public class NullTypesetterImpl implements Typesetter {
     public void setOptions(final TypesetterOptions options) {
 
     }
-    /**
-     * ...
-     *
-     * @param pageBuilder
-     *
-     * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(de.dante.extex.typesetter.pageBuilder.PageBuilder)
-     */
-    public void setPageBuilder(PageBuilder pageBuilder) {
 
-        // TODO unimplemented
+    /**
+     * Setter for the page builder.
+     * Since the page builder is not needed this is a noop.
+     *
+     * @param pageBuilder the new page builder
+     *
+     * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(
+     *       de.dante.extex.typesetter.pageBuilder.PageBuilder)
+     */
+    public void setPageBuilder(final PageBuilder pageBuilder) {
 
     }
-    /**
-     * ...
-     *
-     * @param paragraphBuilder
-     *
-     * @see de.dante.extex.typesetter.Typesetter#setParagraphBuilder(de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder)
-     */
-    public void setParagraphBuilder(ParagraphBuilder paragraphBuilder) {
 
-        // TODO unimplemented
+    /**
+     * Setter for the paragraph builder.
+     * Since the paragraph builder is not needed this is a noop.
+     *
+     * @param paragraphBuilder the new paragraph builder
+     *
+     * @see de.dante.extex.typesetter.Typesetter#setParagraphBuilder(
+     *       de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder)
+     */
+    public void setParagraphBuilder(final ParagraphBuilder paragraphBuilder) {
 
     }
 

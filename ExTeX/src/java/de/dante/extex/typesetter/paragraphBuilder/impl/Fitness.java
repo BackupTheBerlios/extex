@@ -20,10 +20,10 @@
 package de.dante.extex.typesetter.paragraphBuilder.impl;
 
 /**
- * ...
+ * This class prodes a finite enumeration for fitness values.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class Fitness {
 

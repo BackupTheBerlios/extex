@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.primitives.arithmetic;
 
 import de.dante.extex.i18n.CantUseAfterHelpingException;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -28,7 +28,6 @@ import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
 import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -80,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Multiply extends AbstractAssignment {
 
@@ -107,21 +106,20 @@ public class Multiply extends AbstractAssignment {
 
         Token cs = source.getToken();
 
-        if (!(cs instanceof ControlSequenceToken)) {
-            throw new CantUseAfterHelpingException(cs.toString(),
-                    printableControlSequence(context));
-        }
+        if (cs instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) cs);
 
-        Code code = context.getCode((CodeToken) cs);
+            if (code instanceof Multiplyable) {
 
-        if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
-                    cs.toString());
-        } else if (code instanceof Multiplyable) {
-            ((Multiplyable) code).multiply(prefix, context, source);
-        } else {
-            throw new CantUseAfterHelpingException(cs.toString(),
-                    printableControlSequence(context));
+                ((Multiplyable) code).multiply(prefix, context, source);
+                return;
+
+            } else if (code == null) {
+                throw new UndefinedControlSequenceHelpingException(//
+                        printable(context, cs));
+            }
         }
+        throw new CantUseAfterHelpingException(cs.toText(),
+                printableControlSequence(context));
     }
 }

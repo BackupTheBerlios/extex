@@ -29,14 +29,15 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class SpaceNode extends GlueNode implements Node {
 
     /**
-     * The field <tt>DEVELOP</tt> contains the ...
+     * The field <tt>DEVELOP</tt> contains the indicator that part of the code
+     * is used in the development version.
      */
-    private boolean DEVELOP = true;
+    private static final boolean DEVELOP = true;
 
     /**
      * The field <tt>size</tt> contains the width of the space to insert.

@@ -26,7 +26,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LogFormatter extends Formatter {
 
@@ -76,7 +76,7 @@ public class LogFormatter extends Formatter {
         }
 
         if (col >= LINE_LENGTH) {
-            //TODO
+            //TODO improve
             msg.append('\n');
             col = 0;
         }

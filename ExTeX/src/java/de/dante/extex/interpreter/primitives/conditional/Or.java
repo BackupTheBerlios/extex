@@ -33,12 +33,12 @@ import de.dante.util.GeneralException;
  * <doc name="or">
  * <h3>The Primitive <tt>\or</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Or extends AbstractIf {
 

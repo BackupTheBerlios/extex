@@ -22,23 +22,30 @@ package de.dante.extex.i18n;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This exception is raised when a situation is detected where the continuation
+ * is illegal.
+ * <p>
+ * The localization format is taken from the resource bundle of the parent
+ * class under the key <tt>TTP.CantUseAfter</tt>.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CantUseAfterHelpingException extends HelpingException {
 
     /**
      * Creates a new object.
-     * @param macro the name of the macro in which the eof has been encoutered
-     * @param mode the current mode
+     *
+     * @param cause the name of the macro in which the condition has been
+     *  encoutered
+     * @param predecessor the current mode
      */
-    public CantUseAfterHelpingException(final String macro, final String mode) {
+    public CantUseAfterHelpingException(final String cause,
+            final String predecessor) {
 
-        super(LocalizerFactory
-                .getLocalizer(HelpingException.class.getName()),
-                "TTP.CantUseAfter", macro, mode);
+        super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
+                "TTP.CantUseAfter", cause, predecessor);
     }
 
 }

@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * <doc name="ifcat">
  * <h3>The Primitive <tt>\ifcat</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  *  <pre class="syntax">
  *    &lang;ifcat&rang;
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Ifcat extends AbstractIf {
 

@@ -83,7 +83,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class HelpingException extends GeneralException {
 
@@ -125,7 +125,7 @@ public class HelpingException extends GeneralException {
     private ResourceBundle bundle = null;
 
     /**
-     * The field <tt>localizer</tt> contains the ...
+     * The field <tt>localizer</tt> contains the localizer.
      */
     private Localizer localizer = null;
 
@@ -146,13 +146,13 @@ public class HelpingException extends GeneralException {
      * Creates a new object without variable arguments.
      *
      * @param messageTag the message
-     * @param localizer the localizer to use
+     * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer localizer, final String messageTag) {
+    public HelpingException(final Localizer theLocalizer, final String messageTag) {
 
         super();
         this.tag = messageTag;
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -160,15 +160,15 @@ public class HelpingException extends GeneralException {
      *
      * @param messageTag the message
      * @param a1 the first argument
-     * @param localizer the localizer to use
+     * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer localizer, final String messageTag,
+    public HelpingException(final Localizer theLocalizer, final String messageTag,
             final String a1) {
 
         super();
         this.tag = messageTag;
         this.arg1 = a1;
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -177,16 +177,16 @@ public class HelpingException extends GeneralException {
      * @param messageTag the message
      * @param a1 the first argument
      * @param a2 the second argument
-     * @param localizer the localizer to use
+     * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer localizer, final String messageTag,
+    public HelpingException(final Localizer theLocalizer, final String messageTag,
             final String a1, final String a2) {
 
         super();
         this.tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -196,9 +196,9 @@ public class HelpingException extends GeneralException {
      * @param a1 the first argument
      * @param a2 the second argument
      * @param a3 the third argument
-     * @param localizer the localizer to use
+     * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer localizer, final String messageTag,
+    public HelpingException(final Localizer theLocalizer, final String messageTag,
             final String a1, final String a2, final String a3) {
 
         super();
@@ -206,7 +206,7 @@ public class HelpingException extends GeneralException {
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**

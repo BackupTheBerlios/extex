@@ -23,22 +23,23 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
 
 /**
- * ...
+ * This paragraph shape represents a fixed block. It is aliged at 0pt on the
+ * left and by the given width on the right.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FixedParagraphShape extends ParagraphShape {
 
     /**
-     * The field <tt>hsize</tt> contains the ...
+     * The field <tt>hsize</tt> contains the width of the fixed block.
      */
     private FixedDimen hsize;
 
     /**
      * Creates a new object.
      *
-     * @param theHsize ...
+     * @param theHsize the width
      */
     public FixedParagraphShape(final FixedDimen theHsize) {
 

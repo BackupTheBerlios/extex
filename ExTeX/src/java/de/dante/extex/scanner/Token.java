@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface Token {
 
@@ -111,6 +111,13 @@ public interface Token {
     boolean isa(Catcode cc);
 
     /**
+     * Print the token into a StringBuffer.
+     *
+     * @param sb the target string buffer
+     */
+    void toString(StringBuffer sb);
+
+    /**
      * This method returns the textual representation for the Token.
      * This textual representation might not contain the full information but
      * can be used as an abbreviated form to be shown to the end user.
@@ -122,14 +129,7 @@ public interface Token {
     String toText();
 
     /**
-     * Print the token into a StringBuffer.
-     *
-     * @param sb the target string buffer
-     */
-    void toString(StringBuffer sb);
-
-    /**
-     * ...
+     * Invoke the appropriate visit method for the current class.
      *
      * @param visitor the calling visitor
      * @param arg1 the first argument to pass

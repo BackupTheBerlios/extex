@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Manager {
 
@@ -52,7 +52,7 @@ public interface Manager {
     void push(ListMaker listMaker) throws GeneralException;
 
     /**
-     * ...
+     * End the current paragraph.
      *
      * @throws GeneralException in case of an error
      */

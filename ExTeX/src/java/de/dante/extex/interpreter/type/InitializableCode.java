@@ -23,10 +23,11 @@ import de.dante.util.GeneralException;
 
 
 /**
- * ...
+ * This interface describes the ability to be initialized
+ * This is a lifecycle feature.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface InitializableCode {
 

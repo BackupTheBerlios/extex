@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * <doc name="read">
  * <h3>The Primitive <tt>\read</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * </doc>
  *
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Read extends AbstractCode {
 
@@ -86,7 +86,7 @@ public class Read extends AbstractCode {
         }
 
         Tokens toks = file.read(context.getTokenFactory(), context
-                .getTokenizer(), cs);
+                .getTokenizer());
         context.setCode(cs, new MacroCode(cs.getValue(), prefix,
                 MacroPattern.EMPTY, toks), prefix.isGlobal());
 

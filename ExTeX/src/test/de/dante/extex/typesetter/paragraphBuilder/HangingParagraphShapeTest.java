@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * Test cases for the class HangingParagraphShape.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HangingParagraphShapeTest extends TestCase {
 
@@ -51,8 +51,8 @@ public class HangingParagraphShapeTest extends TestCase {
     }
 
     /**
-     * Test case checking that 0 length parshape repeats 0 as left and the right
-     * margin.
+     * Test case checking that parshape of length 0 repeats 0 as left and the
+     * right margin.
      */
     public void test0() {
 
@@ -70,8 +70,8 @@ public class HangingParagraphShapeTest extends TestCase {
     }
 
     /**
-     * Test case checking that 0 length parshape repeats the left and the right
-     * margin.
+     * Test case checking that parshape of length 1 repeats 0 as left and the
+     * right margin.
      */
     public void test1() {
 
@@ -89,7 +89,8 @@ public class HangingParagraphShapeTest extends TestCase {
     }
 
     /**
-     * ...
+     * Test case checking that parshape of length 2 repeats 0 as left and the
+     * right margin.
      */
     public void test2() {
 

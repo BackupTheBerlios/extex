@@ -20,13 +20,14 @@
 package de.dante.extex.interpreter.primitives.arithmetic;
 
 import de.dante.extex.i18n.CantUseAfterHelpingException;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
+import de.dante.extex.interpreter.type.arithmetic.Divideable;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -79,7 +80,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Advance extends AbstractAssignment {
 
@@ -106,22 +107,21 @@ public class Advance extends AbstractAssignment {
 
         Token cs = source.getToken();
 
-        if (!(cs instanceof CodeToken)) {
-            throw new CantUseAfterHelpingException(cs.toString(),
-                    printableControlSequence(context));
-        }
+        if (cs instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) cs);
 
-        Code code = context.getCode((CodeToken) cs);
+            if (code instanceof Advanceable) {
 
-        if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
-                    cs.toString());
-        } else if (code instanceof Advanceable) {
-            ((Advanceable) code).advance(prefix, context, source);
-        } else {
-            throw new CantUseAfterHelpingException(cs.toString(),
-                    printableControlSequence(context));
+                ((Advanceable) code).advance(prefix, context, source);
+                return;
+
+            } else if (code == null) {
+                throw new UndefinedControlSequenceHelpingException(//
+                        printable(context, cs));
+            }
         }
+        throw new CantUseAfterHelpingException(cs.toText(),
+                printableControlSequence(context));
     }
 
 }

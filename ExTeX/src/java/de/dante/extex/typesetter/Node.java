@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface Node extends Knot {
 
@@ -95,8 +95,9 @@ public interface Node extends Knot {
     /**
      * Adjust the width of a flexible node. This method is a noop for any but
      * the flexible nodes.
-     * @param width ...
-     * @param sum TODO
+     *
+     * @param width the desired with
+     * @param sum the total sum of the glues
      */
     void spread(FixedDimen width, FixedGlueComponent sum);
 

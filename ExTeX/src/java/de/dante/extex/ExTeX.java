@@ -53,6 +53,7 @@ import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
+import de.dante.extex.interpreter.ErrorHandlerFactory;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
@@ -61,7 +62,6 @@ import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.logging.LogFormatter;
-import de.dante.extex.main.ErrorHandlerFactory;
 import de.dante.extex.main.Version;
 import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
@@ -164,30 +164,30 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    not start with a backslash or a ampercent. It has no default.
  *   </dd>
  *   <dd>Property:
- *    <tt><a href="#extex.file">extex.file</a></tt></dd>
+ *    <a href="#extex.file"><tt>extex.file</tt></a></dd>
  *
- *   <dt><a name="-configuration"/><tt>-configuration &lang;resource&rang;</tt></dt>
+ *   <dt><a name="-configuration"><tt>-configuration &lang;resource&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
  *    This configuration resource is sought on the class path.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.config">extex.config</a></tt></dd>
  *
- *   <dt><a name="-copyright"/><tt>-copyright</tt></dt>
+ *   <dt><a name="-copyright"><tt>-copyright</tt></a></dt>
  *   <dd>
  *    This command line option produces a copyright notice on the
  *    standard output stream and terminates the program afterwards.
  *   </dd>
  *
  *   <dt><tt>&amp;&lang;format&rang;</tt></dt>
- *   <dt><a name="-fmt"/><tt>-fmt &lang;format&rang;</tt></dt>
+ *   <dt><a name="-fmt"><tt>-fmt &lang;format&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the name of the format to read. An empty
  *    string denotes that no format should be read. This is the default.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.fmt">extex.fmt</a></tt></dd>
  *
- *   <dt><a name="-debug"/><tt>-debug &lang;spec&rang;</tt></dt>
+ *   <dt><a name="-debug"><tt>-debug &lang;spec&rang;</tt></a></dt>
  *   <dd>
  *    This command line parameter can be used to instruct the program to produce
  *    debugging output of several kinds. The specification &lang;spec&rang; is
@@ -232,7 +232,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    </table>
  *   </dd>
  *
- *   <dt><a name="-halt"/><tt>-halt-on-error</tt></dt>
+ *   <dt><a name="-halt"><tt>-halt-on-error</tt></a></dt>
  *   <dd>
  *    This parameter contains the indicator whether the processing should
  *    halt after the first error has been encountered.
@@ -240,13 +240,13 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Property:
  *     <tt><a href="#extex.halt.on.error">extex.halt.on.error</a></tt></dd>
  *
- *   <dt><a name="-help"/><tt>-help</tt></dt>
+ *   <dt><a name="-help"><tt>-help</tt></a></dt>
  *   <dd>
  *    This command line option produces a short usage description on the
  *    standard output stream and terminates the program afterwards.
  *   </dd>
  *
- *   <dt><a name="-ini"/><tt>-ini</tt></dt>
+ *   <dt><a name="-ini"><tt>-ini</tt></a></dt>
  *   <dd>
  *    If set to <code>true</code> then act as initex. This coµmand line
  *    option is defined for compatibility to TeX only. In ExTeX it has no
@@ -254,7 +254,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.ini">extex.ini</a></tt> </dd>
  *
- *   <dt><a name="-interaction"/><tt>-interaction &lang;mode&rang;</tt></dt>
+ *   <dt><a name="-interaction"><tt>-interaction &lang;mode&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the interaction mode. Possible values are
  *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
@@ -263,7 +263,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Property:
  *    <tt><a href="#extex.interaction">extex.interaction</a></tt></dd>
  *
- *   <dt><a name="-job"/><tt>-job-name &lang;name&rang;</tt></dt>
+ *   <dt><a name="-job"><tt>-job-name &lang;name&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
  *    if a file is given to read from. In this case the base name of
@@ -272,7 +272,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Property:
  *    <tt><a href="#extex.jobname">extex.jobname</a></tt></dd>
  *
- *   <dt><a name="-language"/><tt>-language &lang;language&rang;</tt></dt>
+ *   <dt><a name="-language"><tt>-language &lang;language&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the name of the locale to be used for the
  *    messages.
@@ -280,7 +280,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Property:
  *    <tt><a href="#extex.lang">extex.lang</a></tt> </dd>
  *
- *   <dt><a name="-output"/><tt>-output &lang;format&rang;</tt></dt>
+ *   <dt><a name="-output"><tt>-output &lang;format&rang;</tt></a></dt>
  *   <dd>
  *    This parameter contains the output format. This logical name is resolved
  *    via the configuration.
@@ -288,24 +288,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Property:
  *    <tt><a href="#extex.output">extex.output</a></tt></dd>
  *
- *   <dt><a name="-texmfoutputs"/><tt>-texmfoutputs &lang;dir&rang;</tt></dt>
- *   <dd>
- *    This parameter contains the name of the
- *    property for the fallback if the output directory fails to be writable.
- *   </dd>
- *   <dd>Property:
- *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
- *   </dd>
- *
- *   <dt><a name="-texoutputs"/><tt>-texoutputs &lang;dir&rang;</tt></dt>
- *   <dd>
- *    This parameter contain the directory where output files should be
- *    created.
- *   </dd>
- *   <dd>Property:
- *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
- *
- *   <dt><a name="-progname"/><tt>-progname</tt></dt>
+ *   <dt><a name="-progname"/><tt>-progname &lang;name&rang;</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
  *    the banner and the version information.
@@ -320,6 +303,23 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.texinputs">extex.texinputs</a></tt> </dd>
+ *
+ *   <dt><a name="-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a></dt>
+ *   <dd>
+ *    This parameter contains the name of the
+ *    property for the fallback if the output directory fails to be writable.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
+ *   </dd>
+ *
+ *   <dt><a name="-texoutputs"><tt>-texoutputs &lang;dir&rang;</tt></a></dt>
+ *   <dd>
+ *    This parameter contain the directory where output files should be
+ *    created.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
  *
  *   <dt><a name="-version"/><tt>-version</tt></dt>
  *   <dd>
@@ -366,7 +366,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * The following properties are recognized:
  * </p>
  * <dl>
- *   <dt><a name="extex.code"/><tt>extex.code</tt></dt>
+ *   <dt><a name="extex.code"/><tt>extex.code</tt></a></dt>
  *   <dd>
  *    This parameter contains ExTeX code to be executed directly. The
  *    execution is performed after any code specified in an input file.
@@ -415,7 +415,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dd>Command line:
  *    <a href="#-halt"><tt>-halt-on-error</tt></a> </dd>
  *
- *   <dt><a name="extex.file"/><tt>extex.file</tt></dt>
+ *   <dt><a name="extex.file"><tt>extex.file</tt></a></dt>
  *   <dd>
  *    This parameter contains the file to read from. It has no default
  *   </dd>
@@ -612,7 +612,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public class ExTeX {
 
@@ -901,7 +901,8 @@ public class ExTeX {
     private Observer interactionObserver = null;
 
     /**
-     * The field <tt>localizer</tt> contains the ...
+     * The field <tt>localizer</tt> contains the localizer. It is initiated
+     * with a localizer for the name of this class.
      */
     private Localizer localizer = LocalizerFactory.getLocalizer(ExTeX.class
             .getName());
@@ -1195,7 +1196,7 @@ public class ExTeX {
      *
      * @throws GeneralException in case of some error
      * @throws IOException in case, well, you guess it
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of a configuration error
      */
     protected void loadFormat(final Interpreter interpreter,
             final ResourceFinder finder, final String fmt, final String jobname)

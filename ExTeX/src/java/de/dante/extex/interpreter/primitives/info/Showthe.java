@@ -38,13 +38,13 @@ import de.dante.util.GeneralException;
  * <doc name="showthe">
  * <h3>The Primitive <tt>\showthe</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Showthe extends The {
 

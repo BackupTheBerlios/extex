@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -690,7 +690,8 @@ public class ConfigurationXMLImpl implements Configuration {
      *  contains a syntax error.
      * @throws ConfigurationNotFoundException in case that the specified
      *  configuration can not be found.
-     * @throws ConfigurationInvalidResourceException in case that ...
+     * @throws ConfigurationInvalidResourceException in case that the resource
+     *  is invalid
      *
      * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
      */

@@ -31,7 +31,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -173,10 +173,11 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * ...
+     * Adjust the width of a flexible node. This method is a noop for any but
+     * the flexible nodes.
      *
-     * @param width ...
-     * @param sum ...
+     * @param width the desired with
+     * @param sum the total sum of the glues
      *
      * @see de.dante.extex.typesetter.Node#spread(FixedDimen, FixedGlueComponent)
      */

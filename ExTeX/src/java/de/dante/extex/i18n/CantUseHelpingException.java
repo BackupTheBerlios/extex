@@ -22,22 +22,27 @@ package de.dante.extex.i18n;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This exception is raised when a macro is encouterend in a mode for which it
+ * is not meant.
+ * <p>
+ * The localization format is taken from the resource bundle of the parent
+ * class under the key <tt>TTP.CantUseAfter</tt>.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CantUseHelpingException extends HelpingException {
 
     /**
      * Creates a new object.
+     *
      * @param macro the name of the macro in which the eof has been encoutered
      * @param mode the current mode
      */
     public CantUseHelpingException(final String macro, final String mode) {
 
-        super(LocalizerFactory
-                .getLocalizer(HelpingException.class.getName()),
+        super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
                 "TTP.CantUseIn", macro, mode);
     }
 

@@ -20,15 +20,15 @@ package de.dante.util.framework.i18n;
 
 
 /**
- * This interface describes the feature to receive
+ * This interface describes the feature to receive a localizer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Localizable {
 
     /**
-     * ...
+     * Setter for the Localizer.
      *
      * @param localizer the localizer to use
      */

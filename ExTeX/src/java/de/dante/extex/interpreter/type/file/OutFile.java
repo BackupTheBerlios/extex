@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OutFile implements Serializable {
 
@@ -56,7 +56,7 @@ public class OutFile implements Serializable {
     }
 
     /**
-     * ...
+     * Open the current file.
      *
      * @throws GeneralException in case of an error
      */
@@ -66,14 +66,16 @@ public class OutFile implements Serializable {
     }
 
     /**
-     * ...
+     * Close the current file.
      *
      * @throws GeneralException in case of an error
      */
     public void close() throws GeneralException {
 
-        //TODO unimplemented
-        file = null;
+        if (file != null) {
+            //TODO unimplemented
+            file = null;
+        }
     }
 
     /**
@@ -95,7 +97,7 @@ public class OutFile implements Serializable {
      */
     public void write(final Tokens t) throws GeneralException {
 
-        //TODO
+        //TODO unimplemented
     }
 
 }

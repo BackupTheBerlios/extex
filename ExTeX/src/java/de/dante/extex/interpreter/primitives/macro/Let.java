@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
+import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -53,7 +54,7 @@ import de.dante.util.GeneralException;
  * <doc name="let">
  * <h3>The Primitive <tt>\let</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -76,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -199,8 +200,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
         Code code = context.getCode(token);
 
         if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken",
-                    token.toString());
+            throw new UndefinedControlSequenceHelpingException(//
+                    printable(context, token));
         }
 
         return code;

@@ -25,17 +25,19 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MacroPattern extends Tokens {
 
     /**
-     * The field <tt>EMPTY</tt> contains the ...
+     * The constant <tt>EMPTY</tt> contains the empty macro pattern. This can
+     * be used in a poor man's factory.
      */
-    public static MacroPattern EMPTY = new MacroPattern(Tokens.EMPTY, 0);
+    public static final MacroPattern EMPTY = new MacroPattern(Tokens.EMPTY, 0);
 
     /**
-     * The field <tt>arity</tt> contains the ...
+     * The field <tt>arity</tt> contains the artiy, i.e. the number or
+     * parameters.
      */
     private int arity;
 
@@ -75,7 +77,7 @@ public class MacroPattern extends Tokens {
     /**
      * Setter for the arity.
      *
-     * @param theArity ...
+     * @param theArity the new arity
      */
     public void setArity(final int theArity) {
 

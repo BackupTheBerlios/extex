@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -160,7 +160,8 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Compare this value with a given glue and return <code>true</code> iff
+     * the current length is greater or equal than the given length.
      *
      * @param x the value to compare to
      *
@@ -209,7 +210,8 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Compare this value with a given glue and return <code>true</code> iff
+     * the current length is greater than the given length.
      *
      * @param x the value to compare to
      *
@@ -222,7 +224,8 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Compare this value with a given glue and return <code>true</code> iff
+     * the current length is less or equal than the given length.
      *
      * @param x the value to compare to
      *
@@ -235,7 +238,8 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Compare this value with a given glue and return <code>true</code> iff
+     * the current length is less than the given length.
      *
      * @param x the value to compare to
      *
@@ -302,10 +306,10 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Subtract a dimen to this one glue.
-     * The subtraction is performed indepentently on the components.
+     * Subtract a Glue component from this glue.
+     * The subtraction is performed on the length only.
      *
-     * @param g the glue to add
+     * @param g the glue to subtract
      */
     public void subtract(final FixedGlueComponent g) {
 

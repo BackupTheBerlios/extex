@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * <doc name="hbox">
  * <h3>The Primitive <tt>\hbox</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The contents of the toks register <tt>\everyhbox</tt> is inserted at the
@@ -74,7 +74,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 

@@ -33,10 +33,17 @@ import de.dante.util.framework.AbstractFactory;
 
 
 /**
- * ...
+ * This is a factory to deliver primitives from a configuration.
+ * 
+ * <pre>
+ *  &lt;cfg&gt;
+ *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
+ *    &lt;define name="<i>name</i>" class="<i>class</i>"&gt;<i>value</i>&lt;/define&gt;
+ *  &lt;/cfg&gt;
+ * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 

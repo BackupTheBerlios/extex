@@ -37,11 +37,12 @@ import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This class is used to represent box registers.
+ * A ox register can either be void or be a horizontal or vertical list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Box implements Serializable {
 
@@ -62,13 +63,13 @@ public class Box implements Serializable {
      * @param context the processor context
      * @param source the source for new tokens
      * @param typesetter the typesetter stack
-     * @param horizontal indicator whether a <tt>\hbox</tt> should be
+     * @param isHorizontal indicator whether a <tt>\hbox</tt> should be
      *     constructed. The alternative is a <tt>\vbox</tt>.
      *
      * @throws GeneralException in case of an error
      */
     public Box(final Context context, final TokenSource source,
-            final Typesetter typesetter, final boolean horizontal)
+            final Typesetter typesetter, final boolean isHorizontal)
             throws GeneralException {
 
         super();
@@ -80,7 +81,7 @@ public class Box implements Serializable {
             throw new HelpingException(getLocalizer(), "TTP.MissingLeftBrace");
         }
 
-        if (horizontal) {
+        if (isHorizontal) {
             typesetter.openHbox();
         } else {
             typesetter.openVbox();
@@ -135,9 +136,9 @@ public class Box implements Serializable {
     }
 
     /**
-     * ...
+     * Getter for the localizer.
      *
-     * @return ...
+     * @return the localizer
      */
     protected Localizer getLocalizer() {
 

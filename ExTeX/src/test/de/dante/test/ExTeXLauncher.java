@@ -34,14 +34,14 @@ import de.dante.extex.main.exception.MainException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ExTeXLauncher extends TestCase {
 
     /**
-     * ...
+     * Set some properties to default values.
      *
-     * @return ...
+     * @param properties to properties to adapt
      */
     private static void prepareProperties(final Properties properties) {
 
@@ -61,9 +61,9 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
-     * Run  some code through ExTeX.
+     * Run some code through ExTeX.
      *
-     * @param properties ...
+     * @param properties the properties to start with
      * @param code the code to expand
      * @param log the expected output on the log stream
      * @param expect the expected output on the output stream
