@@ -24,14 +24,16 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
+import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * Test cases for dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class DimenRegisterTest extends TestCase {
 
@@ -56,6 +58,29 @@ public class DimenRegisterTest extends TestCase {
     //TODO change InterpreterFactory
 
     /**
+     * Performa test on a given String.
+     *
+     * @param spec the String to parse
+     *
+     * @return the sp of the Dimen returned
+     *
+     * @throws ConfigurationException in case of an error in the configuration
+     * @throws GeneralException in case of an error during parsing
+     */
+    private long doTest(final String spec)
+            throws ConfigurationException,
+                GeneralException {
+
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex.xml");
+        InterpreterFactory interpreterFactory = new InterpreterFactory();
+        interpreterFactory.configure(config.getConfiguration("Interpreter"));
+        Interpreter source = interpreterFactory.newInstance();
+        source.addStream(new TokenStreamStringImpl(spec));
+        return new Dimen(null, source).getValue();
+    }
+
+    /**
      * Test that the parsing of scaled points works.
      * A value in the middle (1234sp) is used.
      *
@@ -63,13 +88,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testSp1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1234 sp"));
-        assertEquals(1234, new Dimen(null, source).getValue());
+        assertEquals(1234, doTest("1234 sp"));
     }
 
     /**
@@ -80,13 +99,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPt1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.000pt"));
-        assertEquals(65536, new Dimen(null, source).getValue());
+        assertEquals(65536, doTest("1.000pt"));
     }
 
     /**
@@ -97,13 +110,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPt2() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.5pt"));
-        assertEquals(98304, new Dimen(null, source).getValue());
+        assertEquals(98304, doTest("1.5pt"));
     }
 
     /**
@@ -114,13 +121,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPt3() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.50pt"));
-        assertEquals(98304, new Dimen(null, source).getValue());
+        assertEquals(98304, doTest("1.50pt"));
     }
 
     /**
@@ -131,13 +132,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPt4() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.33pt"));
-        assertEquals(87163, new Dimen(null, source).getValue());
+        assertEquals(87163, doTest("1.33pt"));
     }
 
     /**
@@ -148,13 +143,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPt5() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.333pt"));
-        assertEquals(87359, new Dimen(null, source).getValue());
+        assertEquals(87359, doTest("1.333pt"));
     }
 
     /**
@@ -165,13 +154,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testMm1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1mm"));
-        assertEquals(186467, new Dimen(null, source).getValue());
+        assertEquals(186467, doTest("1mm"));
     }
 
     /**
@@ -182,13 +165,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testMm2() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.33mm"));
-        assertEquals(248002, new Dimen(null, source).getValue());
+        assertEquals(248002, doTest("1.33mm"));
     }
 
     /**
@@ -199,13 +176,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testCm1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1cm"));
-        assertEquals(1864679, new Dimen(null, source).getValue());
+        assertEquals(1864679, doTest("1cm"));
     }
 
     /**
@@ -216,13 +187,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testCm2() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.33cm"));
-        assertEquals(2480027, new Dimen(null, source).getValue());
+        assertEquals(2480027, doTest("1.33cm"));
     }
 
     /**
@@ -233,13 +198,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testIn1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1in"));
-        assertEquals(4736286, new Dimen(null, source).getValue());
+        assertEquals(4736286, doTest("1in"));
     }
 
     /**
@@ -250,13 +209,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testDd1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1dd"));
-        assertEquals(70124, new Dimen(null, source).getValue());
+        assertEquals(70124, doTest("1dd"));
     }
 
     /**
@@ -267,13 +220,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testDd2() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.25dd"));
-        assertEquals(87655, new Dimen(null, source).getValue());
+        assertEquals(87655, doTest("1.25dd"));
     }
 
     /**
@@ -284,13 +231,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPc1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.25pc"));
-        assertEquals(983040, new Dimen(null, source).getValue());
+        assertEquals(983040, doTest("1.25pc"));
     }
 
     /**
@@ -301,13 +242,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testPc2() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.7pc"));
-        assertEquals(1336932, new Dimen(null, source).getValue());
+        assertEquals(1336932, doTest("1.7pc"));
     }
 
     /**
@@ -318,13 +253,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testBp1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("1.25bp"));
-        assertEquals(82227, new Dimen(null, source).getValue());
+        assertEquals(82227, doTest("1.25bp"));
     }
 
     /**
@@ -335,13 +264,7 @@ public class DimenRegisterTest extends TestCase {
      */
     public void testCc1() throws Exception {
 
-        Configuration config = new ConfigurationFactory()
-                .newInstance("config/extex.xml");
-        InterpreterFactory interpreterFactory = new InterpreterFactory();
-        interpreterFactory.configure(config.getConfiguration("Interpreter"));
-        Interpreter source = interpreterFactory.newInstance();
-        source.addStream(new TokenStreamStringImpl("7,777cc"));
-        assertEquals(6544254, new Dimen(null, source).getValue());
+        assertEquals(6544254, doTest("7,777cc"));
     }
 
 }
