@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UndefinedControlSequenceException extends HelpingException {
 
@@ -38,8 +38,10 @@ public class UndefinedControlSequenceException extends HelpingException {
      */
     public UndefinedControlSequenceException(final String macro) {
 
-        super(LocalizerFactory.getLocalizer(HelpingException.class.getName()),
-                "TTP.UndefinedToken", macro);
+        super(
+                LocalizerFactory
+                        .getLocalizer(UndefinedControlSequenceException.class
+                                .getName()), "TTP.UndefinedToken", macro);
     }
 
 }
