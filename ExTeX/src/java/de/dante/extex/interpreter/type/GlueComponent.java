@@ -22,9 +22,11 @@ import java.io.Serializable;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.DimenConvertable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 
@@ -44,7 +46,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GlueComponent implements Serializable {
     /**
@@ -122,7 +124,7 @@ public class GlueComponent implements Serializable {
     public GlueComponent(final TokenSource source, final Context context,
         final boolean fixed) throws GeneralException {
         super();
-        set(source, context, fixed);
+        set(context, source, fixed);
     }
 
     /**
@@ -158,6 +160,7 @@ public class GlueComponent implements Serializable {
      * @param l the new value
      */
     public void set(final long l) {
+
         value = l;
     }
 
@@ -167,6 +170,7 @@ public class GlueComponent implements Serializable {
      * @param d the new value
      */
     public void set(final Dimen d) {
+
         value = d.getValue();
         order = 0;
     }
@@ -174,35 +178,35 @@ public class GlueComponent implements Serializable {
     /**
      * ...
      *
-     * @param source ...
-     * @param context ...
+     * @param context the interpreter context
+     * @param source the source for next tokens
      *
      * @throws GeneralException in case of an error
      */
     public void set(final Context context, final TokenSource source)
              throws GeneralException {
-        set(source, context, true);
+
+        set(context, source, true);
     }
 
     /**
      * ...
      *
-     * @param source ...
-     * @param context ...
-     * @param fixed ...
+     * @param context the interpreter context
+     * @param source the source for next tokens
+     * @param fixed this argument indicates that no fil parts of the object
+     * should be filled. This means that the component is in fact a fixed
+     * dimen value.
      *
      * @throws GeneralException in case of an error
      */
-    public void set(final TokenSource source, final Context context,
+    protected void set(final Context context, final TokenSource source,
             final boolean fixed) throws GeneralException {
 
         Token t = source.scanNonSpace();
         if (t == null) {
             throw new GeneralHelpingException("Glue: unit not found!"); //TODO
             // incomplete
-        }
-        Code code = context.getCode(t);
-        if (code != null) {
         }
 
         value = scanFloat(source, t);
@@ -238,19 +242,37 @@ public class GlueComponent implements Serializable {
         } else if (source.scanKeyword("cc")) {
             value = value * 14856 / 1157;
         } else if (source.scanKeyword("ex")) {
-            //TODO ex unimplemented
+            Dimen ex = context.getTypesettingContext().getFont().getEm();
+            value = value * ex.getValue() / ONE;
         } else if (source.scanKeyword("em")) {
-            //TODO em unimplemented
+            Dimen em = context.getTypesettingContext().getFont().getEm();
+            value = value * em.getValue() / ONE;
         } else if (fixed && source.scanKeyword("fil")) {
             order = 1;
-            for (t = source.getToken(); (t != null && (t.equals('l') || t
-                    .equals('L'))); t = source.getToken()) {
+            for (t = source.getToken(); //
+                    (t != null && (t.equals('l') || t.equals('L'))); //
+                    t = source.getToken()) {
                 order++;
             }
             source.push(t);
+        } else if ((t = source.getToken()) != null) {
+            if (t instanceof ControlSequenceToken) {
+                Code code = context.getMacro(t.getValue());
+                if (code instanceof DimenConvertable) {
+                    value = value
+                            * ((DimenConvertable) code).convertDimen(context,
+                                                                     source)
+                            / ONE;
+                } else {
+                    throw new GeneralHelpingException("TTP.IllegalUnit");
+                }
+            } else {
+                throw new GeneralHelpingException("TTP.IllegalUnit");
+            }
         } else { // cf. TTP [459]
             throw new GeneralHelpingException("TTP.IllegalUnit");
         }
+
         if (mag != 1000) {
             value = value * mag / 1000;
         }
