@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -151,10 +151,11 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      */
     private int breakLine(final int start, final int len,
             final HorizontalListNode nodes, final HorizontalListNode hlist,
-            final Dimen width) {
+            final Dimen width, final Glue accumulator) {
 
         Node node = nodes.get(start);
         hlist.add(node);
+        node.addWidthTo(accumulator);
         int i = start + 1;
         Glue w = new Glue(0);
 
@@ -163,13 +164,17 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
             if (w.gt(width)) {
                 if (i == start + 1) {
                     //avoid infinite loop and accept overful box
-                    i = saveNodes(nodes, i, point, hlist);
+                    i = saveNodes(nodes, i, point, hlist, accumulator);
                 }
                 return discartNodes(i, len, nodes);
             }
-            i = saveNodes(nodes, i, point, hlist);
+
+            i = saveNodes(nodes, i, point, hlist, accumulator);
+
             while (i < len && nodes.get(i) instanceof Discartable) {
-                hlist.add(nodes.get(i++));
+                hlist.add(nodes.get(i));
+                nodes.get(i).addWidthTo(accumulator);
+                i++;
             }
         }
 
@@ -212,28 +217,34 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         int i = 0;
         int line = 0;
         Dimen wd = new Dimen();
-        Dimen leftLength = leftskip.getLength();
-        Dimen rightLength = rightskip.getLength();
+        Dimen adjustLeftRight = new Dimen(leftskip.getLength());
+        adjustLeftRight.add(rightskip.getLength());
         FixedGlue lineskip = options.getGlueOption("lineskip");
         boolean first = true;
+        Glue accumulator = new Glue(0);
 
         while (i < len) {
+            accumulator.set(Dimen.ZERO_PT);
             wd.set(parshape.getRight(line));
             wd.subtract(parshape.getLeft(line));
             Dimen width = new Dimen(wd);
-            wd.subtract(leftLength);
-            wd.subtract(rightLength);
+            wd.subtract(adjustLeftRight);
             HorizontalListNode hlist = new HorizontalListNode();
+
             hlist.addSkip(leftskip);
-            i = breakLine(i, len, nodes, hlist, wd);
+            accumulator.add(leftskip);
+            i = breakLine(i, len, nodes, hlist, wd, accumulator);
             hlist.addSkip(rightskip);
-            spread(hlist, width);
-            if (first) {
-                first = false;
+            accumulator.add(rightskip);
+
+            spread(hlist, width, accumulator);
+
+            //if (first) {
+            //    first = false;
                 vlist.add(new GlueNode(lineskip));
-            } else {
-                vlist.add(new GlueNode(lineskip));
-            }
+            //} else {
+            //    vlist.add(new GlueNode(lineskip));
+            //}
             vlist.add(hlist);
             //tracer.info(line + "");
             line++;
@@ -372,13 +383,14 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @return ...
      */
     private int saveNodes(final HorizontalListNode nodes, final int start,
-            final int end, final HorizontalListNode hlist) {
+            final int end, final HorizontalListNode hlist, final Glue accumulator) {
 
         Node node;
         for (int i = start; i < end; i++) {
             node = nodes.get(i);
             if (!(node instanceof PenaltyNode)) {
                 hlist.add(node);
+                node.addWidthTo(accumulator);
             }
         }
         return end;
@@ -398,59 +410,22 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      *
      * @param hlist the target list to put the nodes into
      * @param targetWidth the target width
+     * @param w ...
      */
     private void spread(final HorizontalListNode hlist,
-            final FixedDimen targetWidth) {
+            final FixedDimen targetWidth, final Glue w) {
 
-        Glue w = new Glue(0);
+        Dimen width = w.getLength();
+        FixedGlueComponent component = (width.lt(targetWidth) ? w.getStretch() : w
+                .getShrink());
+
+        Dimen wd = new Dimen(targetWidth.getValue() - width.getValue());
         NodeIterator it = hlist.iterator();
         while (it.hasNext()) {
-            it.next().addWidthTo(w);
+            it.next().spread(wd, component);
         }
-        Dimen width = w.getLength();
-        if (width.lt(targetWidth)) {
-            spreadWiden(hlist, targetWidth, width, w.getStretch());
-        } else {
-            spreadNarrow(hlist, targetWidth, width, w.getShrink());
-        }
-    }
 
-    /**
-     * ...
-     *
-     * @param hlist the target list to put the nodes into
-     * @param targetWidth the target width
-     * @param width the actual width before shrinking
-     * @param shrink ...
-     */
-    private void spreadNarrow(final HorizontalListNode hlist,
-            final FixedDimen targetWidth, final FixedDimen width,
-            final FixedGlueComponent shrink) {
-
-        // TODO unimplemented
-
-    }
-
-    /**
-     * ...
-     *
-     * @param hlist the target list to put the nodes into
-     * @param targetWidth the target width
-     * @param width the actual width before stretching
-     * @param stretch ...
-     */
-    private void spreadWiden(final HorizontalListNode hlist,
-            final FixedDimen targetWidth, final FixedDimen width,
-            final FixedGlueComponent stretch) {
-
-        long nom = width.getValue();
-        long denom = stretch.getValue();
-        if (denom != 0) {
-            NodeIterator it = hlist.iterator();
-            while (it.hasNext()) {
-                it.next().spread(nom, denom, targetWidth);
-            }
-        }
+        hlist.setWidth(targetWidth);
     }
 
 }
