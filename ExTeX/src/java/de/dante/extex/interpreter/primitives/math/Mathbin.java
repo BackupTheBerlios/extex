@@ -29,12 +29,13 @@ import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\mathbin</code>.
+ * This class provides an implementation for the primitive
+ * <code>\mathbin</code>.
  *
  * <doc name="mathbin">
  * <h3>The Primitive <tt>\mathbin</tt></h3>
  * <p>
- *  ...
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathbin extends AbstractMathCode {
 
@@ -75,7 +76,7 @@ public class Mathbin extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        NoadConsumer nc = getListMaker(typesetter);
+        NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(context, source);
         nc.add(new BinNoad(noad));
         return true;

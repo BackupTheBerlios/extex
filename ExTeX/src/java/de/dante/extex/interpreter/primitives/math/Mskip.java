@@ -22,7 +22,9 @@ package de.dante.extex.interpreter.primitives.math;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
@@ -42,12 +44,12 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \mskip  </pre>
+ *    \mskip 12mu plus 3mu minus 4 mu </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Mskip extends AbstractMathCode {
 
@@ -72,9 +74,10 @@ public class Mskip extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        NoadConsumer nc = getListMaker(context, typesetter);
+        Muskip glue = new Muskip(context, source);
+        nc.add(glue);
+        return true;
     }
 
 }

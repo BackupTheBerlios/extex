@@ -23,10 +23,12 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\atopwithdelims</code>.
+ * This class provides an implementation for the primitive
+ * <code>\atopwithdelims</code>.
  *
  * <doc name="atopwithdelims">
  * <h3>The Primitive <tt>\atopwithdelims</tt></h3>
@@ -47,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Atopwithdelims extends AbstractMathCode {
 
@@ -71,6 +73,8 @@ public class Atopwithdelims extends AbstractMathCode {
     public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
+
+        NoadConsumer nc = getListMaker(context, typesetter);
 
         //TODO execute() unimplemented
         throw new RuntimeException("unimplemented");
