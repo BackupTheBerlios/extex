@@ -22,10 +22,11 @@ package de.dante.extex.i18n;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This exception signals that an undefined control sequence has been
+ * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UndefinedControlSequenceHelpingException extends HelpingException {
 
