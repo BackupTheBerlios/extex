@@ -16,10 +16,10 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner;
 
 import de.dante.util.UnicodeChar;
-
 
 /**
  * This is the interface for a token. A token is a pair of catcode and value.
@@ -32,40 +32,21 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Token {
 
     /**
-     * Getter for the catcode.
+     * Compare the current token with a pair of catcode and character value.
+     * This pair constitutes a vitual token. They are the same if the catcode
+     * and the value are the same.
      *
-     * @return the catcode
-     */
-    Catcode getCatcode();
-
-    /**
-     * Getter for the value.
-     *
-     * @return the value
-     */
-    String getValue();
-
-    /**
-     * Getter for the value.
-     *
-     * @return the value
-     */
-    UnicodeChar getChar();
-
-    /**
-     * Compare the current token to another token. They are the same if the
-     * catcode and the value are the same.
-     *
-     * @param t the token to compare to
+     * @param cc the catcode
+     * @param c the value
      *
      * @return <code>true</code> iff the tokens are equal
      */
-    boolean equals(Object t);
+    boolean equals(Catcode cc, char c);
 
     /**
      * Compare the current token with a pair of catcode and String value. This
@@ -90,16 +71,35 @@ public interface Token {
     boolean equals(char c);
 
     /**
-     * Compare the current token with a pair of catcode and character value.
-     * This pair constitutes a vitual token. They are the same if the catcode
-     * and the value are the same.
+     * Compare the current token to another token. They are the same if the
+     * catcode and the value are the same.
      *
-     * @param cc the catcode
-     * @param c the value
+     * @param t the token to compare to
      *
      * @return <code>true</code> iff the tokens are equal
      */
-    boolean equals(Catcode cc, char c);
+    boolean equals(Object t);
+
+    /**
+     * Getter for the catcode.
+     *
+     * @return the catcode
+     */
+    Catcode getCatcode();
+
+    /**
+     * Getter for the value.
+     *
+     * @return the value
+     */
+    UnicodeChar getChar();
+
+    /**
+     * Getter for the value.
+     *
+     * @return the value
+     */
+    String getValue();
 
     /**
      * Check if the current token has a specified catcode.
@@ -121,4 +121,17 @@ public interface Token {
      */
     String toText();
 
+    /**
+     * ...
+     *
+     * @param visitor the calling visitor
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     *
+     * @return ...
+     *
+     * @throws Exception in case of ...
+     */
+    Object visit(TokenVisitor visitor, Object arg1, Object arg2)
+            throws Exception;
 }

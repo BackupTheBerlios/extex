@@ -51,7 +51,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -67,7 +67,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private final class SSKey {
 
@@ -122,9 +122,14 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * character (U) and a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
+     * @version $Revision: 1.18 $
      */
     private final class USKey {
+
+        /**
+         * The field <tt>HASH_FACTOR</tt> contains the ...
+         */
+        private static final int HASH_FACTOR = 17;
 
         /**
          * The field <tt>namespace</tt> contains the namespace of the active
@@ -167,7 +172,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
          */
         public int hashCode() {
 
-            return uc.hashCode() + 17 * namespace.hashCode();
+            return uc.hashCode() + HASH_FACTOR * namespace.hashCode();
         }
     }
 
