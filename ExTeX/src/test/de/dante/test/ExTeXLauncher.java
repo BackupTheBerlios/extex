@@ -20,6 +20,8 @@
 package de.dante.test;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.util.Properties;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -42,7 +44,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -50,7 +52,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -93,6 +95,11 @@ public class ExTeXLauncher extends TestCase {
 
         }
     }
+
+    /**
+     * The field <tt>props</tt> contains the ...
+     */
+    private static Properties props = null;
 
     /**
      * Set some properties to default values. The properties set are:
@@ -197,7 +204,17 @@ public class ExTeXLauncher extends TestCase {
     public void runCode(final String code, final String log, final String expect)
             throws Exception {
 
-        runCode(System.getProperties(), code, log, expect);
+        if (props == null) {
+            props = System.getProperties();
+
+            File file = new File(".extex-test");
+            if (file.canRead()) {
+                FileInputStream inputStream = new FileInputStream(file);
+                props.load(inputStream);
+                inputStream.close();
+            }
+        }
+        runCode(props, code, log, expect);
     }
 
     /**
