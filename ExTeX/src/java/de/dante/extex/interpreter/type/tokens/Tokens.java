@@ -39,7 +39,7 @@ import de.dante.extex.scanner.type.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -209,6 +209,17 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
+     * Add a token to the list at a certain position.
+     *
+     * @param index the index to add the token to
+     * @param t the token to add
+     */
+    public void insert(final int index, final Token t) {
+
+        tokens.add(0, t);
+    }
+
+    /**
      * Getter for the length of the toks register, this is the number of
      * elements contained.
      *
@@ -231,6 +242,15 @@ public class Tokens implements Serializable, FixedTokens {
             return null;
         }
         return (Token) tokens.remove(tokens.size() - 1);
+    }
+
+    /**
+     * This method removes all elements from the tokens list. Afterwards the
+     * list is empty.
+     */
+    public void clear() {
+
+        tokens.clear();
     }
 
     /**
