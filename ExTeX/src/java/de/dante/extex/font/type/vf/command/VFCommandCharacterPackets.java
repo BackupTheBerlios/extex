@@ -31,6 +31,7 @@ import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMCharInfoWord;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.font.type.tfm.TFMFont;
+import de.dante.extex.font.type.vf.exception.VFDviException;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.extex.format.dvi.DviPl;
 import de.dante.extex.format.dvi.DviXml;
@@ -98,7 +99,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
@@ -230,6 +231,17 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
         element.setAttribute("packetlength", String.valueOf(packetlength));
         element.setAttribute("width", width.toString());
 
+        // read the char from ther master-tfm
+        int bc = mastertfm.getLengths().getBc();
+        TFMCharInfoWord ciw = mastertfm.getCharinfo().getCharInfoWord(
+                charactercode - bc);
+
+        if (ciw != null) {
+            Element tfm = new Element("tfm");
+            tfm.addContent(ciw.toXML());
+            element.addContent(tfm);
+        }
+
         //        for (int i = 0; i < dvi.length; i++) {
         //            Element d = new Element("dvi-org");
         //            d.setAttribute("id", String.valueOf(i));
@@ -283,8 +295,7 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
             pl.interpret(arar);
             arar.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            // TODO mgn incomplete
+            throw new VFDviException(e.getMessage());
         }
         out.plclose();
         out.plclose();
