@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Underline extends AbstractMathCode {
 
@@ -78,12 +78,8 @@ public class Underline extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        ListMaker maker = typesetter.getListMaker();
-        if (!(maker instanceof NoadConsumer)) {
-            throw new MathHelpingException(printableControlSequence(context));
-        }
-        NoadConsumer nc = (NoadConsumer) maker;
-        Noad noad = nc.scanNoads(context, source);
+        NoadConsumer nc = getListMaker(typesetter);
+        Noad noad = nc.scanNoad(context, source);
         nc.add(new UnderlinedNoad(noad));
         return true;
     }
