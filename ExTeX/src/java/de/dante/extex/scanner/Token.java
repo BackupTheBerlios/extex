@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface Token {
 
@@ -95,13 +95,6 @@ public interface Token {
     UnicodeChar getChar();
 
     /**
-     * Getter for the value.
-     *
-     * @return the value
-     */
-    String getValue();
-
-    /**
      * Check if the current token has a specified catcode.
      *
      * @param cc the catcode to compare against
@@ -116,6 +109,16 @@ public interface Token {
      * @param sb the target string buffer
      */
     void toString(StringBuffer sb);
+
+    /**
+     * Return the printable representation of this token as it can be read back
+     * in.
+     *
+     * @param esc the escape character
+     *
+     * @return the printable representation
+     */
+    String toText(char esc);
 
     /**
      * This method returns the textual representation for the Token.

@@ -19,6 +19,8 @@
 
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
+
 
 /**
  * This class represents a cr token.
@@ -29,7 +31,7 @@ package de.dante.extex.scanner;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class CrToken extends AbstractToken implements Token {
 
@@ -38,7 +40,7 @@ public class CrToken extends AbstractToken implements Token {
      *
      * @param value the string value
      */
-    protected CrToken(final String value) {
+    protected CrToken(final UnicodeChar value) {
 
         super(value);
     }
@@ -60,7 +62,7 @@ public class CrToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return getLocalizer().format("CrToken.Text", getValue());
+        return getLocalizer().format("CrToken.Text", getChar().toString());
     }
 
     /**
@@ -72,7 +74,7 @@ public class CrToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("CrToken.Text", getValue()));
+        sb.append(getLocalizer().format("CrToken.Text", getChar().toString()));
     }
 
     /**

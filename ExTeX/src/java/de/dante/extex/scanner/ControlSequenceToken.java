@@ -20,6 +20,7 @@
 package de.dante.extex.scanner;
 
 import de.dante.extex.interpreter.Namespace;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class represents a control sequence token.
@@ -30,7 +31,7 @@ import de.dante.extex.interpreter.Namespace;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -41,21 +42,28 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     private static final int HASH_FACTOR = 17;
 
     /**
+     * The field <tt>value</tt> contains the string value.
+     */
+    private String name;
+
+    /**
      * The field <tt>namespace</tt> contains the namespace for this token.
      */
     private String namespace;
 
     /**
-     * Creates a new object.
+     * Creates a new object from the first character of a String.
+     * If the string is empty then a space character is used iun stead.
      *
-     * @param value the name of the control sequence -- without the leading
-     * escape character token
-     * @param theNamespace the namespace
+     * @param name the name of the control sequence -- without the leading
+     *  escape character token
+     * @param namespace the namespace
      */
-    protected ControlSequenceToken(final String value, final String theNamespace) {
+    protected ControlSequenceToken(final String name, final String namespace) {
 
-        super(value);
-        namespace = theNamespace;
+        super(new UnicodeChar(name.length() > 0 ? name.charAt(0) : ' '));
+        this.namespace = namespace;
+        this.name = name;
     }
 
     /**
@@ -71,7 +79,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
         if (Namespace.DEFAULT_NAMESPACE.equals(namespace)) {
             return this;
         }
-        return new ControlSequenceToken(getValue(), Namespace.DEFAULT_NAMESPACE);
+        return new ControlSequenceToken(name, Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
@@ -89,7 +97,16 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
         if (theNamespace == null || namespace.equals(theNamespace)) {
             return this;
         }
-        return new ControlSequenceToken(getValue(), theNamespace);
+        return new ControlSequenceToken(name, theNamespace);
+    }
+
+    /**
+     * @see de.dante.extex.scanner.Token#equals(
+     *      de.dante.extex.scanner.Catcode, java.lang.String)
+     */
+    public boolean equals(final Catcode cc, final String s) {
+
+        return getCatcode() == cc && name.equals(s);
     }
 
     /**
@@ -97,11 +114,12 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public boolean equals(final Object other) {
 
-        if (other == null || !(other instanceof ControlSequenceToken)) {
-            return false;
+        if (other instanceof ControlSequenceToken) {
+            ControlSequenceToken othertoken = (ControlSequenceToken) other;
+            return (name.equals(othertoken.getName()) //
+            && namespace.equals(othertoken.namespace));
         }
-        ControlSequenceToken othertoken = (ControlSequenceToken) other;
-        return (super.equals(other) && namespace.equals(othertoken.namespace));
+        return false;
     }
 
     /**
@@ -110,6 +128,14 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     public Catcode getCatcode() {
 
         return Catcode.ESCAPE;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.CodeToken#getName()
+     */
+    public String getName() {
+
+        return name;
     }
 
     /**
@@ -125,7 +151,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public int hashCode() {
 
-        return super.hashCode() + HASH_FACTOR * namespace.hashCode();
+        return name.hashCode() + HASH_FACTOR * namespace.hashCode();
     }
 
     /**
@@ -135,7 +161,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public String toString() {
 
-        return getLocalizer().format("ControlSequenceToken.Text", getValue());
+        return getLocalizer().format("ControlSequenceToken.Text", name);
     }
 
     /**
@@ -147,7 +173,19 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("ControlSequenceToken.Text", getValue()));
+        sb.append(getLocalizer()
+                .format("ControlSequenceToken.Text", name));
+    }
+
+    /**
+     * @see de.dante.extex.scanner.Token#toText(char)
+     */
+    public String toText(final char esc) {
+
+        StringBuffer sb = new StringBuffer();
+        sb.append(esc);
+        sb.append(name);
+        return sb.toString();
     }
 
     /**
@@ -161,4 +199,5 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
         return visitor.visitEscape(this, arg1);
     }
+
 }

@@ -52,7 +52,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -60,13 +60,13 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * The field <tt>crToken</tt> contains the one and only cr token in the
      * system.
      */
-    private static final Token CR_TOKEN = new CrToken(" ");
+    private static final Token CR_TOKEN = new CrToken(null);
 
     /**
      * The field <tt>spaceToken</tt> contains the one and only space token in
      * the system.
      */
-    private static final Token SPACE_TOKEN = new SpaceToken(" ");
+    private static final Token SPACE_TOKEN = new SpaceToken(null);
 
     /**
      * The field <tt>activeCache</tt> contains the cache for active character
