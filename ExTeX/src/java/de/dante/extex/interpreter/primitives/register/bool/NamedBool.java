@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.bool.Bool;
 import de.dante.extex.interpreter.type.bool.BoolConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.main.MainExTeXExtensionException;
+import de.dante.extex.main.exception.MainExTeXExtensionException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NamedBool extends AbstractAssignment
         implements
