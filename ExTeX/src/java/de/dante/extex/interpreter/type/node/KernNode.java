@@ -31,14 +31,14 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [155]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
     /**
      * The field <tt>kern</tt> contains the width of the kern.
      */
-    private Dimen theKern;
+    private Dimen theKern = new Dimen(); //TODO: maybe elimitae in favour of width
 
     /**
      * Creates a new object.
@@ -49,6 +49,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
 
         super();
         theKern.set(kern);
+        setWidth(theKern); // TODO: is this correct?
     }
 
     /**
