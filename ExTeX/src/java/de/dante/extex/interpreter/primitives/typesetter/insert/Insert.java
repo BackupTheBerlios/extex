@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Insert extends AbstractBox {
 
@@ -77,7 +77,7 @@ public class Insert extends AbstractBox {
             throws GeneralException {
 
         if (!typesetter.getMode().isVmode()) {
-            throw new HelpingException(getLocalizer(),"");
+            throw new HelpingException(getLocalizer(), "???");
         }
         long index = source.scanNumber(context);
         Box b = new Box(context, source, typesetter, false);
