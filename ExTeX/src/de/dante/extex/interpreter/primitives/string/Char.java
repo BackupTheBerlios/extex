@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive <code>\char</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
@@ -69,8 +69,7 @@ public class Char extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long val = source.scanNumber();
-        UnicodeChar uc = new UnicodeChar((int) val); // TODO ClassCastException
+        UnicodeChar uc = source.scanCharacterCode();
         Catcode cc = context.getTokenizer().getCatcode(uc);
         Token t = context.getTokenFactory().newInstance(cc, uc);
         source.push(t);
