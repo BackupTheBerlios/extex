@@ -19,6 +19,7 @@
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -38,7 +39,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\def</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Def extends AbstractAssignment {
     /**
@@ -76,7 +77,7 @@ public class Def extends AbstractAssignment {
         } else if (cs == null) {
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         } else {
-            throw new RuntimeException("This can't happen");
+            throw new GeneralPanicException("TTP.Confusion");
         }
     }
 
@@ -89,7 +90,7 @@ public class Def extends AbstractAssignment {
     private Tokens expandedBody(final TokenSource source) {
         //TODO
         //return null;
-        throw new RuntimeException("Unimplemented");
+        throw new RuntimeException("unimplemented");
     }
 
     /**

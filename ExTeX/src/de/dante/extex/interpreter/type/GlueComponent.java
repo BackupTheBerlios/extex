@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.type;
 import java.io.Serializable;
 
 import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.DimenConvertable;
 import de.dante.extex.interpreter.TokenSource;
@@ -47,7 +48,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class GlueComponent implements Serializable {
 
@@ -624,7 +625,7 @@ public class GlueComponent implements Serializable {
                 toks.add(factory.newInstance(Catcode.LETTER, "l"));
             }
         } else {
-            throw new RuntimeException("This can't happen."); //TODO incomplete
+            throw new GeneralPanicException("TTP.Confusion");
         }
     }
 
