@@ -49,7 +49,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -148,7 +148,7 @@ public class EFMFont extends XMLFont implements Font {
                         }
                     }
                     // calculate em
-                    em = new Dimen((long) (emsize.getValue() * empr / 100));
+                    em = new Dimen((long) (emsize.getValue() * empr / PROZ100));
 
                     // get unitsperem
                     attr = fontgroup.getAttribute("units-per-em");
@@ -157,7 +157,7 @@ public class EFMFont extends XMLFont implements Font {
                     }
 
                     // get ex
-                    attr = fontgroup.getAttribute("XHEIGHT");
+                    attr = fontgroup.getAttribute("xheight");
                     if (attr != null) {
                         ex = attr.getIntValue();
                     }
@@ -292,6 +292,7 @@ public class EFMFont extends XMLFont implements Font {
                 rt = new Glue(rglyph.getWidth());
             } catch (Exception e) {
                 // do nothing, use default
+                rt = new Glue(em);
             }
         }
         // TODO use key 'SPACE' from getFontDimen()
@@ -320,6 +321,11 @@ public class EFMFont extends XMLFont implements Font {
      * Default for em-prozent-size
      */
     private static final float DEFAULTEMPR = 100.0f;
+
+    /**
+     * 100 %
+     */
+    private static final int PROZ100 = 100;
 
     /**
      * em: the width
@@ -364,6 +370,7 @@ public class EFMFont extends XMLFont implements Font {
             rt = new Dimen((long) (f * em.getValue() / unitsperem));
         } catch (Exception e) {
             // do nothing, use default
+            rt = new Dimen(0);
         }
         return rt;
     }
@@ -418,7 +425,8 @@ public class EFMFont extends XMLFont implements Font {
 
     /**
      * Return the kerning between c1 and c2.
-     * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.Font#kern(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      * @deprecated use glyph.getKerning()
      */
     public Dimen kern(final UnicodeChar c1, final UnicodeChar c2) {
@@ -449,7 +457,8 @@ public class EFMFont extends XMLFont implements Font {
      * method <code>ligature()</code> twice, if a ligature with
      * more then two characters exist.
      * (e.g. f - ff - ffl)
-     * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.Font#ligature(
+     *      de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
      * @deprecated use glyph.getLigature()
      */
     public UnicodeChar ligature(final UnicodeChar c1, final UnicodeChar c2) {

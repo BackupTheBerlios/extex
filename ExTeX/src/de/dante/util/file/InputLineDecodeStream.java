@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * <code>CharArray</code>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class InputLineDecodeStream {
@@ -51,12 +51,17 @@ public class InputLineDecodeStream {
 
     /**
      * Create a new object
-     * @param	bin		the inputstream for reading
+     * @param   binput the inputstream for reading
      */
-    public InputLineDecodeStream(final BufferedInputStream bin) {
+    public InputLineDecodeStream(final BufferedInputStream binput) {
 
-        this.bin = bin;
+        bin = binput;
     }
+
+    /**
+     * buffer for the <code>ArrayList</code> for a line
+     */
+    private static final int ARRAYLISTBUFFER = 0x1000;
 
     /**
      * Read a line from the inputstream.
@@ -79,7 +84,7 @@ public class InputLineDecodeStream {
         }
 
         // ArrayList for the bytes (initsize 0x1000)
-        ArrayList barr = new ArrayList(0x1000);
+        ArrayList barr = new ArrayList(ARRAYLISTBUFFER);
 
         // read until '\r' or '\n'
         int ib;

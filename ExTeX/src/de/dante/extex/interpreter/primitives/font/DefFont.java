@@ -46,7 +46,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DefFont extends AbstractCode {
 
@@ -105,6 +105,7 @@ public class DefFont extends AbstractCode {
             }
         } catch (Exception e) {
             // do nothing, use default
+            fontsize = new Dimen(Dimen.ONE * size);
         }
 
         FontFactory ff = context.getFontFactory();
@@ -147,6 +148,7 @@ public class DefFont extends AbstractCode {
             rt = Integer.parseInt(sb.toString());
         } catch (NumberFormatException e) {
             // do nothing, use default
+            rt = -1;
         }
         return rt;
     }

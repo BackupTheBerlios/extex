@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\printformat</code>.
- * It format the next primitive for the output with the given pattern and 
+ * It format the next primitive for the output with the given pattern and
  * the default <code>Locale</code>.
  *
  * <p>
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -66,7 +66,11 @@ public class PrintFormat extends AbstractCode implements Theable {
     /**
      * Get the next token (not expand) and print it with some format.
      *
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -77,7 +81,9 @@ public class PrintFormat extends AbstractCode implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public Tokens the(final Context context, final TokenSource source)
             throws GeneralException {

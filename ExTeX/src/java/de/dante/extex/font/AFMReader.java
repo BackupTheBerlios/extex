@@ -32,10 +32,84 @@ import java.util.StringTokenizer;
 import org.jdom.Element;
 
 /**
- * This class read a AFM-file.
+ * This class read a AFM-file and create a efm-element.
+ *
+ * <h1>Element and Attrtibutes</h1>
+ * <table border="1">
+ *  <tr><td><b>fontgroup</b></td><td></td>
+ *          <td>Describe a font</td></tr>
+ *          <tr><td></td><td>name</td>
+ *          <td>The name of the font</td></tr>
+ *          <tr><td></td><td>id</td>
+ *          <td>The name of the font</td></tr>
+ *          <tr><td></td><td>default-size</td>
+ *          <td>The name of the font</td></tr>
+ *          <tr><td></td><td>empr</td>
+ *          <td>The size of em in percent (default 100%)</td></tr>
+ *          <tr><td></td><td>units-per-em</td>
+ *          <td>Units per em (default 1000)</td></tr>
+ *          <tr><td></td><td>bbox</td>
+ *          <td>The boundingbox</td></tr>
+ *          <tr><td></td><td>underline-position</td>
+ *          <td>The underline position</td></tr>
+ *          <tr><td></td><td>underline-thickness</td>
+ *          <td>The thickness of the underline</td></tr>
+ *          <tr><td></td><td>xheight</td>
+ *          <td>The hight of x</td></tr>
+ *          <tr><td></td><td>capheight</td>
+ *          <td>The hight of the cap</td></tr>
+ *  <tr><td><b>font</b></td><td></td>
+ *          <td>Describe one font of a group</td></tr>
+ *          <tr><td></td><td>type</td>
+ *          <td>The font-type (type1)</td></tr>
+ *          <tr><td></td><td>filename</td>
+ *          <td>The anme of the pfb-file</td></tr>
+ *          <tr><td></td><td>font-name</td>
+ *          <td>The name of the font</td></tr>
+ *          <tr><td></td><td>font-fullname</td>
+ *          <td>The fullname of the font</td></tr>
+ *          <tr><td></td><td>font-family</td>
+ *          <td>The family-name</td></tr>
+ *          <tr><td></td><td>font-weight</td>
+ *          <td>The weight of the font</td></tr>
+ *  <tr><td><b>glyph</b></td><td></td>
+ *          <td>Describe the glyph</td></tr>
+ *          <tr><td></td><td>ID</td>
+ *          <td>The ID of the glyph</td></tr>
+ *          <tr><td></td><td>glyph-number</td>
+ *          <td>The number of the glyph</td></tr>
+ *          <tr><td></td><td>glyph-name</td>
+ *          <td>The name of the glyph</td></tr>
+ *          <tr><td></td><td>width</td>
+ *          <td>The width of the glyph</td></tr>
+ *          <tr><td></td><td>depth</td>
+ *          <td>The depth of the glyph</td></tr>
+ *          <tr><td></td><td>height</td>
+ *          <td>The height of the glyph</td></tr>
+ *          <tr><td></td><td>italic</td>
+ *          <td>The italic of the glyph</td></tr>
+ *  <tr><td><b>kerning</b></td><td></td>
+ *          <td>The kerning of a glyph</td></tr>
+ *          <tr><td></td><td>glyph-name</td>
+ *          <td>The name of the glyph</td></tr>
+ *          <tr><td></td><td>glyph-id</td>
+ *          <td>The id of the glyph</td></tr>
+ *          <tr><td></td><td>size</td>
+ *          <td>The kerning-size</td></tr>
+ *  <tr><td><b>ligature</b></td><td></td>
+ *          <td>The ligature of a glyph</td></tr>
+ *          <tr><td></td><td>letter</td>
+ *          <td>The following letter</td></tr>
+ *          <tr><td></td><td>letter-id</td>
+ *          <td>The following letter-id</td></tr>
+ *          <tr><td></td><td>lig</td>
+ *          <td>The ligature</td></tr>
+ *          <tr><td></td><td>lig-id</td>
+ *          <td>The ligature-id</td></tr>
+ * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 // TODO incomplete
 public class AFMReader implements FontMetric {
@@ -162,12 +236,12 @@ public class AFMReader implements FontMetric {
     /**
      * CapHeight
      */
-    private int afmCapHeight = 700;
+    private int afmCapHeight = 0;
 
     /**
      * XHeight
      */
-    private int afmXHeight = 480;
+    private int afmXHeight = 0;
 
     /**
      * Ascender
@@ -208,6 +282,11 @@ public class AFMReader implements FontMetric {
      * Char-Name - Char-Number
      */
     private HashMap afmCharNameNumber = new HashMap(ARRAYLISTINITSIZE);
+
+    /**
+     * base 16
+     */
+    private static final int BASEHEX = 16;
 
     /**
      * Read the AFM-File
@@ -295,75 +374,9 @@ public class AFMReader implements FontMetric {
             System.err.println("Missing StartCharMetrics");
             System.exit(1);
         }
-        // read the metric
-        while ((line = reader.readLine()) != null) {
 
-            // get the token from the line
-            StringTokenizer tok = new StringTokenizer(line);
-
-            // no more tokens
-            if (!tok.hasMoreTokens()) {
-                continue;
-            }
-
-            // get the command
-            String command = tok.nextToken();
-            if (command.equals("EndCharMetrics")) {
-                isMetrics = false;
-                break;
-            }
-
-            // default values
-            AFMCharMetric cm = new AFMCharMetric();
-
-            // get the token separate bei ';'
-            tok = new StringTokenizer(line, ";");
-            while (tok.hasMoreTokens()) {
-                StringTokenizer tokc = new StringTokenizer(tok.nextToken());
-                if (!tokc.hasMoreTokens()) {
-                    continue;
-                }
-                command = tokc.nextToken();
-
-                // command ?
-                if (command.equals("C")) {
-                    cm.C = Integer.parseInt(tokc.nextToken());
-                } else if (command.equals("CH")) {
-                    cm.C = Integer.parseInt(tokc.nextToken(), 16);
-                } else if (command.equals("WX")) {
-                    cm.WX = Float.valueOf(tokc.nextToken()).intValue();
-                } else if (command.equals("N")) {
-                    cm.N = tokc.nextToken();
-                } else if (command.equals("B")) {
-                    cm.Bllx = (int) Float.valueOf(tokc.nextToken())
-                            .floatValue();
-                    cm.Blly = (int) Float.valueOf(tokc.nextToken())
-                            .floatValue();
-                    cm.Burx = (int) Float.valueOf(tokc.nextToken())
-                            .floatValue();
-                    cm.Bury = (int) Float.valueOf(tokc.nextToken())
-                            .floatValue();
-                } else if (command.equals("L")) {
-                    cm.addL(tokc.nextToken().trim(), tokc.nextToken().trim());
-                }
-            }
-            afmCharMetrics.add(cm);
-
-            // store name and number
-            if (afmCharNameNumber.containsKey(cm.N)) {
-                if (cm.C != -1) {
-                    afmCharNameNumber.put(cm.N, new Integer(cm.C));
-                }
-            } else {
-                afmCharNameNumber.put(cm.N, new Integer(cm.C));
-            }
-        }
-
-        // metric close?
-        if (isMetrics) {
-            System.err.println("Missing EndCharMetrics");
-            System.exit(1);
-        }
+        // create metric
+        isMetrics = createMetric(reader, isMetrics);
 
         // read  next command
         while ((line = reader.readLine()) != null) {
@@ -412,6 +425,91 @@ public class AFMReader implements FontMetric {
     }
 
     /**
+     * Create Metric
+     * @param reader        the reader
+     * @param ism           ismetric
+     * @return  ismetric
+     * @throws IOException ...
+     */
+    private boolean createMetric(final BufferedReader reader,
+            final boolean ism) throws IOException {
+
+        boolean isMetrics = ism;
+
+        String line;
+        // read the metric
+        while ((line = reader.readLine()) != null) {
+
+            // get the token from the line
+            StringTokenizer tok = new StringTokenizer(line);
+
+            // no more tokens
+            if (!tok.hasMoreTokens()) {
+                continue;
+            }
+
+            // get the command
+            String command = tok.nextToken();
+            if (command.equals("EndCharMetrics")) {
+                isMetrics = false;
+                break;
+            }
+
+            // default values
+            AFMCharMetric cm = new AFMCharMetric();
+
+            // get the token separate bei ';'
+            tok = new StringTokenizer(line, ";");
+            while (tok.hasMoreTokens()) {
+                StringTokenizer tokc = new StringTokenizer(tok.nextToken());
+                if (!tokc.hasMoreTokens()) {
+                    continue;
+                }
+                command = tokc.nextToken();
+
+                // command ?
+                if (command.equals("C")) {
+                    cm.setC(Integer.parseInt(tokc.nextToken()));
+                } else if (command.equals("CH")) {
+                    cm.setC(Integer.parseInt(tokc.nextToken(), BASEHEX));
+                } else if (command.equals("WX")) {
+                    cm.setWx(Float.valueOf(tokc.nextToken()).intValue());
+                } else if (command.equals("N")) {
+                    cm.setN(tokc.nextToken());
+                } else if (command.equals("B")) {
+                    cm.setBllx((int) Float.valueOf(tokc.nextToken())
+                            .floatValue());
+                    cm.setBlly((int) Float.valueOf(tokc.nextToken())
+                            .floatValue());
+                    cm.setBurx((int) Float.valueOf(tokc.nextToken())
+                            .floatValue());
+                    cm.setBury((int) Float.valueOf(tokc.nextToken())
+                            .floatValue());
+                } else if (command.equals("L")) {
+                    cm.addL(tokc.nextToken().trim(), tokc.nextToken().trim());
+                }
+            }
+            afmCharMetrics.add(cm);
+
+            // store name and number
+            if (afmCharNameNumber.containsKey(cm.getN())) {
+                if (cm.getC() != -1) {
+                    afmCharNameNumber.put(cm.getN(), new Integer(cm.getC()));
+                }
+            } else {
+                afmCharNameNumber.put(cm.getN(), new Integer(cm.getC()));
+            }
+        }
+
+        // metric close?
+        if (isMetrics) {
+            System.err.println("Missing EndCharMetrics");
+            System.exit(1);
+        }
+        return isMetrics;
+    }
+
+    /**
      * Remove all ',' in the string, if the string is <code>null</code>, a
      * empty string is returned.
      * @param   s   the string
@@ -433,17 +531,65 @@ public class AFMReader implements FontMetric {
         /**
          * pre
          */
-        String charpre;
+        private String charpre;
 
         /**
          * post
          */
-        String charpost;
+        private String charpost;
 
         /**
          * kerningsize
          */
-        String kerningsize;
+        private String kerningsize;
+
+        /**
+         * @return Returns the kerningsize.
+         */
+        public String getKerningsize() {
+
+            return kerningsize;
+        }
+
+        /**
+         * @param ksize The kerningsize to set.
+         */
+        public void setKerningsize(final String ksize) {
+
+            kerningsize = ksize;
+        }
+
+        /**
+         * @return Returns the charpost.
+         */
+        public String getCharpost() {
+
+            return charpost;
+        }
+
+        /**
+         * @param cp The charpost to set.
+         */
+        public void setCharpost(final String cp) {
+
+            charpost = cp;
+        }
+
+        /**
+         * @return Returns the charpre.
+         */
+        public String getCharpre() {
+
+            return charpre;
+        }
+
+        /**
+         * @param cp The charpre to set.
+         */
+        public void setCharpre(final String cp) {
+
+            charpre = cp;
+        }
     }
 
     /**
@@ -454,33 +600,42 @@ public class AFMReader implements FontMetric {
         /**
          * C
          */
-        int C = -1;
+        private int c = -1;
 
         /**
          * WX
          */
-        int WX = NOTINIT;
+        private int wx = NOTINIT;
 
         /**
          * Name
          */
-        String N = "";
+        private String n = "";
 
         /**
-         * B
+         * B llx
          */
-        int Bllx = NOTINIT;
+        private int bllx = NOTINIT;
 
-        int Blly = NOTINIT;
+        /**
+         * B lly
+         */
+        private int blly = NOTINIT;
 
-        int Burx = NOTINIT;
+        /**
+         * B urx
+         */
+        private int burx = NOTINIT;
 
-        int Bury = NOTINIT;
+        /**
+         * B ury
+         */
+        private int bury = NOTINIT;
 
         /**
          * Ligatur
          */
-        HashMap L = null;
+        private HashMap l = null;
 
         /**
          * Add a ligature
@@ -489,36 +644,130 @@ public class AFMReader implements FontMetric {
          */
         public void addL(final String letter, final String lig) {
 
-            if (L == null) {
-                L = new HashMap();
+            if (l == null) {
+                l = new HashMap();
             }
-            L.put(letter, lig);
+            l.put(letter, lig);
         }
 
         /**
-         * print
-         * @return the String with infos
+         * @return Returns the bllx.
          */
-        public String toString() {
+        public int getBllx() {
 
-            StringBuffer buf = new StringBuffer();
+            return bllx;
+        }
 
-            buf.append("   C          : " + C + LF);
-            buf.append("   WX         : " + WX + LF);
-            buf.append("   N          : " + N + LF);
-            buf.append("   B          : " + Bllx + " " + Blly + " " + Burx
-                    + " " + Bury + LF);
+        /**
+         * @param ibllx The bllx to set.
+         */
+        public void setBllx(final int ibllx) {
 
-            if (L != null) {
-                Iterator iterator = L.keySet().iterator();
+            bllx = ibllx;
+        }
 
-                while (iterator.hasNext()) {
-                    String key = (String) iterator.next();
-                    buf.append("   L          : " + key + "  " + L.get(key)
-                            + LF);
-                }
-            }
-            return buf.toString();
+        /**
+         * @return Returns the blly.
+         */
+        public int getBlly() {
+
+            return blly;
+        }
+
+        /**
+         * @param iblly The blly to set.
+         */
+        public void setBlly(final int iblly) {
+
+            blly = iblly;
+        }
+
+        /**
+         * @return Returns the burx.
+         */
+        public int getBurx() {
+
+            return burx;
+        }
+
+        /**
+         * @param iburx The burx to set.
+         */
+        public void setBurx(final int iburx) {
+
+            burx = iburx;
+        }
+
+        /**
+         * @return Returns the bury.
+         */
+        public int getBury() {
+
+            return bury;
+        }
+
+        /**
+         * @param ibury The bury to set.
+         */
+        public void setBury(final int ibury) {
+
+            bury = ibury;
+        }
+
+        /**
+         * @return Returns the c.
+         */
+        public int getC() {
+
+            return c;
+        }
+
+        /**
+         * @param ic The c to set.
+         */
+        public void setC(final int ic) {
+
+            c = ic;
+        }
+
+        /**
+         * @return Returns the l.
+         */
+        public HashMap getL() {
+
+            return l;
+        }
+
+        /**
+         * @return Returns the n.
+         */
+        public String getN() {
+
+            return n;
+        }
+
+        /**
+         * @param s The n to set.
+         */
+        public void setN(final String s) {
+
+            n = s;
+        }
+
+        /**
+         * @return Returns the wx.
+         */
+        public int getWx() {
+
+            return wx;
+        }
+
+        /**
+         * @param iwx The wx to set.
+         */
+        public void setWx(final int iwx) {
+
+            wx = iwx;
         }
     }
 
@@ -526,42 +775,6 @@ public class AFMReader implements FontMetric {
      * LineFeed
      */
     private static final char LF = '\n';
-
-    /**
-     * The <code>String</code> for the class.
-     * @return the String with infos
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer(1024);
-
-        buf.append("FontName            : " + afmFontName + LF);
-        buf.append("Fullname            : " + afmFullName + LF);
-        buf.append("FamilyName          : " + afmFamilyName + LF);
-        buf.append("CharacterSet        : " + afmCharacterSet + LF);
-        buf.append("Weight              : " + afmWeight + LF);
-        buf.append("ItalicAngle         : " + afmItalicAngle + LF);
-        buf.append("IsFixedPitch        : " + afmIsFixedPitch + LF);
-        buf.append("llx                 : " + afmllx + LF);
-        buf.append("lly                 : " + afmlly + LF);
-        buf.append("urx                 : " + afmurx + LF);
-        buf.append("ury                 : " + afmury + LF);
-        buf.append("UnderlinePosition   : " + afmUnderlinePosition + LF);
-        buf.append("UnderlineThickness  : " + afmUnderlineThickness + LF);
-        buf.append("EncodingScheme      : " + afmEncodingScheme + LF);
-        buf.append("CapHeight           : " + afmCapHeight + LF);
-        buf.append("XHeight             : " + afmXHeight + LF);
-        buf.append("Ascender            : " + afmAscender + LF);
-        buf.append("Descender           : " + afmDescender + LF);
-        buf.append("StdHW               : " + afmStdHW + LF);
-        buf.append("StdVW               : " + afmStdVW + LF);
-
-        for (int i = 0; i < afmCharMetrics.size(); i++) {
-            buf.append("CharMetric" + LF + afmCharMetrics.get(i));
-        }
-
-        return buf.toString();
-    }
 
     /**
      * remove the fileextension and path, if exists
@@ -661,8 +874,8 @@ public class AFMReader implements FontMetric {
             root.setAttribute("underline-thickness", String
                     .valueOf(afmUnderlineThickness));
         }
-        root.setAttribute("XHEIGHT", String.valueOf(afmXHeight));
-        root.setAttribute("CAPHEIGHT", String.valueOf(afmCapHeight));
+        root.setAttribute("xheight", String.valueOf(afmXHeight));
+        root.setAttribute("capheight", String.valueOf(afmCapHeight));
 
         for (int i = 0; i < afmCharMetrics.size(); i++) {
 
@@ -673,37 +886,37 @@ public class AFMReader implements FontMetric {
             AFMCharMetric cm = (AFMCharMetric) afmCharMetrics.get(i);
 
             // create attributes
-            if (cm.C >= 0) {
-                glyph.setAttribute("ID", String.valueOf(cm.C));
+            if (cm.getC() >= 0) {
+                glyph.setAttribute("ID", String.valueOf(cm.getC()));
             } else {
-                glyph.setAttribute("ID", "notdef_" + cm.N);
+                glyph.setAttribute("ID", "notdef_" + cm.getN());
             }
-            glyph.setAttribute("glyph-number", String.valueOf(cm.C));
-            glyph.setAttribute("glyph-name", cm.N);
+            glyph.setAttribute("glyph-number", String.valueOf(cm.getC()));
+            glyph.setAttribute("glyph-name", cm.getN());
 
-            if (cm.WX != NOTINIT) {
-                glyph.setAttribute("width", String.valueOf(cm.WX));
+            if (cm.getWx() != NOTINIT) {
+                glyph.setAttribute("width", String.valueOf(cm.getWx()));
             } else {
                 // calculate with from bbox
-                if (cm.Bllx != -9999) {
-                    glyph.setAttribute("width", String.valueOf(cm.Bllx
-                            + cm.Burx));
+                if (cm.getBllx() != NOTINIT) {
+                    glyph.setAttribute("width", String.valueOf(cm.getBllx()
+                            + cm.getBurx()));
                 }
             }
 
-            if (cm.Bllx != NOTINIT) {
-                if (cm.Blly < 0) {
-                    glyph.setAttribute("depth", String.valueOf(-cm.Blly));
+            if (cm.getBllx() != NOTINIT) {
+                if (cm.getBlly() < 0) {
+                    glyph.setAttribute("depth", String.valueOf(-cm.getBlly()));
                 } else {
                     glyph.setAttribute("depth", "0");
                 }
-                if (cm.Bury > 0) {
-                    glyph.setAttribute("height", String.valueOf(cm.Bury));
+                if (cm.getBury() > 0) {
+                    glyph.setAttribute("height", String.valueOf(cm.getBury()));
                 } else {
                     glyph.setAttribute("height", "0");
                 }
             } else {
-                throw new IOException("No boundingbox found : " + cm.C);
+                throw new IOException("No boundingbox found : " + cm.getC());
             }
             glyph.setAttribute("italic", String.valueOf(afmItalicAngle));
 
@@ -723,14 +936,14 @@ public class AFMReader implements FontMetric {
             }
 
             // ligature
-            if (cm.L != null) {
-                Iterator iterator = cm.L.keySet().iterator();
+            if (cm.getL() != null) {
+                Iterator iterator = cm.getL().keySet().iterator();
                 while (iterator.hasNext()) {
                     String key = (String) iterator.next();
                     Element lig = new Element("ligature");
                     lig.setAttribute("letter", key);
                     lig.setAttribute("letter-id", getIDforName(key));
-                    String value = (String) cm.L.get(key);
+                    String value = (String) cm.getL().get(key);
                     lig.setAttribute("lig", value);
                     lig.setAttribute("lig-id", getIDforName(value));
                     glyph.addContent(lig);

@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Real implements Serializable {
 
@@ -123,7 +123,7 @@ public class Real implements Serializable {
             }
         }
 
-        StringBuffer sb = new StringBuffer(32);
+        StringBuffer sb = new StringBuffer();
         if (neg) {
             sb.append('-');
         }

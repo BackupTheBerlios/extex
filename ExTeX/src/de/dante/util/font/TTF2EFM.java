@@ -33,9 +33,14 @@ import de.dante.extex.font.TTFReader;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTF2EFM {
+
+    /**
+     * filebuffer
+     */
+    private static final int FILEBUFFER = 0x8000;
 
     /**
      * main
@@ -58,7 +63,7 @@ public class TTF2EFM {
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);
         BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(efmfile), 0x8000);
+                new FileOutputStream(efmfile), FILEBUFFER);
         Document doc = new Document(ttfr.getFontMetric());
         xmlout.output(doc, out);
         out.close();

@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Patterns extends AbstractCode {
 
@@ -61,7 +61,8 @@ public class Patterns extends AbstractCode {
      * The <code>HyphernationTable</code> are based on the
      * value from <code>\language</code>.
      *
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

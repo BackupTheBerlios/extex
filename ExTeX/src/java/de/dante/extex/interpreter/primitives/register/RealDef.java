@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,11 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RealDef extends AbstractCode {
 
@@ -52,6 +52,7 @@ public class RealDef extends AbstractCode {
      * @param name the name for debugging
      */
     public RealDef(final String name) {
+
         super(name);
     }
 
@@ -71,17 +72,10 @@ public class RealDef extends AbstractCode {
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
         source.scanOptionalEquals();
-        long value = new Count(context, source).getValue();
+        String key = "real#" + Long.toString(Count.scanCount(context, source));
+        context.setMacro(tok.getValue(), new NamedReal(key), prefix.isGlobal());
 
-        // create new primitive
-        Code code = context.getMacro(tok.getValue());
-        if (code != null) {
-            throw new GeneralHelpingException("TTP.AlreadyDefinedToken", code
-                    .getName());
-        }
-        code = new DefinedReal(tok.getValue(), "real", value);
-        context.setMacro(tok.getValue(), code);
         prefix.clear();
-        //doAfterAssignment(context, source);
+        // doAfterAssignment(context, source);
     }
 }

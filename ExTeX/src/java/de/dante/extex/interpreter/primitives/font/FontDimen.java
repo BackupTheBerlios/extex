@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FontDimen extends AbstractCode implements Theable {
 
@@ -55,6 +55,7 @@ public class FontDimen extends AbstractCode implements Theable {
      * @param name the name for debugging
      */
     public FontDimen(final String name) {
+
         super(name);
     }
 
@@ -84,16 +85,16 @@ public class FontDimen extends AbstractCode implements Theable {
 
         //gene: this should be deduced from the font class (instanceof)
         /*
-        if (font.getFontType().equals("tfm-normal")) {
-            setDimenValue(font, idx, size, paramLabelnormal);
-        } else if (font.getFontType().equals("tfm-mathext")) {
-            setDimenValue(font, idx, size, paramLabelmathext);
-        } else if (font.getFontType().equals("tfm-mathsyml")) {
-            setDimenValue(font, idx, size, paramLabelmathsyml);
-        } else {
-            throw new GeneralHelpingException("FONT.wrongtype");
-        }
-*/
+         if (font.getFontType().equals("tfm-normal")) {
+         setDimenValue(font, idx, size, paramLabelnormal);
+         } else if (font.getFontType().equals("tfm-mathext")) {
+         setDimenValue(font, idx, size, paramLabelmathext);
+         } else if (font.getFontType().equals("tfm-mathsyml")) {
+         setDimenValue(font, idx, size, paramLabelmathsyml);
+         } else {
+         throw new GeneralHelpingException("FONT.wrongtype");
+         }
+         */
         prefix.clear();
     }
 
@@ -107,6 +108,7 @@ public class FontDimen extends AbstractCode implements Theable {
      */
     private void setDimenValue(Font font, int idx, Dimen size,
             final String[] paramLabel) throws GeneralException {
+
         if (idx <= 0 && idx > paramLabel.length) {
             throw new GeneralHelpingException("FONT.wrongdimennumber", String
                     .valueOf(paramLabel.length - 1));
@@ -121,8 +123,9 @@ public class FontDimen extends AbstractCode implements Theable {
      * @param paramLabel    the name of the parametr
      * @throws GeneralException if a error occoured
      */
-    private Dimen getDimenValue(Font font, int idx, final String[] paramLabel)
-            throws GeneralException {
+    private Dimen getDimenValue(final Font font, final int idx,
+            final String[] paramLabel) throws GeneralException {
+
         if (idx <= 0 && idx > paramLabel.length) {
             throw new GeneralHelpingException("FONT.wrongdimennumber", String
                     .valueOf(paramLabel.length - 1));
@@ -131,10 +134,12 @@ public class FontDimen extends AbstractCode implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.Theable#the(
+     *       de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(Context context, TokenSource source)
+    public Tokens the(final Context context, final TokenSource source)
             throws GeneralException {
+
         // \the\fontdimen7\ff
         int idx = (int) source.scanInteger();
         Token tok = source.scanNonSpace();
@@ -175,7 +180,7 @@ public class FontDimen extends AbstractCode implements Theable {
     private static final String[] paramLabelmathext = {"SLANT", "SPACE",
             "STRETCH", "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE",
             "DEFAULTRULETHICKNESS", "BIGOPSPACING1", "BIGOPSPACING2",
-            "BIGOPSPACING3", "BIGOPSPACING4", "BIGOPSPACING5",};
+            "BIGOPSPACING3", "BIGOPSPACING4", "BIGOPSPACING5"};
 
     /**
      * mathsyml-parameternames

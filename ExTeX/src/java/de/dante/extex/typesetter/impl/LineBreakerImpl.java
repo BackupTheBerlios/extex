@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.interpreter.type.Dimen;
@@ -31,22 +32,25 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation for a <code>LineBreaker</code>.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LineBreakerImpl implements LineBreaker {
 
     /**
-     * Creates a new Obejct 
+     * Creates a new Obejct
      */
     public LineBreakerImpl() {
+
         super();
     }
 
     /**
-     * @see de.dante.extex.typesetter.LineBreaker#breakLines(de.dante.extex.interpreter.type.node.HorizontalListNode, de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.typesetter.LineBreaker#breakLines(
+     *      de.dante.extex.interpreter.type.node.HorizontalListNode,
+     *      de.dante.extex.interpreter.context.Context)
      */
     // TODO incomplete (very simple solution, only for test)
-    public NodeList breakLines(HorizontalListNode nodes, final Manager manager) {
+    public NodeList breakLines(final HorizontalListNode nodes, final Manager manager) {
 
         VerticalListNode vlnode = new VerticalListNode();
 
@@ -54,7 +58,7 @@ public class LineBreakerImpl implements LineBreaker {
         //gene: trashed because of merge
         //if (!nodes.isLineBreak()) {
         if (true) {
-            
+
             int linenumber = 1;
 
             addParSkipBefore(vlnode, manager);
@@ -103,9 +107,11 @@ public class LineBreakerImpl implements LineBreaker {
 
     /**
      * Add a paragraph-indent if necessary
-     * @param hln    the <code>HorizontalListNode</code>
+     * @param hln       the <code>HorizontalListNode</code>
+     * @param manager   the manager 
      */
-    private void addIndent(HorizontalListNode hln, Manager manager) {
+    private void addIndent(final HorizontalListNode hln, final Manager manager) {
+
         // TODO incomplete
     }
 
@@ -114,7 +120,8 @@ public class LineBreakerImpl implements LineBreaker {
      * @param vln        the vertical list
      * @param manager    the manager
      */
-    private void addParSkipBefore(VerticalListNode vln, Manager manager) {
+    private void addParSkipBefore(final VerticalListNode vln, final Manager manager) {
+
         vln.addSkip(new Glue(Dimen.ONE * 20)); // TODO change
     }
 
@@ -123,7 +130,8 @@ public class LineBreakerImpl implements LineBreaker {
      * @param vln        the vertical list
      * @param manager    the manager
      */
-    private void addParSkipAfter(VerticalListNode vln, Manager manager) {
+    private void addParSkipAfter(final VerticalListNode vln, final Manager manager) {
+
         vln.addSkip(new Glue(Dimen.ONE * 20)); // TODO change
     }
 
@@ -132,7 +140,8 @@ public class LineBreakerImpl implements LineBreaker {
      * @param vln        the vertical list
      * @param manager    the manager
      */
-    private void addLineSkip(VerticalListNode vln, final Manager manager) {
+    private void addLineSkip(final VerticalListNode vln, final Manager manager) {
+
         vln.addSkip(new Glue(Dimen.ONE * 12)); // TODO change
     }
 
@@ -141,6 +150,7 @@ public class LineBreakerImpl implements LineBreaker {
      * @param manager    the manager
      */
     private void restoreParameter(final Manager manager) {
+
         // TODO incomplete
     }
 
@@ -151,6 +161,7 @@ public class LineBreakerImpl implements LineBreaker {
      * @return    the width of the line
      */
     private Dimen calculateLineWidth(final Manager manager, final int linenumber) {
+
         return manager.getContext().getDimen("hsize"); // TODO incomplete
     }
 }
