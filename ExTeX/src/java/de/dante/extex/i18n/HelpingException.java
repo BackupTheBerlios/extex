@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,7 +19,7 @@
 
 package de.dante.extex.i18n;
 
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -80,9 +80,9 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class HelpingException extends GeneralException {
+public class HelpingException extends InterpreterException {
 
     /**
      * The constant <tt>DEFAULT_TAG</tt> contains the tag to be used if none

@@ -16,51 +16,56 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-
 package de.dante.extex.interpreter.exception;
 
-import de.dante.util.framework.i18n.Localizer;
-import de.dante.util.framework.i18n.LocalizerFactory;
+import de.dante.util.GeneralException;
+
 
 /**
- * This exception s thrown when the error count exceeds the given limit.
+ * This is the base class for all exceptions of the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class ErrorLimitException extends InterpreterException {
+public class InterpreterException extends GeneralException {
 
     /**
-     * The field <tt>limit</tt> contains the maximal allowed number of errors.
+     * Creates a new object.
      */
-    private int limit;
+    public InterpreterException() {
+
+        super();
+    }
 
     /**
      * Creates a new object.
      *
-     * @param limit the maximal allowed number of errors
+     * @param message the message field
      */
-    public ErrorLimitException(final int limit) {
+    public InterpreterException(final String message) {
 
-        super();
-        this.limit = limit;
+        super(message);
     }
 
     /**
-     * @see java.lang.Throwable#getLocalizedMessage()
+     * Creates a new object.
+     *
+     * @param message the message field
+     * @param cause the root of all evil
      */
-    public String getLocalizedMessage() {
+    public InterpreterException(final String message, final Throwable cause) {
 
-        Localizer l = LocalizerFactory.getLocalizer(ErrorLimitException.class
-                .getName());
-        return l.format("TTP.ErrorLimitReached", Integer.toString(limit));
+        super(message, cause);
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * Creates a new object.
+     *
+     * @param cause the root of all evil
      */
-    public String getMessage() {
+    public InterpreterException(final Throwable cause) {
 
-        return getLocalizedMessage();
+        super(cause);
     }
+
 }
