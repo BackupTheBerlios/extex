@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -172,7 +172,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
             Real real = contextextex.getReal(key);
-            source.scanKeyword("by", true);
+            source.getKeyword("by", true);
             Real value = new Real(context, source);
             real.add(value);
             if (prefix.isGlobal()) {
@@ -197,7 +197,7 @@ public class NamedReal extends AbstractAssignment
 
             String key = getKey(source);
             Real real = contextextex.getReal(key);
-            source.scanKeyword("by", true);
+            source.getKeyword("by", true);
             Real value = new Real(context, source);
             real.multiply(value);
             if (prefix.isGlobal()) {
@@ -221,7 +221,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
             Real real = contextextex.getReal(key);
-            source.scanKeyword("by", true);
+            source.getKeyword("by", true);
             Real value = new Real(context, source);
             real.divide(value);
             if (prefix.isGlobal()) {

@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DimenPrimitive extends AbstractDimen implements Advanceable,
         ExpandableCode, CountConvertible, DimenConvertible, Multiplyable,
@@ -73,7 +73,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
             final TokenSource source) throws GeneralException {
 
         String key = getKey(source);
-        source.scanKeyword("by");
+        source.getKeyword("by");
 
         Dimen d = new Dimen(context, source);
         d.add(context.getDimen(key));
@@ -150,7 +150,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
             final TokenSource source) throws GeneralException {
 
         String key = getKey(source);
-        source.scanKeyword("by");
+        source.getKeyword("by");
         long value = Count.scanCount(context, source);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
         context.setDimen(key, d, prefix.isGlobal());
@@ -168,7 +168,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
             final TokenSource source) throws GeneralException {
 
         String key = getKey(source);
-        source.scanKeyword("by");
+        source.getKeyword("by");
         long value = Count.scanCount(context, source);
 
         if (value == 0) {

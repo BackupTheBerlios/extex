@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Muskip implements Serializable {
 
@@ -101,10 +101,10 @@ public class Muskip implements Serializable {
 
         super();
         this.length = new Dimen(scanMu(context, source));
-        if (source.scanKeyword("plus")) {
+        if (source.getKeyword("plus")) {
             this.stretch = new GlueComponent(scanMu(context, source));
         }
-        if (source.scanKeyword("minus")) {
+        if (source.getKeyword("minus")) {
             this.shrink = new GlueComponent(scanMu(context, source));
         }
     }
@@ -127,7 +127,7 @@ public class Muskip implements Serializable {
             throw new RuntimeException("unimplemented");
         }
         long value = GlueComponent.scanFloat(source, t);
-        if (!source.scanKeyword("mu")) {
+        if (!source.getKeyword("mu")) {
             throw new RuntimeException("unimplemented");
         }
         // TODO: use the math family fonts instead

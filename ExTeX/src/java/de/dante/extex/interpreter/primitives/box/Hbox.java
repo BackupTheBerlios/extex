@@ -73,7 +73,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -118,11 +118,11 @@ public class Hbox extends AbstractCode implements Boxable {
         }
 
         Box box;
-        if (source.scanKeyword("to")) {
+        if (source.getKeyword("to")) {
             Dimen d = new Dimen(context, source);
             box = new Box(context, source, typesetter, true);
             box.setWidth(d);
-        } else if (source.scanKeyword("spread")) {
+        } else if (source.getKeyword("spread")) {
             Dimen d = new Dimen(context, source);
             box = new Box(context, source, typesetter, true);
             box.getWidth().add(d);

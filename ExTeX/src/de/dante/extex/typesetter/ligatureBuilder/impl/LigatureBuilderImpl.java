@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.ligatureBuilder.impl;
 
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.Glyph;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.typesetter.Node;
@@ -32,7 +33,7 @@ import de.dante.util.configuration.Configuration;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -97,7 +98,11 @@ public class LigatureBuilderImpl implements LigatureBuilder {
             if (font2 == font1) {
 
                 //UnicodeChar lig = font1.getLigature(uc1, uc2);
-                UnicodeChar lig = font1.getGlyph(uc1).getLigature(uc2);
+                Glyph g = font1.getGlyph(uc1);
+                if (g==null) {
+                    return i; //TODO: DIRTY?
+                }
+                UnicodeChar lig = g.getLigature(uc2);
                 if (lig != null) {
                     Node ligNode = new LigatureNode(node
                             .getTypesettingContext(), lig, n1, n2);

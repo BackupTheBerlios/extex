@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -599,36 +599,36 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         source.push(t);
         long mag = 1000;
-        if (source.scanKeyword("true")) { // cf. TTP[453], TTP[457]
+        if (source.getKeyword("true")) { // cf. TTP[453], TTP[457]
             mag = context.getMagnification();
             source.push(source.scanNonSpace());
         }
         // cf. TTP[458]
-        if (source.scanKeyword("pt")) {
+        if (source.getKeyword("pt")) {
             // nothing to do
-        } else if (source.scanKeyword("sp")) {
+        } else if (source.getKeyword("sp")) {
             value = value / ONE;
-        } else if (source.scanKeyword("mm")) {
+        } else if (source.getKeyword("mm")) {
             value = value * POINT_PER_100_IN / 2540;
-        } else if (source.scanKeyword("cm")) {
+        } else if (source.getKeyword("cm")) {
             value = value * POINT_PER_100_IN / 254;
-        } else if (source.scanKeyword("in")) {
+        } else if (source.getKeyword("in")) {
             value = value * POINT_PER_100_IN / 100;
-        } else if (source.scanKeyword("pc")) {
+        } else if (source.getKeyword("pc")) {
             value = value * 12;
-        } else if (source.scanKeyword("bp")) {
+        } else if (source.getKeyword("bp")) {
             value = value * POINT_PER_100_IN / 7200;
-        } else if (source.scanKeyword("dd")) {
+        } else if (source.getKeyword("dd")) {
             value = value * 1238 / 1157;
-        } else if (source.scanKeyword("cc")) {
+        } else if (source.getKeyword("cc")) {
             value = value * 14856 / 1157;
-        } else if (source.scanKeyword("ex")) {
+        } else if (source.getKeyword("ex")) {
             Dimen ex = context.getTypesettingContext().getFont().getEm();
             value = value * ex.getValue() / ONE;
-        } else if (source.scanKeyword("em")) {
+        } else if (source.getKeyword("em")) {
             Dimen em = context.getTypesettingContext().getFont().getEm();
             value = value * em.getValue() / ONE;
-        } else if (fixed && source.scanKeyword("fil")) {
+        } else if (fixed && source.getKeyword("fil")) {
             order = 1;
             for (t = source.getToken(); //
             (t != null && (t.equals('l') || t.equals('L'))); //

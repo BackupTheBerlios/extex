@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Read extends AbstractCode {
 
@@ -74,7 +74,7 @@ public class Read extends AbstractCode {
             throws GeneralException {
 
         long no = source.scanInteger();
-        if (!source.scanKeyword("to")) {
+        if (!source.getKeyword("to")) {
             throw new GeneralHelpingException("TTP.MissingToForRead");
         }
         Token cs = source.getControlSequence();

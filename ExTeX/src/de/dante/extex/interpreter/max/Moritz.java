@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -208,6 +208,21 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
+     * Tries to expand a token. If the given token is expandable then it is
+     * recursively expanded and the result is pushed. The first not-expandable
+     * token is returned.
+     *
+     * @param token
+     *            the Token to expand
+     *
+     * @return the next non-expandable token or <code>null</code>
+     *
+     * @throws GeneralException
+     *             in case of an error
+     */
+    protected abstract Token expand(final Token token) throws GeneralException;
+
+    /**
      * @see de.dante.extex.interpreter.TokenSource#getBox(
      *      de.dante.extex.typesetter.Typesetter)
      */
@@ -311,6 +326,79 @@ public abstract class Moritz implements TokenSource, Observable {
         }
 
         return scanNumber();
+    }
+
+    /**
+     * Scan the expanded token stream for a sequence of letter tokens. If all
+     * tokens are found then they are removed from the input stream and
+     * <code>true</code> is returned. Otherwise all tokens are left in the
+     * input stream and <code>false</code> is returned.
+     *
+     * @param s
+     *            the tokens to scan
+     *
+     * @return <code>true</code> iff the tokens could have been successfully
+     *         removed from the input stream
+     *
+     * @throws GeneralException
+     *             in case that no number is found or the end of file has been
+     *             reached before an integer could be acquired
+     */
+    public boolean getKeyword(final String s) throws GeneralException {
+
+        skipSpace();
+        if (getKeyword(s, 0)) {
+            skipSpace();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#getKeyword(java.lang.String,
+     *      boolean)
+     */
+    public boolean getKeyword(final String s, final boolean space)
+            throws GeneralException {
+
+        if (space) {
+            skipSpace();
+        }
+        return getKeyword(s);
+    }
+
+    /**
+     * Scans the input token stream for a given sequence of tokens. Those tokens
+     * may have the catcodes <tt>LETTER</tt> or <tt>OTHER</tt>.
+     *
+     * @param s
+     *            the string to use as reference
+     * @param i
+     *            the index in s to start working at
+     *
+     * @return <code>true</code> iff the keyword has been found
+     *
+     * @throws GeneralException
+     *             in case of an error
+     */
+    private boolean getKeyword(final String s, final int i)
+            throws GeneralException {
+
+        if (i < s.length()) {
+            Token t = getToken();
+
+            if (t == null) {
+                return false;
+            } else if (!(t.equals(Catcode.LETTER, s.charAt(i)) || t.equals(
+                    Catcode.OTHER, s.charAt(i)))
+                    || !getKeyword(s, i + 1)) {
+                stream.put(t);
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**
@@ -719,46 +807,6 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and
-     * <code>true</code> is returned. Otherwise all tokens are left in the
-     * input stream and <code>false</code> is returned.
-     *
-     * @param s
-     *            the tokens to scan
-     *
-     * @return <code>true</code> iff the tokens could have been successfully
-     *         removed from the input stream
-     *
-     * @throws GeneralException
-     *             in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
-     */
-    public boolean scanKeyword(final String s) throws GeneralException {
-
-        skipSpace();
-        if (scanKeyword(s, 0)) {
-            skipSpace();
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanKeyword(java.lang.String,
-     *      boolean)
-     */
-    public boolean scanKeyword(final String s, final boolean space)
-            throws GeneralException {
-
-        if (space) {
-            skipSpace();
-        }
-        return scanKeyword(s);
-    }
-
-    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
@@ -1005,6 +1053,17 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
+     * Setter for the context.
+     *
+     * @param theContext
+     *            the context to use
+     */
+    protected void setContext(final Context theContext) {
+
+        context = theContext;
+    }
+
+    /**
      * Setter for the token stream factory.
      *
      * @param factory the token stream factory
@@ -1044,65 +1103,6 @@ public abstract class Moritz implements TokenSource, Observable {
         } else {
             throw new NotObservableException(name);
         }
-    }
-
-    /**
-     * Scans the input token stream for a given sequence of tokens. Those tokens
-     * may have the catcodes <tt>LETTER</tt> or <tt>OTHER</tt>.
-     *
-     * @param s
-     *            the string to use as reference
-     * @param i
-     *            the index in s to start working at
-     *
-     * @return <code>true</code> iff the keyword has been found
-     *
-     * @throws GeneralException
-     *             in case of an error
-     */
-    private boolean scanKeyword(final String s, final int i)
-            throws GeneralException {
-
-        if (i < s.length()) {
-            Token t = scanToken();
-
-            if (t == null) {
-                return false;
-            } else if (!(t.equals(Catcode.LETTER, s.charAt(i)) || t.equals(
-                    Catcode.OTHER, s.charAt(i)))
-                    || !scanKeyword(s, i + 1)) {
-                stream.put(t);
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Tries to expand a token. If the given token is expandable then it is
-     * recursively expanded and the result is pushed. The first not-expandable
-     * token is returned.
-     *
-     * @param token
-     *            the Token to expand
-     *
-     * @return the next non-expandable token or <code>null</code>
-     *
-     * @throws GeneralException
-     *             in case of an error
-     */
-    protected abstract Token expand(final Token token) throws GeneralException;
-
-    /**
-     * Setter for the context.
-     *
-     * @param theContext
-     *            the context to use
-     */
-    protected void setContext(final Context theContext) {
-
-        context = theContext;
     }
 
 }

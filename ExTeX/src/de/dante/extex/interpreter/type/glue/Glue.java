@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -102,10 +102,10 @@ public class Glue implements Serializable, FixedGlue {
 
         super();
         this.length = new GlueComponent(context, source, false);
-        if (source.scanKeyword("plus")) {
+        if (source.getKeyword("plus")) {
             this.stretch = new GlueComponent(context, source, true);
         }
-        if (source.scanKeyword("minus")) {
+        if (source.getKeyword("minus")) {
             this.shrink = new GlueComponent(context, source, true);
         }
     }

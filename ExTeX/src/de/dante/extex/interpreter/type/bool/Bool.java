@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Bool implements Serializable {
 
@@ -111,13 +111,13 @@ public class Bool implements Serializable {
             return (new Bool(Count.scanCount(context, source))).getValue();
         }
 
-        if (source.scanKeyword("true")) {
+        if (source.getKeyword("true")) {
             return true;
-        } else if (source.scanKeyword("false")) {
+        } else if (source.getKeyword("false")) {
             return false;
-        } else if (source.scanKeyword("on")) {
+        } else if (source.getKeyword("on")) {
             return true;
-        } else if (source.scanKeyword("off")) {
+        } else if (source.getKeyword("off")) {
             return false;
         }
         throw new GeneralHelpingException("TTP.NoBoolValue");

@@ -72,7 +72,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Hrule extends AbstractCode {
 
@@ -108,11 +108,11 @@ public class Hrule extends AbstractCode {
         Dimen depth = new Dimen(0);
 
         for (;;) {
-            if (source.scanKeyword("width")) {
+            if (source.getKeyword("width")) {
                 width.set(context, source);
-            } else if (source.scanKeyword("height")) {
+            } else if (source.getKeyword("height")) {
                 height.set(context, source);
-            } else if (source.scanKeyword("depth")) {
+            } else if (source.getKeyword("depth")) {
                 depth.set(context, source);
             } else {
                 break;

@@ -57,7 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -98,12 +98,12 @@ public class FontPrimitive extends AbstractAssignment
 
         // optional parameters 'at' and 'scaled'
         // if 'at' not used, the fontname must have a size (e.g. cmr10)
-        if (source.scanKeyword("at", true)) {
+        if (source.getKeyword("at", true)) {
             // \font\myfont=cmr12 at 15pt
             // \font\second=cmr10 at 12truept
             source.skipSpace();
             fontsize = new Dimen(context, source);
-        } else if (source.scanKeyword("scaled", true)) {
+        } else if (source.getKeyword("scaled", true)) {
             // \font\magnifiedfiverm=cmr5 scaled 2000
             source.skipSpace();
             long scale = source.scanInteger();
@@ -125,14 +125,14 @@ public class FontPrimitive extends AbstractAssignment
 
         for (boolean onceMore = true; onceMore;) {
 
-            if (source.scanKeyword("letterspaced", true)) {
+            if (source.getKeyword("letterspaced", true)) {
                 // \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
                 source.skipSpace();
                 letterspaced = new Glue(source, context);
-            } else if (source.scanKeyword("noligatures", true)) {
+            } else if (source.getKeyword("noligatures", true)) {
                 // \font\myfont=cmr12 at 15pt noligatures
                 ligatures = false;
-            } else if (source.scanKeyword("nokerning", true)) {
+            } else if (source.getKeyword("nokerning", true)) {
                 // \font\myfont=cmr12 at 15pt nokerning
                 kerning = false;
             } else {

@@ -43,7 +43,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public interface TokenSource {
 
@@ -305,7 +305,7 @@ public interface TokenSource {
      *
      * @throws GeneralException in case of an error
      */
-    boolean scanKeyword(String keyword) throws GeneralException;
+    boolean getKeyword(String keyword) throws GeneralException;
 
     /**
      * Scan the expanded token stream for a sequence of letter tokens. If all
@@ -321,7 +321,7 @@ public interface TokenSource {
      *
      * @throws GeneralException in case of an error
      */
-    boolean scanKeyword(String s, boolean space) throws GeneralException;
+    boolean getKeyword(String s, boolean space) throws GeneralException;
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
