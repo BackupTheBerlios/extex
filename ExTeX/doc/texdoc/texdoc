@@ -1,6 +1,6 @@
 ##!/usr/local/bin/perl -w
 ##*****************************************************************************
-## $Id: texdoc,v 1.3 2003/12/30 08:35:59 gene Exp $
+## $Id: texdoc,v 1.4 2004/06/14 16:11:56 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -757,8 +757,8 @@ sub out_finish
     $contents =~ s/\+&nbsp;\&equiv;/+&equiv;/gos;
     $contents =~ s/ +&nbsp;/&nbsp;/gos;
     $contents =~ s/&nbsp; +/&nbsp;/gos;
-    $contents =~ s/--/&mdash;/g;
-    $contents =~ s/---/&ndash;/g;
+    $contents =~ s/---/&mdash;/g;
+    $contents =~ s/--/&ndash;/g;
     $contents =~ s/``/&ldquo;/g;
     $contents =~ s/''/&rdquo;/g;
 
