@@ -22,15 +22,14 @@ package de.dante.extex.interpreter.primitives.file;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.util.Calendar;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -63,7 +62,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Dump extends AbstractCode {
 
@@ -120,8 +119,6 @@ public class Dump extends AbstractCode {
             throw new HelpingException("TTP.DumpInGroup");
         }
 
-        Calendar calendar = Calendar.getInstance();
-
         //TODO @see "TeX -- The Program [1328]"
 
         Tokens tJobname = context.getToks("jobname");
@@ -129,24 +126,19 @@ public class Dump extends AbstractCode {
             throw new PanicException("Dump.MissingJobname",
                     printableControlSequence(context));
         }
-        String format = tJobname.toText() + FORMAT_EXTENSION;
+        String jobname = tJobname.toText();
+        SerialLoader loader = new SerialLoader();
 
         try {
-            OutputStream stream = new FileOutputStream(format);
-            stream.write("#!extex\n".getBytes());
-            ObjectOutputStream os = new ObjectOutputStream(stream);
-            os.writeObject(FORMAT_VERSION);
-            os.writeObject(format + " " + //
-                    calendar.get(Calendar.YEAR) + "."
-                    + calendar.get(Calendar.MONTH) + "."
-                    + calendar.get(Calendar.DAY_OF_MONTH));
-            os.writeObject(context);
-            //@see "TeX -- The Program [1329]"
-            os.close();
+            OutputStream stream = new FileOutputStream(jobname
+                    + FORMAT_EXTENSION);
+            //TODO: log "TTP.Dumping", jobname + FORMAT_EXTENSION
+            loader.save(stream, jobname, context);
+            stream.close();
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);
         } catch (IOException e) {
-            throw new GeneralException(e);
+            throw new PanicException(e);
         }
 
         return true;
