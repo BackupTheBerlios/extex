@@ -49,7 +49,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -491,20 +491,19 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
 
         if (e.getName().equals(name)) {
             return e;
-        } else {
-            Element element = e.getChild(name);
+        }
+        Element element = e.getChild(name);
+        if (element != null) {
+            return element;
+        }
+        List liste = e.getChildren();
+        for (int i = 0; i < liste.size(); i++) {
+            element = scanForElement((Element) liste.get(i), name);
             if (element != null) {
                 return element;
-            } else {
-                List liste = e.getChildren();
-                for (int i = 0; i < liste.size(); i++) {
-                    element = scanForElement((Element) liste.get(i), name);
-                    if (element != null) {
-                        return element;
-                    }
-                }
             }
         }
+
         return null;
     }
 

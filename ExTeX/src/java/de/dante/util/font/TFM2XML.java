@@ -42,17 +42,17 @@ import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
 /**
- * Convert a TFM-file to a EFM-file
+ * Convert a TFM-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.1 $
  */
-public final class TFM2EFM {
+public final class TFM2XML {
 
     /**
      * private: no instance
      */
-    private TFM2EFM() {
+    private TFM2XML() {
 
     }
 
@@ -73,7 +73,7 @@ public final class TFM2EFM {
 
         if (args.length != PARAMETER) {
             System.err
-                    .println("java de.dante.util.font.TFM2EFM <tfm-file> <efm-file>");
+                    .println("java de.dante.util.font.TFM2XML <tfm-file> <xml-file>");
             System.exit(1);
         }
 
@@ -116,9 +116,6 @@ public final class TFM2EFM {
         }
         PSFontsMapReader psfm = new PSFontsMapReader(psin);
 
-        //        // TFM-Reader
-        //        TFMReader tfmr = new TFMReader(tfmin, fontname, psfm, ef);
-
         TFMFont font = new TFMFont(new RandomAccessInputStream(tfmin), fontname);
 
         font.setFontMapEncoding(psfm, ef);
@@ -127,7 +124,7 @@ public final class TFM2EFM {
         XMLOutputter xmlout = new XMLOutputter("   ", true);
         BufferedOutputStream out = new BufferedOutputStream(
                 new FileOutputStream(efmfile));
-        Document doc = new Document(font.getFontMetric());
+        Document doc = new Document(font.toXML());
         xmlout.output(doc, out);
         out.close();
     }

@@ -20,12 +20,17 @@
 package de.dante.extex.font.type.tfm;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 
+import org.jdom.Document;
 import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
@@ -33,6 +38,7 @@ import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.file.random.RandomAccessInputFileDebug;
 
 /**
  * This class read a TFM-file.
@@ -40,7 +46,7 @@ import de.dante.util.configuration.ConfigurationException;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TFMReader implements FontMetric, Serializable {
 
@@ -96,6 +102,17 @@ public class TFMReader implements FontMetric, Serializable {
 
         // close stream
         in.close();
+    }
+    /**
+     * only for test
+     * @param args  the comandline
+     * @throws Exception if an error occurs
+     */
+    public static void main(final String[] args) throws Exception {
+
+        FileInputStream in = new FileInputStream(
+                "src/font/cmr12.tfm");
+        new TFMReader(in,null,null,null);
     }
 
     /**
@@ -156,9 +173,9 @@ public class TFMReader implements FontMetric, Serializable {
                             (aer.getBot() != 0)
                                     ? aer.getBot()
                                     : TFMCharInfo.NOCHARCODE, aer.getRep());
-                } else {
-                    rangeerror(pos, "Extensible");
                 }
+                rangeerror(pos, "Extensible");
+
                 break;
         }
         return new TFMCharInfo(wd, ht, dp, ic);
@@ -898,9 +915,9 @@ public class TFMReader implements FontMetric, Serializable {
 
         if (table[0].getValue() != 0) {
             throw new HelpingException("TFM.dimenzero", what);
-        } else {
-            table[0] = TFMFixWord.ZERO;
         }
+        table[0] = TFMFixWord.ZERO;
+
     }
 
     /**

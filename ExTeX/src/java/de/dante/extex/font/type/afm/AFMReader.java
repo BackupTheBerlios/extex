@@ -112,7 +112,7 @@ import de.dante.extex.font.type.FontMetric;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AFMReader implements FontMetric, Serializable {
 
@@ -773,8 +773,7 @@ public class AFMReader implements FontMetric, Serializable {
     /**
      * LineFeed
      */
-//    private static final char LF = '\n';
-
+    //    private static final char LF = '\n';
     /**
      * remove the fileextension and path, if exists
      * @param   file    the filename
@@ -831,9 +830,8 @@ public class AFMReader implements FontMetric, Serializable {
 
         if (id >= 0) {
             return String.valueOf(id);
-        } else {
-            return "notdef_" + n;
         }
+        return "notdef_" + n;
     }
 
     /**

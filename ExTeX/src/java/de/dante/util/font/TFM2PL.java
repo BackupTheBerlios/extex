@@ -27,9 +27,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
+import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
@@ -42,17 +40,17 @@ import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
 /**
- * Convert a TFM-file to a EFM-file
+ * Convert a TFM-file to a PL-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.1 $
  */
-public final class TFM2EFM {
+public final class TFM2PL {
 
     /**
      * private: no instance
      */
-    private TFM2EFM() {
+    private TFM2PL() {
 
     }
 
@@ -73,11 +71,11 @@ public final class TFM2EFM {
 
         if (args.length != PARAMETER) {
             System.err
-                    .println("java de.dante.util.font.TFM2EFM <tfm-file> <efm-file>");
+                    .println("java de.dante.util.font.TFM2EFM <tfm-file> <pl-file>");
             System.exit(1);
         }
 
-        File efmfile = new File(args[1]);
+        File plfile = new File(args[1]);
         String fontname = args[0].replaceAll("\\.tfm|\\.TFM", "");
 
         Configuration config = new ConfigurationFactory()
@@ -116,19 +114,13 @@ public final class TFM2EFM {
         }
         PSFontsMapReader psfm = new PSFontsMapReader(psin);
 
-        //        // TFM-Reader
-        //        TFMReader tfmr = new TFMReader(tfmin, fontname, psfm, ef);
-
         TFMFont font = new TFMFont(new RandomAccessInputStream(tfmin), fontname);
 
         font.setFontMapEncoding(psfm, ef);
 
-        // write to efm-file
-        XMLOutputter xmlout = new XMLOutputter("   ", true);
-        BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(efmfile));
-        Document doc = new Document(font.getFontMetric());
-        xmlout.output(doc, out);
+        PlWriter out = new PlWriter(new BufferedOutputStream(
+                new FileOutputStream(plfile)));
+        font.toPL(out);
         out.close();
     }
 }

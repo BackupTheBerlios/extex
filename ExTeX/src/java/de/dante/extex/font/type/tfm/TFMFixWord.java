@@ -19,6 +19,10 @@
 
 package de.dante.extex.font.type.tfm;
 
+import java.io.Serializable;
+
+import com.ibm.icu.text.DecimalFormat;
+
 /**
  * TFM-FixWord
  * <p>
@@ -27,9 +31,9 @@ package de.dante.extex.font.type.tfm;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TFMFixWord {
+public class TFMFixWord implements Serializable {
 
     /**
      * NULL
@@ -55,6 +59,11 @@ public class TFMFixWord {
      * POINT-SHIFT
      */
     private static final int POINTSHIFT = 20;
+
+    /**
+     * fixdominator
+     */
+    public static final int FIXWORDDENOMINATOR = 0x100000;
 
     /**
      * Create a new object
@@ -117,8 +126,10 @@ public class TFMFixWord {
     }
 
     /**
-     * Return the value as String in units. <p>It devide the value by
-     * 1000.
+     * Return the value as String in units.
+     * <p>
+     * It devide the value by 1000.
+     * </p>
      *
      * @return the value as String in units
      */
@@ -130,6 +141,21 @@ public class TFMFixWord {
         }
         return String
                 .valueOf(-((-value * TFMConstants.CONST_1000) >>> POINTSHIFT));
+    }
+
+    /**
+     * format
+     */
+    private static final DecimalFormat FORMAT = new DecimalFormat("0.0#####");
+
+    /**
+     * Returns the value as Sting in untis with comma (0.00000).
+     * @return Returns the value as Sting in untis with comma.
+     */
+    public String toStringComma() {
+
+        double d = Double.parseDouble(toString()) * TFMConstants.CONST_1000;
+        return FORMAT.format(d).replace(',', '.');
     }
 
     /**
@@ -161,5 +187,4 @@ public class TFMFixWord {
         } while (v > (delta *= TFMConstants.CONST_10));
         return buf.toString();
     }
-
 }

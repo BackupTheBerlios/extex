@@ -19,6 +19,8 @@
 
 package de.dante.extex.font.type.tfm;
 
+import java.io.Serializable;
+
 /**
  * TFM-LigKern
  * <p>
@@ -28,9 +30,9 @@ package de.dante.extex.font.type.tfm;
  * @see <a href="package-summary.html#lig_kern">lig_kern</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public abstract class TFMLigKern {
+public abstract class TFMLigKern implements Serializable {
 
     /**
      * The skip amount
