@@ -48,6 +48,7 @@
     <path property="extex.texinputs"/>
     <path property="texinputs"/>
 
+    <vf><extension/><extension>.vf</extension></vf>
     <tfm><extension/><extension>.tfm</extension></tfm>
     <efm><extension/><extension>.efm</extension></efm>
     <afm><extension/><extension>.afm</extension></afm>
