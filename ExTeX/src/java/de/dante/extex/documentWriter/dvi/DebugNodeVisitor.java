@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * This is a implementation of a NodeVisitor for debugging.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DebugNodeVisitor implements InspectableNodeVisitor {
     /**
@@ -101,10 +101,8 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
     private void appendNodeInformation(final StringBuffer buffer,
                                        final Object value) {
 
-        Node node = null;
-
         if (value instanceof Node) {
-            node = (Node) value;
+            final Node node = (Node) value;
 
             buffer.append(" (wd=");
             buffer.append(convertDimen(node.getWidth()));
@@ -123,18 +121,18 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * Write the debug message.
      *
      * @param mesg a <code>String</code>
-     * @param value1 value for additional information
-     * @param value2 value for additional information
+     * @param node value for additional information
+     * @param value value for additional information
      */
     private void debugMessage(final String mesg,
-                              final Object value1,
-                              final Object value2) {
+                              final Node node,
+                              final Object value) {
 
         StringBuffer buffer = new StringBuffer("DEBUG: ");
 
         buffer.append(mesg);
-        appendNodeInformation(buffer, value1);
-        appendNodeInformation(buffer, value2);
+        appendNodeInformation(buffer, node);
+        appendNodeInformation(buffer, value);
 
         // TODO: better the visitor knows where the Node is (TE)
         System.out.println(buffer);
@@ -149,51 +147,51 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
     /**
      * Call the <code>visitAdjust</code> to inspect.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor
+     * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode, Object)
      */
-    public Object visitAdjust(final AdjustNode value, final Object value2)
+    public Object visitAdjust(final AdjustNode node, final Object value)
         throws GeneralException {
 
-        debugMessage("visitAdjust", value, value2);
-        return nodeVisitor.visitAdjust(value, value2);
+        debugMessage("visitAdjust", node, value);
+        return nodeVisitor.visitAdjust(node, value);
     }
 
 
     /**
      * Call the <code>visitAfterMath</code> to inspect.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor
+     * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode, Object)
      */
-    public Object visitAfterMath(final AfterMathNode value, final Object value2)
+    public Object visitAfterMath(final AfterMathNode node, final Object value)
         throws GeneralException {
 
-        debugMessage("visitAfterMath", value, value2);
-        return nodeVisitor.visitAfterMath(value, value2);
+        debugMessage("visitAfterMath", node, value);
+        return nodeVisitor.visitAfterMath(node, value);
     }
 
 
     /**
      * Call the <code>visitAlignedLeaders</code> to inspect.
      *
-     * @param value the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param node the first parameter for the visitor
+     * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode, Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2)
+    public Object visitAlignedLeaders(final AlignedLeadersNode node, final Object value)
         throws GeneralException {
 
-        debugMessage("visitAlignedLeaders", value, value2);
-        return nodeVisitor.visitAlignedLeaders(value, value2);
+        debugMessage("visitAlignedLeaders", node, value);
+        return nodeVisitor.visitAlignedLeaders(node, value);
     }
 
 
@@ -201,16 +199,16 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * Call the <code>visitBeforeMath</code> to inspect.
      *
      * @param node the first parameter for the visitor
-     * @param value2 the second parameter for the visitor
+     * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode, Object)
      */
-    public Object visitBeforeMath(final BeforeMathNode node, final Object value2)
+    public Object visitBeforeMath(final BeforeMathNode node, final Object value)
         throws GeneralException {
 
-        debugMessage("visitBeforeMath", node, value2);
-        return nodeVisitor.visitBeforeMath(node, value2);
+        debugMessage("visitBeforeMath", node, value);
+        return nodeVisitor.visitBeforeMath(node, value);
     }
 
 
@@ -458,16 +456,16 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
     /**
      * Call the <code>visitWhatsIt</code> to inspect.
      *
-     * @param nde the first parameter for the visitor
+     * @param node the first parameter for the visitor
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode, Object)
      */
-    public Object visitWhatsIt(final WhatsItNode nde, final Object value)
+    public Object visitWhatsIt(final WhatsItNode node, final Object value)
         throws GeneralException {
 
-        debugMessage("visitWhatsIt", nde, value);
-        return nodeVisitor.visitWhatsIt(nde, value);
+        debugMessage("visitWhatsIt", node, value);
+        return nodeVisitor.visitWhatsIt(node, value);
     }
 }
