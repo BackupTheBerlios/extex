@@ -25,7 +25,10 @@ import de.dante.extex.interpreter.MacroCode;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.LeftBraceToken;
+import de.dante.extex.scanner.MacroParamToken;
+import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -34,7 +37,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\def</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Def extends AbstractCode {
     /**
@@ -57,35 +60,65 @@ public class Def extends AbstractCode {
         throws GeneralException {
         Token cs = source.getControlSequence();
         String name = cs.getValue();
-        Tokens pattern = getPattern(source);
-        Tokens body = source.getTokens();
+        Tokens pattern = getPattern(context, source, name, prefix.isLong());
+        Tokens body = (prefix.isExpanded() //
+            ? expandedBody(source)//
+            : source.getTokens());
         context.setMacro(name, new MacroCode(name, prefix, pattern, body),
                          prefix.isGlobal());
         prefix.clear();
+    }
+
+    private Tokens expandedBody(TokenSource source) {
+        //TODO
+        return null;
     }
 
     /**
      * ...
      * 
      * @param source the source for new tokens
-     *
+     * 
      * @return the tokens read
-     *
+     * 
      * @throws GeneralException in case of an error
      */
-    private Tokens getPattern(final TokenSource source) throws GeneralException {
+    protected Tokens getPattern(final Context context, final TokenSource source,
+        final String name, final boolean notLong) throws GeneralException {
         Tokens toks = new Tokens();
+        int no = 1;
+        boolean afterHash = false;
 
-        //TODO verify that the macro parameters are correct
-        for (Token t = source.getToken(); t != null; t = source.getToken() ) {
+        for (Token t = source.getToken(); t != null; t = source.getToken()) {
             if (t instanceof LeftBraceToken) {
-                
+                source.push(t);
                 return toks;
             }
+            /*
+            if (notLong && t.equals(Catcode.ESCAPE,"par") ) {
+                throw new GeneralHelpingException("");
+            }
+            */
+
+            if (afterHash) {
+                if (t instanceof MacroParamToken) {
+                    //ok
+                } else if (t instanceof OtherToken) {
+                    if (t.getValue().charAt(0) != '0' + no) {
+                        //TODO error
+                    }
+                    no++;
+                } else {
+                    //TODO error
+                }
+            }
+            afterHash = (t instanceof MacroParamToken);
             toks.add(t);
         }
 
-        throw new GeneralHelpingException("xxx");//TODO EOF
+        char esc = (char) (context.getCount("escapechar").getValue());
+        throw new GeneralHelpingException("TTP.EOFinDef", //
+            Character.toString(esc) + name);
     }
     
 }

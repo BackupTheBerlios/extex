@@ -25,18 +25,18 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\gdef</code>.
+ * This class provides an implementation for the primitive <code>\edef</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class Gdef extends Def {
+public class Edef extends Def {
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Gdef(final String name) {
+    public Edef(final String name) {
         super(name);
     }
 
@@ -49,8 +49,8 @@ public class Gdef extends Def {
     public void execute(final Flags prefix, final Context context,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
-        prefix.setGlobal();
-        super.execute(prefix, context, source, typesetter);
+        prefix.setExpanded();
+        super.execute(prefix,context,source,typesetter);
     }
-
+    
 }
