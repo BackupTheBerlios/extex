@@ -45,7 +45,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTablePREP extends AbstractTTFTable
         implements
@@ -95,26 +95,11 @@ public class TTFTablePREP extends AbstractTTFTable
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table Prep\n");
-        for (int i = 0; i < instructions.length; i++) {
-            buf.append("   ").append(i).append('\n');
-        }
-        return buf.toString();
-    }
-
-    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "PREP");
+        Element table = new Element("prep");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         for (int i = 0; i < instructions.length; i++) {
             Element ins = new Element("instructions");

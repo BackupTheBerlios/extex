@@ -24,7 +24,7 @@ import java.text.DateFormat;
 
 import org.jdom.Element;
 
-import de.dante.util.FixedPoint;
+import de.dante.util.Fixed32;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
@@ -98,7 +98,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TTFTableHEAD extends AbstractTTFTable
         implements
@@ -113,7 +113,7 @@ public class TTFTableHEAD extends AbstractTTFTable
     /**
      * font revision
      */
-    private FixedPoint fontRevision;
+    private Fixed32 fontRevision;
 
     /**
      * checksumadjustment
@@ -204,7 +204,7 @@ public class TTFTableHEAD extends AbstractTTFTable
         super(tablemap);
         rar.seek(de.getOffset());
         version = rar.readInt();
-        fontRevision = new FixedPoint(rar.readInt());
+        fontRevision = new Fixed32(rar.readInt());
         checkSumAdjustment = rar.readInt();
         magicNumber = rar.readInt();
         flags = rar.readShort();
@@ -262,7 +262,7 @@ public class TTFTableHEAD extends AbstractTTFTable
      * Returns the fontRevision.
      * @return Returns the fontRevision.
      */
-    public FixedPoint getFontRevision() {
+    public Fixed32 getFontRevision() {
 
         return fontRevision;
     }
@@ -381,8 +381,7 @@ public class TTFTableHEAD extends AbstractTTFTable
     public Element toXML() {
 
         DateFormat dformat = DateFormat.getDateInstance();
-        Element table = new Element("table");
-        table.setAttribute("name", "head");
+        Element table = new Element("head");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         table.setAttribute("version", String.valueOf(TTFFont
                 .convertVersion(version)));

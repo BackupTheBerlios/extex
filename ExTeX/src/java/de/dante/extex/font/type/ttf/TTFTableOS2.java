@@ -21,6 +21,10 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Comment;
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -100,9 +104,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableOS2 extends AbstractTTFTable implements TTFTable {
+public class TTFTableOS2 extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * version
@@ -611,15 +618,15 @@ public class TTFTableOS2 extends AbstractTTFTable implements TTFTable {
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
+     * @see de.dante.util.XMLConvertible#toXML()
      */
-    public String toString() {
+    public Element toXML() {
 
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table OS2\n");
-        buf.append("   Version     : " + String.valueOf(version) + '\n');
-        return buf.toString();
+        Element table = new Element("os2");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        Comment c = new Comment("incomplete");
+        table.addContent(c);
+        return table;
     }
 
     /**

@@ -19,15 +19,16 @@
 
 package de.dante.extex.font;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Class for a <code>FontFile</code>List.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class FontFileList {
+public class FontFileList implements Serializable {
 
     /**
      * The list

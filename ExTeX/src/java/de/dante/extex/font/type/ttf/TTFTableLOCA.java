@@ -70,7 +70,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableLOCA extends AbstractTTFTable
         implements
@@ -180,8 +180,7 @@ public class TTFTableLOCA extends AbstractTTFTable
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "loca");
+        Element table = new Element("loca");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         for (int i = 0; i < offsets.length; i++) {
             Element offset = new Element("offset");

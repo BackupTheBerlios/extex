@@ -19,6 +19,7 @@
 
 package de.dante.extex.font;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -28,9 +29,9 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class GlyphImpl implements Glyph {
+public class GlyphImpl implements Glyph, Serializable {
 
     /**
      * the width of the glyph

@@ -31,7 +31,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The 'CFF' ... TODO incomplete
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTFTableCFF extends AbstractTTFTable
         implements
@@ -69,8 +69,7 @@ public class TTFTableCFF extends AbstractTTFTable
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "CFF");
+        Element table = new Element("cff");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         Comment c = new Comment("incomplete");
         table.addContent(c);

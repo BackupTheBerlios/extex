@@ -38,9 +38,12 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class TTFTableCMAP extends AbstractTTFTable implements TTFTable, XMLConvertible {
+public class TTFTableCMAP extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     // -------------------------------------------------------
     // -------------------------------------------------------
@@ -702,8 +705,8 @@ public class TTFTableCMAP extends AbstractTTFTable implements TTFTable, XMLConve
      * @param rar       the RandomAccessInput
      * @throws IOException if an error occured
      */
-    TTFTableCMAP(final TableMap tablemap,final TableDirectory.Entry de, final RandomAccessR rar)
-            throws IOException {
+    TTFTableCMAP(final TableMap tablemap, final TableDirectory.Entry de,
+            final RandomAccessR rar) throws IOException {
 
         super(tablemap);
         rar.seek(de.getOffset());
@@ -816,34 +819,11 @@ public class TTFTableCMAP extends AbstractTTFTable implements TTFTable, XMLConve
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table cmap\n");
-        buf.append("   Version     : " + String.valueOf(version) + '\n');
-
-        // Get each of the index entries
-        for (int i = 0; i < numTables; i++) {
-            buf.append("   " + entries[i].toString() + '\n');
-        }
-
-        // Get each of the tables
-        for (int i = 0; i < numTables; i++) {
-            buf.append("   " + formats[i].toString() + '\n');
-        }
-        return buf.toString();
-    }
-
-    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "cmap");
+        Element table = new Element("cmap");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         table.setAttribute("version", String.valueOf(TTFFont
                 .convertVersion(version)));

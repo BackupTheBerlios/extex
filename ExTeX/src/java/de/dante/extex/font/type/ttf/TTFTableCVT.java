@@ -47,7 +47,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableCVT extends AbstractTTFTable
         implements
@@ -99,26 +99,11 @@ public class TTFTableCVT extends AbstractTTFTable
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table CVT\n");
-        for (int i = 0; i < values.length; i++) {
-            buf.append("   [" + i + "] : " + String.valueOf(values[i]) + '\n');
-        }
-        return buf.toString();
-    }
-
-    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "cvt");
+        Element table = new Element("cvt");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         for (int i = 0; i < values.length; i++) {
             Element val = new Element("values");

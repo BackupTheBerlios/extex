@@ -21,15 +21,21 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
  * Table gpos.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TTFTableGPOS extends AbstractTTFTable implements TTFTable {
+public class TTFTableGPOS extends AbstractTTFTable
+        implements
+            TTFTable,
+            XMLConvertible {
 
     /**
      * Version.
@@ -82,19 +88,14 @@ public class TTFTableGPOS extends AbstractTTFTable implements TTFTable {
     }
 
     /**
-     * Returns the info for this class.
-     *
-     * @return Returns the info for this class
+     * @see de.dante.util.XMLConvertible#toXML()
      */
-    public String toString() {
+    public Element toXML() {
 
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table GPOS\n");
-        buf.append("   Version     : " + String.valueOf(version) + '\n');
-        buf.append("   scriptlist  : " + String.valueOf(scriptList) + '\n');
-        buf.append("   featurelist : " + String.valueOf(featureList) + '\n');
-        buf.append("   lookuplist  : " + String.valueOf(lookupList) + '\n');
-        return buf.toString();
+        Element table = new Element("gpos");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        // TODO incomplete
+        return table;
     }
 
     /**

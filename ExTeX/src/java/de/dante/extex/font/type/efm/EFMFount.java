@@ -20,6 +20,7 @@
 package de.dante.extex.font.type.efm;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,9 +49,9 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public abstract class EFMFount implements ModifiableFount {
+public abstract class EFMFount implements ModifiableFount, Serializable {
 
     /**
      * The fontname

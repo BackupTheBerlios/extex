@@ -83,7 +83,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTablePOST extends AbstractTTFTable
         implements
@@ -658,35 +658,11 @@ public class TTFTablePOST extends AbstractTTFTable
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table Post\n");
-        buf.append("   Version       : " + String.valueOf(version) + '\n');
-        buf.append("   isFixedPitch  : " + String.valueOf(isFixedPitch) + '\n');
-        buf.append("   italicangle   : " + String.valueOf(italicAngle) + '\n');
-        buf.append("   maxMemType1   : " + String.valueOf(maxMemType1) + '\n');
-        buf.append("   maxMemType42  : " + String.valueOf(maxMemType42) + '\n');
-        buf.append("   minMemType1   : " + String.valueOf(minMemType1) + '\n');
-        buf.append("   minMemType42  : " + String.valueOf(minMemType42) + '\n');
-        buf.append("   numGlyphs     : " + String.valueOf(numGlyphs) + '\n');
-        buf.append("   underlinepos  : " + String.valueOf(underlinePosition)
-                + '\n');
-        buf.append("   underlinethick: " + String.valueOf(underlineThickness)
-                + '\n');
-        return buf.toString();
-    }
-
-    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "POST");
+        Element table = new Element("post");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         table.setAttribute("version", "0x" + Integer.toHexString(version));
         table.setAttribute("isfixedpitch", String.valueOf(isFixedPitch));

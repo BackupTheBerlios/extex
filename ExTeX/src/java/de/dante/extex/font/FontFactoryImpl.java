@@ -21,6 +21,7 @@ package de.dante.extex.font;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
@@ -57,9 +58,9 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
-public class FontFactoryImpl implements FontFactory {
+public class FontFactoryImpl implements FontFactory, Serializable {
 
     /**
      * The field <tt>TAG_TYPE</tt> contains the name of the tag in the

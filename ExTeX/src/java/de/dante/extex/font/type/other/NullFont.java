@@ -19,6 +19,8 @@
 
 package de.dante.extex.font.type.other;
 
+import java.io.Serializable;
+
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -31,9 +33,9 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class NullFont implements Font {
+public class NullFont implements Font, Serializable {
 
     /**
      * The field <tt>hyphen</tt> contains the hyphen char for this font.

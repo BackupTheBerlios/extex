@@ -31,7 +31,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The 'AVAR' ... TODO incomplete
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTFTableAVAR extends AbstractTTFTable
         implements
@@ -69,8 +69,7 @@ public class TTFTableAVAR extends AbstractTTFTable
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "AVAR");
+        Element table = new Element("avar");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         Comment c = new Comment("incomplete");
         table.addContent(c);

@@ -19,15 +19,17 @@
 
 package de.dante.extex.font;
 
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.type.dimen.Dimen;
 
 /**
  * Kerning
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Kerning {
+public class Kerning implements Serializable {
 
     /**
      * The id for the glyph

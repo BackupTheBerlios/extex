@@ -43,7 +43,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableKERN extends AbstractTTFTable
         implements
@@ -116,29 +116,11 @@ public class TTFTableKERN extends AbstractTTFTable
     }
 
     /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-        buf.append("Table KERN\n");
-        buf.append("   Version     : ").append(version).append('\n');
-        buf.append("   nTables     : ").append(nTables).append('\n');
-
-        for (int i = 0; i < tables.length; i++) {
-            buf.append(tables[i].toString());
-        }
-        return buf.toString();
-    }
-
-    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "kern");
+        Element table = new Element("kern");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         table.setAttribute("version", String.valueOf(version));
         table.setAttribute("numberoftables", String.valueOf(nTables));

@@ -53,7 +53,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableHMTX extends AbstractTTFTable
         implements
@@ -196,8 +196,7 @@ public class TTFTableHMTX extends AbstractTTFTable
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "hmtx");
+        Element table = new Element("hmtx");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         for (int i = 0; i < hMetricslength; i++) {
             Element hmetrics = new Element("hmetrics");

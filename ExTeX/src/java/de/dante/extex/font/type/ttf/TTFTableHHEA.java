@@ -68,7 +68,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFTableHHEA extends AbstractTTFTable
         implements
@@ -136,6 +136,31 @@ public class TTFTableHHEA extends AbstractTTFTable
     private short numberOfHMetrics;
 
     /**
+     * reserved 0
+     */
+    private short reserved0;
+
+    /**
+     * reserved 1
+     */
+    private short reserved1;
+
+    /**
+     * reserved 2
+     */
+    private short reserved2;
+
+    /**
+     * reserved 3
+     */
+    private short reserved3;
+
+    /**
+     * reserved 4
+     */
+    private short reserved4;
+
+    /**
      * Create a new object
      *
      * @param tablemap  the tablemap
@@ -158,9 +183,11 @@ public class TTFTableHHEA extends AbstractTTFTable
         xMaxExtent = rar.readShort();
         caretSlopeRise = rar.readShort();
         caretSlopeRun = rar.readShort();
-        for (int i = 0; i < 5; i++) {
-            rar.readShort();
-        }
+        reserved0 = rar.readShort();
+        reserved1 = rar.readShort();
+        reserved2 = rar.readShort();
+        reserved3 = rar.readShort();
+        reserved4 = rar.readShort();
         metricDataFormat = rar.readShort();
         numberOfHMetrics = rar.readShort();
     }
@@ -287,10 +314,10 @@ public class TTFTableHHEA extends AbstractTTFTable
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "hhea");
+        Element table = new Element("hhea");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
-        table.setAttribute("version", String.valueOf(version));
+        table.setAttribute("version", String.valueOf(TTFFont
+                .convertVersion(version)));
         table.setAttribute("ascender", String.valueOf(ascender));
         table.setAttribute("descender", String.valueOf(descender));
         table.setAttribute("linegap", String.valueOf(lineGap));
@@ -308,6 +335,11 @@ public class TTFTableHHEA extends AbstractTTFTable
         table
                 .setAttribute("numberofhmetrics", String
                         .valueOf(numberOfHMetrics));
+        table.setAttribute("reserved0", String.valueOf(reserved0));
+        table.setAttribute("reserved1", String.valueOf(reserved1));
+        table.setAttribute("reserved2", String.valueOf(reserved2));
+        table.setAttribute("reserved3", String.valueOf(reserved3));
+        table.setAttribute("reserved4", String.valueOf(reserved4));
         return table;
     }
 }

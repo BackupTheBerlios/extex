@@ -31,7 +31,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The 'VHEA' ... TODO incomplete
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTFTableVHEA extends AbstractTTFTable
         implements
@@ -69,8 +69,7 @@ public class TTFTableVHEA extends AbstractTTFTable
      */
     public Element toXML() {
 
-        Element table = new Element("table");
-        table.setAttribute("name", "VHEA");
+        Element table = new Element("vhea");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
         Comment c = new Comment("incomplete");
         table.addContent(c);

@@ -20,15 +20,15 @@
 package de.dante.extex.font;
 
 import java.io.File;
-
+import java.io.Serializable;
 
 /**
  * Abstract class for a Font-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public abstract class AbstractFontFile implements FontFile {
+public abstract class AbstractFontFile implements FontFile, Serializable {
 
     /**
      * Create a new object

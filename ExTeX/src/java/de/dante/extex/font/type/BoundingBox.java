@@ -19,15 +19,17 @@
 
 package de.dante.extex.font.type;
 
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.type.dimen.Dimen;
 
 /**
  * Container for a BoundingBox.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class BoundingBox {
+public class BoundingBox implements Serializable {
 
     /**
      * llx
