@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -263,6 +263,16 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public int size() {
 
         return list.size();
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
     }
 
     /**

@@ -20,33 +20,24 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.font.Glyph;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * The ligature node represents a ligature of several characters.
+ * Ligatures can be build amoung characters from one common font only. The
+ * information where and how to build ligatures comes from the font.
+ * The original characters are contained in this node to be restored when
+ * required.
  *
  * @see "TeX -- The Program [143]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class LigatureNode extends AbstractNode implements Node {
-
-    /**
-     * The field <tt>character</tt> contains the single character represented
-     * by this node.
-     */
-    private UnicodeChar character;
-
-    /**
-     * The field <tt>typesettingContext</tt> contains the typesetting context
-     */
-    private TypesettingContext typesettingContext;
+public class LigatureNode extends CharNode implements Node {
 
     /**
      * The field <tt>list</tt> contains the ...
@@ -69,52 +60,29 @@ public class LigatureNode extends AbstractNode implements Node {
     public LigatureNode(final TypesettingContext context, final UnicodeChar uc,
             final Node n1, final Node n2) {
 
-        super();
-        typesettingContext = context;
-        character = uc;
+        super(context, uc);
         first = n1;
         second = n2;
-        Glyph glyph = context.getFont().getGlyph(uc);
-
-        if (glyph != null) {
-            setWidth(glyph.getWidth());
-            setHeight(glyph.getHeight());
-            setDepth(glyph.getDepth());
-        } else {
-            setWidth(new Dimen(0));
-            setHeight(new Dimen(0));
-            setDepth(new Dimen(0));
-        }
     }
 
     /**
-     * Getter for character.
+     * Getter for first.
      *
-     * @return the character.
+     * @return the first.
      */
-    public UnicodeChar getCharacter() {
+    public Node getFirst() {
 
-        return character;
+        return this.first;
     }
 
     /**
-     * Getter for the space factor
+     * Getter for second.
      *
-     * @return the space factor
+     * @return the second.
      */
-    public int getSpaceFactor() {
+    public Node getSecond() {
 
-        return 0; // TODO incomplete
-    }
-
-    /**
-     * Getter for typesettingContext.
-     *
-     * @return the typesettingContext.
-     */
-    public TypesettingContext getTypesettingContext() {
-
-        return typesettingContext;
+        return this.second;
     }
 
     /**
@@ -128,34 +96,7 @@ public class LigatureNode extends AbstractNode implements Node {
      */
     public String toString() {
 
-        return "lig "; //TODO
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-
-        sb.append('\\');
-        sb.append(typesettingContext.getFont().getFontName());
-        sb.append(' ');
-        sb.append(character.toString());
-        sb.append(" (");
-        sb.append(getHeight().toString());
-        sb.append("+");
-        sb.append(getDepth().toString());
-        sb.append(")x");
-        sb.append(getWidth().toString());
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-
-        sb.append(character.toString());
+        return " (ligature " + first.toString() + " " + second.toString() + ")"; //TODO
     }
 
     /**
@@ -167,5 +108,4 @@ public class LigatureNode extends AbstractNode implements Node {
 
         return visitor.visitLigature(value, value2);
     }
-
 }
