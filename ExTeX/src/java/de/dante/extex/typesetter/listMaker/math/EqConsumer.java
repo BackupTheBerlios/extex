@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,9 +16,9 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.typesetter.listMaker;
+package de.dante.extex.typesetter.listMaker.math;
 
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 
 
 /**
@@ -37,7 +37,8 @@ public interface EqConsumer {
      * @param left the indicator on which side to produce the equation number.
      *  A value <code>true</code> indicates that the left side should be used.
      *
-     * @throws GeneralException in case on an error
+     * @throws CantUseInException in case that the EqConsumer is in a mode
+     *  where a switching to the number is not possible
      */
-    void switchToNumber(boolean left) throws GeneralException;
+    void switchToNumber(boolean left) throws CantUseInException;
 }
