@@ -16,16 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This is the factory for
+ * {@link de.dante.extex.interpreter.type.node.CharNode CharNode}s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CharNodeFactory {
 
@@ -34,11 +36,11 @@ public class CharNodeFactory {
      */
     //private Map cache = new HashMap();
     //TODO use a cache for
-
     /**
      * Creates a new object.
      */
     public CharNodeFactory() {
+
         super();
     }
 
@@ -57,7 +59,7 @@ public class CharNodeFactory {
 
         if (node == null) {
             node = new CharNode(typesettingContext, uc);
-//            cache.put(uc, node);
+            //            cache.put(uc, node);
         }
 
         return node;
