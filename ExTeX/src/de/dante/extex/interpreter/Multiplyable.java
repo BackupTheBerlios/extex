@@ -22,10 +22,11 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This is a interface to mark those Classes which are able to multiply something.
+ * This is a interface to mark those Classes which are able to multiply
+ * something.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Multiplyable {
     /**
@@ -38,7 +39,6 @@ public interface Multiplyable {
      *
      * @throws GeneralException in case of an error
      */
-    public abstract void multiply(Flags prefix, Context context,
-                                 TokenSource source)
-                          throws GeneralException;
+    void multiply(Flags prefix, Context context, TokenSource source)
+            throws GeneralException;
 }

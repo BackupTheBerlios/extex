@@ -20,17 +20,17 @@ package de.dante.extex.interpreter.context;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Color {
-	
-	public abstract int getR();
-	public abstract int getG();
-	public abstract int getB();
-	public abstract int getAlphaR();
-	public abstract int getAlphaG();
-	public abstract int getAlphaB();
+
+    int getR();
+    int getG();
+    int getB();
+    int getAlphaR();
+    int getAlphaG();
+    int getAlphaB();
 
 }

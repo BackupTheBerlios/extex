@@ -42,7 +42,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface TokenSource {
     /**
@@ -50,14 +50,16 @@ public interface TokenSource {
      *
      * @return the current locator
      */
-    public abstract Locator getLocator();
+    Locator getLocator();
 
     /**
      * Get the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
+     *
+     * @throws GeneralException in case of an error
      */
-    public abstract Token getNonSpace() throws GeneralException;
+    Token getNonSpace() throws GeneralException;
 
     /**
      * Get the next token form the input streams. If the current input stream
@@ -68,7 +70,7 @@ public interface TokenSource {
      * @return the next token or <code>null</code>
      * @see "TeX -- The Program [332]"
      */
-    public abstract Token getToken() throws GeneralException;
+    Token getToken() throws GeneralException;
 
     /**
      * Get the next tokens form the input streams between <code>{</code> and
@@ -77,36 +79,37 @@ public interface TokenSource {
      * streams are at the end then <code>null</code> is returned.
      *
      * @return the next tokens or <code>null</code>
+     *
+     * @throws GeneralException in case of an error
      */
-    public abstract Tokens getTokens() throws GeneralException;
+    Tokens getTokens() throws GeneralException;
 
     /**
      * ...
      *
      * @return ...
      */
-    public abstract TokenStreamFactory getTokenStreamFactory();
+    TokenStreamFactory getTokenStreamFactory();
 
     /**
      * Put a given stream on top of the stream stack. The reading occurs on
      * this new stream before resorting to the previous streams.
      *
-     * @param stream
-     *                 the new stream to read from
+     * @param stream the new stream to read from
      */
-    public abstract void addStream(TokenStream stream);
+    void addStream(TokenStream stream);
 
     /**
      * All input streams are closed and not further Token is available for
      * processing. This normally means that the interpreter is forced to
      * terminate more or less gracefully.
      */
-    public abstract void closeAllStreams();
+    void closeAllStreams();
 
     /**
      * ...
      */
-    public abstract void closeNextFileStream();
+    void closeNextFileStream();
 
     /**
      * Push back a token onto the input stream for subsequent reading.
@@ -114,7 +117,7 @@ public interface TokenSource {
      * @param token
      *                 the token to push
      */
-    public abstract void push(Token token);
+    void push(Token token);
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
@@ -122,15 +125,14 @@ public interface TokenSource {
      * @param tokens
      *                 the tokens to push
      */
-    public abstract void push(Token[] tokens);
+    void push(Token[] tokens);
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
      *
-     * @param tokens
-     *                 the tokens to push
+     * @param tokens the tokens to push
      */
-    public abstract void push(Tokens tokens);
+    void push(Tokens tokens);
 
     /**
      * Scan the input stream for tokens making up a character code, this is a
@@ -140,13 +142,10 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws CodeNumberFormatException
-     *                 in case that no number is found
-     * @throws CodeEOFException
-     *                 in case that the end of file has been reached before an
-     *                 integer could be acquired
+     * @throws GeneralException in case that no number is found or the end of
+     *             file has been reached before an integer could be acquired
      */
-    public abstract UnicodeChar scanCharacterCode() throws GeneralException;
+    UnicodeChar scanCharacterCode() throws GeneralException;
 
     /**
      * ...
@@ -155,7 +154,7 @@ public interface TokenSource {
      *
      * @throws GeneralException ...
      */
-    public abstract long scanFloat() throws GeneralException;
+    long scanFloat() throws GeneralException;
 
     /**
      * Scan a real-value
@@ -164,7 +163,7 @@ public interface TokenSource {
      *
      * @throws GeneralException ...
      */
-    public abstract Real scanReal() throws GeneralException;
+    Real scanReal() throws GeneralException;
     
     
     /**
@@ -175,13 +174,10 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws CodeNumberFormatException
-     *                 in case that no number is found
-     * @throws CodeEOFException
-     *                 in case that the end of file has been reached before an
-     *                 integer could be acquired
+     * @throws CodeNumberFormatException in case that no number is found
+     * @throws GeneralException ...
      */
-    public abstract long scanInteger() throws GeneralException;
+    long scanInteger() throws GeneralException;
 
     /**
      * Scan the expanded token stream for a sequence of letter tokens. If all
@@ -189,32 +185,34 @@ public interface TokenSource {
      * is returned. Otherwise all tokens are left in the input stream and
      * <code>false</code> is returned.
      *
-     * @param s
-     *                 the tokens to scan
+     * @param s the tokens to scan
      *
      * @return <code>true</code> iff the tokens could have been successfully
-     *            removed from the input stream
+     *         removed from the input stream
+     *
+     * @throws GeneralException ...
      */
-    public abstract boolean scanKeyword(String s)
-                                 throws GeneralException;
+    boolean scanKeyword(String s) throws GeneralException;
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
+     *
+     * @throws GeneralException ...
      */
-    public abstract Token scanNonSpace() throws GeneralException;
+    Token scanNonSpace() throws GeneralException;
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
-     * @param t
-     *                 the first token to consider
+     * @param token the first token to consider
      *
      * @return the next non-space token or <code>null</code> at EOF
+     *
+     * @throws GeneralException ...
      */
-    public abstract Token scanNonSpace(Token t)
-                                    throws GeneralException;
+    Token scanNonSpace(Token token) throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams. If the current input
@@ -223,8 +221,10 @@ public interface TokenSource {
      * <code>null</code> is returned.
      *
      * @return the next token or <code>null</code>
+     *
+     * @throws GeneralException ...
      */
-    public abstract Token scanToken() throws GeneralException;
+    Token scanToken() throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between <code>{</code>
@@ -233,8 +233,10 @@ public interface TokenSource {
      * stream are at the end then <code>null</code> is returned.
      *
      * @return the next tokens or <code>null</code>
+     *
+     * @throws GeneralException ...
      */
-    public abstract Tokens scanTokens() throws GeneralException;
+    Tokens scanTokens() throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between <code>{</code>
@@ -244,9 +246,10 @@ public interface TokenSource {
      * <code>null</code> is returned.
      *
      * @return the next tokens as <code>String</code> or <code>null</code>
+     *
+     * @throws GeneralException ...
      */
-    public abstract String scanTokensAsString()
-                                           throws GeneralException;
+    String scanTokensAsString() throws GeneralException;
 
     /**
      * Scan the input stream for tokens making up a number, this is a sequence
@@ -254,50 +257,43 @@ public interface TokenSource {
      * optional whitespace. Alternate representations for an integer exist.
      *
      * @return the value of the integer scanned
+
      *
-     * @throws CodeNumberFormatException
-     *                 in case that no number is found
-     * @throws CodeEOFException
-     *                 in case that the end of file has been reached before an
-     *                 integer could be acquired
+     * @throws GeneralException ...
      */
-    public abstract long scanNumber() throws GeneralException;
+    long scanNumber() throws GeneralException;
 
     /**
      * Scan the input stream for tokens making up a number, i.e. a sequence of
      * digits with catcode OTHER. The number can be preceeded by optional
      * whitespace.
      *
-     * @param t
-     *                 the first token to consider
+     * @param t the first token to consider
      *
      * @return the value of the integer scanned
      *
-     * @throws CodeNumberFormatException
-     *                 in case that no number is found
-     * @throws CodeEOFException
-     *                 in case that the end of file has been reached before an
-     *                 integer could be acquired
+     * @throws GeneralException ...
      */
-    public abstract long scanNumber(Token t) throws GeneralException;
+    long scanNumber(Token t) throws GeneralException;
 
     /**
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
+     *
+     * @throws GeneralException ...
      */
     //gene: this method is subject to be eliminated in favor of getKeyword().
-    public void scanOptionalEquals() throws GeneralException;
+    void scanOptionalEquals() throws GeneralException;
 
     /**
-     * Send the string to the named observer.
-     * The observer must be capable to deal with a string argument.
+     * Send the string to the named observer. The observer must be capable to
+     * deal with a string argument.
      *
      * @param name name of the observer
      * @param text the text to send to the observer
      *
      * @throws NotObservableException in case that the named observer is not
-     * accessible
+     *             accessible
      */
-    public abstract void update(String name, String text)
-                         throws NotObservableException;
+    void update(String name, String text) throws NotObservableException;
 }

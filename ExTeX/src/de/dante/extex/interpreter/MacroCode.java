@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.Typesetter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MacroCode extends AbstractCode implements Code {
     /** The tokens the macro expands to */
@@ -90,7 +90,7 @@ public class MacroCode extends AbstractCode implements Code {
      * @return ...
      */
     private Tokens[] getArgs(final TokenSource source) {
-        Tokens[] ta = new Tokens[10];
+        Tokens[] ta = new Tokens[2];
         Tokens t    = new Tokens();
         //TODO
         return ta;

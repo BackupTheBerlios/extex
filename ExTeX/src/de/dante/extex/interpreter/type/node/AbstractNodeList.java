@@ -30,7 +30,7 @@ import java.util.List;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractNodeList extends AbstractNode
     implements NodeList {
@@ -93,7 +93,7 @@ public abstract class AbstractNodeList extends AbstractNode
      * @param sb the target StringBuffer
      * @param prefix ...
      */
-    protected void toString(StringBuffer sb, String prefix) {
+    protected void toString(final StringBuffer sb, final String prefix) {
         sb.append("(");
         sb.append(prefix);
 

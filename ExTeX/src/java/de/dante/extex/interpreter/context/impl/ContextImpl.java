@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
- * 
+ *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ *
  */
 package de.dante.extex.interpreter.context.impl;
 
@@ -49,6 +49,7 @@ import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.file.FileFinder;
 import de.dante.util.file.FileFinderConfigImpl;
 import de.dante.util.file.FileFinderDirect;
@@ -56,7 +57,7 @@ import de.dante.util.file.FileFinderList;
 
 /**
  * This is a reference implementation for an interpreter context.
- * 
+ *
  * The groups are implemented as a linked list of single groups. In contrast to
  * the Knuthian implementation in TeX no undo stack is used.
  * <p>
@@ -85,101 +86,147 @@ import de.dante.util.file.FileFinderList;
  * Here the third approach is used which is suspected to be a little more
  * efficient on the cost of slightly more memory consumption.</li>
  * </ul>
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ContextImpl implements Context, Serializable {
 
+    private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
 	/**
-	 * The saved configuration
-	 */
-	private Configuration config = null;
+     * The field <tt>FILE_TAG</tt> ...
+     */
+    private static final String FILE_TAG = "File";
 
-	/**
-	 * This is the entry to the linked list of groups. The current group is the
-	 * first one.
-	 */
-	private Group group = null;
+    /**
+     * The constant <tt>DEFAULT_ATTRIBUTE</tt> ...
+     */
+    private static final String DEFAULT_ATTRIBUTE = "default";
 
-	/**
-	 * The factory to acquire a new group
-	 */
-	private transient GroupFactory groupFactory;
+    /**
+     * The constant <tt>FONT_TAG</tt> ...
+     */
+    private static final String FONT_TAG = "Font";
 
-	/**
-	 * ...
-	 */
-	private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+    /**
+     * The constant <tt>GROUP_TAG</tt> ...
+     */
+    private static final String GROUP_TAG = "Group";
 
-	/**
-	 * The interaction mode to use
-	 */
-	private Interaction interaction = null;
+    /**
+     * The constant <tt>MAGNIFICATION_MAX</tt> ...
+     */
+    private static final int MAGNIFICATION_MAX = 32768;
 
-	/**
-	 * The stack for conditionals
-	 */
-	private Stack ifStack = new Stack();
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
 
-	/**
-	 * The token factory implementation to use
-	 */
-	private TokenFactory tokenFactory = new TokenFactoryImpl();
+    /**
+     * The saved configuration
+     */
 
-	/**
-	 * This boolean is used to determine whether the magnification has already
-	 * been set to a new value. It it is <code>true</code> then it is not
-	 * desirable to change the value of <i>magnification</i>.
-	 */
-	private boolean magnificationLock = false;
+    private Configuration config = null;
 
-	/**
-	 * The magnification for the whole document in permille
-	 */
-	private long magnification = 1000;
+    /**
+     * This is the entry to the linked list of groups. The current group is the
+     * first one.
+     */
+    private Group group = null;
 
-	private TypesettingContextFactory tcFactory;
-	
-	private FontFactory fontFactory;
-	
+    /**
+     * The factory to acquire a new group
+     */
+    private transient GroupFactory groupFactory;
+
+    /**
+     * ...
+     */
+    private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+
+    /**
+     * The stack for conditionals
+     */
+    private Stack ifStack = new Stack();
+
+    /**
+     * The token factory implementation to use
+     */
+    private TokenFactory tokenFactory = new TokenFactoryImpl();
+
+    /**
+     * This boolean is used to determine whether the magnification has already
+     * been set to a new value. It it is <code>true</code> then it is not
+     * desirable to change the value of <i>magnification</i>.
+     */
+    private boolean magnificationLock = false;
+
+    /**
+     * The magnification for the whole document in permille
+     */
+    private long magnification = 1000;
+
+    /**
+     * The field <tt>tcFactory</tt> ...
+     */
+    private TypesettingContextFactory tcFactory;
+
+    /**
+     * The field <tt>fontFactory</tt> ...
+     */
+    private FontFactory fontFactory;
+
     /**
      * Creates a new object.
+     *
+     * @param configuration ...
+     * @throws ConfigurationException ...
+     * @throws GeneralException ...
      */
-    public ContextImpl(Configuration config) throws ConfigurationException,
-            GeneralException {
+    public ContextImpl(final Configuration configuration)
+            throws ConfigurationException, GeneralException {
         super();
-        this.config = config;
-        groupFactory = new GroupFactory(config.getConfiguration("Group"));
+        this.config = configuration;
+        groupFactory = new GroupFactory(config.getConfiguration(GROUP_TAG));
         group = groupFactory.newInstance(group);
 
-        Configuration fontConfiguration = config.getConfiguration("Font");
-        String fontClass = fontConfiguration.getAttribute("class");
+        Configuration fontConfiguration = config.getConfiguration(FONT_TAG);
+        String fontClass = fontConfiguration.getAttribute(CLASS_ATTRIBUTE);
 
         if (fontClass == null || fontClass.equals("")) {
-            throw new ConfigurationMissingAttributeException("class",fontConfiguration);
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    fontConfiguration);
         }
 
         try {
             FileFinderList finder = new FileFinderList(new FileFinderDirect(
                     new StringList("", ":")));
             finder.add(new FileFinderConfigImpl(fontConfiguration
-                    .getConfiguration("File")));
+                    .getConfiguration(FILE_TAG)));
             fontFactory = (FontFactory) (Class.forName(fontClass)
                     .getConstructor(new Class[]{FileFinder.class})
                     .newInstance(new Object[]{finder}));
         } catch (Exception e) {
             throw new ConfigurationInstantiationException(e);
         }
-        String defaultFont = fontConfiguration.getAttribute("default");
+        String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
 
         if (defaultFont == null || defaultFont.equals("")) {
-            throw new ConfigurationMissingAttributeException("default",fontConfiguration);
+            throw new ConfigurationMissingAttributeException(DEFAULT_ATTRIBUTE,
+                    fontConfiguration);
         }
 
-        tcFactory = new TypesettingContextFactory(config
-                .getConfiguration("TypesettingContext"));
+        Configuration typesettingConfig = config
+                .getConfiguration(TYPESETTING_CONTEXT_TAG);
+
+        if (typesettingConfig == null) {
+            throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
+                    config.toString());
+        }
+
+        tcFactory = new TypesettingContextFactory(typesettingConfig);
         TypesettingContext typesettingContext = tcFactory.newInstance();
         typesettingContext.setFont(fontFactory.getInstance(defaultFont));
         //typesettingContext.setLanguage(config.getValue("Language"));
@@ -187,376 +234,390 @@ public class ContextImpl implements Context, Serializable {
 
     }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
-	 *         de.dante.extex.interpreter.Code)
-	 */
-	public void setActive(String name, Code code) {
-		group.setActive(name, code);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
+     *         de.dante.extex.interpreter.Code)
+     */
+    public void setActive(final String name, final Code code) {
+        group.setActive(name, code);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
-	 *         de.dante.extex.interpreter.Code, boolean)
-	 */
-	public void setActive(String name, Code code, boolean global) {
-		group.setActive(name, code, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
+     *      de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setActive(final String name, final Code code,
+            final boolean global) {
+        group.setActive(name, code, global);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getActive(java.lang.String)
-	 */
-	public Code getActive(String name) {
-		return group.getActive(name);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getActive(java.lang.String)
+     */
+    public Code getActive(final String name) {
+        return group.getActive(name);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setCatcode(char,
-	 *         de.dante.extex.scanner.Catcode)
-	 */
-	public void setCatcode(UnicodeChar c, Catcode cc) throws GeneralHelpingException {
-		group.setCatcode(c, cc);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(char,
+     *      de.dante.extex.scanner.Catcode)
+     */
+    public void setCatcode(final UnicodeChar c, final Catcode cc)
+            throws GeneralHelpingException {
+        group.setCatcode(c, cc);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setCatcode(java.lang.String,
-	 *         de.dante.extex.scanner.Catcode, boolean)
-	 */
-	public void setCatcode(UnicodeChar c, Catcode cc, boolean global) throws GeneralHelpingException {
-		group.setCatcode(c, cc, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(java.lang.String,
+     *      de.dante.extex.scanner.Catcode, boolean)
+     */
+    public void setCatcode(final UnicodeChar c, final Catcode cc,
+            final boolean global) throws GeneralHelpingException {
+        group.setCatcode(c, cc, global);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-	 *         Box)
-	 */
-	public void setBox(String name, Box value) {
-		group.setBox(name, value);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
+     *         Box)
+     */
+    public void setBox(final String name, final Box value) {
+        group.setBox(name, value);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-	 *         Box, boolean)
-	 */
-	public void setBox(String name, Box value, boolean global) {
-		group.setBox(name, value, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
+     *      Box, boolean)
+     */
+    public void setBox(final String name, final Box value,
+            final boolean global) {
+        group.setBox(name, value, global);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getBox(java.lang.String)
-	 */
-	public Box getBox(String name) {
-		return group.getBox(name);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getBox(java.lang.String)
+     */
+    public Box getBox(final String name) {
+        return group.getBox(name);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
-	 *         long)
-	 */
-	public void setCount(String name, long value) {
-	    Count count = new Count(value);
-	    group.setCount(name, count);
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
+     *         long)
+     */
+    public void setCount(final String name, final long value) {
+        Count count = new Count(value);
+        group.setCount(name, count);
 
-	    //TODO: use existing Register instead of making a new one
-	}
+        //TODO: use existing Register instead of making a new one
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
-	 *         long, boolean)
-	 */
-	public void setCount(String name, long value, boolean global) {
-	    Count count = new Count(value);
-	    group.setCount(name, count, global);
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
+     *         long, boolean)
+     */
+    public void setCount(final String name, final long value,
+            final boolean global) {
+        Count count = new Count(value);
+        group.setCount(name, count, global);
 
-	    //TODO: use existing Register instead of making a new one
-	}
+        //TODO: use existing Register instead of making a new one
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getCount(java.lang.String)
-	 */
-	public Count getCount(String name) {
-	    return group.getCount(name);
-	}
-	
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-	 *         long)
-	 */
-	public void setDimen(String name, long value) {
-		Dimen dimen = new Dimen(value);
-		group.setDimen(name, dimen);
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getCount(java.lang.String)
+     */
+    public Count getCount(final String name) {
+        return group.getCount(name);
+    }
 
-		//TODO: use existing Register instead of making a new one
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
+     *         long)
+     */
+    public void setDimen(final String name, final long value) {
+        Dimen dimen = new Dimen(value);
+        group.setDimen(name, dimen);
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-	 *         de.dante.extex.interpreter.type.Dimen)
-	 */
-	public void setDimen(String name, Dimen value) {
-		group.setDimen(name, value);
-	}
+        //TODO: use existing Register instead of making a new one
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-	 *         de.dante.extex.interpreter.type.Dimen, boolean)
-	 */
-	public void setDimen(String name, Dimen value, boolean global) {
-		group.setDimen(name, value, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
+     *         de.dante.extex.interpreter.type.Dimen)
+     */
+    public void setDimen(final String name, final Dimen value) {
+        group.setDimen(name, value);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-	 *         long, boolean)
-	 */
-	public void setDimen(String name, long value, boolean global) {
-		Dimen dimen = new Dimen(value);
-		group.setDimen(name, dimen, global);
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
+     *         de.dante.extex.interpreter.type.Dimen, boolean)
+     */
+    public void setDimen(final String name, final Dimen value,
+            final boolean global) {
+        group.setDimen(name, value, global);
+    }
 
-		//TODO: use existing Register instead of making a new one
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
+     *         long, boolean)
+     */
+    public void setDimen(final String name, final long value,
+            final boolean global) {
+        Dimen dimen = new Dimen(value);
+        group.setDimen(name, dimen, global);
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getDimen(java.lang.String)
-	 */
-	public Dimen getDimen(String name) {
-		return group.getDimen(name);
-	}
+        //TODO: use existing Register instead of making a new one
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getFontFactory()
-	 */
-	public FontFactory getFontFactory() {
-	    return fontFactory;
-	}
-	/**
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getDimen(java.lang.String)
+     */
+    public Dimen getDimen(final String name) {
+        return group.getDimen(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getFontFactory()
+     */
+    public FontFactory getFontFactory() {
+        return fontFactory;
+    }
+    /**
      * @see de.dante.extex.interpreter.context.Context#setFontFactory(de.dante.extex.font.FontFactory)
      */
-	public void setFontFactory(FontFactory fontFactory) {
-	    this.fontFactory = fontFactory;
-	}
-	
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
-	 */
-	public boolean isGlobalGroup() {
-		return (group.getNext() == null);
-	}
+    public void setFontFactory(final FontFactory factory) {
+        this.fontFactory = factory;
+    }
+    
+    /**
+     * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
+     */
+    public boolean isGlobalGroup() {
+        return (group.getNext() == null);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getHyphenation(int)
-	 */
-	public HyphenationTable getHyphenationTable(int language) throws GeneralException {
-		return hyphenationManager.getHyphenationTable(Integer.toString(language));
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getHyphenation(int)
+     */
+    public HyphenationTable getHyphenationTable(final int language)
+            throws GeneralException {
+        return hyphenationManager.getHyphenationTable(Integer
+                .toString(language));
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction)
-	 */
-	public void setInteraction(Interaction interaction) {
-		group.setInteraction(interaction);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction)
+     */
+    public void setInteraction(final Interaction interaction) {
+        group.setInteraction(interaction);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction,
-	 *         boolean)
-	 */
-	public void setInteraction(Interaction interaction, boolean global) {
-		group.setInteraction(interaction, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction,
+     *      boolean)
+     */
+    public void setInteraction(final Interaction interaction,
+            final boolean global) {
+        group.setInteraction(interaction, global);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getInteraction()
-	 */
-	public Interaction getInteraction() {
-		return interaction;
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getInteraction()
+     */
+    public Interaction getInteraction() {
+        return group.getInteraction();
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String,
-	 *         de.dante.extex.interpreter.Code)
-	 */
-	public void setMacro(String name, Code code) {
-		group.setMacro(name, code);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String,
+     *         de.dante.extex.interpreter.Code)
+     */
+    public void setMacro(final String name, final Code code) {
+        group.setMacro(name, code);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String,
-	 *         de.dante.extex.interpreter.Code, boolean)
-	 */
-	public void setMacro(String name, Code code, boolean global) {
-		group.setMacro(name, code, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String,
+     *      de.dante.extex.interpreter.Code, boolean)
+     */
+    public void setMacro(final String name, final Code code,
+            final boolean global) {
+        group.setMacro(name, code, global);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getMacro(java.lang.String)
-	 */
-	public Code getMacro(String name) {
-		return group.getMacro(name);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMacro(java.lang.String)
+     */
+    public Code getMacro(final String name) {
+        return group.getMacro(name);
+    }
 
-	/**
-	 * Setter for the magnification. The magnification is a global value which
-	 * can be assigned at most once. It contains the magnification factor in
-	 * permille. The default value is 1000. It can only take positive numbers
-	 * as values. The maximal value is taken from the configuration option <tt>maximalMaginification</tt>.
-	 * The default value for the maximal magnification is 32768.
-	 * 
-	 * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
-	 */
-	public void setMagnification(long mag) throws GeneralHelpingException {
-		if (magnificationLock && this.magnification != mag) {
-			throw new GeneralHelpingException("TTP.IncompatMag", Long.toString(mag));
-		}
+    /**
+     * Setter for the magnification. The magnification is a global value which
+     * can be assigned at most once. It contains the magnification factor in
+     * permille. The default value is 1000. It can only take positive numbers
+     * as values. The maximal value is taken from the configuration option <tt>maximalMaginification</tt>.
+     * The default value for the maximal magnification is 32768.
+     * 
+     * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
+     */
+    public void setMagnification(final long mag) throws GeneralHelpingException {
+        if (magnificationLock && this.magnification != mag) {
+            throw new GeneralHelpingException("TTP.IncompatMag", Long
+                    .toString(mag));
+        }
 
-		magnificationLock = true;
+        magnificationLock = true;
 
-		long maximalMagnification;
+        long maximalMagnification;
 
-		try {
-			maximalMagnification = config.getValueAsInteger("maximalMagnification", 32768);
-		} catch (ConfigurationException e) {
-			throw new GeneralHelpingException(e);
-		}
+        try {
+            maximalMagnification = config
+                    .getValueAsInteger("maximalMagnification",
+                                        MAGNIFICATION_MAX);
+        } catch (ConfigurationException e) {
+            throw new GeneralHelpingException(e);
+        }
 
-		if (mag < 1 || mag > maximalMagnification) {
-			throw new GeneralHelpingException("TTP.IllegalMag", Long.toString(mag));
-		}
+        if (mag < 1 || mag > maximalMagnification) {
+            throw new GeneralHelpingException("TTP.IllegalMag", Long
+                    .toString(mag));
+        }
 
-		magnification = mag;
-	}
+        magnification = mag;
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getMagnification()
-	 */
-	public long getMagnification() {
-		return magnification;
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMagnification()
+     */
+    public long getMagnification() {
+        return magnification;
+    }
 
-	/**
-	 * Getter for the token factory.
-	 * 
-	 * @return the token factory
-	 */
-	public TokenFactory getTokenFactory() {
-		return tokenFactory;
-	}
+    /**
+     * Getter for the token factory.
+     *
+     * @return the token factory
+     */
+    public TokenFactory getTokenFactory() {
+        return tokenFactory;
+    }
 
-	/**
-	 * Getter for the tokenizer.
-	 * 
-	 * @return the tokenizer
-	 */
-	public Tokenizer getTokenizer() {
-		return (Tokenizer) group;
-	}
+    /**
+     * Getter for the tokenizer.
+     *
+     * @return the tokenizer
+     */
+    public Tokenizer getTokenizer() {
+        return (Tokenizer) group;
+    }
 
 	/**
 	 * Setter for the typesetting context in the current group.
-	 * 
-	 * @param context
-	 *                 the new context to use
+	 *
+	 * @param context the new context to use
 	 */
-	public void setTypesettingContext(TypesettingContext context) {
+	public void setTypesettingContext(final TypesettingContext context) {
 		group.setTypesettingContext(context);
 	}
 
-	/**
-	 * Setter for the typesetting context in the specified groups.
-	 * 
-	 * @param context
-	 *                 the new context to use
-	 * @param global
-	 *                 if <code>true</code> then the new value is set in all
-	 *                 groups, otherwise only in the current group.
-	 */
-	public void setTypesettingContext(TypesettingContext context, boolean global) {
-		group.setTypesettingContext(context, global);
-	}
+    /**
+     * Setter for the typesetting context in the specified groups.
+     *
+     * @param context the new context to use
+     * @param global if <code>true</code> then the new value is set in all
+     *            groups, otherwise only in the current group.
+     */
+    public void setTypesettingContext(final TypesettingContext context,
+            final boolean global) {
+        group.setTypesettingContext(context, global);
+    }
 
-	/**
-	 * Getter for the typesetting context.
-	 * 
-	 * @return the typesetting context
-	 */
-	public TypesettingContext getTypesettingContext() {
-		return group.getTypesettingContext();
-	}
+    /**
+     * Getter for the typesetting context.
+     *
+     * @return the typesetting context
+     */
+    public TypesettingContext getTypesettingContext() {
+        return group.getTypesettingContext();
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
-	 */
-	public void afterGroup(Token t) throws GeneralException {
-		group.afterGroup(t);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
+     */
+    public void afterGroup(final Token t) throws GeneralException {
+        group.afterGroup(t);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#closeGroup()
-	 */
-	public void closeGroup() throws GeneralException {
-		Group next = group.getNext();
+    /**
+     * @see de.dante.extex.interpreter.context.Context#closeGroup()
+     */
+    public void closeGroup() throws GeneralException {
+        Group next = group.getNext();
 
-		if (next == null) {
-			throw new GeneralHelpingException("TTP.TooManyRightBraces");
-		} else {
-			Tokens toks = group.getAfterGroup();
-			group = next;
+        if (next == null) {
+            throw new GeneralHelpingException("TTP.TooManyRightBraces");
+        } else {
+            Tokens toks = group.getAfterGroup();
+            group = next;
 
-			if (toks != null) {
-				//TODO execute aftergroup
-			}
-		}
-	}
+            if (toks != null) {
+                //TODO execute aftergroup
+            }
+        }
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @return ...
-	 */
-	public boolean ifPop() {
-		return ((Conditional) ifStack.pop()).isValue();
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public boolean ifPop() {
+        return ((Conditional) ifStack.pop()).isValue();
+    }
 
-	/**
-	 * Put a boolean value onto the if stack.
-	 * 
-	 * @param value
-	 *                 the value to push
-	 */
-	public void ifPush(Locator locator, boolean value) {
-		ifStack.add(new Conditional(locator, value));
-	}
+    /**
+     * Put a boolean value onto the if stack.
+     *
+     * @param value
+     *                 the value to push
+     */
+    public void ifPush(final Locator locator, final boolean value) {
+        ifStack.add(new Conditional(locator, value));
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#openGroup()
-	 */
-	public void openGroup() throws ConfigurationException {
-		group = groupFactory.newInstance(group);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#openGroup()
+     */
+    public void openGroup() throws ConfigurationException {
+        group = groupFactory.newInstance(group);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
-	 */
-	public Tokens getToks(String name) {
-		return group.getToks(name);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
+     */
+    public Tokens getToks(final String name) {
+        return group.getToks(name);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
-	 *         de.dante.extex.interpreter.type.Tokens, boolean)
-	 */
-	public void setToks(String name, Tokens toks, boolean global) {
-		group.setToks(name, toks, global);
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
+     *      de.dante.extex.interpreter.type.Tokens, boolean)
+     */
+    public void setToks(final String name, final Tokens toks,
+            final boolean global) {
+        group.setToks(name, toks, global);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
-	 *         de.dante.extex.interpreter.type.Tokens)
-	 */
-	public void setToks(String name, Tokens toks) {
-		group.setToks(name, toks);
-	}
-	
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
+     *      de.dante.extex.interpreter.type.Tokens)
+     */
+    public void setToks(final String name, final Tokens toks) {
+        group.setToks(name, toks);
+    }
+
     /**
      * Getter for group.
      *

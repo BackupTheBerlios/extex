@@ -25,14 +25,17 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
-    /** This is the color to use. The effect depends on the object to be colored.
-     *  E.g.
-     *  in a CharNode it is the color of the text (background is always transparent)
-     *  in a RuleNode it is the color of the rule
-     *  in a HListNode or VListNode it is the background color
+    /**
+     * This is the color to use. The effect depends on the object to be
+     * colored.
+     * E.g.
+     * in a CharNode it is the color of the text (background is always
+     * transparent)
+     * in a RuleNode it is the color of the rule
+     * in a HListNode or VListNode it is the background color
      */
     private Color color;
 
@@ -60,7 +63,7 @@ public class TypesettingContextImpl implements TypesettingContext {
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setAngle(int)
      */
-    public void setAngle(int angle) {
+    public void setAngle(final int angle) {
         this.angle = angle;
     }
 
@@ -74,7 +77,7 @@ public class TypesettingContextImpl implements TypesettingContext {
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setColor(de.dante.extex.interpreter.context.Color)
      */
-    public void setColor(Color color) {
+    public void setColor(final Color color) {
         this.color = color;
     }
 
@@ -88,7 +91,7 @@ public class TypesettingContextImpl implements TypesettingContext {
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setDirection(de.dante.extex.interpreter.context.Direction)
      */
-    public void setDirection(Direction direction) {
+    public void setDirection(final Direction direction) {
         this.direction = direction;
     }
 
@@ -102,7 +105,7 @@ public class TypesettingContextImpl implements TypesettingContext {
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setFont(de.dante.extex.interpreter.type.Font)
      */
-    public void setFont(Font font) {
+    public void setFont(final Font font) {
         this.font = font;
     }
 
@@ -116,8 +119,8 @@ public class TypesettingContextImpl implements TypesettingContext {
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(HyphenationTable)
      */
-    public void setLanguage(HyphenationTable language) {
-		hyphenation = language;
+    public void setLanguage(final HyphenationTable language) {
+        hyphenation = language;
     }
 
     /**

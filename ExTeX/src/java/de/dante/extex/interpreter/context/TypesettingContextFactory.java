@@ -24,11 +24,11 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TypesettingContextFactory {
     /**
@@ -47,16 +47,17 @@ public class TypesettingContextFactory {
      * {@link #newInstance(...) newInstance}.
      */
     private Class theClass;
-    
+
     /**
      * Creates a new object.
-     * 
-     *  
+     *
+     * @param configuration ...
+     * @throws ConfigurationException ...
      */
-    public TypesettingContextFactory(Configuration config)
+    public TypesettingContextFactory(final Configuration configuration)
             throws ConfigurationException {
         super();
-        this.config = config;
+        this.config = configuration;
 
         String classname = config.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
@@ -75,8 +76,10 @@ public class TypesettingContextFactory {
 
     /**
      * ...
-     * 
-     * @return @throws ConfigurationException
+     *
+     * @return ...
+     *
+     * @throws ConfigurationInstantiationException ...
      */
     public TypesettingContext newInstance()
             throws ConfigurationInstantiationException {

@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.NodeList;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
@@ -55,7 +55,7 @@ public class DumpDocumentWriter implements DocumentWriter {
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
      */
-    public void setOutputStream(OutputStream os) {
+    public void setOutputStream(final OutputStream os) {
     }
 
     /**

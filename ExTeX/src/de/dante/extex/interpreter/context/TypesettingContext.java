@@ -23,25 +23,80 @@ import de.dante.extex.interpreter.type.Font;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface TypesettingContext {
-    
-    public abstract void setFont(Font font);
-    public abstract Font getFont();
 
-    public abstract void setDirection(Direction direction);
-    public abstract Direction getDirection();
+    /**
+     * ...
+     *
+     * @param font ...
+     */
+    void setFont(Font font);
 
-    public abstract void setLanguage(HyphenationTable language);
-    public abstract HyphenationTable getLanguage();
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    Font getFont();
 
-    public abstract void setColor(Color color);
-    public abstract Color getColor();
+    /**
+     * ...
+     *
+     * @param direction ...
+     */
+    void setDirection(Direction direction);
 
-    public abstract void setAngle(int angle);
-    public abstract int getAngle();
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    Direction getDirection();
+
+    /**
+     * ...
+     *
+     * @param language ...
+     */
+    void setLanguage(HyphenationTable language);
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    HyphenationTable getLanguage();
+
+    /**
+     * ...
+     *
+     * @param color ...
+     */
+    void setColor(Color color);
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    Color getColor();
+
+    /**
+     * ...
+     *
+     * @param angle ...
+     */
+    void setAngle(int angle);
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    int getAngle();
 
 }

@@ -24,19 +24,18 @@ import de.dante.util.UnicodeChar;
 /**
  * A tokenizer is a class which is able to characterize characters according to
  * the catcodes.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Tokenizer {
-    
     /**
      * Getter for the catcode of a character.
-     * 
+     *
      * @param c the Unicode character to analyze
-     * 
+     *
      * @return the catcode of a character
      */
-    public abstract Catcode getCatcode(UnicodeChar c);
-    
+    Catcode getCatcode(UnicodeChar c);
+
 }

@@ -31,45 +31,48 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Hrule extends AbstractCode {
     /** ... */
-    private static final long DEFAULT_RULE = 26214; //0.4pt 
+    private static final long DEFAULT_RULE = 26214; //0.4pt
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Hrule(String name) {
+    public Hrule(final String name) {
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      * @see "TeX -- The Program [463]"
      */
-    public void execute(Flags prefix, Context context,
-                       TokenSource source, Typesetter typesetter)
-                throws GeneralException {
-        Dimen width  = new Dimen(0);
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+        Dimen width = new Dimen(0);
         Dimen height = new Dimen(DEFAULT_RULE);
-        Dimen depth  = new Dimen(0);
+        Dimen depth = new Dimen(0);
         boolean onceMore = true;
-        
+
         for (;;) {
             if (source.scanKeyword("width")) {
-                width.set(source,context);
+                width.set(source, context);
             } else if (source.scanKeyword("height")) {
-                height.set(source,context);
+                height.set(source, context);
             } else if (source.scanKeyword("depth")) {
-                depth.set(source,context);
+                depth.set(source, context);
             } else {
                 break;
             }
         }
-        
+
         //TODO: typesetter.add();
         prefix.clear();
     }

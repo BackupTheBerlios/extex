@@ -27,9 +27,9 @@ import de.dante.util.GeneralException;
  * This is a interface to mark those classes which are able to provide a
  * description. This description is returned in form of
  * {@link de.dante.extex.interpreter.type.Tokens Tokens}.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Theable {
     /**
@@ -42,7 +42,6 @@ public interface Theable {
      *
      * @throws GeneralException in case of an error
      */
-    public abstract Tokens the(Context context, TokenSource source)
-                        throws GeneralException;
+    Tokens the(Context context, TokenSource source) throws GeneralException;
 
 }

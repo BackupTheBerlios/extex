@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
  * For ExTeX this the properties file has many similarities to TEX.POOL in TeX.
  * </p>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class Messages {
     /** the name of the resource bundle to use */
@@ -149,7 +149,7 @@ public final class Messages {
      *
      * @return the expanded format string
      */
-    public static String format(final String fmt, final Object a, 
+    public static String format(final String fmt, final Object a,
             final Object b, final Object c, final Object d) {
         return MessageFormat.format(format(fmt), new Object[]{a, b, c, d});
     }

@@ -83,7 +83,7 @@ import de.dante.util.file.FileFinderPathImpl;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ExTeX {
     /**
@@ -262,7 +262,8 @@ public class ExTeX {
 
     /**
      * This class provides access to the whole functionality of ExTeX on the
-     * command line. The exception is that this method does not call <code>{@link System#exit(int) System.exit()}</code>
+     * command line. The exception is that this method does not call
+     * <code>{@link System#exit(int) System.exit()}</code>
      * but returns the exit status as result.
      *
      * @param args the list of command line arguments

@@ -29,23 +29,23 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * ...
- * 
- * 
+ *
+ *
  * <pre>
  *  &lt;Context class="the.package.TheClass"&gt;
  *  &lt;/Context&gt;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ContextFactory {
-    
+
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> ...
      */
     private static final String CLASS_ATTRIBUTE = "class";
-    
+
     /**
      * The field <tt>config</tt> contains the configuration for this factory.
      */
@@ -57,15 +57,18 @@ public class ContextFactory {
      * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group) newInstance}.
      */
     private Constructor constructor;
-    
+
     /**
      * Creates a new object.
-     * 
-     * @param config the configuration for this factory
+     *
+     * @param configuration the configuration for this factory
+     *
+     * @throws ConfigurationException ...
      */
-    public ContextFactory(Configuration config) throws ConfigurationException {
+    public ContextFactory(final Configuration configuration)
+            throws ConfigurationException {
         super();
-        this.config = config;
+        config = configuration;
 
         String classname = config.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
@@ -87,8 +90,10 @@ public class ContextFactory {
 
     /**
      * Get a instance for the interface Context.
-     * 
+     *
      * @return a new instance for the interface Context
+     *
+     * @throws ConfigurationException ...
      */
     public Context newInstance() throws ConfigurationException {
         Context context;
