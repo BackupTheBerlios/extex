@@ -16,19 +16,19 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.filter;
 
 import java.io.InputStream;
 import java.io.OutputStream;
 
-
 /**
  * This interface describes the features of an input filter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface InputFilter {
+public interface OutputFilter {
 
     /**
      * This method provides the real filtering.
@@ -39,5 +39,4 @@ public interface InputFilter {
      * @param out the output stream to write to
      */
     void filter(InputStream in, OutputStream out);
-
 }
