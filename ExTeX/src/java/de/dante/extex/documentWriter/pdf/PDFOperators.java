@@ -20,7 +20,6 @@
 package de.dante.extex.documentWriter.pdf;
 
 // FOP
-import org.apache.fop.pdf.PDFStream;
 import org.apache.fop.pdf.PDFColor;
 
 // Java
@@ -30,31 +29,28 @@ import java.awt.Color;
  *  Some operators for PDF.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PDFOperators {
 
     protected float lastX = 0;
     protected float lastY = 0;
     
-    protected PDFStream stream;
-    
-    public PDFOperators(PDFStream stream) {
-        this.stream = stream;
+    public PDFOperators() {
     }
     
     /**
      * "GSave", save the graphic state
      */
-    public void gSave() {
-      this.stream.add(" q\n");
+    public String gSave() {
+      return " q\n";
     } 
       
     /**
      * "GRestore", restore the graphic state
      */
-    public void gRestore() {
-      this.stream.add(" Q\n");
+    public String gRestore() {
+      return " Q\n";
     } 
           
     /**
@@ -62,9 +58,9 @@ public class PDFOperators {
      * @param x      the end x location 
      * @param y      the end y location 
      */
-    public void moveTo(float x, float y) {
+    public String moveTo(float x, float y) {
       this.lastX = x; this.lastY = y;
-      this.stream.add(" " + x + " " + y + " m\n");
+      return " " + x + " " + y + " m\n";
     }
     
     /**
@@ -72,9 +68,9 @@ public class PDFOperators {
      * @param dx      the x difference to the move position
      * @param dy      the y difference to the move position
      */
-    public void rMoveTo(float dx, float dy) {
+    public String rMoveTo(float dx, float dy) {
       this.lastX = this.lastX + dx; this.lastY = this.lastY + dy;
-      this.stream.add(" " + this.lastX + " " + this.lastY + " m\n");
+      return " " + this.lastX + " " + this.lastY + " m\n";
     }
     
     /**
@@ -82,100 +78,186 @@ public class PDFOperators {
      * @param x      the end x location 
      * @param y      the end y location 
      */
-    public void lineTo(float x, float y) {
+    public String lineTo(float x, float y) {
       this.lastX = x; this.lastY = y;
-      this.stream.add(" " + x + " " + y + " l\n");
+      return " " + x + " " + y + " l\n";
     }
     
+    /**
+     * Appends a Bêzier curve to the path, starting from the current point.
+     *
+     * @param  x1		x-coordinate of the first control point
+     * @param  y1		y-coordinate of the first control point
+     * @param  x2		x-coordinate of the second control point
+     * @param  y2		y-coordinate of the second control point
+     * @param  x3		x-coordinaat of the ending point (= new current point)
+     * @param  y3		y-coordinaat of the ending point (= new current point)
+     */    
+    public String curveTo(float x1, float y1, float x2, float y2, float x3, float y3) {
+      this.lastX = x3; this.lastY = y3;
+      return " " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x3 + " " + y3 + " c\n";
+    }
+    
+    /**
+     * Appends a Bêzier curve to the path, starting from the current point.
+     *
+     * @param  x2		x-coordinate of the second control point
+     * @param  y2		y-coordinate of the second control point
+     * @param  x3		x-coordinaat of the ending point (= new current point)
+     * @param  y3		y-coordinaat of the ending point (= new current point)
+     */
+    public String curveTo(float x2, float y2, float x3, float y3) {
+      this.lastX = x3; this.lastY = y3;
+      return " " + x2 + " " + y2 + " " + x3 + " " + y3 + " v\n";
+    }     
+
+    /**
+     * Appends a Bêzier curve to the path, starting from the current point.
+     *
+     * @param  x1		x-coordinate of the first control point
+     * @param  y1		y-coordinate of the first control point
+     * @param  x3		x-coordinaat of the ending point (= new current point)
+     * @param  y3		y-coordinaat of the ending point (= new current point)
+     */
+    public String curveFromTo(float x1, float y1, float x3, float y3) {
+      this.lastX = x3; this.lastY = y3;
+      return " " + x1 + " " + y1 + " " + x3 + " " + y3 + " y\n";
+    }     
+
+   /** Draws a circle. The endpoint will (x+r, y).
+     *
+     * @param x x center of circle
+     * @param y y center of circle
+     * @param r radius of circle
+     */
+    public String circle(float x, float y, float r) {
+      float b = 0.5523f;
+      return moveTo(x + r, y) + 
+	curveTo(x + r, y + r * b, x + r * b, y + r, x, y + r) +
+	curveTo(x - r * b, y + r, x - r, y + r * b, x - r, y) +
+	curveTo(x - r, y - r * b, x - r * b, y - r, x, y - r) +
+	curveTo(x + r * b, y - r, x + r, y - r * b, x + r, y);
+    }  
+          
     /**
      * "RLineTo"
      * @param dx      the x difference to the end of the line
      * @param dy      the y difference to the end of the line
      */
-    public void rLineTo(float dx, float dy) {
+    public String rLineTo(float dx, float dy) {
       this.lastX = this.lastX + dx; this.lastY = this.lastY + dy;
-      this.stream.add(" " + this.lastX + " " + this.lastY + " l\n");
+      return " " + this.lastX + " " + this.lastY + " l\n";
     }
         
     /**
      * "LineWidth"
      * @param wd     width of the line 
      */
-    public void lineWidth(float wd) {
-      this.stream.add(" " + wd + " w\n");
+    public String lineWidth(float wd) {
+      return " " + wd + " w\n";
+    }
+
+    /**
+     * Changes the value of the <VAR>line dash pattern</VAR>.
+     * <P>
+     * The line dash pattern controls the pattern of dashes and gaps used to stroke paths.
+     * It is specified by an <I>array</I> and a <I>phase</I>. The array specifies the length
+     * of the alternating dashes and gaps. The phase specifies the distance into the dash
+     * pattern to start the dash.<BR>
+     *
+     * @param                phase                the value of the phase
+     */    
+    public String setLineDash(float phase) {
+      return " [] " + phase + " d\n";
     }
     
     /**
+     * Changes the value of the <VAR>line dash pattern</VAR>.
+     * <P>
+     * The line dash pattern controls the pattern of dashes and gaps used to stroke paths.
+     * It is specified by an <I>array</I> and a <I>phase</I>. The array specifies the length
+     * of the alternating dashes and gaps. The phase specifies the distance into the dash
+     * pattern to start the dash.<BR>
+     *
+     * @param                phase                the value of the phase
+     * @param                unitsOn                the number of units that must be 'on' (equals the number of units that must be 'off').
+     */        
+    public String setLineDash(float unitsOn, float phase) {
+      return "[" + unitsOn + "] " + phase + " d\n";
+    }
+    
+    /**
+     * Changes the value of the <VAR>line dash pattern</VAR>.
+     * <P>
+     * The line dash pattern controls the pattern of dashes and gaps used to stroke paths.
+     * It is specified by an <I>array</I> and a <I>phase</I>. The array specifies the length
+     * of the alternating dashes and gaps. The phase specifies the distance into the dash
+     * pattern to start the dash.<BR>
+     *
+     * @param                phase                the value of the phase
+     * @param                unitsOn                the number of units that must be 'on'
+     * @param                unitsOff        the number of units that must be 'off'
+     */
+    public String setLineDash(float unitsOn, float unitsOff, float phase) {
+      return "[" + unitsOn + " " + unitsOff + "] " + phase + " d\n";  
+    }
+         
+    /**
      * "Stroke"
      */
-    public void stroke() {
-      this.stream.add(" S\n");
+    public String stroke() {
+      return " S\n";
     }
         
     /**
      * "Fill"
      */
-    public void fill() {
-      this.stream.add(" f\n");
+    public String fill() {
+      return " f\n";
     } 
     
     /**
      * "ClosePath"
      */
-    public void closepath() {
-      this.stream.add(" h\n");
+    public String closepath() {
+      return " h\n";
     } 
 
     /**
      * "CloseStroke"
      */     
-    public void closeStroke() {
-      this.stream.add(" s\n");
+    public String closeStroke() { 
+      return " s\n";
     }
     
     /**
      * "CloseFillStroke"
      */     
-    public void closeFillStroke() {
-      this.stream.add(" b\n");
+    public String closeFillStroke() {
+      return " b\n";
     }
     
     /**
      * "FillStroke"
      */     
-    public void fillStroke() {
-      this.stream.add(" B\n");
+    public String fillStroke() {
+      return " B\n";
     }
     
     /**
      * "CloseFill"
      */   
-    public void closeFill() {
-      this.stream.add(" h f\n");
+    public String closeFill() {
+      return " h f\n";
     }
     
     /**
      * "Concat"
      */
-    public void concat(float sx, float u, float v, float sy, float tx, float ty) {
-      this.stream.add(" " + sx + " " + u + " " + v + " " + 
-                            sy + " " + tx + " " + ty + " cm\n");
+    public String concat(float sx, float u, float v, float sy, float tx, float ty) {
+      return " " + sx + " " + u + " " + v + " " + 
+                            sy + " " + tx + " " + ty + " cm\n";
     }
-    
-    /**
-     * "CurveTo"
-     * @param x1      first point x
-     * @param y1      first point y
-     * @param x2      second point x
-     * @param y2      second point y
-     * @param x3      third point x
-     * @param y3      third point y
-     */
-    public void curveTo(float x1, float y1, float x2, float y2, float x3, float y3) {
-      this.lastX = x3; this.lastY = y3;
-      this.stream.add(" " + x1 + " " + y1 + " " + x2 + " " + 
-                            y2 + " " + x3 + " " + y3 + " c\n");
-    } 
        
     /**
      * "AddRectangle"
@@ -184,25 +266,33 @@ public class PDFOperators {
      * @param wd      the width 
      * @param ht      the height      
      */    
-    public void addRectangle(float x, float y, float wd, float ht) {
+    public String addRectangle(float x, float y, float wd, float ht) {
       this.lastX = x; this.lastY = y;
-      this.stream.add(" " + x + " " + y + " " + wd + " " + ht + " re\n");
+      return " " + x + " " + y + " " + wd + " " + ht + " re\n";
     } 
+    
+    /**
+     * Adds a comment 
+     * @param s      the comment
+     */      
+    public String addComment(String s) {
+      return "\n% " + s + "\n";
+    }
     
     /**
      * Adds color for stroking
      * @param col      the color
      */       
-    public void strokeColor(Color col) {
-      applyColor(col, false);
+    public String strokeColor(Color col) {
+      return applyColor(col, false);
     }
     
     /**
      * Adds color for filling
      * @param col      the color
      */      
-    public void fillColor(Color col) {
-      applyColor(col, true);
+    public String fillColor(Color col) {
+      return applyColor(col, true);
     }
       
     /**
@@ -211,14 +301,14 @@ public class PDFOperators {
      * @param fill     fill color if true, else stroke color
      * @see org.apache.fop.svg.PDFGraphics2D#applyColor(java.awt.Color, boolean)
      */    
-    private void applyColor(Color col, boolean fill) {
+    private String applyColor(Color col, boolean fill) {
       Color c = col; PDFColor currentColor = new PDFColor(0, 0, 0);
       
       if (c.getColorSpace().getType()
               == java.awt.color.ColorSpace.TYPE_RGB) {
           currentColor = new PDFColor(c.getRed(), c.getGreen(),
                                        c.getBlue());
-          this.stream.add(currentColor.getColorSpaceOut(fill));              
+          return currentColor.getColorSpaceOut(fill); 
       } else if (c.getColorSpace().getType()
                  == java.awt.color.ColorSpace.TYPE_CMYK) {
           float[] cComps = c.getColorComponents(new float[3]);
@@ -228,7 +318,7 @@ public class PDFOperators {
               cmyk[i] = cComps[i];
           }
           currentColor = new PDFColor(cmyk[0], cmyk[1], cmyk[2], cmyk[3]);
-          this.stream.add(currentColor.getColorSpaceOut(fill));
+          return currentColor.getColorSpaceOut(fill);
       } else if (c.getColorSpace().getType()
                  == java.awt.color.ColorSpace.TYPE_2CLR) {
           // used for black/magentacurrentColor.getColorSpaceOut(fill)
@@ -238,18 +328,13 @@ public class PDFOperators {
               blackMagenta[i] = cComps[i];
           }
           // currentColor = new PDFColor(blackMagenta[0], blackMagenta[1]);
-          this.stream.add(currentColor.getColorSpaceOut(fill));
+          return currentColor.getColorSpaceOut(fill);
       } else {
           System.err.println("Color Space not supported.");
+          return null;
       }
     }  
     
-    /**
-     * Gets the current pdf stream.
-     */      
-    public PDFStream getStream() {
-      return this.stream;
-    }
 }
 
     

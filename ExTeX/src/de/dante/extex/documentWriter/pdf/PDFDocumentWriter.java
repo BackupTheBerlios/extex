@@ -44,13 +44,15 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.extex.interpreter.type.node.AbstractNodeList;
+import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.util.GeneralException;
 
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -109,7 +111,7 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
     }
         
     private PDFDocument pdfDoc = null;
-    private PDFStream currentStream = null;
+    private PDFStream cs = null;
     private PDFResources pdfResources = null;
     private PDFAnnotList currentAnnotList = null;
     private PDFPage currentPage = null;
@@ -124,8 +126,12 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
     private FontInfo fontInfo = null;
     private FontState fontState = null;
     
+    private float lastX, lastY, currentX, currentY;
+    private boolean onlyStroke, show, markOrigin; 
+    private StringBuffer operators;
+    
     private float sp2bp(long sp) {
-      return (float)((sp >> 16) * 72.0 / 72.27);
+      return Math.round((double) sp / ((long)1 << 16) * 72.0 / 72.27);
     }
 
     public Object visitAdjust(Object value, Object Value2){return null;}
@@ -146,9 +152,7 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
     public Object visitWhatsIt(Object value, Object Value2){return null;} 
 
     public Object visitVerticalList(Object value, Object Value2){
-      x = lastX; y = lastY;
-      op.fillColor(Color.LIGHT_GRAY);
-      onlyStroke = false; show = true; 
+      operators.append(op.fillColor(Color.LIGHT_GRAY)); markOrigin = true;
       return null;
     }
     
@@ -158,69 +162,115 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
     }
         
     public Object visitChar(Object value, Object Value2){
-      x = lastX; y = lastY; 
-      lastX = x + wd; lastY = y + ht + dp; 
-      // Nur damit es weniger eintönig ist ;-)
-      op.fillColor(Color.GREEN);
-      onlyStroke = false; show = true;
+      operators.append(op.fillColor(Color.GREEN));
       return null;
     }   
- 
-    private float lastX, lastY, x, y, wd, ht, dp;
-    private boolean onlyStroke, show; 
-
-    private void showNode(Node node) { 
-
-      onlyStroke = false;
-
-      wd = sp2bp(node.getWidth().getValue());
-      ht = sp2bp(node.getHeight().getValue());
-      dp = sp2bp(node.getDepth().getValue());
-
-      op.gSave();
-
-      try {
-       node.visit(this, node, null);
-      }
-      catch (GeneralException  e) {
-       e.printStackTrace();
-      } 
-
-      if (show)
-      {
-       op.addRectangle(x, y-ht, wd, ht+dp); 
-       if (onlyStroke) op.stroke(); else op.fillStroke();
-      } 
-
-      op.gRestore();
-
+    
+    private String debugNode(Node node){ 
       String nodeName = node.getClass().getName();    
       nodeName = nodeName.substring(nodeName.lastIndexOf('.')+1);
       nodeName = nodeName.substring(0, nodeName.lastIndexOf("Node"));
       // Haben wir irgendwo "regular expressions" bei der Hand?
 
-      System.out.println(nodeName + 
+      return nodeName + 
        " (wd=" + node.getWidth().toPT() + 
        "\tht=" + node.getHeight().toPT() +
        "\tdp=" + node.getDepth().toPT() + ")" + "\t" +
-       (nodeName.equals("Char") ? node.toString() : ""));     
+       (nodeName.equals("Char") ? node.toString() : "");       
     }
     
+    private void showNode(Node node) { 
+    
+      float wd = sp2bp(node.getWidth().getValue());
+      float ht = sp2bp(node.getHeight().getValue());
+      float dp = sp2bp(node.getDepth().getValue());
+          
+      onlyStroke = false; show = true; markOrigin = false;
+      operators = new StringBuffer();
+
+      try {
+       node.visit(this, node, null);
+      }
+      catch (GeneralException e) {
+       e.printStackTrace();
+      } 
+
+      if (show)
+      {
+       cs.add(op.gSave());
+       
+       if (markOrigin)
+       {
+         cs.add(op.gSave());
+         cs.add(op.lineWidth(.6f));
+         cs.add(op.strokeColor(Color.RED));
+         cs.add(op.circle(72, 72, 5));
+         cs.add(op.moveTo(72-5, 72)); cs.add(op.rLineTo(5, 0));
+         cs.add(op.moveTo(72, 72-5)); cs.add(op.rLineTo(0, 5));
+         cs.add(op.stroke());
+         cs.add(op.gRestore());
+       }
+       
+       cs.add(operators.toString());
+       cs.add(op.lineWidth(.3f));
+       cs.add(op.addRectangle(currentX, currentY-ht, wd, ht+dp));
+       if (onlyStroke) cs.add(op.stroke()); else cs.add(op.fillStroke());
+       
+       if (dp > 0.0) // Basislinie
+       {
+         cs.add(op.gSave());
+         cs.add(op.setLineDash(.3f, .3f));
+         cs.add(op.moveTo(currentX, currentY));
+         cs.add(op.rLineTo(wd, 0f)); 
+         cs.add(op.stroke());
+         cs.add(op.gRestore());
+       }
+       
+       cs.add(op.gRestore());
+      } 
+      
+      currentX = currentX + wd; 
+
+      System.out.println(debugNode(node));
+        
+    }
+   
+    // Getestet mit "./extex -output pdf testdata/testlinebreak"
+    //
     private void processNodes(final NodeList nodes) {
-      NodeIterator it = nodes.iterator(); 
+      NodeIterator it = nodes.iterator();
+      float lastDP = 0.0f; float wd; float ht; float dp;  
+               
+      if (nodes instanceof VerticalListNode)
+      {
+        wd = sp2bp(nodes.getWidth().getValue());
+        ht = sp2bp(nodes.getHeight().getValue());
+        dp = sp2bp(nodes.getDepth().getValue());  
+        lastX = currentX = 72; lastY = currentY = 72 + ht; 
+        // Basepoint setzen, so dass linke obere Ecke der 
+        // Vbox bei 1in Offset erscheint.
+        lastDP = 0.0f; 
+        System.out.println("\n");
+        showNode(nodes);
+        lastX = 72; lastY = 72 - ht; lastDP = ht;
+      }
       
-      lastX = 72; lastY = 72; // Wir beginnen bei 1in Offset.
-      
-      showNode(nodes);  
-      
-      System.out.println("---------------BEGIN----------------");
       while(it.hasNext()) 
       {
         Node n = it.next();
-        if (n instanceof NodeList) processNodes((NodeList)n);
+        if (n instanceof HorizontalListNode) 
+        {
+          wd = sp2bp(n.getWidth().getValue());
+          ht = sp2bp(n.getHeight().getValue());
+          dp = sp2bp(n.getDepth().getValue()); 
+          currentX = lastX; currentY = lastY + lastDP + ht; 
+          lastDP = dp;
+          System.out.println(debugNode(n)); 
+          processNodes((NodeList)n);
+          lastY = currentY;
+        }
         else showNode(n);
       }
-      System.out.println("---------------END------------------"); 
     }
     
     /**
@@ -255,6 +305,8 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
            
       pdfDoc.outputHeader(this.out);
       
+      op = new PDFOperators();  
+      
     }
     
     /**
@@ -266,14 +318,12 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
     
       pdfDoc.output(this.out); 
       
-      currentStream = pdfDoc.makeStream();
+      cs = pdfDoc.makeStream();
 
-      currentPage = pdfDoc.makePage(pdfResources, currentStream,
+      currentPage = pdfDoc.makePage(pdfResources, cs,
         pageWD, pageHT, page);
         
-      op = new PDFOperators(currentStream);  
-        
       // TeX/SVG-Koordinatensystem.
-      op.concat(1, 0, 0, -1, 0, pageHT);
+      cs.add(op.concat(1, 0, 0, -1, 0, pageHT));
     }    
 }
