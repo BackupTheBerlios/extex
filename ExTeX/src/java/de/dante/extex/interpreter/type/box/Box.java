@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.type.box;
 import java.io.Serializable;
 
 import de.dante.extex.i18n.EofHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -43,11 +44,11 @@ import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class is used to represent box registers.
- * A ox register can either be void or be a horizontal or vertical list.
+ * A box register can either be void or be a horizontal or vertical list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Box implements Serializable {
 
@@ -316,6 +317,27 @@ public class Box implements Serializable {
             nodes.getWidth().add(spread);
         }
 
+    }
+
+    /**
+     * Split off material from a vlist of a certain height.
+     *
+     * @param height the heght of the material to cut off
+     *
+     * @return a new vertical node list with the material
+     *
+     * @throws HelpingException in case that the Box is not a vlist
+     *
+     * @see "TTP [977]"
+     */
+    public VerticalListNode vsplit(final Dimen height) throws HelpingException {
+
+        if (!isVbox()) {
+            throw new HelpingException(getLocalizer(), "..."); //TODO gene: i18n
+        }
+
+        //TODO gene: vsplit unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
 }
