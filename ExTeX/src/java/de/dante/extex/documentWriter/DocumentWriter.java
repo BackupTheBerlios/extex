@@ -26,19 +26,20 @@ import de.dante.util.GeneralException;
 
 /**
  * This is the interface to the backend of the system. The document has to be
- * written to a output stream. Certain information can be acquired before and
+ * written to an output stream. Certain information can be acquired before and
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface DocumentWriter {
+
     /**
      * Getter for the extension associated with this kind of output. For
-     * instance <tt>.pdf</tt> is the expected value for PDF files and
-     * <tt>.dvi</tt> is the expected value for DVI files.
+     * instance <tt>pdf</tt> is the expected value for PDF files and
+     * <tt>dvi</tt> is the expected value for DVI files.
      *
-     * @return the appropriate filename extension
+     * @return the appropriate extension for file names
      */
     String getExtension();
 
@@ -79,7 +80,7 @@ public interface DocumentWriter {
     void close() throws GeneralException, IOException;
 
     /**
-     * Setter of an named parameter.
+     * Setter for a named parameter.
      * Parameters are a general mechanism to influence the behavior of the
      * document writer. Any parameter not known by the document writer has to
      * be ignored.

@@ -34,7 +34,7 @@ import de.dante.util.framework.AbstractFactory;
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DocumentWriterFactory extends AbstractFactory {
 
@@ -53,7 +53,8 @@ public class DocumentWriterFactory extends AbstractFactory {
      * Creates a new object.
      *
      * @param configuration the configuration to use for the factory
-     * @throws ConfigurationException ...
+     *
+     * @throws ConfigurationException in case of an error
      */
     public DocumentWriterFactory(final Configuration configuration)
             throws ConfigurationException {
