@@ -63,7 +63,7 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Max extends Moritz implements Interpreter,
         TokenSource, Observable, CatcodeVisitor {
@@ -240,6 +240,10 @@ public class Max extends Moritz implements Interpreter,
      */
     public void setTypesetter(final Typesetter theTypesetter) {
         this.typesetter = theTypesetter;
+    }
+
+    public Typesetter getTypesetter() {
+        return this.typesetter;
     }
 
     /**
