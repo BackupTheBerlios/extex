@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -51,7 +51,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.i18n.PanicException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ErrorHandlerFactory;
 import de.dante.extex.interpreter.Interaction;
@@ -610,7 +610,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.78 $
+ * @version $Revision: 1.79 $
  */
 public class ExTeX {
 
@@ -1227,7 +1227,7 @@ public class ExTeX {
             try {
                 interpreter.loadFormat(stream);
             } catch (LoaderException e) {
-                throw new PanicException(localizer, "TTP.FormatFileError",
+                throw new HelpingException(localizer, "TTP.FormatFileError",
                         format);
             }
             logger.config(localizer.format("ExTeX.FormatDate", format, time));
@@ -1462,8 +1462,6 @@ public class ExTeX {
         //TODO gene: if weak references are used then the instances have to be kept in some variables:-(
 
         interpreter.registerObserver("close", new FileCloseObserver(logger));
-        //interpreter.registerObserver("message", new MessageObserver(logger));
-        //interpreter.registerObserver("log", new LogMessageObserver(logger));
         if (Boolean.valueOf(properties.getProperty(PROP_TRACE_TOKENIZER))
                 .booleanValue()) {
             interpreter.registerObserver("pop", new TokenObserver(logger));
