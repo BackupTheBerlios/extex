@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ToksPrimitive extends AbstractToks implements Theable {
 
@@ -92,7 +92,7 @@ public class ToksPrimitive extends AbstractToks implements Theable {
      *
      * @param prefix the prefix flags
      * @param context the interpreter context
-     * @param source the tokensource
+     * @param source the token source
      * @param key the key
      *
      * @throws GeneralException in case of an error

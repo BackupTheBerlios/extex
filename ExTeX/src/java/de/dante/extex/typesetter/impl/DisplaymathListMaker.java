@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class DisplaymathListMaker extends AbstractListMaker
         implements
@@ -82,6 +82,7 @@ public class DisplaymathListMaker extends AbstractListMaker
     public void addGlue(final Glue g) throws GeneralException {
 
         // TODO Auto-generated method stub
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -93,6 +94,7 @@ public class DisplaymathListMaker extends AbstractListMaker
             final Count spacefactor) throws GeneralException {
 
         // TODO Auto-generated method stub
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -131,7 +133,7 @@ public class DisplaymathListMaker extends AbstractListMaker
     public void par() throws GeneralException {
 
         getManager().endParagraph();
-        throw new HelpingException("TTP.MissingDollar");
+        throw new HelpingException(getLocalizer(), "TTP.MissingDollar");
     }
 
     /**
@@ -157,7 +159,7 @@ public class DisplaymathListMaker extends AbstractListMaker
     public void toggleMath() throws GeneralException {
 
         getManager().endParagraph();
-        throw new HelpingException("TTP.DisplayMathEnd");
+        throw new HelpingException(getLocalizer(), "TTP.DisplayMathEnd");
     }
 
 }

@@ -109,6 +109,8 @@
     <primitives src="primitives/etex.xml"/>
     <primitives src="primitives/namespace.xml"/>
 
+    <ExtendedRegisterNames>true</ExtendedRegisterNames>
+
   </Interpreter>
 
   <!-- 

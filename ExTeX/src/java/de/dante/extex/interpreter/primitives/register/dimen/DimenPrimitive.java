@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -183,8 +183,6 @@ public class DimenPrimitive extends AbstractDimen
 
         Dimen d = new Dimen(context.getDimen(key).getValue() / value);
         context.setDimen(key, d, prefix.isGlobal());
-
-        prefix.clear();
     }
 
     /**

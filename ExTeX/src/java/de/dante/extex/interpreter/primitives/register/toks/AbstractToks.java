@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * numbered toks registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractToks extends AbstractAssignment {
 
@@ -59,12 +59,12 @@ public abstract class AbstractToks extends AbstractAssignment {
     protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        String number = Long.toString(source.scanNumber());
+        String name = source.scanRegisterName();
 
         if (Namespace.SUPPORT_NAMESPACE_TOKS) {
-            return context.getNamespace() + "toks#" + number;
+            return context.getNamespace() + "toks#" + name;
         } else {
-            return "toks#" + number;
+            return "toks#" + name;
         }
     }
 

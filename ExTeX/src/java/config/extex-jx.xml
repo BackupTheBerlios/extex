@@ -112,6 +112,8 @@
     <primitives src="primitives/etex.xml"/>
     <primitives src="primitives/jx.xml"/>
 
+    <ExtendedRegisterNames>true</ExtendedRegisterNames>
+
   </Interpreter>
 
   <!-- 

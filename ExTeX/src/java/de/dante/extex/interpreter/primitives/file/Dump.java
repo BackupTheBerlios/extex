@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Dump extends AbstractCode {
 
@@ -125,7 +125,7 @@ public class Dump extends AbstractCode {
 
         Tokens jobnameTokens = context.getToks("jobname");
         if (jobnameTokens == null) {
-            throw new PanicException("Dump.MissingJobname",
+            throw new PanicException(getLocalizer(), "Dump.MissingJobname",
                     printableControlSequence(context));
         }
         String jobname = jobnameTokens.toText();

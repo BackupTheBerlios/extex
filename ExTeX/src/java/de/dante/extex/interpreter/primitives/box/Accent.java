@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Accent extends AbstractCode {
 
@@ -116,7 +116,8 @@ public class Accent extends AbstractCode {
 
         if (token == null) {
 
-            throw new HelpingException("EOF");
+            throw new HelpingException(getLocalizer(), "UnexpectedEOF",
+                    printableControlSequence(context));
 
         } else if (token.isa(Catcode.LETTER) || token.isa(Catcode.OTHER)) {
             UnicodeChar c = token.getChar();

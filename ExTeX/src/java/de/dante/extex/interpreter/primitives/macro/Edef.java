@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.interpreter.Flags;
@@ -54,20 +55,23 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Edef extends Def {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Edef(final String name) {
+
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -77,7 +81,9 @@ public class Edef extends Def {
             throws GeneralException {
 
         prefix.setExpanded();
-        super.execute(prefix, context, source, typesetter);
+        if (super.execute(prefix, context, source, typesetter)) {
+            prefix.clear();
+        }
     }
 
 }

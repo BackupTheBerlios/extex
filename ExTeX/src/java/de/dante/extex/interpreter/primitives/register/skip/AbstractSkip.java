@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * numbered skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractSkip extends AbstractAssignment {
 
@@ -59,12 +59,12 @@ public abstract class AbstractSkip extends AbstractAssignment {
     protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        String number = Long.toString(source.scanNumber());
+        String name = source.scanRegisterName();
 
         if (Namespace.SUPPORT_NAMESPACE_SKIP) {
-            return context.getNamespace() + "skip#" + number;
+            return context.getNamespace() + "skip#" + name;
         } else {
-            return "skip#" + number;
+            return "skip#" + name;
         }
     }
 

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.interpreter.Flags;
@@ -54,15 +55,17 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Xdef extends Edef {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Xdef(final String name) {
+
         super(name);
     }
 
@@ -77,7 +80,9 @@ public class Xdef extends Edef {
             throws GeneralException {
 
         prefix.setGlobal();
-        super.execute(prefix, context, source, typesetter);
+        if (super.execute(prefix, context, source, typesetter)) {
+            prefix.clear();
+        }
     }
 
 }

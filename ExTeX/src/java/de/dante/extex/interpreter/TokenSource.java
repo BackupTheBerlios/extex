@@ -44,7 +44,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public interface TokenSource {
 
@@ -140,6 +140,37 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     Font getFont() throws GeneralException;
+
+    /**
+     * Scan the expanded token stream for a sequence of letter tokens. If all
+     * tokens are found then they are removed from the input stream and
+     * <code>true</code> is returned. Otherwise all tokens are left in the
+     * input stream and <code>false</code> is returned.
+     *
+     * @param keyword the tokens to scan
+     *
+     * @return <code>true</code> iff the tokens could have been successfully
+     *         removed from the input stream
+     *
+     * @throws GeneralException in case of an error
+     */
+    boolean getKeyword(String keyword) throws GeneralException;
+
+    /**
+     * Scan the expanded token stream for a sequence of letter tokens. If all
+     * tokens are found then they are removed from the input stream and
+     * <code>true</code> is returned. Otherwise all tokens are left in the
+     * input stream and <code>false</code> is returned.
+     *
+     * @param s the tokens to scan
+     * @param space skip space
+     *
+     * @return <code>true</code> iff the tokens could have been successfully
+     *         removed from the input stream
+     *
+     * @throws GeneralException in case of an error
+     */
+    boolean getKeyword(String s, boolean space) throws GeneralException;
 
     /**
      * Getter for the locator.
@@ -299,37 +330,6 @@ public interface TokenSource {
     long scanInteger() throws GeneralException;
 
     /**
-     * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and
-     * <code>true</code> is returned. Otherwise all tokens are left in the
-     * input stream and <code>false</code> is returned.
-     *
-     * @param keyword the tokens to scan
-     *
-     * @return <code>true</code> iff the tokens could have been successfully
-     *         removed from the input stream
-     *
-     * @throws GeneralException in case of an error
-     */
-    boolean getKeyword(String keyword) throws GeneralException;
-
-    /**
-     * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and
-     * <code>true</code> is returned. Otherwise all tokens are left in the
-     * input stream and <code>false</code> is returned.
-     *
-     * @param s the tokens to scan
-     * @param space skip space
-     *
-     * @return <code>true</code> iff the tokens could have been successfully
-     *         removed from the input stream
-     *
-     * @throws GeneralException in case of an error
-     */
-    boolean getKeyword(String s, boolean space) throws GeneralException;
-
-    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
@@ -378,6 +378,16 @@ public interface TokenSource {
     long scanNumber(Token t) throws GeneralException;
 
     /**
+     * Scan the input streams for an entity to denote a register name.
+     * Upon EOF <code>null</code> is returned.
+     *
+     * @return the register name encountered
+     *
+     * @throws GeneralException in case of an error
+     */
+    String scanRegisterName() throws GeneralException;
+
+    /**
      * Get the next expanded token form the input streams. If the current input
      * stream is at its end then the next one on the streamStack is used until
      * a token could be read. If all stream are at the end then
@@ -410,9 +420,10 @@ public interface TokenSource {
     Tokens scanTokens() throws GeneralException;
 
     /**
-     * Get the next expanded token form the input streams between <code>{</code>
-     * and <code>}</code> an convert it to a <code>String</code>. If the
-     * current inputstream is at its end then the next one on the streamStack
+     * Get the next expanded token form the input streams between a leftbace
+     * character (usually <code>{</code>) and a rightbrace character
+     * (usually <code>}</code>) and convert it to a <code>String</code>. If the
+     * current input stream is at its end then the next one on the streamStack
      * is used until a token could be read. If all stream are at the end then
      * <code>null</code> is returned.
      *

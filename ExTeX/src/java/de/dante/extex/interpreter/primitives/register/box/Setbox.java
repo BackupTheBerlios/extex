@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Setbox extends BoxParameter implements Code, Serializable {
 
@@ -79,12 +79,12 @@ public class Setbox extends BoxParameter implements Code, Serializable {
     protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        String number = Long.toString(source.scanNumber());
+        String name = source.scanRegisterName();
 
         if (Namespace.SUPPORT_NAMESPACE_BOX) {
-            return context.getNamespace() + "box#" + number;
+            return context.getNamespace() + "box#" + name;
         } else {
-            return "box#" + number;
+            return "box#" + name;
         }
     }
 

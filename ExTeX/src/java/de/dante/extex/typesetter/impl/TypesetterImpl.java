@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
@@ -44,6 +43,8 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.i18n.Localizable;
+import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -52,9 +53,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
-public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
+public class TypesetterImpl
+        implements
+            Typesetter,
+            Manager,
+            Localizable,
+            LogEnabled {
 
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
@@ -81,6 +87,11 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     private ListMaker listMaker;
 
     /**
+     * The field <tt>localizer</tt> contains the ...
+     */
+    private Localizer localizer;
+
+    /**
      * The field <tt>logger</tt> contains the logger to use.
      */
     private Logger logger = null;
@@ -91,15 +102,15 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     private TypesetterOptions options;
 
     /**
+     * The field <tt>pageBuilder</tt> contains the current page builder.
+     */
+    private PageBuilder pageBuilder = null;
+
+    /**
      * The field <tt>paragraphBuilder</tt> contains the current paragraph
      * builder.
      */
     private ParagraphBuilder paragraphBuilder = null;
-
-    /**
-     * The field <tt>pageBuilder</tt> contains the current page builder.
-     */
-    private PageBuilder pageBuilder = null;
 
     /**
      * The field <tt>saveStack</tt> contains the stack of list makers.
@@ -178,20 +189,15 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#endParagraph()
+     * ...
+     *
+     * @param localizer
+     *
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(de.dante.util.framework.i18n.Localizer)
      */
-    public void endParagraph() throws GeneralException {
+    public void enableLocalization(final Localizer localizer) {
 
-        NodeList list = listMaker.close();
-        pop();
-        if (list instanceof VerticalListNode) {
-            NodeIterator it = list.iterator();
-            while (it.hasNext()) {
-                listMaker.add(it.next());
-            }
-        } else {
-            listMaker.add(list);
-        }
+        this.localizer = localizer;
     }
 
     /**
@@ -209,6 +215,23 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
         }
         if (ligatureBuilder instanceof LogEnabled) {
             ((LogEnabled) ligatureBuilder).enableLogging(theLogger);
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#endParagraph()
+     */
+    public void endParagraph() throws GeneralException {
+
+        NodeList list = listMaker.close();
+        pop();
+        if (list instanceof VerticalListNode) {
+            NodeIterator it = list.iterator();
+            while (it.hasNext()) {
+                listMaker.add(it.next());
+            }
+        } else {
+            listMaker.add(list);
         }
     }
 
@@ -311,8 +334,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void pop() throws GeneralException {
 
         if (saveStack.isEmpty()) {
-            throw new PanicException("TTP.Confusion", //
-                    Messages.format("Typesetter.EmptyStack"));
+            throw new PanicException(localizer, "Typesetter.EmptyStack");
         }
 
         this.listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));

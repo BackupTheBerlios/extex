@@ -70,7 +70,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public abstract class Moritz
         implements
@@ -212,25 +212,37 @@ public abstract class Moritz
     }
 
     /**
+     * The field <tt>extendedRegisterNames</tt> contains the indicator that the
+     * extended definition for register names should be used. If it is
+     * <code>false</code> then only numbers are permitted.
+     */
+    private boolean extendedRegisterNames = false;
+
+    /**
      * @see de.dante.util.framework.configuration.Configurable#configure(
      *      de.dante.util.configuration.Configuration)
      */
     public void configure(final Configuration config)
             throws ConfigurationException {
 
+        Configuration cfg = config.findConfiguration("ExtendedRegisterNames");
+        if (cfg != null) {
+            extendedRegisterNames = Boolean.getBoolean(cfg.getValue());
+        }
+
     }
 
     /**
      * Setter for the localizer.
      *
-     * @param localizer the localizer to use
+     * @param theLocalizer the localizer to use
      *
      * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
      *      de.dante.util.framework.i18n.Localizer)
      */
-    public void enableLocalization(final Localizer localizer) {
+    public void enableLocalization(final Localizer theLocalizer) {
 
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
@@ -412,8 +424,8 @@ public abstract class Moritz
                 stream.put(t);
                 return false;
             }
-        }
 
+        }
         return true;
     }
 
@@ -687,6 +699,7 @@ public abstract class Moritz
     public void push(final Token[] tokens) throws GeneralException {
 
         for (int i = tokens.length - 1; i >= 0; i--) {
+
             observersPush.update(this, tokens[i]);
             stream.put(tokens[i]);
         }
@@ -787,7 +800,7 @@ public abstract class Moritz
         long cc = scanNumber();
 
         if (cc < 0 || cc > MAX_CHAR_CODE) {
-            throw new HelpingException(localizer, "TTP.BadCharCode", //
+            throw new HelpingException(getLocalizer(), "TTP.BadCharCode", //
                     Long.toString(cc), "0", Long.toString(MAX_CHAR_CODE));
         }
 
@@ -960,7 +973,8 @@ public abstract class Moritz
                                             + 10;
                                     break;
                                 default:
-                                    throw new PanicException("TTP.Confusion",
+                                    throw new PanicException(localizer,
+                                            "Panic.HexNumber",
                                             "Strange character in hex number");
                             }
                         }
@@ -972,14 +986,15 @@ public abstract class Moritz
                         return n;
 
                     default:
-                        throw new HelpingException(localizer,
+                        throw new HelpingException(getLocalizer(),
                                 "TTP.MissingNumber");
                 }
             } else if (t instanceof CodeToken) {
                 Context context = getContext();
                 Code code = context.getCode((CodeToken) t);
                 if (code == null) {
-                    throw new HelpingException(localizer, "TTP.MissingNumber");
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.MissingNumber");
                 } else if (code instanceof CountConvertible) {
                     return ((CountConvertible) code).convertCount(context,
                             this, getTypesetter());
@@ -988,15 +1003,36 @@ public abstract class Moritz
                             getTypesetter());
                     t = getToken();
                 } else {
-                    throw new HelpingException(localizer, "TTP.MissingNumber");
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.MissingNumber");
                 }
             } else {
 
-                throw new HelpingException(localizer, "TTP.MissingNumber");
+                throw new HelpingException(getLocalizer(), "TTP.MissingNumber");
             }
         }
 
-        throw new HelpingException(localizer, "TTP.MissingNumber");
+        throw new HelpingException(getLocalizer(), "TTP.MissingNumber");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#scanRegisterName()
+     */
+    public String scanRegisterName() throws GeneralException {
+
+        Token token = getNonSpace();
+
+        if (token == null) {
+            //TODO: handle EOF
+            throw new HelpingException(getLocalizer(), "TTP.MissingNumber");
+        }
+
+        if (extendedRegisterNames && token.isa(Catcode.LEFTBRACE)) {
+            push(token);
+            return scanTokensAsString();
+        }
+
+        return Long.toString(scanNumber(token));
     }
 
     /**

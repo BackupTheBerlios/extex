@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -218,7 +218,8 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 
         long sf = f.getValue();
         if (sf <= 0) {
-            throw new HelpingException("TTP.BadSpaceFactor", Long.toString(sf));
+            throw new HelpingException(getLocalizer(), "TTP.BadSpaceFactor",
+                    Long.toString(sf));
         }
         spacefactor = sf;
     }

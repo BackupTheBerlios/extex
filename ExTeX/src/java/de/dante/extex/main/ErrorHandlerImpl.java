@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.util.logging.Logger;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.InteractionVisitor;
@@ -33,6 +32,8 @@ import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.i18n.Localizable;
+import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -46,12 +47,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ErrorHandlerImpl
         implements
             ErrorHandler,
             LogEnabled,
+            Localizable,
             InteractionVisitor {
 
     /**
@@ -59,6 +61,11 @@ public class ErrorHandlerImpl
      * since it is needed several times.
      */
     private static final String NL = "\n";
+
+    /**
+     * The field <tt>localizer</tt> contains the ...
+     */
+    private Localizer localizer;
 
     /**
      * The field <tt>logger</tt> contains the logger to write a protocol of
@@ -74,6 +81,19 @@ public class ErrorHandlerImpl
     public ErrorHandlerImpl() {
 
         super();
+    }
+
+    /**
+     * ...
+     *
+     * @param localizer
+     *
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
+     */
+    public void enableLocalization(final Localizer localizer) {
+
+        this.localizer = localizer;
     }
 
     /**
@@ -177,11 +197,11 @@ public class ErrorHandlerImpl
             boolean firstHelp = true;
 
             for (;;) {
-                logger.severe(Messages.format("ErrorHandler.Prompt"));
+                logger.severe(localizer.format("ErrorHandler.Prompt"));
 
                 String line = readLine();
                 if (line == null) {
-                    throw new HelpingException("TTP.EOFonTerm");
+                    throw new HelpingException(localizer, "TTP.EOFonTerm");
                 }
                 logger.config(line);
 
@@ -212,11 +232,11 @@ public class ErrorHandlerImpl
                         case 'd':
                         case 'D':
                             //TODO: support debug? TTP[84] TTP[1338]
-                            break;
+                            throw new RuntimeException("unimplemented");
                         case 'e':
                         case 'E':
                             //TODO: support edit? TTP[84]
-                            break;
+                            throw new RuntimeException("unimplemented");
                         case 'i':
                         case 'I':
                             source.addStream(source.getTokenStreamFactory()
@@ -228,10 +248,10 @@ public class ErrorHandlerImpl
                             String help;
 
                             if (!firstHelp) {
-                                help = Messages
+                                help = localizer
                                         .format("ErrorHandler.noMoreHelp");
                             } else if ((help = ex.getHelp()) == null) {
-                                help = Messages.format("ErrorHandler.noHelp");
+                                help = localizer.format("ErrorHandler.noHelp");
                             }
 
                             firstHelp = false;
@@ -240,7 +260,7 @@ public class ErrorHandlerImpl
                         case 'q':
                         case 'Q':
                             context.setInteraction(Interaction.BATCHMODE, true);
-                            logger.info(Messages
+                            logger.info(localizer
                                     .format("ErrorHandler.batchmode")
                                     + NL);
                             return true;
@@ -248,7 +268,7 @@ public class ErrorHandlerImpl
                         case 'R':
                             context.setInteraction(Interaction.NONSTOPMODE,
                                     true);
-                            logger.info(Messages
+                            logger.info(localizer
                                     .format("ErrorHandler.nonstopmode")
                                     + NL);
                             return true;
@@ -257,7 +277,7 @@ public class ErrorHandlerImpl
                             context
                                     .setInteraction(Interaction.SCROLLMODE,
                                             true);
-                            logger.info(Messages
+                            logger.info(localizer
                                     .format("ErrorHandler.scrollmode")
                                     + NL);
                             return true;
@@ -265,7 +285,7 @@ public class ErrorHandlerImpl
                         case 'X':
                             return false;
                         default:
-                            logger.severe(Messages.format("ErrorHandler.help")
+                            logger.severe(localizer.format("ErrorHandler.help")
                                     + NL);
                     }
                 }

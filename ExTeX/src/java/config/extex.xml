@@ -108,6 +108,8 @@
     <primitives src="primitives/tex.xml"/>
     <primitives src="primitives/etex.xml"/>
 
+    <ExtendedRegisterNames>true</ExtendedRegisterNames>
+
   </Interpreter>
 
   <!-- 
