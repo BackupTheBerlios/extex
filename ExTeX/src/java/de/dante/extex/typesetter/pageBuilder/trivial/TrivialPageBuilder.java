@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TrivialPageBuilder implements PageBuilder {
 
@@ -120,9 +120,10 @@ public class TrivialPageBuilder implements PageBuilder {
     }
 
     /**
-     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setContext(de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setContext(
+     *      de.dante.extex.interpreter.context.Context)
      */
-    public void setContext(Context context) {
+    public void setContext(final Context context) {
 
     }
 

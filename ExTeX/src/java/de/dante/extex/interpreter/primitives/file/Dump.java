@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.file;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.NotSerializableException;
 import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
@@ -36,7 +37,6 @@ import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -73,7 +73,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -86,7 +86,7 @@ public class Dump extends AbstractCode implements LogEnabled {
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * Creates a new object.
@@ -156,6 +156,7 @@ public class Dump extends AbstractCode implements LogEnabled {
         } catch (FileNotFoundException e) {
             throw new InterpreterException(e);
         } catch (IOException e) {
+            //e.printStackTrace();
             throw new InterpreterException(e);
         } finally {
             if (stream != null) {

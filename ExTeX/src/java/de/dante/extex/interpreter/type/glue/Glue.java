@@ -24,6 +24,7 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
@@ -39,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -130,6 +131,8 @@ public class Glue implements Serializable, FixedGlue {
                 this.length = new GlueComponent(g.getLength());
                 this.shrink = new GlueComponent(g.getShrink());
                 this.stretch = new GlueComponent(g.getStretch());
+            } else if (code == null) {
+                throw new UndefinedControlSequenceException(context.esc(t));
             } else {
                 //TODO gene: unimplemented
                 throw new RuntimeException("unimplemented");
