@@ -79,7 +79,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
@@ -179,14 +179,14 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
             throws IOException {
 
         charid = id;
-        widthindex = (short) rar.read();
-        short heightdepthindex = (short) rar.read();
+        widthindex = (short) rar.readByteAsInt();
+        short heightdepthindex = (short) rar.readByteAsInt();
         heightindex = (short) (heightdepthindex >> TFMConstants.CONST_4 & TFMConstants.CONST_X0F);
         depthindex = (short) (heightdepthindex & TFMConstants.CONST_X0F);
-        short italicindextag = (short) rar.read();
+        short italicindextag = (short) rar.readByteAsInt();
         italicindex = (short) (italicindextag >> 2 & TFMConstants.CONST_X3F);
         tag = (short) (italicindextag & TFMConstants.CONST_X03);
-        remainder = (short) rar.read();
+        remainder = (short) rar.readByteAsInt();
 
         switch (tag) {
             case TAG0 :

@@ -16,9 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-
 package de.dante.util.file.random;
 
+import java.io.EOFException;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -28,9 +28,19 @@ import java.io.RandomAccessFile;
  * RandomAccess for a File (Input) DEBUG-VERSION
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RandomAccessInputFileDebug implements RandomAccessR {
+
+    /**
+     * Shift 8
+     */
+    private static final int SHIFT8 = 8;
+
+    /**
+     * Shift 16
+     */
+    private static final int SHIFT16 = 16;
 
     /**
      * Stream for debug
@@ -121,6 +131,18 @@ public class RandomAccessInputFileDebug implements RandomAccessR {
     }
 
     /**
+     * @see de.dante.util.file.random.RandomAccessR#readByteAsInt()
+     */
+    public int readByteAsInt() throws IOException {
+
+        int ch = this.read();
+        if (ch < 0) {
+            throw new EOFException();
+        }
+        return ch;
+    }
+
+    /**
      * Reads a Unicode character from the input.
      *
      * If the bytes read, in order, are
@@ -194,6 +216,30 @@ public class RandomAccessInputFileDebug implements RandomAccessR {
         int b = raf.readInt();
         out.println("\nInt: (" + b + " :0x" + Integer.toHexString(b) + ") ");
         return b;
+    }
+
+    /**
+     * Reads a signed 24-bit integer from the input.
+     *
+     * If the bytes read, in order, are <code>b1</code>,
+     * <code>b2</code>, and <code>b3</code>, where
+     * <code>0&nbsp;&lt;=&nbsp;b1, b2, b3&nbsp;&lt;=&nbsp;255</code>,
+     * then the result is equal to:
+     * <blockquote><pre>
+     *     (b1 &lt;&lt; 16) + (b2 &lt;&lt; 8) + b3
+     * </pre></blockquote>
+     * <p>
+     * @see java.io.DataInput#readInt()
+     */
+    public int readInt24() throws IOException {
+
+        int ch1 = this.read();
+        int ch2 = this.read();
+        int ch3 = this.read();
+        if ((ch1 | ch2 | ch3) < 0) {
+            throw new EOFException();
+        }
+        return ((ch1 << SHIFT16) + (ch2 << SHIFT8) + (ch3 << 0));
     }
 
     /**

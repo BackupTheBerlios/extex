@@ -62,7 +62,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class TFMHeaderArray implements XMLConvertible, PlFormat, Serializable {
 
@@ -155,7 +155,7 @@ class TFMHeaderArray implements XMLConvertible, PlFormat, Serializable {
                     // ignore 2 bytes
                     rar.skipBytes(2);
                     // face
-                    xeroxfacecode = rar.read();
+                    xeroxfacecode = rar.readByteAsInt();
                     hr--;
                     // optional rest
                     if (hr > 0) {

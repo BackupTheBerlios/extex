@@ -31,7 +31,7 @@ import de.dante.util.file.random.RandomAccessR;
  * Abstract class for all vf commands.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class VFCommand implements XMLConvertible, Serializable {
 
@@ -114,7 +114,7 @@ public abstract class VFCommand implements XMLConvertible, Serializable {
     public static VFCommand getInstance(final RandomAccessR rar)
             throws IOException, FontException {
 
-        int c = rar.read();
+        int c = rar.readByteAsInt();
         if (c < 0) {
             return null;
         }

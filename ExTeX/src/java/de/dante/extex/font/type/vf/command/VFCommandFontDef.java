@@ -97,7 +97,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VFCommandFontDef extends VFCommand {
 
@@ -142,7 +142,7 @@ public class VFCommandFontDef extends VFCommand {
         switch (ccode) {
             case FNT_DEF_1 :
                 // 8 bit
-                fontnumbers = rar.read();
+                fontnumbers = rar.readByteAsInt();
                 break;
             case FNT_DEF_2 :
                 // 16 bit
@@ -150,13 +150,7 @@ public class VFCommandFontDef extends VFCommand {
                 break;
             case FNT_DEF_3 :
                 // 24 bit
-                int ch1 = rar.read();
-                int ch2 = rar.read();
-                int ch3 = rar.read();
-                if ((ch1 | ch2 | ch3) < 0) {
-                    throw new EOFException();
-                }
-                fontnumbers = ((ch1 << SHIFT16) + (ch2 << SHIFT8) + (ch3 << 0));
+                fontnumbers = rar.readInt24();
                 break;
             case FNT_DEF_4 :
                 // 32 bit
@@ -184,13 +178,13 @@ public class VFCommandFontDef extends VFCommand {
      */
     private String readFontName(final RandomAccessR rar) throws IOException {
 
-        int a = rar.read();
-        int l = rar.read();
+        int a = rar.readByteAsInt();
+        int l = rar.readByteAsInt();
 
         int len = a + l;
         StringBuffer buf = new StringBuffer();
         for (int i = 0; i < len; i++) {
-            buf.append((char) rar.read());
+            buf.append((char) rar.readByteAsInt());
         }
         return buf.toString();
     }

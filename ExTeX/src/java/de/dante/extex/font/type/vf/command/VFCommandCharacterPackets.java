@@ -90,7 +90,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand {
@@ -141,20 +141,13 @@ public class VFCommandCharacterPackets extends VFCommand {
         } else {
             // short format
             packetlength = ccode;
-            charactercode = rar.read();
+            charactercode = rar.readByteAsInt();
             // 24 bit
-            int ch1 = rar.read();
-            int ch2 = rar.read();
-            int ch3 = rar.read();
-            if ((ch1 | ch2 | ch3) < 0) {
-                throw new EOFException();
-            }
-            int w = ((ch1 << SHIFT16) + (ch2 << SHIFT8) + (ch3 << 0));
-            width = new TFMFixWord(w, TFMFixWord.FIXWORDDENOMINATOR);
+            width = new TFMFixWord(rar.readInt24(), TFMFixWord.FIXWORDDENOMINATOR);
         }
         dvi = new short[packetlength];
         for (int i = 0; i < packetlength; i++) {
-            dvi[i] = (short) rar.read();
+            dvi[i] = (short) rar.readByteAsInt();
         }
     }
 

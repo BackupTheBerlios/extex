@@ -26,7 +26,7 @@ import java.io.IOException;
  * Interface for random access (read only)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface RandomAccessR extends DataInput {
 
@@ -57,9 +57,14 @@ public interface RandomAccessR extends DataInput {
      * Reads a byte of data from this file. The byte is returned as an
      * integer in the range 0 to 255 (<code>0x00-0x0ff</code>).
      * @throws IOException if an IO-error occurs.
-     * @return     the next byte of data, or <code>-1</code> if the end of the
-     *             file has been reached.
+     * @return     the next byte of data.
      */
-    int read() throws IOException;
+    int readByteAsInt() throws IOException;
 
+    /**
+     * Reads a int with 24 bit (3x8).
+     * @return  Returns a int value.
+     * @throws IOException if an IO-error occurs.
+     */
+    int readInt24() throws IOException;
 }
