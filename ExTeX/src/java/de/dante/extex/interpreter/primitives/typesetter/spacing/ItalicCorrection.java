@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -75,23 +75,21 @@ public class ItalicCorrection extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Node node = typesetter.getLastNode();
+        /*
+         Node node = typesetter.getLastNode();
 
-        if (node != null) {
-            /*
-            if (node instanceof CharNode) {
-                Font font = ((LigatureNode) node).getTypesettingContext().getFont();
-                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
-                typesetter.add(new KernNode(ic));
-            } else if (node instanceof LigatureNode) {
-                Font font = ((LigatureNode) node).getTypesettingContext().getFont();
-                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
-                typesetter.add(new KernNode(ic));
-            }
-            */
-            //TODO execute() unimplemented
-            throw new RuntimeException("unimplemented");
-        }
-        return true;
+         if (node instanceof CharNode) {
+         Font font = ((LigatureNode) node).getTypesettingContext().getFont();
+         Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
+         typesetter.add(new KernNode(ic));
+         } else if (node instanceof LigatureNode) {
+         Font font = ((LigatureNode) node).getTypesettingContext().getFont();
+         Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
+         typesetter.add(new KernNode(ic));
+         }
+         */
+        //TODO gene: execute() unimplemented
+        throw new RuntimeException("unimplemented");
+        //return true;
     }
 }

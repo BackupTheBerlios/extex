@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathDelimiter extends AbstractMathCode {
 
@@ -78,7 +78,7 @@ public class MathDelimiter extends AbstractMathCode {
         long delcode = source.scanNumber();
         Delimiter del = new Delimiter(delcode);
 
-        //TODO execute() unimplemented
+        //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
         //return true;
     }

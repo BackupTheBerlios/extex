@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <doc name="protected" extension="yes">
  * <h3>The Prefix Primitive <tt>\protected</tt></h3>
  * <p>
- *  TODO documentation missing
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -49,7 +49,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Protected extends AbstractCode {
 

@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Noexpand extends AbstractCode implements ExpandableCode {
 
@@ -90,7 +90,7 @@ public class Noexpand extends AbstractCode implements ExpandableCode {
             throws GeneralException {
 
         //Token t = source.getToken();
-        //TODO execute() unimplemented
+        //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
     }
 
