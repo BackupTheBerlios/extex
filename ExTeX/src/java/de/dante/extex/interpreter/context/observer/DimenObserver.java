@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,29 +16,32 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.type.Token;
+package de.dante.extex.interpreter.context.observer;
 
+import de.dante.extex.interpreter.context.ContextInternals;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 
 /**
  * This interface describes the ability to receive a notification about the
- * change of a code assignment for a macro or an  active character.
+ * change of a dimen register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public interface CodeChangeObserver {
+public interface DimenObserver {
 
     /**
-     * Receive a notification on a code change.
+     * Receive a notification on a dimen change.
      *
-     * @param name the token containing the name of the changed entity.
-     *  This is a macro or an active character.
+     * @param context the interpreter context
+     * @param name the token containing the name of the changed Count.
      * @param value the new value assigned to the name. In case of
      *  <code>null</code> the name is unbound.
+     *
+     * @throws Exception in case of a problem
      */
-    void receiveCodeChange(Token name, Code value);
+    void receiveDimenChange(ContextInternals context, String name, Dimen value)
+            throws Exception;
 
 }
