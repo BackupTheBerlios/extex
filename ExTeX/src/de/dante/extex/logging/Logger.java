@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,56 +20,19 @@ package de.dante.extex.logging;
 
 import java.util.logging.Level;
 
-/**
- * This is a wrapper class for the logger.
- * Currently the Java 1.4 logger is wrapped.
+/*
+ * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Logger {
-    /** the wrapped logger */
-    private java.util.logging.Logger logger;
-
-    /**
-     * Creates a new object.
-     *
-     * @param name the name
-     * @param resourceBundle the resource bundle
-     */
-    public Logger(String name, String resourceBundle) {
-        super();
-        logger = java.util.logging.Logger.getLogger(name, resourceBundle);
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param name the name
-     */
-    public Logger(String name) {
-        super();
-        logger = java.util.logging.Logger.getLogger(name);
-    }
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @return ...
-     */
-    public synchronized static Logger getLogger(String name) {
-        return new Logger(name);
-    }
-
+public interface Logger {
     /**
      * ...
      *
      * @param arg0 ...
      */
-    public void config(String arg0) {
-        logger.config(arg0);
-    }
+    public abstract void config(String arg0);
 
     /**
      * ...
@@ -77,20 +40,7 @@ public class Logger {
      * @param arg0
      * @param arg1
      */
-    public void entering(String arg0, String arg1) {
-        logger.entering(arg0, arg1);
-    }
-
-    /**
-     * ...
-     *
-     * @param arg0
-     * @param arg1
-     * @param arg2
-     */
-    public void entering(String arg0, String arg1, Object arg2) {
-        logger.entering(arg0, arg1, arg2);
-    }
+    public abstract void entering(String arg0, String arg1);
 
     /**
      * ...
@@ -99,16 +49,21 @@ public class Logger {
      * @param arg1
      * @param arg2
      */
-    public void entering(String arg0, String arg1, Object[] arg2) {
-        logger.entering(arg0, arg1, arg2);
-    }
+    public abstract void entering(String arg0, String arg1, Object arg2);
+
+    /**
+     * ...
+     *
+     * @param arg0
+     * @param arg1
+     * @param arg2
+     */
+    public abstract void entering(String arg0, String arg1, Object[] arg2);
 
     /**
      * @see java.lang.Object#equals(java.lang.Object)
      */
-    public boolean equals(Object arg0) {
-        return logger.equals(arg0);
-    }
+    public abstract boolean equals(Object arg0);
 
     /**
      * ...
@@ -116,9 +71,7 @@ public class Logger {
      * @param arg0
      * @param arg1
      */
-    public void exiting(String arg0, String arg1) {
-        logger.exiting(arg0, arg1);
-    }
+    public abstract void exiting(String arg0, String arg1);
 
     /**
      * ...
@@ -127,52 +80,40 @@ public class Logger {
      * @param arg1
      * @param arg2
      */
-    public void exiting(String arg0, String arg1, Object arg2) {
-        logger.exiting(arg0, arg1, arg2);
-    }
+    public abstract void exiting(String arg0, String arg1, Object arg2);
 
     /**
      * ...
      *
      * @param arg0
      */
-    public void fine(String arg0) {
-        logger.fine(arg0);
-    }
+    public abstract void fine(String arg0);
 
     /**
      * ...
      *
      * @param arg0
      */
-    public void finer(String arg0) {
-        logger.finer(arg0);
-    }
+    public abstract void finer(String arg0);
 
     /**
      * ...
      *
      * @param arg0
      */
-    public void finest(String arg0) {
-        logger.finest(arg0);
-    }
+    public abstract void finest(String arg0);
 
     /**
      * @see java.lang.Object#hashCode()
      */
-    public int hashCode() {
-        return logger.hashCode();
-    }
+    public abstract int hashCode();
 
     /**
      * ...
      *
      * @param arg0
      */
-    public void info(String arg0) {
-        logger.info(arg0);
-    }
+    public abstract void info(String arg0);
 
     /**
      * ...
@@ -180,9 +121,7 @@ public class Logger {
      * @param arg0
      * @param arg1
      */
-    public void log(Level arg0, String arg1) {
-        logger.log(arg0, arg1);
-    }
+    public abstract void log(Level arg0, String arg1);
 
     /**
      * ...
@@ -191,9 +130,7 @@ public class Logger {
      * @param arg1
      * @param arg2
      */
-    public void log(Level arg0, String arg1, Object arg2) {
-        logger.log(arg0, arg1, arg2);
-    }
+    public abstract void log(Level arg0, String arg1, Object arg2);
 
     /**
      * ...
@@ -202,9 +139,7 @@ public class Logger {
      * @param arg1
      * @param arg2
      */
-    public void log(Level arg0, String arg1, Object[] arg2) {
-        logger.log(arg0, arg1, arg2);
-    }
+    public abstract void log(Level arg0, String arg1, Object[] arg2);
 
     /**
      * ...
@@ -213,18 +148,14 @@ public class Logger {
      * @param arg1
      * @param arg2
      */
-    public void log(Level arg0, String arg1, Throwable arg2) {
-        logger.log(arg0, arg1, arg2);
-    }
+    public abstract void log(Level arg0, String arg1, Throwable arg2);
 
     /**
      * ...
      *
      * @param arg0
      */
-    public void severe(String arg0) {
-        logger.severe(arg0);
-    }
+    public abstract void severe(String arg0);
 
     /**
      * ...
@@ -233,23 +164,17 @@ public class Logger {
      * @param arg1
      * @param arg2
      */
-    public void throwing(String arg0, String arg1, Throwable arg2) {
-        logger.throwing(arg0, arg1, arg2);
-    }
+    public abstract void throwing(String arg0, String arg1, Throwable arg2);
 
     /**
      * @see java.lang.Object#toString()
      */
-    public String toString() {
-        return logger.toString();
-    }
+    public abstract String toString();
 
     /**
      * ...
      *
      * @param arg0
      */
-    public void warning(String arg0) {
-        logger.warning(arg0);
-    }
+    public abstract void warning(String arg0);
 }
