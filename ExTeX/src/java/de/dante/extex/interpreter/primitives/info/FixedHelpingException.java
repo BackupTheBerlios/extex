@@ -25,13 +25,12 @@ import de.dante.extex.i18n.HelpingException;
  * help on the error encoutered. Thus it has two levels of information: the
  * first level is the message and the second level is the additional help.
  * <p>
- * In contrast to
- * {@link de.dante.extex.i18n.HelpingException GeneralHelpingException}
+ * In contrast to {@link de.dante.extex.i18n.HelpingException HelpingException}
  * the messages are not mapped.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FixedHelpingException extends HelpingException {
 

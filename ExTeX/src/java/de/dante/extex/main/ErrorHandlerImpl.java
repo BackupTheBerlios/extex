@@ -39,14 +39,14 @@ import de.dante.util.configuration.ConfigurationException;
  * This is a simple implementation of the error handler interacting with the
  * user on the command line like TeX does.
  * <p>
- * The GeneralHelpingException is capable of carrying a name and two arguments
- * for the error message. This class can be queried to provide additional help
- * concerning the error at hand.
- * See {@link HelpingException GeneralHelpingException} for details.
+ * The {@link HelpingException HelpingException} is capable of carrying a name
+ * and two arguments for the error message. This class can be queried to
+ * provide additional help concerning the error at hand.
+ * See {@link HelpingException HelpingException} for details.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
 
