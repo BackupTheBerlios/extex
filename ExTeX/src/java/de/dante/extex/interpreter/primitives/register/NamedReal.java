@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.Multiplyable;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.ContextExTeX;
+import de.dante.extex.interpreter.context.ContextExtension;
 import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.main.MainExTeXExtensionException;
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedReal extends AbstractCode implements Theable, Advanceable, Multiplyable, Divideable {
 
@@ -66,15 +66,15 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 */
 	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
 
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			String key = getKey(source);
 			source.scanOptionalEquals();
 
 			Real value = scanReal(contextextex, source);
-			
+
 			contextextex.setReal(key, value, prefix.isGlobal());
 			prefix.clear();
 			doAfterAssignment(context, source);
@@ -90,9 +90,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 * @param value ...
 	 */
 	public void set(Context context, Real value) throws GeneralException {
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			contextextex.setReal(getName(), value);
 
@@ -108,9 +108,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 * @param value ...
 	 */
 	public void set(Context context, String value) throws GeneralException {
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			contextextex.setReal(getName(), new Real(value));
 
@@ -123,9 +123,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
 	 */
 	public Tokens the(Context context, TokenSource source) throws GeneralException {
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			String key = getKey(source);
 			String s = contextextex.getReal(key).toString();
@@ -156,7 +156,7 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 *
 	 * @throws GeneralException ...
 	 */
-	private Real scanReal(ContextExTeX context, TokenSource source) throws GeneralException {
+	private Real scanReal(ContextExtension context, TokenSource source) throws GeneralException {
 
 		Token t = source.getNonSpace();
 
@@ -175,9 +175,9 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 * @see de.dante.extex.interpreter.Advanceable#advance(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
 	 */
 	public void advance(Flags prefix, Context context, TokenSource source) throws GeneralException {
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			String key = getKey(source);
 			Real real = contextextex.getReal(key);
@@ -199,20 +199,18 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 			throw new MainExTeXExtensionException();
 		}
 	}
-	
-	
-	
+
 	/**
 	 * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
 	 */
 	public void multiply(Flags prefix, Context context, TokenSource source) throws GeneralException {
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			String key = getKey(source);
 			Real real = contextextex.getReal(key);
-			
+
 			// TODO remove SpaceToken or change scanKeyWord 
 			Token t = source.getNonSpace();
 			source.push(t);
@@ -231,19 +229,17 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 		}
 	}
 
-	
-	
 	/**
 	 * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
 	 */
 	public void divide(Flags prefix, Context context, TokenSource source) throws GeneralException {
-		if (context instanceof ContextExTeX) {
+		if (context instanceof ContextExtension) {
 
-			ContextExTeX contextextex = (ContextExTeX) context;
+			ContextExtension contextextex = (ContextExtension) context;
 
 			String key = getKey(source);
 			Real real = contextextex.getReal(key);
-			
+
 			// TODO remove SpaceToken or change scanKeyWord 
 			Token t = source.getNonSpace();
 			source.push(t);

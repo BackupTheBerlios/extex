@@ -27,9 +27,9 @@ import de.dante.extex.interpreter.type.Real;
  * context for the ExTeX-functions.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public interface ContextExTeX extends Serializable, Context {
+public interface ContextExtension extends Serializable {
 
 	/**
 	 * Setter for the {@link de.dante.extex.interpreter.type.Real real}

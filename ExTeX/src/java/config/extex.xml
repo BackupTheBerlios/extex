@@ -354,8 +354,8 @@
     <Define name="xspaceskip" class=""/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
 
-    <Context class="de.dante.extex.interpreter.context.impl.ContextExTeXImpl">
-      <Group class="de.dante.extex.interpreter.context.impl.GroupExTeXImpl"/>
+    <Context class="de.dante.extex.interpreter.context.impl.extension.ContextExtensionImpl">
+      <Group class="de.dante.extex.interpreter.context.impl.extension.GroupExtensionImpl"/>
     </Context>
 
 	<Font class="de.dante.extex.font.FontFactoryImpl">

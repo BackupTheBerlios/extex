@@ -16,12 +16,13 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
-package de.dante.extex.interpreter.context.impl;
+package de.dante.extex.interpreter.context.impl.extension;
 
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.ContextExTeX;
+import de.dante.extex.interpreter.context.ContextExtension;
+import de.dante.extex.interpreter.context.impl.ContextImpl;
 import de.dante.extex.interpreter.type.Real;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
@@ -30,43 +31,43 @@ import de.dante.util.configuration.ConfigurationException;
  * This is a reference implementation for an interpreter context with ExTeX-functions.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class ContextExTeXImpl extends ContextImpl implements Context, ContextExTeX, Serializable {
+public class ContextExtensionImpl extends ContextImpl implements Context, ContextExtension, Serializable {
 
 	/**
 	 * This is the entry to the linked list of groups with ExTeX-functions. 
 	 * The current group is the first one.
 	 */
-	protected GroupExTeX groupextex = null;
+	protected GroupExtension groupext = null;
 
 	/**
 	 * Creates a new object.
 	 */
-	public ContextExTeXImpl(Configuration config) throws ConfigurationException {
+	public ContextExtensionImpl(Configuration config) throws ConfigurationException {
 		super(config);
 
-		groupextex = (GroupExTeX) group; // TODO test with instanceof -> throw Exception
+		groupext = (GroupExtension) group; // TODO test with instanceof -> throw Exception
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.ContextExTeX#getReal(java.lang.String)
 	 */
 	public Real getReal(String name) {
-		return groupextex.getReal(name);
+		return groupext.getReal(name);
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(java.lang.String, de.dante.extex.interpreter.type.Real, boolean)
 	 */
 	public void setReal(String name, Real value, boolean global) {
-		groupextex.setReal(name, value, global);
+		groupext.setReal(name, value, global);
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(java.lang.String, de.dante.extex.interpreter.type.Real)
 	 */
 	public void setReal(String name, Real value) {
-		groupextex.setReal(name, value);
+		groupext.setReal(name, value);
 	}
 }

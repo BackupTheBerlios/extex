@@ -16,13 +16,15 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
-package de.dante.extex.interpreter.context.impl;
+package de.dante.extex.interpreter.context.impl.extension;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.context.impl.Group;
+import de.dante.extex.interpreter.context.impl.GroupImpl;
 import de.dante.extex.interpreter.type.Real;
 
 /**
@@ -31,7 +33,7 @@ import de.dante.extex.interpreter.type.Real;
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class GroupExTeXImpl extends GroupImpl implements Tokenizer, Group, GroupExTeX, Serializable {
+public class GroupExtensionImpl extends GroupImpl implements Tokenizer, Group, GroupExtension, Serializable {
 
 	/**
 	 * The map for the real registers
@@ -41,7 +43,7 @@ public class GroupExTeXImpl extends GroupImpl implements Tokenizer, Group, Group
 	/**
 	 * The next group in the linked list
 	 */
-	protected GroupExTeX nextextex = null;
+	protected GroupExtension nextext = null;
 	
 	
     /**
@@ -50,9 +52,9 @@ public class GroupExTeXImpl extends GroupImpl implements Tokenizer, Group, Group
      * @param next the next group in the stack. If the value is <code>null</code>
      *            then this is the global base
      */
-    public GroupExTeXImpl(Group next) {
+    public GroupExtensionImpl(Group next) {
         super(next);
-        nextextex = (GroupExTeX)next; // TODO test with instanceof -> throw Exception
+        nextext = (GroupExtension)next; // TODO test with instanceof -> throw Exception
     }
 
 	/**
@@ -62,8 +64,8 @@ public class GroupExTeXImpl extends GroupImpl implements Tokenizer, Group, Group
 		Real real = (Real) (realMap.get(name));
 
 		if (real == null) {
-			if (nextextex != null) {
-				real = nextextex.getReal(name);
+			if (nextext != null) {
+				real = nextext.getReal(name);
 			} else {
 				real = new Real(0);
 				setReal(name, real);
@@ -80,7 +82,7 @@ public class GroupExTeXImpl extends GroupImpl implements Tokenizer, Group, Group
 		setReal(name, value);
 
 		if (global && next != null) {
-			nextextex.setReal(name, value, global);
+			nextext.setReal(name, value, global);
 		}
 	}
 

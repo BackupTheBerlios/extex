@@ -16,11 +16,12 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
-package de.dante.extex.interpreter.context.impl;
+package de.dante.extex.interpreter.context.impl.extension;
 
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.context.impl.Group;
 import de.dante.extex.interpreter.type.Real;
 
 /**
@@ -29,7 +30,7 @@ import de.dante.extex.interpreter.type.Real;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public interface GroupExTeX extends Group, Tokenizer, Serializable {
+public interface GroupExtension extends Group, Tokenizer, Serializable {
 
 	/**
 	 * Setter for the real register in the current group.
