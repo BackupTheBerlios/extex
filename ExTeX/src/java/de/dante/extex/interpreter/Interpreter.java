@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,6 +24,7 @@ import java.io.InputStream;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -41,18 +42,16 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
     /**
-     * Setter for the error handler.
-     * The value of <code>null</code> can be used to delete the error handler
-     * currently set.
+     * Getter for the context
      *
-     * @param handler the new error handler
+     * @return the context
      */
-    void setErrorHandler(ErrorHandler handler);
+    Context getContext();
 
     /**
      * Getter for the error handler.
@@ -64,11 +63,60 @@ public interface Interpreter extends TokenSource, Observable {
     ErrorHandler getErrorHandler();
 
     /**
-     * Setter for the resource finder for files handled by the interpreter.
+     * Getter for the interaction mode.
      *
-     * @param resourceFinder the new file finder
+     * @return the interaction mode
      */
-    void setResourceFinder(ResourceFinder resourceFinder);
+    Interaction getInteraction();
+
+    /**
+     * Load the format from an external source.
+     *
+     * @param stream stream to read from
+     *
+     * @throws IOException in case of an IO error
+     * @throws LoaderException in case of an error during loading
+     */
+    void loadFormat(InputStream stream) throws LoaderException, IOException;
+
+    /**
+     * Process the current token streams by repeatedly reading a single token
+     * and processing it until no token is left. The visitor pattern is used to
+     * branch to the appropriate method for processing a single token.
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
+     * @throws ErrorLimitException in case that the error limit has been reached
+     */
+    void run()
+            throws ConfigurationException,
+                GeneralException,
+                ErrorLimitException;
+
+    /**
+     * Add a token stream and start processing it.
+     *
+     * @param stream the input stream to consider
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
+     * @throws ErrorLimitException in case that the error limit has been reached
+     *
+     * @see #run()
+     */
+    void run(TokenStream stream)
+            throws ConfigurationException,
+                GeneralException,
+                ErrorLimitException;
+
+    /**
+     * Setter for the error handler.
+     * The value of <code>null</code> can be used to delete the error handler
+     * currently set.
+     *
+     * @param handler the new error handler
+     */
+    void setErrorHandler(ErrorHandler handler);
 
     /**
      * Setter for the font factory
@@ -87,20 +135,6 @@ public interface Interpreter extends TokenSource, Observable {
     void setInteraction(Interaction interaction) throws GeneralException;
 
     /**
-     * Getter for the interaction mode.
-     *
-     * @return the interaction mode
-     */
-    Interaction getInteraction();
-
-    /**
-     * Getter for the context
-     *
-     * @return the context
-     */
-    Context getContext();
-
-    /**
      * Setter for the job name.
      *
      * @param jobname the new value for the job name
@@ -108,6 +142,13 @@ public interface Interpreter extends TokenSource, Observable {
      * @throws GeneralException in case of an error
      */
     void setJobname(String jobname) throws GeneralException;
+
+    /**
+     * Setter for the resource finder for files handled by the interpreter.
+     *
+     * @param resourceFinder the new file finder
+     */
+    void setResourceFinder(ResourceFinder resourceFinder);
 
     /**
      * Setter for the token stream factory.
@@ -128,41 +169,5 @@ public interface Interpreter extends TokenSource, Observable {
      * @param typesetter the new typesetter
      */
     void setTypesetter(Typesetter typesetter);
-
-    /**
-     * Load the format from an external source.
-     *
-     * @param stream stream to read from
-     *
-     * @throws IOException in case of an IO error
-     * @throws LoaderException in case of an error during loading
-     */
-    void loadFormat(InputStream stream)
-            throws LoaderException,
-                IOException;
-
-    /**
-     * Process the current token streams by repeatedly reading a single token
-     * and processing it until no token is left. The visitor pattern is used to
-     * branch to the appropriate method for processing a single token.
-     *
-     * @throws ConfigurationException in case of a configuration error
-     * @throws GeneralException in case of another error
-     */
-    void run() throws ConfigurationException, GeneralException;
-
-    /**
-     * Add a token stream and start processing it.
-     *
-     * @param stream the input stream to consider
-     *
-     * @throws ConfigurationException in case of a configuration error
-     * @throws GeneralException in case of another error
-     *
-     * @see #run()
-     */
-    void run(TokenStream stream)
-            throws ConfigurationException,
-                GeneralException;
 
 }
