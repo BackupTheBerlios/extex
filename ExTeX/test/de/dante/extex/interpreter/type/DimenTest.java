@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,12 +21,451 @@ package de.dante.extex.interpreter.type;
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for...
+ * This is a test suite for the data type Dimen.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DimenTest extends ExTeXLauncher {
+
+    /**
+     * The constant <tt>INITIAL</tt> contains the initial value which should be
+     * some strange value not related to anything else in some test case.
+     */
+    private static final int INITIAL = -111;
+
+    /**
+     * Constructor for DimenTest.
+     *
+     * @param arg the argument
+     */
+    public DimenTest(final String arg) {
+        super(arg);
+    }
+
+    /**
+     * Test case:
+     * The constant ONE has a proper value.
+     */
+    public void testONE() {
+
+        assertEquals(65536L, Dimen.ONE);
+    }
+
+    /**
+     * Test case:
+     * The constant ONE_PT has a proper value.
+     */
+    public void testONEpt() {
+
+        assertEquals(65536L, Dimen.ONE_PT.getValue());
+    }
+
+    /**
+     * Test case:
+     * The constant ONE_PT has a proper value.
+     */
+    public void testONEinch() {
+
+        assertEquals(4736286L, Dimen.ONE_INCH.getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor without parameters delivers a proper result.
+     */
+    public void test1() {
+
+        assertEquals(0L, new Dimen().getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with long parameter 0 delivers a proper result.
+     */
+    public void test10() {
+
+        assertEquals(0L, new Dimen(0L).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with long parameter 1 delivers a proper result.
+     */
+    public void test11() {
+
+        assertEquals(1L, new Dimen(1L).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with long parameter 2 delivers a proper result.
+     */
+    public void test12() {
+
+        assertEquals(2L, new Dimen(2L).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with long parameter -1 delivers a proper result.
+     */
+    public void test13() {
+
+        assertEquals(-1L, new Dimen(-1L).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with long parameter -2 delivers a proper result.
+     */
+    public void test14() {
+
+        assertEquals(-2L, new Dimen(-2L).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter 0 delivers a proper result.
+     */
+    public void test20() {
+
+        assertEquals(0L, new Dimen(0).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter 1 delivers a proper result.
+     */
+    public void test21() {
+
+        assertEquals(1L, new Dimen(1).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter 2 delivers a proper result.
+     */
+    public void test22() {
+
+        assertEquals(2L, new Dimen(2).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -1 delivers a proper result.
+     */
+    public void test23() {
+
+        assertEquals(-1L, new Dimen(-1).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -2 delivers a proper result.
+     */
+    public void test24() {
+
+        assertEquals(-2L, new Dimen(-2).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with Dimen parameter null delivers a proper result.
+     */
+    public void test3null() {
+
+        Dimen d = null;
+        assertEquals(0L, new Dimen(d).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with Dimen parameter 0 delivers a proper result.
+     */
+    public void test30() {
+
+        Dimen d = new Dimen(0);
+        assertEquals(0L, new Dimen(d).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with Dimen parameter 1 delivers a proper result.
+     */
+    public void test31() {
+
+        Dimen d = new Dimen(1);
+        assertEquals(1L, new Dimen(d).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with Dimen parameter 2 delivers a proper result.
+     */
+    public void test32() {
+
+        Dimen d = new Dimen(2);
+        assertEquals(2L, new Dimen(d).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with Dimen parameter -1 delivers a proper result.
+     */
+    public void test33() {
+
+        Dimen d = new Dimen(-1);
+        assertEquals(-1L, new Dimen(d).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -2 delivers a proper result.
+     */
+    public void test34() {
+
+        Dimen d = new Dimen(-2);
+        assertEquals(-2L, new Dimen(d).getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with source parameter 0 delivers a proper result.
+     * ...
+     */
+    //TODO: incomplete
+
+
+    /**
+     * Test case:
+     * Setting to the long value 0 delivers a proper result.
+     */
+    public void testSet10() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(0L);
+        assertEquals(0L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the long value 1 delivers a proper result.
+     */
+    public void testSet11() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(1L);
+        assertEquals(1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the long value 2 delivers a proper result.
+     */
+    public void testSet12() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(2L);
+        assertEquals(2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the long value -1 delivers a proper result.
+     */
+    public void testSet13() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(-1L);
+        assertEquals(-1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -2 delivers a proper result.
+     */
+    public void testSet14() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(-2L);
+        assertEquals(-2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the Dimen value 0 delivers a proper result.
+     */
+    public void testSet20() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(new Dimen(0L));
+        assertEquals(0L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the Dimen value 1 delivers a proper result.
+     */
+    public void testSet21() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(new Dimen(1L));
+        assertEquals(1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the Dimen value 2 delivers a proper result.
+     */
+    public void testSet22() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(new Dimen(2L));
+        assertEquals(2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the Dimen value -1 delivers a proper result.
+     */
+    public void testSet23() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(new Dimen(-1L));
+        assertEquals(-1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -2 delivers a proper result.
+     */
+    public void testSet24() {
+
+        Dimen d = new Dimen(INITIAL);
+        d.set(new Dimen(-2L));
+        assertEquals(-2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Setting to the source parameter 0 delivers a proper result.
+     * ...
+     */
+    //TODO: incomplete
+
+
+    /**
+     * Test case:
+     * Adding 0 delivers a proper result.
+     */
+    public void testAdd00() {
+
+        Dimen d	= new Dimen(0);
+        d.add(new Dimen(0));
+        assertEquals(0L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding 1 delivers a proper result.
+     */
+    public void testAdd01() {
+
+        Dimen d	= new Dimen(0);
+        d.add(new Dimen(1));
+        assertEquals(1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding 2 delivers a proper result.
+     */
+    public void testAdd02() {
+
+        Dimen d	= new Dimen(0);
+        d.add(new Dimen(2));
+        assertEquals(2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding -1 delivers a proper result.
+     */
+    public void testAdd03() {
+
+        Dimen d	= new Dimen(0);
+        d.add(new Dimen(-1));
+        assertEquals(-1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -2 delivers a proper result.
+     */
+    public void testAdd04() {
+
+        Dimen d	= new Dimen(0);
+        d.add(new Dimen(-2));
+        assertEquals(-2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding 0 delivers a proper result.
+     */
+    public void testAdd10() {
+
+        Dimen d	= new Dimen(1);
+        d.add(new Dimen(0));
+        assertEquals(1L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding 1 delivers a proper result.
+     */
+    public void testAdd11() {
+
+        Dimen d	= new Dimen(1);
+        d.add(new Dimen(1));
+        assertEquals(2L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding 2 delivers a proper result.
+     */
+    public void testAdd12() {
+
+        Dimen d	= new Dimen(1);
+        d.add(new Dimen(2));
+        assertEquals(3L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * Adding -1 delivers a proper result.
+     */
+    public void testAdd13() {
+
+        Dimen d	= new Dimen(1);
+        d.add(new Dimen(-1));
+        assertEquals(0L, d.getValue());
+    }
+
+    /**
+     * Test case:
+     * The constructor with int parameter -2 delivers a proper result.
+     */
+    public void testAdd14() {
+
+        Dimen d = new Dimen(1);
+        d.add(new Dimen(-2));
+        assertEquals(-1L, d.getValue());
+    }
+
+
 
     /**
      * The field <tt>STRING</tt> contains the mapping from scaled points to
@@ -1036,20 +1475,12 @@ public class DimenTest extends ExTeXLauncher {
     };
 
     /**
-     * Constructor for DimenTest.
-     *
-     * @param arg the argument
+     * Test case:
+     * The printable representation as produced by toString() has to be
+     * identical to the 1000 values in STRING which have been produced by TeX.
      */
-    public DimenTest(final String arg) {
-        super(arg);
-    }
+    public void testToString() {
 
-    /**
-     * Test case checking that ...
-     * @throws Exception in case of an error
-     */
-    public void testToString() throws Exception {
-        
         Dimen d = new Dimen();
 
         for (long i = 0; i < STRING.length; i++) {
@@ -1057,5 +1488,5 @@ public class DimenTest extends ExTeXLauncher {
             assertTrue(STRING[(int) i].equals(d.toString()));
         }
     }
-    
+
 }
