@@ -83,9 +83,21 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HelpingException extends GeneralException {
+
+    /**
+     * The constant <tt>DEFAULT_TAG</tt> contains the tag to be used if none
+     * is given.
+     */
+    private static final String DEFAULT_TAG = "GeneralDetailedException.help";
+
+    /**
+     * The constant <tt>DEFAULT_ARGUMENT</tt> contains the argument if none
+     * is given.
+     */
+    private static final String DEFAULT_ARGUMENT = "?";
 
     /**
      * The field <tt>defaultBundle</tt> contains the default resource bundle.
@@ -107,17 +119,17 @@ public class HelpingException extends GeneralException {
     /**
      * The field <tt>arg1</tt> contains the first argument.
      */
-    private String arg1 = "?";
+    private String arg1;
 
     /**
      * The field <tt>arg2</tt> contains the second argument.
      */
-    private String arg2 = "?";
+    private String arg2;
 
     /**
      * The field <tt>arg3</tt> contains the third argument.
      */
-    private String arg3 = "?";
+    private String arg3;
 
     /**
      * The field <tt>bundle</tt> contains the resource bundle to use.
@@ -127,12 +139,12 @@ public class HelpingException extends GeneralException {
     /**
      * The field <tt>localizer</tt> contains the localizer.
      */
-    private Localizer localizer = null;
+    private Localizer localizer;
 
     /**
      * The field <tt>tag</tt> contains the name of the message to show.
      */
-    private String tag = "GeneralDetailedException.help";
+    private String tag;
 
     /**
      * Creates a new object.
@@ -140,6 +152,11 @@ public class HelpingException extends GeneralException {
     protected HelpingException() {
 
         super();
+        this.tag = DEFAULT_TAG;
+        this.localizer = null;
+        this.arg1 = DEFAULT_ARGUMENT;
+        this.arg2 = DEFAULT_ARGUMENT;
+        this.arg3 = DEFAULT_ARGUMENT;
     }
 
     /**
@@ -148,11 +165,15 @@ public class HelpingException extends GeneralException {
      * @param messageTag the message
      * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer theLocalizer, final String messageTag) {
+    public HelpingException(final Localizer theLocalizer,
+            final String messageTag) {
 
         super();
         this.tag = messageTag;
         this.localizer = theLocalizer;
+        this.arg1 = DEFAULT_ARGUMENT;
+        this.arg2 = DEFAULT_ARGUMENT;
+        this.arg3 = DEFAULT_ARGUMENT;
     }
 
     /**
@@ -162,13 +183,15 @@ public class HelpingException extends GeneralException {
      * @param a1 the first argument
      * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer theLocalizer, final String messageTag,
-            final String a1) {
+    public HelpingException(final Localizer theLocalizer,
+            final String messageTag, final String a1) {
 
         super();
         this.tag = messageTag;
-        this.arg1 = a1;
         this.localizer = theLocalizer;
+        this.arg1 = a1;
+        this.arg2 = DEFAULT_ARGUMENT;
+        this.arg3 = DEFAULT_ARGUMENT;
     }
 
     /**
@@ -179,14 +202,15 @@ public class HelpingException extends GeneralException {
      * @param a2 the second argument
      * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer theLocalizer, final String messageTag,
-            final String a1, final String a2) {
+    public HelpingException(final Localizer theLocalizer,
+            final String messageTag, final String a1, final String a2) {
 
         super();
         this.tag = messageTag;
+        this.localizer = theLocalizer;
         this.arg1 = a1;
         this.arg2 = a2;
-        this.localizer = theLocalizer;
+        this.arg3 = DEFAULT_ARGUMENT;
     }
 
     /**
@@ -198,15 +222,16 @@ public class HelpingException extends GeneralException {
      * @param a3 the third argument
      * @param theLocalizer the localizer to use
      */
-    public HelpingException(final Localizer theLocalizer, final String messageTag,
-            final String a1, final String a2, final String a3) {
+    public HelpingException(final Localizer theLocalizer,
+            final String messageTag, final String a1, final String a2,
+            final String a3) {
 
         super();
         this.tag = messageTag;
+        this.localizer = theLocalizer;
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
-        this.localizer = theLocalizer;
     }
 
     /**
