@@ -16,23 +16,29 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.i18n.GeneralPanicException;
+import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.RightBraceToken;
+import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -55,14 +61,16 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class Moritz implements TokenSource, Observable {
+
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
      * character code. In original TeX this value would be 255.
      */
     private static final long MAX_CHAR_CODE = Integer.MAX_VALUE;
+
     //TODO: find a good value
 
     /**
@@ -136,6 +144,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @param configuration the configuration to use
      */
     public Moritz(final Configuration configuration) {
+
         super();
     }
 
@@ -143,6 +152,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#getLocator()
      */
     public Locator getLocator() {
+
         return (stream == null ? null : stream.getLocator());
     }
 
@@ -240,18 +250,55 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = getToken();
 
         if (t == null) {
-            throw new GeneralHelpingException("xxx"); //TODO EOF
-        } else if (!(t instanceof ControlSequenceToken)) {
-            throw new GeneralHelpingException("xxx"); //TODO error
-        } else if (!t.getValue().equals("csname")) {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        } else if (t instanceof ActiveCharacterToken) {
             return t;
+        } else if (t instanceof ControlSequenceToken) {
+
+            if (!t.getValue().equals("csname")) {
+                Tokens toks = new Tokens();
+                //scanToEndcsname();
+
+                //TODO incomplete
+                return null;
+            }
+            return t;
+
+        } else {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
+    }
+
+    abstract public Typesetter getTypesetter();
+
+    private Tokens scanToEndCsname() throws GeneralException {
 
         Tokens toks = new Tokens();
-        //scanToEndcsname();
+        for (Token t = getToken(); t != null; t = getToken()) {
+            if (t instanceof ControlSequenceToken) {
+                String name = t.getValue();
+                if ("endcsname".equals(name)) {
+                    return toks;
+                }
 
-        //TODO incomplete
-        return null;
+                Code code = getContext().getMacro(name);
+                if (code != null && code instanceof ExpandableCode) {
+                    //((ExpandableCode) code).expand(Flags.NONE, getContext(),
+                    //                               this, getTypesetter());
+                    throw new RuntimeException("unimplemented");
+                }
+
+            } else if (t instanceof ActiveCharacterToken) {
+                Code code = getContext().getActive(t.getValue());
+                if (code != null && code instanceof ExpandableCode) {
+                    throw new RuntimeException("unimplemented");
+                }
+
+            } else if (!(t instanceof SpaceToken)) {
+                toks.add(t);
+            }
+        }
+        return toks;
     }
 
     /**
@@ -260,6 +307,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @param factory the token stream factory
      */
     public void setTokenStreamFactory(final TokenStreamFactory factory) {
+
         tokenStreamFactory = factory;
     }
 
@@ -269,6 +317,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @return the token stream factory
      */
     public TokenStreamFactory getTokenStreamFactory() {
+
         return tokenStreamFactory;
     }
 
@@ -305,7 +354,8 @@ public abstract class Moritz implements TokenSource, Observable {
             observersCloseStream.update(this, stream);
             if (stream.isFileStream()) {
                 int last = streamStack.size() - 1;
-                stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
+                stream = (last >= 0 ? (TokenStream) streamStack.remove(last)
+                        : null);
                 return;
             }
             int last = streamStack.size() - 1;
@@ -319,6 +369,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @param token the token to push
      */
     public void push(final Token token) throws GeneralException {
+
         observersPush.update(this, token);
         stream.put(token);
     }
@@ -329,6 +380,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @param tokens the tokens to push
      */
     public void push(final Token[] tokens) throws GeneralException {
+
         for (int i = tokens.length - 1; i >= 0; i--) {
             observersPush.update(this, tokens[i]);
             stream.put(tokens[i]);
@@ -420,6 +472,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode()
      */
     public UnicodeChar scanCharacterCode() throws GeneralException {
+
         long cc = scanNumber();
 
         if (cc < 0 || cc > MAX_CHAR_CODE) {
@@ -442,6 +495,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *             file has been reached before an integer could be acquired
      */
     public long getInteger() throws GeneralException {
+
         Token t = getNonSpace();
 
         if (t == null) {
@@ -500,7 +554,7 @@ public abstract class Moritz implements TokenSource, Observable {
     public boolean scanKeyword(final String s) throws GeneralException {
 
         skipSpace();
-        if (scanKeyword(s, 0) ) {
+        if (scanKeyword(s, 0)) {
             skipSpace();
             return true;
         } else {
@@ -536,6 +590,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @throws GeneralException in case of an error
      */
     public Token scanToken() throws GeneralException {
+
         return expand(getToken());
     }
 
@@ -574,6 +629,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString()
      */
     public String scanTokensAsString() throws GeneralException {
+
         return scanTokens().toText();
     }
 
@@ -588,6 +644,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *             file has been reached before an integer could be acquired
      */
     public long scanNumber() throws GeneralException {
+
         return scanNumber(scanNonSpace());
     }
 
@@ -607,6 +664,122 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t;
 
         if (token != null && token.isa(Catcode.OTHER)) {
+            int c = token.getChar().getCodePoint();
+            //System.err.println(token.toString());
+            switch (c) {
+                case '0' :
+                case '1' :
+                case '2' :
+                case '3' :
+                case '4' :
+                case '5' :
+                case '6' :
+                case '7' :
+                case '8' :
+                case '9' :
+                    n = c - '0';
+
+                    for (t = scanToken(); t != null && t.isa(Catcode.OTHER)
+                                          && t.getValue().matches("[0-9]"); t = scanToken()) {
+                        n = n * 10 + t.getValue().charAt(0) - '0';
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+
+                case '`' :
+                    t = getToken();
+
+                    if (t != null) {
+                        return t.getValue().charAt(0);
+                    }
+                // fall through to error handling
+                    break;
+
+                case '\'' :
+                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
+                                         && t.getValue().matches("[0-7]"); //
+                    t = scanToken()) {
+                        n = n * 8 + t.getValue().charAt(0) - '0';
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+
+                case '"' :
+                    for (t = scanToken(); t != null
+                                          && t.isa(Catcode.OTHER)
+                                          && t.getValue()
+                                                  .matches("[0-9a-fA-F]"); //
+                    t = scanToken()) {
+                        switch (t.getValue().charAt(0)) {
+                            case '0' :
+                            case '1' :
+                            case '2' :
+                            case '3' :
+                            case '4' :
+                            case '5' :
+                            case '6' :
+                            case '7' :
+                            case '8' :
+                            case '9' :
+                                n = n * 16 + t.getValue().charAt(0) - '0';
+                                break;
+                            case 'a' :
+                            case 'b' :
+                            case 'c' :
+                            case 'd' :
+                            case 'e' :
+                            case 'f' :
+                                n = n * 16 + t.getValue().charAt(0) - 'a' + 10;
+                                break;
+                            case 'A' :
+                            case 'B' :
+                            case 'C' :
+                            case 'D' :
+                            case 'E' :
+                            case 'F' :
+                                n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
+                                break;
+                            default :
+                                throw new GeneralPanicException(
+                                        "this can't happen");
+                        }
+                    }
+
+                    if (t != null) {
+                        stream.put(t);
+                    }
+                    skipSpace();
+                    return n;
+            }
+        }
+
+        throw new GeneralHelpingException("TTP.MissingNumber");
+    }
+
+    /**
+     * Scan a number with a given first token.
+     *
+     * @param token the first token to consider
+     *
+     * @return the value of the integer scanned
+     *
+     * @throws GeneralException in case that no number is found or the end of
+     *             file has been reached before an integer could be acquired
+     */
+    public long getNumber(final Token token) throws GeneralException {
+
+        long n = 0;
+        Token t;
+
+        if (token != null && token.isa(Catcode.OTHER)) {
             switch (token.getValue().charAt(0)) {
                 case '0' :
                 case '1' :
@@ -621,9 +794,14 @@ public abstract class Moritz implements TokenSource, Observable {
                     n = token.getValue().charAt(0) - '0';
 
                     for (t = getToken(); //
-                         t != null && t.isa(Catcode.OTHER)
-                         && t.getValue().matches("[0-9]"); //
-                         t = scanToken()) {
+                    t != null
+                                                                                && t
+                                                                                        .isa(Catcode.OTHER)
+                                                                                && t
+                                                                                        .getValue()
+                                                                                        .matches(
+                                                                                                 "[0-9]"); //
+                    t = getToken()) {
                         n = n * 10 + t.getValue().charAt(0) - '0';
                     }
 
@@ -643,9 +821,14 @@ public abstract class Moritz implements TokenSource, Observable {
 
                 case '\'' :
                     for (t = getToken(); //
-                         t != null && t.isa(Catcode.OTHER)
-                         && t.getValue().matches("[0-7]"); //
-                         t = scanToken()) {
+                    t != null
+                                                                                && t
+                                                                                        .isa(Catcode.OTHER)
+                                                                                && t
+                                                                                        .getValue()
+                                                                                        .matches(
+                                                                                                 "[0-7]"); //
+                    t = getToken()) {
                         n = n * 8 + t.getValue().charAt(0) - '0';
                     }
 
@@ -657,9 +840,14 @@ public abstract class Moritz implements TokenSource, Observable {
 
                 case '"' :
                     for (t = getToken(); //
-                         t != null && t.isa(Catcode.OTHER)
-                         && t.getValue().matches("[0-9a-fA-F]"); //
-                         t = scanToken()) {
+                    t != null
+                                                                                && t
+                                                                                        .isa(Catcode.OTHER)
+                                                                                && t
+                                                                                        .getValue()
+                                                                                        .matches(
+                                                                                                 "[0-9a-fA-F]"); //
+                    t = getToken()) {
                         switch (t.getValue().charAt(0)) {
                             case '0' :
                             case '1' :
@@ -713,6 +901,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @throws GeneralException in case of an error
      */
     public void scanOptionalEquals() throws GeneralException {
+
         Token t = scanNonSpace();
 
         if (t == null) {
@@ -730,6 +919,7 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     public void update(final String name, final String text)
             throws GeneralException, NotObservableException {
+
         if ("message".equals(name)) {
             observersMessage.update(this, text);
         } else {
@@ -750,8 +940,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @throws GeneralException in case of an error
      */
-    protected abstract Token expand(final Token token)
-	        throws GeneralException;
+    protected abstract Token expand(final Token token) throws GeneralException;
 
     /**
      * Setter for the context.
@@ -759,6 +948,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @param theContext the context to use
      */
     protected void setContext(final Context theContext) {
+
         context = theContext;
     }
 
@@ -766,6 +956,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.Interpreter#getContext()
      */
     public Context getContext() {
+
         return context;
     }
 
@@ -782,6 +973,7 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     private boolean scanKeyword(final String s, final int i)
             throws GeneralException {
+
         if (i < s.length()) {
             Token t = scanToken();
 
