@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * A Hash for Tokens.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HashToks implements Serializable {
 
@@ -70,28 +70,28 @@ public class HashToks implements Serializable {
         Token token = source.getNonSpace();
 
         if (token == null) {
-            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            throw new HelpingException("TTP.MissingLeftBrace");
             //TODO: handle EOF
         } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            throw new HelpingException("TTP.MissingLeftBrace");
             //TODO call the error handler
         }
 
         while (true) {
             String key = source.scanTokensAsString();
             if (key.trim().length() == 0) {
-                throw new GeneralHelpingException("TTP.hasherrorKey");
+                throw new HelpingException("TTP.hasherrorKey");
             }
             Tokens toks = source.getTokens();
             if (toks == null) {
-                throw new GeneralHelpingException("TTP.hasherrorvalue");
+                throw new HelpingException("TTP.hasherrorvalue");
             }
             put(key, toks);
 
             // next ?
             token = source.getNonSpace();
             if (token == null) {
-                throw new GeneralHelpingException("TTP.MissingRightBrace");
+                throw new HelpingException("TTP.MissingRightBrace");
                 //TODO: handle EOF
             } else if (token.isa(Catcode.RIGHTBRACE)) {
                 break;

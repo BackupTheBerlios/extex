@@ -21,10 +21,10 @@ package de.dante.extex.interpreter.type.bool;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.RealConvertible;
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Bool implements Serializable {
 
@@ -92,7 +92,7 @@ public class Bool implements Serializable {
         Token tok = source.scanNonSpace();
 
         if (tok == null) {
-            throw new GeneralHelpingException("TTP.NoBoolValue");
+            throw new HelpingException("TTP.NoBoolValue");
         } else if (tok instanceof ControlSequenceToken) {
             Code code = context.getCode(tok);
             if (code != null && code instanceof CountConvertible) {
@@ -102,7 +102,7 @@ public class Bool implements Serializable {
                 return (new Bool(((((RealConvertible) code).convertReal(
                         context, source)).getLong()))).getValue();
             } else {
-                throw new GeneralHelpingException("TTP.NoBoolValue");
+                throw new HelpingException("TTP.NoBoolValue");
             }
         }
 
@@ -120,7 +120,7 @@ public class Bool implements Serializable {
         } else if (source.getKeyword("off")) {
             return false;
         }
-        throw new GeneralHelpingException("TTP.NoBoolValue");
+        throw new HelpingException("TTP.NoBoolValue");
 
     }
 
@@ -166,10 +166,10 @@ public class Bool implements Serializable {
             } else if (Integer.parseInt(s) != 0) {
                 value = true;
             } else {
-                throw new GeneralHelpingException("TTP.NoBoolValue", s);
+                throw new HelpingException("TTP.NoBoolValue", s);
             }
         } catch (Exception e) {
-            throw new GeneralHelpingException("TTP.NoBoolValue", s);
+            throw new HelpingException("TTP.NoBoolValue", s);
         }
     }
 

@@ -18,12 +18,12 @@
  */
 package de.dante.extex.interpreter.primitives.arithmetic;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
@@ -76,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Divide extends AbstractAssignment {
     /**
@@ -89,7 +89,7 @@ public class Divide extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -102,19 +102,19 @@ public class Divide extends AbstractAssignment {
         Token cs = source.getToken();
 
         if (!(cs instanceof CodeToken)) {
-            throw new GeneralHelpingException("TTP.CantUseAfter",
+            throw new HelpingException("TTP.CantUseAfter",
                     cs.toString(), printableControlSequence(context));
         }
 
         Code code = context.getCode(cs);
 
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken", cs
+            throw new HelpingException("TTP.UndefinedToken", cs
                     .toString());
         } else if (code instanceof Divideable) {
             ((Divideable) code).divide(prefix, context, source);
         } else {
-            throw new GeneralHelpingException("TTP.CantUseAfter",
+            throw new HelpingException("TTP.CantUseAfter",
                     cs.toString(), printableControlSequence(context));
         }
     }

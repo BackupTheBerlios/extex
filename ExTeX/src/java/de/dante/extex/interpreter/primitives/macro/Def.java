@@ -19,12 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.i18n.GeneralPanicException;
-import de.dante.extex.interpreter.AbstractAssignment;
+import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.LeftBraceToken;
@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Def extends AbstractAssignment {
 
@@ -78,7 +78,7 @@ public class Def extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -98,9 +98,9 @@ public class Def extends AbstractAssignment {
             context.setCode(cs, new MacroCode(name, prefix, pattern, body),
                             prefix.isGlobal());
         } else if (cs == null) {
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         } else {
-            throw new GeneralPanicException("TTP.Confusion");
+            throw new PanicException("TTP.Confusion");
         }
     }
 
@@ -143,13 +143,13 @@ public class Def extends AbstractAssignment {
             if (afterHash) {
                 if (t instanceof OtherToken) {
                     if (t.getValue().charAt(0) != '0' + no) {
-                        throw new GeneralHelpingException(
+                        throw new HelpingException(
                                 "TTP.NonConseqParams",
                                 printableControlSequence(context));
                     }
                     no++;
                 } else if (!(t instanceof MacroParamToken)) {
-                    throw new GeneralHelpingException("TTP.NonConseqParams",
+                    throw new HelpingException("TTP.NonConseqParams",
                             printableControlSequence(context));
                 }
                 afterHash = false;
@@ -159,7 +159,7 @@ public class Def extends AbstractAssignment {
             toks.add(t);
         }
 
-        throw new GeneralHelpingException("TTP.EOFinDef",
+        throw new HelpingException("TTP.EOFinDef",
                 printableControlSequence(context));
     }
 

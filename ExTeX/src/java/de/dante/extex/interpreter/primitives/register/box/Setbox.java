@@ -21,8 +21,8 @@ package de.dante.extex.interpreter.primitives.register.box;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.util.GeneralException;
 
 /**
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Setbox extends BoxParameter implements Code, Serializable {
 

@@ -16,8 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.type;
 
+import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -26,7 +28,7 @@ import de.dante.util.GeneralException;
  * This interface describes the feature of being expandable code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public interface ExpandableCode {
 

@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Token;
@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Ifx extends AbstractIf {
 
@@ -84,7 +84,7 @@ public class Ifx extends AbstractIf {
         Token t2 = source.getToken();
 
         if (t1 == null || t2 == null) {
-            throw new GeneralHelpingException("UnexpectedEOF",
+            throw new HelpingException("UnexpectedEOF",
                     printableControlSequence(context));
         }
 

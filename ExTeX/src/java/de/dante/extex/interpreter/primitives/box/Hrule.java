@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.box;
 
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.node.RuleNode;
 import de.dante.extex.typesetter.Typesetter;
@@ -72,7 +72,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Hrule extends AbstractCode {
 
@@ -92,7 +92,7 @@ public class Hrule extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

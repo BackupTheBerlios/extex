@@ -18,11 +18,11 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CharCode extends AbstractCode implements ExpandableCode, CountConvertible {
 
@@ -56,7 +56,7 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -71,7 +71,7 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

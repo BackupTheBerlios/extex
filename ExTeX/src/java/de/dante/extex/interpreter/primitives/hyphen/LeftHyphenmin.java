@@ -20,11 +20,11 @@
 package de.dante.extex.interpreter.primitives.hyphen;
 
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LeftHyphenmin extends AbstractCode implements Theable {
 
@@ -61,7 +61,7 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
      * Scan for lefthyphenmin-value and stored it in the
      * <code>HyphernationTable</code> with the language-number.
      *
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -85,7 +85,7 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
     /**
      * Return the <code>Tokens</code> to show the content with <code>\the</code>.
      *
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

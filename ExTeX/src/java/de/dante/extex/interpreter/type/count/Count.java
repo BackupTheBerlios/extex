@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.type.count;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -143,7 +143,7 @@ public class Count implements Serializable, FixedCount {
     public void divide(final long denom) throws GeneralException {
 
         if (denom == 0) {
-            throw new GeneralHelpingException("TTP.ArithOverflow");
+            throw new HelpingException("TTP.ArithOverflow");
         }
 
         value /= denom;

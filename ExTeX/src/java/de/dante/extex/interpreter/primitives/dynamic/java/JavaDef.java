@@ -20,12 +20,12 @@ package de.dante.extex.interpreter.primitives.dynamic.java;
 
 import java.lang.reflect.InvocationTargetException;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -80,9 +80,9 @@ import de.dante.util.GeneralException;
  * <p>
  * Now we come to the Java side of the definition. The class given as
  * &lang;<i>tokens</i>&rang; must implement the interface {@link
- * de.dante.extex.interpreter.Code Code}. The easiest way to achieve
+ * de.dante.extex.interpreter.type.Code Code}. The easiest way to achieve
  * this is by declaring a class derived from {@link
- * de.dante.extex.interpreter.AbstractCode AbstractCode}.
+ * de.dante.extex.interpreter.type.AbstractCode AbstractCode}.
  * <pre class="JavaSample">
  *   <b>package</b> my.package;
  *
@@ -118,7 +118,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -133,7 +133,7 @@ public class JavaDef extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -147,7 +147,7 @@ public class JavaDef extends AbstractCode {
         Tokens name = source.getTokens();
         String classname = name.toText();
         if ("".equals(classname)) {
-            throw new GeneralHelpingException("JavaDef.ClassNotFound",
+            throw new HelpingException("JavaDef.ClassNotFound",
                     classname);
         }
         Code code;
@@ -169,7 +169,7 @@ public class JavaDef extends AbstractCode {
         } catch (NoSuchMethodException e) {
             throw new GeneralException(e);
         } catch (ClassNotFoundException e) {
-            throw new GeneralHelpingException("JavaDef.ClassNotFound",
+            throw new HelpingException("JavaDef.ClassNotFound",
                     classname);
         }
         context.setCode(cs, code, prefix.isGlobal());

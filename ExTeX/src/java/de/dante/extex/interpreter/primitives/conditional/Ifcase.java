@@ -19,11 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -70,7 +70,7 @@ public class Ifcase extends AbstractIf {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -110,7 +110,7 @@ public class Ifcase extends AbstractIf {
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -161,7 +161,7 @@ public class Ifcase extends AbstractIf {
             }
         }
 
-        throw new GeneralHelpingException("TTP.EOFinSkipped");
+        throw new HelpingException("TTP.EOFinSkipped");
     }
 
     /**
@@ -181,7 +181,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     protected static final class Tag {
 

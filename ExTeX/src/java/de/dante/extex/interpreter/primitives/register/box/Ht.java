@@ -20,11 +20,11 @@ package de.dante.extex.interpreter.primitives.register.box;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     CountConvertible, DimenConvertible {
@@ -76,7 +76,7 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *     de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -98,7 +98,7 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -112,7 +112,7 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

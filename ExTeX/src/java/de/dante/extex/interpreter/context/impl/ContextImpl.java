@@ -30,8 +30,7 @@ import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
@@ -44,6 +43,7 @@ import de.dante.extex.interpreter.context.CountChangeObserver;
 import de.dante.extex.interpreter.context.Direction;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
@@ -112,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class ContextImpl
         implements
@@ -304,7 +304,7 @@ public class ContextImpl
         Group next = group.getNext();
 
         if (next == null) {
-            throw new GeneralHelpingException("TTP.TooManyRightBraces");
+            throw new HelpingException("TTP.TooManyRightBraces");
         }
 
         if (group.getInteraction() != next.getInteraction()) {
@@ -692,7 +692,7 @@ public class ContextImpl
             throws GeneralException {
 
         if (!(t instanceof CodeToken)) {
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         }
         group.setCode(t, code, global);
 
@@ -836,17 +836,17 @@ public class ContextImpl
      *
      * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
      */
-    public void setMagnification(final long mag) throws GeneralHelpingException {
+    public void setMagnification(final long mag) throws HelpingException {
 
         if (magnificationLock && this.magnification != mag) {
-            throw new GeneralHelpingException("TTP.IncompatMag", Long
+            throw new HelpingException("TTP.IncompatMag", Long
                     .toString(mag));
         }
 
         magnificationLock = true;
 
         if (mag < 1 || mag > magnificationMax) {
-            throw new GeneralHelpingException("TTP.IllegalMag", Long
+            throw new HelpingException("TTP.IllegalMag", Long
                     .toString(mag));
         }
 

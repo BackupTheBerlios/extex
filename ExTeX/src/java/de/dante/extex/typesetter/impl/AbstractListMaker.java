@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter.impl;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -76,7 +76,7 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void setSpacefactor(final Count f) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.ImproperSForPD", "spacefactor");
+        throw new HelpingException("TTP.ImproperSForPD", "spacefactor");
     }
 
     /**
@@ -140,7 +140,7 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.ImproperSForPD", "prevdepth");
+        throw new HelpingException("TTP.ImproperSForPD", "prevdepth");
     }
 
 }

@@ -17,8 +17,10 @@
  *
  */
 
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.type;
 
+import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -30,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.1 $
  */
 public class AbstractCode implements Code {
 
@@ -51,7 +53,7 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -65,7 +67,7 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#getName()
+     * @see de.dante.extex.interpreter.type.Code#getName()
      */
     public String getName() {
 
@@ -73,7 +75,7 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#isIf()
+     * @see de.dante.extex.interpreter.type.Code#isIf()
      */
     public boolean isIf() {
 
@@ -81,7 +83,7 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#isOuter()
+     * @see de.dante.extex.interpreter.type.Code#isOuter()
      */
     public boolean isOuter() {
 
@@ -107,7 +109,7 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#setName(java.lang.String)
+     * @see de.dante.extex.interpreter.type.Code#setName(java.lang.String)
      */
     public void setName(final String theName) {
 

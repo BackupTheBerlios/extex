@@ -35,7 +35,7 @@ import de.dante.extex.font.GlyphImpl;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.ModifiableFount;
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class EFMFount implements ModifiableFount {
 
@@ -132,7 +132,7 @@ public abstract class EFMFount implements ModifiableFount {
             Element fontgroup = doc.getRootElement();
 
             if (fontgroup == null) {
-                throw new GeneralHelpingException("EFM.nofontgroup");
+                throw new HelpingException("EFM.nofontgroup");
             }
 
             // empr
@@ -186,7 +186,7 @@ public abstract class EFMFount implements ModifiableFount {
                         efile = efile.replaceAll(".pfb", "");
                         //  externalfile = getFontFile(fileFinder.findFile(efile,"pfb"));
                     } else {
-                        throw new GeneralHelpingException(
+                        throw new HelpingException(
                                 "EFM.wrongfileextension", efile);
                     }
                 }
@@ -252,7 +252,7 @@ public abstract class EFMFount implements ModifiableFount {
             }
 
         } catch (JDOMException e) {
-            throw new GeneralHelpingException("EFM.jdomerror", e.getMessage());
+            throw new HelpingException("EFM.jdomerror", e.getMessage());
         }
     }
 

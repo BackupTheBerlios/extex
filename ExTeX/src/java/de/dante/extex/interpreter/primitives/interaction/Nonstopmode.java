@@ -18,11 +18,11 @@
  */
 package de.dante.extex.interpreter.primitives.interaction;
 
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Nonstopmode extends AbstractAssignment {
 
@@ -64,7 +64,7 @@ public class Nonstopmode extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

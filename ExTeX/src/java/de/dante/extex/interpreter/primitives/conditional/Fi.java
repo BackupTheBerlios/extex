@@ -18,12 +18,12 @@
  */
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Fi extends AbstractCode implements ExpandableCode {
 
@@ -73,7 +73,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
      *  an exception is raised.
      * </p>
      *
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -84,7 +84,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
             throws GeneralException {
 
         if (context.popConditional() == null) {
-            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+            throw new HelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
         return true;
@@ -99,7 +99,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
      *  an exception is raised.
      * </p>
      *
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -110,7 +110,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
             throws GeneralException {
 
         if (context.popConditional() == null) {
-            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+            throw new HelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
     }

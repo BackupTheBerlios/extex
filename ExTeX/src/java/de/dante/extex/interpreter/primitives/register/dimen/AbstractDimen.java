@@ -19,8 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.util.GeneralException;
 
 /**
@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * numbered dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractDimen extends AbstractAssignment {
 

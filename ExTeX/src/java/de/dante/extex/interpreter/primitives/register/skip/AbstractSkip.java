@@ -19,8 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.register.skip;
 
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.util.GeneralException;
 
 /**
@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * numbered skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractSkip extends AbstractAssignment {
 

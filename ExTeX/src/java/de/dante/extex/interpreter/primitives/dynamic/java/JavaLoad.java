@@ -18,11 +18,11 @@
  */
 package de.dante.extex.interpreter.primitives.dynamic.java;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -87,7 +87,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class JavaLoad extends AbstractCode {
 
@@ -102,7 +102,7 @@ public class JavaLoad extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -115,7 +115,7 @@ public class JavaLoad extends AbstractCode {
         Tokens name = source.getTokens();
         String classname = name.toText();
         if ("".equals(classname)) {
-            throw new GeneralHelpingException("JavaDef.ClassNotFound",
+            throw new HelpingException("JavaDef.ClassNotFound",
                     classname);
         }
         Loadable component;
@@ -124,7 +124,7 @@ public class JavaLoad extends AbstractCode {
             component = (Loadable) (Class.forName(classname).newInstance());
             component.init(context, typesetter);
         } catch (ClassNotFoundException e) {
-            throw new GeneralHelpingException("JavaDef.ClassNotFound",
+            throw new HelpingException("JavaDef.ClassNotFound",
                     classname);
         } catch (Throwable e) {
             throw new GeneralException(e);

@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Futurelet extends Let {
 
@@ -64,7 +64,7 @@ public class Futurelet extends Let {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

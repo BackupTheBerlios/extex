@@ -68,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "muskip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Muskipdef extends AbstractMuskip {
 
@@ -83,7 +83,7 @@ public class Muskipdef extends AbstractMuskip {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *     de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

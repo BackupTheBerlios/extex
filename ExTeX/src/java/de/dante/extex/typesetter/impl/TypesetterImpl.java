@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.i18n.GeneralPanicException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -51,7 +51,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -195,7 +195,7 @@ public class TypesetterImpl implements Typesetter, Manager {
             documentWriter.shipout(listMaker.close());
             documentWriter.close();
         } catch (IOException e) {
-            throw new GeneralPanicException(e);
+            throw new PanicException(e);
         }
     }
 
@@ -284,7 +284,7 @@ public class TypesetterImpl implements Typesetter, Manager {
     public void pop() throws GeneralException {
 
         if (saveStack.isEmpty()) {
-            throw new GeneralPanicException("TTP.Confusion");
+            throw new PanicException("TTP.Confusion");
         }
 
         this.listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
@@ -343,7 +343,7 @@ public class TypesetterImpl implements Typesetter, Manager {
         try {
             documentWriter.shipout(nodes);
         } catch (IOException e) {
-            throw new GeneralPanicException(e);
+            throw new PanicException(e);
         }
     }
 

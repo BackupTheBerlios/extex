@@ -22,7 +22,7 @@ package de.dante.extex.main;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interaction;
@@ -42,11 +42,11 @@ import de.dante.util.configuration.ConfigurationException;
  * The GeneralHelpingException is capable of carrying a name and two arguments
  * for the error message. This class can be queried to provide additional help
  * concerning the error at hand.
- * See {@link GeneralHelpingException GeneralHelpingException} for details.
+ * See {@link HelpingException GeneralHelpingException} for details.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
 
@@ -125,7 +125,7 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
 
                 String line = readLine();
                 if (line == null) {
-                    throw new GeneralHelpingException("TTP.EOFonTerm");
+                    throw new HelpingException("TTP.EOFonTerm");
                 }
                 logger.config(line);
 

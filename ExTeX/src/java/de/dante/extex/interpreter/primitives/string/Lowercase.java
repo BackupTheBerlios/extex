@@ -18,11 +18,11 @@
  */
 package de.dante.extex.interpreter.primitives.string;
 
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.LetterToken;
 import de.dante.extex.scanner.OtherToken;
@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
@@ -70,7 +70,7 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -85,7 +85,7 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

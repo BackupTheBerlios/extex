@@ -25,12 +25,10 @@ import java.util.Calendar;
 import java.util.Iterator;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.i18n.GeneralPanicException;
+import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.i18n.Messages;
-import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.ErrorHandler;
-import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
 import de.dante.extex.interpreter.Interaction;
@@ -38,6 +36,8 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeVisitor;
@@ -69,7 +69,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Max extends Moritz
         implements
@@ -422,7 +422,7 @@ public class Max extends Moritz
         Token token = (Token) oToken;
         Code code = context.getCode(token);
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken", //
+            throw new HelpingException("TTP.UndefinedToken", //
                     token.toString());
         }
         if (code.execute(prefix, context, this, typesetter)) {
@@ -441,7 +441,7 @@ public class Max extends Moritz
     public Object visitComment(final Object arg1, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        throw new GeneralPanicException(Messages.format("TTP.Confusion",
+        throw new PanicException(Messages.format("TTP.Confusion",
                 getClass().getName()));
     }
 
@@ -467,7 +467,7 @@ public class Max extends Moritz
         observersMacro.update(this, token);
         Code code = context.getCode(token);
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken", //
+            throw new HelpingException("TTP.UndefinedToken", //
                     token.toString());
         }
         if (code.execute(prefix, context, this, typesetter)) {
@@ -493,7 +493,7 @@ public class Max extends Moritz
     public Object visitInvalid(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.InvalidChar", ((Token) oToken)
+        throw new HelpingException("TTP.InvalidChar", ((Token) oToken)
                 .getValue());
     }
 
@@ -533,7 +533,7 @@ public class Max extends Moritz
     public Object visitMacroParam(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.CantUseIn", ((Token) oToken)
+        throw new HelpingException("TTP.CantUseIn", ((Token) oToken)
                 .toString(), typesetter.getMode().toString());
     }
 
@@ -553,7 +553,7 @@ public class Max extends Moritz
         Token next = getToken();
 
         if (next == null) {
-            throw new GeneralHelpingException("TTP.MissingDollar");
+            throw new HelpingException("TTP.MissingDollar");
         } else if (next.isa(Catcode.MATHSHIFT)) {
             typesetter.toggleDisplaymath();
         } else {
@@ -612,7 +612,7 @@ public class Max extends Moritz
             throw new GeneralException("unimplemented");
         }
 
-        throw new GeneralHelpingException("TTP.MissingDollar");
+        throw new HelpingException("TTP.MissingDollar");
     }
 
     /**
@@ -628,7 +628,7 @@ public class Max extends Moritz
             throw new GeneralException("unimplemented");
         }
 
-        throw new GeneralHelpingException("TTP.MissingDollar");
+        throw new HelpingException("TTP.MissingDollar");
     }
 
     /**
@@ -751,11 +751,11 @@ public class Max extends Moritz
             observersExpand.update(this, current);
             try {
                 current.getCatcode().visit(this, current, null, null);
-            } catch (GeneralPanicException e) {
+            } catch (PanicException e) {
                 throw e; //TODO report the problem and terminate
             } catch (GeneralException e) {
                 if (++errorCount > maxErrors) { // cf. TTP[82]
-                    throw new GeneralPanicException("TTP.ErrorLimitReached",
+                    throw new PanicException("TTP.ErrorLimitReached",
                             Integer.toString(maxErrors));
                 } else if (errorHandler != null) {
                     errorHandler.handleError(e, current, this, context);
@@ -764,7 +764,7 @@ public class Max extends Moritz
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                throw new GeneralPanicException(e);
+                throw new PanicException(e);
             }
         }
     }

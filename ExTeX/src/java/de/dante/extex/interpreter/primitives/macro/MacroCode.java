@@ -19,13 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
@@ -106,7 +106,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -127,7 +127,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
             if (t instanceof MacroParamToken) {
                 t = body.get(++i);
                 if (t == null) {
-                    throw new GeneralHelpingException("TTP.EOFinMatch",
+                    throw new HelpingException("TTP.EOFinMatch",
                             printableControlSequence(context));
                 } else if (t instanceof MacroParamToken) {
                     toks.add(t);
@@ -150,7 +150,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -179,13 +179,13 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
         Token t = source.getToken();
 
         if (t == null) {
-            throw new GeneralHelpingException("TTP.EOFinMatch",
+            throw new HelpingException("TTP.EOFinMatch",
                     printableControlSequence(context));
         } else if (t instanceof LeftBraceToken) {
             source.push(t);
             Tokens toks = source.getTokens();
             if (toks == null) {
-                throw new GeneralHelpingException("TTP.EOFinMatch",
+                throw new HelpingException("TTP.EOFinMatch",
                         printableControlSequence(context));
             }
             return toks;
@@ -195,7 +195,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#isOuter()
+     * @see de.dante.extex.interpreter.type.Code#isOuter()
      */
     public boolean isOuter() {
 
@@ -220,7 +220,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
             throws GeneralException {
 
         if (i + 1 >= len) {
-            throw new GeneralHelpingException("TTP.UseDoesntMatch",
+            throw new HelpingException("TTP.UseDoesntMatch",
                     printableControlSequence(context));
         }
         int pi = i + 1;
@@ -228,7 +228,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
         if (ti instanceof MacroParamToken) {
             Token t = source.getToken();
             if (!ti.equals(t)) {
-                throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                throw new HelpingException("TTP.UseDoesntMatch",
                         printableControlSequence(context));
             }
             return pi;
@@ -247,7 +247,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
             return pi - 1;
         }
 
-        throw new GeneralHelpingException("TTP.UseDoesntMatch",
+        throw new HelpingException("TTP.UseDoesntMatch",
                 printableControlSequence(context));
     }
 
@@ -279,12 +279,12 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
             if (ti instanceof MacroParamToken) {
                 pi = matchParameter(context, source, args, len, pi);
             } else if (notLong && ti.equals(Catcode.ESCAPE, "par")) {
-                throw new GeneralHelpingException("TTP.RunawayArg",
+                throw new HelpingException("TTP.RunawayArg",
                         printableControlSequence(context));
             } else {
                 t = source.getToken();
                 if (!t.equals(ti)) {
-                    throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                    throw new HelpingException("TTP.UseDoesntMatch",
                             printableControlSequence(context));
                 }
             }
@@ -316,7 +316,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
             toks.add(t);
         }
 
-        throw new GeneralHelpingException("TTP.EOFinMatch",
+        throw new HelpingException("TTP.EOFinMatch",
                 printableControlSequence(context));
     }
 

@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.Stack;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.main.exception.MainIOException;
@@ -44,7 +44,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -379,7 +379,7 @@ public abstract class TokenStreamBaseImpl32
 
         state = MID_LINE;
 
-        throw new GeneralHelpingException("TTP.InvalidChar");
+        throw new HelpingException("TTP.InvalidChar");
     }
 
     /**
@@ -631,7 +631,7 @@ public abstract class TokenStreamBaseImpl32
                                 pointer++;
                             }
                         } else {
-                            throw new GeneralHelpingException(
+                            throw new HelpingException(
                                     "TTP.NoDigitFoundAfter");
                         }
                         break;
@@ -645,13 +645,13 @@ public abstract class TokenStreamBaseImpl32
                             UnicodeChar ucn = new UnicodeChar(unicodename);
 
                             if (ucn.getCodePoint() < 0) {
-                                throw new GeneralHelpingException(
+                                throw new HelpingException(
                                         "TTP.NoUnicodeName", unicodename);
                             }
                             uc = new UnicodeChar(ucn.getCodePoint());
 
                         } else {
-                            throw new GeneralHelpingException(
+                            throw new HelpingException(
                                     "TTP.NoUnicodeNameFoundAfter");
                         }
 
@@ -663,13 +663,13 @@ public abstract class TokenStreamBaseImpl32
                         if (pointer < bufferLength()) {
                             uc = scanHex(maxhexdigits, tokenizer);
                         } else {
-                            throw new GeneralHelpingException(
+                            throw new HelpingException(
                                     "TTP.NoHexDigitFound");
                         }
 
                         break;
                     default :
-                        throw new GeneralHelpingException("TTP.TooManySupMarks");
+                        throw new HelpingException("TTP.TooManySupMarks");
                 }
             }
         }
@@ -737,7 +737,7 @@ public abstract class TokenStreamBaseImpl32
                     hexvalue = (hexvalue << SHIFT4) + hex;
                 } else if (i == 0) {
                     // error no hexdigit found after '^^'
-                    throw new GeneralHelpingException("TTP.NoHexDigitFound");
+                    throw new HelpingException("TTP.NoHexDigitFound");
                 } else {
                     break;
                 }
@@ -819,7 +819,7 @@ public abstract class TokenStreamBaseImpl32
                     buf.append(uc.toString());
                 } else {
                     if (buf.length() == 0) {
-                        throw new GeneralHelpingException(
+                        throw new HelpingException(
                                 "TTP.NoLetterFoundAfter");
                     }
                     // ';' not use in the name

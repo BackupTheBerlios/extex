@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
@@ -63,7 +63,7 @@ public class The extends AbstractCode implements ExpandableCode {
      * Get the next token (not expand) and if it <code>Theable</code>, then
      * call <code>the()</code> and put the result on the stack.
      *
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -76,20 +76,20 @@ public class The extends AbstractCode implements ExpandableCode {
         Token cs = source.getToken();
 
         if (!(cs instanceof ControlSequenceToken)) {
-            throw new GeneralHelpingException("TTP.CantUseAfter",
+            throw new HelpingException("TTP.CantUseAfter",
                     cs.toString(), printableControlSequence(context));
         }
 
         Code code = context.getCode(cs);
 
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken", cs
+            throw new HelpingException("TTP.UndefinedToken", cs
                     .toString());
         } else if (code instanceof Theable) {
             Tokens toks = ((Theable) code).the(context, source);
             source.push(toks);
         } else {
-            throw new GeneralHelpingException("TTP.CantUseAfter",
+            throw new HelpingException("TTP.CantUseAfter",
                     cs.toString(), printableControlSequence(context));
         }
 
@@ -97,7 +97,7 @@ public class The extends AbstractCode implements ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Else extends AbstractIf {
 
@@ -72,7 +72,7 @@ public class Else extends AbstractIf {
      *  is raised.
      * </p>
      *
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -85,7 +85,7 @@ public class Else extends AbstractIf {
         Conditional cond = context.popConditional();
 
         if (cond == null || skipToElseOrFi(context, source)) {
-            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+            throw new HelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
 
@@ -102,7 +102,7 @@ public class Else extends AbstractIf {
      *  is raised.
      * </p>
      *
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -115,7 +115,7 @@ public class Else extends AbstractIf {
         Conditional cond = context.popConditional();
 
         if (cond == null || skipToElseOrFi(context, source)) {
-            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+            throw new HelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
     }
@@ -137,7 +137,7 @@ public class Else extends AbstractIf {
      * an opening conditional even so it is derived from
      * {@link de.dante.extex.interpreter.primitives.conditional.AbstractIf AbstractIf}.
      *
-     * @see de.dante.extex.interpreter.Code#isIf()
+     * @see de.dante.extex.interpreter.type.Code#isIf()
      */
     public boolean isIf() {
 

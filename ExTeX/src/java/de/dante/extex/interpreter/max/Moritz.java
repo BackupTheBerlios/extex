@@ -21,15 +21,15 @@ package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.i18n.GeneralPanicException;
-import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -230,11 +230,11 @@ public abstract class Moritz implements TokenSource, Observable {
 
         Token t = getToken();
         if (t == null || !(t instanceof CodeToken)) {
-            throw new GeneralHelpingException("TTP.BoxExpected");
+            throw new HelpingException("TTP.BoxExpected");
         }
         Code code = context.getCode(t);
         if (code == null || !(code instanceof Boxable)) {
-            throw new GeneralHelpingException("TTP.BoxExpected");
+            throw new HelpingException("TTP.BoxExpected");
         }
         Box box = ((Boxable) code).getBox(context, this, typesetter);
 
@@ -267,7 +267,7 @@ public abstract class Moritz implements TokenSource, Observable {
             push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
                     "inaccessible ", context.getNamespace()));
 
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         } else if (t instanceof CodeToken) {
             Code code = context.getCode(t);
             if (code != null && code instanceof CsConvertible) {
@@ -278,7 +278,7 @@ public abstract class Moritz implements TokenSource, Observable {
             push(context.getTokenFactory().newInstance(Catcode.ESCAPE,
                     "inaccessible ", context.getNamespace()));
             push(t);
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         }
 
         return t;
@@ -291,11 +291,11 @@ public abstract class Moritz implements TokenSource, Observable {
 
         Token t = getToken();
         if (t == null || !(t instanceof CodeToken)) {
-            throw new GeneralHelpingException("TTP.MissingFontIdent");
+            throw new HelpingException("TTP.MissingFontIdent");
         }
         Code code = context.getCode(t);
         if (code == null || !(code instanceof FontConvertible)) {
-            throw new GeneralHelpingException("TTP.MissingFontIdent");
+            throw new HelpingException("TTP.MissingFontIdent");
         }
 
         return ((FontConvertible) code).convertFont(context, this);
@@ -318,7 +318,7 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = getNonSpace();
 
         if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
+            throw new HelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "-")) {
             return -scanNumber();
         } else if (!t.equals(Catcode.OTHER, "+")) {
@@ -522,7 +522,7 @@ public abstract class Moritz implements TokenSource, Observable {
                                 n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
                                 break;
                             default:
-                                throw new GeneralPanicException(
+                                throw new PanicException(
                                         "this can't happen");
                         }
                     }
@@ -538,7 +538,7 @@ public abstract class Moritz implements TokenSource, Observable {
             }
         }
 
-        throw new GeneralHelpingException("TTP.MissingNumber");
+        throw new HelpingException("TTP.MissingNumber");
     }
 
     /**
@@ -555,7 +555,7 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = getNonSpace();
 
         if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
+            throw new HelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "=")) {
             stream.put(getNonSpace());
         } else {
@@ -605,9 +605,9 @@ public abstract class Moritz implements TokenSource, Observable {
         Token token = getToken();
 
         if (token == null) {
-            throw new GeneralHelpingException("EOF");
+            throw new HelpingException("EOF");
         } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            throw new HelpingException("TTP.MissingLeftBrace");
         }
 
         int balance = 1;
@@ -696,7 +696,7 @@ public abstract class Moritz implements TokenSource, Observable {
             try {
                 stream = getTokenStreamFactory().newInstance("");
             } catch (ConfigurationException e) {
-                throw new GeneralPanicException(e);
+                throw new PanicException(e);
             }
         }
 
@@ -771,7 +771,7 @@ public abstract class Moritz implements TokenSource, Observable {
         long cc = scanNumber();
 
         if (cc < 0 || cc > MAX_CHAR_CODE) {
-            throw new GeneralHelpingException("TTP.BadCharCode", Long
+            throw new HelpingException("TTP.BadCharCode", Long
                     .toString(cc), "0", Long.toString(MAX_CHAR_CODE));
         }
 
@@ -795,7 +795,7 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = scanNonSpace();
 
         if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
+            throw new HelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "-")) {
             return -scanNumber();
         } else if (t.equals(Catcode.OTHER, "+")) {
@@ -945,7 +945,7 @@ public abstract class Moritz implements TokenSource, Observable {
                                             + 10;
                                     break;
                                 default:
-                                    throw new GeneralPanicException(
+                                    throw new PanicException(
                                             "TTP.Confusion");
                             }
                         }
@@ -957,12 +957,12 @@ public abstract class Moritz implements TokenSource, Observable {
                         return n;
 
                     default:
-                        throw new GeneralHelpingException("TTP.MissingNumber");
+                        throw new HelpingException("TTP.MissingNumber");
                 }
             } else if (t instanceof CodeToken) {
                 Code code = context.getCode(t);
                 if (code == null) {
-                    throw new GeneralHelpingException("TTP.MissingNumber");
+                    throw new HelpingException("TTP.MissingNumber");
                 } else if (code instanceof CountConvertible) {
                     return ((CountConvertible) code)
                             .convertCount(context, this);
@@ -971,15 +971,15 @@ public abstract class Moritz implements TokenSource, Observable {
                             getTypesetter());
                     t = getToken();
                 } else {
-                    throw new GeneralHelpingException("TTP.MissingNumber");
+                    throw new HelpingException("TTP.MissingNumber");
                 }
             } else {
 
-                throw new GeneralHelpingException("TTP.MissingNumber");
+                throw new HelpingException("TTP.MissingNumber");
             }
         }
 
-        throw new GeneralHelpingException("TTP.MissingNumber");
+        throw new HelpingException("TTP.MissingNumber");
     }
 
     /**
@@ -1008,7 +1008,7 @@ public abstract class Moritz implements TokenSource, Observable {
             //TODO: handle EOF
             throw new RuntimeException("unimplemented");
         } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            throw new HelpingException("TTP.MissingLeftBrace");
             //TODO call the error handler
         }
 

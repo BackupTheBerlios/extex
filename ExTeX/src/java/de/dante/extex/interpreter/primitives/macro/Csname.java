@@ -19,14 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
@@ -58,7 +58,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Csname extends AbstractCode implements ExpandableCode,
         CsConvertible {
@@ -74,7 +74,7 @@ public class Csname extends AbstractCode implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -90,7 +90,7 @@ public class Csname extends AbstractCode implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -117,7 +117,7 @@ public class Csname extends AbstractCode implements ExpandableCode,
 
         if (t == null) {
 
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         } else if (t instanceof CodeToken) {
 
             if (t.getValue().equals("csname")) {
@@ -129,7 +129,7 @@ public class Csname extends AbstractCode implements ExpandableCode,
 
         } else if (!(t instanceof ActiveCharacterToken)) {
 
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         }
 
         return t;

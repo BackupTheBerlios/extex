@@ -19,7 +19,7 @@
 
 package de.dante.extex.typesetter.impl;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -47,7 +47,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -215,7 +215,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 
         long sf = f.getValue();
         if (sf <= 0) {
-            throw new GeneralHelpingException("TTP.BadSpaceFactor", Long
+            throw new HelpingException("TTP.BadSpaceFactor", Long
                     .toString(sf));
         }
         spacefactor = sf;

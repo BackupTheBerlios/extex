@@ -19,13 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.i18n.GeneralPanicException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.macro.MacroCode;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Read extends AbstractCode {
 
@@ -63,7 +63,7 @@ public class Read extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -75,14 +75,14 @@ public class Read extends AbstractCode {
 
         long no = source.scanInteger();
         if (!source.getKeyword("to")) {
-            throw new GeneralHelpingException("TTP.MissingToForRead");
+            throw new HelpingException("TTP.MissingToForRead");
         }
         Token cs = source.getControlSequence();
         InFile file = context.getInFile(Long.toString(no));
         Tokens toks;
 
         if (file == null) {
-            throw new GeneralPanicException("TTP.Confusion");
+            throw new PanicException("TTP.Confusion");
         }
 
         toks = file.read(context.getTokenFactory(), context.getTokenizer(), cs);

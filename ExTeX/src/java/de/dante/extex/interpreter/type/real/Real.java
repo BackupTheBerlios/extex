@@ -21,10 +21,10 @@ package de.dante.extex.interpreter.type.real;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.scanner.Catcode;
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Real implements Serializable {
 
@@ -99,7 +99,7 @@ public class Real implements Serializable {
         // get number
         Token t = source.scanNonSpace();
         if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
+            throw new HelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "-")) {
             neg = true;
             t = source.scanNonSpace();
@@ -197,7 +197,7 @@ public class Real implements Serializable {
             try {
                 value = Double.valueOf(s).doubleValue();
             } catch (NumberFormatException e) {
-                throw new GeneralHelpingException("TTP.NumberFormatError", s);
+                throw new HelpingException("TTP.NumberFormatError", s);
             }
         }
     }
@@ -252,7 +252,7 @@ public class Real implements Serializable {
     public void divide(final double val) throws GeneralException {
 
         if (val == 0.0d) {
-            throw new GeneralHelpingException("TTP.ArithOverflow");
+            throw new HelpingException("TTP.ArithOverflow");
         }
 
         value /= val;

@@ -50,9 +50,9 @@ import de.dante.util.GeneralException;
  * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class GeneralHelpingException extends GeneralException {
+public class HelpingException extends GeneralException {
     /**
      * The field <tt>arg1</tt> contains the first argument.
      */
@@ -80,7 +80,7 @@ public class GeneralHelpingException extends GeneralException {
      *
      * @param messageTag the message
      */
-    public GeneralHelpingException(final String messageTag) {
+    public HelpingException(final String messageTag) {
         super();
         tag = messageTag;
     }
@@ -91,7 +91,7 @@ public class GeneralHelpingException extends GeneralException {
      * @param messageTag the message
      * @param a1 the first argument
      */
-    public GeneralHelpingException(final String messageTag, final String a1) {
+    public HelpingException(final String messageTag, final String a1) {
         super();
         tag = messageTag;
         this.arg1 = a1;
@@ -104,7 +104,7 @@ public class GeneralHelpingException extends GeneralException {
      * @param a1 the first argument
      * @param a2 the second argument
      */
-    public GeneralHelpingException(final String messageTag, final String a1,
+    public HelpingException(final String messageTag, final String a1,
             final String a2) {
         super();
         tag = messageTag;
@@ -120,7 +120,7 @@ public class GeneralHelpingException extends GeneralException {
      * @param a2 the second argument
      * @param a3 the third argument
      */
-    public GeneralHelpingException(final String messageTag, final String a1,
+    public HelpingException(final String messageTag, final String a1,
             final String a2, final String a3) {
         super();
         tag = messageTag;
@@ -134,7 +134,7 @@ public class GeneralHelpingException extends GeneralException {
      *
      * @param e the cause
      */
-    public GeneralHelpingException(final Throwable e) {
+    public HelpingException(final Throwable e) {
         super();
     }
 

@@ -19,10 +19,10 @@
 
 package de.dante.extex.interpreter.primitives.register.font;
 
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.typesetter.Typesetter;
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -47,7 +47,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

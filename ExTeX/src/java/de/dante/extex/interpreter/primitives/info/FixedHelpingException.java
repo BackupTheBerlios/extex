@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.info;
 
-import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.i18n.HelpingException;
 
 /**
  * This class provides an Exception with the possibility to provide additional
@@ -26,14 +26,14 @@ import de.dante.extex.i18n.GeneralHelpingException;
  * first level is the message and the second level is the additional help.
  * <p>
  * In contrast to
- * {@link de.dante.extex.i18n.GeneralHelpingException GeneralHelpingException}
+ * {@link de.dante.extex.i18n.HelpingException GeneralHelpingException}
  * the messages are not mapped.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class HelpingException extends GeneralHelpingException {
+public class FixedHelpingException extends HelpingException {
 
     /**
      * The field <tt>message</tt> contains the message. We need to keep it here
@@ -54,7 +54,7 @@ public class HelpingException extends GeneralHelpingException {
      * @param theMessage the message of this Exception
      * @param theHelp the help string
      */
-    public HelpingException(final String theMessage, final String theHelp) {
+    public FixedHelpingException(final String theMessage, final String theHelp) {
 
         super("");
         this.message = theMessage;

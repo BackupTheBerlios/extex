@@ -19,12 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
@@ -65,11 +65,11 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
- * @see de.dante.extex.interpreter.Theable
+ * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CountPrimitive extends AbstractCount implements ExpandableCode,
         Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
@@ -103,7 +103,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -121,7 +121,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -163,7 +163,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
         long value = Count.scanCount(context, source);
 
         if (value == 0) {
-            throw new GeneralHelpingException("TTP.ArithOverflow");
+            throw new HelpingException("TTP.ArithOverflow");
         }
 
         value = context.getCount(key).getValue() / value;
@@ -188,7 +188,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

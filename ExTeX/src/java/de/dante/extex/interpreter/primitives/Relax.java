@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives;
 
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.type.AbstractCode;
 
 /**
  * This class provides an implementation for the primitive <code>\relax</code>.
@@ -45,7 +45,7 @@ import de.dante.extex.interpreter.AbstractCode;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Relax extends AbstractCode {
 

@@ -23,10 +23,10 @@ import gnu.jel.CompilationException;
 import gnu.jel.CompiledExpression;
 import gnu.jel.Evaluator;
 import gnu.jel.Library;
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Theable;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathExpression extends AbstractMath
         implements
@@ -110,7 +110,7 @@ public class MathExpression extends AbstractMath
             }
             buf.append('^');
 
-            throw new GeneralHelpingException("TTP.MathExpr", ce.getMessage()
+            throw new HelpingException("TTP.MathExpr", ce.getMessage()
                     + " (at column " + String.valueOf(col) + ")", expr, buf
                     .toString());
         }
@@ -121,7 +121,7 @@ public class MathExpression extends AbstractMath
             try {
                 result = compileexpr.evaluate(null);
             } catch (Throwable e) {
-                throw new GeneralHelpingException("TTP.MathExprError", e
+                throw new HelpingException("TTP.MathExprError", e
                         .getMessage());
             }
 

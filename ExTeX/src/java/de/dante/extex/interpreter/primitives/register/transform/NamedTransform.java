@@ -19,12 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.register.transform;
 
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
+import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.interpreter.type.transform.Transform;
 import de.dante.extex.main.MainExTeXExtensionException;
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedTransform extends AbstractAssignment implements Theable {
 
@@ -56,7 +56,7 @@ public class NamedTransform extends AbstractAssignment implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -116,7 +116,7 @@ public class NamedTransform extends AbstractAssignment implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

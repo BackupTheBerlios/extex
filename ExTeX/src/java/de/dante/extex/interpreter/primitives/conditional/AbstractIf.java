@@ -19,13 +19,13 @@
 
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -54,7 +54,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
      * method. Thus the overwritten method returning the constant is provided
      * in this abstract base class.
      *
-     * @see de.dante.extex.interpreter.Code#isIf()
+     * @see de.dante.extex.interpreter.type.Code#isIf()
      */
     public boolean isIf() {
 
@@ -62,7 +62,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -81,7 +81,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -157,7 +157,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
             }
         }
 
-        throw new GeneralHelpingException("TTP.EOFinSkipped");
+        throw new HelpingException("TTP.EOFinSkipped");
     }
 
 }

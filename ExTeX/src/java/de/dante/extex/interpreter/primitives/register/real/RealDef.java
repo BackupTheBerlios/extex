@@ -19,11 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.register.real;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractAssignment;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RealDef extends AbstractAssignment {
 
@@ -54,7 +54,7 @@ public class RealDef extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -66,7 +66,7 @@ public class RealDef extends AbstractAssignment {
         //  \realdef\hugo=7
         Token tok = source.scanNonSpace();
         if (!(tok instanceof ControlSequenceToken)) {
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException("TTP.MissingCtrlSeq");
         }
         source.getOptionalEquals();
         String key = "real#" + Long.toString(Count.scanCount(context, source));

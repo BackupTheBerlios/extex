@@ -19,12 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Let extends AbstractAssignment implements CatcodeVisitor {
 
@@ -67,7 +67,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -99,7 +99,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
             final Token cs, final Token t) throws GeneralException {
 
         if (t == null) {
-            throw new GeneralHelpingException("UnexpectedEOF",
+            throw new HelpingException("UnexpectedEOF",
                     printableControlSequence(context));
         }
 
@@ -113,7 +113,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
         if (cs instanceof CodeToken) {
             context.setCode(cs, code, prefix.isGlobal());
         } else {
-            throw new GeneralHelpingException("TTP.Confusion", //
+            throw new HelpingException("TTP.Confusion", //
                     getClass().getName() + "#assign()");
         }
     }
@@ -129,7 +129,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
         Code code = context.getCode((Token) oToken);
 
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken",
+            throw new HelpingException("TTP.UndefinedToken",
                     ((Token) oToken).toString());
         }
 
@@ -143,7 +143,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitComment(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.Confusion", "");
+        throw new HelpingException("TTP.Confusion", "");
     }
 
     /**
@@ -167,7 +167,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
         Code code = context.getCode((Token) oToken);
 
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken",
+            throw new HelpingException("TTP.UndefinedToken",
                     ((Token) oToken).toString());
         }
 
@@ -181,7 +181,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitIgnore(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.Confusion", "");
+        throw new HelpingException("TTP.Confusion", "");
     }
 
     /**
@@ -191,7 +191,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
     public final Object visitInvalid(final Object oName, final Object oContext,
             final Object ignore) throws GeneralException {
 
-        throw new GeneralHelpingException("TTP.Confusion", "");
+        throw new HelpingException("TTP.Confusion", "");
     }
 
     /**

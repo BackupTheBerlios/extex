@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.type.glue;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.i18n.GeneralPanicException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -559,7 +559,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 toks.add(factory.newInstance(Catcode.LETTER, 'l', ""));
             }
         } else {
-            throw new GeneralPanicException("TTP.Confusion");
+            throw new PanicException("TTP.Confusion");
         }
     }
 
@@ -587,14 +587,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         Token t = source.scanNonSpace();
         if (t == null) {
-            throw new GeneralHelpingException("TTP.IllegalUnit");
+            throw new HelpingException("TTP.IllegalUnit");
         }
 
         value = scanFloat(source, t);
 
         t = source.getNonSpace();
         if (t == null) {
-            throw new GeneralHelpingException("TTP.IllegalUnit");
+            throw new HelpingException("TTP.IllegalUnit");
         }
 
         source.push(t);
@@ -645,13 +645,13 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                                                                      source)
                             / ONE;
                 } else {
-                    throw new GeneralHelpingException("TTP.IllegalUnit");
+                    throw new HelpingException("TTP.IllegalUnit");
                 }
             } else {
-                throw new GeneralHelpingException("TTP.IllegalUnit");
+                throw new HelpingException("TTP.IllegalUnit");
             }
         } else { // cf. TTP [459]
-            throw new GeneralHelpingException("TTP.IllegalUnit");
+            throw new HelpingException("TTP.IllegalUnit");
         }
 
         if (mag != 1000) {

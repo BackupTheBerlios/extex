@@ -21,13 +21,13 @@ package de.dante.extex.interpreter.primitives.info;
 
 import java.text.DecimalFormat;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -66,7 +66,7 @@ public class PrintFormat extends AbstractCode implements Theable {
     /**
      * Get the next token (not expand) and print it with some format.
      *
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -81,7 +81,7 @@ public class PrintFormat extends AbstractCode implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -101,14 +101,14 @@ public class PrintFormat extends AbstractCode implements Theable {
         if (!(cs instanceof ControlSequenceToken)) {
             char esc = (char) (context.getCount("escapechar").getValue());
             // TODO change char to UnicodeChar
-            throw new GeneralHelpingException("TTP.CantUseAfter",
+            throw new HelpingException("TTP.CantUseAfter",
                     cs.toString(), Character.toString(esc) + getName());
         }
 
         Code code = context.getCode(cs);
 
         if (code == null) {
-            throw new GeneralHelpingException("TTP.UndefinedToken", cs
+            throw new HelpingException("TTP.UndefinedToken", cs
                     .toString());
         } else if (code instanceof RealConvertible) {
             Real val = ((RealConvertible) code).convertReal(context, source);
@@ -117,7 +117,7 @@ public class PrintFormat extends AbstractCode implements Theable {
             return toks;
         } else {
             char esc = (char) (context.getCount("escapechar").getValue());
-            throw new GeneralHelpingException("TTP.CantUseAfter",
+            throw new HelpingException("TTP.CantUseAfter",
                     cs.toString(), Character.toString(esc) + getName());
         }
     }

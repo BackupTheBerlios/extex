@@ -23,12 +23,12 @@ import java.io.Serializable;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.Code;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -55,7 +55,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public interface Context extends Serializable {
 
@@ -388,10 +388,10 @@ public interface Context extends Serializable {
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      *
-     * @throws GeneralHelpingException in case of an error
+     * @throws HelpingException in case of an error
      */
     void setCatcode(UnicodeChar c, Catcode cc, boolean global)
-            throws GeneralHelpingException;
+            throws HelpingException;
 
     /**
      * Setter for the code assigned to a Token.
@@ -529,11 +529,11 @@ public interface Context extends Serializable {
      *
      * @param mag the new magnification factor
      *
-     * @throws GeneralHelpingException in case that the magnification factor is
+     * @throws HelpingException in case that the magnification factor is
      *             not in the allowed range or that the magnification has been
      *             set to a different value earlier.
      */
-    void setMagnification(long mag) throws GeneralHelpingException;
+    void setMagnification(long mag) throws HelpingException;
 
     /**
      * Setter for the mathcode of a character

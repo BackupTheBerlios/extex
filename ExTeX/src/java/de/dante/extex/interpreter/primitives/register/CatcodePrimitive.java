@@ -18,11 +18,11 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractAssignment;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
@@ -52,7 +52,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 
@@ -66,7 +66,7 @@ public class CatcodePrimitive extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -83,7 +83,7 @@ public class CatcodePrimitive extends AbstractAssignment {
             context.setCatcode(charCode, Catcode.toCatcode((int) ccNumber),
                                prefix.isGlobal());
         } catch (CatcodeException e) {
-            throw new GeneralHelpingException("TTP.CodeOutOfRange", Long
+            throw new HelpingException("TTP.CodeOutOfRange", Long
                     .toString(ccNumber), Integer.toString(Catcode
                     .getCatcodeMax()));
         }

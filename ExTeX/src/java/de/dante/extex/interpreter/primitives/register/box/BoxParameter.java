@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.primitives.register.box;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class BoxParameter extends AbstractCode implements Code, Serializable {
 
@@ -50,7 +50,7 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,

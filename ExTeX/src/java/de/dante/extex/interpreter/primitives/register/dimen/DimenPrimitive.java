@@ -19,12 +19,12 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DimenPrimitive extends AbstractDimen implements Advanceable,
         ExpandableCode, CountConvertible, DimenConvertible, Multiplyable,
@@ -83,7 +83,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -99,7 +99,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
+     * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -172,7 +172,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
         long value = Count.scanCount(context, source);
 
         if (value == 0) {
-            throw new GeneralHelpingException("TTP.ArithOverflow");
+            throw new HelpingException("TTP.ArithOverflow");
         }
 
         Dimen d = new Dimen(context.getDimen(key).getValue() / value);
@@ -182,7 +182,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

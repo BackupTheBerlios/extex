@@ -24,9 +24,9 @@ import de.dante.util.GeneralException;
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class GeneralPanicException extends GeneralException {
+public class PanicException extends GeneralException {
     /**
      * The constant <tt>PANIC_ERROR_CODE</tt> contains the return code for this
      * kind of Exception.
@@ -57,7 +57,7 @@ public class GeneralPanicException extends GeneralException {
      * @param messageTag the name of the message in the file <i>
      *            messages.properties</i>
      */
-    public GeneralPanicException(final String messageTag) {
+    public PanicException(final String messageTag) {
         super(PANIC_ERROR_CODE);
         tag = messageTag;
     }
@@ -69,7 +69,7 @@ public class GeneralPanicException extends GeneralException {
      *            messages.properties</i>
      * @param a1 the first parameter
      */
-    public GeneralPanicException(final String messageTag, final String a1) {
+    public PanicException(final String messageTag, final String a1) {
         super(PANIC_ERROR_CODE);
         tag = messageTag;
         this.arg1 = a1;
@@ -83,7 +83,7 @@ public class GeneralPanicException extends GeneralException {
      * @param a1 the first parameter
      * @param a2 the second parameter
      */
-    public GeneralPanicException(final String messageTag, final String a1,
+    public PanicException(final String messageTag, final String a1,
                                     final String a2) {
         super(PANIC_ERROR_CODE);
         tag       = messageTag;
@@ -100,7 +100,7 @@ public class GeneralPanicException extends GeneralException {
      * @param a2 the second parameter
      * @param a3 the third parameter
      */
-    public GeneralPanicException(final String messageTag, final String a1,
+    public PanicException(final String messageTag, final String a1,
                                     final String a2, final String a3) {
         super(PANIC_ERROR_CODE);
         tag       = messageTag;
@@ -114,7 +114,7 @@ public class GeneralPanicException extends GeneralException {
      *
      * @param e the cause
      */
-    public GeneralPanicException(final Throwable e) {
+    public PanicException(final Throwable e) {
         super(PANIC_ERROR_CODE);
     }
 
