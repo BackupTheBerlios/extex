@@ -37,14 +37,15 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationIOException;
 
 /**
  * This class provides an implementation for the primitive <code>\font</code>.
- * 
+ *
  * <doc name="font">
  * <h3>The Primitive <tt>\font</tt></h3>
  * <p>
- *  The primitive <tt>\font</tt> 
+ *  The primitive <tt>\font</tt>
  *  TODO documentation missing
  * </p>
  * <p>
@@ -76,7 +77,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -109,11 +110,11 @@ public class FontPrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token t = source.getControlSequence();
+        Token fontId = source.getControlSequence();
         source.getOptionalEquals();
         String fontname = scanFontName(context, source);
         int size = getFontSize(fontname);
-        Dimen fontsize = null;
+        Dimen fontSize = null;
 
         // optional parameters 'at' and 'scaled'
         // if 'at' not used, the fontname must have a size (e.g. cmr10)
@@ -121,22 +122,24 @@ public class FontPrimitive extends AbstractAssignment
             // \font\myfont=cmr12 at 15pt
             // \font\second=cmr10 at 12truept
             source.skipSpace();
-            fontsize = new Dimen(context, source);
+            fontSize = new Dimen(context, source);
+            if (fontSize.lt(Dimen.ZERO_PT)) {
+                throw new HelpingException(getLocalizer(), "TTP.ImproperAt",
+                        fontSize.toString());
+            }
+
         } else if (source.getKeyword("scaled", true)) {
             // \font\magnifiedfiverm=cmr5 scaled 2000
             source.skipSpace();
             long scale = source.scanInteger();
-            fontsize = new Dimen(Dimen.ONE * size * scale
+            if (scale <= 0) {
+                throw new HelpingException(getLocalizer(), "TTP.IllegalMag",
+                        Long.toString(scale), "32768"); //TODO gene: max ok?
+            }
+            fontSize = new Dimen(Dimen.ONE * size * scale
                     / DEFAULT_SCALE_FACTOR);
         } else {
-            // use size from the fontname
-            fontsize = new Dimen(Dimen.ONE * size);
-        }
-
-        // fontsize < 0
-        if (fontsize.lt(Dimen.ZERO_PT)) {
-            throw new HelpingException(getLocalizer(), "TTP.ImproperAt",
-                    fontsize.toString());
+            fontSize = new Dimen(Dimen.ONE * size);
         }
 
         Glue letterspaced = new Glue(0);
@@ -163,14 +166,17 @@ public class FontPrimitive extends AbstractAssignment
         FontFactory factory = context.getFontFactory();
         Font font;
         try {
-            font = factory.getInstance(fontname, fontsize, letterspaced,
+            font = factory.getInstance(fontname, fontSize, letterspaced,
                     ligatures, kerning);
+        } catch (ConfigurationIOException e) {
+            throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
+                    context.esc(fontId.getValue()), fontname);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
 
-        Code code = new FontCode(t.getValue(), font);
-        context.setCode(t, code, prefix.isGlobal());
+        Code code = new FontCode(fontId.getValue(), font);
+        context.setCode(fontId, code, prefix.isGlobal());
     }
 
     /**
