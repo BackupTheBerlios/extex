@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -37,7 +37,8 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
-import de.dante.extex.interpreter.exception.CantUseInException;
+import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.Code;
@@ -83,7 +84,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public class Max extends Moritz
         implements
@@ -122,7 +123,7 @@ public class Max extends Moritz
      * The field <tt>errorCount</tt> contains the count for the number of
      * errors already encountered.
      */
-    private int errorCount = 0; //TODO gene: make proper use of the error count
+    private int errorCount = 0;
 
     /**
      * The error handler is invoked whenever an error is detected. If none is
@@ -264,8 +265,12 @@ public class Max extends Moritz
      * @param onceMore switch to control the termination of the execution
      *
      * @throws GeneralException in case of an error
+     * @throws ErrorLimitException in case that the number of errors exceeds
+     *  the configured error limit
      */
-    private void execute(final Switch onceMore) throws GeneralException {
+    private void execute(final Switch onceMore)
+            throws GeneralException,
+                ErrorLimitException {
 
         for (Token current = getToken(context); //
         current != null && onceMore.isOn(); //
@@ -273,23 +278,18 @@ public class Max extends Moritz
             observersExpand.update(this, current);
             try {
                 current.visit(this, null, null);
-            } catch (PanicException e) {
-                throw e;
             } catch (GeneralException e) {
                 if (++errorCount > maxErrors) { // cf. TTP[82]
-                    throw new PanicException(getLocalizer(),
-                            "TTP.ErrorLimitReached", //
-                            Integer.toString(maxErrors));
+                    throw new ErrorLimitException(maxErrors);
                 } else if (errorHandler != null) {
                     if (!errorHandler.handleError(e, current, this, context)) {
-                        return;
+                        throw e;
                     }
                 } else {
                     throw e;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
-                throw new PanicException(e);
+                throw new GeneralException(e);
             }
         }
     }
@@ -298,7 +298,9 @@ public class Max extends Moritz
      * @see de.dante.extex.interpreter.TokenSource#execute(
      *      de.dante.extex.scanner.Token)
      */
-    public void execute(final Token token) throws GeneralException {
+    public void execute(final Token token)
+            throws GeneralException,
+                ErrorLimitException {
 
         observersExpand.update(this, token);
         try {
@@ -307,25 +309,23 @@ public class Max extends Moritz
             throw e;
         } catch (GeneralException e) {
             if (++errorCount > maxErrors) { // cf. TTP[82]
-                throw new PanicException(getLocalizer(),
-                        "TTP.ErrorLimitReached", //
-                        Integer.toString(maxErrors));
+                throw new ErrorLimitException(maxErrors);
             } else if (errorHandler != null) {
                 if (!errorHandler.handleError(e, token, this, context)) {
-                    return;
+                    throw e;
                 }
             } else {
                 throw e;
             }
         } catch (Exception e) {
-            throw new PanicException(e);
+            throw new GeneralException(e);
         }
     }
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#executeGroup()
      */
-    public void executeGroup() throws GeneralException {
+    public void executeGroup() throws GeneralException, ErrorLimitException {
 
         Switch b = new Switch(true);
         context.afterGroup(new SwitchObserver(b, false));
@@ -472,7 +472,10 @@ public class Max extends Moritz
     /**
      * @see de.dante.extex.interpreter.Interpreter#run()
      */
-    public void run() throws ConfigurationException, GeneralException {
+    public void run()
+            throws ConfigurationException,
+                GeneralException,
+                ErrorLimitException {
 
         if (typesetter == null) {
             throw new NoTypesetterException(getClass().getName() + "#run()");
@@ -499,18 +502,13 @@ public class Max extends Moritz
     }
 
     /**
-     * Add a token stream and start processing it.
-     *
-     * @param stream the input stream to consider
-     *
-     * @throws ConfigurationException in case of a configuration error
-     * @throws GeneralException in case of another error
-     *
-     * @see #run()
+     * @see de.dante.extex.interpreter.Interpreter#run(
+     *      de.dante.extex.scanner.stream.TokenStream)
      */
     public void run(final TokenStream stream)
             throws ConfigurationException,
-                GeneralException {
+                GeneralException,
+                ErrorLimitException {
 
         addStream(stream);
         run();
@@ -739,8 +737,8 @@ public class Max extends Moritz
     public Object visitMacroParam(final MacroParamToken token,
             final Object ignore) throws GeneralException {
 
-        throw new CantUseInException(token.toString(), typesetter
-                .getMode().toString());
+        throw new CantUseInException(token.toString(), typesetter.getMode()
+                .toString());
     }
 
     /**

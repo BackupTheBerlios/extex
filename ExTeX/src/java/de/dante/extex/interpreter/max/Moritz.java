@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,9 +27,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.EofException;
-import de.dante.extex.interpreter.exception.MissingLeftBraceException;
-import de.dante.extex.interpreter.exception.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.primitives.register.toks.ToksParameter;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
@@ -76,7 +77,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public abstract class Moritz
         implements
@@ -266,7 +267,9 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#execute(
      *      de.dante.extex.scanner.Token)
      */
-    public abstract void execute(final Token token) throws GeneralException;
+    public abstract void execute(final Token token)
+            throws GeneralException,
+                ErrorLimitException;
 
     /**
      * Tries to expand a token. If the given token is expandable then it is
@@ -334,7 +337,8 @@ public abstract class Moritz
 
         }
         push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                "inaccessible ", context.getNamespace()));
+                new UnicodeChar(context.esc("")), "inaccessible ",
+                context.getNamespace()));
         push(t);
         throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
     }
@@ -804,7 +808,7 @@ public abstract class Moritz
             try {
                 stream = getTokenStreamFactory().newInstance("");
             } catch (ConfigurationException e) {
-                throw new PanicException(e);
+                throw new GeneralException(e);
             }
         }
 
