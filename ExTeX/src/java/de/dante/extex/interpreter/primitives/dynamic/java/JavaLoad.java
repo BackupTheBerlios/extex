@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  *  The general form of this primitive is
  * <pre class="syntax">
  *   &lang;javaload&rang;
- *       &rarr; \javaload&lang;<i>tokens</i>&rang; </pre>
+ *       &rarr; \javaload&lang; <i>tokens</i>&rang; </pre>
  * </p>
  * <p>
  *  The &lang;<i>tokens</i>&rang; is any specification of a list of
@@ -52,7 +52,9 @@ import de.dante.util.GeneralException;
  *  The value of these tokens are taken and interpreted as the name of
  *  a Java class. This class is loaded if needed, instantiated, and its
  *  method
- *  {@link de.dante.extex.interpreter.primitives.dynamic.java.Loadable#init(de.dante.extex.interpreter.context.Context, de.dante.extex.typesetter.Typesetter) init()}
+ *  {@link de.dante.extex.interpreter.primitives.dynamic.java.Loadable#init(
+ *    de.dante.extex.interpreter.context.Context,
+ *    de.dante.extex.typesetter.Typesetter) init()}
  *  is invoked. The instantiation requires the empty contructor to be visible.
  * </p>
  * <p>
@@ -62,7 +64,8 @@ import de.dante.util.GeneralException;
  * </p>
  * <p>
  *  For the loading of the Java class it is necessary that this Java
- *  class implements the interface {@link Loadable Loadable}.
+ *  class implements the interface
+ *  {@link de.dante.extex.interpreter.primitives.dynamic.java.Loadable Loadable}.
  * <pre class="JavaSample">
  *   <b>package</b> my.package;
  *
@@ -88,7 +91,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class JavaLoad extends AbstractCode {
 
