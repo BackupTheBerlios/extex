@@ -53,29 +53,29 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
      * The field <tt>ZERO</tt> contains the ...
      */
-    public static GlueComponent ZERO = new GlueComponent(0);
+    public static final GlueComponent ZERO = new GlueComponent(0);
 
     /**
      * The field <tt>MINUS_ONE_FIL</tt> contains the ...
      */
-    public static GlueComponent MINUS_ONE_FIL = new GlueComponent(-1,1);
+    public static final GlueComponent MINUS_ONE_FIL = new GlueComponent(-1, 1);
 
     /**
      * The field <tt>MINUS_ONE_FIL</tt> contains the ...
      */
-    public static GlueComponent ONE_FIL = new GlueComponent(1,1);
+    public static final GlueComponent ONE_FIL = new GlueComponent(1, 1);
 
     /**
      * The field <tt>ONE_FILL</tt> contains the ...
      */
-    public static GlueComponent ONE_FILL = new GlueComponent(1,2);
+    public static final GlueComponent ONE_FILL = new GlueComponent(1, 2);
 
     /**
      * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to

@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -306,7 +306,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * number. All non-whitespace characters must have the catcode OTHER.
      *
      * @return the value of the integer scanned
-     * 
+     *
      * @throws GeneralException
      *             in case that no number is found or the end of file has been
      *             reached before an integer could be acquired

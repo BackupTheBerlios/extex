@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Lastkern extends AbstractCode
         implements
@@ -89,8 +89,8 @@ public class Lastkern extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public long convertDimen(Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         Node node = typesetter.getLastNode();
         return (node instanceof KernNode

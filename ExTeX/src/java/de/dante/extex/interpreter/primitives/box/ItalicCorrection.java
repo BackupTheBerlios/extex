@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -81,7 +81,7 @@ public class ItalicCorrection extends AbstractCode {
         Node node = typesetter.getLastNode();
 
         if (node != null) {
-            if (node instanceof CharNode ) {
+            if (node instanceof CharNode) {
                 Font font = ((LigatureNode) node).getTypesettingContext().getFont();
 //                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
 //                typesetter.add(new KernNode(ic));

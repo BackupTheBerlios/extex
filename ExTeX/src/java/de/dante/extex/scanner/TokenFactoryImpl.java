@@ -51,7 +51,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -61,7 +61,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private final class SSKey {
 
@@ -116,7 +116,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * character (U) and a namespace string (S).
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     private final class USKey {
 
@@ -439,6 +439,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * Ignored characters are simply ignored;-)
      *
+     * @param oValue ...
+     * @param oChar the requested character code
+     * @param ignore the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -450,6 +456,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
     /**
      * Invalid characters are ignored; even without any error message.
+     *
+     * @param oValue ...
+     * @param oChar the requested character code
+     * @param ignore the third argument is ignored
+     *
+     * @return <code>null</code>
      *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
@@ -650,6 +662,12 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
     /**
      * There is only one space token. It has the character code 32.
+     *
+     * @param oValue ...
+     * @param oChar the requested character code
+     * @param ignore the third argument is ignored
+     *
+     * @return the space token.
      *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,
      *      java.lang.Object, java.lang.Object)

@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -153,6 +153,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
                     n++;
                 } else if (code.isOuter()) {
                     // TODO incomplete
+                    throw new RuntimeException("unimplemented");
                 }
             }
         }

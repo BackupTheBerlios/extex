@@ -27,13 +27,13 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * distinguishable for the sake of some fine differentiations in TeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ImplicitKernNode extends KernNode {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param kern the natural size
      */
     public ImplicitKernNode(final Dimen kern) {
@@ -42,6 +42,13 @@ public class ImplicitKernNode extends KernNode {
     }
 
     /**
+     * This method puts the printable representation into the string buffer.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
+     *
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
+     *
      * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
      *      java.lang.String)
      * @see "TeX -- The Program [191]"
@@ -51,6 +58,5 @@ public class ImplicitKernNode extends KernNode {
         sb.append("kern ");
         getWidth().toString(sb);
     }
-
 
 }

@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -129,7 +129,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     /**
      * @see de.dante.extex.typesetter.NodeList#get(int)
      */
-    public Node get(int index) {
+    public Node get(final int index) {
 
         return (Node) list.get(index);
     }

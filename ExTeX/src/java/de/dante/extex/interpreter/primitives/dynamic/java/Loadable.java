@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Loadable {
 
@@ -45,6 +45,8 @@ public interface Loadable {
      *
      * @param context the processor context
      * @param typesetter the current typesetter
+     *
+     * @throws GeneralException in case of an error
      */
     void init(Context context, Typesetter typesetter) throws GeneralException;
 }

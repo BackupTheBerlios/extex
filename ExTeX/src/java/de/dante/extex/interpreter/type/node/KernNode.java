@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [155]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
@@ -52,6 +52,14 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     }
 
     /**
+     * This method returns the printable representation of this node.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
+     *
+     * @param prefix the prefix string inserted at the beginning of each line
+     *
+     * @return the printable representation of this node
+     *
      * @see de.dante.extex.interpreter.type.node.AbstractNode#toText(java.lang.String)
      * @see "TeX -- The Program [191]"
      */
@@ -63,6 +71,13 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     }
 
     /**
+     * This method puts the printable representation into the string buffer.
+     * This is meant to produce a short form only as it is used in error
+     * messages to the user.
+     *
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
+     *
      * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
      *      java.lang.String)
      * @see "TeX -- The Program [191]"

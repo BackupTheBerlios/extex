@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [143]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class LigatureNode extends CharNode implements Node {
 
@@ -54,6 +54,8 @@ public class LigatureNode extends CharNode implements Node {
      *
      * @param context the typesetting context
      * @param uc the unicode character
+     * @param n1 ...
+     * @param n2 ...
      *
      * @see "TeX -- The Program [144]"
      */

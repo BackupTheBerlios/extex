@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
@@ -45,12 +45,12 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
     /**
      * Creates a new object.
      *
-     * @param size the actual size
+     * @param theSize the actual size
      */
-    public GlueNode(final FixedGlue size) {
+    public GlueNode(final FixedGlue theSize) {
 
-        super(size.getLength());
-        this.size = new Glue(size);
+        super(theSize.getLength());
+        this.size = new Glue(theSize);
     }
 
     /**

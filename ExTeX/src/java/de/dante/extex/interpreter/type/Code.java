@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Code {
 
@@ -82,7 +82,8 @@ public interface Code {
      * @param context the interpreter context
      * @param source the token source
      * @param typesetter the typesetter
-     * @return TODO
+     *
+     * @return ...
      *
      * @throws GeneralException in case of an error
      */

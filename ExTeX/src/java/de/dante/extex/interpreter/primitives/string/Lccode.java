@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Lccode extends AbstractAssignment
         implements
@@ -102,7 +102,6 @@ public class Lccode extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        UnicodeChar ucCode = source.scanCharacterCode();
         source.push(the(context, source, typesetter));
     }
 

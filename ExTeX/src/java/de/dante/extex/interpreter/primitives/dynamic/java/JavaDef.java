@@ -116,12 +116,12 @@ import de.dante.util.GeneralException;
  * <p>
  * There is more to say about primitives like how to write expandable
  * primitives or ifs. Those details can be found in section
- * {@linkplain de.dante.extex.interpreter.primitives Primitives}. 
+ * {@linkplain de.dante.extex.interpreter.primitives Primitives}.
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class JavaDef extends AbstractCode {
 

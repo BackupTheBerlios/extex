@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.Node;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
@@ -37,10 +37,10 @@ public class ExtensionNode extends WhatsItNode implements Node {
 
     /**
      * Creates a new object.
-     * 
-     * @param theExtension
+     *
+     * @param theExtension ...
      */
-    public ExtensionNode(Extension theExtension) {
+    public ExtensionNode(final Extension theExtension) {
 
         super();
         this.extension = theExtension;
@@ -73,7 +73,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
     /**
      * @see de.dante.extex.interpreter.type.node.AbstractNode#setDepth(de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setDepth(Dimen depth) {
+    public void setDepth(final Dimen depth) {
 
         this.extension.setDepth(depth);
     }
@@ -81,7 +81,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
     /**
      * @see de.dante.extex.interpreter.type.node.AbstractNode#setHeight(de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setHeight(Dimen height) {
+    public void setHeight(final Dimen height) {
 
         this.extension.setHeight(height);
     }
@@ -89,7 +89,7 @@ public class ExtensionNode extends WhatsItNode implements Node {
     /**
      * @see de.dante.extex.interpreter.type.node.AbstractNode#setWidth(de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setWidth(Dimen width) {
+    public void setWidth(final Dimen width) {
 
         this.extension.setWidth(width);
     }

@@ -53,10 +53,10 @@ import de.dante.util.GeneralException;
  *    &lang;rule dimension&rang;
  *        &rarr; <tt>width</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
- *        &lang;dimen&rang;} 
+ *        &lang;dimen&rang;}
  *         |  <tt>height</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
- *        &lang;dimen&rang;} 
+ *        &lang;dimen&rang;}
  *         |  <tt>depth</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *        &lang;dimen&rang;}   </pre>
@@ -78,7 +78,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Hrule extends AbstractCode {
 
@@ -98,6 +98,19 @@ public class Hrule extends AbstractCode {
     }
 
     /**
+     * This method takes the first token and executes it. The result is placed
+     * on the stack. This operation might have side effects. To execute a token
+     * it might be necessary to consume further tokens.
+     *
+     * @param prefix the prefix controlling the execution
+     * @param context the interpreter context
+     * @param source the token source
+     * @param typesetter the typesetter
+     *
+     * @return <code>true</code> to initiate the clearing of the prefix
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,

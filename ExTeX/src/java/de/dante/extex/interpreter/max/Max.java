@@ -70,7 +70,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Max extends Moritz
         implements
@@ -108,7 +108,7 @@ public class Max extends Moritz
      * The field <tt>errorCount</tt> contains the count for the number of
      * errors already encountered.
      */
-    private int errorCount = 0;
+    private int errorCount = 0; //TODO: make proper use of the error count
 
     /**
      * The error handler is invoked whenever an error is detected. If none is
@@ -182,12 +182,126 @@ public class Max extends Moritz
     }
 
     /**
+     * Apply the configuration options found in the given configuration object.
+     *
+     * @param config the configuration object to consider.
+     *
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
+     */
+    private void configure(final Configuration config)
+            throws ConfigurationException,
+                GeneralException {
+
+        if (config == null) {
+            throw new ConfigurationMissingException("Interpreter");
+        }
+
+        context = new ContextFactory(config.getConfiguration("Context"))
+                .newInstance(null);
+        setContext(context);
+        context.setInteraction(Interaction.ERRORSTOPMODE, true);
+
+        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
+
+        TokenFactory tokenFactory = context.getTokenFactory();
+        Iterator iterator = config.iterator("define");
+
+        while (iterator.hasNext()) {
+            Configuration cfg = (Configuration) iterator.next();
+            String name = cfg.getAttribute("name");
+
+            if (name == null || name.equals("")) {
+                throw new ConfigurationMissingAttributeException("name", cfg);
+            }
+
+            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
+
+            if (classname == null || classname.equals("")) {
+                throw new ConfigurationMissingAttributeException(
+                        CLASS_ATTRIBUTE, cfg);
+            }
+
+            try {
+                Code code = (Code) (Class.forName(classname).getConstructor(
+                        new Class[]{String.class})
+                        .newInstance(new Object[]{name}));
+                context.setCode(tokenFactory.createToken(Catcode.ESCAPE, name,
+                        Namespace.DEFAULT_NAMESPACE), code, true);
+            } catch (IllegalArgumentException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (SecurityException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InstantiationException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (IllegalAccessException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InvocationTargetException e) {
+                Throwable c = e.getCause();
+                if (c != null && c instanceof ConfigurationException) {
+                    throw (ConfigurationException) c;
+                }
+                throw new ConfigurationInstantiationException(e);
+            } catch (NoSuchMethodException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (ClassNotFoundException e) {
+                throw new ConfigurationClassNotFoundException(classname, config);
+            }
+        }
+
+        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        context.setCount("month", calendar.get(Calendar.MONTH), true);
+        context.setCount("year", calendar.get(Calendar.YEAR), true);
+        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
+                + calendar.get(Calendar.MINUTE), true);
+
+        everyRun = config.findConfiguration("everyjob");
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Interpreter#dumpFormat()
      */
     public void dumpFormat() {
 
         // TODO unimplemented
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * This method contaons the main execution loop.
+     *
+     * @param onceMore
+     *            switch to controll the termination of the execution
+     *
+     * @throws GeneralException
+     *             in case of an error
+     */
+    private void execute(final Switch onceMore) throws GeneralException {
+
+        for (Token current = getToken(); //
+        current != null && onceMore.isOn(); //
+        current = getToken()) {
+            observersExpand.update(this, current);
+            try {
+                current.getCatcode().visit(this, current, null, null);
+            } catch (PanicException e) {
+                throw e; //TODO report the problem and terminate
+            } catch (GeneralException e) {
+                if (++errorCount > maxErrors) { // cf. TTP[82]
+                    throw new PanicException("TTP.ErrorLimitReached",
+                            Integer.toString(maxErrors));
+                } else if (errorHandler != null) {
+                    if (!errorHandler.handleError(e, current, this, context)) {
+                        return;
+                    }
+                } else {
+                    throw e;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new PanicException(e);
+            }
+        }
     }
 
     /**
@@ -198,6 +312,33 @@ public class Max extends Moritz
         Switch b = new Switch(true);
         context.afterGroup(new SwitchObserver(b, false));
         execute(b);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.max.Moritz#expand(
+     *      de.dante.extex.scanner.Token)
+     */
+    protected Token expand(final Token token) throws GeneralException {
+
+        Code code;
+        Token t = token;
+
+        while (t != null) { //TODO ???
+            if (t instanceof CodeToken) {
+                observersMacro.update(this, t);
+                code = context.getCode(t);
+            } else {
+                return t;
+            }
+            if (code instanceof ExpandableCode) {
+                ((ExpandableCode) code).expand(prefix, context, this,
+                        typesetter);
+            } else {
+                return t;
+            }
+            t = getToken();
+        }
+        return t;
     }
 
     /**
@@ -345,6 +486,16 @@ public class Max extends Moritz
     }
 
     /**
+     * Setter for calendar.
+     *
+     * @param theCalendar the calendar to set.
+     */
+    public void setCalendar(final Calendar theCalendar) {
+
+        this.calendar = theCalendar;
+    }
+
+    /**
      * Setter for the error handler. The value of <code>null</code> can be
      * used to delete the error handler currently set.
      *
@@ -379,11 +530,9 @@ public class Max extends Moritz
     /**
      * Setter for the interaction mode. The interaction mode is set globally.
      *
-     * @param interaction
-     *            the interaction mode
+     * @param interaction the interaction mode
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      */
     public void setInteraction(final Interaction interaction)
             throws GeneralException {
@@ -400,6 +549,18 @@ public class Max extends Moritz
     }
 
     /**
+     * @see de.dante.extex.interpreter.max.Moritz#setTokenStreamFactory(
+     *      de.dante.extex.scanner.stream.TokenStreamFactory)
+     */
+    public void setTokenStreamFactory(final TokenStreamFactory factory)
+            throws ConfigurationException {
+
+        super.setTokenStreamFactory(factory);
+        context.setStandardTokenStream(factory
+                .newInstance(new InputStreamReader(System.in)));
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Interpreter#setTypesetter(
      *      de.dante.extex.typesetter.Typesetter)
      */
@@ -409,6 +570,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on an active token.
+     * In TeX this is e.g. ~.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -428,13 +600,25 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a comment token.
+     * In TeX this normally is a %.
+     * <p>
      * A comment is ignored. This should never happen since comments are eaten
      * up in the scanner already.
+     * </p>
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
-    public Object visitComment(final Object arg1, final Object ignore,
+    public Object visitComment(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
         throw new PanicException(Messages.format("TTP.Confusion",
@@ -442,6 +626,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a cr token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -453,6 +647,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on an escape token.
+     * In TeX this normally means a control sequence.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -473,6 +678,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on an ignore token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -483,6 +698,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on an invalid token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -494,6 +719,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a left brace token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      * @see "TeX -- The Program [1063]"
@@ -511,6 +746,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a letter token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -523,6 +768,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a macro parameter token.
+     * In TeX this normally is a #.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
@@ -534,6 +790,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a math shift token.
+     * In TeX this normally is a $.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see "TeX -- The Program [1137]"
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
@@ -561,6 +828,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on an other token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -573,6 +850,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a right brace token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see "TeX -- The Program [1067]"
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
@@ -585,6 +872,16 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a space token.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -596,6 +893,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a sub mark token.
+     * In TeX this normally is a _.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -612,6 +920,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a sup mark token.
+     * In TeX this normally is a ^.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -628,6 +947,17 @@ public class Max extends Moritz
     }
 
     /**
+     * This visit method is invoked on a tab mark token.
+     * In TeX this normally is a &.
+     *
+     * @param oToken the first argument to pass is the token to expand.
+     * @param ignore the second argument is ignored
+     * @param ignore2 the third argument is ignored
+     *
+     * @return <code>null</code>
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
@@ -637,161 +967,4 @@ public class Max extends Moritz
         //TODO unimplemented
         throw new GeneralException("unimplemented");
     }
-
-    /**
-     * Apply the configuration options found in the given configuration object.
-     *
-     * @param config
-     *            the configuration object to consider.
-     *
-     * @throws ConfigurationException
-     *             in case of a configuration error
-     * @throws GeneralException
-     *             in case of another error
-     */
-    private void configure(final Configuration config)
-            throws ConfigurationException,
-                GeneralException {
-
-        if (config == null) {
-            throw new ConfigurationMissingException("Interpreter");
-        }
-
-        context = new ContextFactory(config.getConfiguration("Context"))
-                .newInstance(null);
-        setContext(context);
-        context.setInteraction(Interaction.ERRORSTOPMODE, true);
-
-        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
-
-        TokenFactory tokenFactory = context.getTokenFactory();
-        Iterator iterator = config.iterator("define");
-
-        while (iterator.hasNext()) {
-            Configuration cfg = (Configuration) iterator.next();
-            String name = cfg.getAttribute("name");
-
-            if (name == null || name.equals("")) {
-                throw new ConfigurationMissingAttributeException("name", cfg);
-            }
-
-            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
-
-            if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException(
-                        CLASS_ATTRIBUTE, cfg);
-            }
-
-            try {
-                Code code = (Code) (Class.forName(classname).getConstructor(
-                        new Class[]{String.class})
-                        .newInstance(new Object[]{name}));
-                context.setCode(tokenFactory.createToken(Catcode.ESCAPE, name,
-                        Namespace.DEFAULT_NAMESPACE), code, true);
-            } catch (IllegalArgumentException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (SecurityException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InstantiationException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (IllegalAccessException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InvocationTargetException e) {
-                Throwable c = e.getCause();
-                if (c != null && c instanceof ConfigurationException) {
-                    throw (ConfigurationException) c;
-                }
-                throw new ConfigurationInstantiationException(e);
-            } catch (NoSuchMethodException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname, config);
-            }
-        }
-
-        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-        context.setCount("month", calendar.get(Calendar.MONTH), true);
-        context.setCount("year", calendar.get(Calendar.YEAR), true);
-        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
-                + calendar.get(Calendar.MINUTE), true);
-
-        everyRun = config.findConfiguration("everyjob");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.max.Moritz#setTokenStreamFactory(
-     *      de.dante.extex.scanner.stream.TokenStreamFactory)
-     */
-    public void setTokenStreamFactory(final TokenStreamFactory factory)
-            throws ConfigurationException {
-
-        super.setTokenStreamFactory(factory);
-        context.setStandardTokenStream(factory
-                .newInstance(new InputStreamReader(System.in)));
-    }
-
-    /**
-     * This method contaons the main execution loop.
-     *
-     * @param onceMore
-     *            switch to controll the termination of the execution
-     *
-     * @throws GeneralException
-     *             in case of an error
-     */
-    private void execute(final Switch onceMore) throws GeneralException {
-
-        for (Token current = getToken(); //
-        current != null && onceMore.isOn(); //
-        current = getToken()) {
-            observersExpand.update(this, current);
-            try {
-                current.getCatcode().visit(this, current, null, null);
-            } catch (PanicException e) {
-                throw e; //TODO report the problem and terminate
-            } catch (GeneralException e) {
-                if (++errorCount > maxErrors) { // cf. TTP[82]
-                    throw new PanicException("TTP.ErrorLimitReached",
-                            Integer.toString(maxErrors));
-                } else if (errorHandler != null) {
-                    if (!errorHandler.handleError(e, current, this, context)) {
-                        return;
-                    }
-                } else {
-                    throw e;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new PanicException(e);
-            }
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.max.Moritz#expand(
-     *      de.dante.extex.scanner.Token)
-     */
-    protected Token expand(final Token token) throws GeneralException {
-
-        Code code;
-        Token t = token;
-        //System.err.println("expand " + t.toString());
-        while (t != null) { //TODO ???
-            if (t instanceof CodeToken) {
-                observersMacro.update(this, t);
-                code = context.getCode(t);
-            } else {
-                return t;
-            }
-            if (code instanceof ExpandableCode) {
-                ((ExpandableCode) code).expand(prefix, context, this,
-                        typesetter);
-            } else {
-                return t;
-            }
-            t = getToken();
-        }
-        return t;
-    }
-
 }

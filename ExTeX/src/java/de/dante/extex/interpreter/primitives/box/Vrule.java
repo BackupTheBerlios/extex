@@ -52,10 +52,10 @@ import de.dante.util.GeneralException;
  *    &lang;rule dimension&rang;
  *        &rarr; <tt>width</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
- *        &lang;dimen&rang;} 
+ *        &lang;dimen&rang;}
  *         |  <tt>height</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
- *        &lang;dimen&rang;} 
+ *        &lang;dimen&rang;}
  *         |  <tt>depth</tt> {@linkplain
  *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
  *        &lang;dimen&rang;}   </pre>
@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Vrule extends AbstractCode {
 

@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class DocumentWriterFactory {
 
@@ -75,7 +75,8 @@ public class DocumentWriterFactory {
      *
      * @throws ConfigurationException in case of an error
      */
-    public DocumentWriter newInstance(final String type, final DocumentWriterOptions options)
+    public DocumentWriter newInstance(final String type,
+            final DocumentWriterOptions options)
             throws ConfigurationException {
 
         Configuration cfg = config.findConfiguration(type != null ? type : "");

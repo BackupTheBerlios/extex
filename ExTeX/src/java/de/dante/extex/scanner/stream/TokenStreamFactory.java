@@ -119,7 +119,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class TokenStreamFactory implements Observable {
 
@@ -132,7 +132,7 @@ public class TokenStreamFactory implements Observable {
     /**
      * The field <tt>bufferSize</tt> contains the desired size for the input
      * buffer. Negative values mean that the default size should be used. If the
-     * vakue is zero then nol buffer at all should be used.
+     * vakue is zero then no buffer at all should be used.
      */
     private int bufferSize = -1;
 
@@ -261,7 +261,6 @@ public class TokenStreamFactory implements Observable {
 
         TokenStream stream;
         try {
-
             stream = (TokenStream) readerConstructor.newInstance(new Object[]{
                     configuration, options, reader, Boolean.FALSE, "*"});
 
@@ -295,7 +294,6 @@ public class TokenStreamFactory implements Observable {
 
         TokenStream stream;
         try {
-
             stream = (TokenStream) stringConstructor.newInstance(new Object[]{
                     configuration, options, line, "#"});
 
