@@ -23,9 +23,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.node.CharNode;
-import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -53,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -81,15 +78,17 @@ public class ItalicCorrection extends AbstractCode {
         Node node = typesetter.getLastNode();
 
         if (node != null) {
+            /*
             if (node instanceof CharNode) {
                 Font font = ((LigatureNode) node).getTypesettingContext().getFont();
-//                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
-//                typesetter.add(new KernNode(ic));
+                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
+                typesetter.add(new KernNode(ic));
             } else if (node instanceof LigatureNode) {
                 Font font = ((LigatureNode) node).getTypesettingContext().getFont();
-//                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
-//                typesetter.add(new KernNode(ic));
+                Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
+                typesetter.add(new KernNode(ic));
             }
+            */
             throw new RuntimeException("unimplemented");
         }
         return true;

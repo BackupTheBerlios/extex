@@ -70,7 +70,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Max extends Moritz
         implements
@@ -80,17 +80,23 @@ public class Max extends Moritz
             CatcodeVisitor {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the
-     * atrtribute to be used to extract the class name foprm the configuration.
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
+     * to be used to extract the class name foprm the configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
     /**
      * The constant <tt>MAX_ERRORS_DEFAULT</tt> contains the default value for
-     * maximal allowed number of errors after which the ExTeX run is
-     * automatically terminated.
+     * maximal allowed number of errors after which the ExTeX run is terminated
+     * automatically.
      */
     private static final int MAX_ERRORS_DEFAULT = 100;
+
+    /**
+     * The constant <tt>MINUTES_PER_HOUR</tt> contains the number of minutes
+     * per hour.
+     */
+    private static final int MINUTES_PER_HOUR = 60;
 
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
@@ -252,8 +258,8 @@ public class Max extends Moritz
         context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
         context.setCount("month", calendar.get(Calendar.MONTH), true);
         context.setCount("year", calendar.get(Calendar.YEAR), true);
-        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
-                + calendar.get(Calendar.MINUTE), true);
+        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
 
         everyRun = config.findConfiguration("everyjob");
     }
@@ -288,8 +294,8 @@ public class Max extends Moritz
                 throw e; //TODO report the problem and terminate
             } catch (GeneralException e) {
                 if (++errorCount > maxErrors) { // cf. TTP[82]
-                    throw new PanicException("TTP.ErrorLimitReached",
-                            Integer.toString(maxErrors));
+                    throw new PanicException("TTP.ErrorLimitReached", Integer
+                            .toString(maxErrors));
                 } else if (errorHandler != null) {
                     if (!errorHandler.handleError(e, current, this, context)) {
                         return;
@@ -621,8 +627,8 @@ public class Max extends Moritz
     public Object visitComment(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        throw new PanicException(Messages.format("TTP.Confusion",
-                getClass().getName()));
+        throw new PanicException(Messages.format("TTP.Confusion", getClass()
+                .getName()));
     }
 
     /**
@@ -685,8 +691,6 @@ public class Max extends Moritz
      * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
-     *
-     * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
@@ -785,8 +789,8 @@ public class Max extends Moritz
     public Object visitMacroParam(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn", ((Token) oToken)
-                .toString(), typesetter.getMode().toString());
+        throw new HelpingException("TTP.CantUseIn",
+                ((Token) oToken).toString(), typesetter.getMode().toString());
     }
 
     /**
