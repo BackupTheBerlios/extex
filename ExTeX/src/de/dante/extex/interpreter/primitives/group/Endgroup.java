@@ -29,8 +29,27 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\endgroup</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\endgroup</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\endgroup</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \begingroup 123 \endgroup  </pre>
+ * </p>
+ * </doc>
+ *
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Endgroup extends AbstractCode {
 

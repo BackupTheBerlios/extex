@@ -32,7 +32,13 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\divide</code>.
- * The real work is done by the object implementing the Advanceable interface.
+ *
+ * <doc name="divide">
+ * <h3>The Primitive <tt>\divide</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
  *
  * Example
  * <pre>
@@ -41,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Divide extends AbstractAssignment {
     /**
@@ -54,7 +60,8 @@ public class Divide extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

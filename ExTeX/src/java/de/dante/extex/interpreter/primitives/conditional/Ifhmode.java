@@ -27,8 +27,15 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive
  * <code>\ifhmode</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\ifhmode</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Ifhmode extends AbstractIf {
     /**

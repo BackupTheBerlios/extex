@@ -29,8 +29,25 @@ import de.dante.extex.typesetter.Typesetter;
  * It does simply nothing, but as a side effect the prefix <i>OUTER</i> is
  * added to the prefixes.
  *
+ * <doc>
+ * <h3>The Prefix Primitive <tt>\outer</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\outer ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \outer\def#1{--#1--}  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Outer extends AbstractCode {
     /**

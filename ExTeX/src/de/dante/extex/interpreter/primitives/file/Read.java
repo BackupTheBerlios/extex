@@ -34,13 +34,20 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\read</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\read</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * Example
  * <pre>
  * \read3 to \abc
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Read extends AbstractCode {
 

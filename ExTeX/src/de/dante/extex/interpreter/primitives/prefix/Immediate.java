@@ -30,8 +30,25 @@ import de.dante.extex.typesetter.Typesetter;
  * It does simply nothing, but as a side effect the prefix <i>IMMEDIATE</i> is
  * added to the prefixes.
  *
+ * <doc>
+ * <h3>The Prefix Primitive <tt>\immediate</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\immediate ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \immediate\write1{abc}  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Immediate extends AbstractCode {
     /**

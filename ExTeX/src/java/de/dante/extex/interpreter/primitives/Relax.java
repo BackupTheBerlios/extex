@@ -22,10 +22,30 @@ import de.dante.extex.interpreter.AbstractCode;
 
 /**
  * This class provides an implementation for the primitive <code>\relax</code>.
- * It does simply nothing, but as a side effect all prefixes are zeroed.
+ *
+ * <doc name="relax">
+ * <h3>The Primitive <tt>\relax</tt></h3>
+ * <p>
+ *  This primitive simply does nothing. It acts as a no-op for the TeX macro
+ *  language.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\relax</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \relax  </pre>
+ *  <pre class="TeXSample">
+ *    \the\count123\relax456  </pre>
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Relax extends AbstractCode {
 

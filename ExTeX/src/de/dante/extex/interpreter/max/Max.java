@@ -67,7 +67,7 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Max extends Moritz implements Interpreter, TokenSource,
         Observable, CatcodeVisitor {
@@ -673,7 +673,7 @@ public class Max extends Moritz implements Interpreter, TokenSource,
                 Code code = (Code) (Class.forName(classname)
                         .getConstructor(new Class[]{String.class})
                         .newInstance(new Object[]{name}));
-                code.set(context, cfg.getValue());
+//                code.set(context, new StringSource(,cfg.getValue()));
                 context.setCode(tokenFactory.newInstance(Catcode.ESCAPE, name, NAMESPACE),
                                 code, true);
             } catch (IllegalArgumentException e) {

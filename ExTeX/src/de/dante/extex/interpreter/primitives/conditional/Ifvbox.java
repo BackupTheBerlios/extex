@@ -27,8 +27,15 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifvbox</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\ifvbox</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Ifvbox extends AbstractIf {
     /**

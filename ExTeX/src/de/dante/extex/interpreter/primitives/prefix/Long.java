@@ -29,8 +29,25 @@ import de.dante.extex.typesetter.Typesetter;
  * It does simply nothing, but as a side effect the prefix <i>LONG</i> is
  * added to the prefixes.
  *
+ * <doc>
+ * <h3>The Prefix Primitive <tt>\long</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\long ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \long\def#1{--#1--}  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Long extends AbstractCode {
     /**

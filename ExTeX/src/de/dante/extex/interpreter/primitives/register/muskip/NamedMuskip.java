@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedMuskip extends AbstractAssignment {
     /**
@@ -75,22 +75,9 @@ public class NamedMuskip extends AbstractAssignment {
         throws GeneralException {
 
         String key = getKey(source);
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         Muskip skip = new Muskip(context, source);
         context.setMuskip(key, skip, prefix.isGlobal());
-    }
-
-    /**
-     * ...
-     *
-     * @param context the interpreter context
-     * @param value ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void set(final Context context, final String value)
-             throws GeneralException {
-                 //TODO
     }
 
 }

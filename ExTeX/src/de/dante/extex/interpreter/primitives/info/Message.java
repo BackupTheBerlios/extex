@@ -29,9 +29,16 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\message</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\message</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Message extends AbstractCode {
 

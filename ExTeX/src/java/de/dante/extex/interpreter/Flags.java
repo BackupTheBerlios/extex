@@ -20,10 +20,55 @@ package de.dante.extex.interpreter;
 
 
 /**
- * ...
+ * This interface describes a set of named flags.
+ * 
+ * <p>
+ * The flags correspond largely to the prefix macros like <tt>\global</tt>
+ * The following flags are known:
+ * </p>
+ * <table>
+ *  <tr>
+ *   <th>Flag</th>
+ *   <th>Macro</th>
+ *   <th>Description</th>
+ *  </tr>
+ *  <tr>
+ *   <td><b>expanded</b></td>
+ *   <td></td>
+ *   <td>The expanded flag is used internally to signal that expansion should
+ *    be used for a definition. This is applied in <tt>\edef</tt> and
+ *    <tt>\xdef</tt>.
+ *   </td>
+ *  </tr>
+ *  <tr>
+ *   <td><b>global</b></td>
+ *   <td><tt>\global</tt></td>
+ *   <td>The global flag controls the sope of assignments like <tt>\def</tt>s.
+ *   </td>
+ *  </tr>
+ *  <tr>
+ *   <td><b>immediate</b></td>
+ *   <td><tt>\immediate</tt></td>
+ *   <td>The immediate flag controls the delay of writing operations. This is
+ *    used in <tt>\write</tt> and friends.
+ *   </td>
+ *  </tr>
+ *  <tr>
+ *   <td><b>long</b></td>
+ *   <td><tt>\long</tt></td>
+ *   <td>The long flag controls the matching of macro parameters.
+ *   </td>
+ *  </tr>
+ *  <tr>
+ *   <td><b>outer</b></td>
+ *   <td><tt>\outer</tt></td>
+ *   <td>The outer flag controls ...
+ *   </td>
+ *  </tr>
+ * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Flags {
 

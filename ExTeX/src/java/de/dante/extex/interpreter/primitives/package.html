@@ -1,6 +1,6 @@
 <html>
  <head>
-  <title>primitives: The Built-in Code</title>
+  <title>ExTeX primitives: The Built-in Code</title>
   <meta name="copyright" content="
    Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
 
@@ -17,9 +17,9 @@
    You should have received a copy of the GNU Lesser General Public License
    along with this library; if not, write to the Free Software Foundation,
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
-  " />
+   " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.5 $" />
+  <meta name="version" content="$Revision: 1.6 $" />
  </head>
  <body>
   This package contains classes for the primitives which are mapped to
@@ -45,7 +45,7 @@
    a left-hand-side context of the expansion. This is the case
    whenever the next top-level macro is treated. You can consider for
    example the treatment of the macro <tt>\def</tt> as such a case:
-   <pre style="background:#eeffff;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="TeXSample">
      \def\abc{123}</pre>
    In this example <tt>\def</tt> is an executable primitive.
   </p>
@@ -61,7 +61,7 @@
    In the simplest case only a constructor with one String argument and
    the method <tt>execute()</tt> has to be defined. Such an empty
    frame can be seen in the following example:
-  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="JavaSample">
     <b>package</b> my.package;
 
     <b>import</b> de.dante.extex.interpreter.AbstractCode;
@@ -107,7 +107,7 @@
     primitive yourself.
     </p>
    </dd>
-   <dt><tt><b>{@link de.dante.extex.interpreter.contect.Context Context}</b> context</tt></dt>
+   <dt><tt><b>{@link de.dante.extex.interpreter.context.Context Context}</b> context</tt></dt>
    <dd>The context provides reading and writing access to the data
     stored in the processor. This information is the memory. It is
     written to file when dumping a format. Refer to the documentation
@@ -196,7 +196,7 @@
    provided. This class defines the method <tt>execute()</tt>
    appropriately. The only task left is to overwrite the method
    <tt>assign()</tt> to perform the assignment.
-  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="JavaSample">
     <b>package</b> my.package;
 
     <b>import</b> de.dante.extex.interpreter.AbstractAssignment;
@@ -241,7 +241,7 @@
    To implement an expandable primitive it is sufficient to declare
    the interface for the class and implement the method
    <tt>expand()</tt>. This is sketched in the following example:
-  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="JavaSample">
     <b>package</b> my.package;
 
     <b>import</b> de.dante.extex.interpreter.AbstractCode;
@@ -299,7 +299,7 @@
    <tt>conditional()</tt> which computes whether the then or the else
    branch should be considered relevant. This is shown in the
    following example:
-  <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+   <pre class="JavaSample">
     <b>package</b> my.package;
 
     <b>import</b> de.dante.extex.interpreter.primitives.conditional.AbstractIf;

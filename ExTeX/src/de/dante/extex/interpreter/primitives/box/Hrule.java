@@ -31,8 +31,45 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
+ * <doc name="hrule">
+ * <h3>The Primitive <tt>\hrule</tt></h3>
+ * <p>
+ *  This primitive produces a horizontal rule. This is a rectangular area of
+ *  specified dimensions. If not overwritten the width and depth are 0pt and
+ *  the height is 0.4&nbsp;pt (26214&nbsp;sp).
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\hrule</tt>&lang;rule specification&rang;
+ *
+ *    &lang;rule specification&rang;
+ *        := {@linkplain de.dante.extex.interpreter.TokenSource#skipSpace() &lang;optional spaces&rang;}
+ *         |  &lang;rule dimension&rang; &lang;rule specification&rang;
+ *
+ *    &lang;rule dimension&rang;
+ *        := <tt>width</tt> &lang;dimen&rang;
+ *         |  <tt>height</tt> &lang;dimen&rang;
+ *         |  <tt>depth</tt> &lang;dimen&rang;  </pre>
+ * </p>
+ * <p>
+ *  The color from the typographic context is taken as foregroud color for the
+ *  rule. The default color is black.
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \hrule  </pre>
+ *  <pre class="TeXSample">
+ *    \hrule width 2pt  </pre>
+ *  <pre class="TeXSample">
+ *    \hrule width 2pt depth 3mm height \dimen4  </pre>
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Hrule extends AbstractCode {
 

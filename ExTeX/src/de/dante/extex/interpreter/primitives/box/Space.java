@@ -30,8 +30,30 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ </code>.
  *
+ * <doc name="space">
+ * <h3>The Primitive <tt>\ </tt></h3>
+ * <p>
+ *  This primitive inserts an explicite space into the current list. This has
+ *  an effect in horizontal or restricted horizontal modes only. In other modes
+ *  it has no effect.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ </tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    123\ 456  </pre>
+ *  <pre class="TeXSample">
+ *    123\ \  456  </pre>
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Space extends AbstractCode {
 

@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class AbstractCode implements Code {
 
@@ -51,30 +51,6 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#isIf()
-     */
-    public boolean isIf() {
-
-        return false;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Code#setName(java.lang.String)
-     */
-    public void setName(final String theName) {
-
-        this.name = theName;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Code#getName()
-     */
-    public String getName() {
-
-        return name;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -89,16 +65,27 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * In general this method is simply a noop. Classes which need this feature
-     * can overwrite this method.
-     *
-     * @see de.dante.extex.interpreter.Code#set(
-     *      de.dante.extex.interpreter.context.Context, java.lang.String)
+     * @see de.dante.extex.interpreter.Code#getName()
      */
-    public void set(final Context context, final String value)
-            throws GeneralException {
+    public String getName() {
 
-        // nothing to do
+        return name;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Code#isIf()
+     */
+    public boolean isIf() {
+
+        return false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Code#setName(java.lang.String)
+     */
+    public void setName(final String theName) {
+
+        this.name = theName;
     }
 
     /**

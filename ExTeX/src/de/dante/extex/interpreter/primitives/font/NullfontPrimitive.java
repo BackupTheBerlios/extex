@@ -28,10 +28,28 @@ import de.dante.util.GeneralException;
 
 
 /**
- * ...
+ * This class provides an implementation for the primitive
+ * <code>\nullfont</code>.
+ *
+ * <doc>
+ * <h3>The Primitive <tt>\nullfont</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\nullfont</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \font123=\nullfont  </pre>
+ * </p>
+ * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements FontConvertible {

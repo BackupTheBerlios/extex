@@ -36,7 +36,22 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ht</code>.
  *
- * Example
+  * <doc>
+ * <h3>The Primitive <tt>\ht</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ht</tt> &lang;8-bit number&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ht42  </pre>
+ * </p>
+ * </doc>
  *
  * <pre>
  *  \advance\dimen12 \ht0
@@ -44,7 +59,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     CountConvertible, DimenConvertible {
@@ -70,7 +85,7 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
         throws GeneralException {
 
         Box box = context.getBox(getKey(source, context.getNamespace()));
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         Dimen d = new Dimen(context, source);
 
         if (box != null) {

@@ -29,8 +29,15 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\else</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\else</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Else extends AbstractIf {
 
@@ -40,6 +47,7 @@ public class Else extends AbstractIf {
      * @param name the name for debugging
      */
     public Else(final String name) {
+
         super(name);
     }
 
@@ -55,15 +63,31 @@ public class Else extends AbstractIf {
 
         Conditional cond = context.popConditional();
 
-        if (cond == null) {
+        if (cond == null || skipToElseOrFi(context, source)) {
             throw new GeneralHelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
-        } else if (skipToElseOrFi(context, source)) {
-                throw new GeneralHelpingException("TTP.ExtraOrElseFi",
-                        printableControlSequence(context));
         }
 
         prefix.clear();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        Conditional cond = context.popConditional();
+
+        if (cond == null || skipToElseOrFi(context, source)) {
+            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+                    printableControlSequence(context));
+        }
     }
 
     /**
@@ -86,6 +110,7 @@ public class Else extends AbstractIf {
      * @see de.dante.extex.interpreter.Code#isIf()
      */
     public boolean isIf() {
+
         return false;
     }
 

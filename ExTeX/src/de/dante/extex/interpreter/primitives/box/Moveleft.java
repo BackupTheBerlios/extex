@@ -35,6 +35,14 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\moveleft</code>.
+ *
+ * <doc name="moveleft">
+ * <h3>The Primitive <tt>\moveleft</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * <p>
  * Examples
  * </p>
@@ -45,7 +53,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Moveleft extends AbstractCode implements Boxable {
 

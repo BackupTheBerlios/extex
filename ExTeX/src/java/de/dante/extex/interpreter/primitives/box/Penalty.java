@@ -31,8 +31,31 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\penalty</code>.
  *
+ * <doc name="penalty">
+ * <h3>The Primitive <tt>\penalty</tt></h3>
+ * <p>
+ *  This primitive inserts penalty into the current node list. In vertical mode
+ *  the page builder is also invoked.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\penalty</tt> &lang;number&rang;  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \penalty 123  </pre>
+ *  <pre class="TeXSample">
+ *    \penalty -456  </pre>
+ *  <pre class="TeXSample">
+ *    \penalty -\count254  </pre>
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Penalty extends AbstractCode {
 

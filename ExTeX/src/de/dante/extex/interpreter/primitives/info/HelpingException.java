@@ -21,10 +21,17 @@ package de.dante.extex.interpreter.primitives.info;
 import de.dante.extex.i18n.GeneralHelpingException;
 
 /**
- * ...
+ * This class provides an Exception with the possibility to provide additional
+ * help on the error encoutered. Thus it has two levels of information: the
+ * first level is the message and the second level is the additional help.
+ * <p>
+ * In contrast to
+ * {@link de.dante.extex.i18n.GeneralHelpingException GeneralHelpingException}
+ * the messages are not mapped.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HelpingException extends GeneralHelpingException {
 

@@ -30,7 +30,29 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\countdef</code>.
  *
- * <p>Example</p>
+ * <doc>
+ * <h3>The Primitive <tt>\countdef</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\countdef</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \countdef\abc=45  </pre>
+ *  <pre class="TeXSample">
+ *    \countdef\abc 33  </pre>
+ * </p>
+ * </doc>
+ *
  * <pre>
  * \countdef\abc=45
  * \countdef\abc 54
@@ -53,7 +75,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "count#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Countdef extends AbstractCount {
 
@@ -79,7 +101,7 @@ public class Countdef extends AbstractCount {
             throws GeneralException {
 
         Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String key = getKey(source);
         context.setCode(cs, new NamedCount(key), prefix.isGlobal());
     }

@@ -30,8 +30,27 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\endcsname</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\endcsname</tt></h3>
+ * <p>
+ *  The macro <tt>\endcsname</tt> is used in combination with the macro
+ *  <tt>\csname</tt> only. Whenever a <tt>\endcsname</tt> is seen alone it must
+ *  be an error. Thus thus primitive produces an error message only.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\endscsname</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \csname abc\endcsname  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Endcsname extends AbstractCode {
     /**

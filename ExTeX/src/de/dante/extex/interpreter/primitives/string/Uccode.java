@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive <code>\ uccode</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {
@@ -61,7 +61,7 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
             throws GeneralException {
 
         UnicodeChar ucCode = source.scanCharacterCode();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         UnicodeChar lcCode = source.scanCharacterCode();
         context.setUccode(ucCode, lcCode);
     }

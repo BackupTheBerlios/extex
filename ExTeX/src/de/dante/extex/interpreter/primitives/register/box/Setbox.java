@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Setbox extends NamedBox implements Code, Serializable {
 
@@ -47,7 +47,7 @@ public class Setbox extends NamedBox implements Code, Serializable {
      * Return the key (the number) for the box register.
      *
      * @param source the source for new tokens
-     * @param namespace the namespace to use 
+     * @param namespace the namespace to use
      *
      * @return the key for the box register
      *

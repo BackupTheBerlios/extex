@@ -54,7 +54,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -312,7 +312,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
                 count = next.getCount(name);
             } else {
                 count = new Count(0);
-                setCount(name, count);
+                countMap.put(name, count);
             }
         }
 
@@ -614,16 +614,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setCount(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.count.Count)
-     */
-    public void setCount(final String name, final Count value) {
-
-        countMap.put(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
-     *      java.lang.String,
      *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setCount(final String name, final Count value,
@@ -752,16 +742,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(
      *      java.lang.String,
-     *         de.dante.extex.interpreter.type.muskip.Muskip)
-     */
-    public void setMuskip(final String name, final Muskip value) {
-
-        muskipMap.put(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(
-     *      java.lang.String,
      *      de.dante.extex.interpreter.type.muskip.Muskip, boolean)
      */
     public void setMuskip(final String name, final Muskip value,
@@ -772,16 +752,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         if (global && next != null) {
             next.setMuskip(name, value, global);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.OutFile)
-     */
-    public void setOutFile(final String name, final OutFile file) {
-
-        outFileMap.put(name, file);
     }
 
     /**
@@ -817,16 +787,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setSkip(
      *      java.lang.String,
-     *         de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public void setSkip(final String name, final Glue value) {
-
-        skipMap.put(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setSkip(
-     *      java.lang.String,
      *      de.dante.extex.interpreter.type.glue.Glue, boolean)
      */
     public void setSkip(final String name, final Glue value,
@@ -837,16 +797,6 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         if (global && next != null) {
             next.setSkip(name, value, global);
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setToks(
-     *      java.lang.String,
-     *         de.dante.extex.interpreter.type.tokens.Tokens)
-     */
-    public void setToks(final String name, final Tokens value) {
-
-        toksMap.put(name, value);
     }
 
     /**

@@ -32,14 +32,32 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive
  * <code>\chardef</code>.
  *
- * <p>Example</p>
- * <pre>
- * \chardef\abc=45
- * \chardef\abc 54
- * </pre>
+ * <doc>
+ * <h3>The Primitive <tt>\chardef</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\chardef</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \chardef\abc=45  </pre>
+ *  <pre class="TeXSample">
+ *    \chardef\abc 33  </pre>
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Chardef extends AbstractAssignment {
 
@@ -65,7 +83,7 @@ public class Chardef extends AbstractAssignment {
             throws GeneralException {
 
         Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         UnicodeChar uc = source.scanCharacterCode();
         context.setCode(cs, new CharCode("", uc), prefix.isGlobal());
     }

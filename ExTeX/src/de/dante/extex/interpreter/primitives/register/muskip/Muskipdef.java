@@ -31,11 +31,28 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\muskipdef</code>.
  *
- * <p>Example</p>
- * <pre>
- * \muskipdef\abc=45
- * \muskipdef\abc 54
- * </pre>
+ * <doc>
+ * <h3>The Primitive <tt>\muskipdef</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\muskipdef</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \muskipdef\abc=45  </pre>
+ *  <pre class="TeXSample">
+ *    \muskipdef\abc 33  </pre>
+ * </p>
+ * </doc>
  *
  *
  * <h3>Possible Extension</h3>
@@ -51,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "muskip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Muskipdef extends AbstractAssignment {
 
@@ -77,7 +94,7 @@ public class Muskipdef extends AbstractAssignment {
             throws GeneralException {
 
         Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         //todo: unfortunately we have to know the internal format of the key:-(
         String key = "muskip#"
                      + Long.toString(Count.scanCount(context, source));

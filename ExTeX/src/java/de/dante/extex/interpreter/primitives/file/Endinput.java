@@ -28,8 +28,13 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive
  * <code>\endinput</code>.
- * It sets the named count register to the value given,
- * and as a side effect all prefixes are zeroed.
+ *
+ * <doc>
+ * <h3>The Primitive <tt>\endinput</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
  *
  * Example
  * <pre>
@@ -37,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Endinput extends AbstractCode {
 

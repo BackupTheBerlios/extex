@@ -19,8 +19,6 @@
 package de.dante.extex.interpreter.primitives.register.toks;
 
 import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.util.GeneralException;
 
 /**
@@ -35,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NamedToks extends NumberedToks {
 
@@ -47,21 +45,6 @@ public class NamedToks extends NumberedToks {
     public NamedToks(final String name) {
 
         super(name);
-    }
-
-    /**
-     * Set the value for the register from a String.
-     *
-     * @param context the interpreter context
-     * @param value the value for the tokens
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void set(final Context context, final String value)
-            throws GeneralException {
-
-        context.setToks(getKey(null, context.getNamespace()), new Tokens(
-                context, value), true);
     }
 
     /**

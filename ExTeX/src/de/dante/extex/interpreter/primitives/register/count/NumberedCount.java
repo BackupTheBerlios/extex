@@ -35,21 +35,19 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the count valued primitives like
- * <code>\day</code>. It sets the named count register to the value given,
+ * This class provides an implementation for the primitive <code>\count</code>.
+ * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
- * <p>
- * Example
- * </p>
  *
+ * <p>Example</p>
  * <pre>
- *  \day=345
+ * \count12=345
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NumberedCount extends AbstractCount implements ExpandableCode,
         Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
@@ -94,7 +92,7 @@ public class NumberedCount extends AbstractCount implements ExpandableCode,
             throws GeneralException {
 
         String key = getKey(source, context.getNamespace());
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
 
         long value = Count.scanCount(context, source);
         context.setCount(key, value, prefix.isGlobal());
@@ -165,23 +163,6 @@ public class NumberedCount extends AbstractCount implements ExpandableCode,
         long value = Count.scanCount(context, source);
         value *= context.getCount(key).getValue();
         context.setCount(key, value, prefix.isGlobal());
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Code#set(
-     *      de.dante.extex.interpreter.context.Context,
-     *      java.lang.String)
-     */
-    public void set(final Context context, final String value)
-            throws GeneralException {
-
-        try {
-            context.setCount(getName(), //
-                             (value.equals("") ? 0 : Long.parseLong(value)),
-                             true);
-        } catch (NumberFormatException e) {
-            throw new GeneralException(e); //TODO
-        }
     }
 
     /**

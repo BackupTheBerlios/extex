@@ -31,8 +31,25 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\ignorespaces</code>.
  *
+ * <doc name="ignorespaces">
+ * <h3>The Primitive <tt>\ignorespaces</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\ignorespaces</tt> </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ignorespaces  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Ignorespaces extends AbstractCode {
 

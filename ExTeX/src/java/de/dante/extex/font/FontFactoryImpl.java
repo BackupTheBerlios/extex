@@ -42,7 +42,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -210,7 +210,7 @@ public class FontFactoryImpl implements FontFactory {
      * Load the efm-Font
      * @param name  the name of the efm-file
      * @return  the efm as Document or <code>null</code>, if not found
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration
      */
     private Document loadEFMDocument(final String name)
             throws ConfigurationException {

@@ -32,8 +32,25 @@ import de.dante.util.GeneralException;
  * effect all prefixes are zeroed and the interaction mode is set to
  * <tt>errorstopmode</tt>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\errorstopmode</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\errorstopmode</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \errorstopmode  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Errorstopmode extends AbstractCode {
 

@@ -30,9 +30,39 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\kern</code>.
+  *
+ * <doc name="kern">
+ * <h3>The Primitive <tt>\kern</tt></h3>
+ * <p>
+ *  This primitive produces a horizontal or vertical kerning. This is a (minor)
+ *  adjustment of the position. The meaning depends on the current mode of the
+ *  typesetter. In vertical modes it means a vertival adjustment. Otherwise it
+ * means a horizontal adjustment.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\kern</tt>&lang;dimen&rang;  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \kern 12pt  </pre>
+ *  <pre class="TeXSample">
+ *    \kern -3mm  </pre>
+ *  <pre class="TeXSample">
+ *    \kern -\dimen123  </pre>
+ * </p>
+ * </doc>
+ *
+ * <p>
+ *  The effect of the primitive is that a
+ *  {@link de.dante.extex.interpreter.type.node.KernNode KernNode} is is sent to
+ *  the typesetter.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Kern extends AbstractCode {
 
@@ -52,7 +82,6 @@ public class Kern extends AbstractCode {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
-     * @see "TeX -- The Program [...]"
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

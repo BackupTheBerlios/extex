@@ -37,8 +37,27 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\def</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\def</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\def</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} ... </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \def#1{--#1--}  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Def extends AbstractAssignment {
 

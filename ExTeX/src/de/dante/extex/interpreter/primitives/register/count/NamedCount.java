@@ -23,25 +23,21 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\count</code>.
- * It sets the named count register to the value given,
+ * This class provides an implementation for the count valued primitives like
+ * <code>\day</code>. It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
  * <p>
- * All features are inherited from
- * {@link de.dante.extex.interpreter.primitives.register.count.NamedCount NamedCount}.
- * Just the key has to be provided under which this Count has to be stored.
- * This key is constructed from the name, a hash mark and the running number.
+ * Example
  * </p>
  *
- * <p>Example</p>
  * <pre>
- * \count12=345
+ *  \day=345
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NamedCount extends NumberedCount {
 

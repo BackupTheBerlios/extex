@@ -30,8 +30,25 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\prevdepth</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\prevdepth</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\prevdepth ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \prevdepth ...  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Prevdepth extends AbstractCode {
     /**
@@ -53,7 +70,7 @@ public class Prevdepth extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         Dimen pd = new Dimen(context, source);
         typesetter.setPrevDepth(pd);
         prefix.clear();

@@ -51,7 +51,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -142,11 +142,11 @@ public interface Group extends Tokenizer, Serializable {
     Dimen getDimen(String name);
 
     /**
-     * ...
+     * Getter for the current font.
      *
      * @param name the name of the font
      *
-     * @return ...
+     * @return the current font
      */
     Font getFont(String name);
 
@@ -290,7 +290,7 @@ public interface Group extends Tokenizer, Serializable {
     /**
      * Invoke all registered observers for the end-of-group event.
      *
-     * @param observable ...
+     * @param observable the observable to use as sender
      * @param typesetter the typesetter
      *
      *  @throws GeneralException in case of an error
@@ -364,7 +364,7 @@ public interface Group extends Tokenizer, Serializable {
     void setDimen(String name, Dimen value, boolean global);
 
     /**
-     * ...
+     * Setter for the font with a given name.
      *
      * @param name the name of the font
      * @param font the new font
@@ -384,10 +384,10 @@ public interface Group extends Tokenizer, Serializable {
     void setIf(String name, boolean value, boolean global);
 
     /**
-     * ...
+     * Setter for an inoputr file.
      *
      * @param name the name of the input file
-     * @param file ...
+     * @param file the input file specification
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
@@ -432,10 +432,10 @@ public interface Group extends Tokenizer, Serializable {
     void setMuskip(String name, Muskip value, boolean global);
 
     /**
-     * ...
+     * Setter for the output file for a given name.
      *
      * @param name the name of the output file
-     * @param file ...
+     * @param file the output file specification
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */

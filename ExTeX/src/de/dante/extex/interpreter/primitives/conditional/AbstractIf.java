@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -68,9 +68,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        if (conditional(context, source, typesetter)) {
-            context.pushConditional(source.getLocator(), true);
-        } else if (skipToElseOrFi(context, source)) {
+        if (conditional(context, source, typesetter) ||
+                skipToElseOrFi(context, source)) {
             context.pushConditional(source.getLocator(), true);
         }
 
@@ -88,9 +87,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        if (conditional(context, source, typesetter)) {
-            context.pushConditional(source.getLocator(), true);
-        } else if (skipToElseOrFi(context, source)) {
+        if (conditional(context, source, typesetter) ||
+                skipToElseOrFi(context, source)) {
             context.pushConditional(source.getLocator(), true);
         }
     }
@@ -111,15 +109,15 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
             throws GeneralException;
 
     /**
-     * Skip to the next matching <tt>\fi</tt> or <tT>\else</tt> Token
+     * Skip to the next matching <tt>\fi</tt> or <tt>\else</tt> Token
      * counting the intermediate <tt>\if</tt>s and <tt>\fi</tt>s.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
-     * @return <code>true</code> if a matching \else has been found;
-     *         otherwise return <code>false</code> if a matching \fi has been
-     *         found
+     * @return <code>true</code> if a matching <tt>\else</tt> has been found;
+     *         otherwise return <code>false</code> if a matching <tt>\fi</tt>
+     *         has been found
      *
      * @throws GeneralException in case of en error
      */
@@ -148,4 +146,5 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
 
         throw new GeneralHelpingException("TTP.EOFinSkipped");
     }
+
 }

@@ -29,6 +29,29 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\toksdef</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\toksdef</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\toksdef</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \toksdef\abc=45  </pre>
+ *  <pre class="TeXSample">
+ *    \toksdef\abc 33  </pre>
+ * </p>
+ * </doc>
+ *
  * <p>Example</p>
  * <pre>
  * \toksdef\abc=45
@@ -49,7 +72,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "toks#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Toksdef extends AbstractToks {
 
@@ -75,7 +98,7 @@ public class Toksdef extends AbstractToks {
             throws GeneralException {
 
         Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String key = getKey(source);
         context.setCode(cs, new NamedToks(key), prefix.isGlobal());
     }

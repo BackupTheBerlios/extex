@@ -30,8 +30,25 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\spacefactor</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\spacefactor</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\spacefactor ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \spacefactor ...  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Spacefactor extends AbstractCode {
     /**
@@ -53,7 +70,7 @@ public class Spacefactor extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         long f = source.scanInteger();
         typesetter.setSpacefactor(new Count(f));
         prefix.clear();

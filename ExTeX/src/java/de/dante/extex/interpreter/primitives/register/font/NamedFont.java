@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -58,7 +58,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
             throws GeneralException {
 
         String key = getKey(source);
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
 
         Font font = source.getFont();
         context.setFont(key, font, prefix.isGlobal());

@@ -31,6 +31,14 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\vbox</code>.
+ *
+ * <doc name="vbox">
+ * <h3>The Primitive <tt>\vbox</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * <p>
  * Examples
  * </p>
@@ -41,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Vbox extends AbstractCode implements Boxable {
 

@@ -30,8 +30,15 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\or</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\or</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Or extends AbstractIf {
 
@@ -60,9 +67,7 @@ public class Or extends AbstractIf {
         if (cond == null) {
             throw new GeneralHelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
-        }
-
-        if (skipToElseOrFi(context, source)) {
+        } else if (skipToElseOrFi(context, source)) {
             throw new GeneralHelpingException("TTP.ExtraOrElseFi", "\\else");
         }
 

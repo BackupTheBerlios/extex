@@ -37,13 +37,20 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\dump</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\dump</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * Example
  * <pre>
  * \dump
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Dump extends AbstractCode {
 
@@ -54,7 +61,8 @@ public class Dump extends AbstractCode {
     private static final String FORMAT_VERSION = "1.0";
 
     /**
-     * The constant <tt>FORMAT_MAGIC_NUMBER</tt> contains the ...
+     * The constant <tt>FORMAT_MAGIC_NUMBER</tt> contains the magic first line
+     * written to the file.
      */
     private static final String FORMAT_MAGIC_NUMBER = "#!extex";
 

@@ -43,19 +43,22 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public interface TokenSource {
 
     /**
      * Getter for the locator.
+     * The locator provides a means to get the information where something is
+     * coming from. Usually it point to a line in a file.
      *
      * @return the current locator
      */
     Locator getLocator();
 
     /**
-     * Get the next token which has not the catcode SPACE.
+     * Get the next token which has not the catcode
+     * {@link de.dante.extex.scanner.Catcode#SPACE SPACE}.
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
@@ -68,6 +71,14 @@ public interface TokenSource {
      * is at its end then the next one on the streamStack is used until a token
      * could be read. If all stream are at the end then <code>null</code> is
      * returned.
+     *
+     * <doc class="syntax" name="token">
+     * <p>
+     *  This method corresponds to the following syntax specification:
+     *  <pre class="syntax">
+     *    &lang;token&rang;  </pre>
+     * </p>
+     * </doc>
      *
      * @return the next token or <code>null</code>
      *
@@ -83,6 +94,14 @@ public interface TokenSource {
      * next one on the streamStack is used until a token could be read. If all
      * streams are at the end then <code>null</code> is returned.
      *
+     * <doc class="syntax" name="replacement text">
+     * <p>
+     *  This method corresponds to the following syntax specification:
+     *  <pre class="syntax">
+     *    &lang;replacement text&rang;  </pre>
+     * </p>
+     * </doc>
+     *
      * @return the next tokens or <code>null</code>
      *
      * @throws GeneralException in case of an error
@@ -92,9 +111,9 @@ public interface TokenSource {
     /**
      * ...
      *
-     * @param typesetter the typesetter
+     * @param typesetter the typesetter to use
      *
-     * @return ...
+     * @return the box gathered
      *
      * @throws GeneralException in case of an error
      */
@@ -102,7 +121,13 @@ public interface TokenSource {
 
     /**
      * Get the next token from the token stream and check that it is a
-     * control sequence.
+     * control sequence or active character.
+     * 
+     * <doc class="syntax" name="control sequence">
+     * This method parses the following syntactic entity:
+     * <pre class="syntax">
+     *   &lang;control sequence&rang; </pre>
+     * </doc>
      *
      * @return the token read
      *
@@ -112,6 +137,7 @@ public interface TokenSource {
 
     /**
      * Getter for the token stream factory.
+     * The token stream factory can be used to acquire a new token stream.
      *
      * @return the token stream factory
      */
@@ -249,9 +275,17 @@ public interface TokenSource {
 
     /**
      * Get the next expanded token form the input streams between <code>{</code>
-     * and <code>}</code>. If the current inputstream is at its end then the
+     * and <code>}</code>. If the current input stream is at its end then the
      * next one on the streamStack is used until a token could be read. If all
      * stream are at the end then <code>null</code> is returned.
+     *
+     * <doc class="syntax" name="general text">
+     * <p>
+     *  This method corresponds to the following syntax specification:
+     *  <pre class="syntax">
+     *    &lang;general text&rang;  </pre>
+     * </p>
+     * </doc>
      *
      * @return the next tokens or <code>null</code>
      *
@@ -301,12 +335,23 @@ public interface TokenSource {
      * as well and all spaces afterwards.
      *
      * @throws GeneralException in case of an error
+     *
+     * @deprecated TeX does not need this method. Consider using
+     * getOptionalEquals() instead.
      */
-    //gene: this method is subject to be eliminated in favor of getKeyword().
     void scanOptionalEquals() throws GeneralException;
 
     /**
-     * ...
+     * Skip spaces and if the next non-space character is an equal sign skip it
+     * as well and all spaces afterwards.
+     * 
+     * <doc class="syntax" name="equals">
+     * This method parses the following syntactic entity:
+     * <pre class="syntax">
+     *   &lang;equals&rang;
+     *     := {@linkplain #skipSpace() &lang;optional spaces&rang;}
+     *      |  {@linkplain #skipSpace() &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> </pre>
+     * </doc>
      *
      * @throws GeneralException in case of an error
      */
@@ -322,11 +367,19 @@ public interface TokenSource {
     Font getFont() throws GeneralException;
 
     /**
-     * Skip spaces.
+     * Skip spaces and check whether any tokens are left.
+     *
+     * <p>
+     *  This method corresponds to the following specification:
+     *  <pre class="syntax">
+     *    &lang;optional spaces&rang;  </pre>
+     * </p>
+     *
+     * @return <code>true</code> iff there is another token to read
      *
      * @throws GeneralException in case of an error
      */
-    void skipSpace() throws GeneralException;
+    boolean skipSpace() throws GeneralException;
 
     /**
      * Send the string to the named observer. The observer must be capable to

@@ -37,10 +37,19 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class provides an implementation for any macro code bound to a
+ * control sequence or active character.
+ *
+ * <doc>
+ * <h3>The Macro Code</h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
@@ -68,7 +77,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     private boolean notLong;
 
     /**
-     * The field <tt>outerP</tt> contains the ...
+     * The field <tt>outerP</tt> contains the indicator for outer definitions.
      */
     private boolean outerP;
 
@@ -87,7 +96,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
         this.body = theBody;
         this.pattern = thePattern;
         this.notLong = !flags.isLong();
-        this.outerP = flags.isOuter(); //TODO: use the flag outer
+        this.outerP = flags.isOuter();
     }
 
     /**
@@ -199,7 +208,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
      * @param len the length of the patterns
      * @param i the starting index
      *
-     * @return ...
+     * @return the index of the character after the parameter
      *
      * @throws GeneralException in case of an error
      */

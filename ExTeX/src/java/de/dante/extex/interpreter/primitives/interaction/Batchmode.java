@@ -32,8 +32,25 @@ import de.dante.util.GeneralException;
  * effect all prefixes are zeroed and the interaction mode is set to
  * <tt>batchmode</tt>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\batchmode</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\batchmode</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \batchmode  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Batchmode extends AbstractCode {
 

@@ -29,11 +29,28 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\dimendef</code>.
  *
- * <p>Example</p>
- * <pre>
- * \dimendef\abc=45
- * \dimendef\abc 54
- * </pre>
+ * <doc>
+ * <h3>The Primitive <tt>\dimendef</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\dimendef</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *    &lang;control sequence&rang;} {@linkplain
+ *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \dimendef\abc=45  </pre>
+ *  <pre class="TeXSample">
+ *    \dimendef\abc 33  </pre>
+ * </p>
+ * </doc>
  *
  *
  * <h3>Possible Extension</h3>
@@ -49,7 +66,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Dimendef extends AbstractDimen {
 
@@ -75,7 +92,7 @@ public class Dimendef extends AbstractDimen {
             throws GeneralException {
 
         Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String key = getKey(source, context.getNamespace());
         context.setCode(cs, new NamedDimen(key), prefix.isGlobal());
     }

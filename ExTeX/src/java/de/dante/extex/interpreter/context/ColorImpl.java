@@ -20,10 +20,11 @@
 package de.dante.extex.interpreter.context;
 
 /**
- * ...
+ * This class implements a color specification in RGB mode with an alpha
+ * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ColorImpl implements Color {
 

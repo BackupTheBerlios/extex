@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * </p>
  * <p>
  * The general form of this primitive is
- * <pre style="background:#eeffff;border-width:1pt;border-style:solid;border-color:#666666">
+ * <pre class="syntax">
  *   \javadef&lang;<i>control sequence</i>&rang;&lang;<i>tokens</i>&rang; </pre>
  * </p>
  * <p>
@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  * </p>
  * <p>
  * The following example illustrates the use of this primitive:
- * <pre>
+ * <pre class="TeXSample">
  *   \javadef\abc{de.dante.extex.interpreter.primitive.Relax} </pre>
  * </p>
  * <p>
@@ -73,7 +73,7 @@ import de.dante.util.GeneralException;
  * <tt>\global</tt> can be used to make the definition in all groups
  * instead of the current group only. This is shown in the following
  * example:
- * <pre>
+ * <pre class="TeXSample">
  *   \global\javadef\abc{de.dante.extex.interpreter.primitive.Relax}
  * </pre>
  * </p>
@@ -83,7 +83,7 @@ import de.dante.util.GeneralException;
  * de.dante.extex.interpreter.Code Code}. The easiest way to achieve
  * this is by declaring a class derived from {@link
  * de.dante.extex.interpreter.AbstractCode AbstractCode}.
- * <pre style="background:#eeeeee;border-width:1pt;border-style:solid;border-color:#666666">
+ * <pre class="JavaSample">
  *   <b>package</b> my.package;
  *
  *   <b>import</b> de.dante.extex.interpreter.AbstractCode;
@@ -118,7 +118,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class JavaDef extends AbstractCode {
 

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.skip;
 
 import de.dante.extex.interpreter.Flags;
@@ -38,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NumberedSkip extends AbstractSkip implements Theable {
 
@@ -48,6 +49,7 @@ public class NumberedSkip extends AbstractSkip implements Theable {
      * @param name the name for debugging
      */
     public NumberedSkip(final String name) {
+
         super(name);
     }
 
@@ -59,27 +61,13 @@ public class NumberedSkip extends AbstractSkip implements Theable {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void assign(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         String key = getKey(source);
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         Glue g = new Glue(source, context);
         context.setGlue(key, g, prefix.isGlobal());
-    }
-
-    /**
-     * ...
-     *
-     * @param context the interpreter context
-     * @param value the string to get the value from
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void set(final Context context, final String value)
-             throws GeneralException {
-
-        //TODO
     }
 
     /**

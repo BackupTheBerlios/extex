@@ -20,10 +20,11 @@
 package de.dante.extex.interpreter;
 
 /**
- * ...
+ * This class implements a set of flags.
+ * This is needed to pass controling information to primitives.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FlagsImpl implements Flags {
 

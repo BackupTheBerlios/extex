@@ -29,8 +29,25 @@ import de.dante.extex.typesetter.Typesetter;
  * It does simply nothing, but as a side effect the prefix <i>GLOBAL</i> is
  * added to the prefixes.
  *
+ * <doc>
+ * <h3>The Prefix Primitive <tt>\global</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\global ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \global\def\abc{123}  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Global extends AbstractCode {
     /**

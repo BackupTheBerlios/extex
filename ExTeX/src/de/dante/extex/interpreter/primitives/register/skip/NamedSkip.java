@@ -16,10 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.skip;
 
 import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedSkip extends NumberedSkip {
 
@@ -50,24 +50,8 @@ public class NamedSkip extends NumberedSkip {
      * @param name the name for debugging
      */
     public NamedSkip(final String name) {
+
         super(name);
-    }
-
-    /**
-     * ...
-     *
-     * @param context the interpreter context
-     * @param value ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void set(final Context context, final String value)
-             throws GeneralException {
-
-        //TODO
-//        Glue g = new Glue(..., context);
-//        context.setGlue(getName(),
-//                         (value.equals("") ? 0 : g));
     }
 
     /**
@@ -81,8 +65,8 @@ public class NamedSkip extends NumberedSkip {
      *             Exception this one is declared.
      */
     protected String getKey(final TokenSource source) throws GeneralException {
+
         return getName();
     }
-
 
 }

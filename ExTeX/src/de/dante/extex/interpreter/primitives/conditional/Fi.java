@@ -29,8 +29,15 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\fi</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\fi</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Fi extends AbstractCode {
 

@@ -33,13 +33,25 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\box</code>.
  *
- * Example
- *
- * <pre>
- * </pre>
+ * <doc>
+ * <h3>The Primitive <tt>\box</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\box</tt> &lang;8-bit number&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \box42  </pre>
+ * </p>
+ * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NumberedBox extends AbstractCode implements Boxable, Serializable {
 

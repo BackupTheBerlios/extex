@@ -32,11 +32,27 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\relax</code>.
- * It does simply nothing, but as a side effect all prefixes are zeroed.
+ * This class provides an implementation for the primitive <code>\let</code>.
+ *
+ * <doc>
+ * <h3>The Primitive <tt>\let</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\let</tt> &lang;control sequence&rang; ... </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \let\a=\b  </pre>
+ * </p>
+ * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Let extends AbstractAssignment implements CatcodeVisitor {
 
@@ -62,7 +78,7 @@ public class Let extends AbstractAssignment implements CatcodeVisitor {
             throws GeneralException {
 
         Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         Token t = source.getNonSpace();
 
         let(prefix, context, cs, t);

@@ -33,7 +33,13 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive
  * <code>\multiply</code>.
- * The real work is done by the object implementing the Advanceable interface.
+ *
+ * <doc name="multiply">
+ * <h3>The Primitive <tt>\advance</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
  *
  * Example
  * <pre>
@@ -42,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Multiply extends AbstractAssignment {
     /**
@@ -54,8 +60,9 @@ public class Multiply extends AbstractAssignment {
         super(name);
     }
 
-/**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+    /**
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

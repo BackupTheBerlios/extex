@@ -31,13 +31,20 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\openin</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\openin</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * Example
  * <pre>
  * \openin3= abc.def
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Openin extends AbstractFileCode {
 
@@ -67,7 +74,7 @@ public class Openin extends AbstractFileCode {
                     Integer.toString(InFile.MAX_FILE_NO));
         }
 
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String name = scanFileName(source, context);
 
         InFile file = new InFile(new File(name));

@@ -30,8 +30,25 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\shipout</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\shipout</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\shipout ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \shipout ...  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Shipout extends AbstractCode {
 

@@ -30,17 +30,17 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class StringSource extends Moritz implements TokenSource {
 
     /**
      * Creates a new object.
      *
-     * @param factory ...
-     * @param s ...
+     * @param factory the factory for new tokens
+     * @param s the string to read from
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of errors in the configuration
      */
     public StringSource(final TokenStreamFactory factory, final String s)
             throws ConfigurationException {
@@ -58,12 +58,12 @@ public class StringSource extends Moritz implements TokenSource {
     }
 
     /**
-     * @see de.dante.extex.interpreter.max.Moritz#expand(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.max.Moritz#expand(
+     *      de.dante.extex.scanner.Token)
      */
-    protected Token expand(final Token token) throws GeneralException {
+     protected Token expand(final Token token) throws GeneralException {
 
-        // TODO Auto-generated method stub
-        return null;
+        return token;
     }
 
     /**
@@ -71,8 +71,7 @@ public class StringSource extends Moritz implements TokenSource {
      */
     public void executeGroup() throws GeneralException {
 
-        // TODO Auto-generated method stub
-
+        throw new RuntimeException("unimplemented");
     }
 
 }

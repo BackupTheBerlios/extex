@@ -30,8 +30,15 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\ifdim</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\ifdim</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Ifdim extends AbstractIf {
     /**

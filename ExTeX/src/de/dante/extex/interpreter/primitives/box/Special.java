@@ -30,8 +30,37 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\special</code>.
  *
+ * <doc name="special">
+ * <h3>The Primitive <tt>\special</tt></h3>
+ * <p>
+ *  This primitive sends a string to the backend driver.
+ *  The argument is a balanced block of text which is expanded and translated
+ *  into a string.  The string is given in
+ *  a {@link de.dante.extex.interpreter.type.node.SpecialNode SpecialNode} to
+ *  the typesetter for passing it down.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\special</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanTokens() &lang;general text&rang;}  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \special{hello world}  </pre>
+ *  <pre class="TeXSample">
+ *    \special{ps: \abc}  </pre>
+ * </p>
+ * <p>
+ *  For several backend drivers for TeX a quasi-standard has emerged which uses
+ *  a prefix ended by a colon to indicate the backend driver the special is
+ *  targeted at.
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Special extends AbstractCode {
 
@@ -46,7 +75,7 @@ public class Special extends AbstractCode {
 
     /**
      * Scan the next tokens (between braces) and send the value (as text) to the
-     * typesetter.
+     * typesetter for the backend driver.
      *
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
