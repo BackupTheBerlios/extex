@@ -24,15 +24,22 @@ import de.dante.extex.interpreter.type.node.CharNode;
 
 /**
  * This interface describes the features of a linear collection of nodes.
- *
+ * <p>
+ * The following picture describes the attributes and relations:
+ * </p>
  * <p>
  * <img src="doc-files/NodeList.png" />
+ * </p>
+ * <p>
+ * Note that the NodeList does not provide an automatic relation of the contents
+ * to the attributes. This means that adding a node does not update width,
+ * height, or depth.
  * </p>
  *
  * @see de.dante.extex.interpreter.type.box.Box
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface NodeList extends Node {
 
@@ -46,6 +53,7 @@ public interface NodeList extends Node {
 
     /**
      * Add a node to the node list.
+     * The other attributes (width, height, depth) are not modified.
      *
      * @param node the node to add
      */
@@ -53,6 +61,7 @@ public interface NodeList extends Node {
 
     /**
      * Add a character to the node list.
+     * The other attributes (width, height, depth) are not modified.
      *
      * @param node the character to add
      */
@@ -60,6 +69,7 @@ public interface NodeList extends Node {
 
     /**
      * Add some glue to the node list.
+     * The other attributes (width, height, depth) are not modified.
      *
      * @param glue the glue to add
      */
@@ -96,6 +106,8 @@ public interface NodeList extends Node {
 
     /**
      * Get a new iterator for all nodes in the list.
+     * This method is just provided for completeness. Consider a conventional
+     * loop because of performance issues.
      *
      * @return the iterator for all nodes in the list
      */
@@ -103,6 +115,7 @@ public interface NodeList extends Node {
 
     /**
      * Remove an element at a given position.
+     * The other attributes (width, height, depth) are not modified.
      *
      * @param index the position
      *
