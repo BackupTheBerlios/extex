@@ -23,6 +23,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
@@ -61,7 +62,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -117,6 +118,7 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
             xmlout.setTrimAllWhite(true);
             BufferedOutputStream bout = new BufferedOutputStream(out);
             Document doc = new Document(root);
+            doc.addContent(new Comment("all units in sp"));
             xmlout.output(doc, bout);
             bout.close();
         }
@@ -183,6 +185,7 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     public void shipout(final NodeList nodes) throws IOException {
 
+        // try {
         Element page = new Element("page");
         page.setAttribute("id", String.valueOf(shippedPages + 1));
         root.addContent(page);
@@ -191,6 +194,9 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
 
         processNodes(nodes);
         shippedPages++;
+        //        } catch (Exception e) {
+        //            e.printStackTrace();
+        //        }
     }
 
     /**
@@ -237,9 +243,9 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     private String getDimenAsString(final Dimen dimen) {
 
-        String s = "";
+        String s = "0";
         if (dimen != null) {
-            s = dimen.toString();
+            s = String.valueOf(dimen.getValue());
         }
         return s;
     }
@@ -253,9 +259,19 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     private String getGlueAsString(final Glue glue) {
 
-        String s = "";
+        String s = "0";
         if (glue != null) {
-            s = glue.toString();
+            StringBuffer sb = new StringBuffer(getDimenAsString(glue
+                    .getLength()));
+            if (glue.getStretch().getValue() != 0) {
+                sb.append(" plus ");
+                sb.append(String.valueOf(glue.getStretch().getValue()));
+            }
+            if (glue.getShrink().getValue() != 0) {
+                sb.append(" minus ");
+                sb.append(String.valueOf(glue.getShrink().getValue()));
+            }
+            s = sb.toString();
         }
         return s;
     }
@@ -343,7 +359,10 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
                 .getFontName());
         element.setAttribute("codepoint", String.valueOf(node.getCharacter()
                 .getCodePoint()));
-        element.setAttribute("unicode", node.getCharacter().getUnicodeName());
+        String ucname = node.getCharacter().getUnicodeName();
+        if (ucname != null) {
+            element.setAttribute("unicode", ucname);
+        }
         element.setText(node.toString());
         return element;
     }
@@ -483,7 +502,7 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         Element element = new Element("penalty");
         PenaltyNode node = (PenaltyNode) value;
         addNodeAttributes(element, node);
-        element.setAttribute("penalty" , String.valueOf(node.getPenalty()));
+        element.setAttribute("penalty", String.valueOf(node.getPenalty()));
         return element;
     }
 
@@ -509,7 +528,7 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         Element element = new Element("space");
         SpaceNode node = (SpaceNode) value;
         addNodeAttributes(element, node);
-        element.setAttribute("gluewidth",getGlueAsString(node.getGlueWidth()));
+        element.setAttribute("gluewidth", getGlueAsString(node.getGlueWidth()));
         return element;
     }
 
