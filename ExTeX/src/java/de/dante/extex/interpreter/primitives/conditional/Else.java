@@ -20,6 +20,7 @@ package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractIf;
+import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\else</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Else extends AbstractIf {
 
@@ -53,17 +54,22 @@ public class Else extends AbstractIf {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        if (context.popConditional() != 0) {
-            if (skipToElseOrFi(context, source)) {
-                throw new GeneralHelpingException("TTP.ExtraOrElseFi", "\\else");
-            }
+        Conditional cond = context.popConditional();
+
+        if (cond == null) {
+            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+                    printableControlSequence(context));
+        } else if (skipToElseOrFi(context, source)) {
+                throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+                        printableControlSequence(context));
         }
 
         prefix.clear();
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractIf#conditional(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.AbstractIf#conditional(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
