@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -95,7 +96,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class ExTeX {
 
@@ -601,10 +602,8 @@ public class ExTeX {
                         useDebug(args, ++i);
                     } else if ("--".equals(arg)) {
                         useArg(PROP_CONFIG, args, ++i);
-                    } else {
-                        //properties.setProperty(PROP_CONFIG, arg.substring(1));
-                        //throw new MainUnknownOptionException(arg);
-                        properties.load(new FileInputStream(arg.substring(1)));
+                    } else if (!loadArgumentFile(arg.substring(1))) {
+                        throw new MainUnknownOptionException(arg);
                     }
                 } else if (arg.startsWith("&")) {
                     properties.setProperty(PROP_FMT, arg.substring(1));
@@ -636,6 +635,30 @@ public class ExTeX {
         }
 
         return returnCode;
+    }
+
+    /**
+     * ...
+     *
+     * @param arg the name of the resource to load
+     * @return <code>true</code> iff the resource has been loaded sucessfully
+     * @throws IOException just in case
+     */
+    private boolean loadArgumentFile(final String arg)
+            throws IOException {
+
+        InputStream is = getClass().getClassLoader()
+                .getResourceAsStream("config.extex." + arg);
+        if (is == null) {
+            try {
+                is = new FileInputStream(new File(".extexcfg",arg));
+            } catch (FileNotFoundException e) {
+                return false;
+            }
+        }
+        properties.load(is);
+
+        return true;
     }
 
     /**
@@ -808,14 +831,14 @@ public class ExTeX {
         String bundle = (String) properties.get(PROP_POOL);
 
         if (lang != null) {
-            if (lang.matches("..")) {
+            if (lang.matches("^..$")) {
                 Messages.configure(bundle, new Locale(lang));
                 return;
-            } else if (lang.matches("..[_-]..")) {
+            } else if (lang.matches("^..[_-]..$")) {
                 Messages.configure(bundle, new Locale(lang.substring(0, 2), //
                         lang.substring(3, 5)));
                 return;
-            } else if (lang.matches("..[_-]..[_-]..")) {
+            } else if (lang.matches("^..[_-]..[_-]..$")) {
                 Messages.configure(bundle, new Locale(lang.substring(0, 2), //
                         lang.substring(3, 5), lang.substring(6, 8)));
                 return;
@@ -930,7 +953,8 @@ public class ExTeX {
                     System.in, properties.getProperty(PROP_ENCODING)));
                 interpreter.addStream(stream);
             } catch (UnsupportedEncodingException e) {
-                throw new ConfigurationUnsupportedEncodingException(properties.getProperty(PROP_ENCODING),"???");
+                throw new ConfigurationUnsupportedEncodingException(properties.getProperty(PROP_ENCODING),
+                    "???");
             }
 
         }
@@ -977,17 +1001,17 @@ public class ExTeX {
      * to the tokenizer.
      *
      * @param arg the list of arguments to process
-     * @param idx starting index
+     * @param index starting index
      *
      * @throws MainException in case of an error in {@link #run() run()}
      */
-    private void runWithArgs(final String[] arg, final int idx)
+    private void runWithArgs(final String[] arg, final int index)
             throws MainException {
 
-        if (idx < arg.length) {
+        if (index < arg.length) {
             StringBuffer in = new StringBuffer();
 
-            for (int i = idx; i < arg.length; i++) {
+            for (int i = index; i < arg.length; i++) {
                 in.append(" ");
                 in.append(arg[i]);
             }
