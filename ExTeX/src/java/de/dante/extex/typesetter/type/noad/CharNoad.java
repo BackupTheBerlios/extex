@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
 
@@ -92,7 +92,7 @@ public class CharNoad extends AbstractNoad implements Noad {
         Font font = context.getFont(NumberedFont.key(context, //
                 type, Integer.toString(mg.getFamily())));
         if (font == null) {
-            //TODO gene: impossible
+            //gene: impossible
             throw new NullPointerException("font");
         }
         //TODO gene: use factory?
