@@ -38,9 +38,9 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Copy extends BoxPrimitive implements Boxable, Serializable {
+public class Copy extends NumberedBox implements Boxable, Serializable {
 
     /**
      * Creates a new object.
@@ -63,9 +63,10 @@ public class Copy extends BoxPrimitive implements Boxable, Serializable {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context.getNamespace());
         Box box = context.getBox(key);
         prefix.clear();
+        throw new RuntimeException("unimplemented");
     }
 
 }

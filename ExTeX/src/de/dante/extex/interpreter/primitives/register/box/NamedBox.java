@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedBox extends AbstractCode implements Code, Serializable {
 
@@ -60,7 +60,7 @@ public class NamedBox extends AbstractCode implements Code, Serializable {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context.getNamespace());
         source.scanOptionalEquals();
         Box box = source.getBox(typesetter);
         context.setBox(key, box, prefix.isGlobal());
@@ -71,15 +71,17 @@ public class NamedBox extends AbstractCode implements Code, Serializable {
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source ...
+     * @param source the source for new tokens -- if required
+     * @param namespace the namespace to use
      *
-     * @return ...
+     * @return the key for the box register
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case oif an error
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source, final String namespace)
+            throws GeneralException {
 
-        return getName();
+        return namespace + getName();
     }
 
 }

@@ -39,16 +39,16 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.3 $
  */
-public class BoxPrimitive extends AbstractCode implements Boxable, Serializable {
+public class NumberedBox extends AbstractCode implements Boxable, Serializable {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public BoxPrimitive(final String name) {
+    public NumberedBox(final String name) {
 
         super(name);
     }
@@ -64,24 +64,26 @@ public class BoxPrimitive extends AbstractCode implements Boxable, Serializable 
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context.getNamespace());
         Box box = context.getBox(key);
-        context.setBox(key, null, prefix.isGlobal());
+        context.setBox(key, box, prefix.isGlobal());
         prefix.clear();
     }
 
     /**
-     * Return the key (the number) for the register.
+     * Return the key (the number) for the box register.
      *
      * @param source the source for new tokens
+     * @param namespace the namespace to use
      *
-     * @return ...
+     * @return the key of the box register
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source, final String namespace)
+            throws GeneralException {
 
-        return "box#" + Long.toString(source.scanNumber());
+        return namespace + "box#" + Long.toString(source.scanNumber());
     }
 
     /**
@@ -93,7 +95,7 @@ public class BoxPrimitive extends AbstractCode implements Boxable, Serializable 
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context.getNamespace());
         return context.getBox(key);
     }
 

@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Dp extends Setbox implements Serializable, ExpandableCode,
     Theable, CountConvertible, DimenConvertible {
@@ -69,7 +69,7 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
 
-        Box box = context.getBox(getKey(source));
+        Box box = context.getBox(getKey(source, context.getNamespace()));
         source.scanOptionalEquals();
         Dimen d = new Dimen(context, source);
 
@@ -102,7 +102,7 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
     public Tokens the(final Context context, final TokenSource source)
         throws GeneralException {
 
-        Box box = context.getBox(getKey(source));
+        Box box = context.getBox(getKey(source, context.getNamespace()));
         Dimen d = (box == null ? Dimen.ZERO_PT : box.getDepth());
         return d.toToks(context.getTokenFactory());
     }
@@ -126,7 +126,7 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
     public long convertDimen(final Context context, final TokenSource source)
         throws GeneralException {
 
-        Box b = context.getBox(getKey(source));
+        Box b = context.getBox(getKey(source, context.getNamespace()));
         return  (b == null ? 0 : b.getDepth().getValue());
     }
 
