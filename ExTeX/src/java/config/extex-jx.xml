@@ -188,6 +188,7 @@
     <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
+    <xml class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"/>
   </DocumentWriter>
 
 </ExTeX>
