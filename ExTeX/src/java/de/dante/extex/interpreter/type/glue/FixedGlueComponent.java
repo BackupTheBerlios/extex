@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FixedGlueComponent {
 
@@ -88,7 +88,7 @@ public interface FixedGlueComponent {
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [103]"
-     * @see #toToks(TokenFactory)
+     * @see #toToks(Tokens, TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)
      */
@@ -108,7 +108,7 @@ public interface FixedGlueComponent {
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [103]"
-     * @see #toToks()
+     * @see #toToks(TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)
      */
