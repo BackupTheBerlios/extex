@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GlyphImpl implements Glyph {
 
@@ -298,7 +298,9 @@ public class GlyphImpl implements Glyph {
         if (kerning != null) {
             Kerning kv = (Kerning) kerning.get(String
                     .valueOf(uc.getCodePoint()));
-            size = kv.getSize();
+            if (kv != null) {
+                size = kv.getSize();
+            }
         }
         return size;
     }
