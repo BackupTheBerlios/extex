@@ -146,9 +146,8 @@
     <define name="javadef" class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/>
     <define name="javaload" class="de.dante.extex.interpreter.primitives.dynamic.java.JavaLoad"/>
 
-
     <define name=" " class="de.dante.extex.interpreter.primitives.box.Space"/>
-    <Define name="/" class=""/>
+    <define name="/" class="de.dante.extex.interpreter.primitives.box.ItalicCorrection"/>
     <Define name="\\" class=""/>
     <Define name="above" class=""/>
     <define name="abovedisplayshortskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
