@@ -52,7 +52,7 @@ import de.dante.util.Unit;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -426,19 +426,18 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         StringBuffer operators = new StringBuffer(256);
 
         State oldstate = state; state = VERTICAL;
-	
+
 	Dimen ht = new Dimen(nodes.getHeight());
 	Dimen saveX = new Dimen(lastX); Dimen saveY = new Dimen(lastY);
-	
-	currentX.set(lastX); lastY.add(ht);
-	currentY.set(lastY);
+
+	currentX.set(lastX); currentY.set(lastY); currentY.add(ht);
 
         operators.append(op.fillColor(Color.LIGHT_GRAY));
-	
+
         showNode(nodes, operators); debugNode(nodes);
 
-        lastX.set(saveX); lastY.set(saveY); lastY.subtract(ht); lastDP.set(ht);
-	
+	currentX.set(saveX); currentY.set(saveY);
+
         NodeIterator it = nodes.iterator();
         while (it.hasNext()) {
             Node node = it.next();
@@ -556,9 +555,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         public Object visitChar(Object value, Object value2) {
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
+	    sb.append(" " + node.toString() + "  ");
             sb.append("Char");
             sb.append(metric(node));
-            sb.append("\t" + node.toString());
             return null;
         }
 
@@ -667,7 +666,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         private String metric(final Node node) {
-            return " (wd=" + node.getWidth().toPT() + "\tht=" + node.getHeight().toPT() + "\tdp=" + node.getDepth().toPT() + ")" + "\t";
+            return " (wd=" + node.getWidth().toString() + "\tht=" + node.getHeight().toString() + "\tdp=" + node.getDepth().toString() + ")" + "\t";
         }
 
     }
@@ -796,11 +795,11 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         currentPage = pdfDoc.makePage(pdfResources, cs, pageWD, pageHT, page);
 
-        // TeX/SVG-Koordinatensystem.
+        // TeX/SVG coordinate system.
         cs.add(op.concat(1, 0, 0, -1, 0, pageHT));
 	
 	lastX.set(Dimen.ONE_INCH); lastY.set(Dimen.ONE_INCH); 
-	lastDP.setValue(0L);
+	lastDP.set(0L);
     }
 
     // ---------------------------------------------------------------------------
@@ -828,6 +827,4 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * the current mode
      */
     private State state = VERTICAL;
-    // ---------------------------------------------------------------------------
-
 }
