@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -50,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * <h2>Configuration</h2>
  *
- * TODO doc incomplete
+ * TODO gene: doc incomplete
  *
  * <pre>
  * &lt;Finder class="de.dante.util.resource.LsrFinder"
@@ -69,9 +69,13 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class LsrFinder implements ResourceFinder, LogEnabled, PropertyConfigurable {
+public class LsrFinder
+        implements
+            ResourceFinder,
+            LogEnabled,
+            PropertyConfigurable {
 
     /**
      * The field <tt>INITIAL_LIST_SIZE</tt> contains the initial size of the
@@ -163,9 +167,9 @@ public class LsrFinder implements ResourceFinder, LogEnabled, PropertyConfigurab
     }
 
     /**
-     * @see de.dante.util.resource.ResourceFinder#enableTrace(boolean)
+     * @see de.dante.util.resource.ResourceFinder#enableTracing(boolean)
      */
-    public void enableTrace(final boolean flag) {
+    public void enableTracing(final boolean flag) {
 
         trace = flag;
     }

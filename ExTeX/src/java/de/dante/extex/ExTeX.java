@@ -610,7 +610,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.79 $
+ * @version $Revision: 1.80 $
  */
 public class ExTeX {
 
@@ -1380,7 +1380,7 @@ public class ExTeX {
                         logger, properties);
         if (Boolean.valueOf(properties.getProperty(PROP_TRACE_FONT_FILES))
                 .booleanValue()) {
-            fontFinder.enableTrace(true);
+            fontFinder.enableTracing(true);
         }
 
         try {
@@ -1598,7 +1598,7 @@ public class ExTeX {
                             logger, properties);
             if (Boolean.valueOf(properties.getProperty(PROP_TRACE_INPUT_FILES))
                     .booleanValue()) {
-                finder.enableTrace(true);
+                finder.enableTracing(true);
             }
             TokenStreamFactory tokenStreamFactory //
             = makeTokenStreamFactory(config.getConfiguration("Scanner"), finder);
