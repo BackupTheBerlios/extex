@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-.2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package de.dante.extex.scanner;
 
 import de.dante.extex.i18n.Messages;
+import de.dante.util.UnicodeChar;
 
 
 /**
@@ -30,16 +31,16 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LetterToken extends AbstractToken implements Token {
     /**
      * Creates a new object.
      *
-     * @param value the letter as a single character string
+     * @param uc the letter as a single character string
      */
-    protected LetterToken(String value) {
-        super(value);
+    protected LetterToken(UnicodeChar uc) {
+        super(uc);
     }
 
     /**
@@ -57,6 +58,6 @@ public class LetterToken extends AbstractToken implements Token {
      * @see "TeX -- The Program [298]"
      */
     public String toString() {
-        return Messages.format("LetterToken.Text",value);
+        return Messages.format("LetterToken.Text",getValue());
     }
 }

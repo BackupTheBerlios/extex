@@ -19,6 +19,7 @@
 package de.dante.extex.scanner;
 
 import de.dante.extex.i18n.Messages;
+import de.dante.util.UnicodeChar;
 
 
 /**
@@ -30,16 +31,16 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathShiftToken extends AbstractToken implements Token {
     /**
      * Creates a new object.
      *
-     * @param value the actual value
+     * @param uc the actual value
      */
-    protected MathShiftToken(String value) {
-        super(value);
+    protected MathShiftToken(UnicodeChar uc) {
+        super(uc);
     }
 
     /**
@@ -57,6 +58,6 @@ public class MathShiftToken extends AbstractToken implements Token {
      * @see "TeX -- The Program [298]"
      */
     public String toString() {
-        return Messages.format("MathShiftToken.Text",value);
+        return Messages.format("MathShiftToken.Text",getValue());
     }
 }

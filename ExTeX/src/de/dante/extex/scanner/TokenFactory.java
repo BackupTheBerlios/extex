@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,7 +18,7 @@
  */
 package de.dante.extex.scanner;
 
-import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This is the interface for the token factory.
@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface TokenFactory {
     /**
@@ -39,7 +39,7 @@ public interface TokenFactory {
      * @return the appropriate token
      */
     public abstract Token newInstance(Catcode code, String value)
-                               throws GeneralException;
+                               throws CatcodeException;
 
     /**
      * Get an instance of a token with a given Catcode and character value.
@@ -50,6 +50,18 @@ public interface TokenFactory {
      * @return the appropriate token
      */
     public abstract Token newInstance(Catcode code, char c)
-                               throws GeneralException;
+                               throws CatcodeException;
 
+    /**
+     * Get an instance of a token with a given Catcode and Unicode character
+     * value.
+     * 
+     * @param code the catcode
+     * @param c the Unicode character value
+     * 
+     * @return the appropriate token
+     */
+    public abstract Token newInstance(Catcode code, UnicodeChar c)
+            throws CatcodeException;
+    
 }

@@ -30,12 +30,13 @@ import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -87,7 +88,7 @@ public class HorizontalListMaker extends AbstractListMaker
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
      * @see "The TeXbook [p.76]"
      */
-    public void add(TypesettingContext context, String symbol)
+    public void add(TypesettingContext context, UnicodeChar symbol)
              throws GeneralException {
         CharNode c = manager.getCharNodeFactory()
                             .newInstance(context, symbol);

@@ -18,13 +18,14 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /*
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SubMarkTokenTest extends TestCase {
 
@@ -34,7 +35,7 @@ public class SubMarkTokenTest extends TestCase {
         junit.textui.TestRunner.run(SubMarkTokenTest.class);
     }
 
-    private static Token t = new SubMarkToken("*");
+    private static Token t = new SubMarkToken(new UnicodeChar('*'));
 
     /*
      */
@@ -69,7 +70,7 @@ public class SubMarkTokenTest extends TestCase {
     /*
      */
     public void testEqualsToken1() {
-        Token t1 = new SubMarkToken(" ");
+        Token t1 = new SubMarkToken(new UnicodeChar(' '));
         Token t2 = new SpaceToken(" ");
         assertFalse(t1.equals(t2));
     }

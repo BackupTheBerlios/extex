@@ -18,13 +18,14 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /*
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SpaceTokenTest extends TestCase {
 
@@ -69,7 +70,7 @@ public class SpaceTokenTest extends TestCase {
     /*
      */
     public void testEqualsToken1() {
-        Token t2 = new ActiveCharacterToken(" ");
+        Token t2 = new ActiveCharacterToken(new UnicodeChar(' '));
         assertFalse(t.equals(t2));
     }
 

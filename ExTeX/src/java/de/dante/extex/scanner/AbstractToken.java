@@ -18,21 +18,34 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
+
+/*
+ * ...
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.6 $
+ */
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractToken implements Token {
 
-	/** 
-	 * The value of the token 
-	 */
-    protected String value;
+	/**
+     * The field <tt>value</tt> contains the string value. In case that the
+     * token has a single character value only this may also be <code>null</code>
+     * or it is used to cache the string representation of the character.
+     */
+    private String value = null;
 
-    // TODO use UnicodeCahr for Letter and Other
+    /**
+     * The field <tt>uniCode</tt> ...
+     */
+    private UnicodeChar uniCode = null;
     
     /**
      * Creates a new object.
@@ -44,6 +57,16 @@ public abstract class AbstractToken implements Token {
         this.value = value;
     }
 
+    /**
+     * Creates a new object.
+     *
+     * @param value the value of the token
+     */
+    protected AbstractToken(UnicodeChar uc) {
+        super();
+        this.uniCode = uc;
+    }
+    
     /**
      * This abstract class forces a derived class to overwrite this definition.
      *
@@ -64,13 +87,26 @@ public abstract class AbstractToken implements Token {
      * @return the text representation
      */
     public String toText() {
+        if ( value == null ) {
+            value = uniCode.toString();
+        }
         return value;
+    }
+
+    /**
+     * @see de.dante.extex.scanner.Token#getChar()
+     */
+    public UnicodeChar getChar() {
+        return uniCode;
     }
     
     /**
      * @see de.dante.extex.scanner.Token#getValue()
      */
     public String getValue() {
+        if ( value == null ) {
+            value = uniCode.toString();
+        }
         return value;
     }
 

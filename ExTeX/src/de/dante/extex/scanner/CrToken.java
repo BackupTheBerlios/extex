@@ -30,7 +30,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CrToken extends AbstractToken implements Token {
     /**
@@ -57,7 +57,7 @@ public class CrToken extends AbstractToken implements Token {
      * @see "TeX -- The Program [298]"
      */
     public String toString() {
-        return Messages.format("CrToken.Text",value);
+        return Messages.format("CrToken.Text",getValue());
     }
     
     /**

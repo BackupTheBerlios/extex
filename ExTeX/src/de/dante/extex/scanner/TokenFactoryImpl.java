@@ -18,28 +18,48 @@
  */
 package de.dante.extex.scanner;
 
-import de.dante.util.GeneralException;
-
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.util.UnicodeChar;
+
+/*
+ * ...
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.4 $
+ */
 /**
  * This is a implementation of a token factory. This means that the factory
  * pattern is applied here. This pattern opens the possibility to cache the
  * instances for Tokens to reduce the number of objects present in the system.
+ * 
+ * <h2>The Visitor Pattern</h2>
  * <p>
  * In addition the visitor pattern is used to select the appropriate
- * instanciation method.
+ * instantiation method. The visit methods are not meant to be used externally.
+ * They are purely internal. 
+ * Despite their general definition the <tt>visit</tt>
+ * methods are in fact used in the following way:
+ * </p>
+ * 
+ * <pre>
+ *  Token visit<i>*</i>(String value, UnicodeChar character) throws CatcodeException
+ * </pre>
+ * 
+ * <p>
+ * This means that they are expected to return the new token. The first
+ * argument is the value, which is mainly meaningful for control sequence 
+ * tokens. The third argument contains the Unicode character for single letter
+ * tokens.
+ * </p>
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /** cache for active character tokens */
     private Map activeCache = new HashMap();
-
-    /** ... */
-    private Map crCache = new HashMap();
 
     /** cache for control sequence tokens */
     private Map csCache = new HashMap();
@@ -52,6 +72,9 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
     /** cache for macro parameter tokens */
     private Map macroParamCache = new HashMap();
+    
+    /** cache for math shift tokens */
+    private Map mathShiftCache = new HashMap();
 
     /** cache for other tokens */
     private Map otherCache = new HashMap();
@@ -68,6 +91,19 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /** cache for tab mark tokens */
     private Map tabMarkCache = new HashMap();
 
+    /**
+     * The field <tt>crToken</tt> contains the one and only cr token in the
+     * system.
+     */
+    private Token crToken = new CrToken(" ");
+    
+    /**
+     * The field <tt>spaceToken</tt> contains the one and only space token in
+     * the system.
+     */
+    private Token spaceToken = new SpaceToken(" ");
+
+    
     /**
      * Creates a new object.
      */
@@ -88,12 +124,19 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * @throws GeneralException in case of an error
      */
     public Token newInstance(Catcode code, String value)
-            throws GeneralException {
-        return (Token) code.visit((CatcodeVisitor) this, value, null);
+            throws CatcodeException {
+        try {
+            return (Token) code.visit((CatcodeVisitor) this, value, null);
+        } catch (CatcodeException e) {
+            throw e;
+        } catch (Exception e) {
+            // this should not happen
+            throw new CatcodeException(e);
+        }
     }
 
     /**
-     * Create a new {@link de.dante.extex.scanner.Token Token} of the
+     * Create a new {@link de.dante.extex.scanner.Token Token}of the
      * appropriate kind. Tokens are immutable (no setters) thus the factory
      * pattern can be applied.
      * 
@@ -104,23 +147,60 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @throws GeneralException in case of an error
      */
-    public Token newInstance(Catcode code, char c) throws GeneralException {
-        return (Token) code.visit((CatcodeVisitor) this, Character.toString(c),
-                                  null);
+    public Token newInstance(Catcode code, char c) throws CatcodeException {
+        try {
+            return (Token) code.visit((CatcodeVisitor) this, null,
+                                      new UnicodeChar(c));
+        } catch (CatcodeException e) {
+            throw e;
+        } catch (Exception e) {
+            // this should not happen
+            throw new CatcodeException(e);
+        }
     }
 
     /**
+     * @see de.dante.extex.scanner.TokenFactory#newInstance(de.dante.extex.scanner.Catcode,
+     *      de.dante.util.UnicodeChar)
+     */
+    public Token newInstance(Catcode code, UnicodeChar c)
+            throws CatcodeException {
+
+        try {
+            return (Token) code.visit((CatcodeVisitor) this, null, c);
+        } catch (CatcodeException e) {
+            throw e;
+        } catch (Exception e) {
+            // this should not happen
+            throw new CatcodeException(e);
+        }
+    }
+    
+    /**
      * Active characters are cached. Thus a lookup in the cache preceeds the
-     * creation of a new token
+     * creation of a new token.
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
      */
-    public Object visitActive(Object value, Object ignore) {
-        Object token = activeCache.get(value);
+    public Object visitActive(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = activeCache.get(uc);
 
         if (token == null) {
-            token = new ActiveCharacterToken((String) value);
-            activeCache.put(value, token);
+            token = new ActiveCharacterToken(uc);
+            activeCache.put(uc, token);
         }
 
         return token;
@@ -131,130 +211,225 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
      */
-    public Object visitComment(Object value, Object ignore) {
+    public Object visitComment(Object oValue, Object oChar) {
         return null;
     }
-
+    
     /**
+     * There is only one CrToken.
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
      */
-    public Object visitCr(Object value, Object ignore) {
-        Object token = crCache.get(value);
-
-        if (token == null) {
-            token = new CrToken((String) value);
-            crCache.put(value, token);
-        }
-
-        return token;
+    public Object visitCr(Object oValue, Object oChar) {
+        return crToken;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
      */
-    public Object visitEscape(Object value, Object ignore) {
+    public Object visitEscape(Object oValue, Object oChar) throws CatcodeException {
+        String value;
+        if ( oValue != null) {
+            value = (String)oValue;
+        } else if ( oChar != null) {
+            value = ((UnicodeChar)oChar).toString();
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
         Object token = csCache.get(value);
 
         if (token == null) {
-            token = new ControlSequenceToken((String) value);
+            token = new ControlSequenceToken(value);
             csCache.put(value, token);
         }
-
+        
         return token;
     }
 
     /**
+     * Ignored characters are simply ignored;-)
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,java.lang.Object)
      */
-    public Object visitIgnore(Object value, Object ignore) {
+    public Object visitIgnore(Object oValue, Object oChar) {
         return null;
     }
 
     /**
+     * Invalid characters are ignored; even without any error message.
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,java.lang.Object)
      */
-    public Object visitInvalid(Object value, Object ignore) {
+    public Object visitInvalid(Object oValue, Object oChar) {
         return null;
     }
 
     /**
+     * A left brace token is expected to take a single character only.
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,java.lang.Object)
      */
-    public Object visitLeftBrace(Object value, Object ignore) {
-        Object token = leftBraceCache.get(value);
+    public Object visitLeftBrace(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = leftBraceCache.get(uc);
 
         if (token == null) {
-            token = new LeftBraceToken((String) value);
-            leftBraceCache.put(value, token);
+            token = new LeftBraceToken(uc);
+            leftBraceCache.put(uc, token);
         }
-
+        
         return token;
     }
 
     /**
+     * A letter token is expected to take a single character only.
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,java.lang.Object)
      */
-    public Object visitLetter(Object value, Object ignore) {
-        Object token = letterCache.get(value);
+    public Object visitLetter(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = letterCache.get(uc);
 
         if (token == null) {
-            token = new LetterToken((String) value);
-            letterCache.put(value, token);
+            token = new LetterToken(uc);
+            letterCache.put(uc, token);
         }
-
+        
         return token;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,java.lang.Object)
      */
-    public Object visitMacroParam(Object value, Object ignore) {
-        Object token = macroParamCache.get(value);
+    public Object visitMacroParam(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = macroParamCache.get(uc);
 
         if (token == null) {
-            token = new MacroParamToken((String) value);
-            macroParamCache.put(value, token);
+            token = new MacroParamToken(uc);
+            macroParamCache.put(uc, token);
         }
-
+        
         return token;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
      */
-    public Object visitMathShift(Object value, Object ignore) {
-        return new MathShiftToken((String) value);
+    public Object visitMathShift(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = mathShiftCache.get(uc);
+
+        if (token == null) {
+            token = new MathShiftToken(uc);
+            mathShiftCache.put(uc, token);
+        }
+        
+        return token;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
      */
-    public Object visitOther(Object value, Object ignore) {
-        Object token = otherCache.get(value);
+    public Object visitOther(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = otherCache.get(uc);
 
         if (token == null) {
-            token = new OtherToken((String) value);
-            otherCache.put(value, token);
+            token = new OtherToken(uc);
+            otherCache.put(uc, token);
         }
-
+        
         return token;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(java.lang.Object,java.lang.Object)
      */
-    public Object visitRightBrace(Object value, Object ignore) {
-        Object token = rightBraceCache.get(value);
+    public Object visitRightBrace(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = rightBraceCache.get(uc);
 
         if (token == null) {
-            token = new RightBraceToken((String) value);
-            rightBraceCache.put(value, token);
+            token = new RightBraceToken(uc);
+            rightBraceCache.put(uc, token);
         }
-
+        
         return token;
     }
-
-    private Token spaceToken = new SpaceToken(" ");
 
     /**
      * There is only one space token. It has the character code 32.
@@ -262,49 +437,88 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
      * @see "The TeXbook [Chapter 8, p. 47]"
      */
-    public Object visitSpace(Object value, Object ignore) {
+    public Object visitSpace(Object oValue, Object oChar) {
         return spaceToken;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSubMark(Object value, Object ignore) {
-        Object token = subMarkCache.get(value);
+    public Object visitSubMark(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = subMarkCache.get(uc);
 
         if (token == null) {
-            token = new SubMarkToken((String) value);
-            subMarkCache.put(value, token);
+            token = new SubMarkToken(uc);
+            subMarkCache.put(uc, token);
         }
-
+        
         return token;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSupMark(Object value, Object ignore) {
-        Object token = supMarkCache.get(value);
+    public Object visitSupMark(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = supMarkCache.get(uc);
 
         if (token == null) {
-            token = new SupMarkToken((String) value);
-            supMarkCache.put(value, token);
+            token = new SupMarkToken(uc);
+            supMarkCache.put(uc, token);
         }
-
+        
         return token;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitTabMark(Object value, Object ignore) {
-        Object token = tabMarkCache.get(value);
+    public Object visitTabMark(Object oValue, Object oChar) throws CatcodeException {
+        UnicodeChar uc;
+        if ( oChar != null) {
+            uc = (UnicodeChar)oChar;
+        } else if (oValue != null) {
+            String value = (String)oValue;
+            if ( value.length() != 1 ) {
+                throw new CatcodeException("invalid length"); //TODO i18n
+            }
+            uc = new UnicodeChar(value.charAt(0));
+        } else {
+            throw new CatcodeException("neither value nor char given"); //TODO i18n
+        }
+        
+        Object token = tabMarkCache.get(uc);
 
         if (token == null) {
-            token = new TabMarkToken((String) value);
-            tabMarkCache.put(value, token);
+            token = new TabMarkToken(uc);
+            tabMarkCache.put(uc, token);
         }
-
+        
         return token;
     }
 }

@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * ...
@@ -31,13 +32,13 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ListMaker {
     
     public abstract void add(Node node) throws GeneralException;
 
-    public abstract void add(TypesettingContext typesettingContext, String symbol) throws GeneralException;
+    public abstract void add(TypesettingContext typesettingContext, UnicodeChar symbol) throws GeneralException;
 
     public abstract void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException;
 

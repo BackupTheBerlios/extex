@@ -54,7 +54,7 @@ import de.dante.util.configuration.ConfigurationMissingException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Max extends Moritz implements CatcodeVisitor,
                                            Interpreter,
@@ -277,6 +277,8 @@ public class Max extends Moritz implements CatcodeVisitor,
                 } else {
                     throw e;
                 }
+            } catch (Exception e) {
+                throw new GeneralException(e);
             }
         }
 
@@ -379,7 +381,7 @@ public class Max extends Moritz implements CatcodeVisitor,
     public Object visitLetter(Object oToken, Object ignore)
                        throws GeneralException {
         Token token = (Token) oToken;
-        typesetter.add(context.getTypesettingContext(), token.getValue());
+        typesetter.add(context.getTypesettingContext(), token.getChar());
         return null;
     }
 
@@ -407,7 +409,7 @@ public class Max extends Moritz implements CatcodeVisitor,
         Token next = getToken();
 
         if (next == null) {
-            // throw new GeneralException("Missing $ inserted");
+            // throw new GeneralException("Missing $ inserted"); //TODO i18n
         } else if (next.isa(Catcode.MATHSHIFT)) {
             typesetter.toggleDisplaymath();
         } else {
@@ -424,7 +426,7 @@ public class Max extends Moritz implements CatcodeVisitor,
     public Object visitOther(Object oToken, Object ignore)
                       throws GeneralException {
         Token token = (Token) oToken;
-        typesetter.add(context.getTypesettingContext(), token.getValue());
+        typesetter.add(context.getTypesettingContext(), token.getChar());
         return null;
     }
 

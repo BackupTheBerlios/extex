@@ -19,6 +19,7 @@
 package de.dante.extex.scanner;
 
 import de.dante.extex.i18n.Messages;
+import de.dante.util.UnicodeChar;
 
 
 /**
@@ -30,16 +31,16 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MacroParamToken extends AbstractToken implements Token {
     /**
      * Creates a new object.
      *
-     * @param value the actual value
+     * @param uc the actual value
      */
-    protected MacroParamToken(String value) {
-        super(value);
+    protected MacroParamToken(UnicodeChar uc) {
+        super(uc);
     }
 
     /**
@@ -57,6 +58,6 @@ public class MacroParamToken extends AbstractToken implements Token {
      * @see "TeX -- The Program [298]"
      */
     public String toString() {
-        return Messages.format("MacroParamToken.Text",value);
+        return Messages.format("MacroParamToken.Text",getValue());
     }
 }

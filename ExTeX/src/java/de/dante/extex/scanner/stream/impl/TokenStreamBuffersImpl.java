@@ -27,9 +27,10 @@ import de.dante.extex.scanner.stream.TokenStream;
 
 /*
  * ...
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * 
+ * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
+ * 
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
         TokenStream {
@@ -37,18 +38,8 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
     /**
      * Creates a new object.
      */
-    public TokenStreamBuffersImpl() {
+    protected TokenStreamBuffersImpl() {
         super();
-    }
-
-    /**
-     * Creates a new object.
-     * 
-     * @param line
-     * @throws CharacterCodingException
-     */
-    public TokenStreamBuffersImpl(String line) throws CharacterCodingException {
-        super(line);
     }
 
     /**
@@ -67,22 +58,27 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
      * The field <tt>nextLine</tt> ...
      */
     private int nextLine = 1;
+
     /**
      * The field <tt>lines</tt> ...
      */
     private String[] lines = null;
-    
+
+    private String encoding;
+
     /**
      * Creates a new object.
      * 
      * @param lines the array of lines to consider
      * @throws CharacterCodingException in cas of an error
      */
-    public TokenStreamBuffersImpl(String[] lines) throws CharacterCodingException {
-        super(lines[0]);
+    public TokenStreamBuffersImpl(String[] lines, String encoding)
+            throws CharacterCodingException {
+        super(lines[0], encoding);
         this.lines = lines;
+        this.encoding = encoding;
     }
-    
+
     /**
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
      */
@@ -90,7 +86,7 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
         if (lines == null || nextLine >= lines.length) {
             return false;
         }
-        setBuffer(Charset.forName("ISO-8859-1").newDecoder().decode(
+        setBuffer(Charset.forName(encoding).newDecoder().decode(
                 ByteBuffer.wrap(lines[nextLine++].getBytes())));
         return true;
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -41,32 +41,32 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenStreamImpl extends TokenStreamBufferImpl {
 
 	/** 
-	 * the decoder for the input stream 
+	 * The decoder for the input stream 
 	 */
 	private CharsetDecoder decoder;
 
 	/** 
-	 * the reader to get the input from 
+	 * The reader to get the input from 
 	 */
 	private LineNumberReader reader;
 
 	/** 
-	 * the last input line as it has been read 
+	 * The last input line as it has been read 
 	 */
 	private String line;
 
 	/** 
-	 * the name of the source to read from 
+	 * The name of the source to read from 
 	 */
 	private String source;
 
 	/**
-	 * indicate, if the stream is a filestrem
+	 * Indicate whether the stream is a filestrem
 	 */
 	private boolean isFileStream = false;
 
@@ -77,45 +77,47 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 		super();
 	}
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param line a string to read from
-	 * @param encoding the encoding to use
-	 * 
-	 * @throws CharacterCodingException in case of an error
-	 */
-	public TokenStreamImpl(String line, String encoding) throws CharacterCodingException {
-		super(line, encoding);
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param line a string to read from
+     * @param encoding the encoding to use
+     * 
+     * @throws CharacterCodingException in case of an error
+     */
+    public TokenStreamImpl(String line, String encoding)
+            throws CharacterCodingException {
+        super(line, encoding);
+    }
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param filename the name of the file to read
-	 */
-	public TokenStreamImpl(File filename, String encoding) throws FileNotFoundException, IOException {
-		super("", encoding);
-		this.source = filename.getPath();
-		isFileStream = true;
-		reader = new LineNumberReader(new FileReader(filename));
-		decoder = Charset.forName(encoding).newDecoder();
-		refill();
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param filename the name of the file to read
+     */
+    public TokenStreamImpl(File filename, String encoding)
+            throws FileNotFoundException, IOException {
+        super("", encoding);
+        this.source = filename.getPath();
+        isFileStream = true;
+        reader = new LineNumberReader(new FileReader(filename));
+        decoder = Charset.forName(encoding).newDecoder();
+        refill();
+    }
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param reader the source reader
-	 * @throws IOException in case of an IO error
-	 */
-	public TokenStreamImpl(Reader reader, String encoding) throws IOException {
-		super("", encoding);
-		this.source = reader.toString();
-		this.reader = new LineNumberReader(reader);
-		decoder = Charset.forName(encoding).newDecoder();
-		refill();
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param reader the source reader
+     * @throws IOException in case of an IO error
+     */
+    public TokenStreamImpl(Reader reader, String encoding) throws IOException {
+        super("", encoding);
+        this.source = reader.toString();
+        this.reader = new LineNumberReader(reader);
+        decoder = Charset.forName(encoding).newDecoder();
+        refill();
+    }
 
 	/**
 	 * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
@@ -124,12 +126,13 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 		return isFileStream;
 	}
 
-	/**
-	 * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
-	 */
-	public Locator getLocator() {
-		return new Locator(source, (reader == null ? 0 : reader.getLineNumber()));
-	}
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
+     */
+    public Locator getLocator() {
+        return new Locator(source,
+                (reader == null ? 0 : reader.getLineNumber()));
+    }
 
 	/**
 	 * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
@@ -140,38 +143,38 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 		return true;
 	}
 
-	/**
-	 * Get a new bunch of characters.
-	 * 
-	 * @return a new buffer of characters read or <code>null</code> at end of
-	 *            file
-	 * 
-	 * @return <code>false</code> iff no more character is available
-	 */
-	protected boolean refill() throws IOException {
-		if (reader == null) {
-			return false;
-		}
+    /**
+     * Get a new bunch of characters.
+     * 
+     * @return a new buffer of characters read or <code>null</code> at end of
+     *         file
+     * 
+     * @return <code>false</code> iff no more character is available
+     */
+    protected boolean refill() throws IOException {
+        if (reader == null) {
+            return false;
+        }
 
-		if ((line = reader.readLine()) == null) {
-			reader.close();
-			reader = null;
-			return false;
-		}
+        if ((line = reader.readLine()) == null) {
+            reader.close();
+            reader = null;
+            return false;
+        }
 
-		// TODO check, if the encoding (\inputencoding) is changend
-		// a change of inputencoding is active on the next line after
-		// the primitive
+        // TODO check, if the encoding (\inputencoding) is changend
+        // a change of inputen coding is active on the next line after
+        // the primitive
 
-		// System.err.println("line [" + reader.getLineNumber() + "] :" + line + ":");
+        // System.err.println("line [" + reader.getLineNumber() + "] :" + line
+        // + ":");
 
-		// add '\r' for EOL 
-		line = line + '\r';
+        // add '\r' for EOL
+        line = line + '\r';
 
-		CharBuffer buffer = decoder.decode(ByteBuffer.wrap(line.getBytes()));
-		setBuffer(buffer);
-		pointer = 0;
-		state = NEW_LINE;
-		return true;
-	}
+        CharBuffer buffer = decoder.decode(ByteBuffer.wrap(line.getBytes()));
+        setBuffer(buffer);
+        pointer = 0;
+        return true;
+    }
 }

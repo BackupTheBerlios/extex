@@ -34,18 +34,21 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
+import de.dante.util.UnicodeChar;
 
 /*
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
+
 /**
  * This class contains an implementation of a token stream which is fed from a
  * buffer. The basic functionality of stacking prefabricated tokens and
- * delivering them is inherited from the base class TokenStreamBaseImpl.
+ * delivering them is inherited from the base class
+ * {@link de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl TokenStreamBaseImpl}.
  * <p>
  * In addition this class provides an engine to tokenize the input stream and
  * refill the buffer at its end.
@@ -53,56 +56,48 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
+
     /**
      * new line
      */
-    public static final byte NEW_LINE = 0;
+    private static final State NEW_LINE = new State();
 
     /**
      * mid line
      */
-    public static final byte MID_LINE = 1;
+    private static final State MID_LINE = new State();
 
     /**
      * skip blanks
      */
-    public static final byte SKIP_BLANKS = 2;
+    private static final State SKIP_BLANKS = new State();
 
     /**
      * state of a line
      */
-    protected byte state = NEW_LINE;
+    private State state = NEW_LINE;
 
     /**
-     * The index in the buffer of the next character to consider.
+     * The index in the buffer one before the next character to consider. This
+     * is an invariant: to read a character this pointer has to be advanced
+     * first.
      */
     protected int pointer = -1;
 
     /**
-     * The buffer to read from. The line is empty
+     * The buffer to read from. The line is empty initially.
      */
     private CharBuffer buffer;
 
     /**
      * Creates a new object. The input buffer is initially empty.
      */
-    public TokenStreamBufferImpl() {
+    protected TokenStreamBufferImpl() {
         super();
-    }
-
-    /**
-     * Creates a new object. The encoding used is ISO-8859-1.
-     * 
-     * @param line a string to read from
-     * 
-     * @throws CharacterCodingException in case of an error
-     */
-    public TokenStreamBufferImpl(String line) throws CharacterCodingException {
-        this(line, "ISO-8859-1");
     }
 
     /**
@@ -149,7 +144,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      */
     public Token getNext(TokenFactory factory, Tokenizer tokenizer)
             throws GeneralException {
-        Token t;
+        Token t = null;
         int c;
 
         if (buffer == null) {
@@ -162,8 +157,12 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
                 return null;
             }
 
-            t = (Token) tokenizer.getCatcode((char) c).visit(this, factory,
-                    tokenizer);
+            try {
+                t = (Token) tokenizer.getCatcode(new UnicodeChar(c)).visit(
+                        this, factory, tokenizer);
+            } catch (Exception e) {
+                throw new GeneralException(e);
+            }
         } while (t == null);
 
         return t;
@@ -219,19 +218,25 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         TokenFactory factory = (TokenFactory) oFactory;
         Tokenizer tokenizer = (Tokenizer) oTokenizer;
         int c = getChar();
+        UnicodeChar uc;
 
-        if (c < 0) {
-            // TODO error handling
-            return null;
-        } else if (tokenizer.getCatcode((char) c) == Catcode.LETTER) {
-            StringBuffer sb = new StringBuffer((char) c);
+        if (c < 0
+            || tokenizer.getCatcode((uc = new UnicodeChar(c))) == Catcode.CR) {
+            //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
+            return factory.newInstance(Catcode.ESCAPE, "");
+        } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
+            StringBuffer sb = new StringBuffer();
+            sb.append((char) c);
 
             while ((c = getChar()) >= 0
-                   && tokenizer.getCatcode((char) c) == Catcode.LETTER) {
+                   && tokenizer.getCatcode(new UnicodeChar(c)) == Catcode.LETTER) {
                 sb.append((char) c);
             }
-            state = SKIP_BLANKS;
 
+            if (c >= 0) {
+                ungetChar((char) c);
+            }
+            state = SKIP_BLANKS;
             return factory.newInstance(Catcode.ESCAPE, sb.toString());
         } else {
             state = MID_LINE;
@@ -385,26 +390,45 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
             c = (char) (c < '\100' ? c + 64 : c - 64);
 
             ungetChar(c);
-            return tokenizer.getCatcode((char) getChar()).visit(this, oFactory,
-                    oTokenizer);
+            try {
+                return tokenizer.getCatcode(new UnicodeChar(getChar())).visit(
+                        this, oFactory, oTokenizer);
+            } catch (GeneralException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new GeneralException(e);
+            }
         }
 
         c = (char) next;
         int hc2 = hex2int(c);
 
         if (hc2 < 0) {
-            put(factory.newInstance(tokenizer.getCatcode(c), c));
+            put(factory
+                    .newInstance(tokenizer.getCatcode(new UnicodeChar(c)), c));
 
             c = (char) (c < '\100' ? c + 64 : c - 64);
 
             ungetChar(c);
-            return tokenizer.getCatcode((char) getChar()).visit(this, oFactory,
-                    oTokenizer);
+            try {
+                return tokenizer.getCatcode(new UnicodeChar(getChar())).visit(
+                        this, oFactory, oTokenizer);
+            } catch (GeneralException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new GeneralException(e);
+            }
         }
 
         ungetChar((char) (hc1 * 16 + hc2));
-        return tokenizer.getCatcode((char) getChar()).visit(this, oFactory,
-                oTokenizer);
+        try {
+            return tokenizer.getCatcode(new UnicodeChar(getChar())).visit(this,
+                    oFactory, oTokenizer);
+        } catch (GeneralException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new GeneralException(e);
+        }
 
         //TODO: use ^^^^ notation
     }
@@ -470,8 +494,13 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         return c;
     }
 
+    /**
+     * ...
+     * 
+     * @param c ...
+     */
     private void ungetChar(char c) {
-        buffer.put(pointer--,c);
+        buffer.put(pointer--, c);
     }
 
     /**
@@ -498,6 +527,13 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
             //            return c - 'A' + 10;
         } else {
             return -1;
+        }
+    }
+
+    private static class State {
+
+        public State() {
+            super();
         }
     }
 }

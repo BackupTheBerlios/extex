@@ -40,6 +40,7 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
+import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
@@ -77,7 +78,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -166,7 +167,7 @@ public class ContextImpl implements Context, Serializable {
 	 * @see de.dante.extex.interpreter.context.Context#setCatcode(char,
 	 *         de.dante.extex.scanner.Catcode)
 	 */
-	public void setCatcode(char c, Catcode cc) throws GeneralHelpingException {
+	public void setCatcode(UnicodeChar c, Catcode cc) throws GeneralHelpingException {
 		group.setCatcode(c, cc);
 	}
 
@@ -174,7 +175,7 @@ public class ContextImpl implements Context, Serializable {
 	 * @see de.dante.extex.interpreter.context.Context#setCatcode(java.lang.String,
 	 *         de.dante.extex.scanner.Catcode, boolean)
 	 */
-	public void setCatcode(char c, Catcode cc, boolean global) throws GeneralHelpingException {
+	public void setCatcode(UnicodeChar c, Catcode cc, boolean global) throws GeneralHelpingException {
 		group.setCatcode(c, cc, global);
 	}
 

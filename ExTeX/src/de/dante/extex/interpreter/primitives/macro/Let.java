@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Let extends AbstractCode implements CatcodeVisitor {
     /**
@@ -79,11 +79,16 @@ public class Let extends AbstractCode implements CatcodeVisitor {
             t2 = source.getNonSpace();
         }
 
-        if (t2 == null) { throw new GeneralException(); //TODO
+        if (t2 == null) {
+            throw new GeneralException(); //TODO
         }
 
-        Code code = (Code) (t2.getCatcode().visit(this, t2.getValue(), context));
-
+        Code code;
+        try {
+            code = (Code) (t2.getCatcode().visit(this, t2.getValue(), context));
+        } catch (Exception e) {
+            throw new GeneralException(e);
+        }
         if (t instanceof ControlSequenceToken) {
             context.setMacro(t.getValue(), code, prefix.isGlobal());
         } else if (t instanceof ActiveCharacterToken) {

@@ -28,12 +28,13 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractListMaker implements ListMaker {
     /** The manager to ask for global changes.
@@ -71,7 +72,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
      */
-    public abstract void add(TypesettingContext font, String symbol)
+    public abstract void add(TypesettingContext font, UnicodeChar symbol)
                       throws GeneralException;
 
     /**

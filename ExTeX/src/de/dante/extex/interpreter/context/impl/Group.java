@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
+import de.dante.util.UnicodeChar;
 
 import java.io.Serializable;
 
@@ -43,437 +44,380 @@ import java.io.Serializable;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Group extends Tokenizer, Serializable {
 
-	/**
-	 * Setter for active characters in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the active character, i.e. a single letter string
-	 * @param code
-	 *                 the new code
-	 */
-	public abstract void setActive(String name, Code code);
+    /**
+     * Setter for active characters in the current group.
+     * 
+     * @param name the name of the active character, i.e. a single letter
+     *            string
+     * @param code the new code
+     */
+    public abstract void setActive(String name, Code code);
 
-	/**
-	 * Setter for active characters in the requested group.
-	 * 
-	 * @param name
-	 *                 the name of the active character, i.e. a single letter string
-	 * @param code
-	 *                 the new code
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setActive(String name, Code code, boolean global);
+    /**
+     * Setter for active characters in the requested group.
+     * 
+     * @param name the name of the active character, i.e. a single letter
+     *            string
+     * @param code the new code
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setActive(String name, Code code, boolean global);
 
-	/**
-	 * Getter for the definition of an active character. In fact the name is
-	 * assumed to be a string containing a single character but it can be any
-	 * string.
-	 * 
-	 * @param name
-	 *                 the name of the active character
-	 * 
-	 * @return the code associated to the name or <code>null</code> if none
-	 *            is defined yet
-	 */
-	public abstract Code getActive(String name);
+    /**
+     * Getter for the definition of an active character. In fact the name is
+     * assumed to be a string containing a single character but it can be any
+     * string.
+     * 
+     * @param name the name of the active character
+     * 
+     * @return the code associated to the name or <code>null</code> if none
+     *         is defined yet
+     */
+    public abstract Code getActive(String name);
 
-	/**
-	 * ...
-	 * 
-	 * @return ...
-	 */
-	public abstract Tokens getAfterGroup();
+    /**
+     * ...
+     * 
+     * @return ...
+     */
+    public abstract Tokens getAfterGroup();
 
-	/**
-	 * Setter for the catcode of a character in the current group.
-	 * 
-	 * @param c
-	 *                 the character
-	 * @param code
-	 *                 the catcode
-	 */
-	public abstract void setCatcode(char c, Catcode code);
+    /**
+     * Setter for the catcode of a character in the current group.
+     * 
+     * @param c the character
+     * @param code the catcode
+     */
+    public abstract void setCatcode(UnicodeChar c, Catcode code);
 
-	/**
-	 * Setter for the catcode of a character in the specified groups.
-	 * 
-	 * @param c
-	 *                 the character
-	 * @param code
-	 *                 the catcode
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setCatcode(char c, Catcode value, boolean global);
+    /**
+     * Setter for the catcode of a character in the specified groups.
+     * 
+     * @param c the character
+     * @param code the catcode
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setCatcode(UnicodeChar c, Catcode value, boolean global);
 
-	/**
-	 * Setter for the count register in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the register
-	 * @param value
-	 *                 the value of the register
-	 */
-	public abstract void setCount(String name, Count value);
+    /**
+     * Setter for the count register in the current group.
+     * 
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    public abstract void setCount(String name, Count value);
 
-	/**
-	 * Setter for a count register in the requested groups.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * @param value
-	 *                 the value of the count register
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setCount(String name, Count value, boolean global);
+    /**
+     * Setter for a count register in the requested groups.
+     * 
+     * @param name the name of the count register
+     * @param value the value of the count register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setCount(String name, Count value, boolean global);
 
-	/**
-	 * Getter for the named count register in the current group. The name can
-	 * either be a string representing a number or an arbitrary string. In the
-	 * first case the behavior of the numbered count registers is emulated. The
-	 * other case can be used to store special count values.
-	 * 
-	 * Note: The number of count registers is not limited to 256 as in TeX.
-	 * 
-	 * As a default value 0 is returned.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * 
-	 * @return the value of the count register or its default
-	 */
-	public abstract Count getCount(String name);
+    /**
+     * Getter for the named count register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered count registers is emulated. The
+     * other case can be used to store special count values.
+     * 
+     * Note: The number of count registers is not limited to 256 as in TeX.
+     * 
+     * As a default value 0 is returned.
+     * 
+     * @param name the name of the count register
+     * 
+     * @return the value of the count register or its default
+     */
+    public abstract Count getCount(String name);
 
-	/**
-	 * Setter for the real register in the current group.
-	 * 
-	 * @param name the name of the register
-	 * @param value the value of the register
-	 */
-	public abstract void setReal(String name, Real value);
+    /**
+     * Setter for the real register in the current group.
+     * 
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    public abstract void setReal(String name, Real value);
 
-	/**
-	 * Setter for a real register in the requested groups.
-	 * 
-	 * @param name the name of the real register
-	 * @param value the value of the real register
-	 * @param global the indicator for the scope; <code>true</code> means all
-	 *                       groups; otherwise the current group is affected only
-	 */
-	public abstract void setReal(String name, Real value, boolean global);
+    /**
+     * Setter for a real register in the requested groups.
+     * 
+     * @param name the name of the real register
+     * @param value the value of the real register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setReal(String name, Real value, boolean global);
 
-	/**
-	 * Getter for the named real register in the current group. The name can
-	 * either be a string representing a number or an arbitrary string. In the
-	 * first case the behavior of the numbered real registers is emulated. The
-	 * other case can be used to store special real values.
-	 * 
-	 * As a default value 0 is returned.
-	 * 
-	 * @param name the name of the real register
-	 * 
-	 * @return the value of the real register or its default
-	 */
-	public abstract Real getReal(String name);
+    /**
+     * Getter for the named real register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered real registers is emulated. The
+     * other case can be used to store special real values.
+     * 
+     * As a default value 0 is returned.
+     * 
+     * @param name the name of the real register
+     * 
+     * @return the value of the real register or its default
+     */
+    public abstract Real getReal(String name);
 
-	/**
-	 * Setter for a dimen register in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the register
-	 * @param value
-	 *                 the value of the register
-	 */
-	public abstract void setDimen(String name, Dimen value);
+    /**
+     * Setter for a dimen register in the current group.
+     * 
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    public abstract void setDimen(String name, Dimen value);
 
-	/**
-	 * Setter for a dimen register in the requested groups.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * @param value
-	 *                 the value of the count register
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setDimen(String name, Dimen value, boolean global);
+    /**
+     * Setter for a dimen register in the requested groups.
+     * 
+     * @param name the name of the count register
+     * @param value the value of the count register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setDimen(String name, Dimen value, boolean global);
 
-	/**
-	 * Getter for the named dimen register in the current group. The name can
-	 * either be a string representing a number or an arbitrary string. In the
-	 * first case the behavior of the numbered dimen registers is emulated. The
-	 * other case can be used to store special dimen values.
-	 * 
-	 * Note: The number of dimen registers is not limited to 256 as in TeX.
-	 * 
-	 * As a default value 0 is returned.
-	 * 
-	 * @param name
-	 *                 the name of the dimen register
-	 * 
-	 * @return the value of the dimen register or its default
-	 */
-	public abstract Dimen getDimen(String name);
+    /**
+     * Getter for the named dimen register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered dimen registers is emulated. The
+     * other case can be used to store special dimen values.
+     * 
+     * Note: The number of dimen registers is not limited to 256 as in TeX.
+     * 
+     * As a default value 0 is returned.
+     * 
+     * @param name the name of the dimen register
+     * 
+     * @return the value of the dimen register or its default
+     */
+    public abstract Dimen getDimen(String name);
 
-	/**
-	 * Setter for the value of the booleans in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the boolean
-	 * @param value
-	 *                 the truth value
-	 */
-	public abstract void setIf(String name, boolean value);
+    /**
+     * Setter for the value of the booleans in the current group.
+     * 
+     * @param name the name of the boolean
+     * @param value the truth value
+     */
+    public abstract void setIf(String name, boolean value);
 
-	/**
-	 * Setter for the value of the booleans in all groups.
-	 * 
-	 * @param name
-	 *                 the name of the boolean
-	 * @param value
-	 *                 the truth value
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setIf(String name, boolean value, boolean global);
+    /**
+     * Setter for the value of the booleans in all groups.
+     * 
+     * @param name the name of the boolean
+     * @param value the truth value
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setIf(String name, boolean value, boolean global);
 
-	/**
-	 * Getter for the boolean value.
-	 * 
-	 * @param name
-	 *                 the name of the boolean
-	 * 
-	 * @return the value
-	 */
-	public abstract boolean getIf(String name);
+    /**
+     * Getter for the boolean value.
+     * 
+     * @param name the name of the boolean
+     * 
+     * @return the value
+     */
+    public abstract boolean getIf(String name);
 
-	/**
-	 * Setter for the interaction mode in the current group.
-	 * 
-	 * @param interaction
-	 *                 the new interaction mode
-	 */
-	public abstract void setInteraction(Interaction interaction);
+    /**
+     * Setter for the interaction mode in the current group.
+     * 
+     * @param interaction the new interaction mode
+     */
+    public abstract void setInteraction(Interaction interaction);
 
-	/**
-	 * Setter for the interaction mode in the requested groups.
-	 * 
-	 * @param interaction
-	 *                 the new interaction mode
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setInteraction(Interaction interaction, boolean global);
+    /**
+     * Setter for the interaction mode in the requested groups.
+     * 
+     * @param interaction the new interaction mode
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setInteraction(Interaction interaction, boolean global);
 
-	/**
-	 * Getter for the current interaction mode.
-	 * 
-	 * @return the interaction mode
-	 */
-	public abstract Interaction getInteraction();
+    /**
+     * Getter for the current interaction mode.
+     * 
+     * @return the interaction mode
+     */
+    public abstract Interaction getInteraction();
 
-	/**
-	 * Setter for the definition of a macro in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the macro
-	 * @param code
-	 *                 the new definition
-	 */
-	public abstract void setMacro(String name, Code code);
+    /**
+     * Setter for the definition of a macro in the current group.
+     * 
+     * @param name the name of the macro
+     * @param code the new definition
+     */
+    public abstract void setMacro(String name, Code code);
 
-	/**
-	 * Setter for the definition of a macro in all groups.
-	 * 
-	 * @param name
-	 *                 the name of the macro
-	 * @param code
-	 *                 the new definition
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setMacro(String name, Code code, boolean global);
+    /**
+     * Setter for the definition of a macro in all groups.
+     * 
+     * @param name the name of the macro
+     * @param code the new definition
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setMacro(String name, Code code, boolean global);
 
-	/**
-	 * Getter for the definition of a macro.
-	 * 
-	 * @param name
-	 *                 the name of the macro
-	 * 
-	 * @return the definition of <code>null</code>
-	 */
-	public abstract Code getMacro(String name);
+    /**
+     * Getter for the definition of a macro.
+     * 
+     * @param name the name of the macro
+     * 
+     * @return the definition of <code>null</code>
+     */
+    public abstract Code getMacro(String name);
 
-	/**
-	 * Setter for a muskip register in all groups.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * @param value
-	 *                 the value of the count register
-	 */
-	public abstract void setMuskip(String name, Muskip value);
+    /**
+     * Setter for a muskip register in all groups.
+     * 
+     * @param name the name of the count register
+     * @param value the value of the count register
+     */
+    public abstract void setMuskip(String name, Muskip value);
 
-	/**
-	 * Setter for the muskip register in the requested groups.
-	 * 
-	 * @param name
-	 *                 the name of the register
-	 * @param value
-	 *                 the value of the register
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setMuskip(String name, Muskip value, boolean global);
+    /**
+     * Setter for the muskip register in the requested groups.
+     * 
+     * @param name the name of the register
+     * @param value the value of the register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setMuskip(String name, Muskip value, boolean global);
 
-	/**
-	 * Getter for the named muskip register in the current group. The name can
-	 * either be a string representing a number or an arbitrary string. In the
-	 * first case the behavior of the numbered muskip registers is emulated.
-	 * The other case can be used to store special muskip values.
-	 * 
-	 * Note: The number of muskip registers is not limited to 256 as in TeX.
-	 * 
-	 * As a default value 0 is returned.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * 
-	 * @return the value of the count register or its default
-	 */
-	public abstract Muskip getMuskip(String name);
+    /**
+     * Getter for the named muskip register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered muskip registers is emulated.
+     * The other case can be used to store special muskip values.
+     * 
+     * Note: The number of muskip registers is not limited to 256 as in TeX.
+     * 
+     * As a default value 0 is returned.
+     * 
+     * @param name the name of the count register
+     * 
+     * @return the value of the count register or its default
+     */
+    public abstract Muskip getMuskip(String name);
 
-	/**
-	 * Getter for the next group in the linked list. Maybe this method should
-	 * be hidden.
-	 */
-	public abstract Group getNext();
+    /**
+     * Getter for the next group in the linked list. Maybe this method should
+     * be hidden.
+     */
+    public abstract Group getNext();
 
-	/**
-	 * Setter for the skip register in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the register
-	 * @param value
-	 *                 the value of the register
-	 */
-	public abstract void setSkip(String name, Glue value);
+    /**
+     * Setter for the skip register in the current group.
+     * 
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    public abstract void setSkip(String name, Glue value);
 
-	/**
-	 * Setter for a skip register in all groups.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * @param value
-	 *                 the value of the count register
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setSkip(String name, Glue value, boolean global);
+    /**
+     * Setter for a skip register in all groups.
+     * 
+     * @param name the name of the count register
+     * @param value the value of the count register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setSkip(String name, Glue value, boolean global);
 
-	/**
-	 * Getter for the named skip register in the current group. The name can
-	 * either be a string representing a number or an arbitrary string. In the
-	 * first case the behavior of the numbered skip registers is emulated. The
-	 * other case can be used to store special skip values.
-	 * 
-	 * Note: The number of skip registers is not limited to 256 as in TeX.
-	 * 
-	 * As a default value 0 is returned.
-	 * 
-	 * @param name
-	 *                 the name of the count register
-	 * 
-	 * @return the value of the count register or its default
-	 */
-	public abstract Glue getSkip(String name);
+    /**
+     * Getter for the named skip register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered skip registers is emulated. The
+     * other case can be used to store special skip values.
+     * 
+     * Note: The number of skip registers is not limited to 256 as in TeX.
+     * 
+     * As a default value 0 is returned.
+     * 
+     * @param name the name of the count register
+     * 
+     * @return the value of the count register or its default
+     */
+    public abstract Glue getSkip(String name);
 
-	/**
-	 * Setter for the toks register in the current group.
-	 * 
-	 * @param name
-	 *                 the name of the register
-	 * @param value
-	 *                 the value of the register
-	 */
-	public abstract void setToks(String name, Tokens value);
+    /**
+     * Setter for the toks register in the current group.
+     * 
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    public abstract void setToks(String name, Tokens value);
 
-	/**
-	 * Setter for a toks register in all groups.
-	 * 
-	 * @param name
-	 *                 the name of the toks register
-	 * @param value
-	 *                 the value of the toks register
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setToks(String name, Tokens value, boolean global);
+    /**
+     * Setter for a toks register in all groups.
+     * 
+     * @param name the name of the toks register
+     * @param value the value of the toks register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setToks(String name, Tokens value, boolean global);
 
-	/**
-	 * Getter for the named toks register in the current group. The name can
-	 * either be a string representing a number or an arbitrary string. In the
-	 * first case the behavior of the numbered toks registers is emulated. The
-	 * other case can be used to store special toks values.
-	 * 
-	 * Note: The number of toks registers is not limited to 256 as in TeX.
-	 * 
-	 * As a default value the empty toks register is returned.
-	 * 
-	 * @param name
-	 *                 the name of the toks register
-	 * 
-	 * @return the value of the toks register or its default
-	 */
-	public abstract Tokens getToks(String name);
+    /**
+     * Getter for the named toks register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered toks registers is emulated. The
+     * other case can be used to store special toks values.
+     * 
+     * Note: The number of toks registers is not limited to 256 as in TeX.
+     * 
+     * As a default value the empty toks register is returned.
+     * 
+     * @param name the name of the toks register
+     * 
+     * @return the value of the toks register or its default
+     */
+    public abstract Tokens getToks(String name);
 
-	/**
-	 * Setter for the typesetting context in the current group.
-	 * 
-	 * @param context
-	 *                 the new typesetting context
-	 */
-	public abstract void setTypesettingContext(TypesettingContext context);
+    /**
+     * Setter for the typesetting context in the current group.
+     * 
+     * @param context the new typesetting context
+     */
+    public abstract void setTypesettingContext(TypesettingContext context);
 
-	/**
-	 * Setter for the typesetting context in the specified groups.
-	 * 
-	 * @param context
-	 *                 the new typesetting context
-	 * @param global
-	 *                 the indicator for the scope; <code>true</code> means all
-	 *                 groups; otherwise the current group is affected only
-	 */
-	public abstract void setTypesettingContext(TypesettingContext context, boolean global);
+    /**
+     * Setter for the typesetting context in the specified groups.
+     * 
+     * @param context the new typesetting context
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    public abstract void setTypesettingContext(TypesettingContext context,
+            boolean global);
 
-	/**
-	 * ...
-	 * 
-	 * @return ...
-	 */
-	public abstract TypesettingContext getTypesettingContext();
+    /**
+     * ...
+     * 
+     * @return ...
+     */
+    public abstract TypesettingContext getTypesettingContext();
 
-	/**
-	 * ...
-	 * 
-	 * @param t
-	 *                 ...
-	 */
-	public abstract void afterGroup(Token t);
+    /**
+     * ...
+     * 
+     * @param t ...
+     */
+    public abstract void afterGroup(Token t);
 }

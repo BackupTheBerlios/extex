@@ -18,13 +18,14 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /*
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OtherTokenTest extends TestCase {
 
@@ -34,7 +35,7 @@ public class OtherTokenTest extends TestCase {
         junit.textui.TestRunner.run(OtherTokenTest.class);
     }
 
-    private static Token t = new OtherToken(";");
+    private static Token t = new OtherToken(new UnicodeChar(';'));
 
     /*
      */
@@ -69,7 +70,7 @@ public class OtherTokenTest extends TestCase {
     /*
      */
     public void testEqualsToken1() {
-        Token t1 = new OtherToken(" ");
+        Token t1 = new OtherToken(new UnicodeChar(' '));
         Token t2 = new SpaceToken(" ");
         assertFalse(t.equals(t2));
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,16 +19,24 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.scanner.Catcode;
+import de.dante.util.UnicodeChar;
 
 /**
  * A tokenizer is a class which is able to characterize characters according to
  * the catcodes.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Tokenizer {
     
-    public abstract Catcode getCatcode(char c); // TODO auf UnicodeChar umstellen
-
+    /**
+     * Getter for the catcode of a character.
+     * 
+     * @param c the Unicode character to analyze
+     * 
+     * @return the catcode of a character
+     */
+    public abstract Catcode getCatcode(UnicodeChar c);
+    
 }

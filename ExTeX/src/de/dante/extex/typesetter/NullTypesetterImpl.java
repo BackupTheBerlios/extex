@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
@@ -33,7 +34,7 @@ import de.dante.util.configuration.ConfigurationException;
  * interface.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -110,7 +111,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#add(de.dante.extex.interpreter.type.Font, java.lang.String)
      */
-    public void add(TypesettingContext font, String symbol) {
+    public void add(TypesettingContext font, UnicodeChar symbol) {
     }
 
     /**

@@ -19,6 +19,7 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.util.UnicodeChar;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,7 +28,7 @@ import java.util.Map;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CharNodeFactory {
     /** ... */
@@ -49,7 +50,7 @@ public class CharNodeFactory {
      * @return ...
      */
     public CharNode newInstance(TypesettingContext typesettingContext,
-                                String c) {
+                                UnicodeChar c) {
         CharNode n = (CharNode) cache.get(c);
 
         if (n == null) {

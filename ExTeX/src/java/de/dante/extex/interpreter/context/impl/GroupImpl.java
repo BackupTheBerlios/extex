@@ -35,6 +35,7 @@ import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
+import de.dante.util.UnicodeChar;
 
 /**
  * This is a simple implementation for a group. The whole stack of group is
@@ -43,7 +44,7 @@ import de.dante.extex.scanner.Token;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
@@ -122,17 +123,16 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 */
 	private TypesettingContext typesettingContext;
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param next
-	 *                 the next group in the stack. If the value is <code>null</code>
-	 *                 then this is the global base
-	 */
-	public GroupImpl(Group next) {
-		super();
-		this.next = next;
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param next the next group in the stack. If the value is <code>null</code>
+     *            then this is the global base
+     */
+    public GroupImpl(Group next) {
+        super();
+        this.next = next;
+    }
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Group#setActive(java.lang.String,
@@ -169,20 +169,19 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 		return afterGroup;
 	}
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Group#setCatcode(char,de.dante.extex.scanner.Catcode)
-	 */
-	public void setCatcode(char c, Catcode code) {
-		catcodeMap.put(new Character(c), code); // TODO auf
-		// UnicodeChar
-		// umstellen
-	}
+    /**
+     * @see de.dante.extex.interpreter.context.Group#setCatcode(UnicodeChar,
+     *      de.dante.extex.scanner.Catcode)
+     */
+    public void setCatcode(UnicodeChar c, Catcode code) {
+        catcodeMap.put(c, code);
+    }
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Group#setCatcode(java.lang.String,
 	 *         de.dante.extex.scanner.Catcode, boolean)
 	 */
-	public void setCatcode(char c, Catcode value, boolean global) {
+	public void setCatcode(UnicodeChar c, Catcode value, boolean global) {
 
 		setCatcode(c, value);
 
@@ -191,14 +190,12 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 		}
 	}
 
-	/**
-	 * @see de.dante.extex.interpreter.context.Group#getCatcode(char) TODO auf
-	 *         UnicodeChar umstellen
-	 */
-	public Catcode getCatcode(char c) {
+    /**
+     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
+     */
+    public Catcode getCatcode(UnicodeChar c) {
 
-		Catcode value = (Catcode) catcodeMap.get(new Character(c));
-		// TODO auf UnicodeChar umstellen
+		Catcode value = (Catcode) catcodeMap.get(c);
 
 		if (value != null) {
 			return value;
@@ -209,11 +206,11 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 		}
 
 		// Fallback for predefined catcodes
-		if (Character.isLetter(c)) {
+		if (c.isLetter()) {
 			return Catcode.LETTER;
 		}
 
-		switch (c) {
+		switch (c.getCodePoint()) {
 			case ' ' :
 				return Catcode.SPACE;
 			case '\\' :

@@ -19,6 +19,7 @@
 package de.dante.extex.scanner;
 
 import de.dante.extex.i18n.Messages;
+import de.dante.util.UnicodeChar;
 
 
 /**
@@ -32,7 +33,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ActiveCharacterToken extends AbstractToken implements Token {
     /**
@@ -40,10 +41,10 @@ public class ActiveCharacterToken extends AbstractToken implements Token {
      *
      * @param value the string value
      */
-    protected ActiveCharacterToken(String value) {
-        super(value);
+    protected ActiveCharacterToken(UnicodeChar uc) {
+        super(uc);
     }
-
+    
     /**
      * @see de.dante.extex.scanner.Token#getCatcode()
      */
@@ -53,9 +54,10 @@ public class ActiveCharacterToken extends AbstractToken implements Token {
 
     /**
      * Get the string representation of this object for debugging purposes.
-     *
+     * 
      * @return the string representation
      */
     public String toString() {
-        return Messages.format("ActiveCharacterToken.Text",value);    }
+        return Messages.format("ActiveCharacterToken.Text", getValue());
+    }
 }
