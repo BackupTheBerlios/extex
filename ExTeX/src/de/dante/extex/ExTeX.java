@@ -41,7 +41,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.logging.StreamHandler;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
@@ -59,6 +58,7 @@ import de.dante.extex.main.FileCloseObserver;
 import de.dante.extex.main.FileFinderImpl;
 import de.dante.extex.main.FileOpenObserver;
 import de.dante.extex.main.InteractionObserver;
+import de.dante.extex.main.LogMessageObserver;
 import de.dante.extex.main.MainCodingException;
 import de.dante.extex.main.MainConfigurationException;
 import de.dante.extex.main.MainException;
@@ -84,7 +84,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
-import de.dante.util.configuration.ConfigurationNotFoundException;
+import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
 import de.dante.util.file.FileFinder;
 import de.dante.util.file.FileFinderConfigImpl;
@@ -111,7 +111,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class ExTeX {
 
@@ -160,7 +160,8 @@ public class ExTeX {
     private static final String PROP_ENCODING = "extex.encoding";
 
     /**
-     * The field <tt>PROP_FALLBACKOUTPUTDIR</tt> contains the ...
+     * The field <tt>PROP_FALLBACKOUTPUTDIR</tt> contains the name of the
+     * property for the fallback if the output directory fails to be writable.
      */
     private static final String PROP_FALLBACKOUTPUTDIR = "extex.FallbackOutputdir";
 
@@ -672,7 +673,9 @@ public class ExTeX {
      * ...
      *
      * @param arg the name of the resource to load
+     *
      * @return <code>true</code> iff the resource has been loaded sucessfully
+     *
      * @throws IOException just in case
      */
     private boolean loadArgumentFile(final String arg) throws IOException {
@@ -705,7 +708,7 @@ public class ExTeX {
         showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
 
-        StreamHandler fileHandler = makeLogFileHandler(logFile);
+        Handler fileHandler = makeLogFileHandler(logFile);
 
         try {
             Configuration config = new ConfigurationFactory()
@@ -772,13 +775,30 @@ public class ExTeX {
     }
 
     /**
-     * ...
+     * Find the name of the job.
      *
-     * @param config ...
+     * @return the correct job name
+     */
+    private String determineJobname() {
+
+        String jobname = properties.getProperty(PROP_JOBNAME_MASTER);
+
+        if (jobname == null || jobname.equals("")) {
+            jobname = properties.getProperty(PROP_JOBNAME);
+        }
+        jobname = new File(jobname).getName();
+        return jobname;
+    }
+
+    /**
+     * Create a new font factory.
      *
-     * @return ...
+     * @param config the configuration object for the font factory
      *
-     * @throws ConfigurationException ...
+     * @return the new font factory
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
      */
     private FontFactory makeFontFactory(final Configuration config)
             throws ConfigurationException {
@@ -816,21 +836,23 @@ public class ExTeX {
     }
 
     /**
-     * ...
+     * Create a new interpreter.
      *
      * @param config the configuration object for the interpreter
-     * @param typesetterConfig TODO
+     * @param typesetterConfig the configuration object for the typesetter
      * @param finder the file finder for files opened by the interpreter
      * @param factory the factory for new token streams
      * @param docWriter the document writer
-     * @param fontFactory TODO
-     * @return ...
+     * @param fontFactory the font factory to request the default font from
      *
-     * @throws ConfigurationException ...
-     * @throws GeneralException ...
+     * @return the new interpreter
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
+     * @throws GeneralException in case of an error of some other kind
      */
     private Interpreter makeInterpreter(final Configuration config,
-            Configuration typesetterConfig, final FileFinder finder,
+            final Configuration typesetterConfig, final FileFinder finder,
             final TokenStreamFactory factory, final DocumentWriter docWriter,
             final FontFactory fontFactory) throws GeneralException,
             ConfigurationException {
@@ -862,6 +884,7 @@ public class ExTeX {
 
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
+        interpreter.registerObserver("log", new LogMessageObserver(logger));
         if (Boolean.valueOf(properties.getProperty(PROP_TRACE_TOKENIZER))
                 .booleanValue()) {
             interpreter.registerObserver("pop", new TokenObserver(logger));
@@ -876,32 +899,32 @@ public class ExTeX {
     }
 
     /**
-     * ...
+     * Creat a default font for the interpreter context.
      *
-     * @param fontConfiguration the configuration for the default font
-     * @param fontFactory TODO
-     * @return ...
+     * @param config the configuration object for the font
+     * @param fontFactory the font factory to request the font from
      *
-     * @throws ConfigurationMissingAttributeException ...
-     * @throws GeneralException ...
-     * @throws ConfigurationException ...
+     * @return the default font
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
+     * @throws GeneralException in case of an error of some other kind
      */
-    private Font makeDefaultFont(final Configuration fontConfiguration,
-            FontFactory fontFactory)
-            throws ConfigurationMissingAttributeException, GeneralException,
-            ConfigurationException {
+    private Font makeDefaultFont(final Configuration config,
+            final FontFactory fontFactory)
+            throws ConfigurationException, GeneralException {
 
-        String defaultFont = fontConfiguration.getAttribute("default");
+        String defaultFont = config.getAttribute("default");
 
         if (defaultFont == null || defaultFont.equals("")) {
             throw new ConfigurationMissingAttributeException("default",
-                    fontConfiguration);
+                    config);
         }
 
-        String size = fontConfiguration.getAttribute("size");
+        String size = config.getAttribute("size");
         if (size == null) {
             throw new ConfigurationMissingAttributeException("size",
-                    fontConfiguration);
+                    config);
         }
 
         Font font;
@@ -910,23 +933,23 @@ public class ExTeX {
             font = fontFactory.getInstance(defaultFont, new Dimen(
                     ((long) (Dimen.ONE * f))));
         } catch (NumberFormatException e) {
-            throw new ConfigurationMissingAttributeException("size",
-                    fontConfiguration);
+            throw new ConfigurationSyntaxException("size",
+                    config.toString());
         }
 
         return font;
     }
 
     /**
-     * ...
+     * Create a new Handler for the log file.
      *
-     * @param logFile ...
+     * @param logFile the name of the log file
      *
-     * @return ...
+     * @return the new handler
      */
-    private StreamHandler makeLogFileHandler(final String logFile) {
+    private Handler makeLogFileHandler(final String logFile) {
 
-        StreamHandler fileHandler;
+        Handler fileHandler;
         try {
             fileHandler = new FileHandler(logFile);
             fileHandler.setFormatter(new LogFormatter());
@@ -945,17 +968,19 @@ public class ExTeX {
     }
 
     /**
-     * ...
+     * Create a new typesetter.
      *
-     * @param config ...
-     * @param docWriter ...
-     * @param context ...
-     * @return ...
+     * @param config the configuration object for the typesetter
+     * @param docWriter the document writer to be used as backend
+     * @param context the interpreter context
      *
-     * @throws ConfigurationException ...
+     * @return the new typesetter
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
      */
-    private Typesetter makeTypesetter(Configuration config,
-            DocumentWriter docWriter, Context context)
+    private Typesetter makeTypesetter(final Configuration config,
+            final DocumentWriter docWriter, final Context context)
             throws ConfigurationException {
 
         Typesetter typesetter = new TypesetterFactory(config)
@@ -966,19 +991,21 @@ public class ExTeX {
     }
 
     /**
-     * ...
-     * 
-     * @param config ...
-     * @param jobname ...
-     * @param outFactory ...
+     * Create a new document writer.
      *
-     * @return ...
+     * @param config the configuration object for the document writer
+     * @param jobname the jobname to use
+     * @param outFactory the output factory
      *
-     * @throws ConfigurationException ...
-     * @throws FileNotFoundException ...
+     * @return the new document writer
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
+     * @throws FileNotFoundException in case that the output file could not
+     * be opened
      */
-    private DocumentWriter makeDocumentWriter(Configuration config,
-            String jobname, OutputFactory outFactory)
+    private DocumentWriter makeDocumentWriter(final Configuration config,
+            final String jobname, final OutputFactory outFactory)
             throws ConfigurationException, FileNotFoundException {
 
         DocumentWriter docWriter = new DocumentWriterFactory(config)
@@ -989,41 +1016,26 @@ public class ExTeX {
                     .getExtension());
         }
         docWriter.setOutputStream(outStream);
+
         return docWriter;
     }
 
     /**
-     * ...
+     * Create a TokenStreamFactory.
      *
-     * @return the correct job name
-     */
-    private String determineJobname() {
-
-        String jobname = properties.getProperty(PROP_JOBNAME_MASTER);
-
-        if (jobname == null || jobname.equals("")) {
-            jobname = properties.getProperty(PROP_JOBNAME);
-        }
-        jobname = new File(jobname).getName();
-        return jobname;
-    }
-
-    /**
-     * ...
+     * @param config the configuration object for the token stream factory
+     * @param finder the file finder for the token stream factory
      *
-     * @param config ...
-     * @param finder ...
+     * @return the token stream factory
      *
-     * @return ...
-     *
-     * @throws ConfigurationException ...
-     * @throws ConfigurationNotFoundException ...
-     * @throws NotObservableException ...
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
+     * @throws NotObservableException in case that the observer for file
+     * events could not be registered
      */
     private TokenStreamFactory makeTokenStreamFactory(
             final Configuration config, final FileFinder finder)
-            throws ConfigurationException, ConfigurationNotFoundException,
-            NotObservableException {
+            throws ConfigurationException, NotObservableException {
 
         TokenStreamFactory factory = new TokenStreamFactory(config);
 
@@ -1033,15 +1045,18 @@ public class ExTeX {
     }
 
     /**
-     * ...
-     * 
-     * @param config ...
-     * @return ...
-     * @throws ConfigurationNotFoundException ...
-     * @throws ConfigurationException ...
+     * Create a {@link FileFinder FileFinder} to be used for token input
+     * streams.
+     *
+     * @param config the configuration object for the file finder
+     *
+     * @return the new file finder
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
      */
     private FileFinder makeFileFinder(final Configuration config)
-            throws ConfigurationNotFoundException, ConfigurationException {
+            throws ConfigurationException {
 
         FileFinderList finder = new FileFinderList(new FileFinderDirect(
                 new StringList(":tex", ":")));
@@ -1061,15 +1076,17 @@ public class ExTeX {
     }
 
     /**
-     * ...
-     * 
-     * @param config ...
-     * @return ...
-     * @throws ConfigurationNotFoundException ...
-     * @throws ConfigurationException ...
+     * Create a {@link FileFinder FileFinder} to be used for fonts.
+     *
+     * @param config the configuration object for the font file finder
+     *
+     * @return the file finder for fonts
+     *
+     * @throws ConfigurationException in case that some kind of problems have
+     * been detected in the configuration
      */
     private FileFinder makeFontFileFinder(final Configuration config)
-            throws ConfigurationNotFoundException, ConfigurationException {
+            throws ConfigurationException {
 
         FileFinderList finder = new FileFinderList(new FileFinderDirect(
                 new StringList("", ":")));
@@ -1105,7 +1122,8 @@ public class ExTeX {
     }
 
     /**
-     * ...
+     * Try to determine which language to use and configure the Messages
+     * accordingly.
      */
     private void applyLanguage() {
 
@@ -1248,13 +1266,13 @@ public class ExTeX {
      *
      * @param interpreter the interpreter to delegate the loading to
      * @param fmt the name of the format to use or <code>null</code>
-     * @param jobname TODO
+     * @param jobname the name of the job
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of some error
      * @throws IOException in case, well, you guess it
      */
     private void loadFormat(final Interpreter interpreter, final String fmt,
-            String jobname) throws IOException, GeneralException {
+            final String jobname) throws IOException, GeneralException {
 
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                                                      DateFormat.SHORT,
