@@ -3,7 +3,7 @@
   <title>ExTeX Primitives: Registers</title>
   <meta name="author">Gerd Neugebauer</meta>
   <meta name="author">Michael Niedermair</meta>
-  <meta name="version">$Revision: 1.4 $</meta>
+  <meta name="version">$Revision: 1.5 $</meta>
   <meta name="copyright">
    Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
 
@@ -23,107 +23,13 @@
    </meta>
  </head>
  <body>
-
-      <h1>Registers</h1>
-
-      <p>
-	This package contains primitives for the manipulation of
-	registers. Registers are the primary means to store parameters
-	which influence the behaviour or ExTeX as well as variables
-	used in macro programming. The name of the registers can be a
-	name or an number (between 0 and Integer.MAX_VALUE).
-      </p>
-
-      <p>
-	Several types of registers are provided:
-      </p>
-
-
-      <h2>\count</h2>
-
-      <p>
-	<tt>\count</tt> provides registers for integer values. The
-	registers are numbered from <tt>\count0</tt> up to
-	<tt>\count0</tt><em>&lt;Integer.Max_VALUE&gt;</em>. The count
-	registers can be addressed by names, if a name has been
-	specified by
-      </p>
-
-      <pre>
-	\countdef\<em>&lt;name&gt;</em>=<em>&lt;register number&gt;</em>
-      </pre>
-
-      <p>
-	<tt>\</tt><em>name</em> may now be used as a synonym for
-	<tt>\count</tt><em>&lt;register number&gt;</em>.
-      </p>
-
-      <p>
-	The definitions are made in in the classes
-	<em>NumberedCount</em> and <em>NamedCount</em>.
-      </p>
-
-      <h3>
-	Example
-      </h3>
-
-      <pre>
-	\countdef\nose=40
-	nose: \the\nose
-	
-	\count40=12
-	count40: \the\count40
-
-	nose: \the\nose
-      </pre>
-
-      <h4>
-	Output
-      </h4>
-
-      <table border="0" cellpadding="0" cellspacing="8">
-	  <tr>
-	    <td>
-	      nose: 0
-	    </td>
-	    <td>
-	      The register \count40 ist not yet filled.
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      count40: 12
-	    </td>
-	    <td>
-	      The register <tt>\count40</tt> has been set to the value
-	      <tt>12</tt> in the line above.
-	    </td>
-	  </tr>
-	  <tr>
-	    <td>
-	      nose: 12
-	    </td>
-	    <td>
-	      <tt>\nose</tt> refers to <tt>\count40</tt>.
-	    </td>
-	  </tr>
-      </table>
-      
-      <h3>
-	Version
-      </h3>
-      <p>
-	Tested with NamedCount version 1.12 and NumberedCount version 1.8
-      </p>
-
-      
-      <h2>\dimen</h2>
-      
-      <h2>\real</h2>
-      
-      <h2>\toks</h2>
-      
-      
+  This package contains primitives for the manipulation of registers.
+  Registers are the primary means to store parameters which influence
+  the behaviour or ExTeX as well as variables used in macro
+  programming. The name of the registers can be a name or an number
+  (between 0 and Integer.MAX_VALUE).
+  
+  
   @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
   @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  </body>
