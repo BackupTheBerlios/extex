@@ -113,7 +113,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class ContextImpl
         implements
@@ -169,7 +169,7 @@ public class ContextImpl
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
      */
-    private FontFactory fontFactory;
+    private transient FontFactory fontFactory;
 
     /**
      * The field <tt>group</tt> contains the entry to the linked list of groups.
@@ -186,7 +186,7 @@ public class ContextImpl
     /**
      * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
-    private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+    private transient HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
     /**
      * The field <tt>magnification</tt> contains the magnification for the
