@@ -1,0 +1,127 @@
+<project name="ExTeX (gene)" default="help" basedir=".">
+
+  <description>
+    ExTeX - build file
+  </description>
+
+  <target name="help" description="Displays usage information">
+    <echo>
+Usage:
+    </echo>
+  </target>
+
+  <!-- configure the directories -->
+  <property name="jarfile" value="extex"/>
+  <property name="src" location="src"/>
+  <property name="test.src" location="test"/>
+  <property name="classes" location="tmp/classes"/>
+  <property name="javadoc" location="doc/javadoc"/>
+  <property name="tmp" location="tmp"/>
+  <property name="deploy" location="tmp/ExTeX"/>
+  <!-- classpath for the application -->
+  <path id="main.class.path">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+      <exclude name="junit.jar"/>
+      <exclude name="ant.jar"/>
+    </fileset>
+  </path>
+
+  <target name="compile"
+       	  description="Compile the Java files (without tests)">
+    <!-- create empty output directory for classes if not present -->
+    <mkdir dir="${classes}"/>
+    <!-- compile the application code -->
+    <javac srcdir="${src}" 
+           destdir="${classes}"
+           debug="on">
+       <classpath refid="main.class.path"/>
+    </javac>
+    <copy todir="${classes}">
+      <fileset dir="src">
+        <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
+        <include name="**/ExTeX-PL"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <!-- make a jar from the compiled classes -->
+  <!-- the test classes are not included    -->
+  <target name="jar"
+          depends="compile"
+          description="Create jar file with the compiled classes">
+    <mkdir dir="${deploy}"/>
+    <jar jarfile="${deploy}/${jarfile}.jar">
+      <fileset dir="${classes}"/>
+      <manifest>
+        <attribute name="Built-By" value="${user.name}"/>
+        <attribute name="Main-Class" value="de.dante.extex.ExTeX"/>
+      </manifest>
+    </jar>
+  </target>
+
+
+  <target name="dist"
+          depends="deploy"
+          description="This is just an alias for old make freaks;-)" />
+
+
+  <target name="deploy"
+          depends="jar"
+          description="Create jar file with the compiled classes">
+    <delete dir="${deploy}" />
+    <mkdir dir="${deploy}/lib" />
+    <copy todir="${deploy}/lib">
+      <fileset dir="lib">
+        <include name="**/*.jar"/>
+        <exclude name="**/ant.jar"/>
+        <exclude name="**/junit.jar"/>
+        <exclude name="**/shiftone-jrat.jar"/>
+      </fileset>
+    </copy>
+    <tstamp/>
+    <tar tarfile="${tmp}/ExTeX-${DSTAMP}.tar" basedir="${deploy}">
+      <tarfileset dir=".">
+      </tarfileset>
+    </tar>
+    <gzip zipfile="${tmp}/ExTeX-${DSTAMP}.tgz" 
+          src="${tmp}/ExTeX-${DSTAMP}.tar" />
+    <delete file="${tmp}/ExTeX-${DSTAMP}.tar" />
+  </target>
+
+
+  <target name="clean"
+  		  description="Remove unneccesary files and directories">
+    <delete dir="${classes}"/>
+    <delete dir="${deploy}"/>
+    <delete dir="${javadoc}"/>
+  </target>
+
+
+  <target name="javadoc"
+  		  description="Create javadoc HTML pages">
+    <javadoc 
+             destdir="${javadoc}"
+             overview="src/overview.html"
+             author="true"
+             version="true"
+             use="true"
+             splitindex="true"
+             notree="false"
+             nonavbar="false"
+             noindex="false"
+             nodeprecatedlist="false"
+             nodeprecated="false">
+      <classpath refid="main.class.path"/>
+      <packageset dir="${src}" defaultexcludes="yes"/>
+    </javadoc>
+    <copy todir="javadoc">
+      <fileset dir="src">
+        <include name="**/*.gif"/>
+        <include name="**/*.png"/>
+      </fileset>
+    </copy>
+  </target>
+
+</project>

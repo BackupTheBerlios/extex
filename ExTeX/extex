@@ -1,0 +1,5 @@
+#!/bin/sh
+
+exec java -classpath `dirname $0`/bin de.dante.extex.ExTeX $*
+
+#
