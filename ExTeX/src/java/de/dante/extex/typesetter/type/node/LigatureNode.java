@@ -21,8 +21,6 @@ package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.type.Node;
-import de.dante.extex.typesetter.type.NodeVisitor;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -36,7 +34,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LigatureNode extends CharNode implements Node {
 
@@ -47,27 +45,56 @@ public class LigatureNode extends CharNode implements Node {
     private Node first;
 
     /**
-     * The field <tt>second</tt> contains the node combined in the
-     * ligature.
+     * The field <tt>second</tt> contains the node combined in the ligature.
      */
     private Node second;
+
+    /**
+     * The field <tt>chars</tt> contains the ...
+     */
+    private UnicodeChar[] chars;
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#getChars()
+     */
+    public UnicodeChar[] getChars() {
+
+        return chars;
+    }
 
     /**
      * Creates a new object.
      *
      * @param context the typesetting context
      * @param uc the Unicode character
-     * @param n1 the first node for the ligature
-     * @param n2 the second node for the ligature
+     * @param left the first node for the ligature
+     * @param right the second node for the ligature
      *
      * @see "TeX -- The Program [144]"
      */
     public LigatureNode(final TypesettingContext context, final UnicodeChar uc,
-            final Node n1, final Node n2) {
+            final Node left, final Node right) {
 
         super(context, uc);
-        first = n1;
-        second = n2;
+        this.first = left;
+        this.second = right;
+        UnicodeChar[] uc1 = left.getChars();
+        UnicodeChar[] uc2 = right.getChars();
+        chars = new UnicodeChar[uc1.length + uc2.length];
+        for (int i = 0; i < uc1.length; i++) {
+            chars[i] = uc1[i];
+        }
+        for (int i = 0; i < uc2.length; i++) {
+            chars[i + uc1.length] = uc2[i];
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#countChars()
+     */
+    public int countChars() {
+
+        return chars.length;
     }
 
     /**

@@ -26,13 +26,14 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.util.UnicodeChar;
 
 /**
  * Abstract class for all <code>NodeList</code>s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -108,6 +109,39 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
         list.add(node);
         updateDimensions(node);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#countChars()
+     */
+    public int countChars() {
+
+        int count = 0;
+        for (int i = 0; i < list.size(); i++) {
+            count += ((Node) list.get(i)).countChars();
+        }
+        return count;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#getChars()
+     */
+    public UnicodeChar[] getChars() {
+
+        int len = countChars();
+        if (len == 0) {
+            return NO_CHARS;
+        }
+        UnicodeChar[] chars = new UnicodeChar[len];
+        int idx = 0;
+        for (int i = 0; i < list.size(); i++) {
+            UnicodeChar[] uca = ((Node) list.get(i)).getChars();
+            for (int j = 0; j < uca.length; j++) {
+                chars[idx++] = uca[j];
+            }
+        }
+
+        return chars;
     }
 
     /**

@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -34,9 +35,14 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractNode implements Node {
+
+    /**
+     * The constant <tt>NO_CHAR</tt> contains the empty array of UnicodeChar.
+     */
+    protected static final UnicodeChar[] NO_CHARS = new UnicodeChar[0];
 
     /**
      * The field <tt>depth</tt> contains the depth of the node.
@@ -129,6 +135,22 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.Node#countChars()
+     */
+    public int countChars() {
+
+        return 0;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#getChars()
+     */
+    public UnicodeChar[] getChars() {
+
+        return NO_CHARS;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.Node#getDepth()
      */
     public Dimen getDepth() {
@@ -156,6 +178,34 @@ public abstract class AbstractNode implements Node {
                     .getLocalizer(Node.class.getName());
         }
         return this.localizer;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
+     */
+    public Dimen getVerticalSize() {
+
+        Dimen h = getHeight();
+        Dimen d = new Dimen(getDepth());
+
+        if (h.ge(Dimen.ZERO)) {
+            if (d.ge(Dimen.ZERO)) {
+                d.add(h);
+            } else {
+                d.negate();
+                d.max(h);
+            }
+        } else {
+            if (d.ge(Dimen.ZERO)) {
+                d.negate();
+                d.min(h);
+                d.negate();
+            } else {
+                d.add(h);
+                d.negate();
+            }
+        }
+        return d;
     }
 
     /**
@@ -230,32 +280,4 @@ public abstract class AbstractNode implements Node {
      *      java.lang.String)
      */
     public abstract void toText(final StringBuffer sb, final String prefix);
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
-     */
-    public Dimen getVerticalSize() {
-
-        Dimen h = getHeight();
-        Dimen d = new Dimen(getDepth());
-
-        if (h.ge(Dimen.ZERO)) {
-            if (d.ge(Dimen.ZERO)) {
-                d.add(h);
-            } else {
-                d.negate();
-                d.max(h);
-            }
-        } else {
-            if (d.ge(Dimen.ZERO)) {
-                d.negate();
-                d.min(h);
-                d.negate();
-            } else {
-                d.add(h);
-                d.negate();
-            }
-        }
-        return d;
-    }
 }

@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * A node is the basic data structure for the typesetter. It has a reference
@@ -40,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Node extends Knot {
 
@@ -62,6 +63,28 @@ public interface Node extends Knot {
      */
     void atShipping(Context context, Typesetter typesetter)
             throws GeneralException;
+
+    /**
+     * This method determines the number of characters contained in a node.
+     * <ul>
+     * <li>A CharNode has a single character</li>
+     * <li>A LigatureNde has the number of characters which made up the
+     *  ligature</li>
+     * <li>A NodeList has the number of characters given by the sum of the
+     *  number of characters of its elements</li>
+     * <li>Any other node types has no character</li>
+     * </ul>
+     *
+     * @return the numer of characters contained
+     */
+    int countChars();
+
+    /**
+     * Getter for the array of characters enclosed in this node.
+     *
+     * @return the array of characters
+     */
+    UnicodeChar[] getChars();
 
     /**
      * Getter for the depth of the node.
