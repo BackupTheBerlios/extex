@@ -47,27 +47,15 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LigatureBuilderImplTest extends TestCase {
-
-    private static final int CC_FF = '§';
-
-    private static final int CC_FL = '$';
-
-    private static final int CC_FFL = '&';
-
-    private static final UnicodeChar FF = new UnicodeChar(CC_FF);
-
-    private static final UnicodeChar FL = new UnicodeChar(CC_FL);
-
-    private static final UnicodeChar FFL = new UnicodeChar(CC_FFL);
 
     /**
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockFont extends NullFont {
 
@@ -118,7 +106,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MockGlyph implements Glyph {
 
@@ -332,6 +320,20 @@ public class LigatureBuilderImplTest extends TestCase {
         }
 
         /**
+         * ...
+         *
+         * @param w ...
+         *
+         * @see de.dante.extex.font.Glyph#setWidth(
+         *      de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void setWidth(final Dimen w) {
+
+            // TODO unimplemented
+
+        }
+
+        /**
          * @see de.dante.extex.interpreter.type.font.Glyph#setWidth(FixedDimen)
          */
         public void setWidth(final FixedDimen w) {
@@ -351,6 +353,18 @@ public class LigatureBuilderImplTest extends TestCase {
      * The field <tt>builder</tt> contains the ...
      */
     private static LigatureBuilder builder = new LigatureBuilderImpl();
+
+    private static final int CC_FF = '§';
+
+    private static final int CC_FFL = '&';
+
+    private static final int CC_FL = '$';
+
+    private static final UnicodeChar FF = new UnicodeChar(CC_FF);
+
+    private static final UnicodeChar FFL = new UnicodeChar(CC_FFL);
+
+    private static final UnicodeChar FL = new UnicodeChar(CC_FL);
 
     /**
      * The field <tt>tc1</tt> contains the ...
@@ -388,6 +402,25 @@ public class LigatureBuilderImplTest extends TestCase {
     /**
      * ...
      */
+    public void testFour1() {
+
+        NodeList nodes = new HorizontalListNode();
+        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
+        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc1, new UnicodeChar('l')));
+        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
+        builder.insertLigatures(nodes);
+        assertEquals(3, nodes.size());
+        assertTrue(nodes.get(0) instanceof CharNode);
+        assertTrue(nodes.get(1) instanceof LigatureNode);
+        LigatureNode lig = (LigatureNode) nodes.get(1);
+        assertEquals(CC_FL, lig.getCharacter().getCodePoint());
+        assertEquals('f', ((CharNode) nodes.get(2)).getCharacter().getCodePoint());
+    }
+
+    /**
+     * ...
+     */
     public void testOne1() {
 
         NodeList nodes = new HorizontalListNode();
@@ -409,33 +442,6 @@ public class LigatureBuilderImplTest extends TestCase {
         builder.insertLigatures(nodes);
         assertEquals(1, nodes.size());
         assertEquals(n, nodes.get(0));
-    }
-
-    /**
-     * ...
-     */
-    public void testTwo1() {
-
-        NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        builder.insertLigatures(nodes);
-        assertEquals(1, nodes.size());
-        assertTrue(nodes.get(0) instanceof LigatureNode);
-        LigatureNode lig = (LigatureNode) nodes.get(0);
-        assertEquals(CC_FF, lig.getCharacter().getCodePoint());
-    }
-
-    /**
-     * ...
-     */
-    public void testTwo2() {
-
-        NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
-        builder.insertLigatures(nodes);
-        assertEquals(2, nodes.size());
     }
 
     /**
@@ -487,20 +493,28 @@ public class LigatureBuilderImplTest extends TestCase {
     /**
      * ...
      */
-    public void testFour1() {
+    public void testTwo1() {
 
         NodeList nodes = new HorizontalListNode();
-        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        nodes.add(new CharNode(tc1, new UnicodeChar('l')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         builder.insertLigatures(nodes);
-        assertEquals(3, nodes.size());
-        assertTrue(nodes.get(0) instanceof CharNode);
-        assertTrue(nodes.get(1) instanceof LigatureNode);
-        LigatureNode lig = (LigatureNode) nodes.get(1);
-        assertEquals(CC_FL, lig.getCharacter().getCodePoint());
-        assertEquals('f', ((CharNode) nodes.get(2)).getCharacter().getCodePoint());
+        assertEquals(1, nodes.size());
+        assertTrue(nodes.get(0) instanceof LigatureNode);
+        LigatureNode lig = (LigatureNode) nodes.get(0);
+        assertEquals(CC_FF, lig.getCharacter().getCodePoint());
+    }
+
+    /**
+     * ...
+     */
+    public void testTwo2() {
+
+        NodeList nodes = new HorizontalListNode();
+        nodes.add(new CharNode(tc1, new UnicodeChar('f')));
+        nodes.add(new CharNode(tc1, new UnicodeChar('a')));
+        builder.insertLigatures(nodes);
+        assertEquals(2, nodes.size());
     }
 
 }
