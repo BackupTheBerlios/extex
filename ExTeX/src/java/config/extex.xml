@@ -142,12 +142,24 @@
     -  one of several backends programatically.
     -->
   <DocumentWriter default="out">
-    <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
-    <dvi class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
-    <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <pdf  class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi  class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
+    <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
-    <xml class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"/>
+    <xml  class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
+          encoding="ISO-8859-1"
+          debug="false"
+          showvisible="true"
+          indent="  "
+          newlines="true"
+          trimallwhitespace="true"
+          usesp="false"
+          usebp="false"
+          usemm="true"/>
+    <svg  class="de.dante.extex.documentWriter.svg.SVGDocumentWriter"
+          encoding="ISO-8859-1"
+          debug="false"/>
   </DocumentWriter>
 
 </ExTeX>
