@@ -81,7 +81,6 @@ import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
 
-
 /**
  * This is a reference implementation for an interpreter context.
  *
@@ -116,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class ContextImpl
         implements
@@ -128,38 +127,6 @@ public class ContextImpl
             Observable,
             Localizable,
             Serializable {
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#expand(
-     *      de.dante.extex.interpreter.type.tokens.Tokens, Typesetter)
-     */
-    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
-            throws GeneralException {
-
-        Tokens result = new Tokens();
-        //TODO use interface instead of implementation
-        TokenStreamBaseImpl stream = new TokenStreamBaseImpl(false, tokens);
-
-        /*
-        while (!stream.isEof()) {
-            Token t = stream.get(null, null);
-
-            while (t instanceof CodeToken) {
-                Code code = getCode((CodeToken) t);
-                if (code instanceof ExpandableCode) {
-                    ((ExpandableCode) code).expand(Flags.NONE, (Context) this,
-                            (TokenStream) stream, typesetter);
-                    t = stream.get(null, null);
-                }
-            }
-
-        }
-
-        return result;
-        */
-        // TODO expand() unimplemented
-        throw new RuntimeException("unimplemented");
-    }
 
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
@@ -397,6 +364,47 @@ public class ContextImpl
     public void enableLocalization(final Localizer localizer) {
 
         this.localizer = localizer;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#esc(java.lang.String)
+     */
+    public String esc(String name) {
+
+        char esc = (char) (getCount("escapechar").getValue());
+        return Character.toString(esc) + name;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#expand(
+     *      de.dante.extex.interpreter.type.tokens.Tokens, Typesetter)
+     */
+    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
+            throws GeneralException {
+
+        Tokens result = new Tokens();
+        //TODO use interface instead of implementation
+        TokenStreamBaseImpl stream = new TokenStreamBaseImpl(false, tokens);
+
+        /*
+         while (!stream.isEof()) {
+         Token t = stream.get(null, null);
+
+         while (t instanceof CodeToken) {
+         Code code = getCode((CodeToken) t);
+         if (code instanceof ExpandableCode) {
+         ((ExpandableCode) code).expand(Flags.NONE, (Context) this,
+         (TokenStream) stream, typesetter);
+         t = stream.get(null, null);
+         }
+         }
+
+         }
+
+         return result;
+         */
+        // TODO expand() unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**

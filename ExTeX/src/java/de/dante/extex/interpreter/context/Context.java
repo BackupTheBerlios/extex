@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -86,6 +86,20 @@ public interface Context extends Tokenizer, Serializable {
      */
     void closeGroup(Typesetter typesetter, TokenSource source)
             throws GeneralException;
+
+    /**
+     * Attach the current escape character in front of a name and return the
+     * result.
+     * <p>
+     * This method is meant to produce a printable version of a control
+     * sequence for error messages.
+     * </p>
+     *
+     * @param name the name of the macro
+     *
+     * @return the control sequence including the escape character
+     */
+    String esc(String name);
 
     /**
      * Expand some tokens.
