@@ -4,6 +4,14 @@
 
     <target name="help" description="Displays usage information">
         <echo>Usage: ant &lt;target&gt;
+          The following targets are supported:
+          compile
+          jar
+          javadoc
+          checkstyle
+          tests
+          deploy
+          clean
         </echo>
     </target>
 
