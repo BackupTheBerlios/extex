@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ExTeX {
     /**
@@ -628,7 +628,7 @@ public class ExTeX {
 
     /**
      * Acquire the next argument from the command line and set a property
-     * accordingly. If none is found then a exception is thrown.
+     * accordingly. If none is found then an exception is thrown.
      * 
      * @param name the name of the argument
      * @param arg the list of arguments
@@ -643,9 +643,25 @@ public class ExTeX {
         properties.setProperty(name, arg[i]);
     }
 
+    /**
+     * ...
+     * 
+     * @param arg the list of arguments
+     * @param i the starting index
+     * @throws MainException in case of an index overflow
+     */
     private void useDebug(String[] arg, int i) throws MainException {
-        if (i >= arg.length) { throw new MainMissingArgumentException("debug"); }
-        
+        if (i >= arg.length) {
+            throw new MainMissingArgumentException("debug");
+        }
+        String s = arg[i];
+        for (i = 0; i < s.length(); i++) {
+            switch (s.charAt(i)) {
+            case 'T':
+                properties.setProperty("extex.traceTokenizer", "true");
+                break;
+            }
+        }
     }
     
     /**
