@@ -6,7 +6,6 @@
 *.out
 *.pdf
 .xvpics
-bin
 build.properties
 target
 tmp

@@ -10,7 +10,7 @@
     <property name="jarfile" value="extex"/>
     <property name="src" location="src"/>
     <property name="src.test" location="test"/>
-    <property name="classes" location="tmp/classes"/>
+    <property name="classes" location="target/classes"/>
     <property name="javadoc" location="doc/javadoc"/>
     <property name="javadocxml" location="doc/javadocxml"/>
     <property name="dbdoclet" location="doc/javadocdb"/>
