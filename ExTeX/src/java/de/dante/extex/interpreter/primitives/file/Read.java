@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,7 +20,6 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -49,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Read extends AbstractCode {
 
@@ -81,10 +80,6 @@ public class Read extends AbstractCode {
         }
         CodeToken cs = source.getControlSequence(context);
         InFile file = context.getInFile(key);
-
-        if (file == null) {
-            throw new PanicException(getLocalizer(), "NoInFile");
-        }
 
         Tokens toks = file.read(context.getTokenFactory(), context
                 .getTokenizer());
