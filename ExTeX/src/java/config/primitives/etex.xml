@@ -67,7 +67,7 @@
   <define name="fontcharht"
           class="de.dante.extex.interpreter.primitives.font.Fontcharht"/>
   <Define name="fontcharic"
-          class=""/>
+          class="de.dante.extex.interpreter.primitives.font.Fontcharic"/>
   <define name="fontcharwd"
           class="de.dante.extex.interpreter.primitives.font.Fontcharwd"/>
   <Define name="glueexpr"
@@ -100,6 +100,8 @@
           class=""/>
   <Define name="numexpr"
           class=""/>
+  <Define name="pagediscarts"
+          class=""/>
   <Define name="parshapedimen"
           class=""/>
   <Define name="parshapeindent"
@@ -123,6 +125,8 @@
   <Define name="showtokens"
           class=""/>
   <Define name="splitbotmarks"
+          class=""/>
+  <Define name="splitdiscarts"
           class=""/>
   <Define name="splitfirstmarks"
           class=""/>
