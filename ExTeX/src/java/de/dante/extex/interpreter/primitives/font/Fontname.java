@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -48,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
@@ -65,7 +66,7 @@ public class Fontname extends AbstractCode implements ExpandableCode {
     /**
      * Get the next <code>ControlSequenceToken</code> with the
      * <code>FontCode</code>
-     * and put the fontname on the stack.
+     * and put the font name on the stack.
      *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -78,7 +79,12 @@ public class Fontname extends AbstractCode implements ExpandableCode {
             throws GeneralException {
 
         source.skipSpace();
-        Font font = source.getFont();
+        Font font;
+        try {
+            font = source.getFont();
+        } catch (EofHelpingException e) {
+            throw new EofHelpingException(printableControlSequence(context));
+        }
         source.push(new Tokens(context, font.getFontName()));
 
         return true;
