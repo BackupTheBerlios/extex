@@ -23,8 +23,6 @@ import java.io.Serializable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
@@ -32,16 +30,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Dimen extends GlueComponent implements Serializable {
-
-    /**
-     * The constant <tt>ONE</tt> contains the internal representation for 1pt.
-     *
-     * @see "TeX -- The Program [101]"
-     */
-    public static final long ONE = 1 << 16;
 
     /**
       * The constant <tt>ZERO_PT</tt> contains the immutable dimen register
@@ -115,17 +106,35 @@ public class Dimen extends GlueComponent implements Serializable {
     public Dimen(final Context context, final TokenSource source)
         throws GeneralException {
 
-        super(source, context, false);
+        super(context, source, false);
     }
 
     /**
+     * Setter for the value.
+     * The order of the arument is ignored.
+     *
+     * @param d the new value
+     */
+    public void set(final GlueComponent d) {
+
+        set(d.getValue());
+    }
+
+    /**
+     * Set the value from the data gathered by parsing a token source.
+     *
+     * @param context the interpreter context
+     * @param source the source for next tokens
+     *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.interpreter.type.GlueComponent#set(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void set(final Context context, final TokenSource source)
-        throws GeneralException {
+             throws GeneralException {
 
-        set(context, source, false);
+        set(context, source, true);
     }
 
     /**
@@ -195,49 +204,6 @@ public class Dimen extends GlueComponent implements Serializable {
     }
 
     /**
-     * Compares the current instance with another Dimen for equality of the
-     * values.
-     *
-     * @param d the other dimen to compare to
-     *
-     * @return <code>true</code> iff <i>|this| == |d|</i>
-     *
-     * @throws NullPointerException in case that the argument is
-     * <code>null</code>.
-     */
-    public boolean eq(final Dimen d) {
-        return (getValue() == d.getValue());
-    }
-
-    /**
-     * Compares the current instance with another Dimen.
-     *
-     * @param d the other dimen to compare to
-     *
-     * @return <code>true</code> iff <i>|this| &lt; |d|</i>
-     *
-     * @throws NullPointerException in case that the argument is
-     * <code>null</code>.
-     */
-    public boolean lt(final Dimen d) {
-        return (getValue() < d.getValue());
-    }
-
-    /**
-     * Compares the current instance with another Dimen.
-     *
-     * @param d the other dimen to compare to
-     *
-     * @return <code>true</code> iff <i>|this| &lt;= |d|</i>
-     *
-     * @throws NullPointerException in case that the argument is
-     * <code>null</code>.
-     */
-    public boolean le(final Dimen d) {
-        return (getValue() <= d.getValue());
-    }
-
-    /**
      * Sets the value of the dimen to the maximum of the value already stored
      * and a given argument.
      *
@@ -254,141 +220,6 @@ public class Dimen extends GlueComponent implements Serializable {
         if (val > getValue()) {
             setValue(val);
         }
-    }
-
-    /**
-     * Determine the printable representation of the object.
-     * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
-     *
-     * @return the printable representation
-     *
-     * @see #toString(StringBuffer)
-     * @see #toToks(TokenFactory)
-     */
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        toString(sb);
-        return sb.toString();
-    }
-
-    /**
-     * Determine the printable representation of the object and append it to
-     * the given StringBuffer.
-     * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
-     *
-     * @param sb the output string buffer
-     *
-     * @see #toString()
-     * @see #toToks(TokenFactory)
-     */
-    public void toString(final StringBuffer sb) {
-        long val = getValue();
-        
-        if (val < 0) {
-            sb.append('-');
-            val = -val;
-        }
-
-        long v = val / ONE;
-        if (v == 0) {
-            sb.append('0');
-        } else {
-            long m = 1;
-            while (m <= v) {
-                m *= 10;
-            }
-            m /= 10;
-            while (m > 0) {
-                sb.append((char) ('0' + (v / m)));
-                v = v % m;
-                m /= 10;
-            }
-        }
-
-        sb.append('.');
-
-        val = 10 * (val % ONE) + 5;
-        long delta = 10;
-        do {
-            if (delta > ONE) {
-                val = val + 0100000 - 50000; // round the last digit
-            }
-            int i = (int) (val / ONE);
-            sb.append((char) ('0' + i));
-            val = 10 * (val % ONE);
-            delta *= 10;
-        } while (val > delta);
-
-        sb.append('p');
-        sb.append('t');
-    }
-
-    /**
-     * Determine the printable representation of the object and return it as a
-     * löist of Tokens.
-     * The value returned is exactely the string which would be produced by
-     * TeX to print the Dimen. This means the result is expressed in pt and
-     * properly rounded to be read back in again without loss of information.
-     *
-     * @param factory the token factory to get the required tokens from
-     *
-     * @return the printable representation
-     *
-     * @throws GeneralException in case of an error
-     *
-     * @see "TeX -- The Program [103]"
-     * @see #toString()
-     * @see #toString(StringBuffer)
-     */
-    public Tokens toToks(final TokenFactory factory) throws GeneralException {
-
-        Tokens toks = new Tokens();
-        long val = getValue();
-
-        if (val < 0) {
-            toks.add(factory.newInstance(Catcode.OTHER, '-'));
-            val = -val;
-        }
-
-        long v = val / ONE;
-        if (v == 0) {
-            toks.add(factory.newInstance(Catcode.OTHER, '0'));
-        } else {
-            long m = 1;
-            while (m <= v) {
-                m *= 10;
-            }
-            m /= 10;
-            while (m > 0) {
-                toks.add(factory.newInstance(Catcode.OTHER,
-                                             (char) ('0' + (v / m))));
-                v = v % m;
-                m /= 10;
-            }
-        }
-
-        toks.add(factory.newInstance(Catcode.OTHER, '.'));
-
-        val = 10 * (val % ONE) + 5;
-        long delta = 10;
-        do {
-            if (delta > ONE) {
-                val = val + 0100000 - 50000; // round the last digit
-            }
-            int i = (int) (val / ONE);
-            toks.add(factory.newInstance(Catcode.OTHER, (char) ('0' + i)));
-            val = 10 * (val % ONE);
-            delta *= 10;
-        } while (val > delta);
-
-        toks.add(factory.newInstance(Catcode.LETTER, "p"));
-        toks.add(factory.newInstance(Catcode.LETTER, "t"));
-
-        return toks;
     }
 
 }
