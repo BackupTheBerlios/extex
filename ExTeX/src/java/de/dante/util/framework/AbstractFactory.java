@@ -41,7 +41,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * methods which should make it easy to create a custom factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
@@ -166,7 +166,7 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    private Object createInstanceForConfiguration(final Configuration cfg,
+    protected Object createInstanceForConfiguration(final Configuration cfg,
             final Class target) throws ConfigurationException {
 
         String className = cfg.getAttribute(CLASS_ATTRIBUTE);
