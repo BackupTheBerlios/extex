@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -160,6 +160,19 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
+     * ...
+     *
+     * @param x the value to compare to
+     *
+     * @return <code>true</code> iff the current length is greater or equal
+     *  than the given one
+     */
+    public boolean ge(final FixedGlueComponent x) {
+
+        return this.length.ge(x);
+    }
+
+    /**
      * Getter for the length.
      * Note that the value returned is independent from the original object.
      * Changing its value does not affect the length of the glue.
@@ -206,6 +219,32 @@ public class Glue implements Serializable, FixedGlue {
     public boolean gt(final FixedGlueComponent x) {
 
         return this.length.gt(x);
+    }
+
+    /**
+     * ...
+     *
+     * @param x the value to compare to
+     *
+     * @return <code>true</code> iff the current length is less or equal
+     *  than the given one
+     */
+    public boolean le(final FixedGlueComponent x) {
+
+        return this.length.le(x);
+    }
+
+    /**
+     * ...
+     *
+     * @param x the value to compare to
+     *
+     * @return <code>true</code> iff the current length is less than the
+     *  given one
+     */
+    public boolean lt(final FixedGlueComponent x) {
+
+        return this.length.lt(x);
     }
 
     /**

@@ -22,21 +22,28 @@ package de.dante.extex.scanner;
 import java.io.Serializable;
 
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public abstract class AbstractToken implements Serializable, Token {
+public abstract class AbstractToken implements Token, Serializable {
 
     /**
      * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
      * the hash code.
      */
     private static final int HASH_FACTOR = 17;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer = null;
 
     /**
      * The field <tt>uniCode</tt> contains the Unicode character assigned to
@@ -62,8 +69,7 @@ public abstract class AbstractToken implements Serializable, Token {
 
         super();
         this.value = s;
-        this.uniCode = new UnicodeChar(s.length() > 0 ? s.charAt(0)
-                : ' ');
+        this.uniCode = new UnicodeChar(s.length() > 0 ? s.charAt(0) : ' ');
     }
 
     /**
@@ -84,7 +90,7 @@ public abstract class AbstractToken implements Serializable, Token {
     public boolean equals(final Catcode cc, final char c) {
 
         return getCatcode() == cc && getValue().length() == 1
-               && value.charAt(0) == c;
+                && value.charAt(0) == c;
     }
 
     /**
@@ -110,9 +116,9 @@ public abstract class AbstractToken implements Serializable, Token {
     public boolean equals(final Object t) {
 
         return this == t
-               || (t instanceof Token
-                   && getCatcode() == ((Token) t).getCatcode()
-                   && getValue().equals(((Token) t).getValue()));
+                || (t instanceof Token
+                        && getCatcode() == ((Token) t).getCatcode() && getValue()
+                        .equals(((Token) t).getValue()));
     }
 
     /**
@@ -128,6 +134,20 @@ public abstract class AbstractToken implements Serializable, Token {
     public UnicodeChar getChar() {
 
         return uniCode;
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer.
+     */
+    protected Localizer getLocalizer() {
+
+        if (this.localizer == null) {
+            this.localizer = LocalizerFactory.getLocalizer(Token.class
+                    .getName());
+        }
+        return this.localizer;
     }
 
     /**

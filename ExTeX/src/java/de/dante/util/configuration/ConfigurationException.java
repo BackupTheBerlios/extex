@@ -1,33 +1,40 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.util.configuration;
 
-import de.dante.extex.i18n.Messages;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is thrown when a problem in the configuration is detected.
+ * This exception is thrown when a problem in the configuration has been
+ * detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class ConfigurationException extends Exception {
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer = null;
 
     /**
      * The field <tt>message</tt> contains the message string for this
@@ -75,6 +82,20 @@ public abstract class ConfigurationException extends Exception {
 
         super(aMessage, cause);
         this.message = aMessage;
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer.
+     */
+    protected Localizer getLocalizer() {
+
+        if (this.localizer == null) {
+            this.localizer = LocalizerFactory
+                    .getLocalizer(ConfigurationException.class.getName());
+        }
+        return this.localizer;
     }
 
     /**
@@ -133,23 +154,23 @@ public abstract class ConfigurationException extends Exception {
                 if (msg != null) {
                     if (source != null) {
                         if (message != null) {
-                            return Messages
+                            return localizer
                                     .format(
                                             "ConfigurationException.FormatCauseMessageLocation",
                                             getText(), msg, message, source);
                         } else {
-                            return Messages
+                            return localizer
                                     .format(
                                             "ConfigurationException.FormatCauseLocation",
                                             getText(), msg, source);
                         }
                     } else if (message != null) {
-                        return Messages
+                        return localizer
                                 .format(
                                         "ConfigurationException.FormatCauseMessage",
                                         getText(), msg, message);
                     } else {
-                        return Messages
+                        return localizer
                                 .format("ConfigurationException.FormatCause",
                                         getText(), msg);
                     }
@@ -159,19 +180,29 @@ public abstract class ConfigurationException extends Exception {
 
         if (source != null) {
             if (message != null) {
-                return Messages
+                return localizer
                         .format("ConfigurationException.FormatMessageLocation",
                                 getText(), message, source);
             } else {
-                return Messages.format("ConfigurationException.FormatLocation",
+                return localizer.format("ConfigurationException.FormatLocation",
                                        getText(), source);
             }
         } else if (message != null) {
-            return Messages.format("ConfigurationException.FormatMessage",
+            return localizer.format("ConfigurationException.FormatMessage",
                                    getText(), message);
         } else {
-            return Messages.format("ConfigurationException.Format", getText());
+            return localizer.format("ConfigurationException.Format", getText());
         }
+    }
+
+    /**
+     * Getter for the unformatted message.
+     *
+     * @return the unformatted message
+     */
+    protected String getMessageUnformatted() {
+
+        return super.getMessage();
     }
 
     /**
@@ -183,16 +214,6 @@ public abstract class ConfigurationException extends Exception {
      */
     protected String getText() {
 
-        return Messages.format("ConfigurationException.Text");
-    }
-
-    /**
-     * Getter for the unformatted message.
-     *
-     * @return the unformatted message
-     */
-    protected String getMessageUnformatted() {
-
-        return super.getMessage();
+        return localizer.format("ConfigurationException.Text");
     }
 }

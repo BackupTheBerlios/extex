@@ -24,12 +24,14 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Node;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -44,6 +46,11 @@ public abstract class AbstractNode implements Node {
      *  The height is the extend of the node above the baseline.
      */
     private Dimen height;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer = null;
 
     /** This is the width of the node.
      *  The width is the extend of the node along the baseline.
@@ -114,6 +121,20 @@ public abstract class AbstractNode implements Node {
     public Dimen getHeight() {
 
         return height;
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer.
+     */
+    protected Localizer getLocalizer() {
+
+        if (this.localizer == null) {
+            this.localizer = LocalizerFactory
+                    .getLocalizer(Node.class.getName());
+        }
+        return this.localizer;
     }
 
     /**

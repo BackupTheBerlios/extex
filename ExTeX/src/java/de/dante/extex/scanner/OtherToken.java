@@ -19,7 +19,6 @@
 
 package de.dante.extex.scanner;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -32,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class OtherToken extends AbstractToken implements Token {
 
@@ -63,7 +62,7 @@ public class OtherToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return Messages.format("OtherToken.Text", getValue());
+        return getLocalizer().format("OtherToken.Text", getValue());
     }
 
     /**
@@ -75,7 +74,7 @@ public class OtherToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(Messages.format("OtherToken.Text", getValue()));
+        sb.append(getLocalizer().format("OtherToken.Text", getValue()));
     }
 
     /**

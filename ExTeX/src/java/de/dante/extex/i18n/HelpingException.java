@@ -24,6 +24,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import de.dante.util.GeneralException;
+import de.dante.util.framework.i18n.Localizer;
 
 /**
  * This class provides an Exception with the possibility to provide additional
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * <p>
  * Both information strings are mapped via the
  * {@link de.dante.extex.i18n.Messages Messages} apparatus. The key provided
- * to this Exception is used as a key to find the format in the Messages.
+ * to this Exception is used as a key to find the format in the resource bundle.
  * For the message it is used plain and for the help the string ".help" is
  * appended.
  * </p>
@@ -55,7 +56,7 @@ import de.dante.util.GeneralException;
  * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HelpingException extends GeneralException {
 
@@ -68,6 +69,8 @@ public class HelpingException extends GeneralException {
      * Setter for the resource bundle to use.
      *
      * @param resource the ResourceBundle to use
+     *
+     * @deprecated use the locator instead.
      */
     public static void setResource(final ResourceBundle resource) {
 
@@ -95,6 +98,11 @@ public class HelpingException extends GeneralException {
     private ResourceBundle bundle = null;
 
     /**
+     * The field <tt>localizer</tt> contains the ...
+     */
+    private Localizer localizer = null;
+
+    /**
      * The field <tt>tag</tt> contains the name of the message to show.
      */
     private String tag = "GeneralDetailedException.help";
@@ -103,28 +111,83 @@ public class HelpingException extends GeneralException {
      * Creates a new object without variable arguments.
      *
      * @param messageTag the message
-     *
-     * deprecated use the method with the explicit resource bundle instead.
+     * @param localizer the localizer to use
      */
-    public HelpingException(final String messageTag) {
+    public HelpingException(final Localizer localizer,
+            final String messageTag) {
 
         super();
-        tag = messageTag;
-        bundle = defaultBundle;
+        this.tag = messageTag;
+        this.localizer = localizer;
+    }
+
+    /**
+     * Creates a new object with one variable argument.
+     *
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param localizer the localizer to use
+     */
+    public HelpingException(final Localizer localizer,
+            final String messageTag, final String a1) {
+
+        super();
+        this.tag = messageTag;
+        this.arg1 = a1;
+        this.localizer = localizer;
+    }
+
+    /**
+     * Creates a new object with two variable arguments.
+     *
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param a2 the second argument
+     * @param localizer the localizer to use
+     */
+    public HelpingException(final Localizer localizer,
+            final String messageTag, final String a1, final String a2) {
+
+        super();
+        this.tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.localizer = localizer;
+    }
+
+    /**
+     * Creates a new object with three variable arguments.
+     *
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param a2 the second argument
+     * @param a3 the third argument
+     * @param localizer the localizer to use
+     */
+    public HelpingException(final Localizer localizer,
+            final String messageTag, final String a1, final String a2,
+            final String a3) {
+
+        super();
+        this.tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.arg3 = a3;
+        this.localizer = localizer;
     }
 
     /**
      * Creates a new object without variable arguments.
      *
      * @param messageTag the message
-     * @param resource the resource bundle to use
+     *
+     * @deprecated use the method with the explicit localizer instead.
      */
-    public HelpingException(final ResourceBundle resource,
-            final String messageTag) {
+    public HelpingException(final String messageTag) {
 
         super();
-        tag = messageTag;
-        bundle = resource;
+        this.tag = messageTag;
+        this.bundle = defaultBundle;
     }
 
     /**
@@ -138,25 +201,9 @@ public class HelpingException extends GeneralException {
     public HelpingException(final String messageTag, final String a1) {
 
         super();
-        tag = messageTag;
+        this.tag = messageTag;
         this.arg1 = a1;
-        bundle = defaultBundle;
-    }
-
-    /**
-     * Creates a new object with one variable argument.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     * @param resource the resource bundle to use
-     */
-    public HelpingException(final ResourceBundle resource,
-            final String messageTag, final String a1) {
-
-        super();
-        tag = messageTag;
-        this.arg1 = a1;
-        bundle = resource;
+        this.bundle = defaultBundle;
     }
 
     /**
@@ -172,28 +219,10 @@ public class HelpingException extends GeneralException {
             final String a2) {
 
         super();
-        tag = messageTag;
+        this.tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
-        bundle = defaultBundle;
-    }
-
-    /**
-     * Creates a new object with two variable arguments.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     * @param a2 the second argument
-     * @param resource the resource bundle to use
-     */
-    public HelpingException(final ResourceBundle resource,
-            final String messageTag, final String a1, final String a2) {
-
-        super();
-        tag = messageTag;
-        this.arg1 = a1;
-        this.arg2 = a2;
-        bundle = resource;
+        this.bundle = defaultBundle;
     }
 
     /**
@@ -211,32 +240,38 @@ public class HelpingException extends GeneralException {
             final String a2, final String a3) {
 
         super();
-        tag = messageTag;
+        this.tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
-        bundle = defaultBundle;
+        this.bundle = defaultBundle;
     }
 
     /**
-     * Creates a new object with three variable arguments.
+     * Unfailing getter for a format string.
      *
-     * @param messageTag the message
-     * @param a1 the first argument
-     * @param a2 the second argument
-     * @param a3 the third argument
-     * @param resource the resource bundle to use
+     * @param name the key string for the format
+     *
+     * @return ...
      */
-    public HelpingException(final ResourceBundle resource,
-            final String messageTag, final String a1, final String a2,
-            final String a3) {
+    protected String determineFormat(final String name) {
 
-        super();
-        tag = messageTag;
-        this.arg1 = a1;
-        this.arg2 = a2;
-        this.arg3 = a3;
-        bundle = resource;
+        if (localizer!= null) {
+            return localizer.format(name);
+        }
+
+        // The following fallback should be eliminated as soon as the deprecated
+        // methods are removed.
+
+        String format;
+        try {
+            return this.bundle.getString(name);
+        } catch (MissingResourceException e) {
+            format = "???" + name + "???";
+        } catch (NullPointerException e) {
+            format = "???" + name + "???";
+        }
+        return format;
     }
 
     /**
@@ -259,26 +294,6 @@ public class HelpingException extends GeneralException {
 
         return MessageFormat.format(determineFormat(tag), new Object[]{arg1,
                 arg2, arg3});
-    }
-
-    /**
-     * Unfailing getter for a format string.
-     *
-     * @param name the key string for the format
-     *
-     * @return ...
-     */
-    protected String determineFormat(final String name) {
-
-        String format;
-        try {
-            return bundle.getString(name);
-        } catch (MissingResourceException e) {
-            format = "???" + name + "???";
-        } catch (NullPointerException e) {
-            format = "???" + name + "???";
-        }
-        return format;
     }
 
 }

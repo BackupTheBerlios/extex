@@ -73,6 +73,8 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingException;
+import de.dante.util.framework.i18n.Localizable;
+import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -112,7 +114,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public class ContextImpl
         implements
@@ -122,6 +124,7 @@ public class ContextImpl
             TypesetterOptions,
             TokenStreamOptions,
             Observable,
+            Localizable,
             Serializable {
 
     /**
@@ -186,13 +189,17 @@ public class ContextImpl
     /**
      * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
-    private transient HyphenationManager hyphenationManager =
-        new HyphenationManagerImpl();
+    private transient HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
     /**
      * The field <tt>id</tt> contains the ...
      */
     private String id = null;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer to use.
+     */
+    private transient Localizer localizer = null;
 
     /**
      * The field <tt>magnification</tt> contains the magnification for the
@@ -324,7 +331,7 @@ public class ContextImpl
         Group next = group.getNext();
 
         if (next == null) {
-            throw new HelpingException("TTP.TooManyRightBraces");
+            throw new HelpingException(localizer, "TTP.TooManyRightBraces");
         }
 
         if (group.getInteraction() != next.getInteraction()) {
@@ -340,6 +347,19 @@ public class ContextImpl
             source.push(toks);
         }
 
+    }
+
+    /**
+     * Setter for the localizer.
+     *
+     * @param localizer the localizer to use
+     *
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
+     */
+    public void enableLocalization(final Localizer localizer) {
+
+        this.localizer = localizer;
     }
 
     /**
@@ -763,7 +783,7 @@ public class ContextImpl
             throws GeneralException {
 
         if (!(t instanceof CodeToken)) {
-            throw new HelpingException("TTP.MissingCtrlSeq");
+            throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
         }
         group.setCode(t, code, global);
 
@@ -923,13 +943,15 @@ public class ContextImpl
     public void setMagnification(final long mag) throws HelpingException {
 
         if (magnificationLock && this.magnification != mag) {
-            throw new HelpingException("TTP.IncompatMag", Long.toString(mag));
+            throw new HelpingException(localizer, "TTP.IncompatibleMag", //
+                    Long.toString(mag));
         }
 
         magnificationLock = true;
 
         if (mag < 1 || mag > magnificationMax) {
-            throw new HelpingException("TTP.IllegalMag", Long.toString(mag));
+            throw new HelpingException(localizer, "TTP.IllegalMag", //
+                    Long.toString(mag));
         }
 
         magnification = mag;
@@ -976,6 +998,7 @@ public class ContextImpl
 
         group.setOutFile(name, file, global);
     }
+
     /**
      * @see de.dante.extex.interpreter.context.Context#setParshape(de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
      */

@@ -19,11 +19,14 @@
 
 package de.dante.util;
 
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
+
 /**
  * This is a base class for exceptions which carry a return code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GeneralException extends Exception {
 
@@ -31,6 +34,11 @@ public class GeneralException extends Exception {
      * The field <tt>exitCode</tt> contains the exit code.
      */
     private int exitCode = -1;
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer = null;
 
     /**
      * Creates a new object with the default exit code of -1.
@@ -100,5 +108,19 @@ public class GeneralException extends Exception {
     public String getHelp() {
 
         return null;
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer.
+     */
+    protected Localizer getLocalizer() {
+
+        if (this.localizer == null) {
+            this.localizer = LocalizerFactory
+                    .getLocalizer(GeneralException.class.getName());
+        }
+        return this.localizer;
     }
 }

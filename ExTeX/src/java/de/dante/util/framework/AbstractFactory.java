@@ -34,6 +34,8 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNotFoundException;
 import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.framework.configuration.Configurable;
+import de.dante.util.framework.i18n.Localizable;
+import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -41,7 +43,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * methods which should make it easy to create a custom factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
@@ -72,6 +74,21 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
 
         if (configuration != null && instance instanceof Configurable) {
             ((Configurable) instance).configure(configuration);
+        }
+    }
+
+    /**
+     * ...
+     *
+     * @param instance the instance to pass the localizer to
+     * @param className the class name for the instance
+     */
+    private static void enableLocalization(final Object instance,
+            final String className) {
+
+        if (instance instanceof Localizable) {
+            ((Localizable) instance).enableLocalization(LocalizerFactory
+                    .getLocalizer(className));
         }
     }
 
@@ -159,60 +176,74 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
     /**
      * Create a new instance for a given configuration.
      *
-     * @param cfg the configuration to use
+     * @param config the configuration to use
      * @param target the expected class or interface
      *
      * @return a new instance
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    protected Object createInstanceForConfiguration(final Configuration cfg,
+    protected Object createInstanceForConfiguration(final Configuration config,
             final Class target) throws ConfigurationException {
 
-        String className = cfg.getAttribute(CLASS_ATTRIBUTE);
+        String className = config.getAttribute(CLASS_ATTRIBUTE);
 
         if (className == null) {
             throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    cfg);
+                    config);
         }
 
-        Object instance;
-
         try {
-            Class cl = Class.forName(className);
+            Class theClass = Class.forName(className);
 
-            if (!target.isAssignableFrom(cl)) {
+            if (!target.isAssignableFrom(theClass)) {
                 throw new ConfigurationInvalidClassException(target.getName(),
-                        cfg);
+                        config);
             }
 
-            Constructor[] cs = cl.getConstructors();
-            for (int i = 0; i < cs.length; i++) {
-                Constructor c = cs[i];
-                Class[] args = c.getParameterTypes();
+            Constructor[] constructors = theClass.getConstructors();
+            Object instance = null;
+
+            for (int i = 0; i < constructors.length; i++) {
+                Class[] args = constructors[i].getParameterTypes();
                 switch (args.length) {
                     case 0:
-                        instance = cl.newInstance();
-                        configure(instance, cfg);
+                        instance = theClass.newInstance();
+                        enableLocalization(instance, className);
                         enableLogging(instance, getLogger());
+                        configure(instance, config);
                         return instance;
 
                     case 1:
                         if (args[0].isAssignableFrom(Configuration.class)) {
-                            return c.newInstance(new Object[]{cfg});
+                            instance = constructors[i]
+                                    .newInstance(new Object[]{config});
+                            enableLocalization(instance, className);
+                            enableLogging(instance, getLogger());
+                            return instance;
                         } else if (args[0].isAssignableFrom(Logger.class)) {
-                            return c.newInstance(new Object[]{logger});
+                            instance = constructors[i]
+                                    .newInstance(new Object[]{logger});
+                            enableLocalization(instance, className);
+                            configure(instance, config);
+                            return instance;
                         }
                         break;
 
                     case 2:
                         if (args[0].isAssignableFrom(Configuration.class)
                                 && args[1].isAssignableFrom(Logger.class)) {
-                            return c.newInstance(new Object[]{cfg, logger});
+                            instance = constructors[i]
+                                    .newInstance(new Object[]{config, logger});
+                            enableLocalization(instance, className);
+                            return instance;
                         } else if (args[0].isAssignableFrom(Logger.class)
                                 && args[1]
                                         .isAssignableFrom(Configuration.class)) {
-                            return c.newInstance(new Object[]{logger, cfg});
+                            instance = constructors[i]
+                                    .newInstance(new Object[]{logger, config});
+                            enableLocalization(instance, className);
+                            return instance;
                         }
                         break;
 
@@ -223,7 +254,7 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(className, cfg);
+            throw new ConfigurationClassNotFoundException(className, config);
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (InstantiationException e) {
@@ -238,7 +269,79 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             throw new ConfigurationInstantiationException(e);
         }
 
-        throw new ConfigurationInvalidClassException(target.getName(), cfg);
+        throw new ConfigurationInvalidClassException(target.getName(), config);
+    }
+
+
+    /**
+     * Create a new instance for a given configuration.
+     *
+     * @param config the configuration to use
+     * @param target the expected class or interface
+     * @param arg1 the first (String) constructor argument
+     *
+     * @return a new instance
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    protected Object createInstanceForConfiguration(final Configuration config,
+            final Class target, final String arg1) throws ConfigurationException {
+
+        String className = config.getAttribute(CLASS_ATTRIBUTE);
+
+        if (className == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
+        }
+
+        try {
+            Class theClass = Class.forName(className);
+
+            if (!target.isAssignableFrom(theClass)) {
+                throw new ConfigurationInvalidClassException(target.getName(),
+                        config);
+            }
+
+            Constructor[] constructors = theClass.getConstructors();
+            Object instance = null;
+
+            for (int i = 0; i < constructors.length; i++) {
+                Class[] args = constructors[i].getParameterTypes();
+                switch (args.length) {
+                    case 1:
+                        if (args[0].isAssignableFrom(String.class)) {
+                            instance = constructors[i]
+                                    .newInstance(new Object[]{arg1});
+                            enableLogging(instance, getLogger());
+                            configure(instance, config);
+                            enableLocalization(instance, className);
+                            return instance;
+                        }
+                        break;
+
+                    default: // Fall through to exception
+                }
+            }
+
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(className, config);
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause != null && cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationInstantiationException(e);
+        }
+
+        throw new ConfigurationInvalidClassException(target.getName(), config);
     }
 
     /**
@@ -296,20 +399,20 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
                 ConfigurationIOException,
                 ConfigurationMissingAttributeException {
 
-        Configuration cfg = configuration.findConfiguration(type);
-        if (cfg == null) {
-            String fallback = configuration.getAttribute(DEFAULT_ATTRIBUTE);
+        Configuration config = this.configuration.findConfiguration(type);
+        if (config == null) {
+            String fallback = this.configuration.getAttribute(DEFAULT_ATTRIBUTE);
             if (fallback == null) {
                 throw new ConfigurationMissingAttributeException(
                         DEFAULT_ATTRIBUTE, configuration);
             }
-            cfg = configuration.findConfiguration(fallback);
-            if (cfg == null) {
+            config = configuration.findConfiguration(fallback);
+            if (config == null) {
                 throw new ConfigurationMissingAttributeException(fallback,
-                        configuration);
+                        this.configuration);
             }
         }
-        return cfg;
+        return config;
     }
 
 }

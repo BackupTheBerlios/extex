@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
@@ -37,7 +36,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class AfterMathNode extends AbstractNode implements Node, Discartable {
 
@@ -79,11 +78,12 @@ public class AfterMathNode extends AbstractNode implements Node, Discartable {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append(Messages.format("TTP.AfterMathNode.Text"));
         Dimen width = getWidth();
-        if (!width.eq(Dimen.ZERO_PT)) {
-            sb.append(Messages.format("TTP.MathNode.Surrounded"));
-            width.toString(sb);
+        if (width.eq(Dimen.ZERO_PT)) {
+            sb.append(getLocalizer().format("AfterMathNode.Text"));
+        } else {
+            sb.append(getLocalizer().format("AfterMathNode.Surrounded",
+                    width.toString()));
         }
     }
 

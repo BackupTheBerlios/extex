@@ -19,7 +19,6 @@
 
 package de.dante.extex.scanner;
 
-import de.dante.extex.i18n.Messages;
 
 /**
  * This class represents a space token.
@@ -30,7 +29,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class SpaceToken extends AbstractToken implements Token {
 
@@ -63,7 +62,7 @@ public class SpaceToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return Messages.format("SpaceToken.Text", getValue());
+        return getLocalizer().format("SpaceToken.Text", getValue());
     }
 
     /**
@@ -75,7 +74,7 @@ public class SpaceToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(Messages.format("SpaceToken.Text", getValue()));
+        sb.append(getLocalizer().format("SpaceToken.Text", getValue()));
     }
 
     /**

@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -35,7 +34,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
@@ -115,11 +114,7 @@ public class MarkNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append('\\');
-        sb.append(Messages.format("TTP.MarkNode.Text"));
-        sb.append('{');
-        mark.toString(sb);
-        sb.append('}');
+        sb.append(getLocalizer().format("MarkNode.Text", mark.toString()));
     }
 
     /**

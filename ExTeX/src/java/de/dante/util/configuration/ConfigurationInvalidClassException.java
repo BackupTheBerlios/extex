@@ -16,19 +16,17 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.util.configuration;
 
-import de.dante.extex.i18n.Messages;
+package de.dante.util.configuration;
 
 /**
  * This exception is thrown when a dynamically loaded class does not implement
  * the expected interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class ConfigurationInvalidClassException
-    extends ConfigurationException {
+public class ConfigurationInvalidClassException extends ConfigurationException {
 
     /**
      * The field <tt>classname</tt> contains the name of the class which
@@ -40,12 +38,10 @@ public class ConfigurationInvalidClassException
      * Creates a new object.
      *
      * @param aClassName the name of the class which could not be found
-     * @param config the configuration in which the problem occurred or
-     * <code>null</code>
      */
-    public ConfigurationInvalidClassException(final String aClassName,
-            final Configuration config) {
-        super(null, config.toString());
+    public ConfigurationInvalidClassException(final String aClassName) {
+
+        super(null);
         this.classname = aClassName;
     }
 
@@ -53,9 +49,13 @@ public class ConfigurationInvalidClassException
      * Creates a new object.
      *
      * @param aClassName the name of the class which could not be found
+     * @param config the configuration in which the problem occurred or
+     * <code>null</code>
      */
-    public ConfigurationInvalidClassException(final String aClassName) {
-        super(null);
+    public ConfigurationInvalidClassException(final String aClassName,
+            final Configuration config) {
+
+        super(null, config.toString());
         this.classname = aClassName;
     }
 
@@ -70,11 +70,11 @@ public class ConfigurationInvalidClassException
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigurationInvalidClassException.Text",
-                               (classname != null //
-                                   ? classname //
-                                   : getCause() != null ? getCause()
-                                       .getMessage() : ""));
+
+        return getLocalizer().format("ConfigurationInvalidClassException.Text",
+                (classname != null //
+                        ? classname //
+                        : getCause() != null ? getCause().getMessage() : ""));
     }
 
 }

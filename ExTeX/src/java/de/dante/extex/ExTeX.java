@@ -98,6 +98,8 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
 import de.dante.util.file.OutputFactory;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observer;
 import de.dante.util.resource.ResourceFinder;
@@ -620,7 +622,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.69 $
+ * @version $Revision: 1.70 $
  */
 public class ExTeX {
 
@@ -863,31 +865,6 @@ public class ExTeX {
     }
 
     /**
-     * Log a throwable including its stack trace to the logger.
-     * @param logger the target logger
-     * @param e the throwable to log
-     */
-    private static void logInternalError(final Logger logger, final Throwable e) {
-
-        //e.printStackTrace();
-
-        String msg = e.getMessage();
-        for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
-            msg = t.getMessage();
-            if ("".equals(msg)) {
-                msg = null;
-            }
-        }
-
-        if (msg == null) {
-            msg = e.getClass().getName();
-            msg = msg.substring(msg.lastIndexOf('.') + 1);
-        }
-
-        logException(logger, Messages.format("ExTeX.InternalError", msg), e);
-    }
-
-    /**
      * This is the main method which is invoked to run the whole engine from
      * the command line. It creates a new ExTeX object and invokes
      * <tt>{@link #run(java.lang.String[]) run()}</tt> on it.
@@ -923,8 +900,10 @@ public class ExTeX {
             consoleHandler.setLevel(Level.WARNING);
             logger.addHandler(consoleHandler);
 
+            Localizer localizer = LocalizerFactory.getLocalizer(ExTeX.class
+                    .getName());
             logException(logger, //
-                    Messages.format("ExTeX.SevereError", e.toString()), e);
+                    localizer.format("ExTeX.SevereError", e.toString()), e);
             status = EXIT_INTERNAL_ERROR;
         }
 
@@ -936,6 +915,12 @@ public class ExTeX {
      * whenever the interaction mode is changed.
      */
     private Observer interactionObserver = null;
+
+    /**
+     * The field <tt>localizer</tt> contains the ...
+     */
+    private Localizer localizer = LocalizerFactory.getLocalizer(ExTeX.class
+            .getName());
 
     /**
      * The field <tt>logger</tt> contains the logger currently in use.
@@ -1093,7 +1078,8 @@ public class ExTeX {
 
         if (bundle != null) {
             HelpingException.setResource(ResourceBundle.getBundle(bundle));
-            Messages.configure(bundle);
+            Messages.configure(bundle); //TODO eliminate
+            localizer = LocalizerFactory.getLocalizer(ExTeX.class.getName());
         }
     }
 
@@ -1164,7 +1150,7 @@ public class ExTeX {
                 interpreter.addStream(stream);
                 notInitialized = false;
             } catch (FileNotFoundException e) {
-                logger.severe(Messages.format("CLI.FileNotFound", filename));
+                logger.severe(localizer.format("CLI.FileNotFound", filename));
             }
         }
 
@@ -1240,7 +1226,7 @@ public class ExTeX {
             InputStream stream = finder.findResource(fmt, "fmt");
 
             if (stream == null && !fmt.equals("tex")) {
-                logger.info(Messages.format("xxxxxx", fmt)); //TODO
+                logger.info(localizer.format("xxxxxx", fmt)); //TODO
                 stream = finder.findResource("tex", "fmt");
             }
             if (stream == null) {
@@ -1251,9 +1237,9 @@ public class ExTeX {
             } catch (LoaderException e) {
                 throw new PanicException("TTP.FormatFileError");
             }
-            logger.config(Messages.format("ExTeX.FormatDate", fmt, time));
+            logger.config(localizer.format("ExTeX.FormatDate", fmt, time));
         } else {
-            logger.config(Messages.format("ExTeX.NoFormatDate", time));
+            logger.config(localizer.format("ExTeX.NoFormatDate", time));
         }
         interpreter.setJobname(jobname);
     }
@@ -1271,6 +1257,30 @@ public class ExTeX {
         if (file != null && file.canRead()) {
             properties.load(new FileInputStream(file));
         }
+    }
+
+    /**
+     * Log a throwable including its stack trace to the logger.
+     * @param e the throwable to log
+     */
+    private void logInternalError(final Throwable e) {
+
+        //e.printStackTrace();
+
+        String msg = e.getMessage();
+        for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
+            msg = t.getMessage();
+            if ("".equals(msg)) {
+                msg = null;
+            }
+        }
+
+        if (msg == null) {
+            msg = e.getClass().getName();
+            msg = msg.substring(msg.lastIndexOf('.') + 1);
+        }
+
+        logException(logger, localizer.format("ExTeX.InternalError", msg), e);
     }
 
     /**
@@ -1454,7 +1464,7 @@ public class ExTeX {
         initializeStreams(interpreter);
 
         //TODO: if weak references are used then the instances have to be kept in some variables:-(
-        
+
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
         interpreter.registerObserver("log", new LogMessageObserver(logger));
@@ -1487,12 +1497,11 @@ public class ExTeX {
             fileHandler.setLevel(Level.ALL);
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
-            logger
-                    .severe(Messages.format("ExTeX.LogFileError", e
+            logger.severe(localizer.format("ExTeX.LogFileError", e
                             .getMessage()));
             fileHandler = null;
         } catch (IOException e) {
-            logger.severe(Messages.format("ExTeX.LogFileError", e.toString()));
+            logger.severe(localizer.format("ExTeX.LogFileError", e.toString()));
             fileHandler = null;
         }
         return fileHandler;
@@ -1624,7 +1633,7 @@ public class ExTeX {
 
             int pages = docWriter.getPages();
             String outname = jobname + "." + docWriter.getExtension();
-            logger.info(Messages.format((pages == 0
+            logger.info(localizer.format((pages == 0
                     ? "ExTeX.NoPages"
                     : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname,
                     Integer.toString(pages)));
@@ -1641,13 +1650,13 @@ public class ExTeX {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
         } catch (Throwable e) {
-            logInternalError(logger, e);
+            logInternalError(e);
         } finally {
             if (fileHandler != null) {
                 fileHandler.close();
                 logger.removeHandler(fileHandler);
                 // see "TeX -- The Program [1333]"
-                logger.info(Messages.format("ExTeX.Logfile", logFile));
+                logger.info(localizer.format("ExTeX.Logfile", logFile));
             }
         }
     }
@@ -1680,14 +1689,14 @@ public class ExTeX {
                         useArg(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
                         int year = Calendar.getInstance().get(Calendar.YEAR);
-                        logger.info(Messages.format("ExTeX.Copyright",
+                        logger.info(localizer.format("ExTeX.Copyright",
                                 (year <= COPYRIGHT_YEAR ? Integer
                                         .toString(COPYRIGHT_YEAR) : Integer
                                         .toString(COPYRIGHT_YEAR)
                                         + "-" + Integer.toString(year))));
                         onceMore = false;
                     } else if ("-help".startsWith(arg)) {
-                        logger.info(Messages.format("ExTeX.Usage", "extex"));
+                        logger.info(localizer.format("ExTeX.Usage", "extex"));
                         onceMore = false;
                     } else if ("-fmt".startsWith(arg)) {
                         useArg(PROP_FMT, args, ++i);
@@ -1719,7 +1728,7 @@ public class ExTeX {
                         properties.setProperty(PROP_PROGNAME, arg
                                 .substring("-progname=".length()));
                     } else if ("-version".startsWith(arg)) {
-                        logger.info(Messages.format("ExTeX.Version", properties
+                        logger.info(localizer.format("ExTeX.Version", properties
                                 .getProperty(PROP_PROGNAME), EXTEX_VERSION,
                                 properties.getProperty("java.version")));
                         onceMore = false;
@@ -1768,8 +1777,8 @@ public class ExTeX {
             } catch (MainException e1) {
                 logException(logger, e1.getMessage(), e1);
             }
-            logInternalError(logger, e);
-            logger.info(Messages.format("ExTeX.Logfile", properties
+            logInternalError(e);
+            logger.info(localizer.format("ExTeX.Logfile", properties
                     .getProperty(PROP_JOBNAME)));
 
             returnCode = EXIT_INTERNAL_ERROR;
@@ -1875,7 +1884,7 @@ public class ExTeX {
             } else {
                 banner = properties.getProperty("java.version");
             }
-            logger.info(Messages.format("ExTeX.Version", //
+            logger.info(localizer.format("ExTeX.Version", //
                     properties.getProperty(PROP_PROGNAME), EXTEX_VERSION, //
                     banner));
             showBanner = false;

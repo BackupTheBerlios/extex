@@ -92,7 +92,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class Max extends Moritz
         implements
@@ -106,7 +106,7 @@ public class Max extends Moritz
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.36 $
+     * @version $Revision: 1.37 $
      */
     private class TokenFactoryFactory extends AbstractFactory {
 
@@ -319,6 +319,7 @@ public class Max extends Moritz
             Configuration cfg = (Configuration) iterator.next();
             String name = cfg.getAttribute(NAME_ATTRIBUTE);
 
+            //TODO use AbstractFactory
             if (name == null || name.equals("")) {
                 throw new ConfigurationMissingAttributeException(
                         NAME_ATTRIBUTE, cfg);
@@ -714,7 +715,7 @@ public class Max extends Moritz
 
         Code code = context.getCode(token);
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", //
+            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken",
                     token.toString());
         }
         if (code.execute(prefix, context, this, typesetter)) {
@@ -763,7 +764,7 @@ public class Max extends Moritz
         observersMacro.update(this, token);
         Code code = context.getCode(token);
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", //
+            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
                     token.toString());
         }
         if (code.execute(prefix, context, this, typesetter)) {
@@ -834,8 +835,8 @@ public class Max extends Moritz
     public Object visitMacroParam(final MacroParamToken token,
             final Object ignore) throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn", token.toString(),
-                typesetter.getMode().toString());
+        throw new HelpingException(getLocalizer(), "TTP.CantUseIn", token
+                .toString(), typesetter.getMode().toString());
     }
 
     /**
@@ -875,7 +876,7 @@ public class Max extends Moritz
         Token next = getToken();
 
         if (next == null) {
-            throw new HelpingException("TTP.MissingDollar");
+            throw new HelpingException(getLocalizer(), "TTP.MissingDollar");
         } else if (next.isa(Catcode.MATHSHIFT)) {
             typesetter.toggleDisplaymath();
         } else {
@@ -971,7 +972,7 @@ public class Max extends Moritz
             throw new RuntimeException("unimplemented");
         }
 
-        throw new HelpingException("TTP.MissingDollar");
+        throw new HelpingException(getLocalizer(), "TTP.MissingDollar");
     }
 
     /**
@@ -997,7 +998,7 @@ public class Max extends Moritz
             throw new RuntimeException("unimplemented");
         }
 
-        throw new HelpingException("TTP.MissingDollar");
+        throw new HelpingException(getLocalizer(), "TTP.MissingDollar");
     }
 
     /**

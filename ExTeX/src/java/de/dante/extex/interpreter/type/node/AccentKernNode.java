@@ -16,10 +16,10 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
-
 
 /**
  * This class provides the same functionality as
@@ -27,10 +27,11 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * distinguishable for the sake of some fine differentiations in TeX.
  *
  * @see "TeX -- The Program [155]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class AccentKernNode extends KernNode {
+public class AccentKernNode extends AbstractKernNode {
 
     /**
      * Creates a new object.
@@ -40,6 +41,16 @@ public class AccentKernNode extends KernNode {
     public AccentKernNode(final Dimen kern) {
 
         super(kern);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+
+        sb.append(getLocalizer().format("AccentKernNode.String",
+                getWidth().toString()));
     }
 
     /**
@@ -56,8 +67,8 @@ public class AccentKernNode extends KernNode {
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append("kern ");
-        getWidth().toString(sb);
+        sb.append(getLocalizer().format("AccentKernNode.Text",
+                getWidth().toString()));
     }
 
 }

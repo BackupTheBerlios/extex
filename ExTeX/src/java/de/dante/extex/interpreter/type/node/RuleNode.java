@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Node;
@@ -32,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -98,30 +97,13 @@ public class RuleNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append('\\');
-        sb.append(Messages.format("TTP.RuleNode.Text"));
-        sb.append('(');
         Dimen x = getHeight();
-        if (x == null) {
-            sb.append("*");
-        } else {
-            x.toString(sb);
-        }
-        sb.append("+");
+        String h = (x == null ? "*" : x.toString());
         x = getDepth();
-        if (x == null) {
-            sb.append("*");
-        } else {
-            x.toString(sb);
-        }
-        sb.append(")x");
+        String d = (x == null ? "*" : x.toString());
         x = getWidth();
-        if (x == null) {
-            sb.append("*");
-        } else {
-            x.toString(sb);
-        }
-        sb.append(")");
+        String w = (x == null ? "*" : x.toString());
+        sb.append(getLocalizer().format("RuleNode.Text", h, d, w));
     }
 
     /**

@@ -19,26 +19,25 @@
 
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
-
 import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @see "TeX -- The Program [157]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.11 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discartable {
 
     /**
-     * The field <tt>penalty</tt> contains the ...
+     * The field <tt>penalty</tt> contains the penalty value of this node.
      */
     private long penalty = 0;
 
@@ -97,19 +96,8 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append('\\');
-        sb.append(Messages.format("TTP.PenaltyNode.Text"));
-        sb.append(Long.toString(penalty));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-
-        return visitor.visitPenalty(value, value2);
+        sb.append(getLocalizer().format("PenaltyNode.Text",
+                Long.toString(penalty)));
     }
 
     /**
@@ -121,6 +109,16 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
             throws GeneralException {
 
         return visitor.visitPenalty(this, value);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitPenalty(value, value2);
     }
 
 }

@@ -19,7 +19,6 @@
 
 package de.dante.extex.scanner;
 
-import de.dante.extex.i18n.Messages;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -31,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class SubMarkToken extends AbstractToken implements Token {
 
@@ -62,7 +61,7 @@ public class SubMarkToken extends AbstractToken implements Token {
      */
     public String toString() {
 
-        return Messages.format("SubMarkToken.Text", getValue());
+        return getLocalizer().format("SubMarkToken.Text", getValue());
     }
 
     /**
@@ -74,7 +73,7 @@ public class SubMarkToken extends AbstractToken implements Token {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(Messages.format("SubMarkToken.Text", getValue()));
+        sb.append(getLocalizer().format("SubMarkToken.Text", getValue()));
     }
 
     /**

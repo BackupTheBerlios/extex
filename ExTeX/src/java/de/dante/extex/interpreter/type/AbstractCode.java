@@ -33,15 +33,15 @@ import de.dante.util.GeneralException;
  * most of the methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.3 $
  */
 public class AbstractCode implements Code, Serializable {
 
     /**
      * The field <tt>name</tt> contains the name of this code for debugging.
      */
-    private String name = "";
+    private String name;
 
     /**
      * Creates a new object.

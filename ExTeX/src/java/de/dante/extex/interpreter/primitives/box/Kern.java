@@ -24,7 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.node.KernNode;
+import de.dante.extex.interpreter.type.node.ExplicitKernNode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -65,7 +65,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Kern extends AbstractCode {
 
@@ -94,10 +94,10 @@ public class Kern extends AbstractCode {
         try {
             kern.set(context, source);
         } catch (GeneralException e) {
-            typesetter.add(new KernNode(kern));
+            typesetter.add(new ExplicitKernNode(kern));
             throw e;
         }
-        typesetter.add(new KernNode(kern));
+        typesetter.add(new ExplicitKernNode(kern));
         return true;
     }
 

@@ -19,21 +19,51 @@
 
 package de.dante.extex.typesetter;
 
-import de.dante.extex.i18n.Messages;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides type-safe constants for the modes of a typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class Mode {
+
+    /**
+     * This inner class represents vertical modes.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.8 $
+     */
+    private static class HorizontalMode extends Mode {
+
+        /**
+         * Creates a new object.
+         *
+         * @param theTag the tag of the mode
+         */
+        protected HorizontalMode(final String theTag) {
+
+            super(theTag);
+        }
+
+        /**
+         * Check for a horizontal mode.
+         *
+         * @return <code>true</code> since this is a horizontal modes
+         */
+        public final boolean isHmode() {
+
+            return true;
+        }
+    }
 
     /**
      * This inner class represents math modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class MathMode extends Mode {
 
@@ -62,7 +92,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class VerticalMode extends Mode {
 
@@ -88,35 +118,6 @@ public abstract class Mode {
     }
 
     /**
-     * This inner class represents vertical modes.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
-     */
-    private static class HorizontalMode extends Mode {
-
-        /**
-         * Creates a new object.
-         *
-         * @param theTag the tag of the mode
-         */
-        protected HorizontalMode(final String theTag) {
-
-            super(theTag);
-        }
-
-        /**
-         * Check for a horizontal mode.
-         *
-         * @return <code>true</code> since this is a horizontal modes
-         */
-        public final boolean isHmode() {
-
-            return true;
-        }
-    }
-
-    /**
      * The constant <tt>DISPLAYMATH</tt> contains the display math mode of
      * the typesetter.
      */
@@ -126,13 +127,15 @@ public abstract class Mode {
      * The constant <tt>HORIZONTAL</tt> contains the horizontal mode of the
      * typesetter.
      */
-    public static final Mode HORIZONTAL = new HorizontalMode("Mode.HorizontalMode");
+    public static final Mode HORIZONTAL = new HorizontalMode(
+            "Mode.HorizontalMode");
 
     /**
      * The constant <tt>INNER_VERTICAL</tt> contains the inner vertical mode of
      * the typesetter.
      */
-    public static final Mode INNER_VERTICAL = new VerticalMode("Mode.VerticalMode");
+    public static final Mode INNER_VERTICAL = new VerticalMode(
+            "Mode.VerticalMode");
 
     /**
      * The constant <tt>MATH</tt> contains the math mode of the typesetter.
@@ -151,6 +154,11 @@ public abstract class Mode {
      * typesetter.
      */
     public static final Mode VERTICAL = new HorizontalMode("Mode.VerticalMode");
+
+    /**
+     * The field <tt>localizer</tt> contains the localizer.
+     */
+    private Localizer localizer = null;
 
     /**
      * The field <tt>tag</tt> contains the key for the message (cf. i18n)
@@ -174,13 +182,17 @@ public abstract class Mode {
     }
 
     /**
-     * Check for a math mode.
+     * Getter for localizer.
      *
-     * @return <code>true</code> iff the mode is one of the math modes
+     * @return the localizer.
      */
-    public boolean isMath() {
+    protected Localizer getLocalizer() {
 
-        return false;
+        if (this.localizer == null) {
+            this.localizer = LocalizerFactory
+                    .getLocalizer(Mode.class.getName());
+        }
+        return this.localizer;
     }
 
     /**
@@ -189,6 +201,16 @@ public abstract class Mode {
      * @return <code>true</code> iff the mode is one of the horizontal modes
      */
     public boolean isHmode() {
+
+        return false;
+    }
+
+    /**
+     * Check for a math mode.
+     *
+     * @return <code>true</code> iff the mode is one of the math modes
+     */
+    public boolean isMath() {
 
         return false;
     }
@@ -210,6 +232,10 @@ public abstract class Mode {
      */
     public String toString() {
 
-        return Messages.format(tag);
+        if (this.localizer == null) {
+            this.localizer = LocalizerFactory
+                    .getLocalizer(Mode.class.getName());
+        }
+        return localizer.format(tag);
     }
 }
