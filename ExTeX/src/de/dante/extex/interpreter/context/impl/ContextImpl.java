@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -78,7 +77,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -126,15 +125,18 @@ public class ContextImpl implements Context, Serializable {
 	private boolean magnificationLock = false;
 
 	/**
-	 * the magnification for the whole document in permille
+	 * The magnification for the whole document in permille
 	 */
 	private long magnification = 1000;
 
 	/**
 	 * Creates a new object.
 	 */
-	public ContextImpl() {
+	public ContextImpl(Configuration config) throws ConfigurationException {
 		super();
+		this.config = config;
+		groupFactory = new GroupFactory(config.getConfiguration("Group"));
+		group = groupFactory.newInstance(group);
 	}
 
 	/**
@@ -423,15 +425,6 @@ public class ContextImpl implements Context, Serializable {
 	}
 
 	/**
-	 * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
-	 */
-	public void configure(Configuration config) throws ConfigurationException {
-		this.config = config;
-		groupFactory = new GroupFactory(config.getConfiguration("Group"));
-		group = groupFactory.newInstance(group);
-	}
-
-	/**
 	 * ...
 	 * 
 	 * @return ...
@@ -479,28 +472,4 @@ public class ContextImpl implements Context, Serializable {
 	public void setToks(String name, Tokens toks) {
 		group.setToks(name, toks);
 	}
-	
-	
-	
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#getReal(java.lang.String)
-	 */
-	public Real getReal(String name) {
-		return group.getReal(name);
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setReal(java.lang.String, de.dante.extex.interpreter.type.Real, boolean)
-	 */
-	public void setReal(String name, Real value, boolean global) {
-		group.setReal(name, value, global);
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.context.Context#setReal(java.lang.String, de.dante.extex.interpreter.type.Real)
-	 */
-	public void setReal(String name, Real value) {
-		group.setReal(name, value);
-	}
-
 }
