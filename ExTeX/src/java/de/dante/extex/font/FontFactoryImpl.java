@@ -33,6 +33,7 @@ import org.jdom.input.SAXBuilder;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.afm.AFMReader;
 import de.dante.extex.font.type.efm.EFMFount;
+import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMReader;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
@@ -56,7 +57,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -111,6 +112,16 @@ public class FontFactoryImpl implements FontFactory {
             ConfigurationException {
 
         return getInstance(name, new Dimen(0), new Glue(0), true, true);
+    }
+
+    /**
+     * Return a <code>NullFont</code>.
+     *
+     * @see de.dante.extex.font.FontFactory#getInstance()
+     */
+    public Font getInstance() throws GeneralException, ConfigurationException {
+
+        return new NullFont();
     }
 
     /**

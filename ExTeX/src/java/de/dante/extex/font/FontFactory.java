@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface FontFactory {
 
@@ -72,5 +72,14 @@ public interface FontFactory {
      */
     Font getInstance(String name) throws GeneralException,
             ConfigurationException;
+
+    /**
+     * Factory for <code>Font</code>.
+     *
+     * @return the Font, or <code>null</code>, if the font are not aviable
+     * @throws GeneralException ...
+     * @throws ConfigurationException ...
+     */
+    Font getInstance() throws GeneralException, ConfigurationException;
 
 }
