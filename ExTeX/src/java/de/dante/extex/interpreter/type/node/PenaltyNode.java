@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [157]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discartable {
 
@@ -108,6 +108,17 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
             final Object value2) throws GeneralException {
 
         return visitor.visitPenalty(value, value2);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitPenalty(this, value);
     }
 
 }

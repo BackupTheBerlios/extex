@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
@@ -95,6 +95,17 @@ public class KernNode extends AbstractNode implements Node, Discartable {
             final Object value2) throws GeneralException {
 
         return visitor.visitKern(value, value2);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitKern(this, value);
     }
 
 }

@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class WhatsItNode extends AbstractNode implements Node {
 
@@ -74,6 +74,17 @@ public class WhatsItNode extends AbstractNode implements Node {
             final Object value2) throws GeneralException {
 
         return visitor.visitWhatsIt(value, value2);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitWhatsIt(this, value);
     }
 
 }

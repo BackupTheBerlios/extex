@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Node;
@@ -29,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
@@ -37,6 +38,7 @@ public class AdjustNode extends AbstractNode implements Node {
      * Creates a new object.
      */
     public AdjustNode() {
+
         super();
     }
 
@@ -50,6 +52,7 @@ public class AdjustNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [197]"
      */
     public String toString() {
+
         return "vadjust "; //TODO incomplete
     }
 
@@ -58,6 +61,7 @@ public class AdjustNode extends AbstractNode implements Node {
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
+
         sb.append("vadjust "); //TODO unimplemented
     }
 
@@ -69,6 +73,17 @@ public class AdjustNode extends AbstractNode implements Node {
             final Object value2) throws GeneralException {
 
         return visitor.visitAdjust(value, value2);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitAdjust(this, value);
     }
 
 }

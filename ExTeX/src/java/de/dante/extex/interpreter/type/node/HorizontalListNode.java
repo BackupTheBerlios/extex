@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
@@ -97,6 +97,17 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
             final Object value2) throws GeneralException {
 
         return visitor.visitHorizontalList(value, value2);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitHorizontalList(this, value);
     }
 
     /**
