@@ -36,11 +36,12 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
-    /** ... */
+    private static final int DEFAULT_SPACEFACTOR = 1000;
+	/** ... */
     private HorizontalListNode nodes = new HorizontalListNode();
 
     /** ...
@@ -51,14 +52,14 @@ public class HorizontalListMaker extends AbstractListMaker
     /** ...
      * @see "TeX -- The Program [212]"
      */
-    private long spacefactor = 1000;
+    private long spacefactor = DEFAULT_SPACEFACTOR;
 
     /**
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
      */
-    public HorizontalListMaker(Manager manager) {
+    public HorizontalListMaker(final Manager manager) {
         super(manager);
     }
 
@@ -72,54 +73,56 @@ public class HorizontalListMaker extends AbstractListMaker
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
      */
-    public void setSpacefactor(Count f) throws GeneralException {
+    public void setSpacefactor(final Count f) throws GeneralException {
         spacefactor = f.getValue();
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.node.CharNode)
      */
-    public void add(Node c) throws GeneralException {
+    public void add(final Node c) throws GeneralException {
         nodes.add(c);
-        spacefactor = 1000;
+        spacefactor = DEFAULT_SPACEFACTOR;
     }
 
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
-     * @see "The TeXbook [p.76]"
-     */
-    public void add(TypesettingContext context, UnicodeChar symbol)
-             throws GeneralException {
-        CharNode c = manager.getCharNodeFactory()
-                            .newInstance(context, symbol);
-        nodes.add(c);
+	/**
+	 * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font,
+	 *      java.lang.String)
+	 * @see "The TeXbook [p.76]"
+	 */
+	public void add(final TypesettingContext context,
+			final UnicodeChar symbol) throws GeneralException {
+		CharNode c = manager.getCharNodeFactory().newInstance(context, symbol);
+		nodes.add(c);
 
-        int f = c.getSpaceFactor();
+		int f = c.getSpaceFactor();
 
-        if (f != 0) {
-            spacefactor = (spacefactor < 1000 && f > 1000 ? 1000 : f);
-        }
-    }
+		if (f != 0) {
+			spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
+							&& f > DEFAULT_SPACEFACTOR ? DEFAULT_SPACEFACTOR
+					: f);
+		}
+	}
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
-    public void addGlue(Glue g) throws GeneralException {
+    public void addGlue(final Glue g) throws GeneralException {
         nodes.add(new GlueNode(g)); // TODO: use factory?
-        spacefactor = 1000;
+        spacefactor = DEFAULT_SPACEFACTOR;
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace()
      */
-    public void addSpace(TypesettingContext context, Count sfCount)
-                  throws GeneralException {
+    public void addSpace(final TypesettingContext context,
+    		final Count sfCount) throws GeneralException {
         long sf    = (sfCount != null ? sfCount.getValue() : spacefactor);
         Glue space = context.getFont()
                             .getSpace();
 
         // gene: maybe my interpretation of the TeXbook is slightly wrong
-        if (sf == 1000) { // normal case handled first
+        if (sf == DEFAULT_SPACEFACTOR) { // normal case handled first
         } else if (sf == 0) {
             return;
         } else if (sf >= 2000) {
@@ -130,17 +133,17 @@ public class HorizontalListMaker extends AbstractListMaker
                 space = xspaceskip.copy();
             } else if (spaceskip != null) {
                 space = xspaceskip.copy()
-                                  .multiplyStretch(sf, 1000)
-                                  .multiplyShrink(1000, sf);
+                                  .multiplyStretch(sf, DEFAULT_SPACEFACTOR)
+                                  .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
             } else {
                 space = space.copy()
-                             .multiplyStretch(sf, 1000)
-                             .multiplyShrink(1000, sf);
+                             .multiplyStretch(sf, DEFAULT_SPACEFACTOR)
+                             .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
             }
         } else {
             space = space.copy()
-                         .multiplyStretch(sf, 1000)
-                         .multiplyShrink(1000, sf);
+                         .multiplyStretch(sf, DEFAULT_SPACEFACTOR)
+                         .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
         }
 
         addGlue(space);

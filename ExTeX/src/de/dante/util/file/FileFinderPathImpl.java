@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,39 +24,48 @@ import de.dante.util.StringList;
 import de.dante.util.StringListIterator;
 import de.dante.util.configuration.ConfigurationException;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileFinderPathImpl implements FileFinder {
 
-    private StringList path;
-    private StringList ext;
-    
+    /**
+     * The field <tt>path</tt> ...
+     */
+    private StringList pathList;
+
+    /**
+     * The field <tt>ext</tt> ...
+     */
+    private StringList extensionList;
+
     /**
      * Creates a new object.
-     * 
-     * 
+     *
+     * @param path ...
+     * @param extensions ...
      */
-    public FileFinderPathImpl(StringList path, StringList extensions) {
+    public FileFinderPathImpl(final StringList path,
+            final StringList extensions) {
         super();
-        this.path = path;
-        this.ext = extensions;
+        this.pathList = path;
+        this.extensionList = extensions;
     }
-    
+
     /**
      * Setter for the extensions. The given string is splitted at the separator
      * <tt>:</tt>.
      * </p>
-     * 
+     *
      * @param extensions the extensions to set.
      */
-    public void setExtension(String extensions) {
-        this.ext = new StringList(extensions, ":");
+    public void setExtension(final String extensions) {
+        this.extensionList = new StringList(extensions, ":");
     }
-    
+
     /**
      * Setter for path. The given string is splitted at the separator stored in
      * the system property <tt>path.separator</tt>. This is usually the
@@ -64,32 +73,36 @@ public class FileFinderPathImpl implements FileFinder {
      * <p>
      * If this property can not be found then the value <tt>:</tt> is used.
      * </p>
-     * 
+     *
      * @param path the path to set.
      */
-    public void setPath(String path) {
-        this.path = new StringList(path, System.getProperty("path.separator",
-                                                            ":"));
+    public void setPath(final String path) {
+        this.pathList = new StringList(path, System
+                .getProperty("path.separator", ":"));
     }
-        
+
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
+     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     *      java.lang.String)
      */
-    public File findFile(String name, String type) throws ConfigurationException {
+    public File findFile(final String name, final String type)
+            throws ConfigurationException {
         File file;
-        
-        StringListIterator pathIt = path.getIterator();
+
+        StringListIterator pathIt = pathList.getIterator();
         while (pathIt.hasNext()) {
             String path = pathIt.next();
-            StringListIterator extIt = ext.getIterator();
+            StringListIterator extIt = extensionList.getIterator();
             while (extIt.hasNext()) {
                 String ext = extIt.next();
-                file = new File(path,name+ext);
-                if (file.canRead()) return file;
+                file = new File(path, name + ext);
+                if (file.canRead()) {
+                    return file;
+                }
             }
         }
-        
+
         return null;
     }
-    
+
 }

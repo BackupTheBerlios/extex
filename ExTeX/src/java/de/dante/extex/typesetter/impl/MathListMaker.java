@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,12 +32,14 @@ import de.dante.util.UnicodeChar;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
-    /** ... */
+    /**
+     * The field <tt>nodes</tt> ...
+     */
     private HorizontalListNode nodes = new HorizontalListNode();
 
     /**
@@ -45,35 +47,38 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public MathListMaker(Manager manager) {
+    public MathListMaker(final Manager manager) {
         super(manager);
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.node.CharNode)
      */
-    public void add(Node c) throws GeneralException {
+    public void add(final Node c) throws GeneralException {
         nodes.add(c);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font,
+     *      java.lang.String)
      */
-    public void add(TypesettingContext font, UnicodeChar symbol) throws GeneralException {
-        nodes.add(manager.getCharNodeFactory().newInstance(font,symbol));
+    public void add(final TypesettingContext font, final UnicodeChar symbol)
+            throws GeneralException {
+        nodes.add(manager.getCharNodeFactory().newInstance(font, symbol));
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
      */
-    public void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException {
+    public void addSpace(final TypesettingContext typesettingContext,
+            final Count spacefactor) throws GeneralException {
         // TODO Auto-generated method stub
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
-    public void addGlue(Glue g) throws GeneralException {
+    public void addGlue(final Glue g) throws GeneralException {
         // TODO Auto-generated method stub
 
     }

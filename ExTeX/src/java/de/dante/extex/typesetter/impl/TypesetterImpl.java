@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,9 +18,12 @@
  */
 package de.dante.extex.typesetter.impl;
 
+import java.io.IOException;
 import java.util.Stack;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.i18n.GeneralPanicException;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
@@ -35,31 +38,44 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This is a reference implementation of the Typesetter interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
-    /** the factory to produce glyph nodes */
+    /**
+     * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
+     * nodes.
+     */
     private CharNodeFactory charNodeFactory = new CharNodeFactory();
 
-    /** the document writer for producing the output */
+    /**
+     * The field <tt>documentWriter</tt> contains the document writer for
+     * producing the output.
+     */
     private DocumentWriter documentWriter;
 
-    /** the current list maker for efficiency */
+    /**
+     * The field <tt>listMaker</tt> contains the current list maker for
+     * efficiency. Thus we can avoid to peek at the stack whenever the list
+     * maker is needed.
+     */
     private ListMaker listMaker;
 
-    /** the stack of list makers */
+    /**
+     * The field <tt>saveStack</tt> contains the stack of list makers.
+     */
     private Stack saveStack = new Stack();
 
     /**
      * Creates a new object.
+     *
+     * @param config the configuration
      */
-    public TypesetterImpl(Configuration config) {
+    public TypesetterImpl(final Configuration config) {
         super();
         listMaker = new VerticalListMaker(this);
     }
@@ -74,8 +90,8 @@ public class TypesetterImpl implements Typesetter, Manager {
     /**
      * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
      */
-    public void setDocumentWriter(DocumentWriter doc) {
-        this.documentWriter = doc;
+    public void setDocumentWriter(final DocumentWriter doc) {
+        documentWriter = doc;
     }
 
     /**
@@ -93,58 +109,45 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * ...
-     *
-     * @param c
-     * @throws GeneralException
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
      */
-    public void add(Node c) throws GeneralException {
+    public void add(final Node c) throws GeneralException {
         listMaker.add(c);
     }
 
     /**
-     * ...
-     *
-     * @param font
-     * @param symbol
-     * @throws GeneralException
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
      */
-    public void add(TypesettingContext font, UnicodeChar symbol) throws GeneralException {
+    public void add(final TypesettingContext font, final UnicodeChar symbol)
+        throws GeneralException {
         listMaker.add(font, symbol);
     }
 
     /**
-     * ...
-     *
-     * @param g
-     * @throws GeneralException
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
-    public void addGlue(Glue g) throws GeneralException {
+    public void addGlue(final Glue g) throws GeneralException {
         listMaker.addGlue(g);
     }
 
     /**
-     * ...
-     *
-     * @throws GeneralException
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.type.Count)
      */
-    public void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException {
+    public void addSpace(final TypesettingContext typesettingContext,
+        final Count spacefactor) throws GeneralException {
         listMaker.addSpace(typesettingContext, null);
     }
 
     /**
-     * ...
-     *
-     * @return
+     * @see de.dante.extex.typesetter.ListMaker#close()
      */
     public NodeList close() {
         return null;
     }
 
     /**
-     * ...
-     *
-     * @return
+     * @see de.dante.extex.typesetter.impl.Manager#closeTopList()
      */
     public void closeTopList() throws GeneralException {
         NodeList list = listMaker.close();
@@ -153,101 +156,89 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
+     * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
      */
-    public void configure(Configuration config)
-                   throws ConfigurationException {
-        // TODO not needed yet
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#finish()
-     */
-    public void finish() throws GeneralException {
+    public void finish(final Context context) throws GeneralException {
         par();
-        //TODO
-        System.err.println(listMaker.close().toString());
-        
-        
+        //TODO incomplete
+        try {
+            documentWriter.shipout(listMaker.close());
+            documentWriter.close();
+        } catch (IOException e) {
+            throw new GeneralPanicException(e);
+        }
     }
 
     /**
-     * ...
-     *
-     * @throws GeneralException in case of an error
+     * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
         listMaker.par();
     }
 
     /**
-     * ...
-     *
-     * @throws GeneralException ...
+     * @see de.dante.extex.typesetter.impl.Manager#pop()
      */
     public void pop() throws GeneralException {
         if (saveStack.empty()) {
-            throw new GeneralException("xxx");// TODO
+            throw new GeneralException("xxx");
         }
 
         this.listMaker = (ListMaker) (saveStack.pop());
     }
 
     /**
-     * ...
-     *
-     * @param typesetter ...
+     * @see de.dante.extex.typesetter.impl.Manager#push(de.dante.extex.typesetter.ListMaker)
      */
-    public void push(ListMaker list) {
+    public void push(final ListMaker list) {
         saveStack.push(this.listMaker);
         this.listMaker = list;
     }
-    
+
     /**
-     * ...
-     * 
-     * 
+     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
      */
     public void toggleDisplaymath() throws GeneralException {
         listMaker.toggleDisplaymath();
     }
 
     /**
-     * ...
-     * 
-     * 
+     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
      */
     public void toggleMath() throws GeneralException {
         listMaker.toggleMath();
     }
 
     /**
-     * ...
-     * 
-     * @param f the new value for the spacefactor
-     * @throws GeneralException in case of an error
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
      */
-    public void setSpacefactor(Count f) throws GeneralException {
-        listMaker.setSpacefactor(f);
+    public void setSpacefactor(final Count sf) throws GeneralException {
+        listMaker.setSpacefactor(sf);
     }
 
     /**
      * Setter for the previous depth.
-     * 
+     *
      * @param pd the value for previous depth
+     *
      * @throws GeneralException in case of an error
      */
-    public void setPrevDepth(Dimen pd) throws GeneralException {
+    public void setPrevDepth(final Dimen pd) throws GeneralException {
         listMaker.setPrevDepth(pd);
     }
 
     /**
      * This is the entry point for the document writer. Here it receives a
      * complete node list to be sent to the output writer.
-     * 
+     *
      * @param nodes the nodes to send
      */
-    public void shipout(Box nodes) {
-        documentWriter.shipout(nodes);
+    public void shipout(final Box nodes) throws GeneralException {
+        try {
+            documentWriter.shipout(nodes);
+        } catch (IOException e) {
+            throw new GeneralPanicException(e);
+        }
     }
+    
 }

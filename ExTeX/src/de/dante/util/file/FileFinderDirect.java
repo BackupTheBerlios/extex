@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,54 +24,57 @@ import de.dante.util.StringList;
 import de.dante.util.StringListIterator;
 import de.dante.util.configuration.ConfigurationException;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileFinderDirect implements FileFinder {
 
-    private StringList ext;
-    
+    /**
+     * The field <tt>ext</tt> ...
+     */
+    private StringList extensionList;
+
     /**
      * Creates a new object.
      * 
-     * 
+     * @param extensions ...
      */
-    public FileFinderDirect(StringList extensions) {
+    public FileFinderDirect(final StringList extensions) {
         super();
-        this.ext = extensions;
+        extensionList = extensions;
     }
-    
+
     /**
      * Setter for the extensions. The given string is splitted at the separator
      * <tt>:</tt>.
      * </p>
-     * 
+     *
      * @param extensions the extensions to set.
      */
-    public void setExtension(String extensions) {
-        this.ext = new StringList(extensions, ":");
+    public void setExtension(final String extensions) {
+        extensionList = new StringList(extensions, ":");
     }
-    
+
     /**
      * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
      *      java.lang.String)
      */
-    public File findFile(String name, String type)
+    public File findFile(final String name, final String type)
             throws ConfigurationException {
         File file;
 
-        StringListIterator extIt = ext.getIterator();
+        StringListIterator extIt = extensionList.getIterator();
         while (extIt.hasNext()) {
-            String ext = extIt.next();
-            file = new File(name + ext);
-            if (file.canRead())
+            file = new File(name + extIt.next());
+            if (file.canRead()) {
                 return file;
+            }
         }
 
         return null;
     }
-    
+
 }

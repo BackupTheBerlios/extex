@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,13 +25,13 @@ import java.io.File;
 /**
  * This interface describes a class which is ab le to find files of different
  * kinds for reading.
- * It is not determined how the search for files is performed. 
+ * It is not determined how the search for files is performed.
  * Searching for the given file name, augmenting extension and path, or using
  * an external library &ndash; like kpathsea &ndash; are left to possible
  * implementations. Also an interaction with the user can be envisioned.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface FileFinder {
     /**
@@ -44,6 +44,5 @@ public interface FileFinder {
      *
      * @throws ConfigurationException in case of an exception
      */
-    public abstract File findFile(String name, String type)
-                           throws ConfigurationException;
+    File findFile(String name, String type) throws ConfigurationException;
 }

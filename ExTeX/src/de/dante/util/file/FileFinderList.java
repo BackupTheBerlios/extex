@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,52 +25,81 @@ import java.util.List;
 
 import de.dante.util.configuration.ConfigurationException;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileFinderList implements FileFinder {
 
+    /**
+     * The field <tt>list</tt> ...
+     */
     private List list = new ArrayList();
-    
+
     /**
      * Creates a new object.
-     * 
-     * 
+     * Initially the list is empty.
      */
     public FileFinderList() {
         super();
     }
-    
-    public FileFinderList(FileFinder finder) {
+
+    /**
+     * Creates a new object.
+     * Initially the list contans the one file finder given as argument.
+     *
+     * @param finder ...
+     */
+    public FileFinderList(final FileFinder finder) {
         super();
         add(finder);
     }
-    
-    public FileFinderList(FileFinder finder1, FileFinder finder2) {
+
+    /**
+     * Creates a new object.
+     * Initially the list contans the two file finders given as argument.
+     *
+     * @param finder1 ...
+     * @param finder2 ...
+     */
+    public FileFinderList(final FileFinder finder1, final FileFinder finder2) {
         super();
         add(finder1);
         add(finder2);
     }
-    
-    public FileFinderList(FileFinder finder1, FileFinder finder2, FileFinder finder3) {
+
+    /**
+     * Creates a new object.
+     * Initially the list contans the three file finders given as argument.
+     *
+     * @param finder1 ...
+     * @param finder2 ...
+     * @param finder3 ...
+     */
+    public FileFinderList(final FileFinder finder1, final FileFinder finder2,
+            final FileFinder finder3) {
         super();
         add(finder1);
         add(finder2);
         add(finder3);
     }
-    
-    public void add(FileFinder finder) {
+
+    /**
+     * ...
+     *
+     * @param finder ...
+     */
+    public void add(final FileFinder finder) {
         list.add(finder);
     }
-    
+
     /**
      * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
      *      java.lang.String)
      */
-    public File findFile(String name, String type)
+    public File findFile(final String name, final String type)
             throws ConfigurationException {
 
         Iterator iter = list.iterator();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,32 +16,31 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.typesetter.impl;
+package de.dante.util.file;
 
-import de.dante.extex.typesetter.ListMaker;
-import de.dante.extex.typesetter.Mode;
+import java.io.FileNotFoundException;
+import java.io.OutputStreamWriter;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class InnerVerticalListMaker extends VerticalListMaker
-    implements ListMaker {
-    /**
-     * Creates a new object.
-     *
-     * @param manager the manager to ask for global changes
-     */
-    public InnerVerticalListMaker(final Manager manager) {
-        super(manager);
-    }
+public interface OutFileFactory {
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
+     * ...
+     *
+     * @param name ...
+     * @param type ...
+     *
+     * @return ...
+     *
+     * @throws FileNotFoundException in case that the outpout file coud not be
+     *             opened
      */
-    public Mode getMode() {
-        return Mode.INNER_VERTICAL;
-    }
+    OutputStreamWriter newInstance(String name, String type)
+        throws FileNotFoundException;
+
 }

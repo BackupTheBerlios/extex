@@ -24,45 +24,63 @@ import de.dante.util.StringListIterator;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileFinderConfigImpl implements FileFinder {
 
+    /**
+     * The field <tt>EXTENSION_TAG</tt> ...
+     */
+    private static final String EXTENSION_TAG = "extension";
+
+    /**
+     * The field <tt>PATH_TAG</tt> ...
+     */
+    private static final String PATH_TAG = "path";
+
+    /**
+     * The field <tt>config</tt> ...
+     */
     private Configuration config;
-    
+
     /**
      * Creates a new object.
-     * 
-     * 
+     *
+     * @param configuration ...
      */
-    public FileFinderConfigImpl(Configuration config) {
+    public FileFinderConfigImpl(final Configuration configuration) {
         super();
-        this.config = config;
+        this.config = configuration;
     }
-    
+
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
+     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     *      java.lang.String)
      */
-    public File findFile(String name, String type) throws ConfigurationException {
+    public File findFile(final String name, final String type)
+            throws ConfigurationException {
         File file;
-        
+
         Configuration cfg = config.getConfiguration(type);
-        StringListIterator pathIt = cfg.getValues("path").getIterator();
+        StringListIterator pathIt = cfg.getValues(PATH_TAG).getIterator();
         while (pathIt.hasNext()) {
             String path = pathIt.next();
-            StringListIterator extIt = cfg.getValues("extension").getIterator();
+            StringListIterator extIt = cfg.getValues(EXTENSION_TAG)
+                    .getIterator();
             while (extIt.hasNext()) {
                 String ext = extIt.next();
-                file = new File(path,name+ext);
-                if (file.canRead()) return file;
+                file = new File(path, name + ext);
+                if (file.canRead()) {
+                    return file;
+                }
             }
         }
-        
+
         return null;
     }
-    
+
 }
