@@ -1,4 +1,4 @@
-/*
+5/*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
@@ -51,7 +51,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public interface Context
         extends
