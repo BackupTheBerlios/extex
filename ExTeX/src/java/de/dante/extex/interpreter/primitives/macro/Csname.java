@@ -32,11 +32,10 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.SpaceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
@@ -61,7 +60,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Csname extends AbstractCode
         implements
@@ -86,23 +85,15 @@ public class Csname extends AbstractCode
     public Token convertCs(final Context context, final TokenSource source)
             throws InterpreterException {
 
-        Token cs;
-        try {
-            cs = source.getControlSequence(context);
+        Tokens toks = scanToEndCsname(context, source, null);
 
-            if ((cs instanceof ControlSequenceToken)
-                    && ((ControlSequenceToken) cs).getName().equals("csname")) {
-                Tokens toks = scanToEndCsname(context, source);
-                cs = context.getTokenFactory().createToken(Catcode.ESCAPE,
-                        cs.getChar(), toks.toString(), context.getNamespace());
-            }
+        try {
+            return context.getTokenFactory().createToken(Catcode.ESCAPE,
+                    new UnicodeChar(context.escapechar()), toks.toString(),
+                    context.getNamespace());
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
-
-        return cs;
     }
 
     /**
@@ -116,8 +107,15 @@ public class Csname extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Token t = convertCs(context, source);
-        source.push(t);
+        Tokens toks = scanToEndCsname(context, source, null);
+
+        try {
+            source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
+                    new UnicodeChar(context.escapechar()), toks.toString(),
+                    context.getNamespace()));
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -131,9 +129,16 @@ public class Csname extends AbstractCode
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Token t = convertCs(context, source);
-        source.push(t);
-        //gene: this night not be correct
+        Tokens toks = scanToEndCsname(context, source, null);
+
+        try {
+            source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
+                    new UnicodeChar(context.escapechar()), toks.toString(),
+                    context.getNamespace()));
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
+        //TODO gene: this might not be correct
     }
 
     /**
@@ -143,13 +148,15 @@ public class Csname extends AbstractCode
      *
      * @param context the interpreter context
      * @param source the source fot new tokens
+     * @param typesetter the typesetter
      *
      * @return the Tokens found while scanning the input tokens
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private Tokens scanToEndCsname(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source, Typesetter typesetter)
+            throws InterpreterException {
 
         Tokens toks = new Tokens();
         for (Token t = source.getToken(context); t != null; t = source
@@ -163,10 +170,9 @@ public class Csname extends AbstractCode
                 } else if (code instanceof Endcsname) {
                     return toks;
                 } else if (code instanceof ExpandableCode) {
-                    //((ExpandableCode) code).expand(Flags.NONE, getContext(),
-                    //                               this, getTypesetter());
-                    //TODO gene: handle expansion
-                    throw new RuntimeException("unimplemented");
+                    ((ExpandableCode) code).expand(Flags.NONE, context, source,
+                            typesetter);
+                    //TODO gene: handle expansion???
                 }
 
             } else if (!(t instanceof SpaceToken)) {
