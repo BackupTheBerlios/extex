@@ -52,7 +52,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -402,7 +402,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setDelcode(final UnicodeChar c, final Count code, final boolean global) {
 
@@ -545,7 +546,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(de.dante.util.UnicodeChar, Count, boolean)
+     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setMathcode(final UnicodeChar c, final Count code, final boolean global) {
 
@@ -744,7 +746,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setSfcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     * @see de.dante.extex.interpreter.context.impl.Group#setSfcode(de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setSfcode(final UnicodeChar c, final Count code, final boolean global) {
 

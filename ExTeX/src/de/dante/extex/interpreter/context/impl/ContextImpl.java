@@ -100,7 +100,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -342,7 +342,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCode(de.dante.extex.scanner.Token, de.dante.extex.interpreter.Code, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setCode(de.dante.extex.scanner.Token,
+     *      de.dante.extex.interpreter.Code, boolean)
      */
     public void setCode(final Token t, final Code code, final boolean global)
             throws GeneralException {
@@ -398,7 +399,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setDelcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setDelcode(de.dante.util.UnicodeChar,
+     *     de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setDelcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -610,7 +612,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMathcode(de.dante.util.UnicodeChar, Count, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setMathcode(de.dante.util.UnicodeChar,
+     *      Count, boolean)
      */
     public void setMathcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -636,7 +639,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMuskip(java.lang.String, de.dante.extex.interpreter.type.Muskip, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setMuskip(java.lang.String,
+     *      de.dante.extex.interpreter.type.Muskip, boolean)
      */
     public void setMuskip(final String name, final Muskip value,
             final boolean global) {
@@ -653,7 +657,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setSfcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setSfcode(de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setSfcode(final UnicodeChar c, final Count code,
             final boolean global) {

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.interpreter.type.Font;
@@ -29,19 +30,15 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TypesettingContextFactory {
+
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the
      * attribute used to extract the class name fron the given configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The field <tt>config</tt> contains the configuration for this factory.
-     */
-    private Configuration config = null;
 
     /**
      * The field <tt>theClass</tt> contains the class to instantiate. It is
@@ -65,13 +62,13 @@ public class TypesettingContextFactory {
      */
     public TypesettingContextFactory(final Configuration configuration)
             throws ConfigurationException {
-        super();
-        this.config = configuration;
 
-        String classname = config.getAttribute(CLASS_ATTRIBUTE);
+        super();
+
+        String classname = configuration.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
             throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    config);
+                    configuration);
         }
 
         try {
@@ -79,7 +76,8 @@ public class TypesettingContextFactory {
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname, config);
+            throw new ConfigurationClassNotFoundException(classname,
+                    configuration);
         }
     }
 
@@ -110,14 +108,16 @@ public class TypesettingContextFactory {
     /**
      * Factory method to acquire an instance of the TypesettingContext.
      *
+     * @param context the typesetting context to clone
+     * @param font the new value for the font
+     *
      * @return an appropriate instance of the TypesettingContext.
      *
      * @throws ConfigurationInstantiationException in case that the
      *             instantiation of the class failed.
      */
     public TypesettingContext newInstance(final TypesettingContext context,
-            final Font font)
-            throws ConfigurationInstantiationException {
+            final Font font) throws ConfigurationInstantiationException {
 
         TypesettingContext c;
 
@@ -128,7 +128,7 @@ public class TypesettingContextFactory {
         } catch (IllegalAccessException e) {
             throw new ConfigurationInstantiationException(e);
         }
-        
+
         c.set(context);
         c.setFont(font);
 
@@ -138,14 +138,16 @@ public class TypesettingContextFactory {
     /**
      * Factory method to acquire an instance of the TypesettingContext.
      *
+     * @param context the typesetting context to clone
+     * @param color the new value for the color
+     *
      * @return an appropriate instance of the TypesettingContext.
      *
      * @throws ConfigurationInstantiationException in case that the
      *             instantiation of the class failed.
      */
     public TypesettingContext newInstance(final TypesettingContext context,
-            final Color color)
-            throws ConfigurationInstantiationException {
+            final Color color) throws ConfigurationInstantiationException {
 
         TypesettingContext c;
 
@@ -156,7 +158,7 @@ public class TypesettingContextFactory {
         } catch (IllegalAccessException e) {
             throw new ConfigurationInstantiationException(e);
         }
-        
+
         c.set(context);
         c.setColor(color);
 
@@ -165,6 +167,9 @@ public class TypesettingContextFactory {
 
     /**
      * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @param context the typesetting context to clone
+     * @param direction the new value for the direction
      *
      * @return an appropriate instance of the TypesettingContext.
      *
@@ -184,7 +189,7 @@ public class TypesettingContextFactory {
         } catch (IllegalAccessException e) {
             throw new ConfigurationInstantiationException(e);
         }
-        
+
         c.set(context);
         c.setDirection(direction);
 
@@ -194,14 +199,16 @@ public class TypesettingContextFactory {
     /**
      * Factory method to acquire an instance of the TypesettingContext.
      *
+     * @param context the typesetting context to clone
+     * @param angle the new value for the angle
+     *
      * @return an appropriate instance of the TypesettingContext.
      *
      * @throws ConfigurationInstantiationException in case that the
      *             instantiation of the class failed.
      */
     public TypesettingContext newInstance(final TypesettingContext context,
-            final int angle)
-            throws ConfigurationInstantiationException {
+            final int angle) throws ConfigurationInstantiationException {
 
         TypesettingContext c;
 
@@ -212,7 +219,7 @@ public class TypesettingContextFactory {
         } catch (IllegalAccessException e) {
             throw new ConfigurationInstantiationException(e);
         }
-        
+
         c.set(context);
         c.setAngle(angle);
 
