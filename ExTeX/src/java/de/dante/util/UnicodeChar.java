@@ -29,7 +29,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class UnicodeChar {
 
@@ -286,18 +286,6 @@ public class UnicodeChar {
     public boolean isDigit() {
 
         return UCharacter.isDigit(code);
-    }
-
-    /**
-     * Test, of the code is a letter or digit.
-     *
-     * @return <code>true</code>, if the code is a letter or digit,
-     *            otherwise <code>false</code>
-     * @deprecated
-     */
-    public boolean isLetterOrDigit() {
-
-        return UCharacter.isLetterOrDigit(code);
     }
 
     /**
