@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Code {
 
@@ -86,6 +86,7 @@ public interface Code {
      *
      * @throws GeneralException in case of an error
      */
+    //TODO gene: return value is not used and can be eliminated
     boolean execute(Flags prefix, Context context,
             TokenSource source, Typesetter typesetter) throws GeneralException;
 
