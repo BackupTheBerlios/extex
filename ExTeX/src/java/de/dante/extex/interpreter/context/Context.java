@@ -52,7 +52,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public interface Context
         extends
@@ -87,6 +87,14 @@ public interface Context
      * @return the control sequence including the escape character
      */
     String esc(Token token);
+
+    /**
+     * Return the current escape character or <code>\<code> if it is undefined.
+     * This is a convenience method.
+     *
+     * @return the escape character
+     */
+    char escapechar();
 
     /**
      * Expand some tokens.

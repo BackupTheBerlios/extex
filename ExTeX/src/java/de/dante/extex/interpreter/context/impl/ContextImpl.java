@@ -115,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class ContextImpl
         implements
@@ -380,17 +380,26 @@ public class ContextImpl
      */
     public String esc(final String name) {
 
-        char esc = (char) (getCount("escapechar").getValue());
-        return Character.toString(esc) + name;
+        return escapechar() + name;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#esc(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.Context#esc(
+     *      de.dante.extex.scanner.Token)
      */
     public String esc(final Token token) {
 
-        char esc = (char) (getCount("escapechar").getValue());
-        return token.toText(esc);
+        return token.toText(escapechar());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#escapechar()
+     */
+    public char escapechar() {
+
+        long esc = getCount("escapechar").getValue();
+
+        return (esc >= 0 ? (char) esc : '\\');
     }
 
     /**
@@ -573,7 +582,8 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
      */
-    public HyphenationTable getHyphenationTable(final int language) throws InterpreterException {
+    public HyphenationTable getHyphenationTable(final int language)
+            throws InterpreterException {
 
         return hyphenationManager.getHyphenationTable(Integer
                 .toString(language));
