@@ -26,7 +26,9 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.node.PenaltyNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -47,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Lastpenalty extends AbstractCode
         implements
@@ -72,10 +74,10 @@ public class Lastpenalty extends AbstractCode
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        throw new RuntimeException("unimplemented");
-        //        String key = getName();
-        //        Count c = context.getCount(key);
-        //        return (c != null ? c.getValue() : 0);
+        Node node = typesetter.getLastNode();
+        return (node instanceof PenaltyNode
+                ? ((PenaltyNode) node).getPenalty()
+                : 0);
     }
 
     /**
@@ -102,9 +104,10 @@ public class Lastpenalty extends AbstractCode
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        throw new RuntimeException("unimplemented");
-        //        String key = getName();
-        //        return new Tokens(context, context.getCount(key).toString());
+        Node node = typesetter.getLastNode();
+        long pen = (node instanceof PenaltyNode ? ((PenaltyNode) node)
+                .getPenalty() : 0);
+        return new Tokens(context, Long.toString(pen));
     }
 
 }
