@@ -83,7 +83,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class Max extends Moritz
         implements
@@ -717,7 +717,7 @@ public class Max extends Moritz
     public Object visitLetter(final LetterToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.treatLetter(context, context.getTypesettingContext(), token
+        typesetter.letter(context, context.getTypesettingContext(), token
                 .getChar());
         return null;
     }
@@ -792,7 +792,7 @@ public class Max extends Moritz
     public Object visitOther(final OtherToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.treatLetter(context, //
+        typesetter.letter(context, //
                 context.getTypesettingContext(), //
                 token.getChar());
         return null;
