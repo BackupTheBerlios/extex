@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,7 +19,6 @@
 package de.dante.extex.documentWriter;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
@@ -30,9 +29,9 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public interface DocumentWriter {
+public interface DocumentWriter extends SingleDocumentStream {
 
     /**
      * Getter for the extension associated with this kind of output. For
@@ -42,13 +41,6 @@ public interface DocumentWriter {
      * @return the appropriate extension for file names
      */
     String getExtension();
-
-    /**
-     * Setter for the output stream.
-     *
-     * @param writer the output stream
-     */
-    void setOutputStream(OutputStream writer);
 
     /**
      * Getter for the number of pages already produced.
