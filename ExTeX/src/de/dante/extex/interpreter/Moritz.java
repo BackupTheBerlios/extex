@@ -50,14 +50,14 @@ import de.dante.util.configuration.Configuration;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Moritz implements TokenSource, Observable {
 
 	/** ... */
-	private static final long MAX_CHAR_CODE = Integer.MAX_VALUE; 
-	//TODO: find a good value 
-	
+	private static final long MAX_CHAR_CODE = Integer.MAX_VALUE;
+	//TODO: find a good value
+
 	/**
 	 * The interpreter context. well, the two of them are more closely linked
 	 * than I like it.
@@ -442,7 +442,7 @@ public class Moritz implements TokenSource, Observable {
 	public Token scanNextToken() throws GeneralException {
 		Token t = getNextToken();
 
-		//TODO: incomplete
+		//TODO: incomplete: expand fehlt!
 		if (t == null) {
 		} else if (t instanceof ControlSequenceToken) {
 		} else if (t instanceof ActiveCharacterToken) {
@@ -573,5 +573,47 @@ public class Moritz implements TokenSource, Observable {
 		}
 
 		return true;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.TokenSource#scanNextTokens()
+	 */
+	public Tokens scanNextTokens() throws GeneralException {
+
+		Tokens toks = new Tokens();
+		if (!scanLeftBrace()) {
+			throw new GeneralException("missing leftbrace"); // MGN
+			// TODO auf configfile umstellen
+		}
+
+		Token tok;
+		for (int balance = 1;;) {
+			tok = scanNextToken();
+			if (tok != null) {
+				if (tok.getCatcode() == Catcode.LEFTBRACE) {
+					++balance;
+				} else if (tok.getCatcode() == Catcode.RIGTHBRACE && --balance == 0) {
+					break;
+				}
+				toks.add(tok);
+			}
+		}
+		return toks;
+	}
+
+	/**
+	 * Scan for a <code>LeftBraceToken</code> and skip all <code>SpaceToken</code>.
+	 * 
+	 * @return <code>true</code>, if the <code>LeftBraceToken</code> is
+	 *            found, otherwise <code>false</code>
+	 */
+	protected boolean scanLeftBrace() throws GeneralException {
+
+		Token tok = scanNextNonSpace();
+		if (tok.getCatcode() == Catcode.LEFTBRACE) {
+			return true;
+		}
+		push(tok);
+		return false;
 	}
 }

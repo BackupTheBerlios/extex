@@ -18,6 +18,12 @@
  */
 package de.dante.extex.scanner.stream.impl;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.main.MainIOException;
 import de.dante.extex.scanner.Catcode;
@@ -27,13 +33,6 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
-
-import java.io.IOException;
-
-import java.nio.ByteBuffer;
-import java.nio.CharBuffer;
-import java.nio.charset.CharacterCodingException;
-import java.nio.charset.Charset;
 
 /**
  * This class contains an implementation of a token stream which is fed from a
@@ -45,7 +44,7 @@ import java.nio.charset.Charset;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements TokenStream, CatcodeVisitor {
 
@@ -141,7 +140,8 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements TokenS
 
 			t = (Token) tokenizer.getCatcode(buffer.get(pointer)).visit(this, factory, tokenizer);
 			if (t != null) {
-				System.err.println("tok : " + t); // MGN wieder raus!!!
+				System.err.println("tok : " + t); // MGN wieder
+				// raus!!!
 			}
 		} while (t == null);
 

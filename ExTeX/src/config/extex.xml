@@ -203,7 +203,7 @@
     <Define name="maxdepth" class=""/>
     <Define name="meaning" class=""/>
     <Define name="medmuskip" class=""/>
-    <Define name="message" class=""/>
+    <define name="message" class="de.dante.extex.interpreter.primitives.show.Message"/>
     <Define name="mkern" class=""/>
     <define name="month" class="de.dante.extex.interpreter.primitives.register.NamedCount">1</define>
     <Define name="moveleft" class=""/>

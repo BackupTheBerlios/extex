@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003 Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,26 +16,23 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.show;
 
-import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeException;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\catcode</code>.
+ * This class provides an implementation for the primitive <code>\message</code>.
  * 
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public class NumberedCatcode extends AbstractCode {
+public class Message extends AbstractCode {
 
 	/**
 	 * Creates a new object.
@@ -43,27 +40,24 @@ public class NumberedCatcode extends AbstractCode {
 	 * @param name
 	 *                 the name for debugging
 	 */
-	public NumberedCatcode(String name) {
+	public Message(String name) {
 		super(name);
 	}
 
 	/**
+	 * Show the content from <code>{</code> to <code>}</code> in the
+	 * LOG-file.
+	 * 
 	 * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags,
 	 *         de.dante.extex.interpreter.context.Context,
 	 *         de.dante.extex.interpreter.TokenSource,
 	 *         de.dante.extex.typesetter.Typesetter)
 	 */
 	public void expand(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		long charCode = source.scanCharacterCode();
-		source.scanOptionalEquals();
-		long ccNumber = source.scanNumber();
-
-		try {
-			context.setCatcode((char) charCode, Catcode.toCatcode((int) ccNumber), prefix.isGlobal());
-		} catch (CatcodeException e) {
-			throw new GeneralHelpingException("TTP.CodeOutOfRange", Long.toString(ccNumber), "15");
-		}
-
+		
+		Tokens toks = source.scanNextTokens();
+		System.err.println("MESSAGE " + toks); 
+		// TODO Ausgabe in LOG fehlt  noch und expand
 		prefix.clear();
 	}
 }

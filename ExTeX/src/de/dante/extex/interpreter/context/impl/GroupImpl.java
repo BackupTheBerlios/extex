@@ -42,7 +42,7 @@ import de.dante.extex.scanner.Token;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
@@ -167,18 +167,21 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 * @see de.dante.extex.interpreter.context.Group#setCatcode(char,de.dante.extex.scanner.Catcode)
 	 */
 	public void setCatcode(char c, Catcode code) {
-		catcodeMap.put(new Character(c), code);
+		catcodeMap.put(new Character(c), code); // TODO auf
+																 // UnicodeChar
+																 // umstellen
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Group#setCatcode(java.lang.String,
 	 *         de.dante.extex.scanner.Catcode, boolean)
 	 */
-	public void setCatcode(String name, Catcode value, boolean global) {
-		catcodeMap.put(name, value);
+	public void setCatcode(char c, Catcode value, boolean global) {
+
+		setCatcode(c, value);
 
 		if (global && next != null) {
-			next.setCatcode(name, value, global);
+			next.setCatcode(c, value, global);
 		}
 	}
 
@@ -187,7 +190,11 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 *         UnicodeChar umstellen
 	 */
 	public Catcode getCatcode(char c) {
-		Catcode value = (Catcode) catcodeMap.get(new Character(c));
+
+		Catcode value = (Catcode) catcodeMap.get(new Character(c)); // TODO
+																							  // auf
+																							  // UnicodeChar
+																							  // umstellen
 
 		if (value != null) {
 			return value;
@@ -364,7 +371,7 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 *         de.dante.extex.interpreter.Code, boolean)
 	 */
 	public void setMacro(String name, Code value, boolean global) {
-		catcodeMap.put(name, value);
+		macroMap.put(name, value);
 
 		if (global && next != null) {
 			next.setMacro(name, value, global);

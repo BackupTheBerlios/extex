@@ -25,10 +25,10 @@ import de.dante.extex.scanner.Catcode;
  * the catcodes.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Tokenizer {
     
-    public abstract Catcode getCatcode(char c);
+    public abstract Catcode getCatcode(char c); // TODO auf UnicodeChar umstellen
 
 }
