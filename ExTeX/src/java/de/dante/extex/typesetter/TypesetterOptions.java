@@ -24,14 +24,16 @@ import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.util.UnicodeChar;
 
 /**
  * This interface describes the possibilities of the typesetter to access its
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface TypesetterOptions {
 
@@ -72,6 +74,16 @@ public interface TypesetterOptions {
     FixedGlue getGlueOption(String name);
 
     /**
+     * Getter for the lccode mapping of upper case characters to their
+     * lower case equivalent.
+     *
+     * @param uc the upper case character
+     *
+     * @return the lower case equivalent or null if none exists
+     */
+    UnicodeChar getLccode(UnicodeChar uc);
+
+    /**
      * Getter for the current name space.
      *
      * @return the current namespace
@@ -85,6 +97,14 @@ public interface TypesetterOptions {
      *   is present
      */
     ParagraphShape getParshape();
+
+    /**
+     * Getter for the token factory. The token factory can be used to get new
+     * tokens of some kind.
+     *
+     * @return the token factory
+     */
+    TokenFactory getTokenFactory();
 
     /**
      * Getter for the typesetting context.
