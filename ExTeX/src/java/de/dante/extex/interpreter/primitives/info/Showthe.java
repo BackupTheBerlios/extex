@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.i18n.CantUseAfterHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -30,6 +32,7 @@ import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive
@@ -44,9 +47,14 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
-public class Showthe extends The {
+public class Showthe extends The implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -56,6 +64,15 @@ public class Showthe extends The {
     public Showthe(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -80,7 +97,7 @@ public class Showthe extends The {
 
             if (code != null && code instanceof Theable) {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
-                source.update("message", toks.toText());
+                logger.info(toks.toText());
                 return true;
             }
         }

@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -32,6 +34,7 @@ import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\show</code>.
@@ -57,9 +60,14 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class Show extends AbstractCode {
+public class Show extends AbstractCode implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -69,6 +77,15 @@ public class Show extends AbstractCode {
     public Show(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -86,7 +103,7 @@ public class Show extends AbstractCode {
         if (t == null) {
             throw new EofHelpingException(printableControlSequence(context));
         }
-        source.update("message", "\n> " + meaning(t, context).toText() + ".\n");
+        logger.info("\n> " + meaning(t, context).toText() + ".\n");
         return true;
     }
 

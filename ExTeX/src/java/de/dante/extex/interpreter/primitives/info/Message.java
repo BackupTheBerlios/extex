@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Flags;
@@ -43,7 +42,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Message extends AbstractCode implements LogEnabled {
 

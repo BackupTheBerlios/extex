@@ -24,6 +24,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Calendar;
+import java.util.logging.Logger;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
@@ -35,6 +36,7 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\dump</code>.
@@ -70,15 +72,20 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
-public class Dump extends AbstractCode {
+public class Dump extends AbstractCode implements LogEnabled {
 
     /**
      * The constant <tt>FORMAT_EXTENSION</tt> contains the extension for the
      * format file.
      */
     private static final String FORMAT_EXTENSION = ".fmt";
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -88,6 +95,15 @@ public class Dump extends AbstractCode {
     public Dump(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -140,8 +156,7 @@ public class Dump extends AbstractCode {
         try {
             String filename = jobname + FORMAT_EXTENSION;
             stream = new FileOutputStream(filename);
-            source.update("message", getLocalizer().format("TTP.Dumping",
-                    filename));
+            logger.info(getLocalizer().format("TTP.Dumping", filename));
             new SerialLoader().save(stream, jobname, context);
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);

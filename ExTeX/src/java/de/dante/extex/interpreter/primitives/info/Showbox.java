@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -26,6 +28,7 @@ import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\showbox</code>.
@@ -51,9 +54,14 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class Showbox extends AbstractBox {
+public class Showbox extends AbstractBox implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -63,6 +71,15 @@ public class Showbox extends AbstractBox {
     public Showbox(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -80,12 +97,12 @@ public class Showbox extends AbstractBox {
         Box b = context.getBox(key);
 
         if (b == null) {
-            source.update("message", "\\" + key + "=void");
+            logger.info(context.esc(key) + "=void");
         } else {
             //TODO execute() unimplemented
             throw new RuntimeException("unimplemented");
         }
-        source.update("message", getLocalizer().format("TTP.Show.OK"));
+        logger.info(getLocalizer().format("TTP.Show.OK"));
         return true;
     }
 

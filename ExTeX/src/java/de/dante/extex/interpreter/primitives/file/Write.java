@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -30,6 +31,7 @@ import de.dante.extex.interpreter.type.node.WhatsItWriteNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive <code>\write</code>.
@@ -47,9 +49,14 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class Write extends AbstractCode {
+public class Write extends AbstractCode implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the target channel for the message.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -59,6 +66,15 @@ public class Write extends AbstractCode {
     public Write(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -100,14 +116,14 @@ public class Write extends AbstractCode {
             throws GeneralException {
 
         if (key == null || key.equals("")) {
-            source.update("message", toks.toText());
+            logger.info(toks.toText());
             return;
         }
 
         OutFile file = context.getOutFile(key);
 
         if (file == null || !file.isOpen()) {
-            source.update("message", toks.toText());
+            logger.info(toks.toText());
         } else {
             try {
                 file.write(toks);
