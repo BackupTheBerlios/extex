@@ -30,7 +30,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractToken implements Token, Serializable {
 
@@ -39,11 +39,6 @@ public abstract class AbstractToken implements Token, Serializable {
      * the hash code.
      */
     private static final int HASH_FACTOR = 17;
-
-    /**
-     * The field <tt>localizer</tt> contains the localizer.
-     */
-    private Localizer localizer = null;
 
     /**
      * The field <tt>uniCode</tt> contains the Unicode character assigned to
@@ -143,11 +138,7 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     protected Localizer getLocalizer() {
 
-        if (this.localizer == null) {
-            this.localizer = LocalizerFactory.getLocalizer(Token.class
-                    .getName());
-        }
-        return this.localizer;
+        return LocalizerFactory.getLocalizer(Token.class.getName());
     }
 
     /**
