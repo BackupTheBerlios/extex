@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.Configurable;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class DumpDocumentWriter
         implements
@@ -66,17 +66,10 @@ public class DumpDocumentWriter
             Configurable {
 
     /**
-     * This class provides the internal node visitor to traverse the nodes.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.23 $
+     * The field <tt>nv</tt> contains the node visitor instance to use in the
+     * form of an anonymous inner class.
      */
-    private static class Visitor implements NodeVisitor {
-
-        /**
-         * The field <tt>out</tt> contains the output stream.
-         */
-        private OutputStream out;
+    private NodeVisitor nodeVisitor = new NodeVisitor() {
 
         /**
          * The field <tt>vmode</tt> contains the indicator that a vlist is
@@ -137,16 +130,6 @@ public class DumpDocumentWriter
         }
 
         /**
-         * Setter for the output stream.
-         *
-         * @param outStream the output stream
-         */
-        public void setOutputStream(final OutputStream outStream) {
-
-            out = outStream;
-        }
-
-        /**
          * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
          *      de.dante.extex.typesetter.type.node.AdjustNode,
          *      java.lang.Object)
@@ -154,7 +137,7 @@ public class DumpDocumentWriter
         public Object visitAdjust(final AdjustNode node, final Object oOut)
                 throws GeneralException {
 
-            // TODO gene: visitAdjust unimplemented
+            write("\n");
             return null;
         }
 
@@ -178,7 +161,10 @@ public class DumpDocumentWriter
         public Object visitAlignedLeaders(final AlignedLeadersNode node,
                 final Object oOut) throws GeneralException {
 
-            // TODO gene: visitAlignedLeaders unimplemented
+            write(" ");
+            node.visit(this, oOut);
+            node.visit(this, oOut);
+            write("  ");
             return null;
         }
 
@@ -202,7 +188,10 @@ public class DumpDocumentWriter
         public Object visitCenteredLeaders(final CenteredLeadersNode node,
                 final Object oOut) throws GeneralException {
 
-            // TODO gene: visitCenteredLeaders unimplemented
+            write("  ");
+            node.visit(this, oOut);
+            node.visit(this, oOut);
+            write("  ");
             return null;
         }
 
@@ -238,7 +227,10 @@ public class DumpDocumentWriter
         public Object visitExpandedLeaders(final ExpandedLeadersNode node,
                 final Object oOut) throws GeneralException {
 
-            // TODO gene: visitExpandedLeaders unimplemented
+            write("  ");
+            node.visit(this, oOut);
+            node.visit(this, oOut);
+            write(" ");
             return null;
         }
 
@@ -389,12 +381,7 @@ public class DumpDocumentWriter
 
             return null;
         }
-    }
-
-    /**
-     * The field <tt>nv</tt> contains the node visitor instance to use.
-     */
-    private Visitor nodeVisitor = new Visitor();
+    };
 
     /**
      * The field <tt>out</tt> contains the outut stream to use.
@@ -467,7 +454,6 @@ public class DumpDocumentWriter
     public void setOutputStream(final OutputStream outStream) {
 
         out = outStream;
-        nodeVisitor.setOutputStream(out);
     }
 
     /**
@@ -494,7 +480,10 @@ public class DumpDocumentWriter
                 nodes.visit(nodeVisitor, out);
                 out.write('\n');
             } catch (GeneralException e) {
-                throw new IOException(e.getLocalizedMessage());
+                Throwable ex = e.getCause();
+                throw (ex instanceof IOException //
+                        ? (IOException) ex //
+                        : new IOException(e.getLocalizedMessage()));
             }
         }
         shippedPages++;
