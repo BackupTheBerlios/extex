@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -62,9 +62,9 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
         String name = source.scanRegisterName();
 
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
-            return context.getNamespace() + "box" + name;
+            return context.getNamespace() + "#box#" + name;
         } else {
-            return "box" + name;
+            return "box#" + name;
         }
     }
 
