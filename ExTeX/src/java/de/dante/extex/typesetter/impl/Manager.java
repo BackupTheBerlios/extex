@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Manager {
 
@@ -56,7 +56,7 @@ public interface Manager {
      *
      * @throws GeneralException in case of an error
      */
-    void closeTopList() throws GeneralException;
+    void endParagraph() throws GeneralException;
 
     /**
      * Getter for the char node factory.

@@ -19,11 +19,11 @@
 
 package de.dante.extex.typesetter.impl;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
@@ -52,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
@@ -178,9 +178,9 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#closeTopList()
+     * @see de.dante.extex.typesetter.impl.Manager#endParagraph()
      */
-    public void closeTopList() throws GeneralException {
+    public void endParagraph() throws GeneralException {
 
         NodeList list = listMaker.close();
         pop();
@@ -201,6 +201,15 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void enableLogging(final Logger theLogger) {
 
         this.logger = theLogger;
+        if (pageBuilder instanceof LogEnabled) {
+            ((LogEnabled) pageBuilder).enableLogging(theLogger);
+        }
+        if (paragraphBuilder instanceof LogEnabled) {
+            ((LogEnabled) paragraphBuilder).enableLogging(theLogger);
+        }
+        if (ligatureBuilder instanceof LogEnabled) {
+            ((LogEnabled) ligatureBuilder).enableLogging(theLogger);
+        }
     }
 
     /**
@@ -209,9 +218,10 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void finish() throws GeneralException {
 
         par();
-        pageBuilder.shipout(listMaker.close());
-        //TODO test that nothing is left behind
-        pageBuilder.flush();
+        pageBuilder.flush(listMaker.close());
+        if (saveStack != null) {
+            //TODO test that nothing is left behind
+        }
         pageBuilder.close();
     }
 
@@ -301,8 +311,8 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void pop() throws GeneralException {
 
         if (saveStack.isEmpty()) {
-            //TODO i18n
-            throw new PanicException("TTP.Confusion", "stack is empty");
+            throw new PanicException("TTP.Confusion", //
+                    Messages.format("Typesetter.EmptyStack"));
         }
 
         this.listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
@@ -346,6 +356,9 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
 
         this.ligatureBuilder = ligatureBuilder;
+        if (ligatureBuilder instanceof LogEnabled) {
+            ((LogEnabled) ligatureBuilder).enableLogging(logger);
+        }
     }
 
     /**
@@ -369,6 +382,9 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
         this.pageBuilder = pageBuilder;
         pageBuilder.setDocumentWriter(documentWriter);
+        if (pageBuilder instanceof LogEnabled) {
+            ((LogEnabled) pageBuilder).enableLogging(logger);
+        }
     }
 
     /**
@@ -379,6 +395,9 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void setParagraphBuilder(final ParagraphBuilder paragraphBuilder) {
 
         this.paragraphBuilder = paragraphBuilder;
+        if (paragraphBuilder instanceof LogEnabled) {
+            ((LogEnabled) paragraphBuilder).enableLogging(logger);
+        }
     }
 
     /**
@@ -412,7 +431,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
      */
     public void shipout(final NodeList nodes) throws GeneralException {
 
-        pageBuilder.shipout(nodes);
+        pageBuilder.inspectAndBuild(nodes);
     }
 
     /**

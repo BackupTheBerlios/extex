@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -199,7 +199,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
      */
     public void par() throws GeneralException {
 
-        getManager().closeTopList();
+        getManager().endParagraph();
     }
 
     /**

@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -183,7 +183,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      */
     public void par() throws GeneralException {
 
-        getManager().closeTopList();
+        getManager().endParagraph();
         throw new HelpingException("TTP.MissingDollar");
     }
 
@@ -209,6 +209,6 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      */
     public void toggleMath() throws GeneralException {
 
-        getManager().closeTopList();
+        getManager().endParagraph();
     }
 }
