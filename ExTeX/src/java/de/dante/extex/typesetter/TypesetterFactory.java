@@ -20,6 +20,10 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
+import de.dante.extex.typesetter.pageBuilder.PageBuilder;
+import de.dante.extex.typesetter.paragraphBuilder.Hyphenator;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
@@ -28,13 +32,22 @@ import de.dante.util.framework.AbstractFactory;
  * This is the factory for instances of
  * {@link de.dante.extex.typesetter.Typesetter Typesetter}.
  *
+ * @TODO documenation incomplete
+ *
  * <pre>
- *  &lt;Typesetter class="the.package.TheClass"&gt;
+ *  &lt;Typesetter default="someType"&gt;
+ *    &lt;someType class="the.package.TheClass"&gt;
+ *      &lt;LigatureBuilder class="some.package.SomeClass"/&gt;
+ *      &lt;PageBuilder class="someOther.package.SomeOtherClass"/&gt;
+ *      &lt;ParagraphBuilder class="another.package.AnotherClass"&gt;
+ *        &lt;Hyphenator class="an.other.package.AnOtherClass"/&gt;
+ *      &lt;/ParagraphBuilder&gt;
+ *    &lt;/someType&gt;
  *  &lt;/Typesetter&gt;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -43,7 +56,7 @@ public class TypesetterFactory extends AbstractFactory {
      *
      * @param configuration the configuration for this factory
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration
      */
     public TypesetterFactory(final Configuration configuration)
             throws ConfigurationException {
@@ -53,9 +66,75 @@ public class TypesetterFactory extends AbstractFactory {
     }
 
     /**
+     * Make a new ligature builder according to the specification in the
+     * configuration. The sub-configuration <code>LigatureBuilder</code> is used
+     * to determine the requested properties.
+     *
+     * @param config the configuration to use
+     *
+     * @return the new instance
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    private LigatureBuilder makeLigatureBuilder(final Configuration config)
+            throws ConfigurationException {
+
+        Configuration cfg = config.getConfiguration("LigatureBuilder");
+        return (LigatureBuilder) createInstanceForConfiguration(cfg,
+                LigatureBuilder.class);
+    }
+
+    /**
+     * Make a new page builder according to the specification in the
+     * configuration. The sub-configuration <code>PageBuilder</code> is used
+     * to determine the requested properties.
+     *
+     * @param config the conficguration to use
+     *
+     * @return a new instance
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    private PageBuilder makePageBuilder(final Configuration config)
+            throws ConfigurationException {
+
+        Configuration cfg = config.getConfiguration("PageBuilder");
+        return (PageBuilder) createInstanceForConfiguration(cfg,
+                PageBuilder.class);
+    }
+
+    /**
+     * Make a new paragraph builder according to the specification in the
+     * configuration. The sub-configuration <code>ParagraphBuilder</code> is used
+     * to determine the requested properties.
+     *
+     * @param config the configuration to use
+     *
+     * @return the new instance
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    private ParagraphBuilder makeParagraphBuilder(final Configuration config)
+            throws ConfigurationException {
+
+        Configuration cfg = config.getConfiguration("ParagraphBuilder");
+        ParagraphBuilder builder = (ParagraphBuilder) createInstanceForConfiguration(
+                cfg, ParagraphBuilder.class);
+        if (builder instanceof HyphenationEnabled) {
+            cfg = cfg.findConfiguration("Hyphenator");
+            if (cfg != null) {
+                Hyphenator hyphenator = (Hyphenator) createInstanceForConfiguration(
+                        cfg, Hyphenator.class);
+                ((HyphenationEnabled) builder).enableHyphenation(hyphenator);
+            }
+        }
+        return builder;
+    }
+
+    /**
      * Get an instance of a typesetter.
      *
-     * @param type ...
+     * @param type the symbolic name of the configuration to use
      * @param context the interpreter context
      *
      * @return a new typesetter
@@ -65,12 +144,18 @@ public class TypesetterFactory extends AbstractFactory {
     public Typesetter newInstance(final String type, final Context context)
             throws ConfigurationException {
 
+        Configuration cfg = selectConfiguration(type);
+
         Typesetter typesetter = (Typesetter) createInstance(type,
                 Typesetter.class);
+        ParagraphBuilder parBuilder = makeParagraphBuilder(cfg);
+        parBuilder.setOptions((TypesetterOptions) context);
+        typesetter.setParagraphBuilder(parBuilder);
+        typesetter.setLigatureBuilder(makeLigatureBuilder(cfg));
+        typesetter.setPageBuilder(makePageBuilder(cfg));
         typesetter.setOptions((TypesetterOptions) context);
 
         return typesetter;
-
     }
 
 }

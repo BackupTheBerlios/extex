@@ -21,6 +21,9 @@ package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
+import de.dante.extex.typesetter.pageBuilder.PageBuilder;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.GeneralException;
 
 /**
@@ -28,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -70,11 +73,32 @@ public interface Typesetter extends ListMaker {
     void setDocumentWriter(DocumentWriter doc);
 
     /**
+     * Setter for the ligature builder.
+     *
+     * @param ligatureBuilder the ligature builder to set.
+     */
+    void setLigatureBuilder(LigatureBuilder ligatureBuilder);
+
+    /**
+     * Setter for the page builder.
+     *
+     * @param pageBuilder the page builder to set.
+     */
+    void setPageBuilder(PageBuilder pageBuilder);
+
+    /**
      * Setter for the typesetter specific options.
      *
      * @param options the options to use
      */
     void setOptions(TypesetterOptions options);
+
+    /**
+     * Setter for the paragraph builder.
+     *
+     * @param paragraphBuilder the paragraph builder to set.
+     */
+    void setParagraphBuilder(ParagraphBuilder paragraphBuilder);
 
     /**
      * Send a list of nodes to the document writer.

@@ -185,7 +185,11 @@
     -  one of several typesetters programatically.
     -->
   <Typesetter default="TeX">
-	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"/> 
+    <TeX class="de.dante.extex.typesetter.impl.TypesetterImpl">
+      <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
+      <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
+    </TeX>
   </Typesetter>
 
   <!-- 

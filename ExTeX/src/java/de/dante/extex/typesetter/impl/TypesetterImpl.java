@@ -39,9 +39,8 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
-import de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl;
+import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
-import de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -53,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
@@ -70,7 +69,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     private DocumentWriter documentWriter;
 
     /**
-     * The field <tt>ligatureBuilder</tt> contains the ...
+     * The field <tt>ligatureBuilder</tt> contains the ligature builder to use.
      */
     private LigatureBuilder ligatureBuilder;
 
@@ -82,7 +81,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     private ListMaker listMaker;
 
     /**
-     * The field <tt>logger</tt> contains the ...
+     * The field <tt>logger</tt> contains the logger to use.
      */
     private Logger logger = null;
 
@@ -98,20 +97,25 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     private ParagraphBuilder paragraphBuilder = null;
 
     /**
+     * The field <tt>pageBuilder</tt> contains the current page builder.
+     */
+    private PageBuilder pageBuilder = null;
+
+    /**
      * The field <tt>saveStack</tt> contains the stack of list makers.
      */
     private ArrayList saveStack = new ArrayList();
 
     /**
-     * Creates a new object.
+     * Creates a new object and initializes it to receive material.
+     * To make it fully functionalit is required that the paragraph builder
+     * and the ligature builder are provided before they are used.
      */
     public TypesetterImpl() {
 
         super();
 
         listMaker = new VerticalListMaker(this);
-        ligatureBuilder = new LigatureBuilderImpl();    //TODO: IoC
-        paragraphBuilder = new ParagraphBuilderImpl();  //TODO: IoC
     }
 
     /**
@@ -336,13 +340,45 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     }
 
     /**
+     * Setter for ligatureBuilder.
+     *
+     * @param ligatureBuilder the ligatureBuilder to set.
+     */
+    public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
+
+        this.ligatureBuilder = ligatureBuilder;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#setOptions(
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
     public void setOptions(final TypesetterOptions theOptions) {
 
         this.options = theOptions;
-        paragraphBuilder.setOptions(theOptions); //TODO IoC
+    }
+
+    /**
+     * Setter for the page builder.
+     *
+     * @param pageBuilder the new page builder
+     *
+     * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(
+     *      de.dante.extex.typesetter.pageBuilder.PageBuilder)
+     */
+    public void setPageBuilder(final PageBuilder pageBuilder) {
+
+        this.pageBuilder = pageBuilder;
+    }
+
+    /**
+     * Setter for paragraphBuilder.
+     *
+     * @param paragraphBuilder the paragraphBuilder to set.
+     */
+    public void setParagraphBuilder(final ParagraphBuilder paragraphBuilder) {
+
+        this.paragraphBuilder = paragraphBuilder;
     }
 
     /**
@@ -398,5 +434,4 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
         listMaker.toggleMath();
     }
-
 }
