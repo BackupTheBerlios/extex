@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -89,10 +89,11 @@ public interface Context extends Tokenizer, Serializable {
 
     /**
      * Expand some tokens.
-     * @param tokens the tokens to expand
-     * @param typesetter TODO
      *
-     * @return ...
+     * @param tokens the tokens to expand
+     * @param typesetter the typesetter to use
+     *
+     * @return the expanded tokens
      *
      * @throws GeneralException in case of an error
      */

@@ -34,7 +34,7 @@ import de.dante.util.framework.AbstractFactory;
 
 /**
  * This is a factory to deliver primitives from a configuration.
- * 
+ *
  * <pre>
  *  &lt;cfg&gt;
  *    &lt;define name="<i>name</i>" class="<i>class</i>"/&gt;
@@ -43,7 +43,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -67,7 +67,7 @@ public class PrimitiveFactory extends AbstractFactory {
      * @param tokenFactory the token factory to use
      * @param context the interpreter context to register the primitive in
      *
-     * @throws GeneralException ...
+     * @throws GeneralException In case of an error
      * @throws ConfigurationException in case of an error
      * <ul>
      *  <li>ConfigurationMissingAttributeException

@@ -61,7 +61,7 @@ import de.dante.extex.interpreter.context.Context;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SerialLoader {
 
@@ -77,7 +77,8 @@ public class SerialLoader {
     private static final String FORMAT_VERSION = "1.0";
 
     /**
-     * The field <tt>FORMAT_ID</tt> contains the ...
+     * The field <tt>FORMAT_ID</tt> contains the id string stored in the
+     * format file.
      */
     private static final String FORMAT_ID = "ExTeX format";
 
@@ -137,10 +138,10 @@ public class SerialLoader {
     }
 
     /**
-     * ...
+     * Write the format information to an output stream.
      *
      * @param stream the output stream to write the context to
-     * @param jobname ...
+     * @param jobname the jobname currently processed
      * @param context the interpreter context to store
      *
      * @throws IOException in case of an IO error
