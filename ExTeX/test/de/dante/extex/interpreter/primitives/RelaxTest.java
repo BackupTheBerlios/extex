@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,70 +19,68 @@
 package de.dante.extex.interpreter.primitives;
 
 import de.dante.test.ExTeXLauncher;
-import junit.framework.TestCase;
 
-/*
- * ...
+/**
+ * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class RelaxTest extends TestCase {
-
-    /**
-     * Main program. Just in case.
-     */
-    public static void main(String[] args) {
-        junit.textui.TestRunner.run(RelaxTest.class);
-    }
+public class RelaxTest extends ExTeXLauncher {
 
     /**
      * Constructor for RelaxTest.
-     * 
-     * @param arg0
+     *
+     * @param arg ...
      */
-    public RelaxTest(String arg0) {
-        super(arg0);
+    public RelaxTest(final String arg) {
+        super(arg);
     }
-    
-    /**
-     * Test case checking that a pure \relax has no effect.
-     */
-    public void test0() throws Exception {
-        String result = new ExTeXLauncher("pi*").run("abc\\relax def");
-        System.err.println(result);
-        assertEquals("", result);
-    }
-    
+
     /**
      * Test case checking that a pure \relax has no effect.
      */
     public void test1() throws Exception {
-        String result = new ExTeXLauncher("pi").run("\\relax");
-        assertEquals("", result);
+        runCode("\\relax",
+                "",
+                "\n");
     }
-    
+
     /**
      * Test case checking that a whitespace after a \relax is ignored.
      */
     public void test2() throws Exception {
-        String result = new ExTeXLauncher("pi").run("\\relax ");
-        assertEquals("", result);
+        runCode("\\relax ",
+                "",
+                "\n");
     }
 
     /**
      * Test case checking that more whitespace after a \relax is ignored.
      */
-    public void test3() throws Exception {
-        String result = new ExTeXLauncher("pi").run("\\relax               ");
-        assertEquals("", result);
+    public void test4() throws Exception {
+        runCode("\\relax         ",
+                "",
+                "\n");
     }
 
     /**
      * Test case checking that a comment after a \relax is ignored.
      */
-    public void test4() throws Exception {
-        String result = new ExTeXLauncher("pi").run("\\relax %1234 ");
-        assertEquals("", result);
+    public void test5() throws Exception {
+        runCode("\\relax %1234 ",
+                "",
+                "\n");
     }
+
+    /**
+     * Test case checking that a pure \relax has no effect in the
+     * middle of a word.
+     */
+    public void test10() throws Exception {
+        runCode("abc\\relax def",
+                "",
+                "\nabcdef\n");
+    }
+
 }
