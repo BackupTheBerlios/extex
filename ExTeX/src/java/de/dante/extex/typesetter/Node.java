@@ -16,8 +16,10 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
@@ -39,23 +41,26 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public interface Node extends Knot {
 
     /**
-     * Getter for the width of the node.
+     * Add the flexible width of the current node to the given glue.
      *
-     * @return the width
+     * @param glue the glue to add to.
      */
-    Dimen getWidth();
+    void addWidthTo(Glue glue);
 
     /**
-     * Getter for the height of the node.
+     * This method performs any action which are required to executed at the
+     * time of shipping the node to the DocumentWriter.
      *
-     * @return the height
+     * @param context the interpreter context
+     *
+     * @throws GeneralException in case of an error
      */
-    Dimen getHeight();
+    void atShipping(Context context) throws GeneralException;
 
     /**
      * Getter for the depth of the node.
@@ -65,18 +70,18 @@ public interface Node extends Knot {
     Dimen getDepth();
 
     /**
-     * Setter for the width of the node.
+     * Getter for the height of the node.
      *
-     * @param width the new width
+     * @return the height
      */
-    void setWidth(FixedDimen width);
+    Dimen getHeight();
 
     /**
-     * Setter for the heigth of the node.
+     * Getter for the width of the node.
      *
-     * @param height the new height
+     * @return the width
      */
-    void setHeight(Dimen height);
+    Dimen getWidth();
 
     /**
      * Setter for the depth of the node.
@@ -86,11 +91,18 @@ public interface Node extends Knot {
     void setDepth(Dimen depth);
 
     /**
-     * Add the flexible width of the current node to the given glue.
+     * Setter for the heigth of the node.
      *
-     * @param glue the glue to add to.
+     * @param height the new height
      */
-    void addWidthTo(Glue glue);
+    void setHeight(Dimen height);
+
+    /**
+     * Setter for the width of the node.
+     *
+     * @param width the new width
+     */
+    void setWidth(FixedDimen width);
 
     /**
      * Adjust the width of a flexible node. This method is a noop for any but
@@ -103,6 +115,16 @@ public interface Node extends Knot {
 
     /**
      * This method puts the printable representation into the string buffer.
+     * This is meant to produce a exaustive form as it is used in tracing
+     * output to the log file.
+     *
+     * @param sb the output string buffer
+     * @param prefix the prefix string inserted at the beginning of each line
+     */
+    void toString(StringBuffer sb, String prefix);
+
+    /**
+     * This method puts the printable representation into the string buffer.
      * This is meant to produce a short form only as it is used in error
      * messages to the user.
      *
@@ -112,14 +134,16 @@ public interface Node extends Knot {
     void toText(StringBuffer sb, String prefix);
 
     /**
-     * This method puts the printable representation into the string buffer.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
+     * This method provides an entry point for the visitor pattern.
      *
-     * @param sb the output string buffer
-     * @param prefix the prefix string inserted at the beginning of each line
+     * @param visitor the visitor to apply
+     * @param value the argument for the visitor
+     *
+     * @return the result of the method invocation of the visitor
+     *
+     * @throws GeneralException in case of an error
      */
-    void toString(StringBuffer sb, String prefix);
+    Object visit(NodeVisitor visitor, Object value) throws GeneralException;
 
     /**
      * This method provides an entry point for the visitor pattern.
@@ -134,19 +158,6 @@ public interface Node extends Knot {
      * @deprecated use the other visit method instead
      */
     Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException;
-
-    /**
-     * This method provides an entry point for the visitor pattern.
-     *
-     * @param visitor the visitor to apply
-     * @param value the argument for the visitor
-     *
-     * @return the result of the method invocation of the visitor
-     *
-     * @throws GeneralException in case of an error
-     */
-    Object visit(NodeVisitor visitor, Object value)
-        throws GeneralException;
+            throws GeneralException;
 
 }

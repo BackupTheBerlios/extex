@@ -19,11 +19,13 @@
 
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Node;
+import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -31,7 +33,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -105,6 +107,21 @@ public abstract class AbstractNode implements Node {
     public void addWidthTo(final Glue glue) {
 
         glue.add(width);
+    }
+
+    /**
+     * This method performs any action which are required to executed at the
+     * time of shipping the node to the DocumentWriter. It is a NOOP in the
+     * abstract base class and should be overwritten by sub-classes if
+     * required.
+     *
+     * @param context the interpreter context
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see de.dante.extex.typesetter.Node#atShipping(Context)
+     */
+    public void atShipping(final Context context) throws GeneralException {
     }
 
     /**
