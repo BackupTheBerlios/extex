@@ -1,0 +1,63 @@
+<html>
+ <head>
+  <title>ExTeX: Fonts (VF)</title>
+  <meta name="copyright" content="
+   Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
+
+   This library is free software; you can redistribute it and/or modify it
+   under the terms of the GNU Lesser General Public License as published by
+   the Free Software Foundation; either version 2.1 of the License, or (at
+   your option) any later version.
+
+   This library is distributed in the hope that it will be useful, but WITHOUT
+   ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+   FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+   for more details.
+
+   You should have received a copy of the GNU Lesser General Public License
+   along with this library; if not, write to the Free Software Foundation,
+   Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  " />
+  <meta name="author" content="Michael Niedermair" />
+  <meta name="version" content="$Revision: 1.1 $" />
+ </head>
+    <body> 
+        
+        This package contains the definitions and implementations for the 
+        VF-font-metric handling in ExTeX. <a name="VFformat"/>
+            
+        <h2>VF format</h2> 
+            
+        <p>Definition of VF format taken from VFtoVP, Version 1.2</p> 
+        <p>
+        VFtoVP is an extended version of the program TFtoPL, which is part of 
+        the standard TEXware library. The idea of a virtual font was inspired 
+        by the work of David R. Fuchs who designed a similar set of conventions 
+        in 1984 while developing a device driver for ArborText, Inc. He wrote a 
+        somewhat similar program called AMFtoXPL.
+        </p> 
+        <p>
+	     The idea behind VF files is that a general interface mechanism is
+         needed to switch between the myriad font layouts provided by different
+         suppliers of typesetting equipment. Without such a mechanism, people
+         must go to great lengths writing inscrutable macros whenever they
+         want to use typesetting conventions based on one font layout in
+         connection with actual fonts that have another layout.
+         This puts an extra burden on the typesetting system, interfering
+         with the other things it needs to do (like kerning, hyphenation, and
+         ligature formation). These difficulties go away when we have a
+         virtual font,  i.e., a font that exists in a logical sense but
+         not a physical sense. A typesetting system like TEX can do its
+         job without knowing where the actual characters come from;
+         a device driver can then do its job by letting a VF file tell what
+         actual characters correspond to the characters TEX imagined were
+         present. The actual characters can be shifted and/or magnified
+         and/or combined with other characters from many diffrent fonts.
+         A virtual font can even make use of characters from virtual fonts,
+         including itself. Virtual fonts also allow convenient character
+         substitutions for proofreading purposes, when fonts designed for one
+         output device are unavailable on another.       
+        </p>
+    </body>
+</html>
+

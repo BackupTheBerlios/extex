@@ -28,7 +28,7 @@ import java.io.RandomAccessFile;
  * RandomAccess for a File (Input) DEBUG-VERSION
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RandomAccessInputFileDebug implements RandomAccessR {
 
@@ -192,7 +192,7 @@ public class RandomAccessInputFileDebug implements RandomAccessR {
     public int readInt() throws IOException {
 
         int b = raf.readInt();
-        out.println("\nInt: (" + b + ":0x" + Integer.toHexString(b) + ")");
+        out.println("\nInt: (" + b + " :0x" + Integer.toHexString(b) + ") ");
         return b;
     }
 
