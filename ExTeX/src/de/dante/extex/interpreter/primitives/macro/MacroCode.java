@@ -16,16 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives;
+
+package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Showable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.LeftBraceToken;
 import de.dante.extex.scanner.MacroParamToken;
@@ -38,9 +40,9 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class MacroCode extends AbstractCode implements Code, ExpandableCode {
+public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
     /**
      * The field <tt>body</tt> contains the tokens of the macro expansion text.
@@ -89,7 +91,8 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -134,7 +137,11 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
@@ -142,11 +149,12 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
 
         execute(prefix, context, source, typesetter);
     }
+
     /**
      * Match the pattern of this macro with the next tokens of the token
      * source. As a result the matching arguments are stored in an array of
-     * {@link de.dante.extex.interpreter.type.Tokens Tokens}. This array is
-     * returned.
+     * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}. This array
+     * is returned.
      *
      * @param context the processor context
      * @param source the source for new tokens
@@ -246,8 +254,8 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
      *
      * @throws GeneralException in case of an error
      */
-    private Tokens getTokenOrBlock(final Context context, final TokenSource source)
-            throws GeneralException {
+    private Tokens getTokenOrBlock(final Context context,
+            final TokenSource source) throws GeneralException {
 
         Token t = source.getToken();
 
@@ -294,4 +302,17 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode {
                 printableControlSequence(context));
     }
 
+    /**
+     * @see de.dante.extex.interpreter.Showable#show(
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public Tokens show(final Context context) throws GeneralException {
+
+        Tokens toks = new Tokens(context, "macro:\n");
+
+        pattern.show(context, toks);
+        toks.add(context.getTokenFactory(), " ->");
+        body.show(context, toks);
+        return toks;
+    }
 }
