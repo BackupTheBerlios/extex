@@ -6,7 +6,8 @@
     <div class="navitems">
     <a href="&top;development/state.html">State of Development</a><br />
     <a href="&top;development/systems.html">&TeX; and Successors</a><br />
-    <i>Bug Tracking</i><br />
+    <a href="https://developer.berlios.de/bugs/?group_id=1915">Bug Tracking</a><br />
+    <a href="https://developer.berlios.de/feature/?group_id=1915">Feature Requests</a><br />
     </div>
     <a href="&top;documentation/index.html">Documentation</a><br />
     <div class="navitems">
