@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;advance&rang;
- *     &rarr; &rarr; &lang;optional prefix&rang; <tt>\advance</tt> &lang;advancable&rang;
+ *     &rarr; &lang;optional prefix&rang; <tt>\advance</tt> &lang;advancable&rang;
  *
  *    &lang;optional prefix&rang;
  *      &rarr;
@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Advance extends AbstractAssignment {
 
