@@ -19,10 +19,23 @@
 #------------------------------------------------------------------------------
 # THIS FILE SHOULD BE EXECUTABLE.
 #------------------------------------------------------------------------------
-echo
-echo "ExTeX Build System"
-echo "------------------"
-echo
+
+verbose=0
+if [ "$1" = "-v" ] ; then
+    shift
+    verbose=1
+fi
+if [ "$1" = "-q" ] ; then
+    shift
+    verbose=0
+fi
+
+if [ $verbose = 1 ] ; then
+    echo
+    echo "ExTeX Build System"
+    echo "------------------"
+    echo
+fi
 
 if [ "$JAVA_HOME" = "" ] ; then
     echo "ERROR: JAVA_HOME not found in your environment."
@@ -74,10 +87,12 @@ if $cygwin; then
     LOCALCLASSPATH=`cygpath --path --windows "$LOCALCLASSPATH"`
 fi
 
-echo
-echo $JAVA_HOME
-echo Building with classpath $LOCALCLASSPATH
-echo Starting Ant...
-echo
+if [ $verbose = 1 ] ; then
+    echo
+    echo $JAVA_HOME
+    echo Building with classpath $LOCALCLASSPATH
+    echo Starting Ant...
+    echo
+fi
 
 $JAVA_HOME/bin/java -Dant.home=$ANT_HOME -classpath "$LOCALCLASSPATH" org.apache.tools.ant.Main $*
