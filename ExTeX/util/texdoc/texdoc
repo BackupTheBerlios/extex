@@ -2,7 +2,7 @@
 ##*****************************************************************************
 ## $Id: texdoc,v 1.4 2004/06/14 16:11:56 gene Exp $
 ##*****************************************************************************
-## Copyright (C) 2004 Gerd Neugebauer
+## Copyright (C) 2004-2005 Gerd Neugebauer
 ##
 ## This library is free software; you can redistribute it and/or modify it
 ## under the terms of the GNU Lesser General Public License as published by the
@@ -62,7 +62,8 @@ GetOptions("creator=s"	=> \$creator,
 
 use FileHandle;
 
-my $outfile = undef;
+my $outfile	= undef;
+my $outfilename = undef;
 
 my $col = 0;
 
@@ -78,6 +79,8 @@ my $tabcol;
 my @tabfmt;
 my @tabpre;
 my @tabpost;
+
+my %xref = ();
 
 #------------------------------------------------------------------------------
 #
@@ -823,8 +826,9 @@ sub do_open
   }
   $col += length($filename)+1;
   print "[$filename";
-  $filename = ( $filename ne '' ? "$docname\_$filename" : $docname );
-  $outfile = new FileHandle("$filename.html",'w');
+  $outfilename = $filename;
+  $filename    = ( $filename ne '' ? "$docname\_$filename" : $docname );
+  $outfile     = new FileHandle("$filename.html",'w');
   print $outfile header($title,$creator);
   print $outfile "<body $bodyargs>\n";
   push @toc,"<a href='$filename.html' target='main'>$title</a> ";
@@ -844,6 +848,7 @@ sub do_close
   print $outfile "\n</body>\n</html>\n";
   $outfile->close();
   undef $outfile;
+  undef $outfilename;
 }
 
 #------------------------------------------------------------------------------
@@ -884,6 +889,19 @@ sub do_files
       { do_open($file,'',"bgcolor=\"white\"");
 	$_ = "<b>$file. </b>\n".$_;
       }
+    } elsif ( m/amp;\{procedure\}[^{}]*\{([^{}]*)\}/ ) {
+      $xref{$1} = $outfilename;
+    } else {
+      my $s = '';
+      while (m/(\\\\\{)([a-z0-9\\_]*)(\})/i) {
+	#print "$2\n";
+	my $page = $xref{$2};
+	$_	 = $';
+	$s      .= (defined $page
+		    ? "$`$1<a href=\"$docname\\\_$page.html\">$2</a>$3"
+		    : "$`$&");
+      }
+      $_ = $s. $_;
     }
     $contents .= $_;
   } while ( <> );
@@ -979,7 +997,7 @@ print "[";
 print $outfile header($doctitle,$creator);
 print $outfile <<__EOF__;
 <frameset   cols="300,*" border="0" frameborder="0">
-  <frameset rows="118,*" border="0" frameborder="0">
+  <frameset rows="150,*" border="0" frameborder="0">
     <frame name="title"  src="$docname\_title.html">
     <frame name="toc"    src="$docname\_toc.html">
   </frameset>
@@ -993,6 +1011,7 @@ __EOF__
 print $outfile "\n</body>\n</html>\n";
 $outfile->close();
 print "]\n";
+
 
 #------------------------------------------------------------------------------
 # Local Variables: 
