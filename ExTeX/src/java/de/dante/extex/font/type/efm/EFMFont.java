@@ -39,13 +39,13 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.file.FileFinder;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class EFMFont implements Font {
 
@@ -86,7 +86,7 @@ public abstract class EFMFont implements Font {
      * @throws ConfigurationException ...
      */
     public EFMFont(final Document doc, final String fontname, final Dimen size,
-            final Glue ls, final boolean lig, final FileFinder filefinder)
+            final Glue ls, final boolean lig, final ResourceFinder filefinder)
             throws GeneralException, ConfigurationException {
 
         super();
@@ -113,7 +113,7 @@ public abstract class EFMFont implements Font {
      * @throws GeneralException if a error is thrown.
      * @throws ConfigurationException ...
      */
-    private void loadFont(final Document doc, final FileFinder fileFinder)
+    private void loadFont(final Document doc, final ResourceFinder fileFinder)
             throws GeneralException, ConfigurationException {
 
         try {
@@ -171,12 +171,12 @@ public abstract class EFMFont implements Font {
                 if (efile != null) {
                     if (efile.endsWith(".ttf")) {
                         efile = efile.replaceAll(".ttf", "");
-                        externalfile = getFontFile(fileFinder.findFile(efile,
-                                "ttf"));
+//                        externalfile = getFontFile(fileFinder.findFile(efile,
+//                                "ttf"));
                     } else if (efile.endsWith(".pfb")) {
                         efile = efile.replaceAll(".pfb", "");
-                        externalfile = getFontFile(fileFinder.findFile(efile,
-                                "pfb"));
+//                        externalfile = getFontFile(fileFinder.findFile(efile,
+//                                "pfb"));
                     } else {
                         throw new GeneralHelpingException(
                                 "EFM.wrongfileextension", efile);

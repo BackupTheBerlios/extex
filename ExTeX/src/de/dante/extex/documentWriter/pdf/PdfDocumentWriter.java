@@ -58,485 +58,33 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
 public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     /**
-     * The field <tt>out</tt> ...
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(java.lang.String, java.lang.String)
      */
-    private OutputStream out = null;
+    public void setParameter(String name, String value) {
 
-    /**
-     * The field <tt>shippedPages</tt> ...
-     */
-    private int shippedPages = 0;
+        // TODO Auto-generated method stub
 
-    /**
-     * The field <tt>cfg</tt> ...
-     */
-    private Configuration cfg = null;
-
-    private final boolean debug = true;
-
-    private final boolean embedBase14 = true;
-
-    /**
-     * Creates a new object.
-     * @param cfg the configuration
-     */
-    public PdfDocumentWriter(final Configuration cfg) {
-
-        super();
-        this.cfg = cfg;
     }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
-     */
-    public int getPages() {
-
-        return shippedPages;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
-     */
-    public String getExtension() {
-
-        return "pdf";
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
-     */
-    public void setOutputStream(final OutputStream outStream) {
-
-        this.out = outStream;
-    }
-
-    /**
-     * shipout
-     * @param   nodes   the nodelist
-     * @throws IOException ...
-     * @throws GeneralException ...
-     */
-    public void shipout(final NodeList nodes) throws IOException,
-            GeneralException {
-
-        newPage(WIDTH_A4, HEIGHT_A4);
-        shippedPages = pdfDoc.getPages().getCount();
-        markOrigin();
-        nodes.visit(this, nodes, null);
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()    
-     * @throws IOException ...
-     */
-    public void close() throws IOException {
-
-        endPdfDocument();
-    }
-
-    /**
-     * pdfdoc
-     */
-    private PDFDocument pdfDoc = null;
-
-    /**
-     * pdfstream
-     */
-    private PDFStream cs = null;
-
-    /**
-     * pdfresource
-     */
-    private PDFResources pdfResources = null;
-
-    /**
-     * currentpage
-     */
-    private PDFPage currentPage = null;
-
-    /**
-     * operators
-     */
-    private PDFOperators op = null;
-
-    // TeX primitives should set the papersize in any way:
-    // o \paperwidth   / \paperheight, 
-    // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
-    // o \mediawidth   / \mediaheight   <-- VTeX
-    private static final int WIDTH_A4 = 595; // "bp"
-
-    private static final int HEIGHT_A4 = 842; // "bp"
-
-    /**
-     * fontinfo
-     */
-    //private FontInfo fontInfo = null;
-    /**
-     * fontstate
-     */
-    //private FontState fontState = null;
-    /**
-     * x,y ...
-     */
-    private Dimen lastX = new Dimen(), lastY = new Dimen(),
-            currentX = new Dimen(), currentY = new Dimen(),
-            lastDP = new Dimen();
-
-    /**
-     * onlyStroke
-     */
-    private boolean onlyStroke;
-
-    /**
-     * adjust
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitAdjust(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * aftermath
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitAfterMath(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * alignedleader
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitAlignedLeaders(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * beforemath
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitBeforeMath(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * centerleaders
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitCenteredLeaders(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * discretionary
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitDiscretionary(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * expandleaders
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitExpandedLeaders(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * glue
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitGlue(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        StringBuffer operators = new StringBuffer(256);
-        operators.append(op.fillColor(Color.BLUE));
-        showNode(node, operators);
-        debugNode(node);
-        if (debug) {
-            if (state == HORIOZONTAL) {
-                System.out.println("==> hor. glue");
-            } else {
-                System.out.println("==> ver. glue");
-            }
-        }
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * insertion
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitInsertion(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * kern
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitKern(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * ligature
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitLigature(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * mark
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitMark(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * penalty
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitPenalty(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * rule
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitRule(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * space
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitSpace(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        StringBuffer operators = new StringBuffer(256);
-        operators.append(op.fillColor(Color.YELLOW));
-        showNode(node, operators);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * whatsit
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitWhatsIt(final Object value, final Object value2) {
-
-        Node node = (Node) value;
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
-    /**
-     * verticallist
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitVerticalList(final Object value, final Object value2) {
-
-        NodeList nodes = (NodeList) value;
-        StringBuffer operators = new StringBuffer(256);
-
-        State oldstate = state;
-        state = VERTICAL;
-
-        Dimen ht = new Dimen(nodes.getHeight());
-        Dimen saveX = new Dimen(lastX);
-        Dimen saveY = new Dimen(lastY);
-
-        currentX.set(lastX);
-        currentY.set(lastY);
-        currentY.add(ht);
-
-        operators.append(op.fillColor(Color.LIGHT_GRAY));
-
-        showNode(nodes, operators);
-        debugNode(nodes);
-
-        currentX.set(saveX);
-        currentY.set(saveY);
-
-        NodeIterator it = nodes.iterator();
-        while (it.hasNext()) {
-            Node node = it.next();
-            try {
-                node.visit(this, node, null);
-            } catch (Exception e) {
-                e.printStackTrace(); // TODO: handle exception
-            }
-        }
-
-        state = oldstate;
-        return null;
-    }
-
-    /**
-     * horizontallist
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitHorizontalList(final Object value, final Object value2) {
-
-        NodeList nodes = (HorizontalListNode) value;
-
-        State oldstate = state;
-        state = HORIOZONTAL;
-
-        Dimen ht = new Dimen(nodes.getHeight());
-        Dimen dp = new Dimen(nodes.getDepth());
-
-        currentX.set(lastX);
-        currentY.set(lastY);
-        currentY.add(lastDP);
-        currentY.add(ht);
-        lastDP.set(dp);
-
-        debugNode(nodes);
-
-        NodeIterator it = nodes.iterator();
-        while (it.hasNext()) {
-            Node node = it.next();
-            try {
-                node.visit(this, node, null);
-            } catch (Exception e) {
-                e.printStackTrace(); // TODO: handle exception
-            }
-
-        }
-        setPosition(nodes);
-        lastY = currentY;
-        state = oldstate;
-        return null;
-    }
-
-    /**
-     * char
-     * @param value     the value
-     * @param value2    the next value
-     * @return null
-     */
-    public Object visitChar(final Object value, final Object value2) {
-
-        CharNode node = (CharNode) value;
-        StringBuffer operators = new StringBuffer(256);
-        operators.append(op.fillColor(Color.GREEN));
-        showNode(node, operators);
-        debugNode(node);
-        setPosition(node);
-        return null;
-    }
-
     // -------------------------------------------------
 
     /**
      * NodeVisitor for debug.
      */
     private class DebugVisitor implements NodeVisitor {
+
+        private String metric(final Node node) {
+
+            return " (wd=" + node.getWidth().toString() + "\tht="
+                    + node.getHeight().toString() + "\tdp="
+                    + node.getDepth().toString() + ")";
+        }
 
         public Object visitAdjust(Object value, Object value2) {
 
@@ -727,215 +275,119 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             return null;
         }
 
-        private String metric(final Node node) {
-
-            return " (wd=" + node.getWidth().toString() + "\tht="
-                    + node.getHeight().toString() + "\tdp="
-                    + node.getDepth().toString() + ")";
-        }
-
     }
+
+    // ---------------------------------------------------------------------------
+    /**
+     * State
+     */
+    private static class State {
+
+        public State() {
+
+            super();
+        }
+    }
+
+    private static final int HEIGHT_A4 = 842; // "bp"
 
     /**
-     * debug
+     * in horizontal mode
      */
-    private void debugNode(Node node) {
-
-        if (debug) {
-            StringBuffer sb = new StringBuffer(256);
-            try {
-                node.visit(new DebugVisitor(), sb, node);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            System.out.println(sb.toString());
-        }
-    }
-
-    private void showNode(Node node, StringBuffer operators) {
-
-        Dimen wd = new Dimen(node.getWidth());
-        Dimen ht = new Dimen(node.getHeight());
-        Dimen dp = new Dimen(node.getDepth());
-
-        onlyStroke = false;
-
-        cs.add(op.gSave());
-        cs.add(operators.toString());
-        cs.add(op.lineWidth(.3f));
-
-        float rX = (float) Unit.getDimenAsBP(currentX);
-        float rY = (float) Unit.getDimenAsBP(currentY)
-                - (float) Unit.getDimenAsBP(ht);
-        float rWD = (float) Unit.getDimenAsBP(wd);
-        float rHT = (float) Unit.getDimenAsBP(ht)
-                + (float) Unit.getDimenAsBP(dp);
-
-        if (rHT <= 0.0) {
-            rHT = -1.5f;
-        }
-
-        cs.add(op.addRectangle(rX, rY, rWD, rHT));
-
-        if (onlyStroke)
-            cs.add(op.stroke());
-        else
-            cs.add(op.fillStroke());
-
-        if (!dp.le(Dimen.ZERO_PT)) { // baseline
-            rY = (float) Unit.getDimenAsBP(currentY);
-            cs.add(op.gSave());
-            cs.add(op.setLineDash(.3f, .3f));
-            cs.add(op.moveTo(rX, rY));
-            cs.add(op.rLineTo(rWD, 0f));
-            cs.add(op.stroke());
-            cs.add(op.gRestore());
-        }
-        cs.add(op.gRestore());
-    }
-
-    private void setPosition(Node node) {
-
-        if (state == HORIOZONTAL) {
-            currentX.add(node.getWidth());
-        } else {
-            currentY.add(node.getHeight());
-            currentY.add(node.getDepth());
-        }
-    }
-
-    private void markOrigin() {
-
-        cs.add(op.gSave());
-        cs.add(op.lineWidth(.6f));
-        cs.add(op.strokeColor(Color.RED));
-        cs.add(op.circle(72, 72, 5));
-        cs.add(op.moveTo(72 - 5, 72));
-        cs.add(op.rLineTo(5, 0));
-        cs.add(op.moveTo(72, 72 - 5));
-        cs.add(op.rLineTo(0, 5));
-        cs.add(op.stroke());
-        cs.add(op.gRestore());
-    }
-
-    /**
-     * beginPdfDocument Opens/setups the document
-     * @throws IOException ...
-     */
-    private void beginPdfDocument() throws IOException {
-
-        Map filterMap = new java.util.HashMap();
-        List filterList = new java.util.ArrayList();
-
-        pdfDoc = new PDFDocument("");
-
-        //filterList.add("flate");
-        filterList.add("null");
-        filterMap.put(PDFFilterList.DEFAULT_FILTER, filterList);
-        filterMap.put(PDFFilterList.CONTENT_FILTER, filterList);
-        filterMap.put(PDFFilterList.IMAGE_FILTER, filterList);
-        filterMap.put(PDFFilterList.JPEG_FILTER, filterList);
-        filterMap.put(PDFFilterList.FONT_FILTER, filterList);
-        pdfDoc.setFilterMap(filterMap);
-
-        pdfDoc.getInfo().setProducer("ExTeX-0.00");
-        pdfDoc.getInfo().setCreator("LaTeX with hyperref");
-        pdfDoc.getInfo().setTitle("Allerlei Probiererei");
-        pdfDoc.getInfo().setAuthor("Rolf");
-        pdfDoc.getInfo().setSubject("ExTeX-Entwicklung");
-        pdfDoc.getInfo().setKeywords("TeX, Java");
-        pdfDoc.getInfo().setCreationDate(null); // current system date
-
-        op = new PDFOperators();
-
-        pdfDoc.outputHeader(this.out);
-
-    }
-
-    private Vector fontNameList = new Vector();
-
-    private int getFontNumber(String name) {
-
-        if (fontNameList.isEmpty()) { // Preserve space for base14 fonts.
-            for (int i = 0; i < 14; i++)
-                fontNameList.addElement(null);
-        }
-
-        int idx = fontNameList.indexOf(name);
-
-        if (idx == -1) {
-            if (name.equals("Times-Roman"))
-                idx = 0;
-            else if (name.equals("Times-Bold"))
-                idx = 1;
-            else if (name.equals("Times-Italic"))
-                idx = 2;
-            else if (name.equals("Times-BoldItalic"))
-                idx = 3;
-            else if (name.equals("Helvetica"))
-                idx = 4;
-            else if (name.equals("Helvetica-Bold"))
-                idx = 5;
-            else if (name.equals("Helvetica-Oblique"))
-                idx = 6;
-            else if (name.equals("Helvetica-BoldOblique"))
-                idx = 7;
-            else if (name.equals("Courier"))
-                idx = 8;
-            else if (name.equals("Courier-Bold"))
-                idx = 9;
-            else if (name.equals("Courier-Oblique"))
-                idx = 10;
-            else if (name.equals("Courier-BoldOblique"))
-                idx = 11;
-            else if (name.equals("Symbol"))
-                idx = 12;
-            else if (name.equals("ZapfDingbats"))
-                idx = 13;
-
-            if (idx > -1)
-                fontNameList.setElementAt(name, idx);
-            else {
-                fontNameList.addElement(name);
-                idx = fontNameList.size() - 1;
-            }
-        }
-
-        return ++idx;
-    }
-
-    private void debugFont(Typeface font, int nb) {
-
-        if (debug) {
-            boolean isEmbeddable;
-
-            if (font instanceof FontDescriptor)
-                isEmbeddable = ((FontDescriptor) font).isEmbeddable();
-            else
-                isEmbeddable = false;
-
-            System.out.println("Font /F" + nb + ": " + font.getFontName()
-                    + " (" + font.getFontType().getName() + ", kerning: "
-                    + font.hasKerningInfo() + ", embedded: " + isEmbeddable
-                    + ")");
-        }
-    }
+    private final static State HORIOZONTAL = new State();
 
     private static int uniqueCounter = 1;
 
     /**
-     * Create a quasiunique prefix for fontname 
-     * @return The prefix
-     * @see org.apache.fop.fonts.MultiByteFont#MultiByteFont()
+     * in vertical mode
      */
-    private String uniquePrefix() {
+    private final static State VERTICAL = new State();
 
-        int cnt = 0;
-        synchronized (this.getClass()) {
-            cnt = uniqueCounter++;
-        }
-        int ctm = (int) (System.currentTimeMillis() & 0xffff);
-        return new String(cnt + "E" + Integer.toHexString(ctm));
+    // TeX primitives should set the papersize in any way:
+    // o \paperwidth   / \paperheight, 
+    // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
+    // o \mediawidth   / \mediaheight   <-- VTeX
+    private static final int WIDTH_A4 = 595; // "bp"
+
+    /**
+     * The field <tt>cfg</tt> ...
+     */
+    private Configuration cfg = null;
+
+    /**
+     * pdfstream
+     */
+    private PDFStream cs = null;
+
+    /**
+     * currentpage
+     */
+    private PDFPage currentPage = null;
+
+    private final boolean debug = true;
+
+    private final boolean embedBase14 = true;
+
+    private Vector fontNameList = new Vector();
+
+    /**
+     * fontinfo
+     */
+    //private FontInfo fontInfo = null;
+    /**
+     * fontstate
+     */
+    //private FontState fontState = null;
+    /**
+     * x,y ...
+     */
+    private Dimen lastX = new Dimen(), lastY = new Dimen(),
+            currentX = new Dimen(), currentY = new Dimen(),
+            lastDP = new Dimen();
+
+    /**
+     * onlyStroke
+     */
+    private boolean onlyStroke;
+
+    /**
+     * operators
+     */
+    private PDFOperators op = null;
+
+    /**
+     * The field <tt>out</tt> ...
+     */
+    private OutputStream out = null;
+
+    /**
+     * pdfdoc
+     */
+    private PDFDocument pdfDoc = null;
+
+    /**
+     * pdfresource
+     */
+    private PDFResources pdfResources = null;
+
+    /**
+     * The field <tt>shippedPages</tt> ...
+     */
+    private int shippedPages = 0;
+
+    /**
+     * the current mode
+     */
+    private State state = VERTICAL;
+
+    /**
+     * Creates a new object.
+     * @param cfg the configuration
+     */
+    public PdfDocumentWriter(final Configuration cfg) {
+
+        super();
+        this.cfg = cfg;
     }
 
     /**
@@ -1024,6 +476,82 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
+     * beginPdfDocument Opens/setups the document
+     * @throws IOException ...
+     */
+    private void beginPdfDocument() throws IOException {
+
+        Map filterMap = new java.util.HashMap();
+        List filterList = new java.util.ArrayList();
+
+        pdfDoc = new PDFDocument("");
+
+        //filterList.add("flate");
+        filterList.add("null");
+        filterMap.put(PDFFilterList.DEFAULT_FILTER, filterList);
+        filterMap.put(PDFFilterList.CONTENT_FILTER, filterList);
+        filterMap.put(PDFFilterList.IMAGE_FILTER, filterList);
+        filterMap.put(PDFFilterList.JPEG_FILTER, filterList);
+        filterMap.put(PDFFilterList.FONT_FILTER, filterList);
+        pdfDoc.setFilterMap(filterMap);
+
+        pdfDoc.getInfo().setProducer("ExTeX-0.00");
+        pdfDoc.getInfo().setCreator("LaTeX with hyperref");
+        pdfDoc.getInfo().setTitle("Allerlei Probiererei");
+        pdfDoc.getInfo().setAuthor("Rolf");
+        pdfDoc.getInfo().setSubject("ExTeX-Entwicklung");
+        pdfDoc.getInfo().setKeywords("TeX, Java");
+        pdfDoc.getInfo().setCreationDate(null); // current system date
+
+        op = new PDFOperators();
+
+        pdfDoc.outputHeader(this.out);
+
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()    
+     * @throws IOException ...
+     */
+    public void close() throws IOException {
+
+        endPdfDocument();
+    }
+
+    private void debugFont(Typeface font, int nb) {
+
+        if (debug) {
+            boolean isEmbeddable;
+
+            if (font instanceof FontDescriptor)
+                isEmbeddable = ((FontDescriptor) font).isEmbeddable();
+            else
+                isEmbeddable = false;
+
+            System.out.println("Font /F" + nb + ": " + font.getFontName()
+                    + " (" + font.getFontType().getName() + ", kerning: "
+                    + font.hasKerningInfo() + ", embedded: " + isEmbeddable
+                    + ")");
+        }
+    }
+
+    /**
+     * debug
+     */
+    private void debugNode(Node node) {
+
+        if (debug) {
+            StringBuffer sb = new StringBuffer(256);
+            try {
+                node.visit(new DebugVisitor(), sb, node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(sb.toString());
+        }
+    }
+
+    /**
      * endPdfDocument Close the document
      * @throws IOException ...
      */
@@ -1045,6 +573,86 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         addFonts();
 
         pdfDoc.outputTrailer(this.out); // Calls also output(...).
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
+     */
+    public String getExtension() {
+
+        return "pdf";
+    }
+
+    private int getFontNumber(String name) {
+
+        if (fontNameList.isEmpty()) { // Preserve space for base14 fonts.
+            for (int i = 0; i < 14; i++)
+                fontNameList.addElement(null);
+        }
+
+        int idx = fontNameList.indexOf(name);
+
+        if (idx == -1) {
+            if (name.equals("Times-Roman"))
+                idx = 0;
+            else if (name.equals("Times-Bold"))
+                idx = 1;
+            else if (name.equals("Times-Italic"))
+                idx = 2;
+            else if (name.equals("Times-BoldItalic"))
+                idx = 3;
+            else if (name.equals("Helvetica"))
+                idx = 4;
+            else if (name.equals("Helvetica-Bold"))
+                idx = 5;
+            else if (name.equals("Helvetica-Oblique"))
+                idx = 6;
+            else if (name.equals("Helvetica-BoldOblique"))
+                idx = 7;
+            else if (name.equals("Courier"))
+                idx = 8;
+            else if (name.equals("Courier-Bold"))
+                idx = 9;
+            else if (name.equals("Courier-Oblique"))
+                idx = 10;
+            else if (name.equals("Courier-BoldOblique"))
+                idx = 11;
+            else if (name.equals("Symbol"))
+                idx = 12;
+            else if (name.equals("ZapfDingbats"))
+                idx = 13;
+
+            if (idx > -1)
+                fontNameList.setElementAt(name, idx);
+            else {
+                fontNameList.addElement(name);
+                idx = fontNameList.size() - 1;
+            }
+        }
+
+        return ++idx;
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     */
+    public int getPages() {
+
+        return shippedPages;
+    }
+
+    private void markOrigin() {
+
+        cs.add(op.gSave());
+        cs.add(op.lineWidth(.6f));
+        cs.add(op.strokeColor(Color.RED));
+        cs.add(op.circle(72, 72, 5));
+        cs.add(op.moveTo(72 - 5, 72));
+        cs.add(op.rLineTo(5, 0));
+        cs.add(op.moveTo(72, 72 - 5));
+        cs.add(op.rLineTo(0, 5));
+        cs.add(op.stroke());
+        cs.add(op.gRestore());
     }
 
     /**
@@ -1075,30 +683,430 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         lastDP.set(0L);
     }
 
-    // ---------------------------------------------------------------------------
     /**
-     * State
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
      */
-    private static class State {
+    public void setOutputStream(final OutputStream outStream) {
 
-        public State() {
+        this.out = outStream;
+    }
 
-            super();
+    private void setPosition(Node node) {
+
+        if (state == HORIOZONTAL) {
+            currentX.add(node.getWidth());
+        } else {
+            currentY.add(node.getHeight());
+            currentY.add(node.getDepth());
         }
     }
 
     /**
-     * in vertical mode
+     * shipout
+     * @param   nodes   the nodelist
+     * @throws IOException ...
+     * @throws GeneralException ...
      */
-    private final static State VERTICAL = new State();
+    public void shipout(final NodeList nodes) throws IOException,
+            GeneralException {
+
+        newPage(WIDTH_A4, HEIGHT_A4);
+        shippedPages = pdfDoc.getPages().getCount();
+        markOrigin();
+        nodes.visit(this, nodes, null);
+    }
+
+    private void showNode(Node node, StringBuffer operators) {
+
+        Dimen wd = new Dimen(node.getWidth());
+        Dimen ht = new Dimen(node.getHeight());
+        Dimen dp = new Dimen(node.getDepth());
+
+        onlyStroke = false;
+
+        cs.add(op.gSave());
+        cs.add(operators.toString());
+        cs.add(op.lineWidth(.3f));
+
+        float rX = (float) Unit.getDimenAsBP(currentX);
+        float rY = (float) Unit.getDimenAsBP(currentY)
+                - (float) Unit.getDimenAsBP(ht);
+        float rWD = (float) Unit.getDimenAsBP(wd);
+        float rHT = (float) Unit.getDimenAsBP(ht)
+                + (float) Unit.getDimenAsBP(dp);
+
+        if (rHT <= 0.0) {
+            rHT = -1.5f;
+        }
+
+        cs.add(op.addRectangle(rX, rY, rWD, rHT));
+
+        if (onlyStroke)
+            cs.add(op.stroke());
+        else
+            cs.add(op.fillStroke());
+
+        if (!dp.le(Dimen.ZERO_PT)) { // baseline
+            rY = (float) Unit.getDimenAsBP(currentY);
+            cs.add(op.gSave());
+            cs.add(op.setLineDash(.3f, .3f));
+            cs.add(op.moveTo(rX, rY));
+            cs.add(op.rLineTo(rWD, 0f));
+            cs.add(op.stroke());
+            cs.add(op.gRestore());
+        }
+        cs.add(op.gRestore());
+    }
 
     /**
-     * in horizontal mode
+     * Create a quasiunique prefix for fontname 
+     * @return The prefix
+     * @see org.apache.fop.fonts.MultiByteFont#MultiByteFont()
      */
-    private final static State HORIOZONTAL = new State();
+    private String uniquePrefix() {
+
+        int cnt = 0;
+        synchronized (this.getClass()) {
+            cnt = uniqueCounter++;
+        }
+        int ctm = (int) (System.currentTimeMillis() & 0xffff);
+        return new String(cnt + "E" + Integer.toHexString(ctm));
+    }
 
     /**
-     * the current mode
+     * adjust
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
      */
-    private State state = VERTICAL;
+    public Object visitAdjust(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * aftermath
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitAfterMath(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * alignedleader
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitAlignedLeaders(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * beforemath
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitBeforeMath(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * centerleaders
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitCenteredLeaders(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * char
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitChar(final Object value, final Object value2) {
+
+        CharNode node = (CharNode) value;
+        StringBuffer operators = new StringBuffer(256);
+        operators.append(op.fillColor(Color.GREEN));
+        showNode(node, operators);
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * discretionary
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitDiscretionary(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * expandleaders
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitExpandedLeaders(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * glue
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitGlue(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        StringBuffer operators = new StringBuffer(256);
+        operators.append(op.fillColor(Color.BLUE));
+        showNode(node, operators);
+        debugNode(node);
+        if (debug) {
+            if (state == HORIOZONTAL) {
+                System.out.println("==> hor. glue");
+            } else {
+                System.out.println("==> ver. glue");
+            }
+        }
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * horizontallist
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitHorizontalList(final Object value, final Object value2) {
+
+        NodeList nodes = (HorizontalListNode) value;
+
+        State oldstate = state;
+        state = HORIOZONTAL;
+
+        Dimen ht = new Dimen(nodes.getHeight());
+        Dimen dp = new Dimen(nodes.getDepth());
+
+        currentX.set(lastX);
+        currentY.set(lastY);
+        currentY.add(lastDP);
+        currentY.add(ht);
+        lastDP.set(dp);
+
+        debugNode(nodes);
+
+        NodeIterator it = nodes.iterator();
+        while (it.hasNext()) {
+            Node node = it.next();
+            try {
+                node.visit(this, node, null);
+            } catch (Exception e) {
+                e.printStackTrace(); // TODO: handle exception
+            }
+
+        }
+        setPosition(nodes);
+        lastY = currentY;
+        state = oldstate;
+        return null;
+    }
+
+    /**
+     * insertion
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitInsertion(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * kern
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitKern(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * ligature
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitLigature(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * mark
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitMark(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * penalty
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitPenalty(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * rule
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitRule(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * space
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitSpace(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        StringBuffer operators = new StringBuffer(256);
+        operators.append(op.fillColor(Color.YELLOW));
+        showNode(node, operators);
+        setPosition(node);
+        return null;
+    }
+
+    /**
+     * verticallist
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitVerticalList(final Object value, final Object value2) {
+
+        NodeList nodes = (NodeList) value;
+        StringBuffer operators = new StringBuffer(256);
+
+        State oldstate = state;
+        state = VERTICAL;
+
+        Dimen ht = new Dimen(nodes.getHeight());
+        Dimen saveX = new Dimen(lastX);
+        Dimen saveY = new Dimen(lastY);
+
+        currentX.set(lastX);
+        currentY.set(lastY);
+        currentY.add(ht);
+
+        operators.append(op.fillColor(Color.LIGHT_GRAY));
+
+        showNode(nodes, operators);
+        debugNode(nodes);
+
+        currentX.set(saveX);
+        currentY.set(saveY);
+
+        NodeIterator it = nodes.iterator();
+        while (it.hasNext()) {
+            Node node = it.next();
+            try {
+                node.visit(this, node, null);
+            } catch (Exception e) {
+                e.printStackTrace(); // TODO: handle exception
+            }
+        }
+
+        state = oldstate;
+        return null;
+    }
+
+    /**
+     * whatsit
+     * @param value     the value
+     * @param value2    the next value
+     * @return null
+     */
+    public Object visitWhatsIt(final Object value, final Object value2) {
+
+        Node node = (Node) value;
+        debugNode(node);
+        setPosition(node);
+        return null;
+    }
 }

@@ -30,14 +30,14 @@ import de.dante.extex.interpreter.type.font.PfbFontFile;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.file.FileFinder;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This class implements a efm-type1-font (normal)
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EFMType1TFMNOFont extends EFMFont implements Font {
 
@@ -60,7 +60,7 @@ public class EFMType1TFMNOFont extends EFMFont implements Font {
      */
     public EFMType1TFMNOFont(final Document doc, final String fontname,
             final Dimen size, final Glue ls, final boolean lig,
-            final FileFinder filefinder) throws GeneralException,
+            final ResourceFinder filefinder) throws GeneralException,
             ConfigurationException {
 
         super(doc, fontname, size, ls, lig, filefinder);

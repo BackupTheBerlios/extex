@@ -21,19 +21,19 @@ package de.dante.extex.font.type.efm;
 
 import org.jdom.Document;
 
-import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.file.FileFinder;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * This class implements a efm-type1-font (math-syml)
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EFMType1TFMMathsymlFont extends EFMType1TFMNOFont implements Font {
 
@@ -58,7 +58,7 @@ public class EFMType1TFMMathsymlFont extends EFMType1TFMNOFont implements Font {
      */
     public EFMType1TFMMathsymlFont(final Document doc, final String fontname,
             final Dimen size, final Glue ls, final boolean lig,
-            final FileFinder filefinder) throws GeneralException,
+            final ResourceFinder filefinder) throws GeneralException,
             ConfigurationException {
 
         super(doc, fontname, size, ls, lig, filefinder);

@@ -37,10 +37,9 @@ import de.dante.util.configuration.Configuration;
  *
  * MGN eigenes Packages
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
-
     /**
      * The field <tt>out</tt> ...
      */
@@ -61,11 +60,11 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public int getPages() {
+    public void close() {
 
-        return shippedPages;
+        // nothing to do
     }
 
     /**
@@ -77,22 +76,11 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
+     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
-    public void setOutputStream(final OutputStream outStream) {
+    public int getPages() {
 
-        out = outStream;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
-     */
-    public void shipout(final NodeList nodes) throws IOException {
-
-        processNodes(nodes);
-        out.write('\n');
-        out.flush();
-        shippedPages++;
+        return shippedPages;
     }
 
     /**
@@ -115,6 +103,34 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
+     */
+    public void setOutputStream(final OutputStream outStream) {
+
+        out = outStream;
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(java.lang.String, java.lang.String)
+     */
+    public void setParameter(String name, String value) {
+
+        // TODO Auto-generated method stub
+
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
+     */
+    public void shipout(final NodeList nodes) throws IOException {
+
+        processNodes(nodes);
+        out.write('\n');
+        out.flush();
+        shippedPages++;
+    }
+
+    /**
      * show node
      * @param node the node
      * @throws IOException ...
@@ -131,14 +147,6 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
         } catch (GeneralException e) {
             e.printStackTrace();
         }
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
-     */
-    public void close() {
-
-        // nothing to do
     }
 
     /**

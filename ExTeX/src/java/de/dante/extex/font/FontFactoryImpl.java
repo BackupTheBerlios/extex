@@ -19,7 +19,7 @@
 
 package de.dante.extex.font;
 
-import java.io.File;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -41,14 +41,14 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
-import de.dante.util.file.FileFinder;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * Factory to load a font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -60,7 +60,7 @@ public class FontFactoryImpl implements FontFactory {
     /**
      * the file finder
      */
-    private FileFinder finder;
+    private ResourceFinder finder;
 
     /**
      * the logger
@@ -72,7 +72,7 @@ public class FontFactoryImpl implements FontFactory {
      *
      * @param fileFinder the filefinder
      */
-    public FontFactoryImpl(final FileFinder fileFinder) {
+    public FontFactoryImpl(final ResourceFinder fileFinder) {
 
         super();
         finder = fileFinder;
@@ -221,8 +221,8 @@ public class FontFactoryImpl implements FontFactory {
 
         Document doc = null;
         if (name != null) {
-            File fontfile = finder.findFile(name, EFMEXTENSION);
-            if (fontfile != null && fontfile.exists()) {
+            InputStream fontfile = finder.findResource(name, EFMEXTENSION);
+            if (fontfile != null) {
                 try {
                     // create a document with SAXBuilder (without validate)
                     SAXBuilder builder = new SAXBuilder(false);
