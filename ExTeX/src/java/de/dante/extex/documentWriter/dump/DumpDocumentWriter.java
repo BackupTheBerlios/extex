@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.documentWriter.dump;
 
 import java.io.IOException;
@@ -30,9 +31,10 @@ import de.dante.util.configuration.Configuration;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
+
     /**
      * The field <tt>out</tt> contains the outut stream to use.
      */
@@ -45,19 +47,28 @@ public class DumpDocumentWriter implements DocumentWriter {
     private int shippedPages = 0;
 
     /**
+     * The field <tt>options</tt> contains the ...
+     */
+    private DocumentWriterOptions options;
+
+    /**
      * Creates a new object.
      *
      * @param cfg the configuration object
-     * @param options the dynamic access to the context
+     * @param opts the dynamic access to the context
      */
-    public DumpDocumentWriter(final Configuration cfg, final DocumentWriterOptions options) {
+    public DumpDocumentWriter(final Configuration cfg,
+            final DocumentWriterOptions opts) {
+
         super();
+        options = opts;
     }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
     public void close() {
+
         // nothing to do
     }
 
@@ -65,6 +76,7 @@ public class DumpDocumentWriter implements DocumentWriter {
      * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
+
         return "out";
     }
 
@@ -72,6 +84,7 @@ public class DumpDocumentWriter implements DocumentWriter {
      * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
+
         return shippedPages;
     }
 
@@ -80,6 +93,7 @@ public class DumpDocumentWriter implements DocumentWriter {
      *      java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
+
         out = outStream;
     }
 
@@ -96,6 +110,7 @@ public class DumpDocumentWriter implements DocumentWriter {
      *      de.dante.extex.typesetter.NodeList)
      */
     public void shipout(final NodeList nodes) throws IOException {
+
         StringBuffer sb = new StringBuffer();
         nodes.toString(sb, "\n");
         out.write(sb.toString().getBytes());
