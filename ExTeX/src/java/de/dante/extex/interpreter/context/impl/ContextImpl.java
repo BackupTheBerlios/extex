@@ -115,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class ContextImpl
         implements
@@ -380,7 +380,8 @@ public class ContextImpl
      */
     public String esc(final String name) {
 
-        return escapechar() + name;
+        char escapechar = escapechar();
+        return (escapechar != '\0' ? escapechar + name : name);
     }
 
     /**
@@ -399,7 +400,7 @@ public class ContextImpl
 
         long esc = getCount("escapechar").getValue();
 
-        return (esc >= 0 ? (char) esc : '\\');
+        return (esc >= 0 ? (char) esc : '\0');
     }
 
     /**

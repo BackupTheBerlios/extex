@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -190,10 +190,11 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public String toText(final char esc) {
 
-        StringBuffer sb = new StringBuffer();
-        sb.append(esc);
-        sb.append(name);
-        return sb.toString();
+        if (esc != '\0') {
+            return esc + name;
+        }
+
+        return name;
     }
 
     /**
