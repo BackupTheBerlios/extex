@@ -1,0 +1,100 @@
+%%*****************************************************************************
+%% $Id: Design_Guidelines.tex,v 1.1 2003/12/30 08:37:34 gene Exp $
+%%*****************************************************************************
+%% Author: Gerd Neugebauer
+%%-----------------------------------------------------------------------------
+\documentclass[11pt]{scrartcl}
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{shortvrb}
+
+\providecommand*{\ExTeX}{%
+  \textrm{% das Logo grundsätzlich serifenbehaftet
+    \ensuremath{\textstyle\varepsilon_{\kern-0.15em\mathcal{X}}}%
+    \kern-.15em\TeX
+  }%
+}
+\MakeShortVerb|
+
+\begin{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{\ExTeX\ -- Design Guidelines}
+\author{Gerd Neugebauer}
+\date{}
+\maketitle
+
+\begin{abstract}
+  
+\end{abstract}
+
+\section{Objectives}
+
+The aim of \ExTeX\ is the implementation of a typesetting system based
+on the ideas of \TeX.
+
+\begin{itemize}
+
+\item \ExTeX\ should reproduce as good as possible the results of \TeX:
+  the visual appearance of a processed document in compatibility mode should
+  be indistinguishable.
+
+  This does not mean that the produced files (dvi, pdf, aux, log) are the
+  identical to those produced by \TeX.
+
+\item \ExTeX\ should be configurable and extendable. Thus it can serve as a
+  testbed for typesetting experiments. The default configuration reflects the
+  evolving state of the art. 
+
+\item The implementation language is Java. Thus the features of this language
+  should be used, e.g. the Unicode character set.
+
+\end{itemize}
+
+
+
+\section{Code formatting}
+
+The Coding Standards \cite{coding-conventions} od Sun have been become
+the de facto standard in the context of Java programming. Thus these
+rule are used as basis for this project as well.
+
+Any additions or overwriting of rules given there will be documented
+here.
+
+
+\section{Design Rationals}
+
+\subsection{Java 1.4}
+
+\ExTeX\ is assumed to run on Java 1.4 and upwards. Thus the features
+of this release -- which has been the current one at the beginnig of
+the development -- can be used. No provisions have to be made to
+support any version of Java prior to Version 1.4.
+
+
+\subsection{No Static Class Variables}
+
+Static class variables act like global variables. In the context of
+object-oriented programming it is considered as bad design to use
+them. Thus each static variable has to be justified extensively.
+
+\subsection{No System.exits() Outside of main()}
+
+The method |System.exit()| terminates the execution of the programn
+and returns an exit status back to the operating system. Invoking this
+method somewhere in code makes it impossible to easily test the code
+from within Java (e.g. with JUnit)
+
+The method |System.exit()| is allowed in the method |main()| only.
+
+
+\bibliographystyle{alpha}
+\bibliography{Design_Guidelines}
+
+\end{document}%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Local Variables: 
+% mode: latex
+% TeX-master: nil
+% End: 

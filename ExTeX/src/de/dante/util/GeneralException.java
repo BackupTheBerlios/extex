@@ -23,7 +23,7 @@ package de.dante.util;
  * This is a bse class for exceptions which carry a return code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GeneralException extends Exception {
     /** the exit code attribute */

@@ -163,7 +163,7 @@
     <define name="interlinepenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="jobname" class=""/>
     <Define name="kern" class=""/>
-    <Define name="language" class=""/>
+    <define name="language" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="lastbox" class=""/>
     <Define name="lastkern" class=""/>
     <define name="lastpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>

@@ -116,7 +116,7 @@ Usage:
       <classpath refid="main.class.path"/>
       <packageset dir="${src}" defaultexcludes="yes"/>
     </javadoc>
-    <copy todir="javadoc">
+    <copy todir="${javadoc}">
       <fileset dir="src">
         <include name="**/*.gif"/>
         <include name="**/*.png"/>
