@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Max1 extends TestCase {
 
@@ -300,6 +300,14 @@ public class Max1 extends TestCase {
         public void openVbox() {
 
             // TODO Auto-generated method stub
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#getLastNode()
+         */
+        public Node getLastNode() {
+
+            return null;
         }
     }
 
