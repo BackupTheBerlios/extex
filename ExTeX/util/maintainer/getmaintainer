@@ -1,12 +1,15 @@
 #!/bin/sed -f
 # author: Sebastian Waschik
 # created: 2004-07-11
-# RCS-ID: $Id: getmaintainer,v 1.1 2004/08/11 20:49:22 plaicy Exp $
+# RCS-ID: $Id: getmaintainer,v 1.2 2004/08/12 13:48:25 plaicy Exp $
 
 s/^.*@author.*<[aA][^>]*>\([^<]*\)<.*$/\1/
 s/^.*<meta.*name="author".*content="\([^"]*\).*$/\1/
+s/^.*\\author{\([^}]*\)}.*$/\1/
 
 t end
+
+# skip line
 d
 b
 
