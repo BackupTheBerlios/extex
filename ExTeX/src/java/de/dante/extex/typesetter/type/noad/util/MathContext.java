@@ -16,17 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.noad.util;
 
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
-
 
 /**
  * This class provides a container for the information on the current
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathContext {
 
@@ -34,6 +35,11 @@ public class MathContext {
      * The field <tt>style</tt> contains the current style.
      */
     private StyleNoad style;
+
+    /**
+     * The field <tt>mu</tt> contains the current math unit.
+     */
+    private Glue mu;
 
     /**
      * Creates a new object.
@@ -55,6 +61,7 @@ public class MathContext {
 
         return this.style;
     }
+
     /**
      * Setter for style.
      *
@@ -64,4 +71,5 @@ public class MathContext {
 
         this.style = style;
     }
+
 }
