@@ -57,9 +57,9 @@ done
 #for i in lib.develop/*.jar ; do
 #        LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
 #done
-#for i in tmp/ExTeX/*.jar ; do
-#        LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
-#done
+for i in tmp/ExTeX/*.jar ; do
+        LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
+done
 
 LOCALCLASSPATH=$LOCALCLASSPATH$sep$EXTEX_HOME/bin
 
