@@ -48,7 +48,7 @@ import de.dante.util.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -215,7 +215,7 @@ public class DviDocumentWriterTest extends TestCase {
      *
      * @exception Exception if an error occurs
      */
-    public void testMagnifikation() throws Exception {
+    public void testMagnification() throws Exception {
         boolean gotRangeException = false;
 
         checkMagnification(-1); // TODO
