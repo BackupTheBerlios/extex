@@ -27,13 +27,15 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface PageBuilder {
-    
+
     /**
-     * ...
+     * Close the page builder. Any material left should be processed now since
+     * it can not be expected that the page builder is invoked later in any way.
      *
+     * @throws GeneralException in case of an error
      */
     void close() throws GeneralException;
 
@@ -43,8 +45,12 @@ public interface PageBuilder {
      * <p>
      * Nevertheless some shipouts might come afterwards.
      * </p>
+     *
+     * @param nodes the nodes to send
+     *
+     * @throws GeneralException in case of an error
      */
-    void flush() throws GeneralException;
+    void flush(NodeList nodes) throws GeneralException;
 
     /**
      * Setter for the document writer.
@@ -64,5 +70,5 @@ public interface PageBuilder {
      *
      * @throws GeneralException in case of an error
      */
-    void shipout(NodeList nodes) throws GeneralException;
+    void inspectAndBuild(NodeList nodes) throws GeneralException;
 }
