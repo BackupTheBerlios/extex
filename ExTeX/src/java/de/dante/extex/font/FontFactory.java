@@ -26,11 +26,11 @@ import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * FontFactory-Interface
+ * FontFactory-Interface.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface FontFactory {
 
@@ -47,8 +47,8 @@ public interface FontFactory {
      * @throws ConfigurationException ...
      */
     Font getInstance(String name, Dimen size, final Glue letterspaced,
-            boolean ligatures, boolean kerning) throws GeneralException,
-            ConfigurationException;
+            final boolean ligatures, final boolean kerning)
+            throws GeneralException, ConfigurationException;
 
     /**
      * Factory for <code>Font</code>.
@@ -60,6 +60,17 @@ public interface FontFactory {
      * @throws ConfigurationException ...
      */
     Font getInstance(String name, Dimen size) throws GeneralException,
+            ConfigurationException;
+
+    /**
+     * Factory for <code>Font</code>.
+     *
+     * @param name          the filename of the font
+     * @return the Font, or <code>null</code>, if the font are not aviable
+     * @throws GeneralException ...
+     * @throws ConfigurationException ...
+     */
+    Font getInstance(String name) throws GeneralException,
             ConfigurationException;
 
 }

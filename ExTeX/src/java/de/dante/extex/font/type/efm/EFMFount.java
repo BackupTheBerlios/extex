@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class EFMFount implements ModifiableFount {
 
@@ -117,6 +117,11 @@ public abstract class EFMFount implements ModifiableFount {
     private static final String ATTREMPR = "empr";
 
     /**
+     * Attribut default-size
+     */
+    private static final String ATTRDEFAULTSIZE = "default-size";
+
+    /**
      * load the Font
      * @param   doc         the efm-document
      * @param   fileFinder  the fileFinder
@@ -145,6 +150,26 @@ public abstract class EFMFount implements ModifiableFount {
                     empr = DEFAULTEMPR;
                 }
             }
+            // use design-size if emsize equlas sero
+            if (emsize.getValue() == 0) {
+
+                // default-size
+                Attribute defaultsize = fontgroup.getAttribute(ATTRDEFAULTSIZE);
+
+                if (defaultsize != null) {
+                    try {
+                        float f = defaultsize.getFloatValue();
+                        if (f > 0) {
+                            emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                        }
+                    } catch (Exception e) {
+                        emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                    }
+                } else {
+                    emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                }
+            }
+
             // calculate em
             em = new Dimen((long) (emsize.getValue() * empr / PROZ100));
 
@@ -328,6 +353,11 @@ public abstract class EFMFount implements ModifiableFount {
      * Default for em-prozent-size
      */
     private static final float DEFAULTEMPR = 100.0f;
+
+    /**
+     * Default for default-size (10pt)
+     */
+    private static final int DEFAULTSIZE_IN_PT = 10;
 
     /**
      * 100 %

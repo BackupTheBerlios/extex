@@ -56,7 +56,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -102,6 +102,15 @@ public class FontFactoryImpl implements FontFactory {
 
         cfgType = config.getConfiguration(TAG_TYPE);
 
+    }
+
+    /**
+     * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
+     */
+    public Font getInstance(final String name) throws GeneralException,
+            ConfigurationException {
+
+        return getInstance(name, new Dimen(0), new Glue(0), true, true);
     }
 
     /**
