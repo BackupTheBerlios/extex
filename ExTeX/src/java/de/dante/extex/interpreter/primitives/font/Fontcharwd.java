@@ -58,7 +58,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Fontcharwd extends AbstractCode
         implements
@@ -126,7 +126,7 @@ public class Fontcharwd extends AbstractCode
             throws GeneralException {
 
         long value = convertDimen(context, source, typesetter);
-        source.push(new Tokens(context, value));
+        source.push(new Dimen(value).toToks(context.getTokenFactory()));
     }
 
     /**
@@ -138,7 +138,7 @@ public class Fontcharwd extends AbstractCode
             final Typesetter typesetter) throws GeneralException {
 
         long value = convertDimen(context, source, typesetter);
-        return new Tokens(context, value);
+        return new Dimen(value).toToks(context.getTokenFactory());
     }
 
 }
