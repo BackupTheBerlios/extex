@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
@@ -29,9 +30,10 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class AbstractCode implements Code {
+
     /**
      * The field <tt>name</tt> contains the name of this code for debugging.
      */
@@ -43,6 +45,7 @@ public class AbstractCode implements Code {
      * @param codeName the name of the primitive
      */
     public AbstractCode(final String codeName) {
+
         super();
         this.name = codeName;
     }
@@ -51,16 +54,15 @@ public class AbstractCode implements Code {
      * @see de.dante.extex.interpreter.Code#isIf()
      */
     public boolean isIf() {
+
         return false;
     }
 
     /**
-     * Setter for the name of this code instance. This information is primarily
-     * needed for debugging.
-     *
-     * @param theName the name
+     * @see de.dante.extex.interpreter.Code#setName(java.lang.String)
      */
     public void setName(final String theName) {
+
         this.name = theName;
     }
 
@@ -68,18 +70,21 @@ public class AbstractCode implements Code {
      * @see de.dante.extex.interpreter.Code#getName()
      */
     public String getName() {
+
         return name;
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         prefix.clear();
     }
 
@@ -91,7 +96,7 @@ public class AbstractCode implements Code {
      *      de.dante.extex.interpreter.context.Context, java.lang.String)
      */
     public void set(final Context context, final String value)
-        throws GeneralException {
+            throws GeneralException {
 
         // nothing to do
     }

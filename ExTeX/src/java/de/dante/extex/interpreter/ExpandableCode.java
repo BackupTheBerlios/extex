@@ -23,22 +23,19 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This interface describes the feature of being expandable code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ExpandableCode {
 
     /**
      * This method takes the first token and expands it. The result is placed
-     * on the stack. To expand a token it might be necessary to consume further
-     * tokens. In this case <code>true</code> is returned.
-     * <p>
-     * This means that expandable code does one step of expansion, puts the
-     * result on the stack, and returns <code>true</code>.
-     * Non-expandable code simply return <code>false</code>.
-     * </p>
+     * on the stack.
+     * This means that expandable code does one step of expansion and puts the
+     * result on the stack. To expand a token it might be necessary to consume
+     * further tokens.
      *
      * @param prefix the prefix flags controlling the expansion
      * @param context the interpreter context

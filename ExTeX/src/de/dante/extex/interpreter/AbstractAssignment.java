@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 
@@ -75,7 +75,11 @@ public abstract class AbstractAssignment extends AbstractCode {
     }
 
     /**
-     * ...
+     * The method <tt>assign</tt> is the core of the functionality of
+     * <tt>{@link #execute(Flags, Context, TokenSource, Typesetter) execute()}</tt>.
+     * This method is preferable to <tt>execute()</tt> since the
+     * <tt>execute()</tt> method provided in this class takes care of
+     * afterassignment and globaldefs as well.
      *
      * @param prefix the prefix controlling the execution
      * @param context the interpreter context

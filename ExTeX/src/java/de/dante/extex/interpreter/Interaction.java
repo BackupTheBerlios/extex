@@ -29,7 +29,7 @@ import java.io.Serializable;
  * ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -129,7 +129,7 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * This method provides an entry for the visitor pattern.
+     * This method provides an entry point for the visitor pattern.
      * ...
      *
      * @param visitor this argument contains the visitor which has initiated
@@ -150,7 +150,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class BatchMode extends Interaction {
 
@@ -172,7 +172,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -194,7 +194,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -216,7 +216,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class ErrorstopMode extends Interaction {
 

@@ -43,7 +43,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public interface TokenSource {
 
@@ -101,9 +101,10 @@ public interface TokenSource {
     Box getBox(Typesetter typesetter) throws GeneralException;
 
     /**
-     * ...
+     * Get the next token from the token stream and check that it is a
+     * control sequence.
      *
-     * @return ...
+     * @return the token read
      *
      * @throws GeneralException in case of an error
      */
@@ -315,6 +316,7 @@ public interface TokenSource {
      * ...
      *
      * @return ...
+     *
      * @throws GeneralException in case of an error
      */
     Font getFont() throws GeneralException;
@@ -333,7 +335,7 @@ public interface TokenSource {
      * @param name name of the observer
      * @param text the text to send to the observer
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      * @throws NotObservableException in case that the named observer is not
      *             accessible
      */
@@ -343,7 +345,7 @@ public interface TokenSource {
     /**
      * ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     void executeGroup() throws GeneralException;
 

@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface ErrorHandler {
 
@@ -38,7 +38,7 @@ public interface ErrorHandler {
      * This is the error handling callback.
      *
      * @param e the exception which has led to the invokation
-     * @param token ...
+     * @param token the token leading to the error
      * @param source the token source
      * @param context the processor context
      *

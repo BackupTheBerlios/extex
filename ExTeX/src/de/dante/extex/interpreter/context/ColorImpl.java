@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.context;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ColorImpl implements Color {
 
@@ -45,22 +45,26 @@ public class ColorImpl implements Color {
     public static final Color WHITE = new ColorImpl(0, 0, 0, 0);
 
     /**
-     * The field <tt>red</tt> contains the ...
+     * The field <tt>red</tt> contains the red value of the color.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      */
     private int red;
 
     /**
-     * The field <tt>green</tt> contains the ...
+     * The field <tt>green</tt> contains the green value of the color.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      */
     private int green;
 
     /**
-     * The field <tt>blue</tt> contains the ...
+     * The field <tt>blue</tt> contains the blue value of the color.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      */
     private int blue;
 
     /**
-     * The field <tt>alpha</tt> contains the ...
+     * The field <tt>alpha</tt> contains the alpha channel of the color.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      */
     private int alpha;
 

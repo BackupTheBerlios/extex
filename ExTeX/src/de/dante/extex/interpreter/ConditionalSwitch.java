@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,39 +22,21 @@ package de.dante.extex.interpreter;
 import de.dante.util.Locator;
 
 /**
- * This class represents a Confitional for a normal \if \else \fi construct.
+ * This class represents a conditional for a \ifcase construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.1 $
  */
-public class Conditional {
-
-    /**
-     * The field <tt>locator</tt> contains the locator to the position of the
-     * opening <tt>\if</tt>.
-     */
-    private Locator locator;
+public class ConditionalSwitch extends Conditional {
 
     /**
      * Creates a new object.
      *
-     * @param aLocator the locator
+     * @param locator the locator
      */
-    public Conditional(final Locator aLocator) {
+    public ConditionalSwitch(final Locator locator) {
 
-        super();
-        this.locator = aLocator;
-    }
-
-    /**
-     * Getter for the locator of this conditional.
-     * The locator points to the initiating <tt>\if</tt>.
-     *
-     * @return the locator
-     */
-    public Locator getLocator() {
-
-        return locator;
+        super(locator);
     }
 
     /**
@@ -66,7 +48,7 @@ public class Conditional {
      */
     public boolean getValue() {
 
-        return true;
+        return false;
     }
 
 }

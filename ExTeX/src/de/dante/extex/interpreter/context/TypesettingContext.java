@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface TypesettingContext {
 
@@ -65,16 +65,16 @@ public interface TypesettingContext {
     Direction getDirection();
 
     /**
-     * ...
+     * Setter for the hyphenation table.
      *
-     * @param language ...
+     * @param language the hyphenation table
      */
     void setLanguage(HyphenationTable language);
 
     /**
-     * ...
+     * Getter for the hyphenation table.
      *
-     * @return ...
+     * @return the hyphenation table
      */
     HyphenationTable getLanguage();
 

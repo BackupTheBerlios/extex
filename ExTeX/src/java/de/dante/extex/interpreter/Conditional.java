@@ -22,10 +22,10 @@ package de.dante.extex.interpreter;
 import de.dante.util.Locator;
 
 /**
- * ...
+ * This class represents a Confitional for a normal \if \else \fi construct.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Conditional {
 
@@ -36,25 +36,14 @@ public class Conditional {
     private Locator locator;
 
     /**
-     * The field <tt>value</tt> contains the value of the conditional.
-     * If it has the value <code>true</code> then the conditional is one of the
-     * if-then-else constructs. Otherwise it is a <tt>\ifcase</tt> construction.
-     */
-    private boolean value;
-
-    /**
      * Creates a new object.
      *
      * @param aLocator the locator
-     * @param aValue the new value
-     * If it has the value <code>true</code> then the conditional is one of the
-     * if-then-else constructs. Otherwise it is a <tt>\ifcase</tt> construction.
      */
-    public Conditional(final Locator aLocator, final boolean aValue) {
+    public Conditional(final Locator aLocator) {
 
         super();
         this.locator = aLocator;
-        this.value = aValue;
     }
 
     /**
@@ -77,7 +66,7 @@ public class Conditional {
      */
     public boolean getValue() {
 
-        return value;
+        return true;
     }
 
 }
