@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -514,13 +514,13 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         long val = getValue();
 
         if (val < 0) {
-            toks.add(factory.newInstance(Catcode.OTHER, '-'));
+            toks.add(factory.newInstance(Catcode.OTHER, '-', ""));
             val = -val;
         }
 
         long v = val / ONE;
         if (v == 0) {
-            toks.add(factory.newInstance(Catcode.OTHER, '0'));
+            toks.add(factory.newInstance(Catcode.OTHER, '0', ""));
         } else {
             long m = 1;
             while (m <= v) {
@@ -529,13 +529,13 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             m /= 10;
             while (m > 0) {
                 toks.add(factory.newInstance(Catcode.OTHER,
-                                             (char) ('0' + (v / m))));
+                                             (char) ('0' + (v / m)), ""));
                 v = v % m;
                 m /= 10;
             }
         }
 
-        toks.add(factory.newInstance(Catcode.OTHER, '.'));
+        toks.add(factory.newInstance(Catcode.OTHER, '.', ""));
 
         val = 10 * (val % ONE) + 5;
         long delta = 10;
@@ -544,19 +544,19 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 val = val + 0100000 - 50000; // round the last digit
             }
             int i = (int) (val / ONE);
-            toks.add(factory.newInstance(Catcode.OTHER, (char) ('0' + i)));
+            toks.add(factory.newInstance(Catcode.OTHER, (char) ('0' + i), ""));
             val = 10 * (val % ONE);
             delta *= 10;
         } while (val > delta);
 
         if (order == 0) {
-            toks.add(factory.newInstance(Catcode.LETTER, 'p'));
-            toks.add(factory.newInstance(Catcode.LETTER, 't'));
+            toks.add(factory.newInstance(Catcode.LETTER, 'p', ""));
+            toks.add(factory.newInstance(Catcode.LETTER, 't', ""));
         } else if (order > 0) {
-            toks.add(factory.newInstance(Catcode.LETTER, 'f'));
-            toks.add(factory.newInstance(Catcode.LETTER, 'i'));
+            toks.add(factory.newInstance(Catcode.LETTER, 'f', ""));
+            toks.add(factory.newInstance(Catcode.LETTER, 'i', ""));
             for (int i = order; i > 0; i--) {
-                toks.add(factory.newInstance(Catcode.LETTER, 'l'));
+                toks.add(factory.newInstance(Catcode.LETTER, 'l', ""));
             }
         } else {
             throw new GeneralPanicException("TTP.Confusion");

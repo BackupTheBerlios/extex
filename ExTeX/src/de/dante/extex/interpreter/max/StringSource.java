@@ -27,10 +27,10 @@ import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * ...
+ * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class StringSource extends Moritz implements TokenSource {
 

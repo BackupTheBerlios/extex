@@ -30,7 +30,8 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 
 /**
- * ...
+ * This class provides a factory for a
+ * {@link de.dante.extex.interpreter.context.Context Context}.
  *
  *
  * <pre>
@@ -39,7 +40,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ContextFactory {
 

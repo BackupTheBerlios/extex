@@ -28,7 +28,8 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
- * ...
+ * This class provides a factory for a
+ * {@link de.dante.extex.interpreter.context.impl.Group Group}.
  *
  *
  * <pre>
@@ -37,7 +38,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GroupFactory {
 

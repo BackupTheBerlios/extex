@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Dump extends AbstractCode {
 
@@ -103,7 +103,7 @@ public class Dump extends AbstractCode {
 
         Tokens tJobname = context.getToks("jobname");
         if (tJobname == null) {
-            throw new GeneralException("invalid jobname"); //TODO i18n
+            throw new GeneralHelpingException("invalid jobname"); //TODO i18n
         }
         String format = tJobname.toText() + FORMAT_EXTENSION;
 

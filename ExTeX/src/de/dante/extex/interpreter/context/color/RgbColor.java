@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Color;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RgbColor implements Color {
 
@@ -34,7 +34,7 @@ public class RgbColor implements Color {
      * The constant <tt>MAX_VALUE</tt> contains the maximal values for all
      * channels.
      */
-    private static final int MAX_VALUE = 0xffff;
+    public static final int MAX_VALUE = 0xffff;
 
     /**
      * The constant <tt>BLACK</tt> contains the color black.
@@ -93,25 +93,34 @@ public class RgbColor implements Color {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Color#getR()
+     * Getter for the red value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
+     *
+     * @return the red value.
      */
-    public int getR() {
+    public int getRed() {
 
         return red;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Color#getG()
+     * Getter for the green value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
+     *
+     * @return the green value.
      */
-    public int getG() {
+    public int getGreen() {
 
         return green;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Color#getB()
+     * Getter for the blue value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
+     *
+     * @return the blue value.
      */
-    public int getB() {
+    public int getBlue() {
 
         return blue;
     }

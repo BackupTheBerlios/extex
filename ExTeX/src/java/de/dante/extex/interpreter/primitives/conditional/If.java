@@ -39,19 +39,27 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;if&rang;
- *     := <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\fi</tt>
+ *     := <tt>\if</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token<sub>1</sub>&rang;} {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token<sub>2</sub>&rang;}; &lang;true text&rang; <tt>\fi</tt>
  *
- *      |  <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ *      |  <tt>\if</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token<sub>1</sub>&rang;} {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token<sub>2</sub>&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \else ...  </pre>
+ *    \if\a\x ok \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class If extends AbstractIf {
 

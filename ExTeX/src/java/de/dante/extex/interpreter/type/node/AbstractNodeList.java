@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -82,14 +82,12 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * ...
-     *
-     * @param arg0 ...
-     * @param arg1 ...
+     * @see de.dante.extex.typesetter.NodeList#add(int,
+     *      de.dante.extex.typesetter.Node)
      */
-    public void add(final int arg0, final Node arg1) {
+    public void add(final int index, final Node node) {
 
-        this.list.add(arg0, arg1);
+        this.list.add(index, node);
     }
 
     /**
@@ -129,11 +127,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * ...
-     *
-     * @param index ...
-     *
-     * @return ...
+     * @see de.dante.extex.typesetter.NodeList#get(int)
      */
     public Node get(int index) {
 
@@ -196,15 +190,11 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * ...
-     *
-     * @param arg0 ...
-     *
-     * @return ...
+     * @see de.dante.extex.typesetter.NodeList#remove(int)
      */
-    public Object remove(final int arg0) {
+    public Node remove(final int index) {
 
-        return this.list.remove(arg0);
+        return (Node) this.list.remove(index);
     }
 
     /**

@@ -33,18 +33,30 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive
- * <code>\show</code>.
+ * This class provides an implementation for the primitive <code>\show</code>.
  *
  * <doc name="show">
  * <h3>The Primitive <tt>\show</tt></h3>
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;show&rang;
+ *     := <tt>\show</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token&rang;} </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \show\abc  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Show extends AbstractCode {
 
@@ -78,12 +90,12 @@ public class Show extends AbstractCode {
     }
 
     /**
-     * ...
+     * Get the descriptions of a token as token list.
      *
-     * @param t ...
+     * @param t the token to describe
      * @param context the interpreter context
      *
-     * @return ...
+     * @return the token list describing the token
      *
      * @throws GeneralException in case of an error
      */
@@ -105,7 +117,7 @@ public class Show extends AbstractCode {
         toks.add(new Tokens(context, "="));
         Code code = context.getCode(t);
         if (code == null) {
-            toks.add(new Tokens(context, "undefined")); // TODO: i18n
+            toks.add(new Tokens(context, "undefined")); // TODO: i18n?
         } else if ((code instanceof Showable)) {
             toks.add(((Showable) code).show(context));
         } else {

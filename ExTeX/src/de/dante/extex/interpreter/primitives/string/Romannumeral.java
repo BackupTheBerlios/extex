@@ -41,12 +41,17 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\romannumeral</tt> &lang;...&rang; </pre>
+ *    &lang;romannumeral&rang;
+ *        := <tt>\romannumeral</tt> {@linkplain
+ *           de.dante.extex.interpreter.TokenSource#scanInteger()
+ *           &lang;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \romannumeral ...  </pre>
+ *    \romannumeral\count1  </pre>
+ *  <pre class="TeXSample">
+ *    \romannumeral 2004  </pre>
  * </p>
  * </doc>
  *
@@ -54,7 +59,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
@@ -104,7 +109,7 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
 
         for (;;) {
             while (n >= v) {
-                toks.add(factory.newInstance(Catcode.LETTER, magic[j]));
+                toks.add(factory.newInstance(Catcode.LETTER, magic[j], ""));
                 n = n - v;
             }
 
@@ -119,7 +124,7 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
                 u = u / (magic[k - 1] - '0');
             }
             if (n + u >= v) {
-                toks.add(factory.newInstance(Catcode.LETTER, magic[k]));
+                toks.add(factory.newInstance(Catcode.LETTER, magic[k], ""));
                 n = n + u;
             } else {
                 j = j + 2;

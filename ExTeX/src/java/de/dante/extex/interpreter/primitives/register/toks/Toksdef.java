@@ -54,12 +54,6 @@ import de.dante.util.GeneralException;
  * </p>
  * </doc>
  *
- * <p>Example</p>
- * <pre>
- * \toksdef\abc=45
- * \toksdef\abc 54
- * </pre>
- *
  *
  * <h3>Possible Extension</h3>
  * Allow an expandable expression instead of the number to define real named
@@ -74,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "toks#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Toksdef extends AbstractToks {
 

@@ -112,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class ContextImpl
         implements
@@ -222,7 +222,8 @@ public class ContextImpl
     private transient ObserverList observersInteraction = new ObserverList();
 
     /**
-     * The field <tt>standardTokenStream</tt> contains the ...
+     * The field <tt>standardTokenStream</tt> contains the standard token
+     * stream. This token stream usually is fed by the user.
      */
     private transient TokenStream standardTokenStream = null;
 
@@ -319,20 +320,6 @@ public class ContextImpl
             source.push(toks);
         }
 
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getActive(java.lang.String)
-     */
-    public Code getActive(final String name) {
-
-        try {
-            return group.getCode(getTokenFactory().newInstance(Catcode.ACTIVE,
-                    name, namespace));
-        } catch (CatcodeException e) {
-            e.printStackTrace();
-            return null;
-        }
     }
 
     /**
@@ -478,23 +465,6 @@ public class ContextImpl
     public UnicodeChar getLccode(final UnicodeChar uc) {
 
         return group.getLccode(uc);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#getMacro(
-     *      java.lang.String)
-     */
-    public Code getMacro(final String name) {
-
-        try {
-            return getCode(tokenFactory.newInstance(Catcode.ESCAPE, name,
-                    namespace));
-        } catch (CatcodeException e) {
-            e.printStackTrace();
-        } catch (GeneralException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     /**
@@ -671,20 +641,6 @@ public class ContextImpl
             observersInteraction.add(observer);
         } else {
             throw new NotObservableException(name);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String, de.dante.extex.interpreter.Code, boolean)
-     */
-    public void setActive(final String name, final Code code,
-            final boolean global) {
-
-        try {
-            group.setCode(tokenFactory.newInstance(Catcode.ACTIVE, name), code,
-                    global);
-        } catch (CatcodeException e) {
-            e.printStackTrace();
         }
     }
 

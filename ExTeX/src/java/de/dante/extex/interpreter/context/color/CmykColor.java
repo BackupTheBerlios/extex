@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Color;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CmykColor implements Color {
 
@@ -34,7 +34,7 @@ public class CmykColor implements Color {
      * The constant <tt>MAX_VALUE</tt> contains the maximal values for all
      * channels.
      */
-    private static final int MAX_VALUE = 0xffff;
+    public static final int MAX_VALUE = 0xffff;
 
     /**
      * The constant <tt>BLACK</tt> contains the color black.
@@ -116,9 +116,10 @@ public class CmykColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the black component.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the black component
      */
     public int getBlack() {
 
@@ -126,9 +127,10 @@ public class CmykColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the cyan component.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the cyan component
      */
     public int getCyan() {
 
@@ -136,9 +138,10 @@ public class CmykColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the magenta component.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the magenta component
      */
     public int getMagenta() {
 
@@ -146,9 +149,10 @@ public class CmykColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the yellow component.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the yellow component
      */
     public int getYellow() {
 

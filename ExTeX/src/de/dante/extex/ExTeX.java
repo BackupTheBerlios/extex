@@ -120,7 +120,7 @@ import de.dante.util.resource.FileFinderPathImpl;
  *  <a href="#invocation">Direct Java Invocation</a>.
  * </p>
  * <p>
- *  This program &ndash; called <tt>extex<&/tt> here &ndash; has in its normal
+ *  This program &ndash; called <tt>extex</tt> here &ndash; has in its normal
  *  form of invocation one parameter. This parameter is the name of the file to
  *  process:
  * </p>
@@ -128,16 +128,165 @@ import de.dante.util.resource.FileFinderPathImpl;
  *   extex file.tex </pre>
  * <p>
  *  The input file is sought in the current directory and other locations.
- *  Details about searching can be found in <a href="fileSearch">Searching TeX
+ *  Details about searching can be found in <a href="#fileSearch">Searching TeX
  *  Files</a>.
  * </p>
  * <p>
  *  In general the syntax of invocation is as follows:
  * </p>
  * <pre class="CLIsyntax">
- *   extex &lang;options&rang; &lang;file&rang; </pre>
+ *   extex &lang;options&rang; &lang;file&rang; &lang;code&rang; </pre>
  * <p>
- *  
+ *  Command line parameters are the way of setting options with
+ *  highest priority. The command line parameters overrule all
+ *  settings in other parameter files. The command line options are
+ *  contained in the table below.
+ * </p>
+ * 
+ * <dl>
+ *   <dt><tt>&lang;code&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains ExTeX code to be executed directly. The
+ *    execution is performed after any code specified in an input file.
+ *    on the command line the code has to start with a backslash. This
+ *    restriction does not hold for the property settings.
+ *   </dd>
+ *   <dd>Property: <tt><a href="#extex.code">extex.code</a></tt></dd>
+ * 
+ *   <dt><tt>&lang;file&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the file to read from. A file name may
+ *    not start with a backslash or a ampercent. It has no default.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.file">extex.file</a></tt></dd>
+ * 
+ *   <dt><a name="-configuration"/><tt>-configuration &lang;resource&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the configuration resource to use.
+ *    This configuration resource is sought on the classpath.
+ *   </dd>
+ *   <dd>Property: <tt><a href="#extex.config">extex.config</a></tt></dd>
+ * 
+ *   <dt><a name="-copyright"/><tt>-copyright</tt></dt>
+ *   <dd>
+ *    This command line option produces a copyright notice on the
+ *    standard output stream and terminates the program afterwards.
+ *   </dd>
+ * 
+ *   <dt><a name="-texmfoutputs"/><tt>-texmfoutputs &lang;dir&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the
+ *    property for the fallback if the output directory fails to be writable.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
+ *   </dd>
+ * 
+ *   <dt><tt>&amp;&lang;format&rang;</tt></dt>
+ *   <dt><a name="-fmt"/><tt>-fmt &lang;format&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the format to read. An empty
+ *    string denotes that no format should be read. This is the default.
+ *   </dd>
+ *   <dd>Property: <tt><a href="#extex.fmt">extex.fmt</a></tt></dd>
+ * 
+ *   <dt><a name="-halt"/><tt>-halt-on-error</tt></dt>
+ *   <dd>
+ *    ...
+ *   </dd>
+ * 
+ *   <dt><a name="-help"/><tt>-help</tt></dt>
+ *   <dd>
+ *    This command line option produces a short usage description on the
+ *    standard output stream and terminates the program afterwards.
+ *   </dd>
+ * 
+ *   <dt><a name="-ini"/><tt>-ini</tt></dt>
+ *   <dd>
+ *    If set to <code>true</code> then act as initex. This coµmand line
+ *    option is defined for compatibility to TeX only. In ExTeX it has no
+ *    effect at all.
+ *   </dd>
+ *   <dd>Property: <tt><a href="#extex.ini">extex.ini</a></tt> </dd>
+ * 
+ *   <dt><a name="-interaction"/><tt>-interaction &lang;mode&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the interaction mode. possible values are
+ *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
+ *    scrollmode (2), and errorstopmode (3).
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.interaction">extex.interaction</a></tt></dd>
+ * 
+ *   <dt><a name="-job"/><tt>-job-name &lang;name&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the job. It is overwritten
+ *    if a file is given to read from. In this case the basename of
+ *    the input file is used instead.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.jobname">extex.jobname</a></tt></dd>
+ * 
+ *   <dt><a name="-language"/><tt>-language &lang;language&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the locale to be used for the
+ *    messages.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.lang">extex.lang</a></tt> </dd>
+ * 
+ *   <dt><a name="-output"/><tt>-output &lang;format&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the output format. This logical name is resolved
+ *    via the configuration.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.output">extex.output</a></tt></dd>
+ * 
+ *   <dt><a name="-texoutputs"/><tt>-texoutputs &lang;dir&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contain the directory where output files should be
+ *    created.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
+ * 
+ *   <dt><a name="-progname"/><tt>-progname</tt></dt>
+ *   <dd>
+ *    This parameter can be used to overrule the name of the program shown in
+ *    the banner and the version information.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.progname">extex.progname</a></tt></dd>
+ * 
+ *   <dt><a name="-texinputs"/><tt>-texinputs &lang;path&rang;</tt></dt>
+ *   <dd>
+ *    This parameter contains the additional directories for searching TeX
+ *    input files.
+ *   </dd>
+ *   <dd>Property:
+ *    <tt><a href="#extex.texinputs">extex.texinputs</a></tt> </dd>
+ * 
+ *   <dt><a name="-version"/><tt>-version</tt></dt>
+ *   <dd>
+ *    This command line parameter forces that the version information
+ *    is written to standard output and the program is terminated.
+ *   </dd>
+ * </dl>
+ * 
+ * <p>
+ *  Command line parameters can be abbreviated up to a unique prefix
+ *  &ndash; and sometimes even more. Thus the following invocations
+ *  are equivalent:
+ * <pre class="CLIsyntax">
+ *   extex -v
+ *   extex -ve
+ *   extex -ver
+ *   extex -vers
+ *   extex -versi
+ *   extex -versio
+ *   extex -version  </pre>
  * </p>
  *
  *
@@ -147,14 +296,193 @@ import de.dante.util.resource.FileFinderPathImpl;
  *
  *
  *
- * <h3>User and Directory Settings</h3>
+ * <a name="settings"/><h3>Settings and Command Line Parameters</h3>
  *
  * <p>
- *  Settings can be stored in properties files. Those settings are the fallbacks
- *  if no corresponding command line arguments are found.
+ *  Settings can be stored in properties files. Those settings are the
+ *  fallbacks if no corresponding command line arguments are found.
  * </p>
+ * <p>
+ *  The properties are stored in a file named <tt>.extex</tt>. It is
+ *  sought in the users home directory. This determined by the system
+ *  property <tt>user.home</tt>. Afterwards it is sought in the
+ *  current directory. The local settings of a directory overwrite the
+ *  user's setting. The user's setting overwrite the compiled in defaults
+ * </p>
+ * <p>
+ * The following properties are recognized:
+ * </p>
+ * <dl>
+ *   <dt><a name="extex.code"/><tt>extex.code</tt></dt>
+ *   <dd>
+ *    This parameter contains ExTeX code to be executed directly. The
+ *    execution is performed after any code specified in an input file.
+ *    on the command line the code has to start with a backslash. This
+ *    restriction does not hold for the property settings.
+ *   </dd>
+ *   <dd>Command line: <tt>&lang</a>;code&rang;</tt></dd>
+ * 
+ *   <dt><a name="extex.config"/><tt>extex.config</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the configuration resource to use.
+ *    This configuration resource is sought on the classpath.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-configuration"><tt>-configuration &lang;resource&rang;</tt></a></dd>
+ *   <dd>Default: <tt>extex.xml</tt></dd>
+ * 
+ *   <dt><a name="extex.encoding"/><tt>extex.encoding</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the property for
+ *    the standard encoding to use.
+ *   </dd>
+ *   <dd>Default: <tt>ISO-8859-1</tt></dd>
+ * 
+ *   <dt><a name="extex.error.handler"/><tt>extex.error.handler</tt></dt>
+ *   <dd>
+ *    This parameter contains the logical name of the error handler.
+ *   </dd>
+ * 
+ *   <dt><a name="extex.outputdir.fallback"/><tt>extex.outputdir.fallback</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the
+ *    property for the fallback if the output directory fails to be writable.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a> </dd>
+ * 
+ *   <dt><a name="extex.file"/><tt>extex.file</tt></dt>
+ *   <dd>
+ *    This parameter contains the file to read from. It has no default
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="&lang"><tt>&lang;file&rang;</tt></a> </dd>
+ * 
+ *   <dt><a name="extex.fmt"/><tt>extex.fmt</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the format to read. An empty
+ *    string denotes that no format should be read. This is the default.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-fmt"><tt>-fmt &lang;format&rang;</tt></a></dd>
+ * 
+ *   <dt><a name="extex.ini"/><tt>extex.ini</tt></dt>
+ *   <dd>
+ *    If set to <code>true</code> then act as initex. This coµmand line
+ *    option is defined for compatibility to TeX only. In ExTeX it has no
+ *    effect at all.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-ini"><tt>-ini</tt></a> </dd>
+ * 
+ *   <dt><a name="extex.interaction"/><tt>extex.interaction</tt></dt>
+ *   <dd>
+ *    This parameter contains the interaction mode. possible values are
+ *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
+ *    scrollmode (2), and errorstopmode (3).
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-interaction"><tt>-interaction &lang;mode&rang;</tt></a></dd>
+ *   <dd>Default: <tt>3</tt></dd>
+ * 
+ *   <dt><a name="extex.jobname"/><tt>extex.jobname</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the job. It is overwritten
+ *    if a file is given to read from. In this case the basename of
+ *    the input file is used instead.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-job"><tt>-job-name &lang;name&rang;</tt></a></dd>
+ *   <dd>Default: <tt>texput</tt></dd>
+ * 
+ *   <dt><a name="extex.jobnameMaster"/><tt>extex.jobnameMaster</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the job to be used with high
+ *    priority.
+ *   </dd>
+ *   <dd>Default: <tt>texput</tt></dd>
+ * 
+ *   <dt><a name="extex.lang"/><tt>extex.lang</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the locale to be used for the
+ *    messages.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-language"><tt>-language &lang;language&rang;</tt></a> </dd>
+ * 
+ *   <dt><a name="extex.nobanner"/><tt>extex.nobanner</tt></dt>
+ *   <dd>
+ *    This parameter contains a boolean indicating that the banner should be
+ *    suppressed.
+ *   </dd>
+ * 
+ *   <dt><a name="extex.output"/><tt>extex.output</tt></dt>
+ *   <dd>
+ *    This parameter contains the output format. This logical name is resolved
+ *    via the configuration.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-output"><tt>-output &lang;format&rang;</tt></a></dd>
+ *   <dd>Default: <tt>pdf</tt></dd>
+ * 
+ *   <dt><a name="extex.outputdir"/><tt>extex.outputdir</tt></dt>
+ *   <dd>
+ *    This parameter contain the directory where output files should be
+ *    created.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-texoutputs"><tt>-texoutputs &lang;dir&rang;</tt></a></dd>
+ *   <dd>Default: <tt>.</tt></dd>
+ * 
+ *   <dt><a name="extex.pool"/><tt>extex.pool</tt></dt>
+ *   <dd>
+ *    This parameter can be used to overrule the base name of the resource
+ *    containing the messages.
+ *   </dd>
+ *   <dd>Default: <tt>config.extexMessages</tt></dd>
+ * 
+ *   <dt><a name="extex.progname"/><tt>extex.progname</tt></dt>
+ *   <dd>
+ *    This parameter can be used to overrule the name of the program shown in
+ *    the banner and the version information.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-progname"><tt>-progname</tt></a></dd>
+ *   <dd>Default: <tt>ExTeX</tt></dd>
+ * 
+ *   <dt><a name="extex.texinputs"/><tt>extex.texinputs</tt></dt>
+ *   <dd>
+ *    This parameter contains the additional directories for searching TeX
+ *    input files.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-texinputs"><tt>-texinputs &lang;path&rang;</tt></a> </dd>
+ * 
+ *   <dt><a name="extex.trace.macros"/><tt>extex.trace.macros</tt></dt>
+ *   <dd>
+ *    This boolean parameter contains the indicator whether or not to trace the
+ *    execution of macros.
+ *   </dd>
+ * 
+ *   <dt><a name="extex.trace.tokenizer"/><tt>extex.trace.tokenizer</tt></dt>
+ *   <dd>
+ *    This boolean parameter contains the indicator whether or not to trace the
+ *    work of the tokenizer.
+ *   </dd>
+ * 
+ *   <dt><a name="extex.typesetter"/><tt>extex.typesetter</tt></dt>
+ *   <dd>
+ *    This parameter contain the name of the typesetter to use. If it is
+ *    not set then the default from the configuration file is used.
+ *   </dd>
+ * </dl>
  *
- * ...
+ * <p>
+ *  There is another level of properties which is considered between the
+ *  compiled in defaults and the user's properties. Those are the system
+ *  properties of the Java system. There system wide settings can be stored.
+ *  Nevertheless, use this feature sparsely.
+ * </p>
  *
  *
  * <a name="configuration"/><h3>Configuration Files</h3>
@@ -166,8 +494,29 @@ import de.dante.util.resource.FileFinderPathImpl;
  *
  * <a name="invocation"/><h3>Direct Java Invocation</h3>
  *
- *
- * ...
+ * <p>
+ *  The direct invocation of the Java needs some settings to be preset.
+ *  These settings are needed for ExTeX to run properly. The following
+ *  premises are needed:
+ * </p>
+ * <ul>
+ *  <li>Java needs to be installed (see section
+ *   <a href="#installation">Installation</a>. The program <tt>java</tt> is
+ *   assumed to be on the path of executables.
+ *  </li>
+ *  <li>Java must be configured to find the jar files from the ExTeX
+ *   distribution. This can be acomplikshed by setting the environment variable
+ *   <tt>JAVA_HOME</tt>. See the documentation of your Java system for details.
+ *  </li>
+ * </ul>
+ * <p>
+ *  Now ExTeX can be invoked with the same parameters described above:
+ * </p>
+ * <pre class="CLIsyntax">
+ *   java de.dante.extex.ExTeX &lang;options&rang; &lang;file&rang; </pre>
+ * <p>
+ *  The result should be the same as the invocation of the wrapper.
+ * </p>
  *
  *
  * <a name="installation"/><h3>Installation</h3>
@@ -179,7 +528,7 @@ import de.dante.util.resource.FileFinderPathImpl;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public class ExTeX {
 
@@ -238,13 +587,13 @@ public class ExTeX {
      * for the error handler type to use. Possible values are resolved via the
      * configuration.
      */
-    private static final String PROP_ERROR_HANDLER = "extex.errorhandler";
+    private static final String PROP_ERROR_HANDLER = "extex.error.handler";
 
     /**
-     * The field <tt>PROP_FALLBACKOUTPUTDIR</tt> contains the name of the
+     * The field <tt>PROP_OUTPUTDIR_FALLBACK</tt> contains the name of the
      * property for the fallback if the output directory fails to be writable.
      */
-    private static final String PROP_FALLBACKOUTPUTDIR = "extex.FallbackOutputdir";
+    private static final String PROP_OUTPUTDIR_FALLBACK = "extex.outputdir.fallback";
 
     /**
      * The field <tt>PROP_FILE</tt> contains the name of the property for the
@@ -333,14 +682,14 @@ public class ExTeX {
      * property for the boolean determining whether or not the execution of
      * macros should produce tracing output.
      */
-    private static final String PROP_TRACE_MACROS = "extex.traceMacros";
+    private static final String PROP_TRACE_MACROS = "extex.trace.macros";
 
     /**
      * The field <tt>PROP_TRACE_TOKENIZER</tt> contains the name of the
      * property for the boolean determining whether or not the tokenizer
      * should produce tracing output.
      */
-    private static final String PROP_TRACE_TOKENIZER = "extex.traceTokenizer";
+    private static final String PROP_TRACE_TOKENIZER = "extex.trace.tokenizer";
 
     /**
      * The field <tt>PROP_TYPESETTER_TYPE</tt> contains the name of the property
@@ -404,89 +753,8 @@ public class ExTeX {
     /**
      * Creates a new object and supplies some properties for those keys which
      * are not contained in the properties already.
-     * <p>
-     * The following properties are recognized:
-     * </p>
-     * <table>
-     *  <tr>
-     *   <th>Name</th>
-     *   <th>Default</th>
-     *   <th>Description</th>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.progname</td>
-     *   <td>ExTeX</td>
-     *   <td>...</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.file</td>
-     *   <td></td>
-     *   <td>This parameter contains the file to read from. It has no default
-     *   </td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.code</td>
-     *   <td></td>
-     *   <td>This parameter contains TeX code to be executed directly. The
-     *   execution is performed after any code specified in an input file.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.config</td>
-     *   <td>extex.xml</td>
-     *   <td>This parameter contains the name of the configuration file to use.
-     *   This configuration file is sought on the classpath.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.ini</td>
-     *   <td></td>
-     *   <td>If set to <code>true</code> then act as initex.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.interaction</td>
-     *   <td>3</td>
-     *   <td>This parameter contains the interaction mode. possible values are
-     *   the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
-     *   scrollmode (2), and errorstopmode (3).</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.jobname</td>
-     *   <td>texput</td>
-     *   <td>This parameter contains the name of the job.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.fmt</td>
-     *   <td></td>
-     *   <td>This parameter contains the name of the format to read. An empty
-     *   string denotes that no format should be read.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.encoding</td>
-     *   <td>ISO-8859-1</td>
-     *   <td>...</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.texinputs</td>
-     *   <td></td>
-     *   <td>...</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.outputdir</td>
-     *   <td>.</td>
-     *   <td>This parameter contain the directory where output files should be
-     *   created.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.output</td>
-     *   <td>pdf</td>
-     *   <td>This parameter contain the output format.</td>
-     *  </tr>
-     *  <tr>
-     *   <td>extex.typesetter</td>
-     *   <td></td>
-     *   <td>This parameter contain the name of the typesetter to use. If it is
-     *    not set then the default from the configuration file is used.</td>
-     *  </tr>
-     * </table>
+     * A detailed list of the properties supported can be found in section
+     * <a href="#settings">Settings</a>.
      *
      * @param anyProperties the properties to start with
      *
@@ -644,7 +912,7 @@ public class ExTeX {
             OutputFactory outFactory = new OutputFactory(config
                     .getConfiguration("Output"), new String[]{
                     properties.getProperty(PROP_OUTPUTDIR),
-                    properties.getProperty(PROP_FALLBACKOUTPUTDIR)});
+                    properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
 
             showBanner(config);
             ResourceFinder finder = makeFileFinder(config
@@ -1352,7 +1620,7 @@ public class ExTeX {
      * Create a TokenStreamFactory.
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
-     * @param options TODO
+     * @param options the options for the token stream
      *
      * @return the token stream factory
      *

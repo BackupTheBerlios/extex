@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Color;
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HsvColor implements Color {
 
@@ -34,7 +34,7 @@ public class HsvColor implements Color {
      * The constant <tt>MAX_VALUE</tt> contains the maximal values for all
      * channels.
      */
-    private static final int MAX_VALUE = 0xffff;
+    public static final int MAX_VALUE = 0xffff;
 
     /**
      * The constant <tt>BLACK</tt> contains the color black.
@@ -93,9 +93,10 @@ public class HsvColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the hue value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the hue value.
      */
     public int getHue() {
 
@@ -103,9 +104,10 @@ public class HsvColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the saturation value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the saturation value.
      */
     public int getSaturation() {
 
@@ -113,9 +115,10 @@ public class HsvColor implements Color {
     }
 
     /**
-     * ...
+     * Getter for the value.
+     * It has a value in the range from 0 to {@link #MAX_VALUE MAX_VALUE}.
      *
-     * @return ...
+     * @return the value.
      */
     public int getValue() {
 

@@ -62,7 +62,8 @@ package de.dante.extex.interpreter;
  *  <tr>
  *   <td><b>outer</b></td>
  *   <td><tt>\outer</tt></td>
- *   <td>The outer flag controls ...
+ *   <td>The outer flag controls that the macro can not be used at places where
+ *    tokens are absorbed at high speed.
  *   </td>
  *  </tr>
  *  <tr>
@@ -74,7 +75,7 @@ package de.dante.extex.interpreter;
  * </table>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Flags {
 

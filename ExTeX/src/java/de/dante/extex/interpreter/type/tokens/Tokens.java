@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -149,7 +149,7 @@ public class Tokens implements Serializable, FixedTokens {
             for (int i = 0; i < s.length(); i++) {
                 c = s.charAt(i);
                 tokens.add(factory.newInstance((c == ' ' ? Catcode.SPACE
-                        : Catcode.OTHER), c));
+                        : Catcode.OTHER), c, ""));
             }
         }
     }
@@ -223,10 +223,10 @@ public class Tokens implements Serializable, FixedTokens {
             t = (Token) (tokens.get(i));
             if (t instanceof ControlSequenceToken) {
                 toks.add(factory.newInstance(Catcode.OTHER, (char) (context
-                        .getCount("escapechar").getValue())));
+                        .getCount("escapechar").getValue()), ""));
                 toks.add(factory, t.toString());
             } else if (t instanceof MacroParamToken) {
-                toks.add(factory.newInstance(Catcode.OTHER, '#'));
+                toks.add(factory.newInstance(Catcode.OTHER, '#', ""));
                 toks.add(factory.newInstance(Catcode.OTHER, t.getChar(), ""));
             } else {
                 toks.add(factory.newInstance(Catcode.OTHER, t.getChar(), ""));

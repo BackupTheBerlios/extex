@@ -24,20 +24,19 @@ import de.dante.extex.interpreter.type.node.CharNode;
 
 /**
  * This interface describes the features of a linear collection of nodes.
- * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface NodeList extends Node {
 
     /**
-     * ...
+     * Add a node to the node list at a given position.
      *
-     * @param arg0 ...
-     * @param arg1 ...
+     * @param index the position of insertion
+     * @param node the node to add
      */
-    public void add(final int arg0, final Node arg1);
+    void add(int index, Node node);
 
     /**
      * Add a node to the node list.
@@ -54,18 +53,19 @@ public interface NodeList extends Node {
     void addGlyph(CharNode node);
 
     /**
-     * add some glue to the node list.
+     * Add some glue to the node list.
      *
      * @param glue the glue to add
      */
     void addSkip(Glue glue);
 
     /**
-     * ...
+     * Getter for a node at a given posotion.
      *
-     * @param index ...
+     * @param index the position
      *
-     * @return ...
+     * @return the node at position <i>index</i> of <code>null</code> if index
+     * is out of bounds
      */
     Node get(int index);
 
@@ -91,13 +91,13 @@ public interface NodeList extends Node {
     NodeIterator iterator();
 
     /**
-     * ...
+     * Remove an element at a given position.
      *
-     * @param arg0 ...
+     * @param index the position
      *
-     * @return ...
+     * @return the element previously located at position <i>index</i>
      */
-    public Object remove(final int arg0);
+    Node remove(int index);
 
     /**
      * Setter for the move value of the node list.

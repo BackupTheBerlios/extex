@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathcharCode extends Mathchar {
 
@@ -42,7 +42,7 @@ public class MathcharCode extends Mathchar {
      * Creates a new object.
      *
      * @param name the name for debugging
-     * @param mc ...
+     * @param mc the code of the math char
      */
     public MathcharCode(final String name, final Count mc) {
 

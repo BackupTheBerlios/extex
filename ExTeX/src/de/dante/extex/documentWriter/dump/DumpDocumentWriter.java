@@ -29,7 +29,7 @@ import de.dante.util.configuration.Configuration;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
     /**
@@ -82,11 +82,10 @@ public class DumpDocumentWriter implements DocumentWriter {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(java.lang.String, java.lang.String)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(
+     *      java.lang.String, java.lang.String)
      */
-    public void setParameter(String name, String value) {
-
-        // TODO Auto-generated method stub
+    public void setParameter(final String name, final String value) {
 
     }
 

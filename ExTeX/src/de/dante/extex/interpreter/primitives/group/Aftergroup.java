@@ -34,12 +34,29 @@ import de.dante.util.GeneralException;
  * <doc name="aftergroup">
  * <h3>The Primitive <tt>\aftergroup</tt></h3>
  * <p>
- *  ...
+ *  This primitive takes the next token and saves it. The saved token will be
+ *  inserted after the current group has been closed. If several tokens are
+ *  saved then they will be inserted in the same sequence as they are saved.
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *   &lang;aftergroup&rang;
+ *     := <tt>\aftergroup</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token&rang;}   </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    {\aftergroup~ xyz}  </pre>
+ *  <pre class="TeXSample">
+ *    {\aftergroup\a\aftergroup\b xyz}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Aftergroup extends AbstractCode {
 

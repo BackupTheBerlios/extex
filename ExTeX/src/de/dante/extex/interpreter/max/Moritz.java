@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -980,22 +980,6 @@ public abstract class Moritz implements TokenSource, Observable {
         }
 
         throw new GeneralHelpingException("TTP.MissingNumber");
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanOptionalEquals()
-     */
-    public void scanOptionalEquals() throws GeneralException {
-
-        Token t = scanNonSpace();
-
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.MissingNumber");
-        } else if (t.equals(Catcode.OTHER, "=")) {
-            stream.put(getNonSpace());
-        } else {
-            stream.put(t);
-        }
     }
 
     /**
