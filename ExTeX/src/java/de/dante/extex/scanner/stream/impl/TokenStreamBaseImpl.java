@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -152,10 +152,8 @@ public class TokenStreamBaseImpl implements TokenStream {
      * Test for end of file.
      *
      * @return <code>true</code> iff the stream is at its end
-     *
-     * @throws GeneralException in case of an error; this should not happen
      */
-    public boolean isEof() throws GeneralException {
+    public boolean isEof() {
 
         return (stack.length() == 0);
     }

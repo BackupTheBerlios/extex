@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.32 $
+     * @version $Revision: 1.33 $
      */
     private static final class State {
 
@@ -396,10 +396,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * Test for end of file.
      *
      * @return <code>true</code> iff the stream is at its end
-     *
-     * @throws GeneralException in case of an IO error
      */
-    public boolean isEof() throws GeneralException {
+    public boolean isEof() {
 
         if (!super.isEof()) {
             return false;
@@ -416,7 +414,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
                     return true;
                 }
             } catch (IOException e) {
-                throw new MainIOException(e);
+                // TODO gene: incomplete
+                // throw new MainIOException(e);
             }
 
             pointer = 0;

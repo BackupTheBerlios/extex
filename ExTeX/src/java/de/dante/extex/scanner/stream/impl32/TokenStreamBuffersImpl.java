@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.impl32;
 
 import java.io.IOException;
@@ -30,10 +31,11 @@ import de.dante.util.UnicodeChar;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
-        TokenStream {
+public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl
+        implements
+            TokenStream {
 
     /**
      * the line
@@ -55,6 +57,7 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
      * @see de.dante.extex.scanner.stream.impl32.AbstractTokenStreamImpl#bufferLength()
      */
     protected int bufferLength() {
+
         return line.length();
     }
 
@@ -70,6 +73,7 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
      * @see java.lang.Object#toString()
      */
     public String toString() {
+
         return line;
     }
 
@@ -91,6 +95,7 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
      */
     public TokenStreamBuffersImpl(final String[] lines)
             throws CharacterCodingException {
+
         line = lines[0];
         this.lines = lines;
     }
@@ -99,6 +104,7 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
      * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
      */
     protected boolean refill() throws IOException {
+
         super.refill();
         if (lines == null || nextLine >= lines.length) {
             return false;
@@ -107,4 +113,12 @@ public class TokenStreamBuffersImpl extends AbstractTokenStreamImpl implements
         return true;
     }
 
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEof()
+     */
+    public boolean isEof() {
+
+        // TODO mgn incomplete
+        return false;
+    }
 }

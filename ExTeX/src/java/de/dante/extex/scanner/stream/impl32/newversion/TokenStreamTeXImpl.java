@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.scanner.stream.impl;
+package de.dante.extex.scanner.stream.impl32.newversion;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -49,12 +49,15 @@ import de.dante.util.file.InputLineDecodeString;
 import de.dante.util.file.InputLineDecoder;
 
 /**
- * This class implements a 32 bit token stream.
+ * This class implements a token stream.
+ * <p>
+ * This implementations adheres as much as possible to the TeX standard.
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class TokenStream32Impl extends AbstractTokenStreamImpl
+public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
         implements
             TokenStream,
             CatcodeVisitor {
@@ -67,7 +70,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     /**
      * The field <tt>line</tt> contains the current line of input.
      */
-    private CharBuffer line;
+    private CharBuffer line = CharBuffer.allocate(0);
 
     /**
      * The index in the buffer for the next character to consider. This
@@ -110,10 +113,11 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
      * @throws ConfigurationException in case of an error in the configuration
      * @throws IOException in case of an IO error
      */
-    public TokenStream32Impl(final Configuration config,
+    public TokenStreamTeXImpl(final Configuration config,
             final TokenStreamOptions options, final InputStream stream,
-            final String theSource, final String encoding) throws IOException,
-            ConfigurationException {
+            final String theSource, final String encoding)
+            throws IOException,
+                ConfigurationException {
 
         super(false);
 
@@ -148,9 +152,8 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
             try {
                 bufferSize = Integer.parseInt(size);
             } catch (NumberFormatException e) {
-                throw new ConfigurationSyntaxException(e.getMessage(), config
-                        .toString()
-                        + "#" + BUFFERSIZE_ATTRIBUTE);
+                throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
+                        config.toString() + "#" + BUFFERSIZE_ATTRIBUTE);
             }
         }
         return bufferSize;
@@ -168,10 +171,11 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
      * @throws IOException in case of an IO error
      * @throws ConfigurationException in case of an error in the configuration
      */
-    public TokenStream32Impl(final Configuration config,
+    public TokenStreamTeXImpl(final Configuration config,
             final TokenStreamOptions options, final Reader reader,
-            final Boolean isFile, final String theSource) throws IOException,
-            ConfigurationException {
+            final Boolean isFile, final String theSource)
+            throws IOException,
+                ConfigurationException {
 
         super(isFile.booleanValue());
 
@@ -201,7 +205,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
      *
      * @throws IOException in case of an IO error
      */
-    public TokenStream32Impl(final Configuration config,
+    public TokenStreamTeXImpl(final Configuration config,
             final TokenStreamOptions options, final String theLine,
             final String theSource) throws IOException {
 
@@ -355,7 +359,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
             return new UnicodeChar(line, pointer++);
         }
 
-        return (pointer++ > line.length() ? null : CR);
+        return null; //(pointer++ > line.length() ? null : CR);
     }
 
     /**
@@ -372,10 +376,12 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
         }
         // get encoding
         String enc = initencoding;
-        String inputencoding = tsoptions.getToksOption("inputencoding")
-                .toText();
-        if (inputencoding != null && !inputencoding.trim().equals("")) {
-            enc = inputencoding;
+        if (tsoptions != null) {
+            String inputencoding = tsoptions.getToksOption("inputencoding")
+                    .toText();
+            if (inputencoding != null && !inputencoding.trim().equals("")) {
+                enc = inputencoding;
+            }
         }
         if ((line = in.readLine(enc)) == null) {
             in.close();

@@ -35,7 +35,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -115,6 +115,16 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
      */
     public boolean isFileStream() {
+
+        return false;
+    }
+    
+    
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEof()
+     * TODO mgn incomplete
+     */
+    public boolean isEof() {
 
         return false;
     }

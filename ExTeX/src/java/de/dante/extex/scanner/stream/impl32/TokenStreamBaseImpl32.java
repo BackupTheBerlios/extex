@@ -44,7 +44,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -856,4 +856,12 @@ public abstract class TokenStreamBaseImpl32
         }
     }
 
+    
+    /**
+     * @see de.dante.extex.scanner.stream.TokenStream#isEof()
+     */
+    public boolean isEof() {
+        // TODO mgn incomplete
+        return false;
+    }
 }
