@@ -24,7 +24,6 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
-import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 
@@ -33,7 +32,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -147,19 +146,18 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#removeLastNode()
+     */
+    public void removeLastNode() {
+
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
      *     de.dante.extex.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter doc) {
         // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#setParshape(
-     *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
-     */
-    public void setParshape(final ParagraphShape parshape) {
-
     }
 
     /**
