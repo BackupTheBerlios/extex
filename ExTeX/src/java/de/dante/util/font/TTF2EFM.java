@@ -22,18 +22,22 @@ package de.dante.util.font;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.InputStream;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.type.ttf.TTFReader;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.resource.ResourceFinder;
+import de.dante.util.resource.ResourceFinderFactory;
 
 /**
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class TTF2EFM {
 
@@ -52,20 +56,38 @@ public final class TTF2EFM {
     /**
      * main
      * @param args  the commandlinearguments
-     * @throws IOException ...
+     * @throws Exception ...
      */
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws Exception {
 
-        if (args.length != 2) {
+        if (args.length != 3) {
             System.err
-                    .println("java de.dante.util.font.TTF2EFM <ttf-file> <efm-file>");
+                    .println("java de.dante.util.font.TTF2EFM <ttf-file> <efm-file> <texmf>");
             System.exit(1);
         }
 
-        File ttffile = new File(args[0]);
+        String fontname = args[0].replaceAll("\\.ttf\\.TTF", "");
+
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex.xml");
+
+        Configuration cfgfonts = config.getConfiguration("Fonts");
+
+        ResourceFinder finder = (new ResourceFinderFactory())
+                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
+                        null, System.getProperties());
+
+        // ttf-file
+        InputStream ttfin = finder.findResource(args[0], "");
+
+        if (ttfin == null) {
+            System.err.println(args[0] + " not found!");
+            System.exit(1);
+        }
+
         File efmfile = new File(args[1]);
 
-        TTFReader ttfr = new TTFReader(ttffile);
+        TTFReader ttfr = new TTFReader(ttfin, fontname);
 
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);

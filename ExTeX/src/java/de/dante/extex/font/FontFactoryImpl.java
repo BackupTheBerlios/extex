@@ -19,6 +19,7 @@
 
 package de.dante.extex.font;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -30,7 +31,12 @@ import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
 import de.dante.extex.font.type.ModifiableFount;
+import de.dante.extex.font.type.afm.AFMReader;
 import de.dante.extex.font.type.efm.EFMFount;
+import de.dante.extex.font.type.tfm.TFMReader;
+import de.dante.extex.font.type.tfm.enc.EncFactory;
+import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.FontImpl;
 import de.dante.extex.interpreter.type.font.Font;
@@ -50,7 +56,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -213,6 +219,16 @@ public class FontFactoryImpl implements FontFactory {
     private static final String EFMEXTENSION = "efm";
 
     /**
+     * TFM-Extension
+     */
+    private static final String TFMEXTENSION = "tfm";
+
+    /**
+     * AFM-Extension
+     */
+    private static final String AFMEXTENSION = "afm";
+
+    /**
      * Load the efm-Font
      * @param name  the name of the efm-file
      * @return  the efm as Document or <code>null</code>, if not found
@@ -223,14 +239,77 @@ public class FontFactoryImpl implements FontFactory {
 
         Document doc = null;
         if (name != null) {
+
+            // efm
             InputStream fontfile = finder.findResource(name, EFMEXTENSION);
+
             if (fontfile != null) {
+                //System.err.println("\n FONT " + name + "  EFM");
                 try {
                     // create a document with SAXBuilder (without validate)
                     SAXBuilder builder = new SAXBuilder(false);
                     doc = builder.build(fontfile);
                 } catch (Exception e) {
                     throw new ConfigurationIOException(e.getMessage());
+                }
+            } else {
+
+                // try tfm
+                InputStream tfmfile = finder.findResource(name + ".tfm",
+                        TFMEXTENSION);
+
+                if (tfmfile != null) {
+                    //System.err.println("\n FONT " + name + "  TFM");
+
+                    EncFactory ef = new EncFactory(finder);
+
+                    // psfonts.map
+                    InputStream psin = finder.findResource("psfonts.map", "");
+
+                    if (psin == null) {
+                        throw new ConfigurationIOException(
+                                "psfonts.map not found");
+                        // TODO i18n
+                    }
+
+                    try {
+                        PSFontsMapReader psfm = new PSFontsMapReader(psin);
+                        String fontname = name.replaceAll("\\.tfm|\\.TFM", "");
+
+                        // TFM-Reader
+                        TFMReader tfmr = new TFMReader(tfmfile, fontname, psfm,
+                                ef);
+
+                        doc = new Document(tfmr.getFontMetric());
+
+                    } catch (HelpingException e) {
+                        throw new ConfigurationIOException(e.getMessage());
+                    } catch (IOException e) {
+                        throw new ConfigurationIOException(e.getMessage());
+                    }
+                } else {
+
+                    // try afm
+                    InputStream afmfile = finder.findResource(name + ".afm",
+                            AFMEXTENSION);
+
+                    if (afmfile != null) {
+                        //System.err.println("\n FONT " + name + "  AFM");
+
+                        try {
+                            AFMReader afmreader = new AFMReader(afmfile, name
+                                    + ".pfb", "10");
+
+                            doc = new Document(afmreader.getFontMetric());
+                        } catch (IOException e) {
+                            throw new ConfigurationIOException(e.getMessage());
+                        }
+
+                    } else {
+                        throw new ConfigurationIOException(
+                                "Sorry, font unknown!!!");
+                        // TODO i18n
+                    }
                 }
             }
         }

@@ -19,10 +19,10 @@
 
 package de.dante.extex.font.type.afm;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -111,20 +111,14 @@ import de.dante.extex.font.type.FontMetric;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-// TODO incomplete
 public class AFMReader implements FontMetric {
 
     /**
      * name of the pfb-file
      */
     private String pfbname;
-
-    /**
-     * name of the efm-file
-     */
-    private String efmname;
 
     /**
      * defaultsize
@@ -135,15 +129,13 @@ public class AFMReader implements FontMetric {
      * init
      * @param afmin          Stream for Reading the afm-file
      * @param pfbName        the name of the pfbfile
-     * @param efmName        the name of the efmfile
      * @param defaultSize    the defaultsize for the font
      * @throws IOException ...
      */
-    public AFMReader(final BufferedInputStream afmin, final String pfbName,
-            final String efmName, final String defaultSize) throws IOException {
+    public AFMReader(final InputStream afmin, final String pfbName,
+            final String defaultSize) throws IOException {
 
         pfbname = pfbName;
-        efmname = efmName;
         defaultsize = defaultSize;
 
         // create a Reader (AFM use US_ASCII)
@@ -433,8 +425,8 @@ public class AFMReader implements FontMetric {
      * @return  ismetric
      * @throws IOException ...
      */
-    private boolean createMetric(final BufferedReader reader,
-            final boolean ism) throws IOException {
+    private boolean createMetric(final BufferedReader reader, final boolean ism)
+            throws IOException {
 
         boolean isMetrics = ism;
 
@@ -851,10 +843,13 @@ public class AFMReader implements FontMetric {
 
         // create efm-file
         Element root = new Element("fontgroup");
-        root.setAttribute("name", filenameWithoutExtensionAndPath(efmname));
-        root.setAttribute("id", filenameWithoutExtensionAndPath(efmname));
+        root.setAttribute("name", filenameWithoutExtensionAndPath(pfbname));
+        root.setAttribute("id", filenameWithoutExtensionAndPath(pfbname));
         root.setAttribute("default-size", defaultsize);
         root.setAttribute("empr", "100");
+
+        Element efontdimen = new Element("fontdimen");
+        root.addContent(efontdimen);
 
         Element font = new Element("font");
         font.setAttribute("type", "type1");
@@ -871,13 +866,13 @@ public class AFMReader implements FontMetric {
                 + String.valueOf(afmlly) + ' ' + String.valueOf(afmurx) + ' '
                 + String.valueOf(afmury));
         if (afmUnderlineThickness != 0) {
-            root.setAttribute("underline-position", String
+            efontdimen.setAttribute("underline-position", String
                     .valueOf(afmUnderlinePosition));
-            root.setAttribute("underline-thickness", String
+            efontdimen.setAttribute("underline-thickness", String
                     .valueOf(afmUnderlineThickness));
         }
-        root.setAttribute("xheight", String.valueOf(afmXHeight));
-        root.setAttribute("capheight", String.valueOf(afmCapHeight));
+        efontdimen.setAttribute("xheight", String.valueOf(afmXHeight));
+        efontdimen.setAttribute("capheight", String.valueOf(afmCapHeight));
 
         for (int i = 0; i < afmCharMetrics.size(); i++) {
 

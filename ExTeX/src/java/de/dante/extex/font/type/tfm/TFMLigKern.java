@@ -25,9 +25,10 @@ package de.dante.extex.font.type.tfm;
  * Base class for <code>Ligature</code> and <code>Kerning</code> instructions. 
  * It handles the skip amount to the next instruction in the
  * kern/lig program and the character code for the next character.
+ * @see <a href="package-summary.html#lig_kern">lig_kern</a> 
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class TFMLigKern {
 

@@ -17,31 +17,40 @@
  *
  */
 
-package de.dante.extex.font.type;
+package de.dante.util.file.random;
 
+import java.io.DataInput;
 import java.io.IOException;
 
-import org.jdom.Element;
-
-import de.dante.extex.i18n.HelpingException;
-import de.dante.util.configuration.ConfigurationException;
-
 /**
- * This interface get the EFM-<code>Element</code>
- * from some other fontsmetric-classes.
+ * Interface for random access (read only)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public interface FontMetric {
+public interface RandomAccessR extends DataInput {
 
     /**
-     * Return the FontMetrix-Element for this font.
-     * @return the fontmetrix as XML-Element
-     * @throws IOException if an IO-error occured
-     * @throws ConfigurationException if an config-error occured
-     * @throws HelpingException if an error occured
+     * @see java.io.RandomAccessFile#close()
      */
-    Element getFontMetric() throws IOException, ConfigurationException,
-            HelpingException;
+    void close() throws IOException;
+
+    /**
+     * @see java.io.RandomAccessFile#length()
+     */
+    long length() throws IOException;
+
+    /**
+     * @see java.io.RandomAccessFile#seek(long)
+     */
+    void seek(long arg0) throws IOException;
+
+    /**
+     * Returns the pointer in the buffer.
+     *
+     * @throws IOException if an IO-error occurs
+     * @return Returns the pointer in the buffer
+     */
+    long getPointer() throws IOException;
+
 }

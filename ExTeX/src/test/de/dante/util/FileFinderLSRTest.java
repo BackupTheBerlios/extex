@@ -22,6 +22,8 @@ package de.dante.util;
 import java.io.InputStream;
 
 import junit.framework.TestCase;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationFactory;
 import de.dante.util.resource.FileFinderLSRImpl;
 import de.dante.util.resource.ResourceFinder;
 
@@ -29,7 +31,7 @@ import de.dante.util.resource.ResourceFinder;
  * Test cases for FileFinderLSR
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileFinderLSRTest extends TestCase {
 
@@ -59,8 +61,14 @@ public class FileFinderLSRTest extends TestCase {
      */
     public void test1() throws Exception {
 
-        ResourceFinder finder = new FileFinderLSRImpl("/usr/share/texmf",
-                new StringList("tfm:afm", ":"));
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex.xml");
+
+        Configuration cfgfonts = config.getConfiguration("Fonts");
+        Configuration cfgresource = cfgfonts.getConfiguration("Resource");
+        Configuration cfgfinder = cfgresource.getConfiguration("Finder");
+
+        ResourceFinder finder = new FileFinderLSRImpl(cfgfinder);
 
         InputStream in = finder.findResource("cmr12", "");
 

@@ -19,6 +19,7 @@
 
 package de.dante.extex.font.type.tfm;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,13 +27,19 @@ import java.io.InputStream;
 import org.jdom.Element;
 
 import de.dante.extex.font.type.FontMetric;
+import de.dante.extex.font.type.tfm.enc.EncFactory;
+import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
+import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
 import de.dante.extex.i18n.HelpingException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class read a TFM-file.
+ * 
+ * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TFMReader implements FontMetric {
 
@@ -42,23 +49,40 @@ public class TFMReader implements FontMetric {
     private InputStream in;
 
     /**
-     * the pfb-file
+     * fontname
      */
-    private String pfbFile;
+    private String fontname;
+
+    /**
+     * psfontmap
+     */
+    private PSFontsMapReader psfontmap;
+
+    /**
+     * Encoderfactory
+     */
+    private EncFactory encfactory;
 
     /**
      * Create e new object.
      *
+     * @see <a href="package-summary.html#TFMformat">TFM-Format</a> 
+     *
      * @param ins the InputStream for reading
-     * @param pfbfile   the pfb-file
+     * @param afontname fontname
+     * @param apsfontmap psfontmap
+     * @param encf encoderfactroy
      * @throws IOException if a IO-error occured
      * @throws HelpingException if a error occured
      */
-    public TFMReader(final InputStream ins, final String pfbfile)
+    public TFMReader(final InputStream ins, final String afontname,
+            final PSFontsMapReader apsfontmap, final EncFactory encf)
             throws IOException, HelpingException {
 
-        in = ins;
-        pfbFile = pfbfile;
+        in = new BufferedInputStream(ins);
+        fontname = afontname;
+        psfontmap = apsfontmap;
+        encfactory = encf;
 
         // read ...
         readLengths();
@@ -1227,7 +1251,17 @@ public class TFMReader implements FontMetric {
     /**
      * @see de.dante.util.font.FontMetric#getFontMetric()
      */
-    public Element getFontMetric() {
+    public Element getFontMetric() throws IOException, ConfigurationException,
+            HelpingException {
+
+        // read psfonts.map
+        PSFontEncoding psfenc = psfontmap.getPSFontEncoding(fontname);
+
+        // encoding
+        String[] enctable = null;
+        if (!psfenc.getEncfile().equals("")) {
+            enctable = encfactory.getEncodingTable(psfenc.getEncfile());
+        }
 
         // create efm-file
         Element root = new Element("fontgroup");
@@ -1235,6 +1269,9 @@ public class TFMReader implements FontMetric {
         root.setAttribute("id", family);
         root.setAttribute("default-size", designSize.toString());
         root.setAttribute("empr", "100");
+
+        Element fontdimen = new Element("fontdimen");
+        root.addContent(fontdimen);
 
         Element font = new Element("font");
         root.addContent(font);
@@ -1252,8 +1289,10 @@ public class TFMReader implements FontMetric {
                         "SUP3", "SUB1", "SUB2", "SUPDROP", "SUBDROP", "DELIM1",
                         "DELIM2", "AXISHEIGHT"};
                 for (int i = 0; i < paramTable.length; i++) {
-                    root.setAttribute(paramLabel[i], paramTable[i]
-                            .toStringUnits());
+                    if (i < paramLabel.length) {
+                        fontdimen.setAttribute(paramLabel[i], paramTable[i]
+                                .toStringUnits());
+                    }
                 }
             }
         } else if (fontType == MATHEX) {
@@ -1265,8 +1304,10 @@ public class TFMReader implements FontMetric {
                         "BIGOPSPACING2", "BIGOPSPACING3", "BIGOPSPACING4",
                         "BIGOPSPACING5"};
                 for (int i = 0; i < paramTable.length; i++) {
-                    root.setAttribute(paramLabel[i], paramTable[i]
-                            .toStringUnits());
+                    if (i < paramLabel.length) {
+                        fontdimen.setAttribute(paramLabel[i], paramTable[i]
+                                .toStringUnits());
+                    }
                 }
             }
         } else {
@@ -1277,14 +1318,17 @@ public class TFMReader implements FontMetric {
                         "SHRINK", "XHEIGHT", "QUAD", "EXTRASPACE"};
 
                 for (int i = 0; i < paramTable.length; i++) {
-                    root.setAttribute(paramLabel[i], paramTable[i]
-                            .toStringUnits());
+                    if (i < paramLabel.length) {
+                        fontdimen.setAttribute(paramLabel[i], paramTable[i]
+                                .toStringUnits());
+                    }
+
                 }
             }
         }
 
         // filename
-        font.setAttribute("filename", filenameWithoutPath(pfbFile));
+        font.setAttribute("filename", filenameWithoutPath(psfenc.getPfbfile()));
 
         for (int i = 0; i < charTable.length; i++) {
 
@@ -1300,7 +1344,11 @@ public class TFMReader implements FontMetric {
                 glyph.setAttribute("glyph-number", String.valueOf(i));
                 String c = Character.toString((char) i);
                 if (c != null && c.trim().length() > 0) {
-                    glyph.setAttribute("glyph-name", c);
+                    glyph.setAttribute("char", c);
+                }
+
+                if (enctable != null && i < enctable.length) {
+                    glyph.setAttribute("glyph-name", enctable[i].substring(1));
                 }
 
                 glyph.setAttribute("width", ci.getWidth().toStringUnits());
@@ -1347,7 +1395,7 @@ public class TFMReader implements FontMetric {
                             String sk = Character.toString((char) kern
                                     .getNextChar());
                             if (sk != null && sk.trim().length() > 0) {
-                                kerning.setAttribute("glyph-name", sk.trim());
+                                kerning.setAttribute("char", sk.trim());
                             }
                             kerning.setAttribute("size", kern.getKern()
                                     .toStringUnits());

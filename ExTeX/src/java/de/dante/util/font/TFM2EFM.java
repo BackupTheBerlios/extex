@@ -19,31 +19,32 @@
 
 package de.dante.util.font;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.type.tfm.TFMReader;
+import de.dante.extex.font.type.tfm.enc.EncFactory;
+import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
 import de.dante.extex.i18n.HelpingException;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.resource.ResourceFinder;
+import de.dante.util.resource.ResourceFinderFactory;
 
 /**
  * Convert a TFM-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class TFM2EFM {
-
-    /**
-     * filebuffer
-     */
-    private static final int FILEBUFFER = 0x8000;
 
     /**
      * private: no instance
@@ -55,33 +56,62 @@ public final class TFM2EFM {
     /**
      * parameter
      */
-    private static final int PARAMETER = 3;
+    private static final int PARAMETER = 2;
 
     /**
      * main
      * @param args      the comandlinearguments
      * @throws IOException ...
      * @throws HelpingException ...
+     * @throws ConfigurationException ...
      */
     public static void main(final String[] args) throws IOException,
-            HelpingException {
+            HelpingException, ConfigurationException {
 
         if (args.length != PARAMETER) {
             System.err
-                    .println("java de.dante.util.font.TFM2EFM <tfm-file> <pfb-file> <efm-file>");
+                    .println("java de.dante.util.font.TFM2EFM <tfm-file> <efm-file>");
             System.exit(1);
         }
 
-        File tfmfile = new File(args[0]);
-        File efmfile = new File(args[2]);
+        File efmfile = new File(args[1]);
+        String fontname = args[0].replaceAll("\\.tfm|\\.TFM", "");
 
-        TFMReader tfmr = new TFMReader(new BufferedInputStream(
-                new FileInputStream(tfmfile), FILEBUFFER), args[1]);
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex.xml");
+
+        Configuration cfgfonts = config.getConfiguration("Fonts");
+
+        ResourceFinder finder = (new ResourceFinderFactory())
+                .createResourceFinder(cfgfonts.getConfiguration("Resource"),
+                        null, System.getProperties());
+
+        EncFactory ef = new EncFactory(finder);
+
+        // tfm-file
+        InputStream tfmin = finder.findResource(args[0], "");
+
+        if (tfmin == null) {
+            System.err.println(args[0] + " not found!");
+            System.exit(1);
+        }
+
+        // psfonts.map
+        InputStream psin = finder.findResource("psfonts.map", "");
+
+        if (psin == null) {
+            System.err.println("psfonts.map not found!");
+            System.exit(1);
+        }
+        PSFontsMapReader psfm = new PSFontsMapReader(psin);
+
+        // TFM-Reader
+        TFMReader tfmr = new TFMReader(tfmin, fontname, psfm, ef);
 
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);
         BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(efmfile), FILEBUFFER);
+                new FileOutputStream(efmfile));
         Document doc = new Document(tfmr.getFontMetric());
         xmlout.output(doc, out);
         out.close();

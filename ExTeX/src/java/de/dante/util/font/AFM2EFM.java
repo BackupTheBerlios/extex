@@ -19,22 +19,15 @@
 
 package de.dante.util.font;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
-import org.jdom.Document;
-import org.jdom.output.XMLOutputter;
-
-import de.dante.extex.font.type.afm.AFMReader;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * Convert a AFM-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class AFM2EFM {
 
@@ -53,31 +46,42 @@ public final class AFM2EFM {
     /**
      * parameter
      */
-    private static final int PARAMETER = 4;
+    private static final int PARAMETER = 5;
 
     /**
      * main
      * @param args the commandlinearguments
      * @throws IOException ...
+     * @throws ConfigurationException ...
      */
-    public static void main(final String[] args) throws IOException {
+    public static void main(final String[] args) throws IOException,
+            ConfigurationException {
 
         if (args.length != PARAMETER) {
-            System.err.println("java de.dante.util.font.AFM2EFM "
-                    + "<afm-file> <pfb-file> <efm-file> <default-size>");
+            System.err
+                    .println("java de.dante.util.font.AFM2EFM "
+                            + "<afm-file> <pfb-file> <efm-file> <default-size> <texmf>");
             System.exit(1);
         }
 
-        BufferedInputStream in = new BufferedInputStream(new FileInputStream(
-                args[0]), FILEBUFFER);
-        AFMReader afmreader = new AFMReader(in, args[1], args[2], args[3]);
-
-        // write to efm-file
-        XMLOutputter xmlout = new XMLOutputter("   ", true);
-        BufferedOutputStream out = new BufferedOutputStream(
-                new FileOutputStream(args[2]), FILEBUFFER);
-        Document doc = new Document(afmreader.getFontMetric());
-        xmlout.output(doc, out);
-        out.close();
+        //        ResourceFinder rf = new FileFinderLSRImpl(args[4], new StringList("",
+        //                ":"));
+        //
+        //        InputStream afmin = rf.findResource(args[0], "");
+        //
+        //        if (afmin == null) {
+        //            System.err.println(args[0] + " not found!");
+        //            System.exit(1);
+        //        }
+        //
+        //        AFMReader afmreader = new AFMReader(afmin, args[1], args[3]);
+        //
+        //        // write to efm-file
+        //        XMLOutputter xmlout = new XMLOutputter("   ", true);
+        //        BufferedOutputStream out = new BufferedOutputStream(
+        //                new FileOutputStream(args[2]), FILEBUFFER);
+        //        Document doc = new Document(afmreader.getFontMetric());
+        //        xmlout.output(doc, out);
+        //        out.close();
     }
 }

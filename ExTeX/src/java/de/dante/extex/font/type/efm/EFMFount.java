@@ -47,7 +47,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class EFMFount implements ModifiableFount {
 
@@ -161,13 +161,16 @@ public abstract class EFMFount implements ModifiableFount {
             }
 
             // fontdimen-key-values
-            List list = fontgroup.getAttributes();
-            for (int i = 0; i < list.size(); i++) {
-                attr = (Attribute) list.get(i);
-                String key = attr.getName();
-                String val = attr.getValue();
-                if (val != null && val.trim().length() > 0) {
-                    fontdimen.put(key, val);
+            Element efontdimen = fontgroup.getChild("fontdimen");
+            if (efontdimen != null) {
+                List list = efontdimen.getAttributes();
+                for (int i = 0; i < list.size(); i++) {
+                    attr = (Attribute) list.get(i);
+                    String key = attr.getName();
+                    String val = attr.getValue();
+                    if (val != null && val.trim().length() > 0) {
+                        fontdimen.put(key, val);
+                    }
                 }
             }
 
@@ -186,8 +189,8 @@ public abstract class EFMFount implements ModifiableFount {
                         efile = efile.replaceAll(".pfb", "");
                         //  externalfile = getFontFile(fileFinder.findFile(efile,"pfb"));
                     } else {
-                        throw new HelpingException(
-                                "EFM.wrongfileextension", efile);
+                        throw new HelpingException("EFM.wrongfileextension",
+                                efile);
                     }
                 }
 
