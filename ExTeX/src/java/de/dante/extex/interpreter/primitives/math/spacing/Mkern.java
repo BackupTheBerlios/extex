@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
+import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.util.GeneralException;
@@ -49,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mkern extends AbstractMathCode {
 
@@ -75,10 +76,9 @@ public class Mkern extends AbstractMathCode {
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        Mudimen mdimen = new Mudimen(context, source);
+        nc.add(mdimen);
+        return true;
     }
 
 }
