@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Muskip implements Serializable {
     /** ... */
@@ -84,10 +84,10 @@ public class Muskip implements Serializable {
         super();
         this.length = new Dimen(context, source);
         if (source.scanKeyword("plus")) {
-            this.stretch = new GlueComponent(source, context, true);
+            this.stretch = new GlueComponent(context, source, true);
         }
         if (source.scanKeyword("minus")) {
-            this.shrink = new GlueComponent(source, context, true);
+            this.shrink = new GlueComponent(context, source, true);
         }
     }
 

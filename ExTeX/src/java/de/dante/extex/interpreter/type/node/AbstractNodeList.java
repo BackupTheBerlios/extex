@@ -32,9 +32,10 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public abstract class AbstractNodeList extends AbstractNode implements NodeList {
+public abstract class AbstractNodeList extends AbstractNode
+        implements NodeList {
 
     /**
      * The field <tt>shift</tt> contains the offset of the reference point in

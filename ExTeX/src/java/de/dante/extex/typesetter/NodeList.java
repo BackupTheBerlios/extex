@@ -26,12 +26,12 @@ import de.dante.extex.interpreter.type.node.CharNode;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface NodeList extends Node {
 
     /**
-     * Add anode to the node list.
+     * Add a node to the node list.
      *
      * @param node the node to add
      */
