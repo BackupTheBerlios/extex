@@ -611,7 +611,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.81 $
+ * @version $Revision: 1.82 $
  */
 public class ExTeX {
 
@@ -1117,7 +1117,8 @@ public class ExTeX {
      */
 
     protected void initializeStreams(final Interpreter interpreter)
-            throws ConfigurationException, MainIOException {
+            throws ConfigurationException,
+                MainIOException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
@@ -1203,7 +1204,9 @@ public class ExTeX {
      */
     protected void loadFormat(final Interpreter interpreter,
             final ResourceFinder finder, final String fmt, final String jobname)
-            throws IOException, GeneralException, ConfigurationException {
+            throws IOException,
+                GeneralException,
+                ConfigurationException {
 
         String format = fmt;
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
@@ -1282,33 +1285,28 @@ public class ExTeX {
      *
      * @return the default font
      *
+     * @throws GeneralException in case of an error of some other kind
      * @throws ConfigurationException in case that some kind of problems have
      *  been detected in the configuration
-     * @throws GeneralException in case of an error of some other kind
+     * @throws FontException in case of problems with the font itself
      */
     protected Font makeDefaultFont(final Configuration config,
-            final FontFactory fontFactory) throws ConfigurationException,
-            GeneralException {
+            final FontFactory fontFactory)
+            throws GeneralException,
+                ConfigurationException,
+                FontException {
 
         final String attributeName = "name";
         final String attributeSize = "size";
         String defaultFont = config.getAttribute(attributeName);
 
         if (defaultFont == null || defaultFont.equals("")) {
-            try {
-                return fontFactory.getInstance();
-            } catch (FontException e) {
-                // TODO gene: handle exception
-            }
+            return fontFactory.getInstance();
         }
 
         String size = config.getAttribute(attributeSize);
         if (size == null) {
-            try {
-                return fontFactory.getInstance(defaultFont);
-            } catch (FontException e) {
-                // TODO gene: handle exception
-            }
+            return fontFactory.getInstance(defaultFont);
         }
 
         Font font = null;
@@ -1319,8 +1317,6 @@ public class ExTeX {
         } catch (NumberFormatException e) {
             throw new ConfigurationSyntaxException(attributeSize, config
                     .toString());
-        } catch (FontException e) {
-            // TODO gene: handle exception
         }
 
         return font;
@@ -1343,19 +1339,16 @@ public class ExTeX {
      */
     protected DocumentWriter makeDocumentWriter(final Configuration config,
             final String jobname, final OutputFactory outFactory,
-            final DocumentWriterOptions options) throws ConfigurationException,
-            FileNotFoundException {
+            final DocumentWriterOptions options)
+            throws ConfigurationException,
+                FileNotFoundException {
 
         DocumentWriterFactory factory = new DocumentWriterFactory(config);
         factory.enableLogging(logger);
         DocumentWriter docWriter = factory.newInstance(properties
-                .getProperty(PROP_OUTPUT_TYPE), options);
+                .getProperty(PROP_OUTPUT_TYPE), options, outStream, outFactory,
+                jobname);
 
-        if (outStream == null) {
-            outStream = outFactory.createOutputStream(jobname, docWriter
-                    .getExtension());
-        }
-        docWriter.setOutputStream(outStream);
         docWriter.setParameter("Creator", "ExTeX " + new Version().toString());
 
         return docWriter;
@@ -1427,11 +1420,14 @@ public class ExTeX {
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      * @throws GeneralException in case of an error of some other kind
+     * @throws FontException in case of problems with the font itself
      */
     protected Interpreter makeInterpreter(final Configuration config,
             final ResourceFinder finder, final TokenStreamFactory factory,
-            final FontFactory fontFactory) throws GeneralException,
-            ConfigurationException {
+            final FontFactory fontFactory)
+            throws ConfigurationException,
+                GeneralException,
+                FontException {
 
         InterpreterFactory interpreterFactory = new InterpreterFactory();
         interpreterFactory.configure(config);
@@ -1521,7 +1517,8 @@ public class ExTeX {
      */
     protected TokenStreamFactory makeTokenStreamFactory(
             final Configuration config, final ResourceFinder finder)
-            throws ConfigurationException, NotObservableException {
+            throws ConfigurationException,
+                NotObservableException {
 
         TokenStreamFactory factory = new TokenStreamFactory(config, properties
                 .getProperty(PROP_TOKEN_STREAM));
@@ -1937,7 +1934,8 @@ public class ExTeX {
      *  letter has no assigned property to set
      */
     protected void useTrace(final String[] arguments, final int position)
-            throws MainUnknownOptionException, MainMissingArgumentException {
+            throws MainUnknownOptionException,
+                MainMissingArgumentException {
 
         logger.setLevel(Level.FINE);
         if (position >= arguments.length) {
