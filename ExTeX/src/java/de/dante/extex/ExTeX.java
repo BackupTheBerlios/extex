@@ -90,6 +90,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
 import de.dante.util.file.OutputFactory;
+import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observer;
 import de.dante.util.resource.FileFinderConfigImpl;
@@ -579,7 +580,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public class ExTeX {
 
@@ -1398,7 +1399,9 @@ public class ExTeX {
 
         Typesetter typesetter = makeTypesetter(typesetterConfig, docWriter,
                 interpreter.getContext());
-
+        if (typesetter instanceof LogEnabled) {
+            ((LogEnabled) typesetter).enableLogging(logger);
+        }
         interpreter.setTypesetter(typesetter);
 
         factory.setOptions((TokenStreamOptions) interpreter.getContext());
