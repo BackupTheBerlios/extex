@@ -55,7 +55,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -329,7 +329,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @return the localizer
      */
-    protected Localizer getLocalizer() {
+    protected Localizer getMyLocalizer() {
 
         return LocalizerFactory.getLocalizer(GlueComponent.class.getName());
     }
@@ -438,14 +438,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         Token t = source.scanNonSpace();
         if (t == null) {
-            throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
+            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
         }
 
         value = scanFloat(source, t);
 
         t = source.getNonSpace();
         if (t == null) {
-            throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
+            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
         }
 
         source.push(t);
@@ -495,14 +495,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                             * ((DimenConvertible) code).convertDimen(context,
                                     source, typesetter) / ONE;
                 } else {
-                    throw new HelpingException(getLocalizer(),
+                    throw new HelpingException(getMyLocalizer(),
                             "TTP.IllegalUnit");
                 }
             } else {
-                throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
+                throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
             }
         } else { // cf. TTP [459]
-            throw new HelpingException(getLocalizer(), "TTP.IllegalUnit");
+            throw new HelpingException(getMyLocalizer(), "TTP.IllegalUnit");
         }
 
         if (mag != 1000) {
@@ -632,7 +632,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 sb.append('l');
             }
         } else {
-            throw new RuntimeException(getLocalizer().format("Illegal.Order",
+            throw new RuntimeException(getMyLocalizer().format("Illegal.Order",
                     Integer.toString(order)));
         }
     }
@@ -731,7 +731,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 toks.add(factory.createToken(Catcode.LETTER, 'l', ""));
             }
         } else {
-            throw new PanicException(getLocalizer(), "Illegal.Order", Long
+            throw new PanicException(getMyLocalizer(), "Illegal.Order", Long
                     .toString(order));
         }
     }
