@@ -96,7 +96,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class ExTeX {
 
@@ -675,12 +675,13 @@ public class ExTeX {
             jobname = properties.getProperty(PROP_JOBNAME);
         }
         jobname = new File(jobname).getName();
+        final String logFile = jobname + ".log";
 
         showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
                 .booleanValue();
 
         try {
-            fileHandler = new FileHandler(jobname + ".log");
+            fileHandler = new FileHandler(logFile);
             fileHandler.setFormatter(new LogFormatter());
             fileHandler.setLevel(Level.ALL);
             logger.addHandler(fileHandler);
@@ -793,15 +794,11 @@ public class ExTeX {
             if (fileHandler != null) {
                 fileHandler.close();
                 logger.removeHandler(fileHandler);
+                /*
+                 * see "TeX -- The Program [1333]"
+                 */
+                logger.info(Messages.format("ExTeX.Logfile", logFile));
             }
-        }
-
-        /*
-         * see "TeX -- The Program [1333]"
-         */
-        if (fileHandler != null) {
-            logger.info(Messages.format("ExTeX.Logfile", properties
-                    .getProperty(PROP_JOBNAME)));
         }
     }
 
