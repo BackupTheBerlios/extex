@@ -112,7 +112,7 @@
     <define name="finalhyphendemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="firstmark" class=""/>
     <define name="floatingpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="font" class=""/>
+    <define name="font" class="de.dante.extex.interpreter.primitives.font.DefFont"/>
     <Define name="fontdimen" class=""/>
     <Define name="fontname" class=""/>
     <Define name="futurelet" class=""/>
@@ -390,7 +390,7 @@
       <path></path>
       <path>./</path>
     </tex>
-  </File>
+   </File>
 
  
 </ExTeX>

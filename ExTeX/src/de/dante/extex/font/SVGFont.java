@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,39 +18,101 @@
  */
 package de.dante.extex.font;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.JDOMException;
+import org.jdom.input.SAXBuilder;
+
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.main.MainFontException;
+import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.file.FileFinder;
 
 /**
- * This class implements a dummy font which does not contain any characters.
+ * This class implements a svg-font.
+ * It use a fontfile in efm-format.
  * 
- * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public class NullFont implements Font {
+public class SVGFont implements Font {
+
+	/**
+	 * The fontname
+	 */
+	private String name;
 
 	/**
 	 * Creates a new object.
 	 */
-	public NullFont() {
+	public SVGFont(String name, FileFinder fileFinder) throws GeneralException, ConfigurationException {
 		super();
+		// trim name !
+		if (name != null) {
+			this.name = name.trim();
+		}
+		loadFont(fileFinder);
 	}
+
+	/**
+	 * load the Font
+	 * @throws GeneralException, if a error is thrown.
+	 */
+	private void loadFont(FileFinder finder) throws GeneralException, ConfigurationException {
+		if (name != null) {
+
+			File fontfile = finder.findFile(name, "efm");
+
+			System.err.println("load FONT " + fontfile); // TODO kill line after test
+
+			if (fontfile.exists()) {
+
+				try {
+
+					// create a document with SAXBuilder (without validate)
+					SAXBuilder builder = new SAXBuilder(false);
+					Document doc = builder.build(fontfile);
+
+					fontgroup = doc.getRootElement();
+
+				} catch (JDOMException e) {
+					throw new MainFontException(e.getMessage()); // TODO change
+				} catch (IOException e) {
+					throw new MainFontException(e.getMessage()); // TODO change
+				}
+
+			} else {
+				throw new MainFontException("font not found"); // TODO change
+			}
+		} else {
+			throw new MainFontException("fontname not valid"); // TODO change
+		}
+	}
+
+	/**
+	 * The fontgroup-element
+	 */
+	private Element fontgroup = null;
 
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getSpace()
 	 */
 	public Glue getSpace() {
-		return new Glue(12 * Dimen.ONE);
+		return new Glue(12 * Dimen.ONE);// TODO change
 	}
 
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getEm()
 	 */
 	public Dimen getEm() {
-		return new Dimen(12 * Dimen.ONE);
+		return new Dimen(12 * Dimen.ONE);// TODO change
 	}
 
 	/**
@@ -71,7 +133,11 @@ public class NullFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#getFontName()
 	 */
 	public String getFontName() {
-		return "dummy";
+		return name;
+	}
+
+	public String toString() {
+		return "<fontname: " + getFontName() + " >";
 	}
 
 	/**
@@ -132,5 +198,5 @@ public class NullFont implements Font {
 		// TODO Auto-generated method stub
 		return false;
 	}
-
+	
 }

@@ -1,180 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<font name="myfont">
-   <fontsegment typ="type1" filename="CMR12.pfb" fontname="CMR12" fullname="CMR12" familyname="Computer Modern" characterset="" weight="Medium" italicangle="0.0" isfixedpitch="false" llx="-34" lly="-251" urx="988" ury="750" underlineposition="0" underlinethickness="0" encodingscheme="FontSpecific" capheight="683" xheight="431" ascender="694" descender="-194" stdhw="0" stdvw="80">
-      <charmetric ID="0" c="0" n="Gamma" bllx="41" blly="0" burx="570" bury="681" />
-      <charmetric ID="1" c="1" n="Delta" bllx="46" blly="0" burx="769" bury="714" />
-      <charmetric ID="2" c="2" n="Theta" bllx="54" blly="-21" burx="707" bury="704" />
-      <charmetric ID="3" c="3" n="Lambda" bllx="31" blly="0" burx="648" bury="714" />
-      <charmetric ID="4" c="4" n="Xi" bllx="41" blly="0" burx="611" bury="678" />
-      <charmetric ID="5" c="5" n="Pi" bllx="41" blly="0" burx="692" bury="681" />
-      <charmetric ID="6" c="6" n="Sigma" bllx="54" blly="0" burx="652" bury="683" />
-      <charmetric ID="7" c="7" n="Upsilon" bllx="54" blly="0" burx="707" bury="704" />
-      <charmetric ID="8" c="8" n="Phi" bllx="54" blly="0" burx="652" bury="683" />
-      <charmetric ID="9" c="9" n="Psi" bllx="55" blly="0" burx="707" bury="683" />
-      <charmetric ID="10" c="10" n="Omega" bllx="44" blly="0" burx="662" bury="704" />
-      <charmetric ID="11" c="11" n="ff" bllx="26" blly="0" burx="609" bury="704">
+<fontgroup name="CMR12" id="CMR12">
+   <font type="type1" filename="CMR12.pfb">
+      <font-face font-name="CMR12" font-fullname="CMR12" font-family="Computer Modern" font-weight="Medium" units-per-em="1000" bbox="-34 -251 988 750" x-height="431" cap-height="683" />
+      <glyph ID="0" glyph-number="0" glyph-name="Gamma" unicode="Gamma" width="611" bllx="41" blly="0" burx="570" bury="681" depth="0" height="681" />
+      <glyph ID="1" glyph-number="1" glyph-name="Delta" unicode="Delta" width="815" bllx="46" blly="0" burx="769" bury="714" depth="0" height="714" />
+      <glyph ID="2" glyph-number="2" glyph-name="Theta" unicode="Theta" width="761" bllx="54" blly="-21" burx="707" bury="704" depth="21" height="704" />
+      <glyph ID="3" glyph-number="3" glyph-name="Lambda" unicode="Lambda" width="679" bllx="31" blly="0" burx="648" bury="714" depth="0" height="714" />
+      <glyph ID="4" glyph-number="4" glyph-name="Xi" unicode="Xi" width="652" bllx="41" blly="0" burx="611" bury="678" depth="0" height="678" />
+      <glyph ID="5" glyph-number="5" glyph-name="Pi" unicode="Pi" width="734" bllx="41" blly="0" burx="692" bury="681" depth="0" height="681" />
+      <glyph ID="6" glyph-number="6" glyph-name="Sigma" unicode="Sigma" width="707" bllx="54" blly="0" burx="652" bury="683" depth="0" height="683" />
+      <glyph ID="7" glyph-number="7" glyph-name="Upsilon" unicode="Upsilon" width="761" bllx="54" blly="0" burx="707" bury="704" depth="0" height="704" />
+      <glyph ID="8" glyph-number="8" glyph-name="Phi" unicode="Phi" width="707" bllx="54" blly="0" burx="652" bury="683" depth="0" height="683" />
+      <glyph ID="9" glyph-number="9" glyph-name="Psi" unicode="Psi" width="761" bllx="55" blly="0" burx="707" bury="683" depth="0" height="683" />
+      <glyph ID="10" glyph-number="10" glyph-name="Omega" unicode="Omega" width="707" bllx="44" blly="0" burx="662" bury="704" depth="0" height="704" />
+      <glyph ID="11" glyph-number="11" glyph-name="ff" unicode="ff" width="571" bllx="26" blly="0" burx="609" bury="704" depth="0" height="704" ligature="true">
          <l letter="i" lig="ffi" />
          <l letter="l" lig="ffl" />
-      </charmetric>
-      <charmetric ID="12" c="12" n="fi" bllx="26" blly="0" burx="515" bury="704" />
-      <charmetric ID="13" c="13" n="fl" bllx="26" blly="0" burx="515" bury="704" />
-      <charmetric ID="14" c="14" n="ffi" bllx="26" blly="0" burx="787" bury="704" />
-      <charmetric ID="15" c="15" n="ffl" bllx="26" blly="0" burx="787" bury="704" />
-      <charmetric ID="16" c="16" n="dotlessi" bllx="33" blly="0" burx="241" bury="441" />
-      <charmetric ID="17" c="17" n="dotlessj" bllx="-34" blly="-204" burx="203" bury="441" />
-      <charmetric ID="18" c="18" n="grave" bllx="106" blly="511" burx="287" bury="697" />
-      <charmetric ID="19" c="19" n="acute" bllx="202" blly="511" burx="383" bury="697" />
-      <charmetric ID="20" c="20" n="caron" bllx="116" blly="518" burx="373" bury="637" />
-      <charmetric ID="21" c="21" n="breve" bllx="99" blly="522" burx="390" bury="694" />
-      <charmetric ID="22" c="22" n="macron" bllx="68" blly="557" burx="421" bury="586" />
-      <charmetric ID="23" c="23" n="ring" bllx="274" blly="540" burx="459" bury="715" />
-      <charmetric ID="24" c="24" n="cedilla" bllx="130" blly="-201" burx="358" bury="-21" />
-      <charmetric ID="25" c="25" n="germandbls" bllx="28" blly="-10" burx="462" bury="704" />
-      <charmetric ID="26" c="26" n="ae" bllx="46" blly="-10" burx="679" bury="446" />
-      <charmetric ID="27" c="27" n="oe" bllx="30" blly="-10" burx="734" bury="446" />
-      <charmetric ID="28" c="28" n="oslash" bllx="35" blly="-102" burx="454" bury="533" />
-      <charmetric ID="29" c="29" n="AE" bllx="31" blly="0" burx="856" bury="683" />
-      <charmetric ID="30" c="30" n="OE" bllx="67" blly="-21" burx="965" bury="704" />
-      <charmetric ID="31" c="31" n="Oslash" bllx="54" blly="-55" burx="707" bury="738" />
-      <charmetric ID="32" c="32" n="suppress" bllx="26" blly="281" burx="255" bury="392" />
-      <charmetric ID="33" c="33" n="exclam" bllx="86" blly="0" burx="184" bury="715" />
-      <charmetric ID="34" c="34" n="quotedblright" bllx="33" blly="404" burx="334" bury="694" />
-      <charmetric ID="35" c="35" n="numbersign" bllx="54" blly="-194" burx="761" bury="694" />
-      <charmetric ID="36" c="36" n="dollar" bllx="54" blly="-56" burx="435" bury="750" />
-      <charmetric ID="37" c="37" n="percent" bllx="54" blly="-56" burx="761" bury="750" />
-      <charmetric ID="38" c="38" n="ampersand" bllx="41" blly="-21" burx="712" bury="715" />
-      <charmetric ID="39" c="39" n="quoteright" bllx="87" blly="404" burx="198" bury="694" />
-      <charmetric ID="40" c="40" n="parenleft" bllx="98" blly="-251" burx="325" bury="750" />
-      <charmetric ID="41" c="41" n="parenright" bllx="55" blly="-251" burx="282" bury="750" />
-      <charmetric ID="42" c="42" n="asterisk" bllx="64" blly="319" burx="425" bury="750" />
-      <charmetric ID="43" c="43" n="plus" bllx="54" blly="-77" burx="707" bury="576" />
-      <charmetric ID="44" c="44" n="comma" bllx="87" blly="-193" burx="195" bury="97" />
-      <charmetric ID="45" c="45" n="hyphen" bllx="11" blly="189" burx="271" bury="243" />
-      <charmetric ID="46" c="46" n="period" bllx="87" blly="0" burx="184" bury="97" />
-      <charmetric ID="47" c="47" n="slash" bllx="54" blly="-250" burx="435" bury="750" />
-      <charmetric ID="48" c="48" n="zero" bllx="41" blly="-21" burx="448" bury="665" />
-      <charmetric ID="49" c="49" n="one" bllx="91" blly="0" burx="410" bury="665" />
-      <charmetric ID="50" c="50" n="two" bllx="49" blly="0" burx="440" bury="665" />
-      <charmetric ID="51" c="51" n="three" bllx="41" blly="-21" burx="448" bury="665" />
-      <charmetric ID="52" c="52" n="four" bllx="27" blly="0" burx="462" bury="675" />
-      <charmetric ID="53" c="53" n="five" bllx="49" blly="-21" burx="440" bury="664" />
-      <charmetric ID="54" c="54" n="six" bllx="41" blly="-21" burx="448" bury="665" />
-      <charmetric ID="55" c="55" n="seven" bllx="54" blly="-21" burx="475" bury="676" />
-      <charmetric ID="56" c="56" n="eight" bllx="41" blly="-21" burx="448" bury="665" />
-      <charmetric ID="57" c="57" n="nine" bllx="41" blly="-21" burx="448" bury="665" />
-      <charmetric ID="58" c="58" n="colon" bllx="87" blly="0" burx="184" bury="431" />
-      <charmetric ID="59" c="59" n="semicolon" bllx="87" blly="-193" burx="187" bury="431" />
-      <charmetric ID="60" c="60" n="exclamdown" bllx="87" blly="-215" burx="185" bury="500" />
-      <charmetric ID="61" c="61" n="equal" bllx="54" blly="138" burx="707" bury="361" />
-      <charmetric ID="62" c="62" n="questiondown" bllx="54" blly="-204" burx="407" bury="500" />
-      <charmetric ID="63" c="63" n="question" bllx="54" blly="0" burx="407" bury="704" />
-      <charmetric ID="64" c="64" n="at" bllx="54" blly="-10" burx="707" bury="704" />
-      <charmetric ID="65" c="65" n="A" bllx="31" blly="0" burx="702" bury="714" />
-      <charmetric ID="66" c="66" n="B" bllx="43" blly="0" burx="638" bury="683" />
-      <charmetric ID="67" c="67" n="C" bllx="54" blly="-21" burx="652" bury="704" />
-      <charmetric ID="68" c="68" n="D" bllx="42" blly="0" burx="693" bury="683" />
-      <charmetric ID="69" c="69" n="E" bllx="41" blly="0" burx="638" bury="681" />
-      <charmetric ID="70" c="70" n="F" bllx="41" blly="0" burx="597" bury="681" />
-      <charmetric ID="71" c="71" n="G" bllx="54" blly="-21" burx="719" bury="704" />
-      <charmetric ID="72" c="72" n="H" bllx="41" blly="0" burx="692" bury="683" />
-      <charmetric ID="73" c="73" n="I" bllx="36" blly="0" burx="317" bury="683" />
-      <charmetric ID="74" c="74" n="J" bllx="51" blly="-21" burx="451" bury="683" />
-      <charmetric ID="75" c="75" n="K" bllx="41" blly="0" burx="719" bury="683" />
-      <charmetric ID="76" c="76" n="L" bllx="41" blly="0" burx="570" bury="683" />
-      <charmetric ID="77" c="77" n="M" bllx="44" blly="0" burx="852" bury="683" />
-      <charmetric ID="78" c="78" n="N" bllx="41" blly="0" burx="692" bury="683" />
-      <charmetric ID="79" c="79" n="O" bllx="54" blly="-21" burx="707" bury="704" />
-      <charmetric ID="80" c="80" n="P" bllx="42" blly="0" burx="611" bury="683" />
-      <charmetric ID="81" c="81" n="Q" bllx="54" blly="-194" burx="712" bury="704" />
-      <charmetric ID="82" c="82" n="R" bllx="42" blly="-21" burx="717" bury="683" />
-      <charmetric ID="83" c="83" n="S" bllx="54" blly="-21" burx="489" bury="704" />
-      <charmetric ID="84" c="84" n="T" bllx="35" blly="0" burx="671" bury="678" />
-      <charmetric ID="85" c="85" n="U" bllx="41" blly="-21" burx="692" bury="683" />
-      <charmetric ID="86" c="86" n="V" bllx="18" blly="-21" burx="715" bury="683" />
-      <charmetric ID="87" c="87" n="W" bllx="17" blly="-21" burx="988" bury="683" />
-      <charmetric ID="88" c="88" n="X" bllx="22" blly="0" burx="711" bury="683" />
-      <charmetric ID="89" c="89" n="Y" bllx="10" blly="0" burx="723" bury="683" />
-      <charmetric ID="90" c="90" n="Z" bllx="54" blly="0" burx="548" bury="683" />
-      <charmetric ID="91" c="91" n="bracketleft" bllx="116" blly="-250" burx="250" bury="750" />
-      <charmetric ID="92" c="92" n="quotedblleft" bllx="155" blly="403" burx="456" bury="693" />
-      <charmetric ID="93" c="93" n="bracketright" bllx="21" blly="-250" burx="155" bury="750" />
-      <charmetric ID="94" c="94" n="circumflex" bllx="114" blly="543" burx="375" bury="694" />
-      <charmetric ID="95" c="95" n="dotaccent" bllx="87" blly="568" burx="184" bury="665" />
-      <charmetric ID="96" c="96" n="quoteleft" bllx="73" blly="403" burx="184" bury="693" />
-      <charmetric ID="97" c="97" n="a" bllx="44" blly="-10" burx="484" bury="446" />
-      <charmetric ID="98" c="98" n="b" bllx="28" blly="-10" burx="508" bury="694" />
-      <charmetric ID="99" c="99" n="c" bllx="35" blly="-10" burx="406" bury="446" />
-      <charmetric ID="100" c="100" n="d" bllx="35" blly="-10" burx="515" bury="694" />
-      <charmetric ID="101" c="101" n="e" bllx="30" blly="-10" burx="407" bury="446" />
-      <charmetric ID="102" c="102" n="f" bllx="31" blly="0" burx="342" bury="704">
+      </glyph>
+      <glyph ID="12" glyph-number="12" glyph-name="fi" unicode="fi" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
+      <glyph ID="13" glyph-number="13" glyph-name="fl" unicode="fl" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
+      <glyph ID="14" glyph-number="14" glyph-name="ffi" unicode="ffi" width="815" bllx="26" blly="0" burx="787" bury="704" depth="0" height="704" />
+      <glyph ID="15" glyph-number="15" glyph-name="ffl" unicode="ffl" width="815" bllx="26" blly="0" burx="787" bury="704" depth="0" height="704" />
+      <glyph ID="16" glyph-number="16" glyph-name="dotlessi" unicode="dotlessi" width="271" bllx="33" blly="0" burx="241" bury="441" depth="0" height="441" />
+      <glyph ID="17" glyph-number="17" glyph-name="dotlessj" unicode="dotlessj" width="299" bllx="-34" blly="-204" burx="203" bury="441" depth="204" height="441" />
+      <glyph ID="18" glyph-number="18" glyph-name="grave" unicode="grave" width="489" bllx="106" blly="511" burx="287" bury="697" depth="0" height="697" />
+      <glyph ID="19" glyph-number="19" glyph-name="acute" unicode="acute" width="489" bllx="202" blly="511" burx="383" bury="697" depth="0" height="697" />
+      <glyph ID="20" glyph-number="20" glyph-name="caron" unicode="caron" width="489" bllx="116" blly="518" burx="373" bury="637" depth="0" height="637" />
+      <glyph ID="21" glyph-number="21" glyph-name="breve" unicode="breve" width="489" bllx="99" blly="522" burx="390" bury="694" depth="0" height="694" />
+      <glyph ID="22" glyph-number="22" glyph-name="macron" unicode="macron" width="489" bllx="68" blly="557" burx="421" bury="586" depth="0" height="586" />
+      <glyph ID="23" glyph-number="23" glyph-name="ring" unicode="ring" width="734" bllx="274" blly="540" burx="459" bury="715" depth="0" height="715" />
+      <glyph ID="24" glyph-number="24" glyph-name="cedilla" unicode="cedilla" width="435" bllx="130" blly="-201" burx="358" bury="-21" depth="201" height="0" />
+      <glyph ID="25" glyph-number="25" glyph-name="germandbls" unicode="germandbls" width="489" bllx="28" blly="-10" burx="462" bury="704" depth="10" height="704" />
+      <glyph ID="26" glyph-number="26" glyph-name="ae" unicode="ae" width="707" bllx="46" blly="-10" burx="679" bury="446" depth="10" height="446" />
+      <glyph ID="27" glyph-number="27" glyph-name="oe" unicode="oe" width="761" bllx="30" blly="-10" burx="734" bury="446" depth="10" height="446" />
+      <glyph ID="28" glyph-number="28" glyph-name="oslash" unicode="oslash" width="489" bllx="35" blly="-102" burx="454" bury="533" depth="102" height="533" />
+      <glyph ID="29" glyph-number="29" glyph-name="AE" unicode="AE" width="883" bllx="31" blly="0" burx="856" bury="683" depth="0" height="683" />
+      <glyph ID="30" glyph-number="30" glyph-name="OE" unicode="OE" width="992" bllx="67" blly="-21" burx="965" bury="704" depth="21" height="704" />
+      <glyph ID="31" glyph-number="31" glyph-name="Oslash" unicode="Oslash" width="761" bllx="54" blly="-55" burx="707" bury="738" depth="55" height="738" />
+      <glyph ID="32" glyph-number="32" glyph-name="suppress" unicode="suppress" width="271" bllx="26" blly="281" burx="255" bury="392" depth="0" height="392" />
+      <glyph ID="33" glyph-number="33" glyph-name="exclam" unicode="exclam" width="271" bllx="86" blly="0" burx="184" bury="715" depth="0" height="715" />
+      <glyph ID="34" glyph-number="34" glyph-name="quotedblright" unicode="quotedblright" width="489" bllx="33" blly="404" burx="334" bury="694" depth="0" height="694" />
+      <glyph ID="35" glyph-number="35" glyph-name="numbersign" unicode="numbersign" width="815" bllx="54" blly="-194" burx="761" bury="694" depth="194" height="694" />
+      <glyph ID="36" glyph-number="36" glyph-name="dollar" unicode="dollar" width="489" bllx="54" blly="-56" burx="435" bury="750" depth="56" height="750" />
+      <glyph ID="37" glyph-number="37" glyph-name="percent" unicode="percent" width="815" bllx="54" blly="-56" burx="761" bury="750" depth="56" height="750" />
+      <glyph ID="38" glyph-number="38" glyph-name="ampersand" unicode="ampersand" width="761" bllx="41" blly="-21" burx="712" bury="715" depth="21" height="715" />
+      <glyph ID="39" glyph-number="39" glyph-name="quoteright" unicode="quoteright" width="271" bllx="87" blly="404" burx="198" bury="694" depth="0" height="694" />
+      <glyph ID="40" glyph-number="40" glyph-name="parenleft" unicode="parenleft" width="380" bllx="98" blly="-251" burx="325" bury="750" depth="251" height="750" />
+      <glyph ID="41" glyph-number="41" glyph-name="parenright" unicode="parenright" width="380" bllx="55" blly="-251" burx="282" bury="750" depth="251" height="750" />
+      <glyph ID="42" glyph-number="42" glyph-name="asterisk" unicode="asterisk" width="489" bllx="64" blly="319" burx="425" bury="750" depth="0" height="750" />
+      <glyph ID="43" glyph-number="43" glyph-name="plus" unicode="plus" width="761" bllx="54" blly="-77" burx="707" bury="576" depth="77" height="576" />
+      <glyph ID="44" glyph-number="44" glyph-name="comma" unicode="comma" width="271" bllx="87" blly="-193" burx="195" bury="97" depth="193" height="97" />
+      <glyph ID="45" glyph-number="45" glyph-name="hyphen" unicode="hyphen" width="326" bllx="11" blly="189" burx="271" bury="243" depth="0" height="243" />
+      <glyph ID="46" glyph-number="46" glyph-name="period" unicode="period" width="271" bllx="87" blly="0" burx="184" bury="97" depth="0" height="97" />
+      <glyph ID="47" glyph-number="47" glyph-name="slash" unicode="slash" width="489" bllx="54" blly="-250" burx="435" bury="750" depth="250" height="750" />
+      <glyph ID="48" glyph-number="48" glyph-name="zero" unicode="zero" width="489" bllx="41" blly="-21" burx="448" bury="665" depth="21" height="665" />
+      <glyph ID="49" glyph-number="49" glyph-name="one" unicode="one" width="489" bllx="91" blly="0" burx="410" bury="665" depth="0" height="665" />
+      <glyph ID="50" glyph-number="50" glyph-name="two" unicode="two" width="489" bllx="49" blly="0" burx="440" bury="665" depth="0" height="665" />
+      <glyph ID="51" glyph-number="51" glyph-name="three" unicode="three" width="489" bllx="41" blly="-21" burx="448" bury="665" depth="21" height="665" />
+      <glyph ID="52" glyph-number="52" glyph-name="four" unicode="four" width="489" bllx="27" blly="0" burx="462" bury="675" depth="0" height="675" />
+      <glyph ID="53" glyph-number="53" glyph-name="five" unicode="five" width="489" bllx="49" blly="-21" burx="440" bury="664" depth="21" height="664" />
+      <glyph ID="54" glyph-number="54" glyph-name="six" unicode="six" width="489" bllx="41" blly="-21" burx="448" bury="665" depth="21" height="665" />
+      <glyph ID="55" glyph-number="55" glyph-name="seven" unicode="seven" width="489" bllx="54" blly="-21" burx="475" bury="676" depth="21" height="676" />
+      <glyph ID="56" glyph-number="56" glyph-name="eight" unicode="eight" width="489" bllx="41" blly="-21" burx="448" bury="665" depth="21" height="665" />
+      <glyph ID="57" glyph-number="57" glyph-name="nine" unicode="nine" width="489" bllx="41" blly="-21" burx="448" bury="665" depth="21" height="665" />
+      <glyph ID="58" glyph-number="58" glyph-name="colon" unicode="colon" width="271" bllx="87" blly="0" burx="184" bury="431" depth="0" height="431" />
+      <glyph ID="59" glyph-number="59" glyph-name="semicolon" unicode="semicolon" width="271" bllx="87" blly="-193" burx="187" bury="431" depth="193" height="431" />
+      <glyph ID="60" glyph-number="60" glyph-name="exclamdown" unicode="exclamdown" width="271" bllx="87" blly="-215" burx="185" bury="500" depth="215" height="500" />
+      <glyph ID="61" glyph-number="61" glyph-name="equal" unicode="equal" width="761" bllx="54" blly="138" burx="707" bury="361" depth="0" height="361" />
+      <glyph ID="62" glyph-number="62" glyph-name="questiondown" unicode="questiondown" width="462" bllx="54" blly="-204" burx="407" bury="500" depth="204" height="500" />
+      <glyph ID="63" glyph-number="63" glyph-name="question" unicode="question" width="462" bllx="54" blly="0" burx="407" bury="704" depth="0" height="704" />
+      <glyph ID="64" glyph-number="64" glyph-name="at" unicode="at" width="761" bllx="54" blly="-10" burx="707" bury="704" depth="10" height="704" />
+      <glyph ID="65" glyph-number="65" glyph-name="A" unicode="A" width="734" bllx="31" blly="0" burx="702" bury="714" depth="0" height="714" />
+      <glyph ID="66" glyph-number="66" glyph-name="B" unicode="B" width="693" bllx="43" blly="0" burx="638" bury="683" depth="0" height="683" />
+      <glyph ID="67" glyph-number="67" glyph-name="C" unicode="C" width="707" bllx="54" blly="-21" burx="652" bury="704" depth="21" height="704" />
+      <glyph ID="68" glyph-number="68" glyph-name="D" unicode="D" width="747" bllx="42" blly="0" burx="693" bury="683" depth="0" height="683" />
+      <glyph ID="69" glyph-number="69" glyph-name="E" unicode="E" width="666" bllx="41" blly="0" burx="638" bury="681" depth="0" height="681" />
+      <glyph ID="70" glyph-number="70" glyph-name="F" unicode="F" width="639" bllx="41" blly="0" burx="597" bury="681" depth="0" height="681" />
+      <glyph ID="71" glyph-number="71" glyph-name="G" unicode="G" width="768" bllx="54" blly="-21" burx="719" bury="704" depth="21" height="704" />
+      <glyph ID="72" glyph-number="72" glyph-name="H" unicode="H" width="734" bllx="41" blly="0" burx="692" bury="683" depth="0" height="683" />
+      <glyph ID="73" glyph-number="73" glyph-name="I" unicode="I" width="353" bllx="36" blly="0" burx="317" bury="683" depth="0" height="683" />
+      <glyph ID="74" glyph-number="74" glyph-name="J" unicode="J" width="503" bllx="51" blly="-21" burx="451" bury="683" depth="21" height="683" />
+      <glyph ID="75" glyph-number="75" glyph-name="K" unicode="K" width="761" bllx="41" blly="0" burx="719" bury="683" depth="0" height="683" />
+      <glyph ID="76" glyph-number="76" glyph-name="L" unicode="L" width="611" bllx="41" blly="0" burx="570" bury="683" depth="0" height="683" />
+      <glyph ID="77" glyph-number="77" glyph-name="M" unicode="M" width="897" bllx="44" blly="0" burx="852" bury="683" depth="0" height="683" />
+      <glyph ID="78" glyph-number="78" glyph-name="N" unicode="N" width="734" bllx="41" blly="0" burx="692" bury="683" depth="0" height="683" />
+      <glyph ID="79" glyph-number="79" glyph-name="O" unicode="O" width="761" bllx="54" blly="-21" burx="707" bury="704" depth="21" height="704" />
+      <glyph ID="80" glyph-number="80" glyph-name="P" unicode="P" width="666" bllx="42" blly="0" burx="611" bury="683" depth="0" height="683" />
+      <glyph ID="81" glyph-number="81" glyph-name="Q" unicode="Q" width="761" bllx="54" blly="-194" burx="712" bury="704" depth="194" height="704" />
+      <glyph ID="82" glyph-number="82" glyph-name="R" unicode="R" width="720" bllx="42" blly="-21" burx="717" bury="683" depth="21" height="683" />
+      <glyph ID="83" glyph-number="83" glyph-name="S" unicode="S" width="543" bllx="54" blly="-21" burx="489" bury="704" depth="21" height="704" />
+      <glyph ID="84" glyph-number="84" glyph-name="T" unicode="T" width="707" bllx="35" blly="0" burx="671" bury="678" depth="0" height="678" />
+      <glyph ID="85" glyph-number="85" glyph-name="U" unicode="U" width="734" bllx="41" blly="-21" burx="692" bury="683" depth="21" height="683" />
+      <glyph ID="86" glyph-number="86" glyph-name="V" unicode="V" width="734" bllx="18" blly="-21" burx="715" bury="683" depth="21" height="683" />
+      <glyph ID="87" glyph-number="87" glyph-name="W" unicode="W" width="1006" bllx="17" blly="-21" burx="988" bury="683" depth="21" height="683" />
+      <glyph ID="88" glyph-number="88" glyph-name="X" unicode="X" width="734" bllx="22" blly="0" burx="711" bury="683" depth="0" height="683" />
+      <glyph ID="89" glyph-number="89" glyph-name="Y" unicode="Y" width="734" bllx="10" blly="0" burx="723" bury="683" depth="0" height="683" />
+      <glyph ID="90" glyph-number="90" glyph-name="Z" unicode="Z" width="598" bllx="54" blly="0" burx="548" bury="683" depth="0" height="683" />
+      <glyph ID="91" glyph-number="91" glyph-name="bracketleft" unicode="bracketleft" width="271" bllx="116" blly="-250" burx="250" bury="750" depth="250" height="750" />
+      <glyph ID="92" glyph-number="92" glyph-name="quotedblleft" unicode="quotedblleft" width="489" bllx="155" blly="403" burx="456" bury="693" depth="0" height="693" />
+      <glyph ID="93" glyph-number="93" glyph-name="bracketright" unicode="bracketright" width="271" bllx="21" blly="-250" burx="155" bury="750" depth="250" height="750" />
+      <glyph ID="94" glyph-number="94" glyph-name="circumflex" unicode="circumflex" width="489" bllx="114" blly="543" burx="375" bury="694" depth="0" height="694" />
+      <glyph ID="95" glyph-number="95" glyph-name="dotaccent" unicode="dotaccent" width="271" bllx="87" blly="568" burx="184" bury="665" depth="0" height="665" />
+      <glyph ID="96" glyph-number="96" glyph-name="quoteleft" unicode="quoteleft" width="271" bllx="73" blly="403" burx="184" bury="693" depth="0" height="693" />
+      <glyph ID="97" glyph-number="97" glyph-name="a" unicode="a" width="489" bllx="44" blly="-10" burx="484" bury="446" depth="10" height="446" />
+      <glyph ID="98" glyph-number="98" glyph-name="b" unicode="b" width="543" bllx="28" blly="-10" burx="508" bury="694" depth="10" height="694" />
+      <glyph ID="99" glyph-number="99" glyph-name="c" unicode="c" width="435" bllx="35" blly="-10" burx="406" bury="446" depth="10" height="446" />
+      <glyph ID="100" glyph-number="100" glyph-name="d" unicode="d" width="543" bllx="35" blly="-10" burx="515" bury="694" depth="10" height="694" />
+      <glyph ID="101" glyph-number="101" glyph-name="e" unicode="e" width="435" bllx="30" blly="-10" burx="407" bury="446" depth="10" height="446" />
+      <glyph ID="102" glyph-number="102" glyph-name="f" unicode="f" width="299" bllx="31" blly="0" burx="342" bury="704" depth="0" height="704" ligature="true">
          <l letter="i" lig="fi" />
-         <l letter="l" lig="fl" />
          <l letter="f" lig="ff" />
-      </charmetric>
-      <charmetric ID="103" c="103" n="g" bllx="27" blly="-205" burx="475" bury="452" />
-      <charmetric ID="104" c="104" n="h" bllx="32" blly="0" burx="521" bury="694" />
-      <charmetric ID="105" c="105" n="i" bllx="33" blly="0" burx="241" bury="665" />
-      <charmetric ID="106" c="106" n="j" bllx="-34" blly="-204" burx="203" bury="665" />
-      <charmetric ID="107" c="107" n="k" bllx="28" blly="0" burx="500" bury="694" />
-      <charmetric ID="108" c="108" n="l" bllx="33" blly="0" burx="248" bury="694" />
-      <charmetric ID="109" c="109" n="m" bllx="32" blly="0" burx="793" bury="441" />
-      <charmetric ID="110" c="110" n="n" bllx="32" blly="0" burx="521" bury="441" />
-      <charmetric ID="111" c="111" n="o" bllx="30" blly="-10" burx="459" bury="446" />
-      <charmetric ID="112" c="112" n="p" bllx="28" blly="-194" burx="508" bury="441" />
-      <charmetric ID="113" c="113" n="q" bllx="35" blly="-194" burx="515" bury="441" />
-      <charmetric ID="114" c="114" n="r" bllx="28" blly="0" burx="353" bury="441" />
-      <charmetric ID="115" c="115" n="s" bllx="33" blly="-10" burx="352" bury="446" />
-      <charmetric ID="116" c="116" n="t" bllx="18" blly="-10" burx="326" bury="615" />
-      <charmetric ID="117" c="117" n="u" bllx="32" blly="-10" burx="521" bury="441" />
-      <charmetric ID="118" c="118" n="v" bllx="18" blly="-10" burx="498" bury="431" />
-      <charmetric ID="119" c="119" n="w" bllx="18" blly="-10" burx="688" bury="431" />
-      <charmetric ID="120" c="120" n="x" bllx="10" blly="0" burx="506" bury="431" />
-      <charmetric ID="121" c="121" n="y" bllx="18" blly="-204" burx="498" bury="431" />
-      <charmetric ID="122" c="122" n="z" bllx="27" blly="0" burx="393" bury="431" />
-      <charmetric ID="123" c="123" n="endash" bllx="0" blly="256" burx="489" bury="276" />
-      <charmetric ID="124" c="124" n="emdash" bllx="0" blly="256" burx="978" bury="276" />
-      <charmetric ID="125" c="125" n="hungarumlaut" bllx="127" blly="514" burx="410" bury="699" />
-      <charmetric ID="126" c="126" n="tilde" bllx="82" blly="573" burx="407" bury="664" />
-      <charmetric ID="127" c="127" n="dieresis" bllx="104" blly="573" burx="385" bury="665" />
-      <charmetric ID="128" c="128" n="suppress" bllx="26" blly="281" burx="255" bury="392" />
-      <charmetric ID="160" c="160" n="space" bllx="0" blly="0" burx="0" bury="0" />
-      <charmetric ID="161" c="161" n="Gamma" bllx="41" blly="0" burx="570" bury="681" />
-      <charmetric ID="162" c="162" n="Delta" bllx="46" blly="0" burx="769" bury="714" />
-      <charmetric ID="163" c="163" n="Theta" bllx="54" blly="-21" burx="707" bury="704" />
-      <charmetric ID="164" c="164" n="Lambda" bllx="31" blly="0" burx="648" bury="714" />
-      <charmetric ID="165" c="165" n="Xi" bllx="41" blly="0" burx="611" bury="678" />
-      <charmetric ID="166" c="166" n="Pi" bllx="41" blly="0" burx="692" bury="681" />
-      <charmetric ID="167" c="167" n="Sigma" bllx="54" blly="0" burx="652" bury="683" />
-      <charmetric ID="168" c="168" n="Upsilon" bllx="54" blly="0" burx="707" bury="704" />
-      <charmetric ID="169" c="169" n="Phi" bllx="54" blly="0" burx="652" bury="683" />
-      <charmetric ID="170" c="170" n="Psi" bllx="55" blly="0" burx="707" bury="683" />
-      <charmetric ID="173" c="173" n="Omega" bllx="44" blly="0" burx="662" bury="704" />
-      <charmetric ID="174" c="174" n="ff" bllx="26" blly="0" burx="609" bury="704">
+         <l letter="l" lig="fl" />
+      </glyph>
+      <glyph ID="103" glyph-number="103" glyph-name="g" unicode="g" width="489" bllx="27" blly="-205" burx="475" bury="452" depth="205" height="452" />
+      <glyph ID="104" glyph-number="104" glyph-name="h" unicode="h" width="543" bllx="32" blly="0" burx="521" bury="694" depth="0" height="694" />
+      <glyph ID="105" glyph-number="105" glyph-name="i" unicode="i" width="271" bllx="33" blly="0" burx="241" bury="665" depth="0" height="665" />
+      <glyph ID="106" glyph-number="106" glyph-name="j" unicode="j" width="299" bllx="-34" blly="-204" burx="203" bury="665" depth="204" height="665" />
+      <glyph ID="107" glyph-number="107" glyph-name="k" unicode="k" width="516" bllx="28" blly="0" burx="500" bury="694" depth="0" height="694" />
+      <glyph ID="108" glyph-number="108" glyph-name="l" unicode="l" width="271" bllx="33" blly="0" burx="248" bury="694" depth="0" height="694" />
+      <glyph ID="109" glyph-number="109" glyph-name="m" unicode="m" width="815" bllx="32" blly="0" burx="793" bury="441" depth="0" height="441" />
+      <glyph ID="110" glyph-number="110" glyph-name="n" unicode="n" width="543" bllx="32" blly="0" burx="521" bury="441" depth="0" height="441" />
+      <glyph ID="111" glyph-number="111" glyph-name="o" unicode="o" width="489" bllx="30" blly="-10" burx="459" bury="446" depth="10" height="446" />
+      <glyph ID="112" glyph-number="112" glyph-name="p" unicode="p" width="543" bllx="28" blly="-194" burx="508" bury="441" depth="194" height="441" />
+      <glyph ID="113" glyph-number="113" glyph-name="q" unicode="q" width="516" bllx="35" blly="-194" burx="515" bury="441" depth="194" height="441" />
+      <glyph ID="114" glyph-number="114" glyph-name="r" unicode="r" width="380" bllx="28" blly="0" burx="353" bury="441" depth="0" height="441" />
+      <glyph ID="115" glyph-number="115" glyph-name="s" unicode="s" width="386" bllx="33" blly="-10" burx="352" bury="446" depth="10" height="446" />
+      <glyph ID="116" glyph-number="116" glyph-name="t" unicode="t" width="380" bllx="18" blly="-10" burx="326" bury="615" depth="10" height="615" />
+      <glyph ID="117" glyph-number="117" glyph-name="u" unicode="u" width="543" bllx="32" blly="-10" burx="521" bury="441" depth="10" height="441" />
+      <glyph ID="118" glyph-number="118" glyph-name="v" unicode="v" width="516" bllx="18" blly="-10" burx="498" bury="431" depth="10" height="431" />
+      <glyph ID="119" glyph-number="119" glyph-name="w" unicode="w" width="707" bllx="18" blly="-10" burx="688" bury="431" depth="10" height="431" />
+      <glyph ID="120" glyph-number="120" glyph-name="x" unicode="x" width="516" bllx="10" blly="0" burx="506" bury="431" depth="0" height="431" />
+      <glyph ID="121" glyph-number="121" glyph-name="y" unicode="y" width="516" bllx="18" blly="-204" burx="498" bury="431" depth="204" height="431" />
+      <glyph ID="122" glyph-number="122" glyph-name="z" unicode="z" width="435" bllx="27" blly="0" burx="393" bury="431" depth="0" height="431" />
+      <glyph ID="123" glyph-number="123" glyph-name="endash" unicode="endash" width="489" bllx="0" blly="256" burx="489" bury="276" depth="0" height="276" />
+      <glyph ID="124" glyph-number="124" glyph-name="emdash" unicode="emdash" width="979" bllx="0" blly="256" burx="978" bury="276" depth="0" height="276" />
+      <glyph ID="125" glyph-number="125" glyph-name="hungarumlaut" unicode="hungarumlaut" width="489" bllx="127" blly="514" burx="410" bury="699" depth="0" height="699" />
+      <glyph ID="126" glyph-number="126" glyph-name="tilde" unicode="tilde" width="489" bllx="82" blly="573" burx="407" bury="664" depth="0" height="664" />
+      <glyph ID="127" glyph-number="127" glyph-name="dieresis" unicode="dieresis" width="489" bllx="104" blly="573" burx="385" bury="665" depth="0" height="665" />
+      <glyph ID="128" glyph-number="128" glyph-name="suppress" unicode="suppress" width="271" bllx="26" blly="281" burx="255" bury="392" depth="0" height="392" />
+      <glyph ID="160" glyph-number="160" glyph-name="space" unicode="space" width="326" bllx="0" blly="0" burx="0" bury="0" depth="0" height="0" />
+      <glyph ID="161" glyph-number="161" glyph-name="Gamma" unicode="Gamma" width="611" bllx="41" blly="0" burx="570" bury="681" depth="0" height="681" />
+      <glyph ID="162" glyph-number="162" glyph-name="Delta" unicode="Delta" width="815" bllx="46" blly="0" burx="769" bury="714" depth="0" height="714" />
+      <glyph ID="163" glyph-number="163" glyph-name="Theta" unicode="Theta" width="761" bllx="54" blly="-21" burx="707" bury="704" depth="21" height="704" />
+      <glyph ID="164" glyph-number="164" glyph-name="Lambda" unicode="Lambda" width="679" bllx="31" blly="0" burx="648" bury="714" depth="0" height="714" />
+      <glyph ID="165" glyph-number="165" glyph-name="Xi" unicode="Xi" width="652" bllx="41" blly="0" burx="611" bury="678" depth="0" height="678" />
+      <glyph ID="166" glyph-number="166" glyph-name="Pi" unicode="Pi" width="734" bllx="41" blly="0" burx="692" bury="681" depth="0" height="681" />
+      <glyph ID="167" glyph-number="167" glyph-name="Sigma" unicode="Sigma" width="707" bllx="54" blly="0" burx="652" bury="683" depth="0" height="683" />
+      <glyph ID="168" glyph-number="168" glyph-name="Upsilon" unicode="Upsilon" width="761" bllx="54" blly="0" burx="707" bury="704" depth="0" height="704" />
+      <glyph ID="169" glyph-number="169" glyph-name="Phi" unicode="Phi" width="707" bllx="54" blly="0" burx="652" bury="683" depth="0" height="683" />
+      <glyph ID="170" glyph-number="170" glyph-name="Psi" unicode="Psi" width="761" bllx="55" blly="0" burx="707" bury="683" depth="0" height="683" />
+      <glyph ID="173" glyph-number="173" glyph-name="Omega" unicode="Omega" width="707" bllx="44" blly="0" burx="662" bury="704" depth="0" height="704" />
+      <glyph ID="174" glyph-number="174" glyph-name="ff" unicode="ff" width="571" bllx="26" blly="0" burx="609" bury="704" depth="0" height="704" ligature="true">
          <l letter="i" lig="ffi" />
          <l letter="l" lig="ffl" />
-      </charmetric>
-      <charmetric ID="175" c="175" n="fi" bllx="26" blly="0" burx="515" bury="704" />
-      <charmetric ID="176" c="176" n="fl" bllx="26" blly="0" burx="515" bury="704" />
-      <charmetric ID="177" c="177" n="ffi" bllx="26" blly="0" burx="787" bury="704" />
-      <charmetric ID="178" c="178" n="ffl" bllx="26" blly="0" burx="787" bury="704" />
-      <charmetric ID="179" c="179" n="dotlessi" bllx="33" blly="0" burx="241" bury="441" />
-      <charmetric ID="180" c="180" n="dotlessj" bllx="-34" blly="-204" burx="203" bury="441" />
-      <charmetric ID="181" c="181" n="grave" bllx="106" blly="511" burx="287" bury="697" />
-      <charmetric ID="182" c="182" n="acute" bllx="202" blly="511" burx="383" bury="697" />
-      <charmetric ID="183" c="183" n="caron" bllx="116" blly="518" burx="373" bury="637" />
-      <charmetric ID="184" c="184" n="breve" bllx="99" blly="522" burx="390" bury="694" />
-      <charmetric ID="185" c="185" n="macron" bllx="68" blly="557" burx="421" bury="586" />
-      <charmetric ID="186" c="186" n="ring" bllx="274" blly="540" burx="459" bury="715" />
-      <charmetric ID="187" c="187" n="cedilla" bllx="130" blly="-201" burx="358" bury="-21" />
-      <charmetric ID="188" c="188" n="germandbls" bllx="28" blly="-10" burx="462" bury="704" />
-      <charmetric ID="189" c="189" n="ae" bllx="46" blly="-10" burx="679" bury="446" />
-      <charmetric ID="190" c="190" n="oe" bllx="30" blly="-10" burx="734" bury="446" />
-      <charmetric ID="191" c="191" n="oslash" bllx="35" blly="-102" burx="454" bury="533" />
-      <charmetric ID="192" c="192" n="AE" bllx="31" blly="0" burx="856" bury="683" />
-      <charmetric ID="193" c="193" n="OE" bllx="67" blly="-21" burx="965" bury="704" />
-      <charmetric ID="194" c="194" n="Oslash" bllx="54" blly="-55" burx="707" bury="738" />
-      <charmetric ID="195" c="195" n="suppress" bllx="26" blly="281" burx="255" bury="392" />
-      <charmetric ID="196" c="196" n="dieresis" bllx="104" blly="573" burx="385" bury="665" />
-   </fontsegment>
-</font>
+      </glyph>
+      <glyph ID="175" glyph-number="175" glyph-name="fi" unicode="fi" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
+      <glyph ID="176" glyph-number="176" glyph-name="fl" unicode="fl" width="543" bllx="26" blly="0" burx="515" bury="704" depth="0" height="704" />
+      <glyph ID="177" glyph-number="177" glyph-name="ffi" unicode="ffi" width="815" bllx="26" blly="0" burx="787" bury="704" depth="0" height="704" />
+      <glyph ID="178" glyph-number="178" glyph-name="ffl" unicode="ffl" width="815" bllx="26" blly="0" burx="787" bury="704" depth="0" height="704" />
+      <glyph ID="179" glyph-number="179" glyph-name="dotlessi" unicode="dotlessi" width="271" bllx="33" blly="0" burx="241" bury="441" depth="0" height="441" />
+      <glyph ID="180" glyph-number="180" glyph-name="dotlessj" unicode="dotlessj" width="299" bllx="-34" blly="-204" burx="203" bury="441" depth="204" height="441" />
+      <glyph ID="181" glyph-number="181" glyph-name="grave" unicode="grave" width="489" bllx="106" blly="511" burx="287" bury="697" depth="0" height="697" />
+      <glyph ID="182" glyph-number="182" glyph-name="acute" unicode="acute" width="489" bllx="202" blly="511" burx="383" bury="697" depth="0" height="697" />
+      <glyph ID="183" glyph-number="183" glyph-name="caron" unicode="caron" width="489" bllx="116" blly="518" burx="373" bury="637" depth="0" height="637" />
+      <glyph ID="184" glyph-number="184" glyph-name="breve" unicode="breve" width="489" bllx="99" blly="522" burx="390" bury="694" depth="0" height="694" />
+      <glyph ID="185" glyph-number="185" glyph-name="macron" unicode="macron" width="489" bllx="68" blly="557" burx="421" bury="586" depth="0" height="586" />
+      <glyph ID="186" glyph-number="186" glyph-name="ring" unicode="ring" width="734" bllx="274" blly="540" burx="459" bury="715" depth="0" height="715" />
+      <glyph ID="187" glyph-number="187" glyph-name="cedilla" unicode="cedilla" width="435" bllx="130" blly="-201" burx="358" bury="-21" depth="201" height="0" />
+      <glyph ID="188" glyph-number="188" glyph-name="germandbls" unicode="germandbls" width="489" bllx="28" blly="-10" burx="462" bury="704" depth="10" height="704" />
+      <glyph ID="189" glyph-number="189" glyph-name="ae" unicode="ae" width="707" bllx="46" blly="-10" burx="679" bury="446" depth="10" height="446" />
+      <glyph ID="190" glyph-number="190" glyph-name="oe" unicode="oe" width="761" bllx="30" blly="-10" burx="734" bury="446" depth="10" height="446" />
+      <glyph ID="191" glyph-number="191" glyph-name="oslash" unicode="oslash" width="489" bllx="35" blly="-102" burx="454" bury="533" depth="102" height="533" />
+      <glyph ID="192" glyph-number="192" glyph-name="AE" unicode="AE" width="883" bllx="31" blly="0" burx="856" bury="683" depth="0" height="683" />
+      <glyph ID="193" glyph-number="193" glyph-name="OE" unicode="OE" width="992" bllx="67" blly="-21" burx="965" bury="704" depth="21" height="704" />
+      <glyph ID="194" glyph-number="194" glyph-name="Oslash" unicode="Oslash" width="761" bllx="54" blly="-55" burx="707" bury="738" depth="55" height="738" />
+      <glyph ID="195" glyph-number="195" glyph-name="suppress" unicode="suppress" width="271" bllx="26" blly="281" burx="255" bury="392" depth="0" height="392" />
+      <glyph ID="196" glyph-number="196" glyph-name="dieresis" unicode="dieresis" width="489" bllx="104" blly="573" burx="385" bury="665" depth="0" height="665" />
+   </font>
+</fontgroup>
 

@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NullFont implements Font {
 
@@ -115,4 +115,22 @@ public class NullFont implements Font {
 	public String ligature(UnicodeChar c1, UnicodeChar c2) {
 		return null;
 	}
+	
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#externalFileName()
+	 */
+	public String externalFileName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#isExternalFont()
+	 */
+	public boolean isExternalFont() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

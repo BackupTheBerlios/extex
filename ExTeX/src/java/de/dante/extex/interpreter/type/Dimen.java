@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,19 +27,22 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class implements the dimen-value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.3 $
  */
 public class Dimen extends GlueComponent implements Serializable {
-    /** ... */
+
+	/** ... */
     public static final Dimen ZERO_PT = new Dimen(0);
 
     /** ... */
     public static final Dimen ONE_PT = new Dimen(1 << 16);
 
-    /** This constant contains the internal representation for 1pt
+    /** 
+     * This constant contains the internal representation for 1pt
      * @see "TeX -- The Program [101]"
      */
     public static final long ONE = 1 << 16;
@@ -57,6 +60,17 @@ public class Dimen extends GlueComponent implements Serializable {
     public Dimen(long value) {
         super(value);
     }
+    
+    /**
+     * Create a new object.
+     * @param units_per_em	units per em (see Font)
+     * @param val			the value
+     * @param em			the em-size
+     */
+    public Dimen(int units_per_em, int val, Dimen em) {
+    	super(val * em.getValue() / units_per_em);
+    }
+    
 
     public Dimen(TokenSource source, Context context) throws GeneralException {
         super(source,context,false);
@@ -111,6 +125,14 @@ public class Dimen extends GlueComponent implements Serializable {
         sb.append("sp");
     }
 
+    /**
+     * Return a String with the Dimen-value in pt 
+     * @return a String with the Dimen-value in pt
+     */
+    public String toPT() {
+    	return String.valueOf(value >> 16) + "pt"; 
+    }
+    
     /**
      * ...
      *
