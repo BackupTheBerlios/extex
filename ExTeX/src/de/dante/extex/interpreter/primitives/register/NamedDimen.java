@@ -33,13 +33,13 @@ import de.dante.util.GeneralException;
  * It sets the named dimen register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
- * Example
+ * <p>Example</p>
  * <pre>
  * \day=345
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NamedDimen extends AbstractCode implements Advanceable {
     /**
@@ -47,16 +47,43 @@ public class NamedDimen extends AbstractCode implements Advanceable {
      *
      * @param name the name for debugging
      */
-    public NamedDimen(String name) {
+    public NamedDimen(final String name) {
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Advanceable#advance(int, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * Return the key (the name of the primitive) for the register.
+     * 
+     * @param source the source for new tokens
+     * 
+     * @return the key for the current register
+     * 
+     * @throws GeneralException in case that a derived class need to throw an
+     *             Exception this one is declared.
      */
-    public void advance(Flags prefix, Context context,
-                        TokenSource source) throws GeneralException {
-        advance(prefix, context, source, getName());
+    protected String getKey(final TokenSource source) throws GeneralException {
+        return getName();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Advanceable#advance(int,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void advance(final Flags prefix, final Context context,
+        final TokenSource source) throws GeneralException {
+        String key = getKey(source);
+        source.scanKeyword("by");
+
+        Dimen add = new Dimen(context,source);
+        Dimen dimen = context.getDimen(key);
+        add.add(dimen);
+        dimen.set(add);
+        
+        if (prefix.isGlobal()) {
+            context.setDimen(key, add, true);
+        }
+        prefix.clear();
     }
 
     /**
@@ -65,63 +92,28 @@ public class NamedDimen extends AbstractCode implements Advanceable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
-        expand(prefix, context, source, getName());
-    }
+    public void execute(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
 
-    /**
-     * ...
-     *
-     * @param prefix ...
-     * @param context ...
-     * @param source ...
-     * @param key ...
-     *
-     * @throws GeneralException ...
-     */
-    protected void advance(Flags prefix, Context context,
-                           TokenSource source, String key)
-                    throws GeneralException {
-        source.scanKeyword("by");
-
-        long val     = source.scanInteger();//TODO: incorrect
-        Dimen dimen = context.getDimen(key);
-        dimen.set(dimen.getValue() + val);
-
-        if (prefix.isGlobal()) {
-            context.setCount(key, dimen.getValue() + val, true);
-        }
-    }
-
-    /**
-     * ...
-     *
-     * @param prefix ...
-     * @param context ...
-     * @param source ...
-     * @param key ...
-     *
-     * @throws GeneralException ...
-     */
-    protected void expand(Flags prefix, Context context,
-                          TokenSource source, String key)
-                   throws GeneralException {
+        String key = getKey(source);
         source.scanOptionalEquals();
-
-        Dimen dimen = new Dimen(source, context);
+        
+        Dimen dimen = new Dimen(context, source);
         context.setDimen(key, dimen, prefix.isGlobal());
         prefix.clear();
         doAfterAssignment(context, source);
     }
-    
+
     /**
      * ...
      *
      * @param context the interpreter context
      * @param value ...
+     *
+     * @throws GeneralException in case of an error
      */
-    public void set(Context context, String value)
+    public void set(final Context context, final String value)
              throws GeneralException {
                  //TODO
 //        context.setDimen(getName(),

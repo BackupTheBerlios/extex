@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\kern</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Kern extends AbstractCode {
     /**
@@ -55,7 +55,7 @@ public class Kern extends AbstractCode {
             throws GeneralException {
         Dimen kern = new Dimen();
         try {
-            kern.set(source, context);
+            kern.set(context, source);
         } catch (GeneralException e) {
             typesetter.add(new KernNode(kern));
             throw e;

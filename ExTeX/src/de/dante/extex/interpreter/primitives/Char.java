@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,30 +16,34 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives.box;
+package de.dante.extex.interpreter.primitives;
 
 import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.node.KernNode;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for the primitive <code>\kern</code>.
- *
+ * This class provides an implementation for the primitive <code>\char</code>.
+ * It does simply nothing, but as a side effect all prefixes are zeroed.
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class Kern extends AbstractCode {
+public class Char extends AbstractCode implements ExpandableCode {
+
     /**
      * Creates a new object.
-     *
-     * @param name the name for debugging
+     * 
+     * @param name the name for tracing and debugging
      */
-    public Kern(final String name) {
+    public Char(final String name) {
         super(name);
     }
 
@@ -48,19 +52,27 @@ public class Kern extends AbstractCode {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
-     * @see "TeX -- The Program [...]"
      */
     public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
-        Dimen kern = new Dimen();
-        try {
-            kern.set(context, source);
-        } catch (GeneralException e) {
-            typesetter.add(new KernNode(kern));
-            throw e;
-        }
-        typesetter.add(new KernNode(kern));
-        prefix.clear();
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+        expand(prefix, context, source, typesetter);
     }
+
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+        long val = source.scanNumber();
+        UnicodeChar uc = new UnicodeChar((int)val); // TODO ClassCastException
+        Catcode cc = context.getTokenizer().getCatcode(uc);
+        Token t = context.getTokenFactory().newInstance(cc,uc);
+        source.push(t);
+    }
+
 }

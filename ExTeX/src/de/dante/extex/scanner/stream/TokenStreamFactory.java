@@ -39,12 +39,9 @@ import de.dante.util.file.FileFinderConfigImpl;
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
-    /** The configuration to use */
-    private Configuration config;
-
     /** the observers registered for the "file" event */
     private ObserverList openFileObservers = new ObserverList();
 
@@ -54,9 +51,14 @@ public class TokenStreamFactory implements FileFinder, Observable {
     /** the observers registered for the "string" event */
     private ObserverList openStringObservers = new ObserverList();
 
-    /** ... */
+    /**
+     * The field <tt>classname</tt> contains the ...
+     */
     private String classname;
 
+    /**
+     * The field <tt>fileFinder</tt> contains the ...
+     */
     private FileFinder fileFinder;
 
     /**
@@ -67,7 +69,6 @@ public class TokenStreamFactory implements FileFinder, Observable {
     public TokenStreamFactory(final Configuration config)
                        throws ConfigurationException {
         super();
-        this.config    = config;
         this.classname = config.getAttribute("class");
         this.fileFinder = new FileFinderConfigImpl(config);
     }
@@ -165,10 +166,11 @@ public class TokenStreamFactory implements FileFinder, Observable {
     }
 
     /**
-     * @see de.dante.util.Observable#registerObserver(java.lang.String, de.dante.util.Observer)
+     * @see de.dante.util.Observable#registerObserver(java.lang.String,
+     *      de.dante.util.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
-                          throws NotObservableException {
+        throws NotObservableException {
         if ("file".equals(name)) {
             openFileObservers.add(observer);
         } else if ("stream".equals(name)) {

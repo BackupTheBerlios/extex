@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamedCount extends AbstractCode implements 
     Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
@@ -59,7 +59,7 @@ public class NamedCount extends AbstractCode implements
      * 
      * @param name the name for debugging
      */
-    public NamedCount(String name) {
+    public NamedCount(final String name) {
         super(name);
     }
 
@@ -68,8 +68,8 @@ public class NamedCount extends AbstractCode implements
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void advance(Flags prefix, Context context, TokenSource source)
-        throws GeneralException {
+    public void advance(final Flags prefix, final Context context,
+        final TokenSource source) throws GeneralException {
         String key = getKey(source);
         source.scanKeyword("by");
 
@@ -92,7 +92,7 @@ public class NamedCount extends AbstractCode implements
      * 
      * @return ...
      */
-    public long convertCount(Context context, TokenSource source)
+    public long convertCount(final Context context, final TokenSource source)
         throws GeneralException {
         String key = getKey(source);
         Count c = context.getCount(key);
@@ -104,8 +104,8 @@ public class NamedCount extends AbstractCode implements
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void divide(Flags prefix, Context context, TokenSource source)
-        throws GeneralException {
+    public void divide(final Flags prefix, final Context context,
+        final TokenSource source) throws GeneralException {
         String key = getKey(source);
         source.scanKeyword("by");
 
@@ -130,8 +130,9 @@ public class NamedCount extends AbstractCode implements
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-        Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+        final TokenSource source, Typesetter typesetter)
+        throws GeneralException {
         String key = getKey(source);
         source.scanOptionalEquals();
 
@@ -146,8 +147,8 @@ public class NamedCount extends AbstractCode implements
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void multiply(Flags prefix, Context context, TokenSource source)
-        throws GeneralException {
+    public void multiply(final Flags prefix, final Context context,
+        final TokenSource source) throws GeneralException {
         String key = getKey(source);
         source.scanKeyword("by");
 
@@ -168,7 +169,7 @@ public class NamedCount extends AbstractCode implements
      * @param context the interpreter context
      * @param value ...
      */
-    public void set(Context context, long value) {
+    public void set(final Context context, final long value) {
         context.setCount(getName(), value);
     }
 
@@ -178,12 +179,13 @@ public class NamedCount extends AbstractCode implements
      * @param context the interpreter context
      * @param value ...
      */
-    public void set(Context context, String value) throws GeneralException {
+    public void set(final Context context, final String value)
+        throws GeneralException {
         try {
             context.setCount(getName(), (value.equals("") ? 0 : Long
                 .parseLong(value)));
         } catch (NumberFormatException e) {
-            // TODO 
+            // TODO
             throw new GeneralException(e);
         }
     }
@@ -192,7 +194,7 @@ public class NamedCount extends AbstractCode implements
      * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(Context context, TokenSource source)
+    public Tokens the(final Context context, final TokenSource source)
         throws GeneralException {
         String key = getKey(source);
         String s = context.getCount(key).toString();
@@ -203,11 +205,14 @@ public class NamedCount extends AbstractCode implements
     /**
      * Return the key (the name of the primitive) for the register.
      * 
-     * @param source ...
+     * @param source the source for new tokens
      * 
-     * @return ...
+     * @return the key for the current register
+     * 
+     * @throws GeneralException in case that a derived class need to throw an
+     *             Exception this on e is declared.
      */
-    protected String getKey(TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source) throws GeneralException {
         return getName();
     }
 
@@ -221,7 +226,7 @@ public class NamedCount extends AbstractCode implements
      * 
      * @throws GeneralException ...
      */
-    private long scanCount(Context context, TokenSource source)
+    private long scanCount(final Context context, final TokenSource source)
         throws GeneralException {
         Token t = source.getNonSpace();
 
@@ -238,4 +243,5 @@ public class NamedCount extends AbstractCode implements
 
         return source.scanInteger();
     }
+
 }

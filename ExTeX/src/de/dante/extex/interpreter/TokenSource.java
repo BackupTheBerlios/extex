@@ -42,7 +42,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface TokenSource {
     /**
@@ -89,8 +89,17 @@ public interface TokenSource {
 
     /**
      * ...
+     * 
+     * @return
      *
-     * @return ...
+     * @throws GeneralException
+     */
+    Token getControlSequence() throws GeneralException;
+    
+    /**
+     * Getter for the token stream factory.
+     *
+     * @return the token stream factory
      */
     TokenStreamFactory getTokenStreamFactory();
 
@@ -110,23 +119,23 @@ public interface TokenSource {
     void closeAllStreams();
 
     /**
-     * ...
+     * Close all streams on the stack until a file stream is found. This file
+     * stream is closed as last one. The other streams are left unchanged.
+     * If no file stream is found the all streams are closed and none is left.
      */
     void closeNextFileStream();
 
     /**
      * Push back a token onto the input stream for subsequent reading.
-     *
-     * @param token
-     *                 the token to push
+     * 
+     * @param token the token to push
      */
     void push(Token token);
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
      *
-     * @param tokens
-     *                 the tokens to push
+     * @param tokens the tokens to push
      */
     void push(Token[] tokens);
 
@@ -155,7 +164,7 @@ public interface TokenSource {
      *
      * @return ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     long scanFloat() throws GeneralException;
 
@@ -164,7 +173,7 @@ public interface TokenSource {
      *
      * @return the real value
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     Real scanReal() throws GeneralException;
     
@@ -176,8 +185,7 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws CodeNumberFormatException in case that no number is found
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     long scanInteger() throws GeneralException;
 
@@ -192,7 +200,7 @@ public interface TokenSource {
      * @return <code>true</code> iff the tokens could have been successfully
      *         removed from the input stream
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     boolean scanKeyword(String s) throws GeneralException;
 
@@ -201,7 +209,7 @@ public interface TokenSource {
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     Token scanNonSpace() throws GeneralException;
 
@@ -212,7 +220,7 @@ public interface TokenSource {
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     Token scanNonSpace(Token token) throws GeneralException;
 
@@ -224,7 +232,7 @@ public interface TokenSource {
      *
      * @return the next token or <code>null</code>
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     Token scanToken() throws GeneralException;
 
@@ -236,7 +244,7 @@ public interface TokenSource {
      *
      * @return the next tokens or <code>null</code>
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     Tokens scanTokens() throws GeneralException;
 
@@ -249,7 +257,7 @@ public interface TokenSource {
      *
      * @return the next tokens as <code>String</code> or <code>null</code>
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     String scanTokensAsString() throws GeneralException;
 
@@ -259,9 +267,8 @@ public interface TokenSource {
      * optional whitespace. Alternate representations for an integer exist.
      *
      * @return the value of the integer scanned
-
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     long scanNumber() throws GeneralException;
 
@@ -274,7 +281,7 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     long scanNumber(Token t) throws GeneralException;
 
@@ -282,7 +289,7 @@ public interface TokenSource {
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     //gene: this method is subject to be eliminated in favor of getKeyword().
     void scanOptionalEquals() throws GeneralException;
@@ -298,4 +305,5 @@ public interface TokenSource {
      *             accessible
      */
     void update(String name, String text) throws NotObservableException;
+
 }

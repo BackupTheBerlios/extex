@@ -25,6 +25,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.RightBraceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -50,75 +52,84 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class Moritz implements TokenSource, Observable {
-
-    /** 
-     * This is the maximum value for a character code. In original TeX this
-     * value would be 255.
+    /**
+     * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
+     * character code. In original TeX this value would be 255.
      */
     private static final long MAX_CHAR_CODE = Integer.MAX_VALUE; //TODO: find a good value
 
     /**
-     * The interpreter context. well, the two of them (Max and Moritz) are more
-     * closely linked than I like it.
+     * The field <tt>context</tt> contains the interpreter context. well, the
+     * two of them (Max and Moritz) are more closely linked than I like it.
      */
     private Context context;
 
-    /** The observer list is used for the observers which are registered to
-     *  receive notifications when a stream is closed.
+    /**
+     * The field <tt>observersCloseStream</tt> contains the observer list is
+     * used for the observers which are registered to receive notifications
+     * when a stream is closed.
      */
     private ObserverList observersCloseStream = new ObserverList();
 
     /**
-     * This observer list is used for the observers which are registered to
-     * receive a notification when all streams are at their end. The argument
-     * is always <code>null</code>.
+     * The field <tt>observersEOF</tt> contains the observer list is used for
+     * the observers which are registered to receive a notification when all
+     * streams are at their end. The argument is always <code>null</code>.
      */
     private ObserverList observersEOF = new ObserverList();
 
-    /** The observer list is used for the observers which are registered to
-     *  receive notifications when a message is send from another component.
-     *  This message shuld be made accessible to the user in some way, e.g. on
-     *  the terminal or in the log file.
+    /**
+     * The field <tt>observersMessage</tt> contains the observer list is used
+     * for the observers which are registered to receive notifications when a
+     * message is send from another component. This message shuld be made
+     * accessible to the user in some way, e.g. on the terminal or in the log
+     * file.
      */
     private ObserverList observersMessage = new ObserverList();
 
     /**
-     * This observer list is used for the observers which are registered to
-     * receive a notification when a new token is about to be delivered. The
-     * argument is the token to be delivered.
+     * The field <tt>observersPop</tt> contains the observer list is used for
+     * the observers which are registered to receive a notification when a new
+     * token is about to be delivered. The argument is the token to be
+     * delivered.
      */
     private ObserverList observersPop = new ObserverList();
 
     /**
-     * This observer list is used for the observers which are registered to
-     * receive a notification when a new token is pushed back to the input
-     * stream. The argument is the token to be pushed.
+     * The field <tt>observersPush</tt> contains the observer list is used
+     * for the observers which are registered to receive a notification when a
+     * new token is pushed back to the input stream. The argument is the token
+     * to be pushed.
      */
     private ObserverList observersPush = new ObserverList();
 
     /**
-     * This is the stack of streams to read from except of the current one
-     * which is stored in the variable <code>stream</code>.
+     * The field <tt>streamStack</tt> contains the stack of streams to read
+     * from except of the current one which is stored in the variable
+     * <code>stream</code>.
      */
     private Stack streamStack = new Stack();
 
     /**
-     * The current stream to read tokens from. For efficiency this stream is
-     * kept in a variable instead of accessing the streamStack each time it is
-     * needed.
+     * The field <tt>stream</tt> contains the current stream to read tokens
+     * from. For efficiency this stream is kept in a variable instead of
+     * accessing the streamStack each time it is needed.
      */
     private TokenStream stream = null;
 
-    /** The factory for new token streams */
+    /**
+     * The field <tt>tokenStreamFactory</tt> contains the factory for new
+     * token streams.
+     */
     private TokenStreamFactory tokenStreamFactory = null;
 
     /**
      * Creates a new object.
      *
-     * @param configuration ...
+     * @param configuration the configuration to use
      */
     public Moritz(final Configuration configuration) {
         super();
@@ -165,12 +176,10 @@ public abstract class Moritz implements TokenSource, Observable {
 
         while (stream != null) {
             t = stream.get(factory, tokenizer);
-
             if (t != null) {
                 observersPop.update(this, t);
                 return t;
             }
-
             observersCloseStream.update(this, stream);
 
             stream = (TokenStream) streamStack.pop();
@@ -188,6 +197,7 @@ public abstract class Moritz implements TokenSource, Observable {
         Token token = getNonSpace();
 
         if (token == null) {
+            throw new GeneralHelpingException("EOF");
             //TODO: handle EOF
         } else if ( ! token.isa(Catcode.LEFTBRACE)) {
             throw new GeneralHelpingException("TTP.MissingLeftBrace");
@@ -200,7 +210,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
             if (token.isa(Catcode.LEFTBRACE)) {
                 ++balance;
-            } else if (token.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
+            } else if (token instanceof RightBraceToken && --balance <= 0) {
                 break;
             }
 
@@ -210,6 +220,33 @@ public abstract class Moritz implements TokenSource, Observable {
         return toks;
     }
 
+    /**
+     * ...
+     *
+     * @return ...
+     * 
+     * @throws GeneralException
+     */
+    public Token getControlSequence()
+        throws GeneralException {
+        Token t = getToken();
+        
+        if ( t == null ) {
+            throw new GeneralHelpingException("xxx"); //TODO EOF
+        } else if ( ! (t instanceof ControlSequenceToken) ) {
+            throw new GeneralHelpingException("xxx"); //TODO error
+        } else if ( ! t.getValue().equals("csname") ) {
+            return t;
+        }
+
+        Tokens toks = new Tokens();
+        //scanToEndcsname();
+        
+        
+        //TODO incomplete
+        return null;
+    }
+    
     /**
      * Setter for the token stream factory.
      * 
@@ -243,16 +280,26 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#closeAllStreams()
      */
     public void closeAllStreams() {
-        streamStack = new Stack();
-        stream = null;
+
+        while (stream != null) {
+            observersCloseStream.update(this, stream);
+            stream = (TokenStream) streamStack.pop();
+        }
     }
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream()
      */
     public void closeNextFileStream() {
-        throw new RuntimeException("unimplemented");
-        // TODO unimplemented; needed for \endinput
+
+        while (stream != null) {
+            observersCloseStream.update(this, stream);
+            if (stream.isFileStream()) {
+                stream = (TokenStream) streamStack.pop();
+                return;
+            }
+            stream = (TokenStream) streamStack.pop();
+        }
     }
 
     /**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,19 +42,25 @@ import java.io.Serializable;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GlueComponent implements Serializable {
-    /** This constant contains the internal representation for 1pt
+    /**
+     * The constant <tt>ONE</tt> contains the internal representation for 1pt.
      * @see "TeX -- The Program [101]"
      */
     public static final long ONE = 1 << 16;
 
-    /** ... */
-    protected int order = 0;
+    /**
+     * The field <tt>order</tt> contains the ...
+     */
+    private int order = 0;
 
-    /** The integer representatation of the dimen register */
-    protected long value = 0;
+    /**
+     * The field <tt>value</tt> contains the integer representatation of the
+     * dimen register.
+     */
+    private long value = 0;
 
     /**
      * Creates a new object.
@@ -68,7 +74,7 @@ public class GlueComponent implements Serializable {
      *
      * @param value the fixed value
      */
-    public GlueComponent(long value) {
+    public GlueComponent(final long value) {
         super();
         this.value = value;
     }
@@ -79,7 +85,7 @@ public class GlueComponent implements Serializable {
      * @param value the fixed width or the factor
      * @param order the order
      */
-    public GlueComponent(long value, int order) {
+    public GlueComponent(final long value, final int order) {
         super();
         this.value = value;
         this.order = order;
@@ -89,27 +95,27 @@ public class GlueComponent implements Serializable {
      * Creates a new object from a TokenStream.
      *
      * @param source the source for new tokens
-     * @param context the iterpreter context
+     * @param context the interpreter context
      *
      * @throws GeneralException in case of an error
      */
-    public GlueComponent(TokenSource source, Context context)
+    public GlueComponent(final TokenSource source, final Context context)
                   throws GeneralException {
         this(source, context, false);
     }
 
     /**
      * Creates a new object.
-     *
+     * 
      * @param source the source for the tokens to be read
      * @param context the interpreter context
      * @param fixed if <code>true</code> then no glue order is allowed
-     *
+     * 
      * @throws GeneralException in case of an error
      * @throws GeneralHelpingException ...
      */
-    public GlueComponent(TokenSource source, Context context,
-                         boolean fixed) throws GeneralException {
+    public GlueComponent(final TokenSource source, final Context context,
+        final boolean fixed) throws GeneralException {
         super();
         set(source, context, fixed);
     }
@@ -122,7 +128,16 @@ public class GlueComponent implements Serializable {
     public long getValue() {
         return value;
     }
-
+    
+    /**
+     * Setter for the value.
+     *
+     * @param val the new value
+     */
+    public void setValue(final long val) {
+        value = val;
+    }
+    
     /**
      * ...
      *
@@ -137,7 +152,7 @@ public class GlueComponent implements Serializable {
      *
      * @param l the new value
      */
-    public void set(long l) {
+    public void set(final long l) {
         value = l;
     }
 
@@ -146,7 +161,7 @@ public class GlueComponent implements Serializable {
      *
      * @param d the new value
      */
-    public void set(Dimen d) {
+    public void set(final Dimen d) {
         value = d.getValue();
         order = 0;
     }
@@ -159,23 +174,23 @@ public class GlueComponent implements Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    public void set(TokenSource source, Context context)
+    public void set(final Context context, final TokenSource source)
              throws GeneralException {
         set(source, context, true);
     }
 
     /**
      * ...
-     *
+     * 
      * @param source ...
      * @param context ...
      * @param fixed ...
-     *
+     * 
      * @throws GeneralException in case of an error
      * @throws GeneralHelpingException ...
      */
-    public void set(TokenSource source, Context context, boolean fixed)
-             throws GeneralException {
+    public void set(final TokenSource source, final Context context,
+        final boolean fixed) throws GeneralException {
         value = source.scanFloat();
 
         {
@@ -223,9 +238,8 @@ public class GlueComponent implements Serializable {
 
             Token t;
 
-            for (t = source.getToken();
-                     (t != null && (t.equals('l') || t.equals('L')));
-                     t = source.getToken()) {
+            for (t = source.getToken(); (t != null && (t.equals('l') || t
+                .equals('L'))); t = source.getToken()) {
                 order++;
             }
 
@@ -238,4 +252,5 @@ public class GlueComponent implements Serializable {
             value = value * mag / 1000;
         }
     }
+
 }

@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
-import de.dante.extex.logging.Logger;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl;
@@ -35,18 +34,15 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.test.logging.NullLogger;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Max1 extends TestCase {
-
-    private Logger noLogger = new NullLogger();
 
     /**
      * Constructor for Max1.

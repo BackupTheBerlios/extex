@@ -18,11 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 
 /**
@@ -30,13 +26,13 @@ import de.dante.util.GeneralException;
  * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
- * Example
+ * <p>Example</p>
  * <pre>
  * \dimen12=345.67pt
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NumberedDimen extends NamedDimen {
 
@@ -45,30 +41,21 @@ public class NumberedDimen extends NamedDimen {
      *
      * @param name the name for debugging
      */
-    public NumberedDimen(String name) {
+    public NumberedDimen(final String name) {
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     * Return the key (the number) for the register.
+     *
+     * @param source ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException ...
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
-        String key = Long.toString(source.scanNumber());
-        //TODO 
-        super.execute(prefix, context, source, typesetter);
-    }
-    
-    /**
-     * @see de.dante.extex.interpreter.Advanceable#advance(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
-     */
-    public void advance(Flags prefix, Context context, TokenSource source)
-        throws GeneralException {
-        String key = Long.toString(source.scanNumber());
-        super.advance(prefix, context, source, key);
+    protected String getKey(TokenSource source) throws GeneralException {
+        return getName() + "#" + Long.toString(source.scanNumber());
     }
 
 }

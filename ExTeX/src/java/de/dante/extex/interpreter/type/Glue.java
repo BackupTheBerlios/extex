@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Glue implements Serializable {
     /** ... */
@@ -59,7 +59,7 @@ public class Glue implements Serializable {
      * @param shrink ...
      */
     public Glue(final GlueComponent length, final GlueComponent stretch,
-            GlueComponent shrink) {
+            final GlueComponent shrink) {
         super();
         this.length = length;
         this.stretch = stretch;
@@ -86,7 +86,7 @@ public class Glue implements Serializable {
     public Glue(final TokenSource source, final Context context)
             throws GeneralException {
         super();
-        this.length = new Dimen(source, context);
+        this.length = new Dimen(context, source);
         if (source.scanKeyword("plus")) {
             this.stretch = new GlueComponent(source, context, true);
         }

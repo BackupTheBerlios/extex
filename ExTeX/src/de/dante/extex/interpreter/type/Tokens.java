@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Tokens implements Serializable {
 
@@ -55,50 +55,68 @@ public class Tokens implements Serializable {
 	}
 
 	/**
-	 * Creates a new object
-	 * <p>
-	 * Each character of the string a convert in a <code>OtherToken</code>
-	 * and add to the internal list
+	 * Creates a new object.
 	 * 
-	 * @param context
-	 *                 the Context
-	 * @param s
-	 *                 the <code>String</code> to add
-	 * @throws GeneralException,
-	 *                 if a error throws in the factory
+	 * @param t the initial token
 	 */
-	public Tokens(Context context, String s) throws GeneralException {
-		this();
-		if (s != null && s.length() > 0) {
-			TokenFactory factory = context.getTokenFactory();
-			for (int i = 0; i < s.length(); i++) {
-				add(factory.newInstance(Catcode.OTHER, s.charAt(i)));
-			}
-		}
+	public Tokens(final Token t) {
+	    super();
+	    tokens.add(t);
 	}
 
+    /**
+     * Creates a new object
+     * <p>
+     * Each character of the string a convert in a <code>OtherToken</code>
+     * and add to the internal list
+     * 
+     * @param context the Context
+     * @param s the <code>String</code> to add
+     * @throws GeneralException, if a error throws in the factory
+     */
+    public Tokens(final Context context, final String s)
+        throws GeneralException {
+        this();
+        if (s != null && s.length() > 0) {
+            TokenFactory factory = context.getTokenFactory();
+            for (int i = 0; i < s.length(); i++) {
+                add(factory.newInstance(Catcode.OTHER, s.charAt(i)));
+            }
+        }
+    }
+
 	/**
-	 * Add another token to the end of the Tokens.
-	 * 
-	 * @param t
-	 *                 The token to add
-	 */
-	public void add(Token t) {
+     * Add another token to the end of the Tokens.
+     * 
+     * @param t The token to add
+     */
+	public void add(final Token t) {
 		tokens.add(t);
 	}
 
-	/**
-	 * Get a specified token from the toks register.
-	 * 
-	 * @param i
-	 *                 the index for the token to get
-	 * 
-	 * @return the i <sup>th</sup> token or <code>null</code> if i is out
-	 *            of bounds
-	 */
-	public Token get(int i) {
-		return (i >= 0 && i < tokens.size() ? (Token) (tokens.get(i)) : null);
-	}
+    /**
+     * Add another token list to the end of the Tokens.
+     * 
+     * @param toks the tokens to add
+     */
+    public void add(final Tokens toks) {
+        int len = toks.length();
+        for (int i = 0; i < len; i++) {
+            tokens.add(toks.get(i));
+        }
+    }
+	
+    /**
+     * Get a specified token from the toks register.
+     * 
+     * @param i the index for the token to get
+     * 
+     * @return the i <sup>th</sup> token or <code>null</code> if i is out
+     *         of bounds
+     */
+    public Token get(final int i) {
+        return (i >= 0 && i < tokens.size() ? (Token) (tokens.get(i)) : null);
+    }
 
 	/**
 	 * Getter for the length of the toks register, this is the number of
@@ -126,9 +144,9 @@ public class Tokens implements Serializable {
 	}
 
 	/**
-	 * Return a String, which show all tokens (in textformat) in the list.
+	 * Return a String, which show all tokens (in text format) in the list.
 	 * 
-	 * @return a String, which show all tokens (in textformat) in the list
+	 * @return a String, which show all tokens (in text format) in the list
 	 */
 	public String toText() {
 		StringBuffer sb = new StringBuffer();

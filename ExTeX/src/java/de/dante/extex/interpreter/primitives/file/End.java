@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class End extends AbstractCode {
     /**
@@ -43,7 +43,7 @@ public class End extends AbstractCode {
      *
      * @param name the name for debugging
      */
-    public End(String name) {
+    public End(final String name) {
         super(name);
     }
 
@@ -53,8 +53,9 @@ public class End extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
-        throw new GeneralTerminateException("xxx"); //TODO  incomplete
+    public void execute(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+        throw new GeneralTerminateException("\\end"); //TODO incomplete
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.AbstractCode;
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Relax extends AbstractCode {
 
@@ -34,7 +34,7 @@ public class Relax extends AbstractCode {
      * 
      * @param name the name for tracing and debugging
      */
-    public Relax(String name) {
+    public Relax(final String name) {
         super(name);
     }
 

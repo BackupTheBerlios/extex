@@ -27,22 +27,26 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
- * This class implements the dimen-value.
+ * This class implements the dimen value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
-	/** ... */
+	/**
+	 * The constant <tt>ZERO_PT</tt> contains the ...
+	 */
 	public static final Dimen ZERO_PT = new Dimen(0);
 
-	/** ... */
+	/**
+	 * The constant <tt>ONE_PT</tt> contains the ...
+	 */
 	public static final Dimen ONE_PT = new Dimen(1 << 16);
 
-	/** 
-	 * This constant contains the internal representation for 1pt
+	/**
+	 * The constant <tt>ONE</tt> contains the internal representation for 1pt.
 	 * @see "TeX -- The Program [101]"
 	 */
 	public static final long ONE = 1 << 16;
@@ -66,6 +70,7 @@ public class Dimen extends GlueComponent implements Serializable {
     
 	/**
 	 * Create a new object.
+	 *
 	 * @param units_per_em	units per em (see Font)
 	 * @param val			the value
 	 * @param em			the em-size
@@ -84,46 +89,18 @@ public class Dimen extends GlueComponent implements Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    public Dimen(final TokenSource source, final Context context)
+    public Dimen(final Context context, final TokenSource source)
         throws GeneralException {
         super(source, context, false);
     }
 
-	/**
-	 * ...
-	 *
-	 * @param source ...
-	 * @param context ...
-	 *
-	 * @throws GeneralException ...
-	 */
-	public void set(final TokenSource source, final Context context)
-			 throws GeneralException {
-		set(source, context, false);
-	}
-
-	/**
-	 * ...
-	 *
-	 * @param source ...
-	 * @param context ...
-	 *
-	 * @throws GeneralException ...
-	 */
-	public void set(final String source, final Context context)
-			 throws GeneralException {
-		//set(source, context, false);
-		//TODO incomplete
-	}
-
     /**
-     * @see de.dante.extex.interpreter.Advanceable#advance(int,
-     *      de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.type.GlueComponent#set(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void advance(final int prefix, final Context context,
-        final TokenSource source) throws GeneralException {
-        // TODO incomplete
+    public void set(final Context context, final TokenSource source)
+        throws GeneralException {
+        set(source, context, false);
     }
 
     /**
@@ -132,7 +109,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * @param d the Dimen to add to
      */
     public void add(Dimen d) {
-        value += d.getValue();
+        setValue(getValue() + d.getValue());
     }
 
     /**
@@ -141,7 +118,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * @param d the Dimen to add to
      */
     public void subtract(Dimen d) {
-        value -= d.getValue();
+        setValue(getValue() - d.getValue());
     }
 
     /**
@@ -150,7 +127,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * @param d ...
      */
     public boolean lt(Dimen d) {
-        return (value < d.getValue());
+        return (getValue() < d.getValue());
     }
 
     /**
@@ -159,7 +136,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * @param d ...
      */
     public boolean le(Dimen d) {
-        return (value <= d.getValue());
+        return (getValue() <= d.getValue());
     }
     
 	/**
@@ -168,11 +145,16 @@ public class Dimen extends GlueComponent implements Serializable {
 	 * @return ...
 	 */
 	public String toString() {
-		return Long.toString(value) + "sp";
+		return Long.toString(getValue()) + "sp";
 	}
-    
+
+	/**
+	 * ...
+	 *
+	 * @param sb
+	 */
 	public void toString(final StringBuffer sb) {
-		sb.append(Long.toString(value));
+		sb.append(Long.toString(getValue()));
 		sb.append("sp");
 	}
 
@@ -181,12 +163,10 @@ public class Dimen extends GlueComponent implements Serializable {
 	 * @return a String with the Dimen-value in pt
 	 */
 	public String toPT() {
-		return String.valueOf((double)value / ONE) + "pt";
+		return String.valueOf((double)getValue() / ONE) + "pt";
 		//TODO use the rounding algorithm of TeX
 	}
-    
-    
-    
+
 	/**
 	 * ...
 	 *
@@ -199,7 +179,7 @@ public class Dimen extends GlueComponent implements Serializable {
 	 */
 	public Tokens toToks(final TokenFactory factory) throws GeneralException {
 		Tokens toks = new Tokens();
-		String s    = Long.toString(value/ONE);
+		String s    = Long.toString(getValue()/ONE);
 
 		for (int i = 0; i < s.length(); i++) {
 			toks.add(factory.newInstance(Catcode.OTHER,

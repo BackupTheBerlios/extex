@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Vrule extends AbstractCode {
     /** ... */
@@ -61,11 +61,11 @@ public class Vrule extends AbstractCode {
 
         for (; ; ) {
             if (source.scanKeyword("width")) {
-                width.set(source, context);
+                width.set(context, source);
             } else if (source.scanKeyword("height")) {
-                height.set(source, context);
+                height.set(context, source);
             } else if (source.scanKeyword("depth")) {
-                depth.set(source, context);
+                depth.set(context, source);
             } else {
                 break;
             }

@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 
 /**
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
@@ -246,25 +246,28 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
+     *      java.lang.Object)
      */
     public Object visitIgnore(Object oFactory, Object oTokenizer)
-            throws GeneralException {
+        throws GeneralException {
         return null;
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
+     *      java.lang.Object)
      */
     public Object visitInvalid(Object oFactory, Object oTokenizer)
-            throws GeneralException {
+        throws GeneralException {
         state = MID_LINE;
 
         throw new GeneralHelpingException("TTP.InvalidChar");
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
+     *      java.lang.Object)
      */
     public Object visitLeftBrace(Object oFactory, Object oTokenizer)
             throws GeneralException {
@@ -275,7 +278,8 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
+     *      java.lang.Object)
      */
     public Object visitLetter(Object oFactory, Object oTokenizer)
             throws GeneralException {
@@ -286,7 +290,8 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
+     *      java.lang.Object)
      */
     public Object visitMacroParam(Object oFactory, Object oTokenizer)
             throws GeneralException {
@@ -457,6 +462,9 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * Get a new line of characters to consider.
      * 
      * @return <code>false</code> if no further input is available.
+     * 
+     * @throws IOException in case of an IO error; this can be used in a
+     *             derived class
      */
     protected boolean refill() throws IOException {
         return false;

@@ -53,7 +53,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
@@ -130,11 +130,6 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     private Configuration config;
 
     /**
-     * filefinder
-     */
-    private FileFinder finder = null;
-
-    /**
      * Creates a new object.
      *
      * @param configuration the configuration object to take into account
@@ -155,7 +150,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * @param fileFinder the new file finder
      */
     public void setFileFinder(final FileFinder fileFinder) {
-        finder = fileFinder;
+        //finder = fileFinder;
     }
 
     /**
@@ -268,7 +263,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * and processing it until no token is left. The visitor pattern is used to
      * branch to the appropriate method for processing a single token. E.g. the
      * method
-     * {@link #visitActive(java.lang.Object,java.lang.Object) visitActive}is
+     * {@link #visitActive(java.lang.Object,java.lang.Object) visitActive} is
      * used when the current token is an active character.
      *
      * @throws ConfigurationException in case of a configuration error
@@ -296,6 +291,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
             } catch (GeneralPanicException e) {
                 throw e; //TODO report the problem and terminate
             } catch (GeneralTerminateException e) {
+                closeAllStreams();
                 break;
             } catch (GeneralException e) {
                 if (++errorCount > maxErrors) { // cf. TTP[82]
