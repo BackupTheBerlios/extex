@@ -44,18 +44,18 @@ import de.dante.util.UnicodeChar;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;uccode&rang;
- *        &rarr; <tt>&#5c;uccode</tt> &lang;...&rang; </pre>
+ *        &rarr; <tt>\u005cuccode</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    &#5c;uccode ...  </pre>
+ *    \u005cuccode ...  </pre>
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {
