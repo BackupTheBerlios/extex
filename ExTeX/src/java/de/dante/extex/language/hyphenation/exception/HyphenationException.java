@@ -19,16 +19,17 @@
 
 package de.dante.extex.language.hyphenation.exception;
 
-import de.dante.util.GeneralException;
+import de.dante.extex.typesetter.exception.TypesetterException;
+
 
 /**
  * This class is the base class for all exceptions in the hyphenation
  * components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class HyphenationException extends GeneralException {
+public class HyphenationException extends TypesetterException {
 
     /**
      * Creates a new object.
