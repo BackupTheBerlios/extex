@@ -21,6 +21,7 @@ package de.dante.extex.font.type.tfm.enc;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,10 +33,10 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for enc-files
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class EncFactory {
+public class EncFactory implements Serializable {
 
     /**
      * Create a new object

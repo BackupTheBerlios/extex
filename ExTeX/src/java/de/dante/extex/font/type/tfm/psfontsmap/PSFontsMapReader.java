@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -35,10 +36,10 @@ import de.dante.extex.i18n.HelpingException;
  * @see <a href="package-summary.html#psfontsmap">psfonts.map</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class PSFontsMapReader {
+public class PSFontsMapReader implements Serializable {
 
     /**
      * Create a new object.

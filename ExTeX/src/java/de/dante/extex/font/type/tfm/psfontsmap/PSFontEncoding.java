@@ -19,14 +19,16 @@
 
 package de.dante.extex.font.type.tfm.psfontsmap;
 
+import java.io.Serializable;
+
 /**
  * Container for a psfonts.map-line
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
-public class PSFontEncoding {
+public class PSFontEncoding implements Serializable {
 
     /**
      * Create a new object.

@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 
 import de.dante.extex.i18n.HelpingException;
 
@@ -32,10 +33,10 @@ import de.dante.extex.i18n.HelpingException;
  * @see <a href="package-summary.html#font-enc">font encoding file</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
-public class EncReader {
+public class EncReader implements Serializable {
 
     /**
      * Create a new object.
