@@ -29,10 +29,9 @@ import de.dante.util.configuration.Configuration;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
-
     /**
      * The field <tt>out</tt> contains the outut stream to use.
      */
@@ -54,10 +53,10 @@ public class DumpDocumentWriter implements DocumentWriter {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public int getPages() {
-        return shippedPages;
+    public void close() {
+        // nothing to do
     }
 
     /**
@@ -68,11 +67,27 @@ public class DumpDocumentWriter implements DocumentWriter {
     }
 
     /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
+     */
+    public int getPages() {
+        return shippedPages;
+    }
+
+    /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(
      *      java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
         out = outStream;
+    }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(java.lang.String, java.lang.String)
+     */
+    public void setParameter(String name, String value) {
+
+        // TODO Auto-generated method stub
+
     }
 
     /**
@@ -85,13 +100,6 @@ public class DumpDocumentWriter implements DocumentWriter {
         out.write(sb.toString().getBytes());
         out.write('\n');
         shippedPages++;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
-     */
-    public void close() {
-        // nothing to do
     }
 
 }
