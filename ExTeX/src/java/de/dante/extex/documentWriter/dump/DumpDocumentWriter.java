@@ -57,7 +57,7 @@ import de.dante.util.framework.configuration.Configurable;
  * and as tool for testing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class DumpDocumentWriter
         implements
@@ -69,7 +69,7 @@ public class DumpDocumentWriter
      * This class provides the internal node visitor to traverse the nodes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.22 $
+     * @version $Revision: 1.23 $
      */
     private static class Visitor implements NodeVisitor {
 
@@ -426,9 +426,12 @@ public class DumpDocumentWriter
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#close()
      */
-    public void close() {
+    public void close() throws IOException {
 
-        // nothing to do
+        if (out != null) {
+            out.close();
+            out = null;
+        }
     }
 
     /**

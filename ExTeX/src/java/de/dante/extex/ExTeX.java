@@ -611,7 +611,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.86 $
+ * @version $Revision: 1.87 $
  */
 public class ExTeX {
 
@@ -1624,9 +1624,6 @@ public class ExTeX {
                     jobname);
 
             interpreter.run();
-
-            //outStream.close();
-            //docWriter.close();
 
             int pages = docWriter.getPages();
             String outname = jobname + "." + docWriter.getExtension();
