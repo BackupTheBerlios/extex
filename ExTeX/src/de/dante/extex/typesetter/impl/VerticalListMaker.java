@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -90,7 +90,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 	 * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
 	 */
 	public void addGlue(final Glue g) throws GeneralException {
-		// TODO Auto-generated method stub
+		nodes.addSkip(g);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -29,7 +30,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [135]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
@@ -67,6 +68,7 @@ public class HorizontalListNode extends AbstractNodeList implements NodeList {
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitHorizontalList(value, value2);
 	}
+
 
 	/**
 	 * Is a linebreak occured 

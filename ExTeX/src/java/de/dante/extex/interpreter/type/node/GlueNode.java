@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,12 +25,12 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * Node for a glue.
  *
  * @see "TeX -- The Program [149]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
@@ -53,10 +53,26 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
 	 * @param size the actual size
 	 */
 	public GlueNode(final Glue size) {
-		super();
-		theSize = size;
+		this(size,false);
 	}
 
+	/**
+	 * Creates a new object.
+	 *
+	 * @param size 		the actual size
+	 * @param vertical	if <code>true</code>, the size-length is used
+	 * 	                fopr the hight, otherwise for the width. 
+	 */
+	public GlueNode(final Glue size, boolean vertical) {
+		super();
+		theSize = size;
+		if (vertical) {
+			setHeight(size.getLength());
+		} else {
+			setWidth(size.getLength());
+		}
+	}
+	
 	/**
 	 * ...
 	 *
@@ -64,7 +80,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
 	 * @see "TeX -- The Program [186]"
 	 */
 	public String toText() {
-		return " "; //TODO incomplete
+		return " ";
 	}
 
 	/**
@@ -72,14 +88,16 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
 	 *      java.lang.String)
 	 */
 	public void toText(final StringBuffer sb, final String prefix) {
-		sb.append(" "); //TODO incomplete
+		sb.append(" ");
 	}
 
 	/**
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
-		return " "; //TODO incomplete
+		StringBuffer sb = new StringBuffer();
+		toText(sb,"");
+		return sb.toString();
 	}
 
 	/**
@@ -99,5 +117,12 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
 	 */
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitGlue(value, value2);
+	}
+	
+	/**
+	 * @return Returns the size of the <code>GlueNode</code>.
+	 */
+	public Glue getSize() {
+		return theSize;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,31 +19,32 @@
 package de.dante.extex.typesetter;
 
 /**
- * ...
+ * Vistior-interface for <code>Nodes</code>
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.3 $
  */
 public interface NodeVisitor {
-    
-    public abstract Object visitAdjust(Object value, Object Value2);
-    public abstract Object visitAfterMath(Object value, Object Value2);
-    public abstract Object visitAlignedLeaders(Object value, Object Value2);
-    public abstract Object visitBeforeMath(Object value, Object Value2);
-    public abstract Object visitCenteredLeaders(Object value, Object Value2);
-    public abstract Object visitChar(Object value, Object Value2);
-    public abstract Object visitDiscretionary(Object value, Object Value2);
-    public abstract Object visitExpandedLeaders(Object value, Object Value2);
-    public abstract Object visitGlue(Object value, Object Value2);
-    public abstract Object visitHorizontalList(Object value, Object Value2);
-    public abstract Object visitInsertion(Object value, Object Value2);
-    public abstract Object visitKern(Object value, Object Value2);
-    public abstract Object visitLigature(Object value, Object Value2);
-    public abstract Object visitMark(Object value, Object Value2);
-    public abstract Object visitPenalty(Object value, Object Value2);
-    public abstract Object visitRule(Object value, Object Value2);
-    public abstract Object visitSpace(Object value, Object Value2);
-    public abstract Object visitVerticalList(Object value, Object Value2);
-    public abstract Object visitWhatsIt(Object value, Object Value2);
+
+	public abstract Object visitAdjust(Object value, Object value2);
+	public abstract Object visitAfterMath(Object value, Object value2);
+	public abstract Object visitAlignedLeaders(Object value, Object value2);
+	public abstract Object visitBeforeMath(Object value, Object value2);
+	public abstract Object visitCenteredLeaders(Object value, Object value2);
+	public abstract Object visitChar(Object value, Object value2);
+	public abstract Object visitDiscretionary(Object value, Object value2);
+	public abstract Object visitExpandedLeaders(Object value, Object value2);
+	public abstract Object visitGlue(Object value, Object value2);
+	public abstract Object visitHorizontalList(Object value, Object value2);
+	public abstract Object visitInsertion(Object value, Object value2);
+	public abstract Object visitKern(Object value, Object value2);
+	public abstract Object visitLigature(Object value, Object value2);
+	public abstract Object visitMark(Object value, Object value2);
+	public abstract Object visitPenalty(Object value, Object value2);
+	public abstract Object visitRule(Object value, Object value2);
+	public abstract Object visitSpace(Object value, Object value2);
+	public abstract Object visitVerticalList(Object value, Object value2);
+	public abstract Object visitWhatsIt(Object value, Object value2);
 
 }

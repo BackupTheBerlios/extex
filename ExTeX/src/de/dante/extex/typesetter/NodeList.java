@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,10 +23,11 @@ import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 
 /**
- * ...
+ * Nodelist
  * 
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface NodeList extends Node {
 
@@ -80,5 +81,5 @@ public interface NodeList extends Node {
     Dimen getMove();
     
     NodeIterator iterator();
-    
+        
 }

@@ -48,7 +48,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements TokenStream, CatcodeVisitor {
 
@@ -473,10 +473,10 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements TokenS
 
 							String unicodename = scanUnicodeName();
 							UnicodeChar uc = new UnicodeChar(unicodename);
-							if (uc.getCodePoint()<0) {
-								throw new GeneralHelpingException("TTP.NoUnicodeName",unicodename);	
+							if (uc.getCodePoint() < 0) {
+								throw new GeneralHelpingException("TTP.NoUnicodeName", unicodename);
 							}
-							c = uc.getASCIIChar();// TODO change ti 32 bit
+							c = uc.getASCIIChar(); // TODO change ti 32 bit
 
 						} else {
 							throw new GeneralHelpingException("TTP.NoUnicodeNameFoundAfter");

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,36 +26,36 @@ import de.dante.extex.typesetter.Node;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractNode implements Node {
 
 	/** 
-	 * This is the depth of the node.
-	 *  The depth is the extend of the node below the baseline.
-	 *  A <code>null</code> value indicates
-	 *  a running value which has to be set or computed later.
+	 * This is the depth of the node.<p>
+	 * The depth is the extend of the node below the baseline.
+	 * A <code>null</code> value indicates
+	 * a running value which has to be set or computed later.
 	 */
 	private Dimen theDepth;
 
 	/** 
-	 * This is the height of the node.
-	 *  The height is the extend of the node above the baseline.
-	 *  A <code>null</code> value indicates
-	 *  a running value which has to be set or computed later.
+	 * This is the height of the node.<p>
+	 * The height is the extend of the node above the baseline.
+	 * A <code>null</code> value indicates
+	 * a running value which has to be set or computed later.
 	 */
 	private Dimen theHeight;
 
 	/** 
-	 * This is the width of the node.
-	 *  The width is the extend of the node along the baseline.
-	 *  <code>null</code> indicates
-	 *  a running value which has to be set or computed later.
+	 * This is the width of the node.<p>
+	 * The width is the extend of the node along the baseline.
+	 * <code>null</code> indicates
+	 * a running value which has to be set or computed later.
 	 */
 	private Dimen theWidth;
 
 	/**
-	 * Creates a new object.
+	 * Creates a new object.<p>
 	 * All dimensions (width, height, depth) are initially unset.
 	 */
 	public AbstractNode() {
@@ -67,9 +67,7 @@ public abstract class AbstractNode implements Node {
 
 	/**
 	 * Creates a new object.
-	 *
-	 * @param width the width of the node; <code>null</code> denotes the
-	 *            unset value
+	 * @param width the width of the node; <code>null</code> denotes the unset value
 	 */
 	public AbstractNode(final Dimen width) {
 		super();
@@ -81,12 +79,9 @@ public abstract class AbstractNode implements Node {
 	/**
 	 * Creates a new object.
 	 *
-	 * @param width the width of the node; <code>null</code> denotes the
-	 *            unset value
-	 * @param height the height of the node; <code>null</code> denotes the
-	 *            unset value
-	 * @param depth the depth of the node; <code>null</code> denotes the
-	 *            unset value
+	 * @param width the width of the node; <code>null</code> denotes the unset value
+	 * @param height the height of the node; <code>null</code> denotes the unset value
+	 * @param depth the depth of the node; <code>null</code> denotes the unset value
 	 */
 	public AbstractNode(final Dimen width, final Dimen height, final Dimen depth) {
 		super();
