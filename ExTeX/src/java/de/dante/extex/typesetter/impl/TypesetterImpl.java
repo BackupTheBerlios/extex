@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.impl;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.i18n.PanicException;
@@ -44,6 +45,7 @@ import de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This is a reference implementation of the
@@ -51,9 +53,9 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
-public class TypesetterImpl implements Typesetter, Manager {
+public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
@@ -86,6 +88,11 @@ public class TypesetterImpl implements Typesetter, Manager {
     private ListMaker listMaker;
 
     /**
+     * The field <tt>logger</tt> contains the ...
+     */
+    private Logger logger = null;
+
+    /**
      * The field <tt>options</tt> contains the context for accessing parameters.
      */
     private TypesetterOptions options;
@@ -115,6 +122,7 @@ public class TypesetterImpl implements Typesetter, Manager {
         listMaker = new VerticalListMaker(this);
         ligatureBuilder = new LigatureBuilderImpl(config);//TODO: IoC
         paragraphBuilder = new ParagraphBuilderImpl(config);//TODO: IoC
+        paragraphBuilder.setOptions(theOptions);
     }
 
     /**
@@ -185,6 +193,15 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
     public void finish() throws GeneralException {
@@ -222,6 +239,7 @@ public class TypesetterImpl implements Typesetter, Manager {
 
         return this.listMaker.getLastNode();
     }
+
     /**
      * @see de.dante.extex.typesetter.impl.Manager#getLigatureBuilder()
      */
