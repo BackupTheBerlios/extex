@@ -62,7 +62,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DviDocumentWriter
         implements
@@ -408,7 +408,7 @@ public class DviDocumentWriter
     /**
      * Setter for the output stream.  This method throws no exception.
      * If somethings goes wrong {@link
-     * #shipout(de.dante.extex.typesetter.NodeList) shipout(NodeList)}
+     * #shipout(de.dante.extex.typesetter.type.NodeList) shipout(NodeList)}
      * informs the caller.
      *
      * @param writer an <code>OutputStream</code> value

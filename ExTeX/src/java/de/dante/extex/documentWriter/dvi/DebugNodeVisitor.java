@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * This is a implementation of a NodeVisitor for debugging.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DebugNodeVisitor implements InspectableNodeVisitor {
     /**
@@ -74,7 +74,7 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      *
      * @param visitor a <code>NodeVisitor</code> value
      * @see
-     *   InspectableNodeVisitor#setVisitor(de.dante.extex.typesetter.NodeVisitor)
+     *   InspectableNodeVisitor#setVisitor(de.dante.extex.typesetter.type.NodeVisitor)
      */
     public void setVisitor(final NodeVisitor visitor) {
         nodeVisitor.setVisitor(visitor);
