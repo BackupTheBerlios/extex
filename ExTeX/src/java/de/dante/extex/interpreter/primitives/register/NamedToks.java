@@ -37,16 +37,16 @@ import de.dante.util.GeneralException;
  * <pre>
  *  \encoding{UTF-8}
  * </pre>
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NamedToks extends AbstractAssignment implements Theable {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
     public NamedToks(final String name) {
@@ -56,7 +56,8 @@ public class NamedToks extends AbstractAssignment implements Theable {
     /**
      * Return the register value as <code>Tokens</code> for <code>\the</code>.
      *
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public Tokens the(final Context context, final TokenSource source)
             throws GeneralException {
@@ -77,7 +78,7 @@ public class NamedToks extends AbstractAssignment implements Theable {
         String key = getKey(source);
         source.scanOptionalEquals();
         Tokens toks = source.getTokens();
-        context.setToks(getKey(source), toks, prefix.isGlobal());
+        context.setToks(key, toks, prefix.isGlobal());
     }
 
     /**
@@ -97,12 +98,12 @@ public class NamedToks extends AbstractAssignment implements Theable {
      * <p>
      * Scan the tokens between <code>{</code> and <code>}</code> and store
      * it.
-     * 
+     *
      * @param prefix the prefix flags
      * @param context the interpreter context
      * @param source the tokensource
      * @param key the key
-     * 
+     *
      * @throws GeneralException ...
      */
     protected void expand(final Flags prefix, final Context context,
