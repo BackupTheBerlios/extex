@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HangingParagraphShape extends ParagraphShape {
 
@@ -49,17 +49,17 @@ public class HangingParagraphShape extends ParagraphShape {
     /**
      * Creates a new object.
      *
-     * @param hangafter the number of lines to start or end hanging
-     * @param hangindent the amount of indentation
-     * @param hsize the width of the line
+     * @param theHangafter the number of lines to start or end hanging
+     * @param theHangindent the amount of indentation
+     * @param theHsize the width of the line
      */
-    public HangingParagraphShape(final int hangafter,
-            final FixedDimen hangindent, final FixedDimen hsize) {
+    public HangingParagraphShape(final int theHangafter,
+            final FixedDimen theHangindent, final FixedDimen theHsize) {
 
         super();
-        this.hsize = hsize;
-        this.hangafter = hangafter;
-        this.hangindent = hangindent;
+        this.hsize = theHsize;
+        this.hangafter = theHangafter;
+        this.hangindent = theHangindent;
     }
 
     /**
@@ -67,7 +67,14 @@ public class HangingParagraphShape extends ParagraphShape {
      */
     public FixedDimen getLeft(final int index) {
 
-        //TODO
+        if (hangafter > 0) {
+            if (index >= hangafter) {
+                return hangindent;
+            }
+        } else if (index < -hangafter) {
+            return hangindent;
+        }
+
         return Dimen.ZERO_PT;
     }
 
@@ -76,7 +83,6 @@ public class HangingParagraphShape extends ParagraphShape {
      */
     public FixedDimen getRight(final int index) {
 
-        //TODO
         return hsize;
     }
 
