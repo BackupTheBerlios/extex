@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.Mathchar;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 
@@ -31,9 +32,9 @@ import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
  * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class MathcharCode extends Mathchar {
+public class MathcharCode extends Mathchar implements CountConvertible {
 
     /**
      * The field <tt>mathchar</tt> contains the actual character in the form
@@ -68,4 +69,12 @@ public class MathcharCode extends Mathchar {
         insert(nc, mathchar);
     }
 
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws InterpreterException {
+
+        return mathchar.getValue();
+    }
 }
