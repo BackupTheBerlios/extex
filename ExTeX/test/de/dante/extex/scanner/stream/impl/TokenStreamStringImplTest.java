@@ -39,7 +39,7 @@ import de.dante.util.configuration.Configuration;
  * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -311,6 +311,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
+     *
      * @throws Exception in case of an error
      */
     public void testCr4() throws Exception {
@@ -330,23 +331,22 @@ public class TokenStreamStringImplTest extends TestCase {
      */
     private TokenStream makeStream(final String line) throws IOException {
 
-        return new TokenStreamImpl(null, new StringReader(line), Boolean.FALSE,
-                "#");
+        return new TokenStreamImpl(null, null, new StringReader(line),
+                Boolean.FALSE, "#");
     }
 
     /**
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class MockConfiguration implements Configuration {
 
         /**
          * The field <tt>classname</tt> contains the name of the class to use.
          */
-        private String classname =
-            "de.dante.extex.interpreter.context.impl.ContextImpl";
+        private String classname = "de.dante.extex.interpreter.context.impl.ContextImpl";
 
         /**
          * Creates a new object.
