@@ -1,16 +1,14 @@
    <div class="navi">
-     <a href="&top;index.html">ExTeX</a>
+     <a href="&top;index.html">&ExTeX;</a>
    </div>
    <div class="navi">
-    <a href="&top;development/index.html">Development</a>
-    <br>
+    <a href="&top;development/index.html">Development</a><br />
     <div class="navitems">
     <a href="&top;development/state.html">State of Development</a><br />
-    <a href="&top;development/systems.html">TeX and Successors</a><br />
+    <a href="&top;development/systems.html">&TeX; and Successors</a><br />
     <i>Bug Tracking</i><br />
     </div>
-    <a href="&top;documentation/index.html">Documentation</a>
-    <br>
+    <a href="&top;documentation/index.html">Documentation</a><br />
     <div class="navitems">
     <a href="&top;documentation/objectives.html">Objectives</a><br />
     <a href="&top;documentation/faq.html">FAQ</a><br />
@@ -21,6 +19,12 @@
     <br>
     <div class="navitems">
     <i>Download</i><br />
-    <a href="&top;sources/index.html">Repository</a><br />
+    <a href="&top;sources/repository.html">Repository</a><br />
+    </div>
+   </div>
+   <br />
+   <div class="navi">
+    <div class="navitems">
+     <a href="&top;imprint.html">Imprint</a>
     </div>
    </div>

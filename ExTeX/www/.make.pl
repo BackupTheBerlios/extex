@@ -1,6 +1,6 @@
 #!C:\usr\local\share\cygwin\bin\perl.exe -w
 ##*****************************************************************************
-## $Id: .make.pl,v 1.1 2004/01/08 13:56:17 gene Exp $
+## $Id: .make.pl,v 1.2 2004/01/09 14:03:59 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -54,22 +54,38 @@ sub usage
 #
 my $verbose = 0;
 
+#------------------------------------------------------------------------------
+# Variable:	$trace
+# Description:	
+#
 my $trace = 0;
 
+#------------------------------------------------------------------------------
+# Variable:	$srcdir
+# Description:	
+#
 my $srcdir = "src";
 
+#------------------------------------------------------------------------------
+# Variable:	$destdir
+# Description:	
+#
 my $destdir = "www";
 
+#------------------------------------------------------------------------------
+# Variable:	...
+# Description:	
+#
 my ($sec,$min,$hour,$day,$month,$year,$wday,$yday,$isdst) = localtime(time);
 $year  += 1900;
 $month +=1;
 
 use Getopt::Long;
 GetOptions("h|help"	=> \&usage,
-	   "v|verbose"	=> \$verbose,
-	   "trace"	=> \$trace,
-	   "src|source"	=> \$srcdir,
-	   "destdir"    => \$destdir,
+	   "v|verbose"  => \$verbose,
+	   "trace"      => \$trace,
+	   "src=s"	=> \$srcdir,
+	   "destdir=s"  => \$destdir,
 	  );
 use File::Basename;
 use File::Find;
@@ -86,16 +102,23 @@ my $srclen = length($srcdir)+1;
 
 my @dependencies = ();
 
-my $dep		       = new FileHandle(".dependencies","w");
-print $dep "my %depend = {\n";
+my $DEPEND = undef;
+
+my $dep;
+if ( $DEPEND ) {
+  $dep= new FileHandle(".dependencies","w");
+  print $dep "my %depend = {\n";
+}
 
 find( {wanted   => \&process,
        no_chdir => 1,
       },
       $srcdir );
 
-print $dep "};\n";
-$dep->close();
+if ( $DEPEND ) {
+  print $dep "};\n";
+  $dep->close();
+}
 
 
 #------------------------------------------------------------------------------
@@ -109,7 +132,9 @@ sub process
   
   my $name = substr($_,$srclen);
 
-  if ( $name =~ m/^\./ || $name =~ m:/CVS$: ) {
+  if ( $name =~ m/^\./ ) {
+  } elsif ( $name =~ m:CVS$:  ) {
+    $File::Find::prune = 1;
   } elsif ( -d $_ ) {
     print STDERR "Creating $name\n" if $verbose;
     mkdir("$destdir/$name");
@@ -133,6 +158,9 @@ sub process
 #
 sub writeDependency
 { my ($dir,$name) = @_;
+
+  return if not $DEPEND;
+
   local $_ = "$dir/$name";
   s/\\/\\\\/g;
   s/'/\\'/g;
@@ -186,6 +214,9 @@ sub includeFile
     s/\&year;/$year/g;
     s/\&month;/$month/g;
     s/\&day;/$day/g;
+    s/\&TeX;/TeX/g;
+    s/\&LaTeX;/LaTeX/g;
+    s/\&ExTeX;/ExTeX/g;
     if ( m|</head>|i ) {
       includeFile($fromdir,".headEnd",$out,$top,$fromdir);
       print $out $_;
