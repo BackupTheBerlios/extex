@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -36,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface ListMaker {
 
@@ -145,47 +144,47 @@ public interface ListMaker {
     /**
      * Add a letter to the current list or treat it in some other appropriate
      * way.
-     *
-     * @param context the typesetting context
+     * @param context TODO
+     * @param tc the typesetting context
      * @param uc the character
      *
      * @throws GeneralException in case of an error
      */
-    void treatLetter(TypesettingContext context, UnicodeChar uc)
+    void treatLetter(Context context, TypesettingContext tc, UnicodeChar uc)
             throws GeneralException;
 
     /**
      * Treat a math shift character.
      * Usually this leads to entering or leaving math mode -- maybe after
      * inspection of a following token.
-     * @param context TODO
+     * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual math shift character token
      *
      * @throws GeneralException in case of an error
      */
-    void mathShift(Context context, TokenSource source, Token t) throws GeneralException;
+    void mathShift(Context context, TokenSource source, Token t)
+            throws GeneralException;
 
     /**
      * Treat a subscript mark. This might be meaningful in math mode only.
-     *
-     * @param context the typesetting context
+     * @param context the interpreter context
+     * @param source the source for new tokens
      * @param t the actual sub mark token
      *
      * @throws GeneralException in case of an error
      */
-    void subscriptMark(TypesettingContext context, Token t)
+    void subscriptMark(Context context, TokenSource source, Token t)
             throws GeneralException;
 
     /**
      * Treat a superscript mark. This might be meaningful in math mode only.
-     *
-     * @param context the typesetting context
+     * @param context the interpreter context
+     * @param source the source for new tokens
      * @param t the actual super mark token
-     *
      * @throws GeneralException in case of an error
      */
-    void superscriptMark(TypesettingContext context, Token t)
+    void superscriptMark(Context context, TokenSource source, Token t)
             throws GeneralException;
 
 }
