@@ -616,7 +616,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public class ExTeX {
 
@@ -1017,35 +1017,27 @@ public class ExTeX {
      */
     private void applyLanguage() {
 
-        Pattern p1 = Pattern.compile("^(..)[_-](..)$");
-        Pattern p2 = Pattern.compile("^(..)[_-](..)[_-](..)$");
         String lang = (String) properties.get(PROP_LANG);
-        String bundle = (String) properties.get(PROP_POOL);
-
-        if (bundle == null) {
-            return;
-        }
+        Matcher m;
 
         if (lang != null) {
             if (lang.length() == 2) {
-                Messages.configure(bundle, new Locale(lang));
-                return;
-            }
-            Matcher m1 = p1.matcher(lang);
-            if (m1.matches()) {
-                Messages
-                        .configure(bundle, new Locale(m1.group(1), m1.group(2)));
-                return;
-            }
-            Matcher m2 = p2.matcher(lang);
-            if (m2.matches()) {
-                Messages.configure(bundle, new Locale(m2.group(1), m2.group(2),
-                        m2.group(3)));
-                return;
+                Locale.setDefault(new Locale(lang));
+            } else if ((m = Pattern.compile("^(..)[_-](..)$").matcher(lang))
+                    .matches()) {
+                Locale.setDefault(new Locale(m.group(1), m.group(2)));
+            } else if ((m = Pattern.compile("^(..)[_-](..)[_-](..)$").matcher(
+                    lang)).matches()) {
+                Locale.setDefault(new Locale(m.group(1), m.group(2), m
+                                .group(3)));
             }
         }
 
-        Messages.configure(bundle);
+        String bundle = (String) properties.get(PROP_POOL);
+
+        if (bundle == null) {
+            Messages.configure(bundle);
+        }
     }
 
     /**
@@ -1304,7 +1296,8 @@ public class ExTeX {
      * be opened
      */
     private DocumentWriter makeDocumentWriter(final Configuration config,
-            final String jobname, final OutputFactory outFactory, final DocumentWriterOptions options)
+            final String jobname, final OutputFactory outFactory,
+            final DocumentWriterOptions options)
             throws ConfigurationException,
                 FileNotFoundException {
 
@@ -1316,6 +1309,7 @@ public class ExTeX {
                     .getExtension());
         }
         docWriter.setOutputStream(outStream);
+        docWriter.setParameter("Creator", "ExTeX " + new Version().toString());
 
         return docWriter;
     }
@@ -1443,7 +1437,8 @@ public class ExTeX {
 
         Handler fileHandler = null;
         try {
-            fileHandler = new StreamHandler(new FileOutputStream(logFile), new LogFormatter());
+            fileHandler = new StreamHandler(new FileOutputStream(logFile),
+                    new LogFormatter());
             fileHandler.setLevel(Level.ALL);
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
@@ -1562,15 +1557,16 @@ public class ExTeX {
                     .getConfiguration("Fonts"));
 
             Interpreter interpreter = makeInterpreter(config
-                    .getConfiguration("Interpreter"), finder, tokenStreamFactory,
-                    fontFactory);
+                    .getConfiguration("Interpreter"), finder,
+                    tokenStreamFactory, fontFactory);
 
             DocumentWriter docWriter = makeDocumentWriter(config
                     .getConfiguration("DocumentWriter"), jobname, outFactory,
                     (DocumentWriterOptions) interpreter.getContext());
 
             Typesetter typesetter = makeTypesetter(config
-            .getConfiguration("Typesetter"), docWriter, interpreter.getContext());
+                    .getConfiguration("Typesetter"), docWriter, interpreter
+                    .getContext());
             if (typesetter instanceof LogEnabled) {
                 ((LogEnabled) typesetter).enableLogging(logger);
             }

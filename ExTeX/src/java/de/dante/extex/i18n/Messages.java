@@ -20,7 +20,6 @@ package de.dante.extex.i18n;
 
 import java.io.PrintStream;
 import java.text.MessageFormat;
-import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
@@ -39,13 +38,14 @@ import java.util.ResourceBundle;
  *
  * <p>
  * Currently this singleton is implemented as a set of static variables.
- * This might change..
+ * This has to change!!
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public final class Messages {
+    //TODO: This class is a mess. Integrate the localized messages into the components.
 
     /**
      * The constant <tt>BUNDLE_NAME</tt> contains the name of the resource
@@ -172,38 +172,10 @@ public final class Messages {
     }
 
     /**
-     * Initialize the messages with a given locale. This method should be
-     * called early in the application and not called again. Otherwise the
-     * change in the language might confuse the user.
-     *
-     * @param locale the preferred locale to use
-     */
-    public static void configure(final Locale locale) {
-
-        bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
-    }
-
-    /**
-     * Initialize the messages with a given bundle name and locale.
-     * This method should be
-     * called early in the application and not called again. Otherwise the
-     * change in the language might confuse the user.
-     *
-     * @param bundleName the name of the resource bundle to use
-     * @param locale the preferred locale to use
-     */
-    public static void configure(final String bundleName,
-            final Locale locale) {
-
-        bundle = ResourceBundle.getBundle(bundleName, locale);
-    }
-
-    /**
      * Initialize the messages with a given bundle name and the default
-     * language.
-     * This method should be
-     * called early in the application and not called again. Otherwise the
-     * change in the language might confuse the user.
+     * locale.
+     * This method should be called early in the application and not called
+     * again. Otherwise the change in the language might confuse the user.
      *
      * @param bundleName the name of the resource bundle to use
      */
