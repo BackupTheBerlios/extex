@@ -20,11 +20,9 @@
 package de.dante.extex.interpreter.primitives.typesetter.mark;
 
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.primitives.macro.MacroCode;
+import de.dante.extex.interpreter.primitives.macro.MacroPattern;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 
 /**
  * This class provides an implementation for the primitive
@@ -48,9 +46,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Topmark extends AbstractCode {
+public class Topmark extends MacroCode {
 
     /**
      * Creates a new object.
@@ -59,21 +57,7 @@ public class Topmark extends AbstractCode {
      */
     public Topmark(final String name) {
 
-        super(name);
+        super(name, Flags.NONE, MacroPattern.EMPTY, Tokens.EMPTY);
     }
 
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public boolean execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
-
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-    }
 }
