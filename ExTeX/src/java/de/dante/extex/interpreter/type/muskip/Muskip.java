@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Muskip implements Serializable {
 
@@ -125,7 +125,7 @@ public class Muskip implements Serializable {
 
         Token t = source.getToken();
         if (t == null) {
-            throw new EofHelpingException("mu");//TODO i18n?
+            throw new EofHelpingException("mu");
         }
         long value = GlueComponent.scanFloat(source, t);
         if (!source.getKeyword("mu")) {
