@@ -26,6 +26,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -39,7 +40,7 @@ import de.dante.util.framework.configuration.Configurable;
  * and as.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class DumpDocumentWriter implements DocumentWriter, Configurable {
 
@@ -47,7 +48,7 @@ public class DumpDocumentWriter implements DocumentWriter, Configurable {
      * This class provides the internal node visitor to traverse the nodes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static class Visitor implements NodeVisitor {
 
@@ -258,7 +259,7 @@ public class DumpDocumentWriter implements DocumentWriter, Configurable {
         public Object visitLigature(final Object oNode, final Object oOut)
                 throws GeneralException {
 
-            // TODO gene: visitLigature unimplemented
+            write(((LigatureNode) oNode).getCharacter().getCodePoint());
             return null;
         }
 
