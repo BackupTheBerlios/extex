@@ -83,7 +83,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class Max extends Moritz
         implements
@@ -242,16 +242,18 @@ public class Max extends Moritz
     }
 
     /**
-     * ...
+     * Scan a configuration and define primitives found.
      *
-     * @param config ...
-     * @param tokenFactory ...
+     * @param config the configuration to scan
+     * @param tokenFactory the token factory to use
      *
-     * @throws ConfigurationException ...
-     *  ConfigurationMissingAttributeException ...
-     *  ConfigurationInstantiationException ...
-     *  ConfigurationClassNotFoundException ...
-     *  ConfigurationWrapperException ...
+     * @throws ConfigurationException in case of an error
+     * <ul>
+     *  <li>ConfigurationMissingAttributeException ...</li>
+     *  <li>ConfigurationInstantiationException ...</li>
+     *  <li>ConfigurationClassNotFoundException ...</li>
+     *  <li>ConfigurationWrapperException ...</li>
+     * </ul>
      */
     private void definePrimitives(final Configuration config,
             final TokenFactory tokenFactory) throws ConfigurationException {

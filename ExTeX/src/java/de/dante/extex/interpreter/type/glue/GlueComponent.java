@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -104,12 +104,13 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     private static final int POINT_PER_100_IN = 7227;
 
     /**
-     * The constant <tt>PT_PER_PC</tt> contains the ...
+     * The constant <tt>PT_PER_PC</tt> contains the number of points per pica.
      */
     private static final int PT_PER_PC = 12;
 
     /**
-     * The field <tt>ZERO</tt> contains the ...
+     * The constant <tt>ZERO</tt> contains the non-stretchable and
+     * non-shrinkable value of 0&nbsp;pt.
      */
     public static final GlueComponent ZERO = new GlueComponent(0);
 

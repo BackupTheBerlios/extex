@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -104,9 +104,10 @@ public class Count implements Serializable, FixedCount {
 
     /**
      * Scan the input stream for a count value.
+     *
      * @param context the processor context
      * @param source the source for new tokens
-     * @param typesetter TODO
+     * @param typesetter the typesetter to use for conversion
      *
      * @return the value of the count
      *

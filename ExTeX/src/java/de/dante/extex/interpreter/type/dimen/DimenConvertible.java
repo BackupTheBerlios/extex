@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface DimenConvertible {
 
@@ -43,7 +43,7 @@ public interface DimenConvertible {
      * The return value is the length in scaled points.
      * @param context the interpreter context
      * @param source the source for new tokens
-     * @param typesetter TODO
+     * @param typesetter the typesetter to use for conversion
      *
      * @return the converted value in sp
      *
