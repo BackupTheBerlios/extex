@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,27 +19,29 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+
 import de.dante.util.GeneralException;
 
 /**
- * This is a interface to mark those classes which are able to divide something.
+ * This is a interface to mark those classes which are able to provide a
+ * description. This description is returned in form of
+ * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public interface Divideable {
+public interface Showable {
 
     /**
-     * This method is called when the macro <tt>\divide</tt> has been seen.
-     * It performs the remaining tasks for the expansion.
+     * This method is the getter for the description of the primitive.
      *
-     * @param prefix the prefix for the command
-     * @param context the processor context
-     * @param source the token source to parse
+     * @param context the interpreter context
+     *
+     * @return the description of the primitive as list of Tokens
      *
      * @throws GeneralException in case of an error
      */
-    void divide(Flags prefix, Context context, TokenSource source)
-            throws GeneralException;
+    Tokens show(Context context) throws GeneralException;
 
 }

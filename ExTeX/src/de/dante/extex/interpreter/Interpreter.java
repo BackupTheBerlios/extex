@@ -36,7 +36,7 @@ import de.dante.util.observer.Observable;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -67,7 +67,7 @@ public interface Interpreter extends TokenSource, Observable {
 
     /**
      * Setter for the font factory
-     * 
+     *
      * @param fontFactory the new font factory
      */
     void setFontFactory(FontFactory fontFactory);
@@ -131,6 +131,14 @@ public interface Interpreter extends TokenSource, Observable {
     void loadFormat(String format) throws IOException;
 
     /**
+     * ...
+     *
+     * @throws IOException in case of an IO error
+     * @throws GeneralException in case of another error
+     */
+    void dumpFormat() throws GeneralException, IOException;
+
+    /**
      * Process the current token streams by repeatedly reading a single token
      * and processing it until no token is left. The visitor pattern is used to
      * branch to the appropriate method for processing a single token.
@@ -152,4 +160,5 @@ public interface Interpreter extends TokenSource, Observable {
      */
     void run(TokenStream stream) throws ConfigurationException,
             GeneralException;
+
 }

@@ -14,11 +14,13 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  */
+
 package de.dante.extex.interpreter;
 
-import de.dante.extex.main.MainUnknownInteractionException;
+import de.dante.extex.main.exception.MainUnknownInteractionException;
+import de.dante.util.GeneralException;
 
 import java.io.Serializable;
 
@@ -26,9 +28,10 @@ import java.io.Serializable;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class Interaction implements Serializable {
+
     /**
      * The field <tt>BATCHMODE</tt> contains the constant for batch mode.
      */
@@ -56,13 +59,14 @@ public abstract class Interaction implements Serializable {
      * modes.
      */
     private static final Interaction[] MODE_MAP = //
-        {BATCHMODE, NONSTOPMODE, SCROLLMODE, ERRORSTOPMODE};
+    {BATCHMODE, NONSTOPMODE, SCROLLMODE, ERRORSTOPMODE};
 
     /**
      * Creates a new object. This constructor is private to avoid that other
      * interaction modes than the predefined ones are used.
      */
     protected Interaction() {
+
         super();
     }
 
@@ -79,7 +83,8 @@ public abstract class Interaction implements Serializable {
      *             is out of range
      */
     public static Interaction get(final int mode)
-        throws MainUnknownInteractionException {
+            throws MainUnknownInteractionException {
+
         if (mode < 0 || mode >= MODE_MAP.length) {
             throw new MainUnknownInteractionException(Integer.toString(mode));
         }
@@ -105,7 +110,8 @@ public abstract class Interaction implements Serializable {
      *             in which can not be interpreted as interaction mode
      */
     public static Interaction get(final String mode)
-        throws MainUnknownInteractionException {
+            throws MainUnknownInteractionException {
+
         if (mode == null || mode.equals("")) {
             throw new MainUnknownInteractionException("");
         } else if ("batchmode".startsWith(mode) || mode.equals("0")) {
@@ -125,22 +131,33 @@ public abstract class Interaction implements Serializable {
      * ...
      *
      * @param visitor ...
+     * @param arg1 TODO
+     * @param arg2 TODO
+     * @param arg3 TODO
+     * @return TODO
+     * @throws GeneralException TODO
      */
-    public abstract void visit(InteractionVisitor visitor);
+    public abstract boolean visit(final InteractionVisitor visitor,
+            final Object arg1, final Object arg2, final Object arg3)
+            throws GeneralException;
 
     /**
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private static class BatchMode extends Interaction {
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#visit(de.dante.extex.interpreter.InteractionVisitor)
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
          */
-        public void visit(final InteractionVisitor visitor) {
-            visitor.visitBatchmode();
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitBatchmode(arg1, arg2, arg3);
         }
 
     }
@@ -149,15 +166,19 @@ public abstract class Interaction implements Serializable {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private static class NonstopMode extends Interaction {
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#visit(de.dante.extex.interpreter.InteractionVisitor)
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
          */
-        public void visit(final InteractionVisitor visitor) {
-            visitor.visitNonstopmode();
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitNonstopmode(arg1, arg2, arg3);
         }
 
     }
@@ -166,15 +187,19 @@ public abstract class Interaction implements Serializable {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private static class ScrollMode extends Interaction {
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#visit(de.dante.extex.interpreter.InteractionVisitor)
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
          */
-        public void visit(final InteractionVisitor visitor) {
-            visitor.visitScrollmode();
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitScrollmode(arg1, arg2, arg3);
         }
 
     }
@@ -183,15 +208,19 @@ public abstract class Interaction implements Serializable {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     private static class ErrorstopMode extends Interaction {
 
         /**
-         * @see de.dante.extex.interpreter.Interaction#visit(de.dante.extex.interpreter.InteractionVisitor)
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
          */
-        public void visit(final InteractionVisitor visitor) {
-            visitor.visitErrorstopmode();
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitErrorstopmode(arg1, arg2, arg3);
         }
 
     }

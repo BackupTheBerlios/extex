@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,30 +19,32 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Box;
-import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 
 /**
- * This interface describes the capability to deliver a Box.
+ * This is an interface which describes the feature to be convertibe into a
+ * control sequence.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public interface Boxable {
+public interface CsConvertible {
 
     /**
-     * ...
+     * This method converts into control sequence.
+     * It might be necessary to read further tokens to determine which value to
+     * use. For instance an additional register number might be required. In
+     * this case the additional arguments Context and TokenSource can be used.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
-     * @param typesetter ...
      *
-     * @return ...
+     * @return the converted value
      *
      * @throws GeneralException in case of an error
      */
-    Box getBox(Context context, TokenSource source, Typesetter typesetter)
+    Token convertCs(Context context, TokenSource source)
             throws GeneralException;
 
 }

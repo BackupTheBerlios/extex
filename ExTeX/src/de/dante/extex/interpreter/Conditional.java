@@ -16,16 +16,16 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import de.dante.util.Locator;
-
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Conditional {
 
@@ -47,11 +47,14 @@ public class Conditional {
      *
      * @param aLocator the locator
      * @param aValue the new value
+     * If it has the value <code>true</code> then the conditional is one of the
+     * if-then-else constructs. Otherwise it is a <tt>\ifcase</tt> construction.
      */
     public Conditional(final Locator aLocator, final boolean aValue) {
+
         super();
         this.locator = aLocator;
-        this.value   = aValue;
+        this.value = aValue;
     }
 
     /**
@@ -61,11 +64,14 @@ public class Conditional {
      * @return the locator
      */
     public Locator getLocator() {
+
         return locator;
     }
 
     /**
      * Getter for the value of the conditional.
+     * If it has the value <code>true</code> then the conditional is one of the
+     * if-then-else constructs. Otherwise it is a <tt>\ifcase</tt> construction.
      *
      * @return the value
      */
