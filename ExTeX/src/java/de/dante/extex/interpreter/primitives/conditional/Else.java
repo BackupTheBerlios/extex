@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -43,14 +44,17 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \else ...  </pre>
+ *    \ifnum 1<2\else no\fi  </pre>
  * </p>
  * </doc>
  *
+ * Note:<br />
+ * This primitive is <emph>not</emph> expandable!
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class Else extends AbstractIf {
+public class Else extends AbstractCode {
 
     /**
      * Creates a new object.
@@ -84,64 +88,12 @@ public class Else extends AbstractIf {
 
         Conditional cond = context.popConditional();
 
-        if (cond == null || skipToElseOrFi(context, source)) {
+        if (cond == null || AbstractIf.skipToElseOrFi(context, source)) {
             throw new HelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
 
         return true;
-    }
-
-    /**
-     * Expands the primitive.
-     * <p>
-     *  This primitive can only be seen when a conditional has been opened
-     *  before for which the then branch is expanded. Thus the else branch
-     *  has to be skipped. Additioonally the conditional stack has to be
-     *  updated. If the conditional stack is already empty then an exception
-     *  is raised.
-     * </p>
-     *
-     * @see de.dante.extex.interpreter.type.ExpandableCode#expand(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void expand(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
-
-        Conditional cond = context.popConditional();
-
-        if (cond == null || skipToElseOrFi(context, source)) {
-            throw new HelpingException("TTP.ExtraOrElseFi",
-                    printableControlSequence(context));
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.primitives.conditional.AbstractIf#conditional(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    protected boolean conditional(final Context context,
-            final TokenSource source, final Typesetter typesetter) {
-
-        return false;
-    }
-
-    /**
-     * This method is overwritten here since <tt>\else</tt> does not count as
-     * an opening conditional even so it is derived from
-     * {@link de.dante.extex.interpreter.primitives.conditional.AbstractIf AbstractIf}.
-     *
-     * @see de.dante.extex.interpreter.type.Code#isIf()
-     */
-    public boolean isIf() {
-
-        return false;
     }
 
 }
