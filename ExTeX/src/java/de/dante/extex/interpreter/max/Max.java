@@ -67,11 +67,11 @@ import de.dante.util.resource.ResourceFinder;
 
 /**
  * This is a reference implementation for a <b>MA </b>cro e <b>X </b>pander. The
- * macro expander is the core engine driving TeX.
+ * macro expander is the core engine driving ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Max extends Moritz
         implements
@@ -98,6 +98,12 @@ public class Max extends Moritz
      * per hour.
      */
     private static final int MINUTES_PER_HOUR = 60;
+
+    /**
+     * The constant <tt>NAME_ATTRIBUTE</tt> contains the name of the attribute
+     * holding the name of the primitive to define.
+     */
+    private static final String NAME_ATTRIBUTE = "name";
 
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
@@ -204,14 +210,49 @@ public class Max extends Moritz
         maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
 
         TokenFactory tokenFactory = context.getTokenFactory();
+
+        Iterator iterator = config.iterator("primitives");
+
+        while (iterator.hasNext()) {
+            Configuration cfg = (Configuration) iterator.next();
+            definePrimitives(cfg, tokenFactory);
+        }
+
+        definePrimitives(config, tokenFactory);
+
+        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        context.setCount("month", calendar.get(Calendar.MONTH), true);
+        context.setCount("year", calendar.get(Calendar.YEAR), true);
+        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+
+        everyRun = config.findConfiguration("everyjob");
+    }
+
+    /**
+     * ...
+     *
+     * @param config ...
+     * @param tokenFactory ...
+     *
+     * @throws ConfigurationException ...
+     *  ConfigurationMissingAttributeException ...
+     *  ConfigurationInstantiationException ...
+     *  ConfigurationClassNotFoundException ...
+     *  ConfigurationWrapperException ...
+     */
+    private void definePrimitives(final Configuration config,
+            final TokenFactory tokenFactory) throws ConfigurationException {
+
         Iterator iterator = config.iterator("define");
 
         while (iterator.hasNext()) {
             Configuration cfg = (Configuration) iterator.next();
-            String name = cfg.getAttribute("name");
+            String name = cfg.getAttribute(NAME_ATTRIBUTE);
 
             if (name == null || name.equals("")) {
-                throw new ConfigurationMissingAttributeException("name", cfg);
+                throw new ConfigurationMissingAttributeException(
+                        NAME_ATTRIBUTE, cfg);
             }
 
             String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
@@ -249,14 +290,6 @@ public class Max extends Moritz
                 throw new ConfigurationWrapperException(e);
             }
         }
-
-        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-        context.setCount("month", calendar.get(Calendar.MONTH), true);
-        context.setCount("year", calendar.get(Calendar.YEAR), true);
-        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
-                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
-
-        everyRun = config.findConfiguration("everyjob");
     }
 
     /**
