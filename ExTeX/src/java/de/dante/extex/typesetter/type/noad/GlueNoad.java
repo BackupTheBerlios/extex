@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,6 @@
  */
 package de.dante.extex.typesetter.type.noad;
 
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.typesetter.NodeList;
@@ -27,10 +26,11 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This Noad carries a muglue value. This value is translated into a GlueNode
+ * with the translated glue value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GlueNoad extends AbstractNoad {
 
