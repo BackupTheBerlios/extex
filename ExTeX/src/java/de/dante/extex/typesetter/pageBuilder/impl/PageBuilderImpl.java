@@ -22,15 +22,18 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 import java.io.IOException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.GeneralException;
 
 /**
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -39,6 +42,11 @@ public class PageBuilderImpl implements PageBuilder {
      * the pages.
      */
     private DocumentWriter documentWriter = null;
+
+    /**
+     * The field <tt>options</tt> contains the options to control the behaviour.
+     */
+    private TypesetterOptions options = null;
 
     /**
      * Creates a new object.
@@ -90,14 +98,18 @@ public class PageBuilderImpl implements PageBuilder {
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#inspectAndBuild(
-     *      de.dante.extex.typesetter.NodeList)
+     *      VerticalNodeList)
      */
-    public void inspectAndBuild(final NodeList nodes) throws GeneralException {
+    public void inspectAndBuild(final VerticalListNode nodes) throws GeneralException {
 
-        try {
-            this.documentWriter.shipout(nodes);
-        } catch (IOException e) {
-            throw new GeneralException(e);
+        Dimen d = nodes.getVerticalSize();
+        if (d.ge(options.getDimenOption("vsize"))) {
+
+            try {
+                this.documentWriter.shipout(nodes);
+            } catch (IOException e) {
+                throw new GeneralException(e);
+            }
         }
     }
 
@@ -113,5 +125,15 @@ public class PageBuilderImpl implements PageBuilder {
     public void setDocumentWriter(final DocumentWriter docWriter) {
 
         this.documentWriter = docWriter;
+    }
+
+    /**
+     * Setter for options.
+     *
+     * @param options the options to set
+     */
+    public void setOptions(final TypesetterOptions options) {
+
+        this.options = options;
     }
 }

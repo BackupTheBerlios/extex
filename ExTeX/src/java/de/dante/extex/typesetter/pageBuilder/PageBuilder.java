@@ -20,14 +20,16 @@
 package de.dante.extex.typesetter.pageBuilder;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.GeneralException;
 
 /**
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface PageBuilder {
 
@@ -63,7 +65,7 @@ public interface PageBuilder {
      *
      * @throws GeneralException in case of an error
      */
-    void inspectAndBuild(NodeList nodes) throws GeneralException;
+    void inspectAndBuild(VerticalListNode nodes) throws GeneralException;
 
     /**
      * Setter for the document writer.
@@ -72,4 +74,12 @@ public interface PageBuilder {
      * @param docWriter the new document writer to use
      */
     void setDocumentWriter(DocumentWriter docWriter);
+
+    /**
+     * Setter for options.
+     *
+     * @param options the options to set
+     */
+    void setOptions(TypesetterOptions options);
+
 }
