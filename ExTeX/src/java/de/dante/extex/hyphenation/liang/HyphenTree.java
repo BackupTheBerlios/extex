@@ -21,6 +21,7 @@ package de.dante.extex.hyphenation.liang;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import de.dante.extex.hyphenation.exception.DuplicateHyphenationException;
@@ -35,9 +36,44 @@ import de.dante.util.UnicodeChar;
  * or right word boundary.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 class HyphenTree implements Serializable {
+
+    /**
+     * Superimpose two hyphenation code arrays.
+     * The target array is modified. It is considered from a starting position
+     * onwards. The target array has to be long enough such that the source
+     * array fits into it entirely.
+     * <p>
+     * At any position considered the maximum value of target and source is
+     * stored in the target. The comparison of the array is performed at the
+     * positions <i>i</i> in <tt>source</tt> and <i>i + start</i> in
+     * <tt>target</tt> for each <i>i</i> in pointing to a hyphenation code in
+     * <tt>source</tt>.
+     * </p>
+     * <p>
+     * If source is <code>null</code> then nothing is done.
+     * </p>
+     *
+     * @param code the target array to modify
+     * @param start the start index in code
+     * @param source the reference array to read from
+     */
+    public static void superimpose(final char[] code, final int start,
+            final char[] source) {
+
+        if (source != null) {
+            int j = start;
+
+            for (int i = 0; i < source.length; i++) {
+                if (code[j] < source[i]) {
+                    code[j] = source[i];
+                }
+                j++;
+            }
+        }
+    }
 
     /**
      * The field <tt>hc</tt> contains the hyphenation code for the position
@@ -59,16 +95,6 @@ class HyphenTree implements Serializable {
 
         super();
         this.hc = hc;
-    }
-
-    /**
-     * Getter for hyphenation code.
-     *
-     * @return the hyphenation code
-     */
-    public char[] getHc() {
-
-        return this.hc;
     }
 
     /**
@@ -100,6 +126,16 @@ class HyphenTree implements Serializable {
         }
 
         return hyph;
+    }
+
+    /**
+     * Getter for hyphenation code.
+     *
+     * @return the hyphenation code
+     */
+    public char[] getHc() {
+
+        return this.hc;
     }
 
     /**
@@ -142,7 +178,6 @@ class HyphenTree implements Serializable {
             tree = new HyphenTree(hyph);
             nextTree.put(uc, tree);
         }
-        //TODO gene: superimpose on existing entries
         return tree;
     }
 
@@ -163,4 +198,22 @@ class HyphenTree implements Serializable {
             this.hc = hc;
         }
     }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param code ...
+     */
+    public void superimposeAll(final char[] code) {
+
+        Iterator iterator = nextTree.values().iterator();
+        while (iterator.hasNext()) {
+            HyphenTree t = (HyphenTree) iterator.next();
+            if (t.hc != null) {
+                superimpose(t.hc, 0 , code);
+            }
+            t.superimposeAll(code);
+        }
+    }
+
 }

@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -132,13 +132,14 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
                     throw new IllegalTokenHyphenationException(t.toString());
                 }
                 tree = tree.insert(c, null);
-                superimpose(code, 0, tree.getHc());
+                HyphenTree.superimpose(code, 0, tree.getHc());
                 expectLetter = false;
             } else {
                 throw new IllegalTokenHyphenationException(t.toString());
             }
         }
         tree.setHc(code);
+        tree.superimposeAll(code);
     }
 
     /**
@@ -153,22 +154,59 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
     }
 
     /**
-     * Insert discretionaries into a list of nodes.
-     *
-     * @param nodelist the nodelist to augment with discretionary nodes
-     * @param hyph the hyphen codes
-     * @param hyphen the hyphen mark to insert
-     *
-     * @return the horizontal list containing additional discretionary nodes
-     *  as required
-     *
-     * @throws HyphenationException in case of an error
+     * @see de.dante.extex.hyphenation.HyphenationTable#hyphenate(
+     *      de.dante.extex.interpreter.type.node.HorizontalListNode,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
      */
-    private HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final char[] hyph, final Tokens hyphen) throws HyphenationException {
+    public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
+            final Context context, final Tokens hyphen) throws GeneralException {
+
+        if (!isHyphenActive()) {
+            return nodelist;
+        }
+
+        int len = nodelist.countChars();
+        if (len <= 1) {
+            return nodelist;
+        }
+
+        HorizontalListNode nodes = super.hyphenate(nodelist, context, hyphen);
+        if (nodes != nodelist) {
+            return nodes;
+        }
+
+        int leftHyphenMin = (int) getLeftHyphenmin();
+        int rightHyphenMin = (int) getRightHyphenmin();
+        if (len <= leftHyphenMin + rightHyphenMin) { //TODO gene: check
+            return nodelist;
+        }
+
+        char[] hyph = new char[len + 2];
+        UnicodeChar[] chars = new UnicodeChar[len + 2];
+        int idx = 0; // pointer into hyph; in sync with the current char
+        NodeTraverser nt = new NodeTraverser(nodelist);
+        chars[idx++] = BORDER;
+
+        for (UnicodeChar c = nt.next(); c != null; c = nt.next()) {
+            chars[idx++] = c;
+        }
+        chars[idx] = BORDER;
+
+        for (int i = 0; i < len; i++) {
+            HyphenTree.superimpose(hyph, i, patterns.get(chars, i));
+        }
+
+        for (int i = 0; i < leftHyphenMin; i++) {
+            hyph[i] = '0';
+        }
+        for (int i = 0; i < rightHyphenMin; i++) {
+            hyph[hyph.length - i - 1] = '0';
+        }
 
         boolean hasNoHyphen = true;
         boolean[] isHyph = new boolean[hyph.length];
+
         for (int i = 0; i < hyph.length; i++) {
             if ((((int) hyph[i]) & 1) != 0) {
                 isHyph[i] = true;
@@ -181,18 +219,18 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
             return nodelist;
         }
 
-        HorizontalListNode nodes = new HorizontalListNode();
+        nodes = new HorizontalListNode();
         NV nv = new NV(nodes, hyphen, isHyph);
         Count index = new Count(0);
 
         for (int i = 0; i < nodelist.size(); i++) {
             Node node = nodelist.get(i);
             switch (node.countChars()) {
-                case 0: // just in case; this should never happen
+                case 0: // just in case; for non-character nodes
                     nodes.add(node);
                     break;
                 case 1:
-                    if ((((int) hyph[(int) index.getValue()]) & 1) != 0) {
+                    if (isHyph[(int) index.getValue()]) {
                         nodes.add(new DiscretionaryNode(Tokens.EMPTY, hyphen,
                                 Tokens.EMPTY));
                     }
@@ -211,86 +249,4 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
         return nodes;
     }
 
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#hyphenate(
-     *      de.dante.extex.interpreter.type.node.HorizontalListNode,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.type.tokens.Tokens)
-     */
-    public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final Context context, final Tokens hyphen) throws GeneralException {
-
-        if (!isHyphenActive()) {
-            return nodelist;
-        }
-
-        int len = nodelist.countChars();
-        if (len == 0) {
-            return nodelist;
-        }
-
-        HorizontalListNode nodes = super.hyphenate(nodelist, context, hyphen);
-        if (nodes != nodelist) {
-            return nodes;
-        }
-
-        char[] hyph = new char[len + 2];
-        UnicodeChar[] chars = new UnicodeChar[len + 2];
-        int i = 0; // pointer into hyph; in sync with the current char
-        NodeTraverser nt = new NodeTraverser(nodelist);
-        chars[i++] = BORDER;
-
-        for (UnicodeChar c = nt.next(); c != null; c = nt.next()) {
-            chars[i++] = c;
-        }
-        chars[i] = BORDER;
-
-        for (i = 0; i < len; i++) {
-            superimpose(hyph, i, patterns.get(chars, i));
-        }
-
-        for (i = (int) getLeftHyphenmin() - 1; i >= 0; i--) {
-            hyph[i] = '0';
-        }
-        for (i = (int) getRightHyphenmin() - 1; i >= 0; i--) {
-            hyph[hyph.length - i - 1] = '0';
-        }
-
-        return hyphenate(nodelist, hyph, hyphen);
-    }
-
-    /**
-     * Superimpose two hyphenation code arrays.
-     * The target array is modified. It is considered from a starting position
-     * onwards. The target array has to be long enough such that the source
-     * array fits into it entirely.
-     * <p>
-     * At any position considered the maximum value of target and source is
-     * stored in the target. The comparison of the array is performed at the
-     * positions <i>i</i> in <tt>source</tt> and <i>i + start</i> in
-     * <tt>target</tt> for each <i>i</i> in pointing to a hyphenation code in
-     * <tt>source</tt>.
-     * </p>
-     * <p>
-     * If source is <code>null</code> then nothing is done.
-     * </p>
-     *
-     * @param code the target array to modify
-     * @param start the start index in code
-     * @param source the reference array to read from
-     */
-    protected void superimpose(final char[] code, final int start,
-            final char[] source) {
-
-        if (source == null) {
-            return;
-        }
-        int j = start;
-        for (int i = 0; i < source.length; i++) {
-            if (code[j] < source[i]) {
-                code[j] = source[i];
-            }
-            j++;
-        }
-    }
 }
