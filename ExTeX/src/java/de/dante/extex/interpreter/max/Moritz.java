@@ -68,7 +68,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public abstract class Moritz implements TokenSource, Configurable, Observable {
 
@@ -76,15 +76,8 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
      * character code. In original TeX this value would be 255.
      */
-    private static final long MAX_CHAR_CODE = Integer.MAX_VALUE;
-
+    private static final long MAX_CHAR_CODE = Long.MAX_VALUE;
     //TODO: find a good value
-
-    /**
-     * The field <tt>context</tt> contains the interpreter context. well, the
-     * two of them (Max and Moritz) are more closely linked than I like it.
-     */
-    private Context context;
 
     /**
      * The field <tt>observersCloseStream</tt> contains the observer list is
@@ -234,6 +227,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     public Box getBox(final Typesetter typesetter) throws GeneralException {
 
         Token t = getToken();
+        Context context = getContext();
         if (t == null || !(t instanceof CodeToken)) {
             throw new HelpingException("TTP.BoxExpected");
         }
@@ -249,10 +243,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     /**
      * @see de.dante.extex.interpreter.Interpreter#getContext()
      */
-    public Context getContext() {
-
-        return context;
-    }
+    public abstract Context getContext();
 
     /**
      * Get the next token from the token stream and check that it is a
@@ -269,6 +260,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     public CodeToken getControlSequence() throws GeneralException {
 
         Token t = getToken();
+        Context context = getContext();
 
         if (t == null) {
             push(context.getTokenFactory().createToken(Catcode.ESCAPE,
@@ -297,6 +289,8 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     public Font getFont() throws GeneralException {
 
         Token t = getToken();
+        Context context = getContext();
+
         if (t == null || !(t instanceof CodeToken)) {
             throw new HelpingException("TTP.MissingFontIdent");
         }
@@ -317,8 +311,8 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * @return the value of the integer scanned
      *
      * @throws GeneralException
-     *             in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
+     *  in case that no number is found or the end of file has been
+     *  reached before an integer could be acquired
      */
     public long getInteger() throws GeneralException {
 
@@ -344,11 +338,11 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * @param s the tokens to scan
      *
      * @return <code>true</code> iff the tokens could have been successfully
-     *         removed from the input stream
+     *  removed from the input stream
      *
      * @throws GeneralException
-     *             in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
+     *  in case that no number is found or the end of file has been
+     *  reached before an integer could be acquired
      */
     public boolean getKeyword(final String s) throws GeneralException {
 
@@ -378,15 +372,12 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * Scans the input token stream for a given sequence of tokens. Those tokens
      * may have the catcodes <tt>LETTER</tt> or <tt>OTHER</tt>.
      *
-     * @param s
-     *            the string to use as reference
-     * @param i
-     *            the index in s to start working at
+     * @param s the string to use as reference
+     * @param i the index in s to start working at
      *
      * @return <code>true</code> iff the keyword has been found
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      */
     private boolean getKeyword(final String s, final int i)
             throws GeneralException {
@@ -432,14 +423,13 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     /**
      * Scan a number with a given first token.
      *
-     * @param token
-     *            the first token to consider
+     * @param token the first token to consider
      *
      * @return the value of the integer scanned
      *
      * @throws GeneralException
-     *             in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
+     *  in case that no number is found or the end of file has been
+     *  reached before an integer could be acquired
      */
     public long getNumber(final Token token) throws GeneralException {
 
@@ -550,8 +540,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.interpreter.TokenSource#getOptionalEquals()
      */
@@ -576,11 +565,11 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      *
      * @return the next token or <code>null</code>
      *
-     * @throws GeneralException
-     *             in case of another error
+     * @throws GeneralException in case of an error
      */
     public Token getToken() throws GeneralException {
 
+        Context context = getContext();
         TokenFactory factory = context.getTokenFactory();
         Tokenizer tokenizer = context.getTokenizer();
         Token t;
@@ -651,11 +640,9 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     /**
      * Push back a token onto the input stream for subsequent reading.
      *
-     * @param token
-     *            the token to push
+     * @param token the token to push
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      */
     public void push(final Token token) throws GeneralException {
 
@@ -666,11 +653,9 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
      *
-     * @param tokens
-     *            the tokens to push
+     * @param tokens the tokens to push
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      */
     public void push(final Token[] tokens) throws GeneralException {
 
@@ -685,11 +670,9 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * In case that the argument is <code>null</code> then it is silently
      * ignored.
      *
-     * @param tokens
-     *            the tokens to push
+     * @param tokens the tokens to push
      *
-     * @throws GeneralException
-     *             in case that the stream is already closed
+     * @throws GeneralException in case that the stream is already closed
      */
     public void push(final Tokens tokens) throws GeneralException {
 
@@ -714,35 +697,36 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     /**
      * This method can be used to register observers for certain events.
      *
-     * The following events are currently supported: <table>
-     * <tr>
-     * <th>Name</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>pop</td>
-     * <td>...</td>
-     * </tr>
-     * <tr>
-     * <td>push</td>
-     * <td>...</td>
-     * </tr>
-     * <tr>
-     * <td>EOF</td>
-     * <td>...</td>
-     * </tr>
-     * <tr>
-     * <td>close</td>
-     * <td>...</td>
-     * </tr>
-     * <tr>
-     * <td>message</td>
-     * <td>...</td>
-     * </tr>
-     * <tr>
-     * <td>log</td>
-     * <td>...</td>
-     * </tr>
+     * The following events are currently supported:
+     * <table>
+     *  <tr>
+     *   <th>Name</th>
+     *   <th>Description</th>
+     *  </tr>
+     *  <tr>
+     *   <td>pop</td>
+     *   <td>...</td>
+     *  </tr>
+     *  <tr>
+     *   <td>push</td>
+     *   <td>...</td>
+     *  </tr>
+     *  <tr>
+     *   <td>EOF</td>
+     *   <td>...</td>
+     *  </tr>
+     *  <tr>
+     *   <td>close</td>
+     *   <td>...</td>
+     *  </tr>
+     *  <tr>
+     *   <td>message</td>
+     *   <td>...</td>
+     *  </tr>
+     *  <tr>
+     *   <td>log</td>
+     *   <td>...</td>
+     *  </tr>
      * </table>
      *
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
@@ -792,7 +776,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * @return the value of the integer scanned
      *
      * @throws GeneralException
-     *             in case that no number is found or the end of file has been
+     *  in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
      */
     public long scanInteger() throws GeneralException {
@@ -817,7 +801,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * @return the next non-space token or <code>null</code> at EOF
      *
      * @throws GeneralException
-     *             in case of an error in {@link #scanToken() scanToken()}
+     *  in case of an error in {@link #scanToken() scanToken()}
      */
     public Token scanNonSpace() throws GeneralException {
 
@@ -838,8 +822,8 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      * @return the value of the integer scanned
      *
      * @throws GeneralException
-     *             in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
+     *  in case that no number is found or the end of file has been
+     *  reached before an integer could be acquired
      */
     public long scanNumber() throws GeneralException {
 
@@ -849,14 +833,13 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     /**
      * Scan a number with a given first token.
      *
-     * @param token
-     *            the first token to consider
+     * @param token the first token to consider
      *
      * @return the value of the integer scanned
      *
      * @throws GeneralException
-     *             in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
+     *  in case that no number is found or the end of file has been
+     *  reached before an integer could be acquired
      */
     public long scanNumber(final Token token) throws GeneralException {
 
@@ -895,8 +878,8 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
                         t = getToken();
 
                         if (t != null) {
-                            return t.getValue().charAt(0);
-                            //TODO: this might fail for empty cs
+                            String s = t.getValue();
+                            return ("".equals(s) ? 0 : s.charAt(0));
                         }
                         // fall through to error handling
                         break;
@@ -964,6 +947,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
                         throw new HelpingException("TTP.MissingNumber");
                 }
             } else if (t instanceof CodeToken) {
+                Context context = getContext();
                 Code code = context.getCode((CodeToken) t);
                 if (code == null) {
                     throw new HelpingException("TTP.MissingNumber");
@@ -992,8 +976,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
      *
      * @return the next unexpandable token
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      */
     public Token scanToken() throws GeneralException {
 
@@ -1013,7 +996,6 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
             throw new RuntimeException("unimplemented");
         } else if (!token.isa(Catcode.LEFTBRACE)) {
             throw new HelpingException("TTP.MissingLeftBrace");
-            //TODO call the error handler
         }
 
         int balance = 1;
@@ -1041,22 +1023,12 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     }
 
     /**
-     * Setter for the context.
-     *
-     * @param theContext
-     *            the context to use
-     */
-    protected void setContext(final Context theContext) {
-
-        context = theContext;
-    }
-
-    /**
      * Setter for the token stream factory.
      *
      * @param factory the token stream factory
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException this exception is never thrown. It is
+     *  defined here to provide an exit for derived classes
      */
     public void setTokenStreamFactory(final TokenStreamFactory factory)
             throws ConfigurationException {
