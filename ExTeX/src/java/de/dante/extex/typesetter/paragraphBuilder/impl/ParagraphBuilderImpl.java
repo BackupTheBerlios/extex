@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, HyphenationEnabled {
 
@@ -243,7 +243,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
      *
      * @see "TTP [108]"
      */
-    int badness(final long t, final long s) {
+    private int badness(final long t, final long s) {
 
         if (t == 0) {
             return 0;
