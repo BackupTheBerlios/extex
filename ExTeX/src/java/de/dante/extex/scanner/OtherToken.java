@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class OtherToken extends AbstractToken implements Token {
 
@@ -64,6 +64,18 @@ public class OtherToken extends AbstractToken implements Token {
     public String toString() {
 
         return Messages.format("OtherToken.Text", getValue());
+    }
+
+    /**
+     * Print the token into a StringBuffer.
+     *
+     * @param sb the target string buffer
+     *
+     * @see de.dante.extex.scanner.Token#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append(Messages.format("OtherToken.Text", getValue()));
     }
 
     /**

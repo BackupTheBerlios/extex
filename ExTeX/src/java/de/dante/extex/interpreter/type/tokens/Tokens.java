@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -188,12 +188,20 @@ public class Tokens implements Serializable, FixedTokens {
     public String toString() {
 
         StringBuffer sb = new StringBuffer();
+        toString(sb);
+        return sb.toString();
+    }
+
+    /**
+     * Print the token into a StringBuffer.
+     *
+     * @param sb the target string buffer
+     */
+    public void toString(final StringBuffer sb) {
 
         for (int i = 0; i < tokens.size(); i++) {
-            sb.append(((Token) tokens.get(i)).toString());
+            ((Token) tokens.get(i)).toString(sb);
         }
-
-        return sb.toString();
     }
 
     /**

@@ -34,10 +34,9 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
-
     /**
      * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
      * the hash code.
@@ -134,6 +133,18 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
     public String toString() {
 
         return Messages.format("ActiveCharacterToken.Text", getValue());
+    }
+
+    /**
+     * Print the token into a StringBuffer.
+     *
+     * @param sb the target string buffer
+     *
+     * @see de.dante.extex.scanner.Token#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append(Messages.format("ActiveCharacterToken.Text", getValue()));
     }
 
     /**

@@ -30,7 +30,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class SpaceToken extends AbstractToken implements Token {
 
@@ -64,6 +64,18 @@ public class SpaceToken extends AbstractToken implements Token {
     public String toString() {
 
         return Messages.format("SpaceToken.Text", getValue());
+    }
+
+    /**
+     * Print the token into a StringBuffer.
+     *
+     * @param sb the target string buffer
+     *
+     * @see de.dante.extex.scanner.Token#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append(Messages.format("SpaceToken.Text", getValue()));
     }
 
     /**

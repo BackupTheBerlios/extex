@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.Namespace;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -79,7 +79,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      * Create a new instance of the token where the namespace is the given one
      * and the other attributes are the same as for the current token.
      *
-     * @param namespace the namespace to use
+     * @param theNamespace the namespace to use
      *
      * @return the new token
      *
@@ -137,6 +137,18 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     public String toString() {
 
         return Messages.format("ControlSequenceToken.Text", getValue());
+    }
+
+    /**
+     * Print the token into a StringBuffer.
+     *
+     * @param sb the target string buffer
+     *
+     * @see de.dante.extex.scanner.Token#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append(Messages.format("ControlSequenceToken.Text", getValue()));
     }
 
     /**
