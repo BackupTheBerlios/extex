@@ -89,7 +89,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Max extends Moritz
         implements
@@ -575,7 +575,7 @@ public class Max extends Moritz
      *
      * @param fileFinder the new file finder
      */
-    public void setFileFinder(final ResourceFinder fileFinder) {
+    public void setResourceFinder(final ResourceFinder fileFinder) {
 
         //finder = fileFinder;
     }

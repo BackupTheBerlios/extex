@@ -626,7 +626,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class ExTeX {
 
@@ -1442,7 +1442,7 @@ public class ExTeX {
         ErrorHandler errorHandler = errorHandlerFactory.newInstance(properties
                 .getProperty(PROP_ERROR_HANDLER));
         interpreter.setErrorHandler(errorHandler);
-        interpreter.setFileFinder(finder);
+        interpreter.setResourceFinder(finder);
         factory.setOptions((TokenStreamOptions) interpreter.getContext());
         interpreter.setTokenStreamFactory(factory);
         interpreter.setFontFactory(fontFactory);

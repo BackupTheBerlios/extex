@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -37,9 +37,10 @@ import de.dante.util.resource.ResourceFinder;
  * ...
  *
  * @see "TeX -- The Program [1029]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -62,11 +63,11 @@ public interface Interpreter extends TokenSource, Observable {
     ErrorHandler getErrorHandler();
 
     /**
-     * Setter for the file finder for files handled by the interpreter.
+     * Setter for the resource finder for files handled by the interpreter.
      *
-     * @param fileFinder the new file finder
+     * @param resourceFinder the new file finder
      */
-    void setFileFinder(ResourceFinder fileFinder);
+    void setResourceFinder(ResourceFinder resourceFinder);
 
     /**
      * Setter for the font factory
@@ -133,7 +134,7 @@ public interface Interpreter extends TokenSource, Observable {
      * @param stream stream to read from
      *
      * @throws IOException in case of an IO error
-     * @throws LoaderException ...
+     * @throws LoaderException in case of an error during loading
      */
     void loadFormat(InputStream stream)
             throws LoaderException,
