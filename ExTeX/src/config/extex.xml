@@ -23,7 +23,7 @@
     <!-- NOTE: Only the tags "define" are used for initializing.
     -                 The tags "Define" are pure comments waiting to be activated!
     -->
-    <Define name=" " class=""/>
+    <Define name=" " class="de.dante.extex.interpreter.primitives.box.Space"/>
     <Define name="/" class=""/>
     <Define name="\\" class=""/>
     <Define name="above" class=""/>
@@ -48,7 +48,7 @@
     <Define name="box" class=""/>
     <define name="boxmaxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="brokenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="catcode" class=""/>
+    <define name="catcode" class="de.dante.extex.interpreter.primitives.register.NumberedCatcode"/>
     <Define name="char" class=""/>
     <Define name="chardef" class=""/>
     <Define name="cleaders" class=""/>
@@ -62,10 +62,10 @@
     <Define name="crcr" class=""/>
     <Define name="csname" class=""/>
     <define name="day" class="de.dante.extex.interpreter.primitives.register.NamedCount">1</define>
-    <Define name="deadcycles" class=""/>
+    <define name="deadcycles" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="def" class=""/>
-    <Define name="defaulthyphenchar" class=""/>
-    <Define name="defaultskewchar" class=""/>
+    <define name="defaulthyphenchar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
+    <define name="defaultskewchar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="delcode" class=""/>
     <Define name="delimiter" class=""/>
     <Define name="delimiterfactor" class=""/>
@@ -78,18 +78,18 @@
     <Define name="displaystyle" class=""/>
     <define name="displaywidowpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="displaywidth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <Define name="divide" class="de.dante.extex.interpreter.primitives.register.Divide"/>
+    <define name="divide" class="de.dante.extex.interpreter.primitives.register.Divide"/>
     <define name="doublehyphendemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="dp" class=""/>
     <Define name="dump" class=""/>
     <Define name="edef" class=""/>
     <define name="else" class="de.dante.extex.interpreter.primitives.conditional.Else"/>
     <Define name="emergencystretch" class=""/>
-    <Define name="end" class=""/>
+    <define name="end" class="de.dante.extex.interpreter.primitives.file.End"/>
     <Define name="endcsname" class=""/>
     <define name="endgroup" class="de.dante.extex.interpreter.primitives.group.Endgroup"/>
     <Define name="endinput" class="de.dante.extex.interpreter.primitives.file.Endinput"/>
-    <Define name="endlinechar" class=""/>
+    <define name="endlinechar" class="de.dante.extex.interpreter.primitives.register.NamedCount">13</define>
     <Define name="eqno" class=""/>
     <Define name="errhelp" class=""/>
     <Define name="errmessage" class=""/>
@@ -209,7 +209,7 @@
     <Define name="moveleft" class=""/>
     <Define name="moveright" class=""/>
     <Define name="mskip" class=""/>
-    <Define name="multiply" class="de.dante.extex.interpreter.primitives.register.Multiply"/>
+    <define name="multiply" class="de.dante.extex.interpreter.primitives.register.Multiply"/>
     <Define name="muskip" class=""/>
     <Define name="muskipdef" class=""/>
     <define name="newlinechar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -242,7 +242,7 @@
     <Define name="pageshrink" class=""/>
     <Define name="pagestretch" class=""/>
     <define name="pagetotal" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <define name="par" class="de.dante.extex.interpreter.primitives.Par"/>
+    <define name="par" class="de.dante.extex.interpreter.primitives.box.Par"/>
     <Define name="parfillskip" class=""/>
     <define name="parindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="parshape" class=""/>
@@ -254,7 +254,7 @@
     <define name="predisplaypenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="predisplaysize" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="pretolerance" class=""/>
-    <Define name="prevdepth" class=""/>
+    <define name="prevdepth" class="de.dante.extex.interpreter.primitives.parameter.Prevdepth"/>
     <Define name="prevgraf" class=""/>
     <Define name="radical" class=""/>
     <Define name="raise" class=""/>
@@ -284,7 +284,7 @@
     <Define name="skewchar" class=""/>
     <Define name="skip" class=""/>
     <Define name="skipdef" class=""/>
-    <Define name="spacefactor" class=""/>
+    <define name="spacefactor" class="de.dante.extex.interpreter.primitives.parameter.Spacefactor"/>
     <Define name="spaceskip" class=""/>
     <Define name="span" class=""/>
     <Define name="special" class=""/>
