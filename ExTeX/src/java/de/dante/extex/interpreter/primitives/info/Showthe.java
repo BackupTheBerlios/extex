@@ -16,10 +16,9 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives.debugging;
+package de.dante.extex.interpreter.primitives.info;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
@@ -32,26 +31,27 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\the</code>.
+ * This class provides an implementation for the primitive
+ * <code>\showthe</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class The extends AbstractCode {
+public class Showthe extends The {
 
     /**
      * Creates a new object.
      *
      * @param name the name for tracing and debugging
      */
-    public The(final String name) {
+    public Showthe(final String name) {
         super(name);
     }
 
     /**
-     * Get the next token (not expand) and if it <code>Theable</code>, then
-     * call <code>the()</code> and put the result on the stack.
+     * Get the next token (not expand) and 
+     * put the value (as text) into the log.
      *
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -76,7 +76,7 @@ public class The extends AbstractCode {
                     .toString());
         } else if (code instanceof Theable) {
             Tokens toks = ((Theable) code).the(context, source);
-            source.push(toks);
+            source.update("message", toks.toText());
         } else {
             throw new GeneralHelpingException("TTP.CantUseAfter",
                     cs.toString(), printableControlSequence(context));

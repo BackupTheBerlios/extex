@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives.debugging;
+package de.dante.extex.interpreter.primitives.info;
 
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public class Message extends AbstractCode {
 
