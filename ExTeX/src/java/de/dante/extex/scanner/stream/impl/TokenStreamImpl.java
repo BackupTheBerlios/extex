@@ -30,9 +30,9 @@ import java.io.StringReader;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
-import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.34 $
+     * @version $Revision: 1.35 $
      */
     private static final class State {
 
@@ -258,22 +258,18 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * @return the character or <code>null</code> if no more character is
      * available
      *
-     * @throws MainIOException in the rare case that an IOException has
+     * @throws ScannerException in the rare case that an IO Exception has
      * occurred.
      */
     private UnicodeChar getChar(final Tokenizer tokenizer)
-            throws MainIOException {
+            throws ScannerException {
 
         UnicodeChar uc = getRawChar();
 
         if (uc == null) {
             do {
-                try {
-                    if (!refill()) {
-                        return null;
-                    }
-                } catch (IOException e) {
-                    throw new MainIOException(e);
+                if (!refill()) {
+                    return null;
                 }
 
                 pointer = 0;
@@ -336,7 +332,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,
-            final Tokenizer tokenizer) throws GeneralException {
+            final Tokenizer tokenizer) throws ScannerException {
 
         Token t = null;
 
@@ -350,7 +346,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
                 t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
                         tokenizer, uc);
             } catch (Exception e) {
-                throw new GeneralException(e);
+                throw new ScannerException(e);
             }
         } while (t == null);
 
@@ -393,11 +389,9 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * Test for end of file.
-     *
-     * @return <code>true</code> iff the stream is at its end
+     * @see de.dante.extex.scanner.stream.TokenStream#isEof()
      */
-    public boolean isEof() {
+    public boolean isEof() throws ScannerException {
 
         if (!super.isEof()) {
             return false;
@@ -409,13 +403,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
                 return false;
             }
 
-            try {
-                if (!refill()) {
-                    return true;
-                }
-            } catch (IOException e) {
-                // TODO gene: incomplete
-                // throw new MainIOException(e);
+            if (!refill()) {
+                return true;
             }
 
             pointer = 0;
@@ -427,17 +416,21 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      *
      * @return <code>true</code> iff the next line could be acquired.
      *
-     * @throws IOException in case of some kind of IO error
+     * @throws ScannerException in case of some kind of IO error
      */
-    protected boolean refill() throws IOException {
+    protected boolean refill() throws ScannerException {
 
         if (in == null) {
             return false;
         }
-        if ((line = in.readLine()) == null) {
-            in.close();
-            in = null;
-            return false;
+        try {
+            if ((line = in.readLine()) == null) {
+                in.close();
+                in = null;
+                return false;
+            }
+        } catch (IOException e) {
+            throw new ScannerException(e);
         }
         return true;
     }

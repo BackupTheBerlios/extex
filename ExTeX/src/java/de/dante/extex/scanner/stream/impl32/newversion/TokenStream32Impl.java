@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
@@ -52,7 +53,7 @@ import de.dante.util.file.InputLineDecoder;
  * This class implements a 32 bit token stream.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStream32Impl extends AbstractTokenStreamImpl
         implements
@@ -228,7 +229,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,
-            final Tokenizer tokenizer) throws GeneralException {
+            final Tokenizer tokenizer) throws ScannerException {
 
         Token t = null;
 
@@ -242,7 +243,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
                 t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
                         tokenizer, uc);
             } catch (Exception e) {
-                throw new GeneralException(e);
+                throw new ScannerException(e);
             }
         } while (t == null);
 
@@ -285,7 +286,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
      * occurred.
      */
     private UnicodeChar getChar(final Tokenizer tokenizer)
-            throws MainIOException {
+            throws ScannerException {
 
         UnicodeChar uc = getRawChar();
 
@@ -296,7 +297,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
                         return null;
                     }
                 } catch (IOException e) {
-                    throw new MainIOException(e);
+                    throw new ScannerException(e);
                 }
 
                 pointer = 0;

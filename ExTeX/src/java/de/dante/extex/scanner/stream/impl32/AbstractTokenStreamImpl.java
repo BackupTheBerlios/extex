@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.extex.scanner.type.Token;
@@ -46,7 +47,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -137,7 +138,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      *      de.dante.extex.interpreter.Tokenizer)
      */
     public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         Token t = null;
         int c;
@@ -157,7 +158,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                 t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
                         tokenizer, uc);
             } catch (Exception e) {
-                throw new GeneralException(e);
+                throw new ScannerException(e);
             }
         } while (t == null);
 
@@ -421,11 +422,11 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @return the character code or <code>-1</code> if no more character is
      * available
      *
-     * @throws MainIOException in the rare case that an IOException has
+     * @throws ScannerException in the rare case that an IOException has
      * occurred.
      */
-    private int getChar(final Tokenizer tokenizer) throws MainIOException,
-            GeneralException {
+    private int getChar(final Tokenizer tokenizer)
+            throws ScannerException {
 
         while (++pointer >= bufferLength()) {
             try {
@@ -433,7 +434,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                     return -1;
                 }
             } catch (IOException e) {
-                throw new MainIOException(e);
+                throw new ScannerException(e);
             }
 
             pointer = -1;
@@ -476,9 +477,9 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
 
                 // how many ^
                 switch (supcount) {
-                    case 1 :
+                    case 1:
                         break;
-                    case 2 :
+                    case 2:
                         // '^^'
                         pointer += 2;
 
@@ -499,11 +500,10 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                                 pointer++;
                             }
                         } else {
-                            throw new HelpingException(
-                                    "TTP.NoDigitFoundAfter");
+                            throw new ScannerException("TTP.NoDigitFoundAfter");
                         }
                         break;
-                    case 3 :
+                    case 3:
                         // '^^^'
                         pointer += 3;
 
@@ -513,31 +513,30 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                             UnicodeChar uc = new UnicodeChar(unicodename);
 
                             if (uc.getCodePoint() < 0) {
-                                throw new HelpingException(
-                                        "TTP.NoUnicodeName", unicodename);
+                                throw new ScannerException("TTP.NoUnicodeName" +
+                                        unicodename);
                             }
                             c = uc.getCodePoint(); // TODO change to 32 bit
 
                         } else {
-                            throw new HelpingException(
+                            throw new ScannerException(
                                     "TTP.NoUnicodeNameFoundAfter");
                         }
 
                         break;
-                    case 4 :
+                    case 4:
                         // '^^^^'
                         pointer += 4;
 
                         if (pointer < bufferLength()) {
                             c = scanHex(maxhexdigits, tokenizer);
                         } else {
-                            throw new HelpingException(
-                                    "TTP.NoHexDigitFound");
+                            throw new ScannerException("TTP.NoHexDigitFound");
                         }
 
                         break;
-                    default :
-                        throw new HelpingException("TTP.TooManySupMarks");
+                    default:
+                        throw new ScannerException("TTP.TooManySupMarks");
                 }
             }
         }
@@ -583,7 +582,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @return int-value of hexnumber
      */
     private int scanHex(final int n, final Tokenizer tokenizer)
-            throws MainIOException, GeneralException {
+            throws ScannerException {
 
         int hexvalue = 0;
         int i = 0;
@@ -600,7 +599,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                     hexvalue = (hexvalue << 4) + hex;
                 } else if (i == 0) {
                     // error no hexdigit found after '^^'
-                    throw new HelpingException("TTP.NoHexDigitFound");
+                    throw new ScannerException("TTP.NoHexDigitFound");
                 } else {
                     break;
                 }
@@ -637,7 +636,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * 
      * @return unicodename as <code>String</code>
      */
-    private String scanUnicodeName() throws GeneralException {
+    private String scanUnicodeName() throws ScannerException {
 
         StringBuffer buf = new StringBuffer(30);
         while (true) {
@@ -653,8 +652,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                 } else {
                     // one char found?
                     if (buf.length() == 0) {
-                        throw new HelpingException(
-                                "TTP.NoLetterFoundAfter");
+                        throw new ScannerException("TTP.NoLetterFoundAfter");
                     }
                     // ';' not use in the name
                     pointer++;
@@ -699,7 +697,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class State {
 
@@ -712,12 +710,11 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
         }
     }
 
-    
-    
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#isEof()
      */
     public boolean isEof() {
+
         // TODO mgn incomplete
         return false;
     }

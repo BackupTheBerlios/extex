@@ -28,10 +28,10 @@ import java.nio.CharBuffer;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.stream.exception.InvalidCharacterScannerException;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
@@ -55,7 +55,7 @@ import de.dante.util.file.InputLineDecoder;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
         implements
@@ -232,7 +232,7 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
      *      de.dante.extex.interpreter.Tokenizer)
      */
     protected Token getNext(final TokenFactory factory,
-            final Tokenizer tokenizer) throws GeneralException {
+            final Tokenizer tokenizer) throws ScannerException {
 
         Token t = null;
 
@@ -246,7 +246,7 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
                 t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
                         tokenizer, uc);
             } catch (Exception e) {
-                throw new GeneralException(e);
+                throw new ScannerException(e);
             }
         } while (t == null);
 
@@ -285,11 +285,11 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
      * @return Returns the character or <code>null</code>
      *         if no more character is available
      *
-     * @throws MainIOException in the rare case that an IOException has
+     * @throws ScannerException in the rare case that an IOException has
      * occurred.
      */
     private UnicodeChar getChar(final Tokenizer tokenizer)
-            throws MainIOException {
+            throws ScannerException {
 
         UnicodeChar uc = getRawChar();
 
@@ -300,7 +300,7 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
                         return null;
                     }
                 } catch (IOException e) {
-                    throw new MainIOException(e);
+                    throw new ScannerException(e);
                 }
 
                 pointer = 0;
@@ -437,8 +437,8 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
             t = factory.createToken(Catcode.SPACE, ' ', tokenizer
                     .getNamespace());
         } else if (state == NEW_LINE) {
-            t = factory.createToken(Catcode.ESCAPE, "par", tokenizer
-                    .getNamespace());
+            t = factory.createToken(Catcode.ESCAPE, new UnicodeChar('\\'),
+                    "par", tokenizer.getNamespace());
         }
 
         endLine();
@@ -458,13 +458,15 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
 
         if (atEndOfLine()) {
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
-            return factory.createToken(Catcode.ESCAPE, "", namespace);
+            return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, "",
+                    namespace);
         }
 
         UnicodeChar uc = getChar(tokenizer);
 
         if (uc == null) {
-            return factory.createToken(Catcode.ESCAPE, "", namespace);
+            return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, "",
+                    namespace);
 
         } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
             StringBuffer sb = new StringBuffer();
@@ -475,15 +477,15 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
             while (!atEndOfLine() && (uc = getChar(tokenizer)) != null) {
                 if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
                     pointer = savedPointer;
-                    return factory.createToken(Catcode.ESCAPE, sb.toString(),
-                            namespace);
+                    return factory.createToken(Catcode.ESCAPE,
+                            (UnicodeChar) uchar, sb.toString(), namespace);
                 }
                 sb.append((char) (uc.getCodePoint()));
                 savedPointer = pointer;
             }
 
-            return factory
-                    .createToken(Catcode.ESCAPE, sb.toString(), namespace);
+            return factory.createToken(Catcode.ESCAPE, (UnicodeChar) uchar, sb
+                    .toString(), namespace);
 
         } else {
             state = MID_LINE;
@@ -511,7 +513,7 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
 
         state = MID_LINE;
 
-        throw new HelpingException("TTP.InvalidChar");
+        throw new InvalidCharacterScannerException((UnicodeChar) uc);
     }
 
     /**

@@ -24,9 +24,9 @@ import java.util.Stack;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 
 /**
@@ -35,7 +35,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -73,7 +73,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @see de.dante.extex.token.InputFilter#get()
      */
     public Token get(TokenFactory factory, Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         return (stack.size() == 0 ? //
                 getNext(factory, tokenizer) : (Token) stack.pop());
@@ -106,7 +106,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @return the next Token or <code>null</code>
      */
     protected Token getNext(TokenFactory factory, Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         return null;
     }

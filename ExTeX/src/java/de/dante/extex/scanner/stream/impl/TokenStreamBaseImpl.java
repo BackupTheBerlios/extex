@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,10 +22,10 @@ package de.dante.extex.scanner.stream.impl;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.SpaceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 
 /**
@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -100,7 +100,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      *      de.dante.extex.interpreter.Tokenizer)
      */
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         if (!skipSpaces) {
             return (stack.length() > 0 ? //
@@ -139,11 +139,10 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @param tokenizer the classifies for characters
      *
      * @return the next Token or <code>null</code>
-     *
-     * @throws GeneralException in case of an error
+     * @throws ScannerException in case of an error
      */
     protected Token getNext(final TokenFactory factory,
-            final Tokenizer tokenizer) throws GeneralException {
+            final Tokenizer tokenizer) throws ScannerException {
 
         return null;
     }
@@ -153,7 +152,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      *
      * @return <code>true</code> iff the stream is at its end
      */
-    public boolean isEof() {
+    public boolean isEof() throws ScannerException {
 
         return (stack.length() == 0);
     }

@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.extex.scanner.type.Token;
@@ -44,7 +45,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
@@ -88,7 +89,7 @@ public abstract class TokenStreamBaseImpl32
      * @see de.dante.extex.token.InputFilter#get()
      */
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         return (stack.size() == 0 ? getNext(factory, tokenizer) : (Token) stack
                 .pop());
@@ -255,7 +256,7 @@ public abstract class TokenStreamBaseImpl32
      *      de.dante.extex.scanner.TokenFactory,de.dante.extex.interpreter.Tokenizer)
      */
     public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         Token t = null;
         UnicodeChar uc;
@@ -274,7 +275,7 @@ public abstract class TokenStreamBaseImpl32
                 t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
                         tokenizer, uc);
             } catch (Exception e) {
-                throw new GeneralException(e);
+                throw new ScannerException(e);
             }
         } while (t == null);
 
@@ -557,10 +558,10 @@ public abstract class TokenStreamBaseImpl32
      *
      * @param tokenizer the tokenizer
      * @return the character code or <code>null</code> if no more character is available
-     * @throws GeneralException in the rare case that an IOException has occurred.
+     * @throws ScannerException in the rare case that an IOException has occurred.
      */
     private UnicodeChar getChar(final Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         while (++pointer >= bufferLength()) {
             try {
@@ -568,7 +569,7 @@ public abstract class TokenStreamBaseImpl32
                     return null;
                 }
             } catch (IOException e) {
-                throw new MainIOException(e);
+                throw new ScannerException(e);
             }
 
             pointer = -1;
@@ -631,8 +632,8 @@ public abstract class TokenStreamBaseImpl32
                                 pointer++;
                             }
                         } else {
-                            throw new HelpingException(
-                                    "TTP.NoDigitFoundAfter");
+                            throw new ScannerException(
+                                    "TTP.NoDigitFoundAfter"); //TODO mgn
                         }
                         break;
                     case SUP3 :
@@ -645,14 +646,14 @@ public abstract class TokenStreamBaseImpl32
                             UnicodeChar ucn = new UnicodeChar(unicodename);
 
                             if (ucn.getCodePoint() < 0) {
-                                throw new HelpingException(
-                                        "TTP.NoUnicodeName", unicodename);
+                                throw new ScannerException(
+                                        "TTP.NoUnicodeName" + unicodename); // TODO mgn
                             }
                             uc = new UnicodeChar(ucn.getCodePoint());
 
                         } else {
-                            throw new HelpingException(
-                                    "TTP.NoUnicodeNameFoundAfter");
+                            throw new ScannerException(
+                                    "TTP.NoUnicodeNameFoundAfter"); //TODO mgn
                         }
 
                         break;
@@ -663,13 +664,13 @@ public abstract class TokenStreamBaseImpl32
                         if (pointer < bufferLength()) {
                             uc = scanHex(maxhexdigits, tokenizer);
                         } else {
-                            throw new HelpingException(
-                                    "TTP.NoHexDigitFound");
+                            throw new ScannerException(
+                                    "TTP.NoHexDigitFound"); //TODO mgn
                         }
 
                         break;
                     default :
-                        throw new HelpingException("TTP.TooManySupMarks");
+                        throw new ScannerException("TTP.TooManySupMarks");
                 }
             }
         }
@@ -719,10 +720,10 @@ public abstract class TokenStreamBaseImpl32
      * @param n         number of digits
      * @param tokenizer the tokenizer
      * @return UnicodeChar of a hexnumber
-     * @throws GeneralException ...
+     * @throws ScannerException ...
      */
     private UnicodeChar scanHex(final int n, final Tokenizer tokenizer)
-            throws GeneralException {
+            throws ScannerException {
 
         int hexvalue = 0;
         int i = 0;
@@ -737,7 +738,7 @@ public abstract class TokenStreamBaseImpl32
                     hexvalue = (hexvalue << SHIFT4) + hex;
                 } else if (i == 0) {
                     // error no hexdigit found after '^^'
-                    throw new HelpingException("TTP.NoHexDigitFound");
+                    throw new ScannerException("TTP.NoHexDigitFound");
                 } else {
                     break;
                 }
@@ -805,7 +806,7 @@ public abstract class TokenStreamBaseImpl32
      * @return unicodename as <code>String</code>
      * @throws GeneralException ...
      */
-    private String scanUnicodeName() throws GeneralException {
+    private String scanUnicodeName() throws ScannerException {
 
         StringBuffer buf = new StringBuffer();
         while (true) {
@@ -819,7 +820,7 @@ public abstract class TokenStreamBaseImpl32
                     buf.append(uc.toString());
                 } else {
                     if (buf.length() == 0) {
-                        throw new HelpingException(
+                        throw new ScannerException(
                                 "TTP.NoLetterFoundAfter");
                     }
                     // ';' not use in the name
