@@ -34,6 +34,7 @@ import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
@@ -45,7 +46,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -58,7 +59,7 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.typesetter.type.MathClass,
      *      de.dante.extex.typesetter.type.MathGlyph)
      */
@@ -68,7 +69,8 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(de.dante.extex.interpreter.type.muskip.Muskip)
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
+     *      de.dante.extex.interpreter.type.muskip.Muskip)
      */
     public void add(final Muskip glue) throws GeneralException {
 
@@ -115,7 +117,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#close(TypesetterOptions)
      */
-    public NodeList close(TypesetterOptions context) {
+    public NodeList close(final TypesetterOptions context) {
 
         return null;
     }
@@ -176,6 +178,7 @@ public class NullTypesetterImpl implements Typesetter {
 
         return null;
     }
+
     /**
      * Notification method to deal the case that a left brace hs been
      * encountered.
@@ -185,11 +188,22 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#letter(
+     *      Context,
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void letter(final Context context, final TypesettingContext tc,
+            final UnicodeChar uc) throws GeneralException {
+
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void mathShift(Context context, TokenSource source, Token t)
-            throws GeneralException {
+    public void mathShift(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
     }
 
@@ -225,7 +239,7 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoad(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -323,8 +337,8 @@ public class NullTypesetterImpl implements Typesetter {
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void subscriptMark(Context context, TokenSource source, final Token t)
-            throws GeneralException {
+    public void subscriptMark(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
     }
 
@@ -333,8 +347,20 @@ public class NullTypesetterImpl implements Typesetter {
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void superscriptMark(Context context, TokenSource source,
-            final Token t) throws GeneralException {
+    public void superscriptMark(final Context context,
+            final TokenSource source, final Token t) throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
+     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     */
+    public void switchToFraction(final MathDelimiter leftDelimiter,
+            final MathDelimiter rightDelimiter, final Dimen ruleWidth)
+            throws GeneralException {
 
     }
 
@@ -343,25 +369,16 @@ public class NullTypesetterImpl implements Typesetter {
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void tab(final Context context, TokenSource source, final Token t)
-            throws GeneralException {
+    public void tab(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+     * @see de.dante.extex.typesetter.Typesetter#letter(
      *      Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
-     */
-    public void treatLetter(Context context, TypesettingContext tc,
-            UnicodeChar uc) throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#treatLetter(
-     *      Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
      */
     public void treatLetter(final TypesettingContext context, final Token t)
             throws GeneralException {

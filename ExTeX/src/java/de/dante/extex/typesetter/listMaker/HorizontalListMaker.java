@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -229,7 +229,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void treatLetter(Context context,
+    public void letter(Context context,
             final TypesettingContext tc, final UnicodeChar symbol) {
 
         CharNode c = getManager().getCharNodeFactory().newInstance(tc,

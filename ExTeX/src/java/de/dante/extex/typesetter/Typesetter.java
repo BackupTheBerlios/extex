@@ -23,7 +23,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.GeneralException;
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public interface Typesetter extends ListMaker, NoadConsumer {
 

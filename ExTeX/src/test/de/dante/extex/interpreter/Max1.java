@@ -45,6 +45,7 @@ import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
@@ -54,7 +55,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class Max1 extends TestCase {
 
@@ -68,7 +69,7 @@ public class Max1 extends TestCase {
         private StringBuffer sb = new StringBuffer();
 
         /**
-         * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
          *      de.dante.extex.typesetter.type.MathClass,
          *      de.dante.extex.typesetter.type.MathGlyph)
          */
@@ -78,7 +79,8 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(de.dante.extex.interpreter.type.muskip.Muskip)
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
+         *      de.dante.extex.interpreter.type.muskip.Muskip)
          */
         public void add(final Muskip glue) throws GeneralException {
 
@@ -125,7 +127,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.Typesetter#close(TypesetterOptions)
          */
-        public NodeList close(TypesetterOptions context) {
+        public NodeList close(final TypesetterOptions context) {
 
             return null;
         }
@@ -196,11 +198,22 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.ListMaker#letter(
+         *      Context,
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.util.UnicodeChar)
+         */
+        public void letter(final Context context, final TypesettingContext tc,
+                final UnicodeChar uc) throws GeneralException {
+
+        }
+
+        /**
          * @see de.dante.extex.typesetter.ListMaker#mathShift(
          *      Context, TokenSource, de.dante.extex.scanner.Token)
          */
-        public void mathShift(Context context, TokenSource source, Token t)
-                throws GeneralException {
+        public void mathShift(final Context context, final TokenSource source,
+                final Token t) throws GeneralException {
 
         }
 
@@ -246,7 +259,7 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoad(
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
          *      de.dante.extex.interpreter.context.Context,
          *      de.dante.extex.interpreter.TokenSource)
          */
@@ -266,32 +279,36 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
+         * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(
+         *      de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
          */
-        public void setLigatureBuilder(LigatureBuilder ligatureBuilder) {
+        public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
 
             // nothing to do
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#setOptions(de.dante.extex.typesetter.TypesetterOptions)
+         * @see de.dante.extex.typesetter.Typesetter#setOptions(
+         *      de.dante.extex.typesetter.TypesetterOptions)
          */
         public void setOptions(final TypesetterOptions options) {
 
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(de.dante.extex.typesetter.pageBuilder.PageBuilder)
+         * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(
+         *      de.dante.extex.typesetter.pageBuilder.PageBuilder)
          */
-        public void setPageBuilder(PageBuilder pageBuilder) {
+        public void setPageBuilder(final PageBuilder pageBuilder) {
 
             // nothing to do
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#setParagraphBuilder(de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder)
+         * @see de.dante.extex.typesetter.Typesetter#setParagraphBuilder(
+         *      de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder)
          */
-        public void setParagraphBuilder(ParagraphBuilder paragraphBuilder) {
+        public void setParagraphBuilder(final ParagraphBuilder paragraphBuilder) {
 
             // nothing to do
         }
@@ -300,7 +317,7 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.Typesetter#setParshape(
          *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
          */
-        public void setParshape(ParagraphShape parshape) {
+        public void setParshape(final ParagraphShape parshape) {
 
             // nothing to do
         }
@@ -336,8 +353,9 @@ public class Max1 extends TestCase {
          *      Context,
          *      TokenSource, de.dante.extex.scanner.Token)
          */
-        public void subscriptMark(Context context, TokenSource source,
-                final Token t) throws GeneralException {
+        public void subscriptMark(final Context context,
+                final TokenSource source, final Token t)
+                throws GeneralException {
 
         }
 
@@ -346,8 +364,21 @@ public class Max1 extends TestCase {
          *      Context,
          *      TokenSource, de.dante.extex.scanner.Token)
          */
-        public void superscriptMark(Context context, TokenSource source,
-                final Token t) throws GeneralException {
+        public void superscriptMark(final Context context,
+                final TokenSource source, final Token t)
+                throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
+         *      de.dante.extex.typesetter.type.MathDelimiter,
+         *      de.dante.extex.typesetter.type.MathDelimiter,
+         *      de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void switchToFraction(final MathDelimiter leftDelimiter,
+                final MathDelimiter rightDelimiter, final Dimen ruleWidth)
+                throws GeneralException {
 
         }
 
@@ -356,8 +387,8 @@ public class Max1 extends TestCase {
          *      Context,
          *      TokenSource, de.dante.extex.scanner.Token)
          */
-        public void tab(Context context, TokenSource source, final Token t)
-                throws GeneralException {
+        public void tab(final Context context, final TokenSource source,
+                final Token t) throws GeneralException {
 
         }
 
@@ -386,19 +417,10 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+         * @see de.dante.extex.typesetter.Typesetter#letter(
          *      Context,
-         *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
-         */
-        public void treatLetter(Context context, TypesettingContext tc,
-                UnicodeChar uc) throws GeneralException {
-
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.Typesetter#treatLetter(
-         *      Context,
-         *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.extex.scanner.Token)
          */
         public void treatLetter(final TypesettingContext context, final Token t)
                 throws GeneralException {
@@ -440,7 +462,7 @@ public class Max1 extends TestCase {
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex.xml");
 
-        // TODO FileFinder
+        // TODO gene: use FileFinder?
         InterpreterFactory interpreterFactory = new InterpreterFactory();
         interpreterFactory.configure(config.getConfiguration("Interpreter"));
         Interpreter interpreter = interpreterFactory.newInstance();

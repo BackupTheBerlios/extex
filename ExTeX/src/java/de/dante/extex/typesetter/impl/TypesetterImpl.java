@@ -44,11 +44,12 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
 import de.dante.extex.typesetter.listMaker.VerticalListMaker;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
@@ -63,7 +64,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class TypesetterImpl
         implements
@@ -140,7 +141,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.typesetter.type.MathClass,
      *      de.dante.extex.typesetter.type.MathGlyph)
      */
@@ -155,7 +156,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.interpreter.type.muskip.Muskip)
      */
     public void add(final Muskip glue) throws GeneralException {
@@ -430,7 +431,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoad(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -439,6 +440,24 @@ public class TypesetterImpl
 
         if (listMaker instanceof NoadConsumer) {
             return ((NoadConsumer) listMaker).scanNoad(context, source);
+        } else {
+            throw new MissingMathException("???");
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
+     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     */
+    public void switchToFraction(final MathDelimiter leftDelimiter,
+            final MathDelimiter rightDelimiter, final Dimen ruleWidth)
+            throws GeneralException {
+
+        if (listMaker instanceof NoadConsumer) {
+            ((NoadConsumer) listMaker).switchToFraction(leftDelimiter,
+                    rightDelimiter, ruleWidth);
         } else {
             throw new MissingMathException("???");
         }
@@ -576,14 +595,14 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+     * @see de.dante.extex.typesetter.ListMaker#letter(
      *      Context,
      *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
      */
-    public void treatLetter(final Context context, final TypesettingContext tc,
+    public void letter(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws GeneralException {
 
-        listMaker.treatLetter(context, tc, uc);
+        listMaker.letter(context, tc, uc);
     }
 
 }

@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -146,16 +146,16 @@ public class VerticalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+     * @see de.dante.extex.typesetter.ListMaker#letter(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
-    public void treatLetter(final Context context, final TypesettingContext font,
+    public void letter(final Context context, final TypesettingContext font,
             final UnicodeChar symbol) throws GeneralException {
 
         ListMaker hlist = new HorizontalListMaker(getManager());
-        hlist.treatLetter(context, font, symbol);
+        hlist.letter(context, font, symbol);
         getManager().push(hlist);
     }
 

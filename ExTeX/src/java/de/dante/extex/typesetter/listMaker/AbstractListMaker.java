@@ -29,6 +29,8 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.listMaker.math.DisplaymathListMaker;
+import de.dante.extex.typesetter.listMaker.math.MathListMaker;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -37,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -172,7 +174,7 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * Notification method to deal the case that a left brace hs been
+     * Notification method to deal the case that a left brace has been
      * encountered.
      */
     public void leftBrace() {
@@ -180,7 +182,7 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * Notification method to deal the case that a right brace hs been
+     * Notification method to deal the case that a right brace has been
      * encountered.
      */
     public void rightBrace() {
