@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Box implements Serializable {
 
@@ -92,6 +92,16 @@ public class Box implements Serializable {
 
         source.executeGroup();
         nodes = typesetter.close();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param list the node list
+     */
+    public Box(final NodeList list) {
+
+        nodes = list;
     }
 
     /**
