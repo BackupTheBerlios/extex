@@ -20,25 +20,28 @@ package de.dante.extex.typesetter.type.noad;
 
 
 /**
- * ...
+ * This is the abstract base class for Noads.
+ * A {@link de.dante.extex.typesetter.type.noad.Noad Noad} is the intermediate
+ * data strcuture which is used for processing mathamatical material. Finally
+ * Noads are translated into {@link de.dante.extex.typesetter.Node Node}s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractNoad implements Noad {
 
     /**
-     * The field <tt>nucleus</tt> contains the ...
+     * The field <tt>nucleus</tt> contains the nuclues noads.
      */
     private Noad nucleus = null;
 
     /**
-     * The field <tt>subscript</tt> contains the ...
+     * The field <tt>subscript</tt> contains the subscript noads.
      */
     private Noad subscript = null;
 
     /**
-     * The field <tt>superscript</tt> contains the ...
+     * The field <tt>superscript</tt> contains the sujperscript noads.
      */
     private Noad superscript = null;
 

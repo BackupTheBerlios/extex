@@ -33,12 +33,13 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
     /**
-     * The field <tt>size</tt> ...
+     * The field <tt>size</tt> contains the glue specification for this node.
+     * The natural size of the glue is the initial width of this node.
      */
     private FixedGlue size;
 
