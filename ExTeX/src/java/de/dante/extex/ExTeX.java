@@ -23,6 +23,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -39,10 +40,10 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -613,7 +614,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public class ExTeX {
 
@@ -1449,8 +1450,7 @@ public class ExTeX {
 
         Handler fileHandler = null;
         try {
-            fileHandler = new FileHandler(logFile);
-            fileHandler.setFormatter(new LogFormatter());
+            fileHandler = new StreamHandler(new FileOutputStream(logFile), new LogFormatter());
             fileHandler.setLevel(Level.ALL);
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
