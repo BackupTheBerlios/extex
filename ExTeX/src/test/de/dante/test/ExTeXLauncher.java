@@ -22,21 +22,76 @@ package de.dante.test;
 import java.io.ByteArrayOutputStream;
 import java.util.Properties;
 import java.util.logging.Handler;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
+import de.dante.extex.interpreter.ErrorHandler;
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.logging.LogFormatter;
+import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.exception.MainException;
+import de.dante.extex.scanner.Token;
+import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ExTeXLauncher extends TestCase {
+
+    /**
+     * Inner class for the error handler.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.9 $
+     */
+    private class EHandler implements ErrorHandler {
+
+        /**
+         * The field <tt>logger</tt> contains the target logger.
+         */
+        private Logger logger;
+
+        /**
+         * Creates a new object.
+         *
+         * @param theLogger the target logger
+         */
+        public EHandler(final Logger theLogger) {
+
+            super();
+            this.logger = theLogger;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.ErrorHandler#handleError(
+         *      de.dante.util.GeneralException,
+         *      de.dante.extex.scanner.Token,
+         *      de.dante.extex.interpreter.TokenSource,
+         *      de.dante.extex.interpreter.context.Context)
+         */
+        public boolean handleError(final GeneralException e, final Token token,
+                final TokenSource source, final Context context)
+                throws GeneralException {
+
+            logger.log(Level.SEVERE, e.getLocalizedMessage());
+            return false;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.ErrorHandler#setEditHandler(
+         *       de.dante.extex.main.errorHandler.editHandler.EditHandler)
+         */
+        public void setEditHandler(final EditHandler editHandler) {
+
+        }
+    }
 
     /**
      * Set some properties to default values.
@@ -88,6 +143,7 @@ public class ExTeXLauncher extends TestCase {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         main.setOutStream(stream);
+        main.setErrorHandler(new EHandler(logger));
 
         main.run();
 
@@ -142,6 +198,7 @@ public class ExTeXLauncher extends TestCase {
         Handler handler = new StreamHandler(bytes, new LogFormatter());
         logger.addHandler(handler);
         main.setLogger(logger);
+        main.setErrorHandler(new EHandler(logger));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         main.setOutStream(stream);
