@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
@@ -125,7 +125,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("\\skip ");
+        sb.append("\\glue ");
         sb.append(this.size.toString());
         if (DEVELOP && !getWidth().eq(size.getLength())) {
             sb.append(" [");
