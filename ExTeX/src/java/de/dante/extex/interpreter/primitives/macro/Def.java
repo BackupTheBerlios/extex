@@ -34,7 +34,6 @@ import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.RightBraceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\def</code>.
@@ -66,7 +65,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class Def extends AbstractAssignment {
 
