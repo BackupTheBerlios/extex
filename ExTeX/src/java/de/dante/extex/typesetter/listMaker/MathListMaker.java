@@ -19,13 +19,14 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -33,14 +34,16 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.type.noad.MathCharNoad;
 import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.extex.typesetter.type.noad.StyleNoad;
+import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -117,12 +120,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public NodeList close() {
 
-        HorizontalListNode hlist = new HorizontalListNode();
-        int i = mlistToHlist(hlist, 0);
-        while (i < noades.size()) {
-            i = mlistToHlist(hlist, i);
-        }
-        return hlist;
+        return noades.typeset(new MathContext(StyleNoad.TEXTSTYLE)); //TODO ???
     }
 
     /**
@@ -142,19 +140,23 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * Convert a single noad of this mlist into the corresponding hlist.
+     * Getter for noades.
      *
-     * @param hlist the target hlist
-     * @param index the index of the noad to convert
-     *
-     * @return the next index of an unconverted noad
-     *
-     * @see "TeX -- The Program [720]"
+     * @return the noades.
      */
-    private int mlistToHlist(final HorizontalListNode hlist, final int index) {
+    protected MathList getNoades() {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return this.noades;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
+     */
+    public void mathShift(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
+
+        getManager().endParagraph();
     }
 
     /**
@@ -177,36 +179,38 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void removeLastNode() {
 
-        noades.remove(noades.size() - 1);
+        noades.remove(noades.size() - 1); // TODO allow this?
     }
 
     /**
-     * Add a math character node to the list.
-     *
-     * @param tc the typesetting context for the symbol. This  parameter is
-     *  ignored in math mode.
-     * @param symbol the symbol to add
-     *
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoads(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
-    public void treatLetter(final TypesettingContext tc,
-            final UnicodeChar symbol) {
+    public Noad scanNoads(final Context context, final TokenSource source)
+            throws GeneralException {
 
-        int fam = 0; //TODO determine correct family
-        //TODO: use a factory for math chars
-        noades.add(new MathCharNoad(fam, symbol));
-    }
+        Token t = source.getToken();
+        if (t == null) {
+            throw new EofHelpingException(null);
+        }
+        getManager().push(new MathListMaker(getManager()));
+        if (t.isa(Catcode.LEFTBRACE)) {
+            source.executeGroup();
+        } else {
+            source.execute(t);
+        }
+        MathListMaker ml = (MathListMaker) getManager().pop();
 
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#mathShift(
-     *      Context, TokenSource, de.dante.extex.scanner.Token)
-     */
-    public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
-
-        getManager().endParagraph();
+        switch (ml.noades.size()) { //TODO accessing the attribute directly is horrible
+            case 0:
+                //TODO error unimplemented
+                throw new RuntimeException("unimplemented");
+            case 1:
+                return (Noad) ml.noades.get(0); //TODO cast???
+            default:
+                return ml.noades;
+        }
     }
 
     /**
@@ -231,6 +235,25 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
         //TODO ^ unimplemented
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * Add a math character node to the list.
+     *
+     * @param tc the typesetting context for the symbol. This parameter is
+     *  ignored in math mode.
+     * @param symbol the symbol to add
+     *
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void treatLetter(final TypesettingContext tc,
+            final UnicodeChar symbol) {
+
+        int fam = 0; //TODO determine the correct family
+        //TODO: use a factory for math chars
+        noades.add(new MathCharNoad(fam, symbol));
     }
 
 }

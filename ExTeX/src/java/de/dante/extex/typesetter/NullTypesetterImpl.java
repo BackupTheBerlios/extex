@@ -43,7 +43,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -159,6 +159,15 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
+     */
+    public void mathShift(Context context, TokenSource source, Token t)
+            throws GeneralException {
+
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#par()
      */
     public void par() {
@@ -179,6 +188,17 @@ public class NullTypesetterImpl implements Typesetter {
      */
     public void removeLastNode() {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoads(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Noad scanNoads(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return null;
     }
 
     /**
@@ -265,35 +285,6 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#treatLetter(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
-     */
-    public void treatLetter(final TypesettingContext context, final Token t)
-            throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void treatLetter(TypesettingContext context, UnicodeChar uc)
-            throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#mathShift(
-     *      Context, TokenSource, de.dante.extex.scanner.Token)
-     */
-    public void mathShift(Context context, TokenSource source, Token t)
-            throws GeneralException {
-
-    }
-
-    /**
      * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
@@ -319,6 +310,26 @@ public class NullTypesetterImpl implements Typesetter {
      *      TokenSource, de.dante.extex.scanner.Token)
      */
     public void tab(final Context context, TokenSource source, final Token t)
+            throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatLetter(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatLetter(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void treatLetter(TypesettingContext context, UnicodeChar uc)
             throws GeneralException {
 
     }

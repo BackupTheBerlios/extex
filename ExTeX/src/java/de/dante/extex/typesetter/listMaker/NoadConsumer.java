@@ -18,6 +18,8 @@
  */
 package de.dante.extex.typesetter.listMaker;
 
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
@@ -27,7 +29,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface NoadConsumer {
 
@@ -41,4 +43,15 @@ public interface NoadConsumer {
      */
     void add(Noad noad) throws GeneralException;
 
+    /**
+     * ...
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    Noad scanNoads(Context context, TokenSource source) throws GeneralException;
 }
