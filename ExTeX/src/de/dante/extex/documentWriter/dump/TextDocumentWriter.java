@@ -28,12 +28,13 @@ import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.Configuration;
 
 /**
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -50,7 +51,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
     /**
      * Creates a new object.
      */
-    public TextDocumentWriter() {
+    public TextDocumentWriter(final Configuration cfg) {
         super();
     }
 
@@ -65,7 +66,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
-        return "out";
+        return "txt";
     }
 
     /**
