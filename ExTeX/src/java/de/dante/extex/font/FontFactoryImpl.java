@@ -41,7 +41,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -95,6 +95,8 @@ public class FontFactoryImpl implements FontFactory {
 
             if (type == TYPE1) {
                 font = new EFMType1AFMFont(doc, filename, size, finder);
+            } else if (type == TTF) {
+                font = new EFMTTFFont(doc, filename, size, finder);
             } else if (type == TFMNORMAL) {
                 font = new EFMType1TFMNOFont(doc, filename, size, finder);
             } else if (type == TFMMATHEXT) {
@@ -107,7 +109,7 @@ public class FontFactoryImpl implements FontFactory {
                 // TODO i18n
             }
             // ---------------
-//            logger.info(font.toString());
+            // logger.info(font.toString());
             // -----------------------------
             // TODO delete after test
         }
@@ -126,6 +128,8 @@ public class FontFactoryImpl implements FontFactory {
         Attribute typeattr = font.getAttribute("type");
         if ("type1".equals(typeattr.getValue().toLowerCase())) {
             return TYPE1;
+        } else if ("ttf".equals(typeattr.getValue().toLowerCase())) {
+            return TTF;
         } else if ("tfm-mathsyml".equals(typeattr.getValue().toLowerCase())) {
             return TFMMATHSYML;
         } else if ("tfm-mathext".equals(typeattr.getValue().toLowerCase())) {
@@ -140,6 +144,11 @@ public class FontFactoryImpl implements FontFactory {
      * type1-font
      */
     private static final Type TYPE1 = new Type();
+
+    /**
+     * ttf-font
+     */
+    private static final Type TTF = new Type();
 
     /**
      * tfm-normal

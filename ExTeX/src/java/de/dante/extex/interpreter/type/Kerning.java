@@ -23,7 +23,7 @@ package de.dante.extex.interpreter.type;
  * Kerning
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Kerning {
 
@@ -36,6 +36,16 @@ public class Kerning {
      * the name of the glpyh
      */
     private String name = "";
+
+    /**
+     * The id for the glyph (left)
+     */
+    private String idleft = "";
+
+    /**
+     * the name of the glpyh (left)
+     */
+    private String nameleft = "";
 
     /**
      * The kerning-size
@@ -127,4 +137,35 @@ public class Kerning {
         }
     }
 
+    /**
+     * @return Returns the idleft.
+     */
+    public String getIdleft() {
+
+        return idleft;
+    }
+
+    /**
+     * @param aidleft The idleft to set.
+     */
+    public void setIdleft(final String aidleft) {
+
+        idleft = aidleft;
+    }
+
+    /**
+     * @return Returns the nameleft.
+     */
+    public String getNameleft() {
+
+        return nameleft;
+    }
+
+    /**
+     * @param anameleft The nameleft to set.
+     */
+    public void setNameleft(final String anameleft) {
+
+        nameleft = anameleft;
+    }
 }

@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -46,9 +46,9 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public class DefFont extends AbstractCode {
+public class DefFont extends AbstractAssignment {
 
     /**
      * Default-Scale-factor
@@ -66,12 +66,13 @@ public class DefFont extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -83,23 +84,17 @@ public class DefFont extends AbstractCode {
 
         // optional parameters 'at' and 'scaled'
         // if 'at' not used, the fontname must have a size (e.g. cmr10)
-        try {
-            if (source.scanKeyword("at", true)) {
-                // \font\myfont=cmr12 at 15pt
-                // \font\second=cmr10 at 12truept
-                source.skipSpace();
-                fontsize = new Dimen(context, source);
-            } else if (source.scanKeyword("scaled", true)) {
-                // \font\magnifiedfiverm=cmr5 scaled 2000
-                source.skipSpace();
-                long scale = source.scanInteger();
-                fontsize = new Dimen(Dimen.ONE * size * scale
-                        / DEFAULTSCALEFACTOR);
-            } else {
-                // use size from the fontname
-                fontsize = new Dimen(Dimen.ONE * size);
-            }
-        } catch (Exception e) {
+        if (source.scanKeyword("at", true)) {
+            // \font\myfont=cmr12 at 15pt
+            // \font\second=cmr10 at 12truept
+            source.skipSpace();
+            fontsize = new Dimen(context, source);
+        } else if (source.scanKeyword("scaled", true)) {
+            // \font\magnifiedfiverm=cmr5 scaled 2000
+            source.skipSpace();
+            long scale = source.scanInteger();
+            fontsize = new Dimen(Dimen.ONE * size * scale / DEFAULTSCALEFACTOR);
+        } else {
             // use size from the fontname
             fontsize = new Dimen(Dimen.ONE * size);
         }
@@ -120,7 +115,6 @@ public class DefFont extends AbstractCode {
         // create new primitive
         Code code = new FontCode(tok.getValue(), font);
         context.setMacro(tok.getValue(), code, prefix.isGlobal());
-        prefix.clear();
     }
 
     /**

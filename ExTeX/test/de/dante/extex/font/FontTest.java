@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * Test the font-system
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontTest extends TestCase {
 
@@ -72,12 +72,8 @@ public class FontTest extends TestCase {
 
         Font font = factory.getInstance("tfmcmr12", DIM12);
 
-        System.out.println(font);
-
         assertEquals("tfmcmr12", font.getFontName());
-        System.out.println(DIM12 + " = " + font.getEm() + " : "
-                + (DIM12.equals(font.getEm())));
-        assertEquals(DIM12.toString(), font.getEm().toString());
+        assertTrue(DIM12.eq(font.getEm()));
     }
 
 }

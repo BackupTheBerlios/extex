@@ -46,6 +46,9 @@ import org.apache.batik.svggen.font.table.TableDirectory;
 import org.apache.batik.svggen.font.table.TableFactory;
 import org.jdom.Element;
 
+import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Kerning;
+
 /**
  * This class read a TTF-file.
  * <p>
@@ -55,7 +58,7 @@ import org.jdom.Element;
  * Technical Specification, Revision 1.66, November 1995
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
@@ -74,6 +77,11 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
         createEfmElement();
     }
+
+    /**
+     * max glyphnumber
+     */
+    private static final int MAXGLYPH = 0xffff;
 
     /**
      * fontid
@@ -132,22 +140,22 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
             PostTable posttable = (PostTable) getTable(Table.post);
             for (int i = 0; i < kst.getKerningPairCount(); i++) {
 
-                KernPairs kp = new KernPairs();
-                kp.idpre = kst.getKerningPair(i).getLeft();
-                kp.charpre = posttable.getGlyphName(kst.getKerningPair(i).getLeft());
-                kp.idpost = kst.getKerningPair(i).getRight();
-                kp.charpost = posttable.getGlyphName(kst.getKerningPair(i)
-                        .getRight());
+                Kerning kp = new Kerning();
+                kp.setIdleft(String.valueOf(kst.getKerningPair(i).getLeft()));
+                kp.setNameleft(String.valueOf(posttable.getGlyphName(kst
+                        .getKerningPair(i).getLeft())));
+                kp.setId(String.valueOf(kst.getKerningPair(i).getRight()));
+                kp.setName(String.valueOf(posttable.getGlyphName(kst
+                        .getKerningPair(i).getRight())));
                 // SVG kerning values are inverted from TrueType's.
-                kp.size = -kst.getKerningPair(i).getValue();
+                kp.setSize(new Dimen(-kst.getKerningPair(i).getValue()));
                 kernlist.add(kp);
             }
         }
 
         // hash   glyph-number <-> id
         HashMap glyphnumber = new HashMap();
-        for (int i = 0; i <= 0xffff; i++) {
-            // TODO range okay???
+        for (int i = 0; i <= MAXGLYPH; i++) {
             int glyphIndex = cmapFmt.mapCharCode(i);
             if (glyphIndex > 0) {
                 if (!glyphnumber.containsKey(String.valueOf(glyphIndex))) {
@@ -157,8 +165,7 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
         }
 
         // Include our requested range
-        for (int i = 0; i <= 0xffff; i++) {
-            // TODO range okay???
+        for (int i = 0; i <= MAXGLYPH; i++) {
             int glyphIndex = cmapFmt.mapCharCode(i);
             //        ps.println(String.valueOf(i) + " -> " + String.valueOf(glyphIndex));
             //      if (font.getGlyphs()[glyphIndex] != null)
@@ -194,16 +201,18 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
                 // kerning
                 for (int k = 0; k < kernlist.size(); k++) {
-                    KernPairs kp = (KernPairs) kernlist.get(k);
-                    if (kp.idpre == glyphIndex) {
+                    Kerning kp = (Kerning) kernlist.get(k);
+                    int idleft = Integer.parseInt(kp.getIdleft());
+                    if (idleft == glyphIndex) {
                         Element kerning = new Element("kerning");
                         glyph.addContent(kerning);
-                        int id = ((Integer) glyphnumber.get(String
-                                .valueOf(kp.idpost))).intValue();
+                        int id = ((Integer) glyphnumber.get(kp.getId()))
+                                .intValue();
                         kerning.setAttribute("glyph-id", String.valueOf(id));
                         //kerning.setAttribute("glyph-number", String.valueOf(kp.idpost));
-                        kerning.setAttribute("glyph-name", kp.charpost);
-                        kerning.setAttribute("size", String.valueOf(kp.size));
+                        kerning.setAttribute("glyph-name", kp.getName());
+                        kerning.setAttribute("size", String.valueOf(kp
+                                .getSize().getValue()));
                     }
                 }
             }
@@ -212,36 +221,36 @@ public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 
     }
 
-    /**
-     * container for KerningPair
-     */
-    private class KernPairs {
-
-        /**
-         * idpre
-         */
-        int idpre;
-
-        /**
-         * char pre
-         */
-        String charpre;
-
-        /**
-         * id post
-         */
-        int idpost;
-
-        /**
-         * char post
-         */
-        String charpost;
-
-        /**
-         * size
-         */
-        int size;
-    }
+    //    /**
+    //     * container for KerningPair
+    //     */
+    //    private class KernPairs {
+    //
+    //        /**
+    //         * idpre
+    //         */
+    //        int idpre;
+    //
+    //        /**
+    //         * char pre
+    //         */
+    //        String charpre;
+    //
+    //        /**
+    //         * id post
+    //         */
+    //        int idpost;
+    //
+    //        /**
+    //         * char post
+    //         */
+    //        String charpost;
+    //
+    //        /**
+    //         * size
+    //         */
+    //        int size;
+    //    }
 
     /**
      * RandomAccessFile for reading
