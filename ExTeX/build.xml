@@ -6,7 +6,7 @@
         <echo>Usage: ant &lt;target&gt;
           The following targets are supported:
           compile
-              Compile all file except the tests.	
+              Compile all file except the tests.        
           jar
               Create the jar file.
           javadoc
@@ -15,6 +15,8 @@
           tests
               Perfom all tests.
           deploy
+          install -dinstalldir=...
+              Install the relevant files in the given directory.
           clean
         </echo>
     </target>
@@ -93,10 +95,10 @@
         </copy>
     </target>
 
-    <!-- make a jar from the classes not matching magic testcase identifiers-->
     <target name="jar"
             depends="compile"
-            description="Create extex jar file">
+            description="Create ExTeX jar file containing all compiled classes except test cases.">
+    <!-- make a jar from the classes not matching magic testcase identifiers-->
         <mkdir dir="${deploy.lib}"/>
         <jar jarfile="${deploy.lib}/${extexjarfile}.jar">
             <fileset dir="${classes}">
@@ -115,7 +117,7 @@
     <!-- make a jar from the classes matching magic testcase identifiers-->
     <target name="jar.tests"
             depends="compile.tests"
-            description="Create testsuite jar file">
+            description="Create test suite jar file">
         <mkdir dir="${deploy.lib}"/>
         <jar jarfile="${deploy.lib}/${testsuitejarfile}.jar">
             <fileset dir="${classes}">
@@ -182,8 +184,45 @@
             </tarfileset>
         </tar>
         <gzip zipfile="${tmp}/ExTeX-${DSTAMP}.tgz" 
-          src="${tmp}/ExTeX-${DSTAMP}.tar" />
+              src="${tmp}/ExTeX-${DSTAMP}.tar" />
         <delete file="${tmp}/ExTeX-${DSTAMP}.tar" />
+    </target>
+
+    <target name="install"
+            depends="jar"
+            description="Install ExTeX in the directory given by -Dinstalldir=">
+        <fail message="Installation directory not set." unless="installdir" />
+        <mkdir dir="${installdir}"/>
+        <copy todir="${installdir}">
+            <fileset dir=".">
+                <patternset id="ScriptFiles">
+                    <include name="extex" />
+                    <include name="extex32" />
+                </patternset>
+                <include name=".extex" />
+            </fileset>
+        </copy>
+        <chmod perm="a+x">
+            <fileset dir="${installdir}">
+                <patternset refid="ScriptFiles" />
+            </fileset>
+        </chmod>
+        <mkdir dir="${installdir}/lib"/>
+        <copy todir="${installdir}/lib">
+            <fileset dir="lib">
+                <include name="**/*.jar"/>
+            </fileset>
+            <fileset dir="${deploy.lib}">
+                <include name="${extexjarfile}.jar"/>
+            </fileset>
+        </copy>
+        <mkdir dir="${installdir}/src"/>
+        <copy todir="${installdir}/src">
+            <fileset dir="src">
+                <include name="font/**"/>
+            </fileset>
+        </copy>
+        <echo>ExTeX has been installed in ${installdir}</echo>
     </target>
 
     <target name="clean"
@@ -207,7 +246,6 @@
              destdir="${javadoc}"
              overview="${src}/overview.html"
              stylesheetfile="src/javadoc/stylesheet.css"
-        	 excludepackagenames="de.dante.tools.doclet,de.dante.tools.plugin,de.dante.tools.xml"
              author="true"
              version="true"
              use="true"
@@ -219,6 +257,7 @@
              nodeprecated="false">
             <classpath refid="main.class.path"/>
             <packageset dir="${src}" defaultexcludes="yes"/>
+            <packageset dir="${src}" defaultexcludes="yes" excludes="de/dante/tools/**/*" />
         </javadoc>
         <copy todir="${javadoc}">
             <fileset dir="${src}">
