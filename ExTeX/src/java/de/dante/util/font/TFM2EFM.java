@@ -21,9 +21,11 @@ package de.dante.util.font;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Properties;
 
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
@@ -42,7 +44,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class TFM2EFM {
 
@@ -82,9 +84,17 @@ public final class TFM2EFM {
 
         Configuration cfgfonts = config.getConfiguration("Fonts");
 
+        Properties prop = new Properties();
+        try {
+            InputStream in = new FileInputStream(".extex");
+            prop.load(in);
+        } catch (Exception e) {
+            prop.setProperty("extex.fonts","src/font");
+        }
+
         ResourceFinder finder = (new ResourceFinderFactory())
                 .createResourceFinder(cfgfonts.getConfiguration("Resource"),
-                        null, System.getProperties());
+                        null, prop);
 
         EncFactory ef = new EncFactory(finder);
 
