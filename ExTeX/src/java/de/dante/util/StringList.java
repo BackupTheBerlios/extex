@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,12 +23,13 @@ import java.util.Collection;
 import java.util.List;
 
 /**
- * This class provides a {@link List List} of {@link String String}s.
- * This class is meant to be used as a type-save replacement for the generic
- * classes implementing the {@link List List} interface.
- *
+ * This class provides a {@link java.util.List List} of
+ * {@link java.util.String String}s. This class is meant to be used as a
+ * type-save replacement for the generic classes implementing the
+ * {@link java.util.List List} interface.
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class StringList extends ArrayList implements List {
     /**
@@ -49,6 +50,20 @@ public class StringList extends ArrayList implements List {
         add(s);
     }
 
+    /**
+     * Creates a new object and initiates it with some String value.
+     * 
+     * @param s the initial String
+     * @param sepRegex the seprator regular expression
+     */
+    public StringList(String s, String sepRegex) {
+        super();
+        String[] sl = s.split(sepRegex);
+        for (int i = 0; i < sl.length; i++) {
+            add(sl[i]);
+        }
+    }
+    
     /**
      * Creates a new object and fills it with values from the given Collection.
      *
