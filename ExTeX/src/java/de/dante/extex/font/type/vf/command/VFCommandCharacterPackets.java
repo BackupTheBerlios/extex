@@ -98,7 +98,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
@@ -265,8 +265,9 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
     public void toPL(final PlWriter out) throws IOException, FontException {
 
         // read the char from ther master-tfm
+        int bc = mastertfm.getLengths().getBc();
         TFMCharInfoWord ciw = mastertfm.getCharinfo().getCharInfoWord(
-                charactercode);
+                charactercode - bc);
 
         out.plopen("CHARACTER").addChar((short) charactercode);
         if (ciw != null) {
@@ -283,7 +284,7 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
             arar.close();
         } catch (Exception e) {
             e.printStackTrace();
-            // TODO mgn inciomplete
+            // TODO mgn incomplete
         }
         out.plclose();
         out.plclose();

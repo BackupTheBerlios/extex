@@ -32,6 +32,9 @@ import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
+import de.dante.extex.font.type.tfm.TFMCharInfo;
+import de.dante.extex.font.type.tfm.TFMCharInfoArray;
+import de.dante.extex.font.type.tfm.TFMCharInfoWord;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.command.VFCommand;
 import de.dante.extex.font.type.vf.command.VFCommandCharacterPackets;
@@ -55,7 +58,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class VFFont
         implements
@@ -187,6 +190,7 @@ public class VFFont
         }
         // ligtable
         mastertfm.getLigkern().toPL(out);
+
         // character
         for (int i = 0; i < cmds.size(); i++) {
             VFCommand command = (VFCommand) cmds.get(i);
@@ -196,4 +200,5 @@ public class VFFont
             }
         }
     }
+
 }

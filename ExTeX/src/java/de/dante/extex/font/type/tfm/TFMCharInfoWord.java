@@ -79,7 +79,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
@@ -686,6 +686,15 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
             }
         }
         return found;
+    }
+
+    /**
+     * Returns the bc.
+     * @return Returns the bc.
+     */
+    public short getBc() {
+
+        return bc;
     }
 
     /**
