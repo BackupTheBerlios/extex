@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,146 +23,86 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Flags {
+public interface Flags {
 
     /**
-     * The constant <tt>NONE</tt> contains the ...
+     * The constant <tt>NONE</tt> contains a instance where no flags are set.
+     * Beware of changing this instance!
      */
-    public static final Flags NONE = new Flags();
-
-    /**
-     * The field <tt>globalP</tt> contains the ...
-     */
-    private boolean globalP = false;
-
-    /**
-     * The field <tt>longP</tt> contains the ...
-     */
-    private boolean longP = false;
-
-    /**
-     * The field <tt>outerP</tt> contains the ...
-     */
-    private boolean outerP = false;
-
-    /**
-     * The field <tt>expandedP</tt> contains the ...
-     */
-    private boolean expandedP = false;
-
-    /**
-     * The field <tt>immediateP</tt> contains the ...
-     */
-    private boolean immediateP = false;
-
-    /**
-     * Creates a new object.
-     * Initially no flags are set.
-     */
-    public Flags() {
-        super();
-    }
+    public static final Flags NONE = new FlagsImpl();
 
     /**
      * This method clears all flags.
      */
-    public void clear() {
-        globalP = false;
-        longP = false;
-        outerP = false;
-        expandedP = false;
-        immediateP = false;
-    }
-
-    /**
-     * Setter for the global flag.
-     */
-    public void setGlobal() {
-        globalP = true;
-    }
-
-    /**
-     * Setter for the global flag.
-     *
-     * @param value the new value for the global flag
-     */
-    public void setGlobal(final boolean value) {
-        globalP = value;
-    }
-
-    /**
-     * Setter for the long flag.
-     */
-    public void setLong() {
-        longP = true;
-    }
-
-    /**
-     * Setter for the outer flag.
-     */
-    public void setOuter() {
-        outerP = true;
-    }
-
-    /**
-     * Setter for the immediate flag.
-     */
-    public void setImmediate() {
-        immediateP = true;
-    }
-
-    /**
-     * Setter for the expanded flag.
-     */
-    public void setExpanded() {
-        expandedP = true;
-    }
-
-    /**
-     * Getter for the global flag.
-     *
-     * @return the current value of the global flag
-     */
-    public boolean isGlobal() {
-        return globalP;
-    }
-
-    /**
-     * Getter for the long flag.
-     *
-     * @return the current value of the long flag
-     */
-    public boolean isLong() {
-        return longP;
-    }
-
-    /**
-     * Getter for the outer flag.
-     *
-     * @return the current value of the outer flag
-     */
-    public boolean isOuter() {
-        return outerP;
-    }
-
-    /**
-     * Getter for the immediate flag.
-     *
-     * @return the current value of the immediate flag
-     */
-    public boolean isImmediate() {
-        return immediateP;
-    }
+    void clear();
 
     /**
      * Getter for the expanded flag.
      *
      * @return the current value of the expanded flag
      */
-    public boolean isExpanded() {
-        return expandedP;
-    }
+    boolean isExpanded();
+
+    /**
+     * Getter for the global flag.
+     *
+     * @return the current value of the global flag
+     */
+    boolean isGlobal();
+
+    /**
+     * Getter for the immediate flag.
+     *
+     * @return the current value of the immediate flag
+     */
+    boolean isImmediate();
+
+    /**
+     * Getter for the long flag.
+     *
+     * @return the current value of the long flag
+     */
+    boolean isLong();
+
+    /**
+     * Getter for the outer flag.
+     *
+     * @return the current value of the outer flag
+     */
+    boolean isOuter();
+
+    /**
+     * Setter for the expanded flag.
+     */
+    void setExpanded();
+
+    /**
+     * Setter for the global flag.
+     */
+    void setGlobal();
+
+    /**
+     * Setter for the global flag.
+     *
+     * @param value the new value for the global flag
+     */
+    void setGlobal(final boolean value);
+
+    /**
+     * Setter for the immediate flag.
+     */
+    void setImmediate();
+
+    /**
+     * Setter for the long flag.
+     */
+    void setLong();
+
+    /**
+     * Setter for the outer flag.
+     */
+    void setOuter();
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,93 +16,161 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter;
 
+package de.dante.extex.interpreter;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
-public interface Flags {
+public class FlagsImpl implements Flags {
 
     /**
-     * The constant <tt>NONE</tt> contains a instance where no flags are set.
-     * Beware of changing this instance!
+     * The field <tt>expandedP</tt> contains the expanded flag.
      */
-    public static final Flags NONE = new FlagsImpl();
+    private boolean expandedP = false;
+
+    /**
+     * The field <tt>globalP</tt> contains the global flag.
+     */
+    private boolean globalP = false;
+
+    /**
+     * The field <tt>immediateP</tt> contains the immediate flag.
+     */
+    private boolean immediateP = false;
+
+    /**
+     * The field <tt>longP</tt> contains the long flag.
+     */
+    private boolean longP = false;
+
+    /**
+     * The field <tt>outerP</tt> contains the outer flag
+     */
+    private boolean outerP = false;
+
+    /**
+     * Creates a new object.
+     * Initially no flags are set.
+     */
+    public FlagsImpl() {
+
+        super();
+    }
 
     /**
      * This method clears all flags.
      */
-    void clear();
+    public void clear() {
+
+        globalP = false;
+        longP = false;
+        outerP = false;
+        expandedP = false;
+        immediateP = false;
+    }
 
     /**
      * Getter for the expanded flag.
      *
      * @return the current value of the expanded flag
      */
-    boolean isExpanded();
+    public boolean isExpanded() {
+
+        return expandedP;
+    }
 
     /**
      * Getter for the global flag.
      *
      * @return the current value of the global flag
      */
-    boolean isGlobal();
+    public boolean isGlobal() {
+
+        return globalP;
+    }
 
     /**
      * Getter for the immediate flag.
      *
      * @return the current value of the immediate flag
      */
-    boolean isImmediate();
+    public boolean isImmediate() {
+
+        return immediateP;
+    }
 
     /**
      * Getter for the long flag.
      *
      * @return the current value of the long flag
      */
-    boolean isLong();
+    public boolean isLong() {
+
+        return longP;
+    }
 
     /**
      * Getter for the outer flag.
      *
      * @return the current value of the outer flag
      */
-    boolean isOuter();
+    public boolean isOuter() {
+
+        return outerP;
+    }
 
     /**
      * Setter for the expanded flag.
      */
-    void setExpanded();
+    public void setExpanded() {
+
+        expandedP = true;
+    }
 
     /**
      * Setter for the global flag.
      */
-    void setGlobal();
+    public void setGlobal() {
+
+        globalP = true;
+    }
 
     /**
      * Setter for the global flag.
      *
      * @param value the new value for the global flag
      */
-    void setGlobal(final boolean value);
+    public void setGlobal(final boolean value) {
+
+        globalP = value;
+    }
 
     /**
      * Setter for the immediate flag.
      */
-    void setImmediate();
+    public void setImmediate() {
+
+        immediateP = true;
+    }
 
     /**
      * Setter for the long flag.
      */
-    void setLong();
+    public void setLong() {
+
+        longP = true;
+    }
 
     /**
      * Setter for the outer flag.
      */
-    void setOuter();
+    public void setOuter() {
+
+        outerP = true;
+    }
 
 }
