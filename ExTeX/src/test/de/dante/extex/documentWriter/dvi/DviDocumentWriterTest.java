@@ -48,7 +48,7 @@ import de.dante.util.configuration.Configuration;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -165,7 +165,7 @@ public class DviDocumentWriterTest extends TestCase {
      * @exception Exception if an error occurs
      */
     public void testMarkNode() throws Exception {
-        checkException(new MarkNode(Tokens.EMPTY), PanicException.class);
+        checkException(new MarkNode(Tokens.EMPTY, 0), PanicException.class);
     }
 
 
