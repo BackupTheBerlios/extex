@@ -78,57 +78,57 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ContextImpl implements Context, Serializable {
 
 	/**
 	 * The saved configuration
 	 */
-	private Configuration config = null;
+	protected Configuration config = null;
 
 	/**
 	 * This is the entry to the linked list of groups. The current group is the
 	 * first one.
 	 */
-	private Group group = null;
+	protected Group group = null;
 
 	/**
 	 * The factory to acquire a new group
 	 */
-	private transient GroupFactory groupFactory;
+	protected transient GroupFactory groupFactory;
 
 	/**
 	 * ...
 	 */
-	private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+	protected HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
 	/**
 	 * The interaction mode to use
 	 */
-	private Interaction interaction = null;
+	protected Interaction interaction = null;
 
 	/**
 	 * The stack for conditionals
 	 */
-	private Stack ifStack = new Stack();
+	protected Stack ifStack = new Stack();
 
 	/**
 	 * The token factory implementation to use
 	 */
-	private TokenFactory tokenFactory = new TokenFactoryImpl();
+	protected TokenFactory tokenFactory = new TokenFactoryImpl();
 
 	/**
 	 * This boolean is used to determine whether the magnification has already
 	 * been set to a new value. It it is <code>true</code> then it is not
 	 * desirable to change the value of <i>magnification</i>.
 	 */
-	private boolean magnificationLock = false;
+	protected boolean magnificationLock = false;
 
 	/**
 	 * The magnification for the whole document in permille
 	 */
-	private long magnification = 1000;
+	protected long magnification = 1000;
 
 	/**
 	 * Creates a new object.

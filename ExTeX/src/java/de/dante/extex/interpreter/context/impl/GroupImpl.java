@@ -31,7 +31,6 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Muskip;
-import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -44,95 +43,90 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
 	/**
 	 * The next group in the linked list
 	 */
-	private Group next = null;
+	protected Group next = null;
 
 	/**
 	 * ...
 	 */
-	private Interaction interaction = null;
+	protected Interaction interaction = null;
 
 	/**
 	 * The map for the active characters
 	 */
-	private Map activeMap = new HashMap();
+	protected Map activeMap = new HashMap();
 
 	/**
 	 * The map for the catcodes
 	 */
-	private Map catcodeMap = new HashMap();
+	protected Map catcodeMap = new HashMap();
 
 	/**
 	 * The map for the count registers
 	 */
-	private Map countMap = new HashMap();
-
-	/**
-	 * The map for the real registers
-	 */
-	private Map realMap = new HashMap();
+	protected Map countMap = new HashMap();
 
 	/**
 	 * The map for the dimen registers
 	 */
-	private Map dimenMap = new HashMap();
+	protected Map dimenMap = new HashMap();
 
 	/**
 	 * The map for the fonts
 	 */
-	private Map fontMap = new HashMap();
+	protected Map fontMap = new HashMap();
 
 	/**
 	 * The map for the boolean
 	 */
-	private Map ifMap = new HashMap();
+	protected Map ifMap = new HashMap();
 
 	/**
 	 * The map for the macros
 	 */
-	private Map macroMap = new HashMap();
+	protected Map macroMap = new HashMap();
 
 	/**
 	 * The map for the muskip registers
 	 */
-	private Map muskipMap = new HashMap();
+	protected Map muskipMap = new HashMap();
 
 	/**
 	 * The map for the skip registers
 	 */
-	private Map skipMap = new HashMap();
+	protected Map skipMap = new HashMap();
 
 	/**
 	 * The map for the toks registers
 	 */
-	private Map toksMap = new HashMap();
+	protected Map toksMap = new HashMap();
 
 	/**
 	 * ...
 	 */
-	private Tokens afterGroup = null;
+	protected Tokens afterGroup = null;
 
 	/**
 	 * ...
 	 */
-	private TypesettingContext typesettingContext;
+	protected TypesettingContext typesettingContext;
 
-    /**
-     * Creates a new object.
-     * 
-     * @param next the next group in the stack. If the value is <code>null</code>
-     *            then this is the global base
-     */
-    public GroupImpl(Group next) {
-        super();
-        this.next = next;
-    }
+	/**
+	 * Creates a new object.
+	 * 
+	 * @param next the next group in the stack. If the value is <code>null</code>
+	 *            then this is the global base
+	 */
+	public GroupImpl(Group next) {
+		super();
+		this.next = next;
+	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Group#setActive(java.lang.String,
@@ -169,13 +163,13 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 		return afterGroup;
 	}
 
-    /**
-     * @see de.dante.extex.interpreter.context.Group#setCatcode(UnicodeChar,
-     *      de.dante.extex.scanner.Catcode)
-     */
-    public void setCatcode(UnicodeChar c, Catcode code) {
-        catcodeMap.put(c, code);
-    }
+	/**
+	 * @see de.dante.extex.interpreter.context.Group#setCatcode(UnicodeChar,
+	 *      de.dante.extex.scanner.Catcode)
+	 */
+	public void setCatcode(UnicodeChar c, Catcode code) {
+		catcodeMap.put(c, code);
+	}
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Group#setCatcode(java.lang.String,
@@ -190,10 +184,10 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 		}
 	}
 
-    /**
-     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
-     */
-    public Catcode getCatcode(UnicodeChar c) {
+	/**
+	 * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
+	 */
+	public Catcode getCatcode(UnicodeChar c) {
 
 		Catcode value = (Catcode) catcodeMap.get(c);
 
@@ -515,41 +509,4 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 
 		afterGroup.add(t);
 	}
-
-	/**
-	 * @see de.dante.extex.interpreter.context.impl.Group#getReal(java.lang.String)
-	 */
-	public Real getReal(String name) {
-		Real real = (Real) (realMap.get(name));
-
-		if (real == null) {
-			if (next != null) {
-				real = next.getReal(name);
-			} else {
-				real = new Real(0);
-				setReal(name, real);
-			}
-		}
-
-		return real;
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String, de.dante.extex.interpreter.type.Real, boolean)
-	 */
-	public void setReal(String name, Real value, boolean global) {
-		setReal(name, value);
-
-		if (global && next != null) {
-			next.setReal(name, value, global);
-		}
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String, de.dante.extex.interpreter.type.Real)
-	 */
-	public void setReal(String name, Real value) {
-		realMap.put(name, value);
-	}
-
 }
