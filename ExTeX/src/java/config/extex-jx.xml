@@ -101,8 +101,14 @@
     <!-- The implementation of the error handler to use.
       -->
 	<ErrorHandler default="ExTeX">
-	 <ExTeX class="de.dante.extex.main.ErrorHandlerImpl"/>
-	 <TeX class="de.dante.extex.main.ErrorHandlerTeXImpl"/>
+     <ExTeX class="de.dante.extex.main.errorHandler.ErrorHandlerImpl">
+       <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
+     </ExTeX>
+     <TeX class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl">
+       <EditHandler class="de.dante.extex.main.errorHandler.editHandler.EditHandlerTeXImpl"/>
+     </TeX>
+     <extex class="de.dante.extex.main.errorHandler.ErrorHandlerImpl"/>
+     <tex class="de.dante.extex.main.errorHandler.ErrorHandlerTeXImpl"/>
 	</ErrorHandler>
 
     <!-- The following definitions describe the primitives available
