@@ -24,22 +24,31 @@ import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
 
 /**
- * ...
+ * Utility class to provide validation methods for file keys.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class FileKeyValidator {
+public final class FileKeyValidator {
 
     /**
-     * ...
+     * This is a utility class which is not assumed to be instantiated.
+     * This constructor is private to avoid an instantiation by accident.
+     */
+    private FileKeyValidator() {
+
+    }
+
+    /**
+     * Validate the key forn an in file.
+     * If the validation fails an exception is thrown.
      *
-     * @param no ...
-     * @param key ...
+     * @param no the numeric value of the file key
+     * @param key the string representation of the file key
      *
      * @throws BadFileNumberHelpingException in case of a failure
      */
-    public static final void validateInFile(final long no, final String key)
+    public static void validateInFile(final long no, final String key)
             throws BadFileNumberHelpingException {
 
         if (no < 0 || no > InFile.MAX_FILE_NO) {
@@ -49,14 +58,15 @@ public class FileKeyValidator {
     }
 
     /**
-     * ...
+     * Validate the key forn an out file.
+     * If the validation fails an exception is thrown.
      *
-     * @param no ...
-     * @param key ...
+     * @param no the numeric value of the file key
+     * @param key the string representation of the file key
      *
      * @throws BadFileNumberHelpingException in case of a failure
      */
-    public static final void validateOutFile(final long no, final String key)
+    public static void validateOutFile(final long no, final String key)
             throws BadFileNumberHelpingException {
 
         if (no < 0 || no > OutFile.MAX_FILE_NO) {
