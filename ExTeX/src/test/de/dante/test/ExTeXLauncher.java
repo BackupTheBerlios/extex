@@ -34,9 +34,21 @@ import de.dante.extex.main.exception.MainException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ExTeXLauncher extends TestCase {
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    private static void prepareProperties(final Properties properties) {
+
+        properties.setProperty("extex.output", "text");
+        properties.setProperty("extex.interaction", "batchmode");
+        properties.setProperty("extex.fonts", "src/font");
+    }
 
     /**
      * Creates a new object.
@@ -46,21 +58,6 @@ public class ExTeXLauncher extends TestCase {
     public ExTeXLauncher(final String arg) {
 
         super(arg);
-    }
-
-    /**
-     * Run  some code through ExTeX.
-     *
-     * @param code the code to expand
-     * @param log the expected output on the log stream
-     * @param expect the expected output on the output stream
-     *
-     * @throws Exception in case of an error
-     */
-    public void runCode(final String code, final String log, final String expect)
-            throws Exception {
-
-        runCode(System.getProperties(), code, log, expect);
     }
 
     /**
@@ -76,10 +73,9 @@ public class ExTeXLauncher extends TestCase {
     public void runCode(final Properties properties, final String code,
             final String log, final String expect) throws MainException {
 
+        prepareProperties(properties);
         properties.setProperty("extex.code", code);
-        properties.setProperty("extex.output", "text");
         properties.setProperty("extex.file", "");
-        properties.setProperty("extex.interaction", "batchmode");
 
         ExTeX main = new ExTeX(properties);
 
@@ -106,6 +102,21 @@ public class ExTeXLauncher extends TestCase {
     }
 
     /**
+     * Run some code through ExTeX.
+     *
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     * @param expect the expected output on the output stream
+     *
+     * @throws Exception in case of an error
+     */
+    public void runCode(final String code, final String log, final String expect)
+            throws Exception {
+
+        runCode(System.getProperties(), code, log, expect);
+    }
+
+    /**
      * Run ExTeX on a file.
      *
      * @param file the name of the file to read from
@@ -117,11 +128,10 @@ public class ExTeXLauncher extends TestCase {
     public String runFile(final String file) throws Exception {
 
         Properties properties = System.getProperties();
+        prepareProperties(properties);
         properties.setProperty("extex.code", "");
-        properties.setProperty("extex.output", "text");
         properties.setProperty("extex.file", file);
         properties.setProperty("extex.jobname", file);
-        properties.setProperty("extex.interaction", "batchmode");
 
         ExTeX main = new ExTeX(properties);
 
