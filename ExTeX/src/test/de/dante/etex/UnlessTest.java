@@ -26,7 +26,7 @@ import junit.framework.TestCase;
  * Test for the primitive \u005cunless.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UnlessTest extends TestCase {
 
@@ -40,10 +40,10 @@ public class UnlessTest extends TestCase {
     }
 
     /**
-     * Test the primitive <tt>\currengrouplevel</tt>.
+     * Test the primitive <tt>\u005cnless</tt>.
      *
      */
-    public void testCurrentgrouplevel()
+    public void testUnless()
         throws Exception {
 
         TestTeX.test("juunless", "src/test/data/juunless.testtxt");
