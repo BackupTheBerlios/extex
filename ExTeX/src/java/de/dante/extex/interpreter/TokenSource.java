@@ -16,8 +16,10 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -44,7 +46,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public interface TokenSource {
 
@@ -61,18 +63,22 @@ public interface TokenSource {
      * processing. This normally means that the interpreter is forced to
      * terminate more or less gracefully.
      *
+     * @param context the interprester context
+     *
      * @throws GeneralException in case of an error
      */
-    void closeAllStreams() throws GeneralException;
+    void closeAllStreams(Context context) throws GeneralException;
 
     /**
      * Close all streams on the stack until a file stream is found. This file
      * stream is closed as last one. The other streams are left unchanged.
      * If no file stream is found the all streams are closed and none is left.
      *
+     * @param context the interpreter context
+     *
      * @throws GeneralException in case of an error
      */
-    void closeNextFileStream() throws GeneralException;
+    void closeNextFileStream(Context context) throws GeneralException;
 
     /**
      * Tries to execute a token.
@@ -99,14 +105,14 @@ public interface TokenSource {
      *   &lang;box&rang; </pre>
      * </doc>
      *
-     *
+     * @param context the interpreter context
      * @param typesetter the typesetter to use
      *
      * @return the box gathered
      *
      * @throws GeneralException in case of an error
      */
-    Box getBox(Typesetter typesetter) throws GeneralException;
+    Box getBox(Context context, Typesetter typesetter) throws GeneralException;
 
     /**
      * Get the next token from the token stream and check that it is a
@@ -127,12 +133,14 @@ public interface TokenSource {
      * </p>
      * </doc>
      *
+     * @param context the interpreter context
+     *
      * @return the token read
      *
      * @throws GeneralException in case that the token stream is at its end or
      *   that the token read is not a control sequence token
      */
-    CodeToken getControlSequence() throws GeneralException;
+    CodeToken getControlSequence(Context context) throws GeneralException;
 
     /**
      * Parse the specification of a font.
@@ -143,41 +151,44 @@ public interface TokenSource {
      *   &lang;font&rang; </pre>
      * </doc>
      *
+     * @param context the interpreter context
      *
      * @return a font specification
      *
      * @throws GeneralException in case of an error
      */
-    Font getFont() throws GeneralException;
+    Font getFont(Context context) throws GeneralException;
 
     /**
-     * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and
-     * <code>true</code> is returned. Otherwise all tokens are left in the
-     * input stream and <code>false</code> is returned.
-     *
-     * @param keyword the tokens to scan
-     *
-     * @return <code>true</code> iff the tokens could have been successfully
-     *         removed from the input stream
-     *
-     * @throws GeneralException in case of an error
+     * @deprecated use getKeyword(Context, String) instead
      */
     boolean getKeyword(String keyword) throws GeneralException;
 
     /**
-     * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and
-     * <code>true</code> is returned. Otherwise all tokens are left in the
-     * input stream and <code>false</code> is returned.
+     * Get tokens from the token stream searching for a sequence of letter
+     * tokens. If all tokens are found then they are removed from the input
+     * stream and <code>true</code> is returned. Otherwise all tokens are left
+     * in the input stream and <code>false</code> is returned.
+     * <p>
+     * Spaces before the keyword are removed from the input stream. Those
+     * speces are not restored, even if the keyword is not found.
+     * </p>
+     * <p>
+     * Space tokens after the keyword are removed from the input stream.
+     * </p>
      *
-     * @param s the tokens to scan
-     * @param space skip space
+     * @param context the interpreter context
+     * @param keyword the tokens to scan
      *
      * @return <code>true</code> iff the tokens could have been successfully
-     *         removed from the input stream
+     *  removed from the input stream
      *
      * @throws GeneralException in case of an error
+     */
+    boolean getKeyword(Context context, String keyword) throws GeneralException;
+
+    /**
+     * @deprecated use getKeyword(Context, String) instead
      */
     boolean getKeyword(String s, boolean space) throws GeneralException;
 
@@ -191,14 +202,26 @@ public interface TokenSource {
     Locator getLocator();
 
     /**
+     * @deprecated use getNonSpace(Context) instead
+     */
+    Token getNonSpace() throws GeneralException;
+
+    /**
      * Get the next token which has not the catcode
      * {@link de.dante.extex.scanner.Catcode#SPACE SPACE}.
+     *
+     * @param context the interpreter context
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
      * @throws GeneralException in case of an error
      */
-    Token getNonSpace() throws GeneralException;
+    Token getNonSpace(Context context) throws GeneralException;
+
+    /**
+     * @deprecated use getOptionalEquals(Context) instead
+     */
+    void getOptionalEquals() throws GeneralException;
 
     /**
      * Skip spaces and if the next non-space character is an equal sign skip it
@@ -213,9 +236,16 @@ public interface TokenSource {
      *          &lang;optional spaces&rang;} <tt>=</tt><sub>12</sub> </pre>
      * </doc>
      *
+     * @param context the interpreter context
+     *
      * @throws GeneralException in case of an error
      */
-    void getOptionalEquals() throws GeneralException;
+    void getOptionalEquals(Context context) throws GeneralException;
+
+    /**
+     * @deprecated use getToken(Context) instead
+     */
+    Token getToken() throws GeneralException;
 
     /**
      * Get the next token form the input streams. If the current input stream
@@ -236,13 +266,20 @@ public interface TokenSource {
      * </p>
      * </doc>
      *
+     * @param context the interpreter context
+     *
      * @return the next token or <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [332]"
      */
-    Token getToken() throws GeneralException;
+    Token getToken(Context context) throws GeneralException;
+
+    /**
+     * @deprecated use getToken(Context) instead
+     */
+    Tokens getTokens() throws GeneralException;
 
     /**
      * Get the next tokens form the input streams between <code>{</code> and
@@ -258,11 +295,13 @@ public interface TokenSource {
      * </p>
      * </doc>
      *
+     * @param context the interpreter context
+     *
      * @return the next tokens or <code>null</code>
      *
      * @throws GeneralException in case of an error
      */
-    Tokens getTokens() throws GeneralException;
+    Tokens getTokens(Context context) throws GeneralException;
 
     /**
      * Getter for the token stream factory.
@@ -307,12 +346,14 @@ public interface TokenSource {
      * preceeded by optional whitespace. Alternate representations for an
      * character code exist.
      *
+     * @param context the interpreter context
+     *
      * @return the value of the integer scanned
      *
      * @throws GeneralException in case that no number is found or the end of
-     *             file has been reached before an integer could be acquired
+     *  file has been reached before an integer could be acquired
      */
-    UnicodeChar scanCharacterCode() throws GeneralException;
+    UnicodeChar scanCharacterCode(Context context) throws GeneralException;
 
     /**
      * Scan the input stream for tokens making up an integer, this is a number
@@ -333,32 +374,49 @@ public interface TokenSource {
      * </p>
      * </doc>
      *
+     * @param context the interpreter context
+     *
      *
      * @return the value of the integer scanned
      *
      * @throws GeneralException in case of an error
      */
-    long scanInteger() throws GeneralException;
+    long scanInteger(Context context) throws GeneralException;
+
+    /**
+     * @deprecated use scanNonSpace(Context) instead
+     */
+    Token scanNonSpace() throws GeneralException;
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
+     * @param context the interpreter contex
+     *
      * @return the next non-space token or <code>null</code> at EOF
      *
-     * @throws GeneralException in case of an error
+     * @throws GeneralException
+     *  in case of an error in {@link #scanToken(Context) scanToken()}
      */
-    Token scanNonSpace() throws GeneralException;
+    public Token scanNonSpace(Context context) throws GeneralException;
+
+    /**
+     * @deprecated use scanNumber(Context) instead
+     */
+    long scanNumber() throws GeneralException;
 
     /**
      * Scan the input stream for tokens making up a number, this is a sequence
      * of digits with catcode <tt>OTHER</tt>. The number can be preceeded by
      * optional whitespace. Alternate representations for an integer exist.
      *
+     * @param context the interpreter context
+     *
      * @return the value of the integer scanned
      *
      * @throws GeneralException in case of an error
      */
-    long scanNumber() throws GeneralException;
+    long scanNumber(Context context) throws GeneralException;
 
     /**
      * Scan the input stream for tokens making up a number, i.e. a sequence of
@@ -379,24 +437,31 @@ public interface TokenSource {
      * </p>
      * </doc>
      *
-     *
-     * @param t the first token to consider
+     * @param context the interpreter context
+     * @param token the first token to consider
      *
      * @return the value of the integer scanned
      *
      * @throws GeneralException in case of an error
      */
-    long scanNumber(Token t) throws GeneralException;
+    long scanNumber(Context context, Token token) throws GeneralException;
+
+    /**
+     * @deprecated use scanNumber(Context, Token) instead
+     */
+    long scanNumber(Token token) throws GeneralException;
 
     /**
      * Scan the input streams for an entity to denote a register name.
      * Upon EOF <code>null</code> is returned.
      *
+     * @param context the interpreter context
+     *
      * @return the register name encountered
      *
      * @throws GeneralException in case of an error
      */
-    String scanRegisterName() throws GeneralException;
+    String scanRegisterName(Context context) throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams. If the current input
@@ -404,11 +469,13 @@ public interface TokenSource {
      * a token could be read. If all stream are at the end then
      * <code>null</code> is returned.
      *
+     * @param context the interpreter context
+     *
      * @return the next token or <code>null</code>
      *
      * @throws GeneralException in case of an error
      */
-    Token scanToken() throws GeneralException;
+    Token scanToken(Context context) throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between <code>{</code>
@@ -424,11 +491,18 @@ public interface TokenSource {
      * </p>
      * </doc>
      *
+     * @param context the interpreter context
+     *
      * @return the next tokens or <code>null</code>
      *
      * @throws GeneralException in case of an error
      */
-    Tokens scanTokens() throws GeneralException;
+    Tokens scanTokens(Context context) throws GeneralException;
+
+    /**
+     * @deprecated use scanTokensAsString(Context) instead
+     */
+    String scanTokensAsString() throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between a leftbace
@@ -438,11 +512,13 @@ public interface TokenSource {
      * is used until a token could be read. If all stream are at the end then
      * <code>null</code> is returned.
      *
+     * @param context the interpreter context
+     *
      * @return the next tokens as <code>String</code> or <code>null</code>
      *
      * @throws GeneralException in case of an error
      */
-    String scanTokensAsString() throws GeneralException;
+    String scanTokensAsString(Context context) throws GeneralException;
 
     /**
      * Skip spaces and check whether any tokens are left.
@@ -453,11 +529,9 @@ public interface TokenSource {
      *    &lang;optional spaces&rang;  </pre>
      * </p>
      *
-     * @return <code>true</code> iff there is another token to read
-     *
      * @throws GeneralException in case of an error
      */
-    boolean skipSpace() throws GeneralException;
+    void skipSpace() throws GeneralException;
 
     /**
      * Send the string to the named observer. The observer must be capable to
@@ -471,6 +545,7 @@ public interface TokenSource {
      *             accessible
      */
     void update(String name, String text)
-            throws GeneralException, NotObservableException;
+            throws GeneralException,
+                NotObservableException;
 
 }
