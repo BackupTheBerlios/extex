@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the data type Dimen.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DimenTest extends ExTeXLauncher {
 
@@ -235,7 +235,7 @@ public class DimenTest extends ExTeXLauncher {
      * The constructor with source parameter 0 delivers a proper result.
      * ...
      */
-    //TODO: incomplete
+    //TODO gene: incomplete
 
 
     /**
