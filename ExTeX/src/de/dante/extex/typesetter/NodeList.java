@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.node.CharNode;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface NodeList extends Node {
 
@@ -78,5 +78,7 @@ public interface NodeList extends Node {
      * @return
      */
     Dimen getMove();
+    
+    NodeIterator iterator();
     
 }
