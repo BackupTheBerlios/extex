@@ -23,51 +23,62 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.Iterator;
+import java.util.Properties;
+import java.util.logging.Logger;
 
-import de.dante.util.StringList;
 import de.dante.util.StringListIterator;
+import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * This file finder search recuriv in a directory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class FileFinderRPathImpl implements ResourceFinder {
+public class FileFinderRPathImpl
+        implements
+            ResourceFinder,
+            LoggerTaker,
+            PropertiesTaker {
 
     /**
-     * The field <tt>path</tt> contains the directory to consider.
+     * The field <tt>logger</tt> contains the logger to be used for tracing.
      */
-    private File path;
+    private Logger logger = null;
 
     /**
-     * The field <tt>ext</tt> the list of extensions to consider.
+     * The field <tt>trace</tt> contains the indicator that tracing is required.
+     * This field is set to <code>true</code> according to the configuration.
      */
-    private StringList extensionList;
+    private boolean trace = false;
+
+    /**
+     * The field <tt>config</tt> contains the configuration object on which this
+     * file finder is based.
+     */
+    private Configuration config;
+
+    /**
+     * The field <tt>properties</tt> contains the ...
+     */
+    private Properties properties = null;
 
     /**
      * Creates a new object.
      *
-     * @param apath          directory to consider
-     * @param extensions    list of extensions to consider
+     * @param configuration the encapsulated configuration object
      */
-    public FileFinderRPathImpl(final String apath, final StringList extensions) {
+    public FileFinderRPathImpl(final Configuration configuration) {
 
         super();
-        path = new File(apath);
-        extensionList = extensions;
-    }
-
-    /**
-     * Setter for the extensions. The given string is splitted at the separator
-     * <tt>:</tt>.
-     *
-     * @param extensions the extensions to set.
-     */
-    public void setExtension(final String extensions) {
-
-        extensionList = new StringList(extensions, ":");
+        config = configuration;
+        String t = configuration.getAttribute("trace");
+        if (t != null && Boolean.valueOf(t).booleanValue()) {
+            trace = true;
+        }
     }
 
     /**
@@ -77,36 +88,81 @@ public class FileFinderRPathImpl implements ResourceFinder {
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        return findFile(path, name, type);
+        // config
+        Configuration cfg = config.findConfiguration(type);
+        if (cfg == null) {
+            String t = config.getAttribute("default");
+            if (t == null) {
+                throw new ConfigurationMissingAttributeException("default",
+                        config);
+            }
+            cfg = config.getConfiguration(t);
+
+            if (trace && logger != null) {
+                logger.fine("FileFinder: " + type + " not found; Using default"
+                        + t + ".\n");
+            }
+        }
+
+        if (trace && logger != null) {
+            logger.fine("FileFinder: Searching " + name + " [" + type + "]\n");
+        }
+
+        Iterator iterator = cfg.iterator("path");
+        while (iterator.hasNext()) {
+            Configuration c = (Configuration) iterator.next();
+            String prop = c.getAttribute("property");
+            String path = null;
+            if (prop != null) {
+                path = properties.getProperty(prop);
+            } else {
+                path = c.getValue();
+            }
+
+            // only for diretories
+            File fpath = new File(path);
+            if (!fpath.isDirectory()) {
+                if (trace && logger != null) {
+                    logger.fine("FileFinder: no path : " + fpath.toString()
+                            + "\n");
+                }
+                return null;
+            }
+
+            InputStream in = findFile(fpath, name, cfg);
+            if (in != null) {
+                return in;
+            }
+        }
+        return null;
     }
 
     /**
-     * Find the File in a directory or call the method itself with a new directory.
-     * 
-     * @param fpath     the path to search
-     * @param name      the name of the file
-     * @param type      the extensuin of the file
-     * @return  Returns the <code>InputStream</code> of the file or 
-     *          <code>null</code>, if not found.
+     * find a file recursiv
+     *
+     * @param fpath path for searching
+     * @param name  the filename
+     * @param cfg   the configuration
+     * @return Returns the inputstream
      */
     private InputStream findFile(final File fpath, final String name,
-            final String type) {
+            final Configuration cfg) {
 
-        // only for diretories
-        if (!fpath.isDirectory()) {
-            return null;
-        }
-
-        // find file in the directory
         File file;
-
-        StringListIterator extIt = extensionList.getIterator();
+        StringListIterator extIt = cfg.getValues("extension").getIterator();
         while (extIt.hasNext()) {
             String ext = extIt.next();
             file = new File(fpath, name + (ext.equals("") ? "" : ".") + ext);
+            if (trace && logger != null) {
+                logger.fine("FileFinder: Try " + file + "\n");
+            }
             if (file.canRead()) {
                 try {
                     InputStream stream = new FileInputStream(file);
+                    if (trace && logger != null) {
+                        logger.fine("FileFinder: Found " + file.toString()
+                                + "\n");
+                    }
                     return stream;
                 } catch (FileNotFoundException e) {
                     // ignore unreadable files
@@ -119,7 +175,7 @@ public class FileFinderRPathImpl implements ResourceFinder {
         File[] files = fpath.listFiles();
         for (int i = 0; i < files.length; i++) {
             if (files[i].isDirectory()) {
-                InputStream in = findFile(files[i], name, type);
+                InputStream in = findFile(files[i], name, cfg);
                 // found ??
                 if (in != null) {
                     return in;
@@ -128,5 +184,40 @@ public class FileFinderRPathImpl implements ResourceFinder {
         }
         // nothing found!
         return null;
+
+    }
+
+    /**
+     * Getter for logger.
+     *
+     * @return the logger.
+     */
+    public Logger getLogger() {
+
+        return logger;
+    }
+
+    /**
+     * @see de.dante.util.resource.ResourceFinder#enableTrace(boolean)
+     */
+    public void enableTrace(final boolean flag) {
+
+        trace = flag;
+    }
+
+    /**
+     * @see de.dante.util.resource.PropertiesTaker#setProperties(java.util.Properties)
+     */
+    public void setProperties(final Properties prop) {
+
+        properties = prop;
+    }
+
+    /**
+     * @see de.dante.util.resource.LoggerTaker#setLogger(java.util.logging.Logger)
+     */
+    public void setLogger(final Logger alogger) {
+
+        logger = alogger;
     }
 }

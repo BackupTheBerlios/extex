@@ -31,19 +31,29 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Logger;
 
-import de.dante.util.StringList;
 import de.dante.util.StringListIterator;
+import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * This file finder search a file in a ls-R file.
+ * <p>
+ * All ls-R-mapfiles are stored in one map with the path as key.
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class FileFinderLSRImpl implements ResourceFinder {
+public class FileFinderLSRImpl
+        implements
+            ResourceFinder,
+            LoggerTaker,
+            PropertiesTaker {
 
     /**
      * use obj-hashmap in file
@@ -51,9 +61,10 @@ public class FileFinderLSRImpl implements ResourceFinder {
     private static final boolean USEOBJ = false;
 
     /**
-     * The field <tt>path</tt> contains the directory where the ls-R file is stored
+     * The constant <tt>EXTENSION_TAG</tt> contains the name of the tag to get
+     * the possible extensions.
      */
-    private File path;
+    private static final String EXTENSION_TAG = "extension";
 
     /**
      * filename for the ls-R file
@@ -61,37 +72,50 @@ public class FileFinderLSRImpl implements ResourceFinder {
     private static final String LSR = "ls-R";
 
     /**
-     * The field <tt>ext</tt> the list of extensions to consider.
-     */
-    private StringList extensionList;
-
-    /**
      * Map for the ls-R entries
      */
     private Map lsr = null;
 
     /**
-     * Creates a new object.
-     *
-     * @param apath          directory with ls-R file
-     * @param extensions    list of extensions to consider
+     * Map for all ls-R map-entries over all class instances
      */
-    public FileFinderLSRImpl(final String apath, final StringList extensions) {
-
-        super();
-        path = new File(apath);
-        extensionList = extensions;
-    }
+    private static Map alllsr = new HashMap();
 
     /**
-     * Setter for the extensions. The given string is splitted at the separator
-     * <tt>:</tt>.
-     *
-     * @param extensions the extensions to set.
+     * The field <tt>logger</tt> contains the logger to be used for tracing.
      */
-    public void setExtension(final String extensions) {
+    private Logger logger = null;
 
-        extensionList = new StringList(extensions, ":");
+    /**
+     * The field <tt>trace</tt> contains the indicator that tracing is required.
+     * This field is set to <code>true</code> according to the configuration.
+     */
+    private boolean trace = false;
+
+    /**
+     * The field <tt>config</tt> contains the configuration object on which this
+     * file finder is based.
+     */
+    private Configuration config;
+
+    /**
+     * The field <tt>properties</tt> contains the ...
+     */
+    private Properties properties = null;
+
+    /**
+     * Creates a new object.
+     *
+     * @param configuration the encapsulated configuration object
+     */
+    public FileFinderLSRImpl(final Configuration configuration) {
+
+        super();
+        config = configuration;
+        String t = configuration.getAttribute("trace");
+        if (t != null && Boolean.valueOf(t).booleanValue()) {
+            trace = true;
+        }
     }
 
     /**
@@ -100,6 +124,42 @@ public class FileFinderLSRImpl implements ResourceFinder {
      */
     public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
+
+        if (trace && logger != null) {
+            logger.fine("FileFinder: Searching " + name + " [" + type + "]\n");
+        }
+
+        // config
+        Configuration cfg = config.findConfiguration(type);
+        if (cfg == null) {
+            String t = config.getAttribute("default");
+            if (t == null) {
+                throw new ConfigurationMissingAttributeException("default",
+                        config);
+            }
+            cfg = config.getConfiguration(t);
+
+            if (trace && logger != null) {
+                logger.fine("FileFinder: " + type + " not found; Using default"
+                        + t + ".\n");
+            }
+        }
+
+        Configuration cfgpath = config.findConfiguration("path");
+        if (cfgpath == null) {
+            throw new ConfigurationMissingAttributeException("path", cfgpath);
+
+        }
+
+        String path = null;
+        String pathproperty = cfgpath.getAttribute("property");
+        if (pathproperty != null) {
+            path = System.getProperty(pathproperty);
+        } else {
+            path = cfgpath.getValue();
+        }
+
+        lsr = (Map) alllsr.get(path);
 
         if (lsr == null) {
             File lsrobj = new File("ls-R.obj");
@@ -121,7 +181,7 @@ public class FileFinderLSRImpl implements ResourceFinder {
                 //        + (System.currentTimeMillis() - start) + " ms");
             } else {
                 //long start = System.currentTimeMillis();
-                loadLSR();
+                loadLSR(path);
                 //System.out.println("\nload ls-R "
                 //        + (System.currentTimeMillis() - start) + " ms   size=" + lsr.size());
                 if (USEOBJ) {
@@ -137,18 +197,24 @@ public class FileFinderLSRImpl implements ResourceFinder {
                     }
                 }
             }
+            alllsr.put(path, lsr);
         }
 
         File file;
-
-        StringListIterator extIt = extensionList.getIterator();
+        StringListIterator extIt = cfg.getValues(EXTENSION_TAG).getIterator();
         while (extIt.hasNext()) {
             String ext = extIt.next();
             file = (File) lsr.get(name + (ext.equals("") ? "" : ".") + ext);
+            if (trace && logger != null) {
+                logger.fine("FileFinder: Try " + file + "\n");
+            }
             if (file != null && file.canRead()) {
                 try {
-                    //System.out.println("\nFILE " + file);
                     InputStream stream = new FileInputStream(file);
+                    if (trace && logger != null) {
+                        logger.fine("FileFinder: Found " + file.toString()
+                                + "\n");
+                    }
                     return stream;
                 } catch (FileNotFoundException e) {
                     // ignore unreadable files
@@ -161,10 +227,11 @@ public class FileFinderLSRImpl implements ResourceFinder {
 
     /**
      * Load the ls-R file
-     * 
+     *
+     * @param path  the path for the ls-R file
      * @throws ConfigurationException if an error occured
      */
-    private void loadLSR() throws ConfigurationException {
+    private void loadLSR(final String path) throws ConfigurationException {
 
         lsr = new HashMap();
 
@@ -191,7 +258,7 @@ public class FileFinderLSRImpl implements ResourceFinder {
                     File abspath = new File(path, rpath);
                     File file = new File(abspath, line);
                     // only readable files!
-                    if (!file.isDirectory() && file.canRead()) {
+                    if (!file.isDirectory() /* && file.canRead()*/) {
                         lsr.put(line, file);
                     }
                 }
@@ -203,5 +270,39 @@ public class FileFinderLSRImpl implements ResourceFinder {
         } catch (IOException e) {
             throw new ConfigurationIOException("IO", e);
         }
+    }
+
+    /**
+     * Getter for logger.
+     *
+     * @return the logger.
+     */
+    public Logger getLogger() {
+
+        return logger;
+    }
+
+    /**
+     * @see de.dante.util.resource.LoggerTaker#setLogger(java.util.logging.Logger)
+     */
+    public void setLogger(final Logger alogger) {
+
+        logger = alogger;
+    }
+
+    /**
+     * @see de.dante.util.resource.PropertiesTaker#setProperties(java.util.Properties)
+     */
+    public void setProperties(final Properties prop) {
+
+        properties = prop;
+    }
+
+    /**
+     * @see de.dante.util.resource.ResourceFinder#enableTrace(boolean)
+     */
+    public void enableTrace(final boolean flag) {
+
+        trace = flag;
     }
 }
