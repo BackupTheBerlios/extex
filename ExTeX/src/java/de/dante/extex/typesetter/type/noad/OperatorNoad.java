@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class OperatorNoad extends AbstractNucleusNoad {
 
@@ -65,7 +65,7 @@ public class OperatorNoad extends AbstractNucleusNoad {
      *
      * @param limits the limits to set
      */
-    public void setLimits(Boolean limits) {
+    public void setLimits(final Boolean limits) {
 
         this.limits = limits;
     }
@@ -79,6 +79,28 @@ public class OperatorNoad extends AbstractNucleusNoad {
     }
 
     /**
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        final char esc ='\\';
+        sb.append(esc);
+        sb.append("mathop");
+        if (limits == Boolean.TRUE) {
+            sb.append(esc);
+            sb.append("limits");
+        } else if (limits == Boolean.TRUE) {
+            sb.append(esc);
+            sb.append("nolimits");
+        }
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see "TTP [749,750]"
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
      *      de.dante.extex.typesetter.NodeList,
      *      de.dante.extex.typesetter.type.noad.util.MathContext,

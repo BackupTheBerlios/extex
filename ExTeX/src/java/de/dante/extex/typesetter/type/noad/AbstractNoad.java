@@ -27,7 +27,7 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -71,16 +71,6 @@ public abstract class AbstractNoad implements Noad {
     }
 
     /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param sb the target string buffer
-     */
-    protected void printNoad(final StringBuffer sb) {
-
-        // TODO gene: unimplemented
-    }
-
-    /**
      * Setter for the subscript.
      *
      * @param subscript the subscript to set.
@@ -109,23 +99,45 @@ public abstract class AbstractNoad implements Noad {
     }
 
     /**
-     * @see "TTP [696]"
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     * @see java.lang.Object#toString()
      */
-    public void toString(final StringBuffer sb) {
+    public String toString() {
 
-        sb.append("\\");
-        sb.append(stringName());
-        // TODO gene: unimplemented
+        final StringBuffer sb = new StringBuffer();
+        toString(sb, 0xffff);
+        return sb.toString();
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        toString(sb, 0);
+    }
+
+    /**
+     * @see "TTP [696]"
      * @see de.dante.extex.typesetter.type.noad.Noad#toString(
      *      java.lang.StringBuffer, int)
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        toString(sb);
+        if (depth < 0) {
+            sb.append(" {}");
+        } else {
+            sb.append('\\');
+            sb.append(stringName());
+            if (superscript != null) {
+                sb.append('^');
+                superscript.toString(sb, depth - 1);
+            }
+            if (subscript != null) {
+                sb.append('_');
+                subscript.toString(sb, depth - 1);
+            }
+        }
     }
 
 }

@@ -28,21 +28,21 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathGlyph implements Noad {
-
-    /**
-     * The constant <tt>FAMILY_MASK</tt> contains the mask for the family in the
-     * TeX encoding.
-     */
-    private static final int FAMILY_MASK = 0xf;
 
     /**
      * The constan <tt>CHARACTER_MASK</tt> contains the mask for the character
      * value in the TeX encoding.
      */
     private static final int CHARACTER_MASK = 0xff;
+
+    /**
+     * The constant <tt>FAMILY_MASK</tt> contains the mask for the family in the
+     * TeX encoding.
+     */
+    private static final int FAMILY_MASK = 0xf;
 
     /**
      * The field <tt>character</tt> contains the character of this glyph.
@@ -134,6 +134,16 @@ public class MathGlyph implements Noad {
     }
 
     /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb, 1);
+        return sb.toString();
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.noad.Noad#toString(
      *       java.lang.StringBuffer)
      */
@@ -143,14 +153,21 @@ public class MathGlyph implements Noad {
     }
 
     /**
+     * Produce a printable representation to a certain depth of the noad.
+     *
+     * @param sb the string buffer
+     * @param depth the depth to which the full information should be given
+     *
+     * @see "TTP [691]"
      * @see de.dante.extex.typesetter.type.noad.Noad#toString(
      *       java.lang.StringBuffer, int)
      */
     public void toString(final StringBuffer sb, final int depth) {
 
         if (depth >= 0) {
-            sb.append("\"");
+            sb.append('\"');
             sb.append(Integer.toHexString(family));
+            sb.append(' ');
             sb.append(Integer.toHexString(character.getCodePoint()));
         }
     }

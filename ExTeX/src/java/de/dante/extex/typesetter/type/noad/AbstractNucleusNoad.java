@@ -23,7 +23,7 @@ package de.dante.extex.typesetter.type.noad;
  * This abstract noad represents a Noad with a nucleus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractNucleusNoad extends AbstractNoad {
 
@@ -51,6 +51,33 @@ public abstract class AbstractNucleusNoad extends AbstractNoad {
     public Noad getNucleus() {
 
         return this.nucleus;
+    }
+
+    /**
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer, int)
+     */
+    public void toString(final StringBuffer sb, final int depth) {
+
+        if (depth < 0) {
+            sb.append(" {}");
+        } else {
+            sb.append('\\');
+            sb.append(stringName());
+            if (nucleus != null) {
+                sb.append('.');
+                nucleus.toString(sb, depth - 1);
+            }
+            if (getSuperscript() != null) {
+                sb.append('^');
+                getSuperscript().toString(sb, depth - 1);
+            }
+            if (getSubscript() != null) {
+                sb.append('_');
+                getSubscript().toString(sb, depth - 1);
+            }
+        }
     }
 
 }
