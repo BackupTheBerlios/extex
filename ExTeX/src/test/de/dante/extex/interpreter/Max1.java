@@ -23,12 +23,9 @@ import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.muskip.Mudimen;
-import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -45,9 +42,6 @@ import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.extex.typesetter.type.MathClass;
-import de.dante.extex.typesetter.type.MathDelimiter;
-import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -56,7 +50,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class Max1 extends TestCase {
 
@@ -68,32 +62,6 @@ public class Max1 extends TestCase {
         /**
          */
         private StringBuffer sb = new StringBuffer();
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-         *      de.dante.extex.typesetter.type.MathClass,
-         *      de.dante.extex.typesetter.type.MathGlyph)
-         */
-        public void add(final MathClass mclass, final MathGlyph mg)
-                throws GeneralException {
-
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-         *      de.dante.extex.interpreter.type.muskip.Mudimen)
-         */
-        public void add(final Mudimen skip) throws GeneralException {
-
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-         *      de.dante.extex.interpreter.type.muskip.Muskip)
-         */
-        public void add(final Muskip glue) throws GeneralException {
-
-        }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#add(
@@ -167,14 +135,6 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#getLastNoad()
-         */
-        public Noad getLastNoad() throws GeneralException {
-
-            return null;
-        }
-
-        /**
          * @see de.dante.extex.typesetter.ListMaker#getLastNode()
          */
         public Node getLastNode() {
@@ -207,15 +167,7 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left(MathDelimiter)
-         */
-        public void left(final MathDelimiter delimiter) throws GeneralException {
-
-        }
-
-        /**
-         * Notification method to deal the case that a left brace hs been
-         * encountered.
+         * @see de.dante.extex.typesetter.ListMaker#leftBrace()
          */
         public void leftBrace() {
 
@@ -238,15 +190,6 @@ public class Max1 extends TestCase {
          */
         public void mathShift(final Context context, final TokenSource source,
                 final Token t) throws GeneralException {
-
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#middle(
-         *      de.dante.extex.typesetter.type.MathDelimiter)
-         */
-        public void middle(final MathDelimiter delimiter)
-                throws GeneralException {
 
         }
 
@@ -284,30 +227,10 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right(MathDelimiter)
-         */
-        public void right(final MathDelimiter delimiter)
-                throws GeneralException {
-
-        }
-
-        /**
-         * Notification method to deal the case that a right brace hs been
-         * encountered.
+         * @see de.dante.extex.typesetter.ListMaker#rightBrace()
          */
         public void rightBrace() throws GeneralException {
 
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
-         *      de.dante.extex.interpreter.context.Context,
-         *      de.dante.extex.interpreter.TokenSource)
-         */
-        public Noad scanNoad(final Context context, final TokenSource source)
-                throws GeneralException {
-
-            throw new MissingMathException("???");
         }
 
         /**
@@ -407,18 +330,6 @@ public class Max1 extends TestCase {
          */
         public void superscriptMark(final Context context,
                 final TokenSource source, final Token t)
-                throws GeneralException {
-
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
-         *      de.dante.extex.typesetter.type.MathDelimiter,
-         *      de.dante.extex.typesetter.type.MathDelimiter,
-         *      de.dante.extex.interpreter.type.dimen.Dimen)
-         */
-        public void switchToFraction(final MathDelimiter leftDelimiter,
-                final MathDelimiter rightDelimiter, final Dimen ruleWidth)
                 throws GeneralException {
 
         }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,6 @@ import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.impl.TypesetterImpl;
-import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
 /**
@@ -34,7 +33,7 @@ import de.dante.util.GeneralException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -44,15 +43,6 @@ public class DumpTypesetter extends TypesetterImpl {
     public DumpTypesetter() {
 
         super();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.type.noad.Noad)
-     */
-    public void add(final Noad noad) throws GeneralException {
-
-        super.add(noad);
     }
 
     /**

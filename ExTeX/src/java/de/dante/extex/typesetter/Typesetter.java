@@ -37,9 +37,9 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
-public interface Typesetter extends ListMaker, NoadConsumer {
+public interface Typesetter extends ListMaker {
 
     /**
      * Instructs the typesetter to perform any actions necessary for cleaning up

@@ -26,18 +26,12 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.muskip.Mudimen;
-import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
-import de.dante.extex.typesetter.type.MathClass;
-import de.dante.extex.typesetter.type.MathDelimiter;
-import de.dante.extex.typesetter.type.noad.MathGlyph;
-import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -47,50 +41,16 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class NullTypesetterImpl implements Typesetter {
+
     /**
      * Creates a new object.
      */
     public NullTypesetterImpl() {
 
         super();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-     *      de.dante.extex.typesetter.type.MathClass,
-     *      de.dante.extex.typesetter.type.MathGlyph)
-     */
-    public void add(final MathClass mclass, final MathGlyph mg)
-            throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-     *      de.dante.extex.interpreter.type.muskip.Mudimen)
-     */
-    public void add(final Mudimen skip) throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
-     *      de.dante.extex.interpreter.type.muskip.Muskip)
-     */
-    public void add(final Muskip glue) throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.type.noad.Noad)
-     */
-    public void add(final Noad noad) throws GeneralException {
-
-        // nothing to do
     }
 
     /**
@@ -156,14 +116,6 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#getLastNoad()
-     */
-    public Noad getLastNoad() throws GeneralException {
-
-        return null;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
     public Node getLastNode() {
@@ -196,13 +148,6 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left(MathDelimiter)
-     */
-    public void left(final MathDelimiter delimiter) throws GeneralException {
-
-    }
-
-    /**
      * Notification method to deal the case that a left brace hs been
      * encountered.
      */
@@ -231,14 +176,6 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#middle(
-     *      de.dante.extex.typesetter.type.MathDelimiter)
-     */
-    public void middle(final MathDelimiter delimiter) throws GeneralException {
-
-    }
-
-    /**
      * @see de.dante.extex.typesetter.Typesetter#par()
      */
     public void par() {
@@ -262,29 +199,10 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right(MathDelimiter)
-     */
-    public void right(final MathDelimiter delimiter) throws GeneralException {
-
-    }
-
-    /**
-     * Notification method to deal the case that a right brace hs been
-     * encountered.
+     * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
     public void rightBrace() throws GeneralException {
 
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Noad scanNoad(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        return null;
     }
 
     /**
@@ -387,18 +305,6 @@ public class NullTypesetterImpl implements Typesetter {
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Token t) throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
-     *      de.dante.extex.typesetter.type.MathDelimiter,
-     *      de.dante.extex.typesetter.type.MathDelimiter,
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void switchToFraction(final MathDelimiter leftDelimiter,
-            final MathDelimiter rightDelimiter, final Dimen ruleWidth)
-            throws GeneralException {
 
     }
 
