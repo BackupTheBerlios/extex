@@ -21,6 +21,8 @@
   <!-- The following definitions describe the primitives available
     -  and their association to implementing Java classes.
     -->
-    <define name="javadef" class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/>
-    <define name="javaload" class="de.dante.extex.interpreter.primitives.dynamic.java.JavaLoad"/>
+    <define name="javadef"
+            class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/>
+    <define name="javaload"
+            class="de.dante.extex.interpreter.primitives.dynamic.java.JavaLoad"/>
 </primitives>

@@ -21,7 +21,10 @@
   <!-- The following definitions describe the primitives available
     -  and their association to implementing Java classes.
     -->
-  <define name="export" class="de.dante.extex.interpreter.primitives.namespace.Export"/>
-  <define name="import" class="de.dante.extex.interpreter.primitives.namespace.Import"/>
-  <define name="namespace" class="de.dante.extex.interpreter.primitives.namespace.Namespace"/>
+  <define name="export"
+          class="de.dante.extex.interpreter.primitives.namespace.Export"/>
+  <define name="import"
+          class="de.dante.extex.interpreter.primitives.namespace.Import"/>
+  <define name="namespace"
+          class="de.dante.extex.interpreter.primitives.namespace.Namespace"/>
 </primitives>
