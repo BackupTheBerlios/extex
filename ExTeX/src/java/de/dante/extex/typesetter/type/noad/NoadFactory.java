@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.type.MathGlyph;
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NoadFactory {
 
@@ -35,7 +35,7 @@ public class NoadFactory {
      * Inner class for the visiting of a MathClass.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class ClassVisitor implements MathClassVisitor {
 
@@ -45,7 +45,7 @@ public class NoadFactory {
          */
         public Object visitBinary(final Object arg) {
 
-            return new BinNoad((Noad) arg);
+            return new BinaryNoad((Noad) arg);
         }
 
         /**
@@ -101,7 +101,7 @@ public class NoadFactory {
          */
         public Object visitRelation(final Object arg) {
 
-            return new RelNoad((Noad) arg);
+            return new RelationNoad((Noad) arg);
         }
 
         /**

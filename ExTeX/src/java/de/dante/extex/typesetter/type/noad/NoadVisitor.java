@@ -42,7 +42,7 @@ import de.dante.extex.typesetter.type.MathGlyph;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface NoadVisitor {
 
@@ -58,7 +58,7 @@ public interface NoadVisitor {
      *
      * @param noad the visited noad
      */
-    void visitBin(BinNoad noad);
+    void visitBin(BinaryNoad noad);
 
     /**
      * Visitor method for a character noad.
@@ -128,7 +128,7 @@ public interface NoadVisitor {
      *
      * @param noad the visited noad
      */
-    void visitOrd(OrdNoad noad);
+    void visitOrd(OrdinaryNoad noad);
 
     /**
      * Visitor method for an overlined noad.
@@ -156,7 +156,7 @@ public interface NoadVisitor {
      *
      * @param noad the visited noad
      */
-    void visitRel(RelNoad noad);
+    void visitRel(RelationNoad noad);
 
     /**
      * Visitor method for a style noad.
