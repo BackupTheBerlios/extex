@@ -19,7 +19,9 @@
 
 package de.dante.extex.typesetter;
 
+import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.max.Max;
 import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -47,7 +49,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -90,17 +92,26 @@ public class TypesetterFactory extends AbstractFactory {
      * to determine the requested properties.
      *
      * @param config the conficguration to use
+     * @param context the interpreter context
+     * @param typesetter the typesetter associated with it
      *
      * @return a new instance
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    private PageBuilder makePageBuilder(final Configuration config)
+    private PageBuilder makePageBuilder(final Configuration config,
+            final Context context, final Typesetter typesetter)
             throws ConfigurationException {
 
         Configuration cfg = config.getConfiguration("PageBuilder");
-        return (PageBuilder) createInstanceForConfiguration(cfg,
+        PageBuilder pageBuilder = (PageBuilder) createInstanceForConfiguration(cfg,
                 PageBuilder.class);
+        pageBuilder.setContext(context);
+        Interpreter interpreter = new Max(); //TODO gene: use cfg and factory
+        interpreter.setContext(context);
+        pageBuilder.setInterpreter(interpreter);
+        //TODO gene: pageBuilder.setTypesetter(typesetter);
+        return pageBuilder;
     }
 
     /**
@@ -152,7 +163,7 @@ public class TypesetterFactory extends AbstractFactory {
         parBuilder.setOptions((TypesetterOptions) context);
         typesetter.setParagraphBuilder(parBuilder);
         typesetter.setLigatureBuilder(makeLigatureBuilder(cfg));
-        typesetter.setPageBuilder(makePageBuilder(cfg));
+        typesetter.setPageBuilder(makePageBuilder(cfg, context, typesetter));
         typesetter.setOptions((TypesetterOptions) context);
 
         return typesetter;

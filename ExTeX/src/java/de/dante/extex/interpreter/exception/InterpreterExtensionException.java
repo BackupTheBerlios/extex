@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,29 +17,26 @@
  *
  */
 
-package de.dante.extex.main.exception;
+package de.dante.extex.interpreter.exception;
+
 
 /**
- * This exception is thrown when the main program use a
- * ExTeX-extension witch is not avaiable.
+ * This exception is thrown when the main program use an
+ * ExTeX extension witch is not avaiable.
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class MainExTeXExtensionException extends MainException {
-
-    /**
-     * number
-     */
-    private static final int NUMBER = -16;
+public class InterpreterExtensionException extends InterpreterException {
 
     /**
      * Creates a new object.
      *
      */
-    public MainExTeXExtensionException() {
+    public InterpreterExtensionException() {
 
-        super(NUMBER, "ExTeXExtensionException");
+        super("ExTeXExtensionException");
     }
 
     /**

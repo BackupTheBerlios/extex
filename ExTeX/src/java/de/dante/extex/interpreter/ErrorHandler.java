@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,9 +16,11 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
@@ -31,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface ErrorHandler {
 
@@ -45,10 +47,10 @@ public interface ErrorHandler {
      *
      * @return <code>true</code> iff the processing can continue
      *
-     * @throws GeneralException in case of a problem
+     * @throws InterpreterException in case of a problem
      */
     boolean handleError(GeneralException e, Token token, TokenSource source,
-            Context context) throws GeneralException;
+            Context context) throws InterpreterException;
 
     /**
      * Setter for the edit handler.

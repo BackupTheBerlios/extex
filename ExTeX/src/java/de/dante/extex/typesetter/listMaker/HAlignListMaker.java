@@ -22,9 +22,10 @@ package de.dante.extex.typesetter.listMaker;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.table.Omit;
 import de.dante.extex.interpreter.primitives.table.util.PreambleItem;
 import de.dante.extex.interpreter.type.Code;
@@ -45,7 +46,7 @@ import de.dante.util.GeneralException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -55,7 +56,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.7 $
      */
     protected class Cell {
 
@@ -170,12 +171,12 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *  width should be used
      * @param theSpread indicator that the width should be interpreted relative
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public HAlignListMaker(final ListManager manager, final Context context,
             final TokenSource source, final List thePreamble,
             final FixedDimen theWidth, final boolean theSpread)
-            throws GeneralException {
+            throws InterpreterException {
 
         super(manager);
         preamble = thePreamble;
@@ -196,10 +197,10 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @param context the interpreter context
      * @param source the token source
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private void clearLine(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         col = 0;
         line = new Cell[preamble.size()];
@@ -210,7 +211,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws GeneralException {
+            throws InterpreterException {
 
         NodeList result = new VerticalListNode();
         NodeList nl;
@@ -273,7 +274,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     /**
      * @see de.dante.extex.typesetter.listMaker.AlignmentList#omit()
      */
-    public void omit() throws GeneralException {
+    public void omit() {
 
     }
 
@@ -283,7 +284,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void span(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (col >= line.length) {
             new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", "???");
@@ -297,10 +298,10 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @param context the interpreter context
      * @param source the token source
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private void startCell(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         format = (PreambleItem) preamble.get(col);
 

@@ -21,10 +21,11 @@ package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.Count;
@@ -79,7 +80,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -170,7 +171,7 @@ public class FontPrimitive extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Font convertFont(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         return context.getTypesettingContext().getFont();
     }

@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -29,6 +30,7 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.KernNode;
@@ -52,7 +54,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Lastkern extends AbstractCode
         implements
@@ -76,7 +78,7 @@ public class Lastkern extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
         return (node instanceof KernNode ? ((KernNode) node).getWidth()
@@ -90,7 +92,7 @@ public class Lastkern extends AbstractCode
      *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
         return (node instanceof KernNode ? ((KernNode) node).getWidth()
@@ -106,7 +108,7 @@ public class Lastkern extends AbstractCode
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         throw new CantUseInException(printableControlSequence(context),
                 typesetter.getMode().toString());
@@ -118,13 +120,17 @@ public class Lastkern extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Node node = typesetter.getLastNode();
         Dimen pen = (node instanceof KernNode
                 ? ((KernNode) node).getWidth()
                 : Dimen.ZERO_PT);
-        return pen.toToks(context.getTokenFactory());
+        try {
+            return pen.toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

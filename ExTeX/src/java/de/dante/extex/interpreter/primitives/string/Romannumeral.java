@@ -23,10 +23,12 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -61,7 +63,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
@@ -98,7 +100,7 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         long n = source.scanInteger(context);
         Tokens toks = new Tokens();
@@ -110,8 +112,12 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
 
         for (;;) {
             while (n >= v) {
-                toks.add(factory.createToken(Catcode.LETTER, magic[j],
-                        Namespace.DEFAULT_NAMESPACE));
+                try {
+                    toks.add(factory.createToken(Catcode.LETTER, magic[j],
+                            Namespace.DEFAULT_NAMESPACE));
+                } catch (CatcodeException e) {
+                    throw new InterpreterException(e);
+                }
                 n = n - v;
             }
 
@@ -126,7 +132,11 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
                 u = u / (magic[k - 1] - '0');
             }
             if (n + u >= v) {
-                toks.add(factory.createToken(Catcode.LETTER, magic[k], ""));
+                try {
+                    toks.add(factory.createToken(Catcode.LETTER, magic[k], ""));
+                } catch (CatcodeException e) {
+                    throw new InterpreterException(e);
+                }
                 n = n + u;
             } else {
                 j = j + 2;

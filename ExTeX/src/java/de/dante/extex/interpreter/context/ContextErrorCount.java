@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,29 +16,30 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.type;
-
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
+package de.dante.extex.interpreter.context;
 
 
 /**
- * This interface describes the ability to be initialized
- * This is a lifecycle feature.
+ * This interface describes the capabilities of the context to store and
+ * retrieve the error count.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface InitializableCode {
+public interface ContextErrorCount {
 
     /**
-     * Initialize the Code with some value coming from a String.
+     * Getter for the error count.
      *
-     * @param context the interpreter context
-     * @param value the source of information for the initialization
-     *
-     * @throws InterpreterException in case of an error
+     * @return the current value of the number of errors
      */
-    void init(Context context, String value) throws InterpreterException;
+    int getErrorCount();
+
+    /**
+     * Increment the error count by 1.
+     *
+     * @return the new value of the error count
+     */
+    int incrementErrorCount();
 
 }

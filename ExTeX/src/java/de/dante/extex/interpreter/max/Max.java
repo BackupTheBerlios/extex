@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
@@ -39,6 +38,7 @@ import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.Code;
@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public class Max extends Moritz
         implements
@@ -118,12 +118,6 @@ public class Max extends Moritz
      * all relevant information can be found.
      */
     private Context context = null;
-
-    /**
-     * The field <tt>errorCount</tt> contains the count for the number of
-     * errors already encountered.
-     */
-    private int errorCount = 0;
 
     /**
      * The error handler is invoked whenever an error is detected. If none is
@@ -269,17 +263,23 @@ public class Max extends Moritz
      *  the configured error limit
      */
     private void execute(final Switch onceMore)
-            throws GeneralException,
+            throws InterpreterException,
                 ErrorLimitException {
 
         for (Token current = getToken(context); //
         current != null && onceMore.isOn(); //
         current = getToken(context)) {
-            observersExpand.update(this, current);
+            try {
+                observersExpand.update(this, current);
+            } catch (InterpreterException e) {
+                throw e;
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
             try {
                 current.visit(this, null, null);
-            } catch (GeneralException e) {
-                if (++errorCount > maxErrors) { // cf. TTP[82]
+            } catch (InterpreterException e) {
+                if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                     throw new ErrorLimitException(maxErrors);
                 } else if (errorHandler != null) {
                     if (!errorHandler.handleError(e, current, this, context)) {
@@ -289,7 +289,7 @@ public class Max extends Moritz
                     throw e;
                 }
             } catch (Exception e) {
-                throw new GeneralException(e);
+                throw new InterpreterException(e);
             }
         }
     }
@@ -299,16 +299,19 @@ public class Max extends Moritz
      *      de.dante.extex.scanner.Token)
      */
     public void execute(final Token token)
-            throws GeneralException,
+            throws InterpreterException,
                 ErrorLimitException {
 
-        observersExpand.update(this, token);
         try {
+
+            observersExpand.update(this, token);
+
             token.visit(this, null, null);
-        } catch (PanicException e) {
-            throw e;
-        } catch (GeneralException e) {
-            if (++errorCount > maxErrors) { // cf. TTP[82]
+
+            //TODO gene:        } catch (PanicException e) {
+            //            throw e;
+        } catch (InterpreterException e) {
+            if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                 throw new ErrorLimitException(maxErrors);
             } else if (errorHandler != null) {
                 if (!errorHandler.handleError(e, token, this, context)) {
@@ -318,14 +321,14 @@ public class Max extends Moritz
                 throw e;
             }
         } catch (Exception e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
     }
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#executeGroup()
      */
-    public void executeGroup() throws GeneralException, ErrorLimitException {
+    public void executeGroup() throws InterpreterException, ErrorLimitException {
 
         Switch b = new Switch(true);
         context.afterGroup(new SwitchObserver(b, false));
@@ -336,13 +339,20 @@ public class Max extends Moritz
      * @see de.dante.extex.interpreter.max.Moritz#expand(
      *      de.dante.extex.scanner.Token)
      */
-    protected Token expand(final Token token) throws GeneralException {
+    protected Token expand(final Token token) throws InterpreterException {
 
         Token t = token;
+        Code code;
 
         while (t instanceof CodeToken) {
-            observersMacro.update(this, t);
-            Code code = context.getCode((CodeToken) t);
+            try {
+                observersMacro.update(this, t);
+                code = context.getCode((CodeToken) t);
+            } catch (InterpreterException e) {
+                throw e;
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
             if (code instanceof ExpandableCode) {
                 ((ExpandableCode) code).expand(prefix, context, this,
                         typesetter);
@@ -474,7 +484,8 @@ public class Max extends Moritz
      */
     public void run()
             throws ConfigurationException,
-                ErrorLimitException, InterpreterException {
+                ErrorLimitException,
+                InterpreterException {
 
         if (typesetter == null) {
             throw new NoTypesetterException(getClass().getName() + "#run()");
@@ -513,7 +524,8 @@ public class Max extends Moritz
      */
     public void run(final TokenStream stream)
             throws ConfigurationException,
-                ErrorLimitException, InterpreterException {
+                ErrorLimitException,
+                InterpreterException {
 
         addStream(stream);
         run();
@@ -527,6 +539,15 @@ public class Max extends Moritz
     public void setCalendar(final Calendar theCalendar) {
 
         this.calendar = theCalendar;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#setContext(
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public void setContext(final Context context) {
+
+        this.context = context;
     }
 
     /**

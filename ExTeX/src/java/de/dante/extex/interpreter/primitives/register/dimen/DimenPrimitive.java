@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -33,6 +34,7 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -47,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -76,7 +78,7 @@ public class DimenPrimitive extends AbstractDimen
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         String key = getKey(source, context);
         source.getKeyword(context, "by");
@@ -97,11 +99,15 @@ public class DimenPrimitive extends AbstractDimen
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(source, context);
-        Tokens toks = context.getDimen(key).toToks(context.getTokenFactory());
-        source.push(toks);
+        try {
+            Tokens toks = context.getDimen(key).toToks(context.getTokenFactory());
+            source.push(toks);
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -128,7 +134,7 @@ public class DimenPrimitive extends AbstractDimen
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(source, context);
         Dimen d = context.getDimen(key);
@@ -141,7 +147,7 @@ public class DimenPrimitive extends AbstractDimen
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return convertCount(context, source, typesetter);
     }
@@ -192,10 +198,14 @@ public class DimenPrimitive extends AbstractDimen
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(source, context);
-        return context.getDimen(key).toToks(context.getTokenFactory());
+        try {
+            return context.getDimen(key).toToks(context.getTokenFactory());
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

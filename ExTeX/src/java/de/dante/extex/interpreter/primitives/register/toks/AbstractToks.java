@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.toks;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.util.GeneralException;
 
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  * numbered toks registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractToks extends AbstractAssignment {
 
@@ -53,13 +54,20 @@ public abstract class AbstractToks extends AbstractAssignment {
      *
      * @return the key for the current register
      *
-     * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this on e is declared.
+     * @throws InterpreterException in case that a derived class needs to
+     *  throw an Exception this one is declared.
      */
     protected String getKey(final TokenSource source, final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
-        String name = source.scanRegisterName(context);
+        String name;
+        try {
+            name = source.scanRegisterName(context);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
 
         if (Namespace.SUPPORT_NAMESPACE_TOKS) {
             return context.getNamespace() + "toks#" + name;

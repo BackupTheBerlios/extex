@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.count;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -35,7 +36,7 @@ import de.dante.util.GeneralException;
  * primitive.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractReadonlyCount extends AbstractCode
         implements
@@ -73,7 +74,7 @@ public abstract class AbstractReadonlyCount extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         long value = convertCount(context, source, typesetter);
         return new Tokens(context, Long.toString(value));

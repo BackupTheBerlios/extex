@@ -23,10 +23,11 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -60,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.58 $
+ * @version $Revision: 1.59 $
  */
 public class TypesetterImpl
         implements
@@ -125,6 +126,12 @@ public class TypesetterImpl
     private ArrayList saveStack = new ArrayList();
 
     /**
+     * The field <tt>shipoutMark</tt> contains the recorded state of the
+     * shipout mark. Initially the shipout mark is <code>false</code>.
+     */
+    private boolean shipoutMark = false;
+
+    /**
      * Creates a new object and initializes it to receive material.
      * To make it fully functionalit is required that the paragraph builder
      * and the ligature builder are provided before they are used.
@@ -176,10 +183,18 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#clearShipoutMark()
+     */
+    public void clearShipoutMark() {
+
+        shipoutMark = false;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws GeneralException {
+            throws InterpreterException {
 
         NodeList nodes = listMaker.complete(context);
         pop();
@@ -325,6 +340,14 @@ public class TypesetterImpl
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#isShipoutMark()
+     */
+    public boolean isShipoutMark() {
+
+        return shipoutMark;
+    }
+
+    /**
      * Notification method to deal the case that a left brace hs been
      * encountered.
      */
@@ -373,10 +396,10 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.listMaker.ListManager#pop()
      */
-    public ListMaker pop() throws GeneralException {
+    public ListMaker pop() {
 
         if (saveStack.isEmpty()) {
-            throw new PanicException(localizer, "Typesetter.EmptyStack");
+            throw new ImpossibleException("Typesetter.EmptyStack");
         }
         ListMaker current = listMaker;
         listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
@@ -506,6 +529,7 @@ public class TypesetterImpl
     public void shipout(final NodeList nodes) throws GeneralException {
 
         pageBuilder.flush(nodes);
+        shipoutMark = true;
     }
 
     /**

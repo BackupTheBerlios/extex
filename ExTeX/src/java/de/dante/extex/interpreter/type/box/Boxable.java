@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,14 +20,14 @@ package de.dante.extex.interpreter.type.box;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This interface describes the capability to deliver a Box.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Boxable extends BoxOrRule {
 
@@ -40,9 +40,9 @@ public interface Boxable extends BoxOrRule {
      *
      * @return an appropriate Box
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     Box getBox(Context context, TokenSource source, Typesetter typesetter)
-            throws GeneralException;
+            throws InterpreterException;
 
 }

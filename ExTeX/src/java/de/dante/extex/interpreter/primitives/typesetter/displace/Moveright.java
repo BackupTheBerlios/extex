@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.displace;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
@@ -64,7 +65,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Moveright extends AbstractCode implements Boxable {
 
@@ -99,7 +100,7 @@ public class Moveright extends AbstractCode implements Boxable {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Box getBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Dimen move = new Dimen(context, source);
         Box box = source.getBox(context, typesetter);

@@ -30,6 +30,7 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
@@ -46,7 +47,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 
@@ -101,8 +102,8 @@ public class PrimitiveFactory extends AbstractFactory {
                     name);
 
             context.setCode((CodeToken) tokenFactory.createToken(
-                    Catcode.ESCAPE, name, Namespace.DEFAULT_NAMESPACE), code,
-                    true);
+                    Catcode.ESCAPE, new UnicodeChar('\\'), name,
+                    Namespace.DEFAULT_NAMESPACE), code, true);
             if (code instanceof LogEnabled) {
                 ((LogEnabled) code).enableLogging(outputLogger);
             }

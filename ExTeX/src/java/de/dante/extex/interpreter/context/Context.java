@@ -22,10 +22,11 @@ package de.dante.extex.interpreter.context;
 import java.io.Serializable;
 
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
@@ -51,7 +52,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public interface Context
         extends
@@ -59,6 +60,7 @@ public interface Context
             ContextDimen,
             ContextFile,
             ContextGroup,
+            ContextErrorCount,
             Tokenizer,
             Serializable {
 
@@ -127,9 +129,9 @@ public interface Context
      *
      * @return the code for the token
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    Code getCode(CodeToken t) throws GeneralException;
+    Code getCode(CodeToken t) throws InterpreterException;
 
     /**
      * Getter for the {@link de.dante.extex.interpreter.type.count.Count count}
@@ -304,9 +306,9 @@ public interface Context
      *
      * @return the formerly topmost element from the conditional stack
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    Conditional popConditional() throws GeneralException;
+    Conditional popConditional() throws InterpreterException;
 
     /**
      * Put a value onto the conditional stack.

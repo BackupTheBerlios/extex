@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.count;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.ArithmeticOverflowException;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -63,7 +64,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Mag extends AbstractCount
         implements
@@ -127,7 +128,7 @@ public class Mag extends AbstractCount
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         source.push(new Tokens(context, Long.toString(context
                 .getMagnification())));
@@ -139,7 +140,7 @@ public class Mag extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return context.getMagnification();
     }
@@ -188,7 +189,7 @@ public class Mag extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return new Tokens(context, Long.toString(context.getMagnification()));
     }

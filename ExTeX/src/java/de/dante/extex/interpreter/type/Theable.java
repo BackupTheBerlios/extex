@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,9 +21,9 @@ package de.dante.extex.interpreter.type;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This is a interface to mark those classes which are able to provide a
@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Theable {
 
@@ -43,10 +43,9 @@ public interface Theable {
      * @param typesetter the typesetter to use
      *
      * @return the description of the primitive as list of Tokens
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     Tokens the(Context context, TokenSource source, Typesetter typesetter)
-            throws GeneralException;
+            throws InterpreterException;
 
 }

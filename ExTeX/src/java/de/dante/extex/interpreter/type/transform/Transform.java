@@ -22,9 +22,9 @@ package de.dante.extex.interpreter.type.transform;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.util.GeneralException;
 
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * Transform (transformation with six values)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Transform implements Serializable {
 

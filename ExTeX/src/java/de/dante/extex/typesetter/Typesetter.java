@@ -22,7 +22,6 @@ package de.dante.extex.typesetter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
-import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.NodeList;
@@ -38,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -119,11 +118,36 @@ public interface Typesetter extends ListMaker {
 
     /**
      * Send a list of nodes to the document writer.
+     * As a side effect the shipout mark is set.
      *
      * @param nodes the nodes to send to the typesetter
      *
      * @throws GeneralException in case of an error
+     *
+     * @see #clearShipoutMark()
      */
     void shipout(NodeList nodes) throws GeneralException;
 
+    /**
+     * Clear the internal state about shipouts.
+     * The shipout mark is reset to <code>false</code>. 
+     *
+     * @see #isShipoutMark()
+     */
+    void clearShipoutMark();
+
+    /**
+     * Query the shipout mark.
+     * The shipout mark is an internal state which records whether or not the
+     * shipout method has been called recently. This method can be used to
+     * get the current state.
+     * The method {@link #clearShipoutMark() clearShipoutMark()} can be used to
+     * reset the shipout mark to <code>false</code>.
+     * Initially the shipout mark is <code>false</code>.
+     *
+     * @return <code>true</code> iff there has been an invocation to the method
+     *  {@link #shipout(NodeList) shipout()} since the last clearing
+     * @see #clearShipoutMark()
+     */
+    boolean isShipoutMark();
 }

@@ -24,6 +24,7 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.typesetter.Typesetter;
@@ -53,7 +54,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
@@ -93,7 +94,7 @@ public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
      *       de.dante.extex.typesetter.Typesetter)
      */
     public Box getBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(context, source);
         return context.getBox(key);

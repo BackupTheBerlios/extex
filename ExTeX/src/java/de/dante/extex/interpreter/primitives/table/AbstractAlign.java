@@ -22,9 +22,10 @@ package de.dante.extex.interpreter.primitives.table;
 import java.util.ArrayList;
 import java.util.List;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.table.util.PreambleItem;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
@@ -32,7 +33,6 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -40,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for alinments.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class AbstractAlign extends AbstractCode {
 
@@ -73,10 +73,10 @@ public class AbstractAlign extends AbstractCode {
      *
      * @return the preamble as list of PreambleItems
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected List getPreamble(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         List preamble = new ArrayList();
 
@@ -98,11 +98,11 @@ public class AbstractAlign extends AbstractCode {
      *
      * @return <code>true</code> iff the item has been ended by <tt>&</tt>.
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private boolean addPreambleItem(final Context context,
             final TokenSource source, final List preamble)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens pre = new Tokens();
         Tokens post = new Tokens();

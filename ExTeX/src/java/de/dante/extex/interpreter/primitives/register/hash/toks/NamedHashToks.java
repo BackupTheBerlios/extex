@@ -23,11 +23,12 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.InterpreterExtensionException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.hash.toks.HashToks;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.main.exception.MainExTeXExtensionException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -43,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NamedHashToks extends AbstractAssignment implements Theable {
 
@@ -78,7 +79,7 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
             contextextex.setHashToks(key, value, prefix.isGlobal());
 
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -88,7 +89,8 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter)
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -96,7 +98,7 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
             String s = contextextex.getHashToks(key).toString();
             return new Tokens(context, s);
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -107,7 +109,8 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
      * @return the key
      * @throws GeneralException ...
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source)
+            throws InterpreterException {
 
         return getName();
     }

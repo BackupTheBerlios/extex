@@ -31,7 +31,7 @@ import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
@@ -43,7 +43,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a PL-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class TFM2PL {
 

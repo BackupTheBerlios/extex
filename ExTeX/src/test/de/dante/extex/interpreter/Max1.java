@@ -23,6 +23,7 @@ import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -50,7 +51,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public class Max1 extends TestCase {
 
@@ -102,9 +103,16 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.Typesetter#clearShipoutMark()
+         */
+        public void clearShipoutMark() {
+
+        }
+
+        /**
          * @see de.dante.extex.typesetter.Typesetter#complete(TypesetterOptions)
          */
-        public NodeList complete(final TypesetterOptions context) {
+        public NodeList complete(final TypesetterOptions context) throws InterpreterException {
 
             return null;
         }
@@ -164,6 +172,14 @@ public class Max1 extends TestCase {
         public Mode getMode() {
 
             return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#isShipoutMark()
+         */
+        public boolean isShipoutMark() {
+
+            return false;
         }
 
         /**

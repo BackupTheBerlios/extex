@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.primitives.register.hash.toks;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.util.GeneralException;
 
 /**
@@ -41,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NumberedHashToks extends NamedHashToks {
 
@@ -59,10 +60,17 @@ public class NumberedHashToks extends NamedHashToks {
      *
      * @param source    the tokensource
      * @return Return the key
-     * @throws GeneralException if an ecxeption was occured
+     * @throws InterpreterException if an exception has occurred
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source)
+            throws InterpreterException {
 
-        return getName() + "#" + Long.toString(source.scanNumber());
+        try {
+            return getName() + "#" + Long.toString(source.scanNumber());
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 }

@@ -22,12 +22,14 @@ package de.dante.extex.main.errorHandler;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.InteractionVisitor;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
@@ -48,7 +50,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ErrorHandlerImpl
         implements
@@ -121,9 +123,16 @@ public class ErrorHandlerImpl
      */
     public boolean handleError(final GeneralException exception, final Token t,
             final TokenSource source, final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
-        return context.getInteraction().visit(this, source, context, exception);
+        try {
+            return context.getInteraction().visit(this, source, context,
+                    exception);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new ImpossibleException(e);
+        }
     }
 
     /**

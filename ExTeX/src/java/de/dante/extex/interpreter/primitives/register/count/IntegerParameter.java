@@ -19,11 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.InitializableCode;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the count valued primitives like
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class IntegerParameter extends CountPrimitive
         implements
@@ -61,8 +61,7 @@ public class IntegerParameter extends CountPrimitive
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+    protected String getKey(final Context context, final TokenSource source) {
 
         return getName();
     }
@@ -73,13 +72,11 @@ public class IntegerParameter extends CountPrimitive
      * @param context the interpreter context
      * @param value the source of information for the initialization
      *
-     * @throws GeneralException in case of an error
-     *
      * @see de.dante.extex.interpreter.type.InitializableCode#init(
      *      de.dante.extex.interpreter.context.Context, java.lang.String)
      */
     public void init(final Context context, final String value)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (!value.equals("")) {
             try {

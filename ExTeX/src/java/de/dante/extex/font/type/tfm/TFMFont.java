@@ -31,7 +31,7 @@ import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.XMLConvertible;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TFMFont
         implements

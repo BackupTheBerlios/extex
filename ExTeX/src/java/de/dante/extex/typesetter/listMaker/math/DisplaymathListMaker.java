@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.listMaker.math;
 
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -33,7 +34,7 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -63,7 +64,7 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList complete(final TypesetterOptions context) {
+    public NodeList complete(final TypesetterOptions context) throws InterpreterException {
 
         HorizontalListNode list = new HorizontalListNode();
 

@@ -16,19 +16,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.group;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-
 
 /*
  * TODO:
@@ -37,7 +38,7 @@ import de.dante.util.GeneralException;
  *
 
 
-/**
+ /**
  * This class provides an implementation for the primitive
  * <code>\currentgrouplevel</code>.
  *
@@ -60,11 +61,12 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Currentgrouplevel
-    extends AbstractCode
-    implements CountConvertible, Theable {
+public class Currentgrouplevel extends AbstractCode
+        implements
+            CountConvertible,
+            Theable {
 
     /**
      * Creates a new object.
@@ -72,6 +74,7 @@ public class Currentgrouplevel
      * @param name the name for debugging
      */
     public Currentgrouplevel(final String name) {
+
         super(name);
     }
 
@@ -86,11 +89,10 @@ public class Currentgrouplevel
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn",
+        throw new HelpingException(getLocalizer(), "TTP.CantUseIn",
                 printableControlSequence(context), typesetter.getMode()
                         .toString());
     }
-
 
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
@@ -99,11 +101,10 @@ public class Currentgrouplevel
      *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return context.getGroupLevel();
     }
-
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
@@ -112,8 +113,7 @@ public class Currentgrouplevel
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-                      final Typesetter typesetter)
-        throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String level = Long.toString(context.getGroupLevel());
         return new Tokens(context, level);

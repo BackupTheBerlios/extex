@@ -22,15 +22,16 @@ package de.dante.extex.interpreter.primitives.font;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -59,7 +60,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
@@ -86,7 +87,7 @@ public class Fontname extends AbstractCode implements ExpandableCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         source.skipSpace();
         Font font;
@@ -99,8 +100,12 @@ public class Fontname extends AbstractCode implements ExpandableCode {
         Dimen size = font.getActualSize();
         if (font.getDesignSize().ne(size)) {
             TokenFactory tokenFactory = context.getTokenFactory();
-            fontname.add(tokenFactory, " at ");
-            fontname.add(size.toToks(tokenFactory));
+            try {
+                fontname.add(tokenFactory, " at ");
+                fontname.add(size.toToks(tokenFactory));
+            } catch (CatcodeException e) {
+                throw new InterpreterException(e);
+            }
         }
         source.push(fontname);
     }
@@ -114,7 +119,7 @@ public class Fontname extends AbstractCode implements ExpandableCode {
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         execute(prefix, context, source, typesetter);
     }

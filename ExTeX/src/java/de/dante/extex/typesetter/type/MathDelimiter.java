@@ -19,10 +19,10 @@
 
 package de.dante.extex.typesetter.type;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.primitives.math.delimiter.Delimiter;
 import de.dante.extex.scanner.CodeToken;
@@ -39,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathDelimiter {
 

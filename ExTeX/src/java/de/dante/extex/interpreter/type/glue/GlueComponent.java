@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,22 +21,23 @@ package de.dante.extex.interpreter.type.glue;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -56,7 +57,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -128,12 +129,11 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @return the fixed point representation of the floating number in units
      * of 2<sup>16</sup>.
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public static long scanFloat(final Context context,
             final TokenSource source, final Token start)
-            throws GeneralException {
+            throws InterpreterException {
 
         boolean neg = false;
         long val = 0;
@@ -207,11 +207,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param context the interpreter context
      * @param source the source for the tokens to be read
      * @param fixed if <code>true</code> then no glue order is allowed
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public GlueComponent(final Context context, final TokenSource source,
-            final boolean fixed) throws GeneralException {
+            final boolean fixed) throws InterpreterException {
 
         super();
         set(context, source, fixed);
@@ -258,11 +257,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param source the source for new tokens
      * @param context the interpreter context
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public GlueComponent(final TokenSource source, final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         this(context, source, false);
     }
@@ -428,10 +426,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param context the interpreter context
      * @param source the source for next tokens
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public void set(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         set(context, source, true);
     }
@@ -444,11 +442,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param fixed this argument indicates that no fil parts of the object
      * should be filled. This means that the component is in fact a fixed
      * Dimen value.
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected void set(final Context context, final TokenSource source,
-            final boolean fixed) throws GeneralException {
+            final boolean fixed) throws InterpreterException {
 
         Typesetter typesetter = null;
 
@@ -679,14 +676,14 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @return the printable representation
      *
-     * @throws GeneralException in case of an error
+     * @throws CatcodeException in case of an error
      *
      * @see "TeX -- The Program [103]"
      * @see #toToks(TokenFactory)
      * @see #toString()
      * @see #toString(StringBuffer)
      */
-    public Tokens toToks(final TokenFactory factory) throws GeneralException {
+    public Tokens toToks(final TokenFactory factory) throws CatcodeException {
 
         Tokens toks = new Tokens();
         toToks(toks, factory);
@@ -703,7 +700,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @param toks the tokens to append to
      * @param factory the token factory to get the required tokens from
      *
-     * @throws GeneralException in case of an error
+     * @throws CatcodeException in case of an error
      *
      * @see "TeX -- The Program [103]"
      * @see #toToks(TokenFactory)
@@ -711,7 +708,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @see #toString(StringBuffer)
      */
     public void toToks(final Tokens toks, final TokenFactory factory)
-            throws GeneralException {
+            throws CatcodeException {
 
         long val = getValue();
 

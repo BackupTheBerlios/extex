@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -38,7 +39,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -97,7 +98,7 @@ public class VerticalListMaker extends AbstractListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public final NodeList complete(final TypesetterOptions context) {
+    public final NodeList complete(final TypesetterOptions context) throws InterpreterException {
 
         return nodes;
     }

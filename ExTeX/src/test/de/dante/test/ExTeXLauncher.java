@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
+     * @version $Revision: 1.19 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -82,8 +82,7 @@ public class ExTeXLauncher extends TestCase {
          *      de.dante.extex.interpreter.context.Context)
          */
         public boolean handleError(final GeneralException e, final Token token,
-                final TokenSource source, final Context context)
-                throws GeneralException {
+                final TokenSource source, final Context context) {
 
             logger.log(Level.SEVERE, e.getLocalizedMessage());
             return false;

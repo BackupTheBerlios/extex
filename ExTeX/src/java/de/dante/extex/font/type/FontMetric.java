@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import org.jdom.Element;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
@@ -31,7 +31,7 @@ import de.dante.util.configuration.ConfigurationException;
  * from some other fontsmetric-classes.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FontMetric {
 

@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.exception.helping;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -27,7 +26,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UndefinedControlSequenceException extends HelpingException {
 

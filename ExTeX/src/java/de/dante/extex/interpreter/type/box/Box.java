@@ -25,6 +25,7 @@ import javax.naming.OperationNotSupportedException;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -39,7 +40,6 @@ import de.dante.extex.typesetter.listMaker.RestrictedHorizontalListMaker;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -50,7 +50,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Box implements BoxOrRule, Serializable {
 
@@ -75,11 +75,11 @@ public class Box implements BoxOrRule, Serializable {
      * @param insert tokens to insert at the beginning or <code>null</code>
      *  for none
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public Box(final Context context, final TokenSource source,
             final Typesetter typesetter, final boolean isHorizontal,
-            final Tokens insert) throws GeneralException {
+            final Tokens insert) throws InterpreterException {
 
         super();
 
@@ -102,7 +102,7 @@ public class Box implements BoxOrRule, Serializable {
         try {
             context.openGroup();
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
 
         source.push(insert);

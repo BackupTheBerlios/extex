@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.count;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.util.GeneralException;
 
 /**
@@ -49,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Fam extends CountPrimitive {
 
@@ -68,9 +69,14 @@ public class Fam extends CountPrimitive {
      *      Context, de.dante.extex.interpreter.TokenSource)
      */
     protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
-        String number = Long.toString(source.scanNumber(context));
+        String number;
+        try {
+            number = Long.toString(source.scanNumber(context));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
 
         if (Namespace.SUPPORT_NAMESPACE_COUNT) {
             return context.getNamespace() + "fam#" + number;

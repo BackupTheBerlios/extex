@@ -20,6 +20,7 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.util.GeneralException;
 
 
@@ -27,7 +28,7 @@ import de.dante.util.GeneralException;
  * This interface describes a list for alignments with the associated methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface AlignmentList {
 
@@ -72,9 +73,8 @@ public interface AlignmentList {
      *
      * @param context the interpreter context
      * @param source the token source
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException TODO
      */
-    void span(Context context, TokenSource source) throws GeneralException;
+    void span(Context context, TokenSource source) throws InterpreterException;
 
 }

@@ -21,7 +21,6 @@ package de.dante.extex.interpreter.max;
 
 import java.util.ArrayList;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
@@ -29,6 +28,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
@@ -78,7 +78,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public abstract class Moritz
         implements
@@ -199,11 +199,18 @@ public abstract class Moritz
      *
      * @return <code>true</code> iff the closed file has been a file stream
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    private boolean closeStream(final Context context) throws GeneralException {
+    private boolean closeStream(final Context context)
+            throws InterpreterException {
 
-        observersCloseStream.update(this, stream);
+        try {
+            observersCloseStream.update(this, stream);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
         boolean isFile = stream.isFileStream();
         int last = streamStack.size() - 1;
         stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
@@ -217,7 +224,8 @@ public abstract class Moritz
     /**
      * @see de.dante.extex.interpreter.TokenSource#closeAllStreams(Context)
      */
-    public void closeAllStreams(final Context context) throws GeneralException {
+    public void closeAllStreams(final Context context)
+            throws InterpreterException {
 
         while (stream != null) {
             closeStream(context);
@@ -228,7 +236,7 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream(Context)
      */
     public void closeNextFileStream(final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         while (stream != null) {
             if (closeStream(context)) {
@@ -246,7 +254,8 @@ public abstract class Moritz
 
         Configuration cfg = config.findConfiguration("ExtendedRegisterNames");
         if (cfg != null) {
-            extendedRegisterNames = Boolean.valueOf(cfg.getValue()).booleanValue();
+            extendedRegisterNames = Boolean.valueOf(cfg.getValue())
+                    .booleanValue();
         }
 
     }
@@ -269,7 +278,7 @@ public abstract class Moritz
      *      de.dante.extex.scanner.Token)
      */
     public abstract void execute(final Token token)
-            throws GeneralException,
+            throws InterpreterException,
                 ErrorLimitException;
 
     /**
@@ -281,16 +290,17 @@ public abstract class Moritz
      *
      * @return the next non-expandable token or <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    protected abstract Token expand(final Token token) throws GeneralException;
+    protected abstract Token expand(final Token token)
+            throws InterpreterException;
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#getBox(
      *      Context, de.dante.extex.typesetter.Typesetter)
      */
     public Box getBox(final Context context, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token t = getToken(context);
         if (!(t instanceof CodeToken)) {
@@ -321,11 +331,11 @@ public abstract class Moritz
      *
      * @return the token read
      *
-     * @throws GeneralException in case that the token stream is at its end or
-     *   that the token read is not a control sequence token
+     * @throws InterpreterException in case that the token stream is at its
+     *  end or that the token read is not a control sequence token
      */
     public CodeToken getControlSequence(final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token t = getToken(context);
 
@@ -337,9 +347,15 @@ public abstract class Moritz
             return (CodeToken) t;
 
         }
-        push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                new UnicodeChar(context.esc("")), "inaccessible ",
-                context.getNamespace()));
+        try {
+            push(context.getTokenFactory().createToken(Catcode.ESCAPE,
+                    new UnicodeChar(context.esc("")), "inaccessible ",
+                    context.getNamespace()));
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
         push(t);
         throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
     }
@@ -347,7 +363,7 @@ public abstract class Moritz
     /**
      * @see de.dante.extex.interpreter.TokenSource#getFont(Context)
      */
-    public Font getFont(final Context context) throws GeneralException {
+    public Font getFont(final Context context) throws InterpreterException {
 
         Token t = getToken(context);
 
@@ -378,12 +394,11 @@ public abstract class Moritz
      * @return <code>true</code> iff the tokens could have been successfully
      *  removed from the input stream
      *
-     * @throws GeneralException
-     *  in case that no number is found or the end of file has been
-     *  reached before an integer could be acquired
+     * @throws InterpreterException in case that no number is found or the
+     *  end of file has been reached before an integer could be acquired
      */
     public boolean getKeyword(final Context context, final String s)
-            throws GeneralException {
+            throws InterpreterException {
 
         skipSpaces = true;
         if (getKeyword(context, s, 0)) {
@@ -404,10 +419,10 @@ public abstract class Moritz
      *
      * @return <code>true</code> iff the keyword has been found
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private boolean getKeyword(final Context context, final String s,
-            final int i) throws GeneralException {
+            final int i) throws InterpreterException {
 
         if (i < s.length()) {
             Token t = getToken(context);
@@ -444,19 +459,10 @@ public abstract class Moritz
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#getNonSpace()
-     * @deprecated use getNonSpace(Context) instead
-     */
-    public Token getNonSpace() throws GeneralException {
-
-        return getNonSpace(getContext());
-    }
-
-    /**
      * @see de.dante.extex.interpreter.TokenSource#getNonSpace(
      *      de.dante.extex.interpreter.context.Context)
      */
-    public Token getNonSpace(final Context context) throws GeneralException {
+    public Token getNonSpace(final Context context) throws InterpreterException {
 
         skipSpaces = true;
         return getToken(context);
@@ -468,15 +474,14 @@ public abstract class Moritz
      * @param token the first token to consider
      *
      * @return the value of the integer scanned
-     * @throws GeneralException
-     *  in case that no number is found or the end of file has been
-     *  reached before an integer could be acquired
+     * @throws InterpreterException in case that no number is found or the
+     *  end of file has been reached before an integer could be acquired
      * @throws MissingNumberException 
      *  in case that no number is found or the end of file has been
      *  reached before an integer could be acquired
      */
     public long getNumber(final Token token)
-            throws GeneralException,
+            throws InterpreterException,
                 MissingNumberException {
 
         Context context = getContext();
@@ -597,12 +602,12 @@ public abstract class Moritz
      *
      * @param context the interpreter context
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      *
      * @see de.dante.extex.interpreter.TokenSource#getOptionalEquals()
      */
     public void getOptionalEquals(final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         skipSpaces = true;
         Token t = getToken(context);
@@ -629,9 +634,11 @@ public abstract class Moritz
      *
      * @return the next token or <code>null</code>
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.TokenSource#getToken(de.dante.extex.interpreter.context.Context)
      */
-    public Token getToken(final Context context) throws GeneralException {
+    public Token getToken(final Context context) throws InterpreterException {
 
         TokenFactory factory = context.getTokenFactory();
         Tokenizer tokenizer = context.getTokenizer();
@@ -641,41 +648,57 @@ public abstract class Moritz
 
             skipSpaces = false;
 
-            while (stream != null) {
-                do {
-                    t = stream.get(factory, tokenizer);
+            try {
+                while (stream != null) {
+                    do {
+                        t = stream.get(factory, tokenizer);
+                        if (t != null) {
+                            observersPop.update(this, t);
+                        }
+                    } while (t != null && t instanceof SpaceToken);
+
                     if (t != null) {
-                        observersPop.update(this, t);
+                        return t;
                     }
-                } while (t != null && t instanceof SpaceToken);
 
-                if (t != null) {
-                    return t;
+                    closeStream(context);
                 }
-
-                closeStream(context);
+            } catch (InterpreterException e) {
+                throw e;
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
             }
 
         } else {
 
-            while (stream != null) {
-                t = stream.get(factory, tokenizer);
-                if (t != null) {
-                    observersPop.update(this, t);
-                    return t;
+            try {
+                while (stream != null) {
+                    t = stream.get(factory, tokenizer);
+                    if (t != null) {
+                        observersPop.update(this, t);
+                        return t;
+                    }
+                    closeStream(context);
                 }
-                closeStream(context);
+            } catch (InterpreterException e) {
+                throw e;
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
             }
         }
 
-        observersEOF.update(this, null);
+        try {
+            observersEOF.update(this, null);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
         return null;
     }
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#getTokens()
      */
-    public Tokens getTokens(final Context context) throws GeneralException {
+    public Tokens getTokens(final Context context) throws InterpreterException {
 
         Tokens toks = new Tokens();
         Token token = getToken(context);
@@ -724,11 +747,17 @@ public abstract class Moritz
      *
      * @param token the token to push
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    public void push(final Token token) throws GeneralException {
+    public void push(final Token token) throws InterpreterException {
 
-        observersPush.update(this, token);
+        try {
+            observersPush.update(this, token);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
         stream.put(token);
     }
 
@@ -737,14 +766,20 @@ public abstract class Moritz
      *
      * @param tokens the tokens to push
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    public void push(final Token[] tokens) throws GeneralException {
+    public void push(final Token[] tokens) throws InterpreterException {
 
-        for (int i = tokens.length - 1; i >= 0; i--) {
+        try {
+            for (int i = tokens.length - 1; i >= 0; i--) {
 
-            observersPush.update(this, tokens[i]);
-            stream.put(tokens[i]);
+                observersPush.update(this, tokens[i]);
+                stream.put(tokens[i]);
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -846,7 +881,7 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#scanCharacterCode(Context)
      */
     public UnicodeChar scanCharacterCode(final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         long cc = scanNumber(context);
 
@@ -867,7 +902,7 @@ public abstract class Moritz
      * @param context the interpreter context
      *
      * @return the value of the integer scanned
-     * @throws GeneralException
+     * @throws InterpreterException
      *  in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
      *
@@ -875,7 +910,7 @@ public abstract class Moritz
      *      de.dante.extex.interpreter.context.Context)
      */
     public long scanInteger(final Context context)
-            throws GeneralException,
+            throws InterpreterException,
                 MissingNumberException {
 
         Token t = scanNonSpace(context);
@@ -904,10 +939,11 @@ public abstract class Moritz
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
-     * @throws GeneralException
+     * @throws InterpreterException
      *  in case of an error in {@link #scanToken(Context) scanToken()}
      */
-    public Token scanNonSpace(final Context context) throws GeneralException {
+    public Token scanNonSpace(final Context context)
+            throws InterpreterException {
 
         for (Token t = scanToken(context); t != null; t = scanToken(context)) {
 
@@ -923,7 +959,7 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#scanNumber()
      * @deprecated use scanNumber(Context) instead
      */
-    public long scanNumber() throws GeneralException {
+    public long scanNumber() throws InterpreterException {
 
         return scanNumber(getContext(), getNonSpace(getContext()));
     }
@@ -937,13 +973,12 @@ public abstract class Moritz
      *
      * @return the value of the integer scanned
      *
-     * @throws GeneralException
-     *  in case that no number is found or the end of file has been
-     *  reached before an integer could be acquired
+     * @throws InterpreterException in case that no number is found or the
+     *  end of file has been reached before an integer could be acquired
      *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber()
      */
-    public long scanNumber(final Context context) throws GeneralException {
+    public long scanNumber(final Context context) throws InterpreterException {
 
         return scanNumber(context, getNonSpace(context));
     }
@@ -956,14 +991,13 @@ public abstract class Moritz
      *
      * @return the value of the integer scanned
      *
-     * @throws GeneralException
-     *  in case that no number is found or the end of file has been
-     *  reached before an integer could be acquired
+     * @throws InterpreterException in case that no number is found or the
+     *  end of file has been reached before an integer could be acquired
      *
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(de.dante.extex.scanner.Token)
      */
     public long scanNumber(final Context context, final Token token)
-            throws GeneralException,
+            throws InterpreterException,
                 MissingNumberException {
 
         long n = 0;
@@ -1103,7 +1137,7 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#scanRegisterName(Context)
      */
     public String scanRegisterName(final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         skipSpaces = true;
         Token token = getToken(context);
@@ -1129,9 +1163,12 @@ public abstract class Moritz
      *
      * @return the next unexpandable token
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.TokenSource#scanToken(
+     *      de.dante.extex.interpreter.context.Context)
      */
-    public Token scanToken(final Context context) throws GeneralException {
+    public Token scanToken(final Context context) throws InterpreterException {
 
         return expand(getToken(context));
     }
@@ -1139,7 +1176,7 @@ public abstract class Moritz
     /**
      * @see de.dante.extex.interpreter.TokenSource#scanTokens(Context)
      */
-    public Tokens scanTokens(final Context context) throws GeneralException {
+    public Tokens scanTokens(final Context context) throws InterpreterException {
 
         Tokens toks = new Tokens();
         skipSpaces = true;
@@ -1171,7 +1208,7 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString()
      */
     public String scanTokensAsString(final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         return scanTokens(context).toText();
     }
@@ -1193,7 +1230,7 @@ public abstract class Moritz
     /**
      * @see de.dante.extex.interpreter.TokenSource#skipSpace()
      */
-    public void skipSpace() throws GeneralException {
+    public void skipSpace() {
 
         skipSpaces = true;
     }
@@ -1203,7 +1240,7 @@ public abstract class Moritz
      *      java.lang.String)
      */
     public void update(final String name, final String text)
-            throws GeneralException {
+            throws NotObservableException {
 
         throw new NotObservableException(name);
     }

@@ -24,6 +24,7 @@ import java.util.List;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.box.Box;
@@ -73,7 +74,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -118,7 +119,7 @@ public class Halign extends AbstractAlign implements Boxable {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Box getBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return new Box(getNodes(context, source, typesetter));
     }
@@ -132,13 +133,13 @@ public class Halign extends AbstractAlign implements Boxable {
      *
      * @return the list of nodes gathered
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      * @throws EofException in case that an enof of file has occurred
      * @throws MissingLeftBraceException in case that the mandatory left
      *  brace was missing
      */
     private NodeList getNodes(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         FixedDimen width = null;
         boolean spread = false;
@@ -164,11 +165,15 @@ public class Halign extends AbstractAlign implements Boxable {
         try {
             context.openGroup();
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
 
         source.executeGroup();
-        return typesetter.complete((TypesetterOptions) context);
+        try {
+            return typesetter.complete((TypesetterOptions) context);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

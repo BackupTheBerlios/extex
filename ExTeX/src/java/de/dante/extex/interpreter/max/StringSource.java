@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.max;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -31,7 +32,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class StringSource extends Moritz {
 
@@ -62,7 +63,7 @@ public class StringSource extends Moritz {
      * @see de.dante.extex.interpreter.max.Moritz#expand(
      *      de.dante.extex.scanner.Token)
      */
-     protected Token expand(final Token token) throws GeneralException {
+    protected Token expand(final Token token) {
 
         return token;
     }
@@ -70,7 +71,7 @@ public class StringSource extends Moritz {
     /**
      * @see de.dante.extex.interpreter.TokenSource#executeGroup()
      */
-    public void executeGroup() throws GeneralException, ErrorLimitException {
+    public void executeGroup() throws InterpreterException {
 
         // TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
@@ -79,7 +80,8 @@ public class StringSource extends Moritz {
     /**
      * @see de.dante.extex.interpreter.TokenSource#execute(de.dante.extex.scanner.Token)
      */
-    public void execute(final Token token) throws GeneralException, ErrorLimitException {
+    public void execute(final Token token)
+            throws InterpreterException {
 
         // TODO gene: unimplemented
         throw new RuntimeException("unimplemented");

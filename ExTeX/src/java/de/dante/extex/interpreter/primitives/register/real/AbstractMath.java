@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register.real;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  * e.g. sin, cos, ...
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractMath extends AbstractCode
         implements
@@ -79,10 +80,15 @@ public abstract class AbstractMath extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter)
+            throws InterpreterException {
 
-        Real real = calculate(context, source);
-        return new Tokens(context, real.toString());
+        try {
+            Real real = calculate(context, source);
+            return new Tokens(context, real.toString());
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -91,9 +97,15 @@ public abstract class AbstractMath extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Real convertReal(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
-        return calculate(context, source);
+        try {
+            return calculate(context, source);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -103,9 +115,15 @@ public abstract class AbstractMath extends AbstractCode
      *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
-        return calculate(context, source).getLong();
+        try {
+            return calculate(context, source).getLong();
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**

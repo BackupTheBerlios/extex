@@ -16,15 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.LetterToken;
 import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.Token;
@@ -57,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
@@ -94,7 +97,7 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens toks = source.getTokens(context);
 
@@ -106,17 +109,21 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
         TokenFactory factory = context.getTokenFactory();
         Token t;
 
-        for (int i = 0; i < toks.length(); i++) {
-            t = toks.get(i);
-            if (t instanceof LetterToken || t instanceof OtherToken) {
-                UnicodeChar uc = context.getLccode(t.getChar());
-                if (uc != null && //
-                    uc.getCodePoint() != 0 && //
-                    !uc.equals(t.getChar())) {
-                    t = factory.createToken(t.getCatcode(), uc, namespace);
+        try {
+            for (int i = 0; i < toks.length(); i++) {
+                t = toks.get(i);
+                if (t instanceof LetterToken || t instanceof OtherToken) {
+                    UnicodeChar uc = context.getLccode(t.getChar());
+                    if (uc != null && //
+                            uc.getCodePoint() != 0 && //
+                            !uc.equals(t.getChar())) {
+                        t = factory.createToken(t.getCatcode(), uc, namespace);
+                    }
                 }
+                result[i] = t;
             }
-            result[i] = t;
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
         }
 
         source.push(result);

@@ -19,10 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -49,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -113,7 +114,7 @@ public class MacroCode extends AbstractCode
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens[] args = matchPattern(context, source);
         Tokens toks = new Tokens();
@@ -133,11 +134,11 @@ public class MacroCode extends AbstractCode
                 } else if (t instanceof OtherToken && t.getChar().isDigit()) {
                     no = t.getChar().getCodePoint() - '0';
                     if (args[no] == null) {
-                        throw new GeneralException("internal error");
+                        throw new InterpreterException("internal error");//TODO gene:
                     }
                     toks.add(args[no]);
                 } else {
-                    throw new GeneralException("internal error");
+                    throw new InterpreterException("internal error");//TODO gene:
                 }
             } else {
                 toks.add(t);
@@ -156,7 +157,7 @@ public class MacroCode extends AbstractCode
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         execute(prefix, context, source, typesetter);
     }
@@ -172,7 +173,7 @@ public class MacroCode extends AbstractCode
      * @throws GeneralException in case of an error
      */
     private Tokens getTokenOrBlock(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         Token t = source.getToken(context);
 
@@ -221,11 +222,11 @@ public class MacroCode extends AbstractCode
      *
      * @return the index of the character after the parameter
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private int matchParameter(final Context context, final TokenSource source,
             final Tokens[] args, final int len, final int i)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (i + 1 >= len) {
             throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
@@ -272,10 +273,10 @@ public class MacroCode extends AbstractCode
      *         matching. Note that some of th elements of the array might be
      *         <code>null</code>.
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private Tokens[] matchPattern(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         Tokens[] args = new Tokens[pattern.getArity()];
         Token ti;
@@ -311,10 +312,10 @@ public class MacroCode extends AbstractCode
      *
      * @return the tokens accumulated in between
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private Tokens scanTo(final Context context, final TokenSource source,
-            final Token to) throws GeneralException {
+            final Token to) throws InterpreterException {
 
         Tokens toks = new Tokens();
 
@@ -334,13 +335,17 @@ public class MacroCode extends AbstractCode
      * @see de.dante.extex.interpreter.type.Showable#show(
      *      de.dante.extex.interpreter.context.Context)
      */
-    public Tokens show(final Context context) throws GeneralException {
+    public Tokens show(final Context context) throws InterpreterException {
 
-        Tokens toks = new Tokens(context, "macro:\n");
+        try {
+            Tokens toks = new Tokens(context, "macro:\n");
 
-        pattern.show(context, toks);
-        toks.add(context.getTokenFactory(), " ->");
-        body.show(context, toks);
-        return toks;
+            pattern.show(context, toks);
+            toks.add(context.getTokenFactory(), " ->");
+            body.show(context, toks);
+            return toks;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 }

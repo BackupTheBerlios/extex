@@ -24,6 +24,7 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.box.Box;
@@ -109,7 +110,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Dp extends Setbox
         implements
@@ -158,7 +159,7 @@ public class Dp extends Setbox
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         source.push(the(context, source, typesetter));
     }
@@ -169,11 +170,15 @@ public class Dp extends Setbox
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
-        Box box = context.getBox(getKey(context, source));
-        FixedDimen d = (box == null ? Dimen.ZERO_PT : box.getDepth());
-        return d.toToks(context.getTokenFactory());
+        try {
+            Box box = context.getBox(getKey(context, source));
+            FixedDimen d = (box == null ? Dimen.ZERO_PT : box.getDepth());
+            return d.toToks(context.getTokenFactory());
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -182,7 +187,7 @@ public class Dp extends Setbox
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return convertDimen(context, source, typesetter);
     }
@@ -193,7 +198,7 @@ public class Dp extends Setbox
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Box b = context.getBox(getKey(context, source));
         return (b == null ? 0 : b.getDepth().getValue());

@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.BadFileNumberException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -37,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -67,7 +68,7 @@ public abstract class AbstractFileCode extends AbstractCode
      * @throws GeneralException in case of a failure
      */
     public static String scanInFileKey(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         long no = source.scanInteger(context);
         String key = Long.toString(no);

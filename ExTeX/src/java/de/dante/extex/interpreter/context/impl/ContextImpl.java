@@ -31,7 +31,6 @@ import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
@@ -44,6 +43,8 @@ import de.dante.extex.interpreter.context.CountChangeObserver;
 import de.dante.extex.interpreter.context.Direction;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
@@ -114,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public class ContextImpl
         implements
@@ -168,6 +169,11 @@ public class ContextImpl
      * registered for change event on the count registers.
      */
     private transient Map countChangeObservers = new HashMap();
+
+    /**
+     * The field <tt>errorCount</tt> contains the error counter.
+     */
+    private int errorCount = 0;
 
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
@@ -449,7 +455,7 @@ public class ContextImpl
      * @see de.dante.extex.interpreter.context.Context#getCode(
      *      de.dante.extex.scanner.CodeToken)
      */
-    public Code getCode(final CodeToken t) throws GeneralException {
+    public Code getCode(final CodeToken t) throws InterpreterException {
 
         return group.getCode(t);
     }
@@ -495,6 +501,14 @@ public class ContextImpl
     public FixedDimen getDimenOption(final String name) {
 
         return group.getDimen(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextErrorCount#getErrorCount()
+     */
+    public int getErrorCount() {
+
+        return errorCount;
     }
 
     /**
@@ -719,6 +733,14 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.ContextErrorCount#incrementErrorCount()
+     */
+    public int incrementErrorCount() {
+
+        return ++errorCount;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
      */
     public boolean isGlobalGroup() {
@@ -738,7 +760,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#popConditional()
      */
-    public Conditional popConditional() throws GeneralException {
+    public Conditional popConditional() {
 
         int size = conditionalStack.size();
         if (size <= 0) {

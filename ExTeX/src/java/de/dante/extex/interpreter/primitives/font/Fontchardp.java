@@ -23,6 +23,7 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -58,7 +59,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Fontchardp extends AbstractCode
         implements
@@ -83,20 +84,24 @@ public class Fontchardp extends AbstractCode
      *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertDimen(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
-        Font fnt = source.getFont(context);
-        UnicodeChar uc = source.scanCharacterCode(context);
-        Glyph glyph = fnt.getGlyph(uc);
-        if (glyph == null) {
-            return 0;
-        }
-        Dimen depth = glyph.getDepth();
-        if (depth == null) {
-            return 0;
-        }
+        try {
+            Font fnt = source.getFont(context);
+            UnicodeChar uc = source.scanCharacterCode(context);
+            Glyph glyph = fnt.getGlyph(uc);
+            if (glyph == null) {
+                return 0;
+            }
+            Dimen depth = glyph.getDepth();
+            if (depth == null) {
+                return 0;
+            }
 
-        return depth.getValue();
+            return depth.getValue();
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -123,7 +128,7 @@ public class Fontchardp extends AbstractCode
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         long value = convertDimen(context, source, typesetter);
         source.push(new Tokens(context, value));
@@ -135,7 +140,7 @@ public class Fontchardp extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         long value = convertDimen(context, source, typesetter);
         return new Tokens(context, value);

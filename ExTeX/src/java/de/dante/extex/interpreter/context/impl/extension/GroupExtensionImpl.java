@@ -26,19 +26,19 @@ import java.util.Map;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.impl.Group;
 import de.dante.extex.interpreter.context.impl.GroupImpl;
+import de.dante.extex.interpreter.exception.InterpreterExtensionException;
 import de.dante.extex.interpreter.type.bool.Bool;
 import de.dante.extex.interpreter.type.hash.toks.HashToks;
 import de.dante.extex.interpreter.type.pair.Pair;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.transform.Transform;
-import de.dante.extex.main.exception.MainExTeXExtensionException;
 import de.dante.util.GeneralException;
 
 /**
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements
@@ -88,7 +88,7 @@ public class GroupExtensionImpl extends GroupImpl
 
         super(next);
         if (next != null && !(next instanceof GroupExtension)) {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
         nextext = (GroupExtension) next;
     }

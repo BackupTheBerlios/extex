@@ -23,6 +23,8 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.InterpreterExtensionException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.arithmetic.Advanceable;
@@ -32,7 +34,6 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.main.exception.MainExTeXExtensionException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -47,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -69,7 +70,8 @@ public class NamedReal extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -88,7 +90,7 @@ public class NamedReal extends AbstractAssignment
             contextextex.setReal(key, value, prefix.isGlobal());
 
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -106,7 +108,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
             contextextex.setReal(getName(), value);
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -124,7 +126,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
             contextextex.setReal(getName(), new Real(value));
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -134,7 +136,8 @@ public class NamedReal extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter)
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -142,7 +145,7 @@ public class NamedReal extends AbstractAssignment
             String s = contextextex.getReal(key).toString();
             return new Tokens(context, s);
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -151,9 +154,10 @@ public class NamedReal extends AbstractAssignment
      *
      * @param source ...
      * @return the key
-     * @throws GeneralException ...
+     * @throws InterpreterException ...
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source)
+            throws InterpreterException {
 
         return getName();
     }
@@ -179,7 +183,7 @@ public class NamedReal extends AbstractAssignment
                 contextextex.setReal(key, real, true);
             }
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -204,7 +208,7 @@ public class NamedReal extends AbstractAssignment
                 contextextex.setReal(key, real, true);
             }
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -228,7 +232,7 @@ public class NamedReal extends AbstractAssignment
                 contextextex.setReal(key, real, true);
             }
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -238,7 +242,7 @@ public class NamedReal extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Real convertReal(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -246,7 +250,7 @@ public class NamedReal extends AbstractAssignment
             Real r = contextextex.getReal(key);
             return (r != null ? r : Real.ZERO);
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 
@@ -257,7 +261,7 @@ public class NamedReal extends AbstractAssignment
      *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -265,7 +269,7 @@ public class NamedReal extends AbstractAssignment
             Real r = contextextex.getReal(key);
             return (r != null ? r.getLong() : 0);
         } else {
-            throw new MainExTeXExtensionException();
+            throw new InterpreterExtensionException();
         }
     }
 }

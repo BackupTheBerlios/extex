@@ -28,7 +28,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.StringTokenizer;
 
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 
 /**
  * Reader for a psfonts.map-file.
@@ -36,7 +36,7 @@ import de.dante.extex.i18n.HelpingException;
  * @see <a href="package-summary.html#psfontsmap">psfonts.map</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class PSFontsMapReader implements Serializable {

@@ -20,8 +20,8 @@
 package de.dante.extex.interpreter.type.count;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.util.GeneralException;
 
 /**
  * This interface describes the features of a
@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FixedCount {
 
@@ -70,10 +70,9 @@ public interface FixedCount {
      * @param context the interpreter context
      *
      * @return the printable respresentation as tokens
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException TODO
      */
     Tokens toToks(final Context context)
-            throws GeneralException;
+            throws InterpreterException;
 
 }

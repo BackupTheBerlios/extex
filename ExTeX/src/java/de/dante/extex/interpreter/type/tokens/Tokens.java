@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,19 +25,21 @@ import java.util.List;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.MacroParamToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
-import de.dante.util.GeneralException;
 
 /**
- * A Buffer for Tokens.
+ * This class is a container for a list of
+ * {@link de.dante.extex.scanner.Token Token}s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -80,13 +82,17 @@ public class Tokens implements Serializable, FixedTokens {
      * @param context the interpreter context
      * @param s the <code>String</code> to add
      *
-     * @throws GeneralException if a error throws in the factory
+     * @throws InterpreterException in case of an error
      */
     public Tokens(final Context context, final String s)
-            throws GeneralException {
+            throws InterpreterException {
 
         this();
-        add(context.getTokenFactory(), s);
+        try {
+            add(context.getTokenFactory(), s);
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -98,10 +104,10 @@ public class Tokens implements Serializable, FixedTokens {
      * @param context the interpreter context
      * @param num the number to add
      *
-     * @throws GeneralException if a error throws in the factory
+     * @throws InterpreterException in case of an error
      */
     public Tokens(final Context context, final long num)
-            throws GeneralException {
+            throws InterpreterException {
 
         this(context, Long.toString(num));
     }
@@ -139,10 +145,10 @@ public class Tokens implements Serializable, FixedTokens {
      * @param factory the TokenFactory to acquire new Tokens from
      * @param s the String to add
      *
-     * @throws GeneralException in case of an error
+     * @throws CatcodeException in case of an error
      */
     public void add(final TokenFactory factory, final String s)
-            throws GeneralException {
+            throws CatcodeException {
 
         if (s != null && s.length() > 0) {
             char c;
@@ -239,7 +245,7 @@ public class Tokens implements Serializable, FixedTokens {
      *      de.dante.extex.interpreter.type.tokens.Tokens)
      */
     public void show(final Context context, final Tokens toks)
-            throws GeneralException {
+            throws CatcodeException {
 
         TokenFactory factory = context.getTokenFactory();
         Token t;

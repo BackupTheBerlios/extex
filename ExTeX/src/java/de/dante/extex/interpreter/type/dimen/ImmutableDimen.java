@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.type.dimen;
 
 import java.io.Serializable;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 
 
 /**
@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * to produce an exception. Thus the object is in fact immutable.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ImmutableDimen extends Dimen implements Serializable {
 
@@ -95,7 +95,7 @@ public class ImmutableDimen extends Dimen implements Serializable {
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void set(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");
     }
@@ -106,7 +106,7 @@ public class ImmutableDimen extends Dimen implements Serializable {
      *      de.dante.extex.interpreter.TokenSource, boolean)
      */
     protected void set(final Context context, final TokenSource source,
-            final boolean fixed) throws GeneralException {
+            final boolean fixed) throws InterpreterException {
 
         throw new RuntimeException("Unable to set an immutable object");
     }

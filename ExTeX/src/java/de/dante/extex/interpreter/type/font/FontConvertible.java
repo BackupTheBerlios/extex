@@ -20,7 +20,7 @@ package de.dante.extex.interpreter.type.font;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
  * This is an interface which describes the feature to be convertibe into a
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface FontConvertible {
 
@@ -63,9 +63,9 @@ public interface FontConvertible {
      *
      * @return the converted value
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException In case of an error
      */
     Font convertFont(Context context, TokenSource source)
-            throws GeneralException;
+            throws InterpreterException;
 
 }

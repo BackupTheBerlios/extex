@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.i18n;
+package de.dante.extex.interpreter.exception.helping;
 
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.util.framework.i18n.Localizer;
@@ -80,7 +80,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.1 $
  */
 public class HelpingException extends InterpreterException {
 

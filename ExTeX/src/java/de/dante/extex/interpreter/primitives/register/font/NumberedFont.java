@@ -22,15 +22,15 @@ package de.dante.extex.interpreter.primitives.register.font;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for a font stored under a name and a
  * number in the context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NumberedFont extends NamedFont {
 
@@ -90,11 +90,11 @@ public class NumberedFont extends NamedFont {
      *
      * @return the key for the current register
      *
-     * @throws GeneralException in case that a derived class need to throw an
+     * @throws InterpreterException in case that a derived class need to throw an
      *  Exception this one is declared.
      */
     protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         return key(context, getName(), //
                 Long.toString(source.scanNumber(context)));

@@ -21,10 +21,11 @@ package de.dante.extex.interpreter.primitives.typesetter.undo;
 
 import javax.naming.OperationNotSupportedException;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
@@ -55,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Vsplit extends AbstractBox implements Boxable {
 
@@ -91,7 +92,7 @@ public class Vsplit extends AbstractBox implements Boxable {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Box getBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         return new Box(vsplit(context, source, typesetter));
     }
@@ -106,10 +107,10 @@ public class Vsplit extends AbstractBox implements Boxable {
      *
      * @return the nodes of the vlist cut off
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private NodeList vsplit(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(context, source);
         if (!source.getKeyword(context, "to")) {

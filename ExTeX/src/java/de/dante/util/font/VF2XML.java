@@ -32,7 +32,7 @@ import org.jdom.output.XMLOutputter;
 
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.vf.VFFont;
-import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
@@ -44,7 +44,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a VF-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class VF2XML {
 

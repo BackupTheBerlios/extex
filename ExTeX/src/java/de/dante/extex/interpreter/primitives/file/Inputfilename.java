@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.file;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.Theable;
@@ -48,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Inputfilename extends AbstractCode
         implements
@@ -89,7 +90,7 @@ public class Inputfilename extends AbstractCode
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String filename = source.getLocator().getFilename();
         source.push(new Tokens(context, filename == null ? "" : filename));
@@ -101,7 +102,7 @@ public class Inputfilename extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String filename = source.getLocator().getFilename();
         return new Tokens(context, filename == null ? "" : filename);

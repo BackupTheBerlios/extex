@@ -19,10 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -37,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -66,10 +67,10 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
      *         otherwise return <code>false</code> if a matching <tt>\fi</tt>
      *         has been found
      *
-     * @throws GeneralException in case of en error
+     * @throws InterpreterException in case of en error
      */
     protected static boolean skipToElseOrFi(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         Code code;
         int n = 0;
@@ -121,11 +122,11 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
      *
      * @return the boolean value
      *
-     * @throws GeneralException in case of en error
+     * @throws InterpreterException in case of en error
      */
     protected abstract boolean conditional(final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException;
+            throws InterpreterException;
 
     /**
      * @see de.dante.extex.interpreter.type.Code#execute(
@@ -153,7 +154,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+    throws InterpreterException {
 
         if (conditional(context, source, typesetter)
                 || skipToElseOrFi(context, source)) {

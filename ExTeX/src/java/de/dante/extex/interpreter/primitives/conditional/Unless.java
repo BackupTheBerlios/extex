@@ -18,13 +18,13 @@
  */
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
 
@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Unless extends AbstractIf implements Localizable {
     /**
@@ -85,7 +85,7 @@ public class Unless extends AbstractIf implements Localizable {
      */
     protected boolean conditional(final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
 
         CodeToken token = source.getControlSequence(context);

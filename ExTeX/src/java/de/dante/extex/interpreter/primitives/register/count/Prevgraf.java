@@ -21,7 +21,6 @@ package de.dante.extex.interpreter.primitives.register.count;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\prevgraf</code>.
@@ -45,7 +44,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Prevgraf extends CountPrimitive {
 
@@ -64,8 +63,7 @@ public class Prevgraf extends CountPrimitive {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+    protected String getKey(final Context context, final TokenSource source) {
 
         return getName();
     }

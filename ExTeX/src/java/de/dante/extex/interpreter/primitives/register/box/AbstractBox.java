@@ -24,6 +24,7 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.util.GeneralException;
 
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * It provides a method to get the key of a box register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractBox extends AbstractCode implements Serializable {
 
@@ -44,11 +45,10 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      * @param source the source for new tokens
      *
      * @return the key for the box register
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException TODO
      */
     public static String getKey(final String name, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
             return context.getNamespace() + "#box#" + name;
@@ -78,14 +78,18 @@ public abstract class AbstractBox extends AbstractCode implements Serializable {
      * @throws GeneralException in case of an error
      */
     public String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
-        String name = source.scanRegisterName(context);
+        try {
+            String name = source.scanRegisterName(context);
 
-        if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
-            return context.getNamespace() + "#box#" + name;
-        } else {
-            return "box#" + name;
+            if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
+                return context.getNamespace() + "#box#" + name;
+            } else {
+                return "box#" + name;
+            }
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
     }
 

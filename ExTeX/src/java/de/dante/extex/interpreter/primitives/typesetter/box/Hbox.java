@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.box;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -77,7 +78,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -113,7 +114,7 @@ public class Hbox extends AbstractCode implements Boxable {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Box getBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Box box;
         try {
@@ -150,7 +151,7 @@ public class Hbox extends AbstractCode implements Boxable {
      * @throws GeneralException in case of an error
      */
     private Box acquireBox(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Tokens toks = context.getToks("everyhbox");
         Token t = context.getAfterassignment();

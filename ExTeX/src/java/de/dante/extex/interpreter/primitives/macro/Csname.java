@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
@@ -29,6 +30,7 @@ import de.dante.extex.interpreter.type.CsConvertible;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CatcodeException;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.SpaceToken;
@@ -59,7 +61,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Csname extends AbstractCode
         implements
@@ -82,15 +84,22 @@ public class Csname extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Token convertCs(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
-        Token cs = source.getControlSequence(context);
+        Token cs;
+        try {
+            cs = source.getControlSequence(context);
 
-        if ((cs instanceof ControlSequenceToken)
-                && ((ControlSequenceToken) cs).getName().equals("csname")) {
-            Tokens toks = scanToEndCsname(context, source);
-            cs = context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    cs.getChar(), toks.toString(), context.getNamespace());
+            if ((cs instanceof ControlSequenceToken)
+                    && ((ControlSequenceToken) cs).getName().equals("csname")) {
+                Tokens toks = scanToEndCsname(context, source);
+                cs = context.getTokenFactory().createToken(Catcode.ESCAPE,
+                        cs.getChar(), toks.toString(), context.getNamespace());
+            }
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
 
         return cs;
@@ -120,7 +129,7 @@ public class Csname extends AbstractCode
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token t = convertCs(context, source);
         source.push(t);

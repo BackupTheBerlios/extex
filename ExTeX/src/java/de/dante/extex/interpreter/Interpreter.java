@@ -43,7 +43,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -125,6 +125,14 @@ public interface Interpreter extends TokenSource, Observable {
      * @param fontFactory the new font factory
      */
     void setFontFactory(FontFactory fontFactory);
+
+    /**
+     * Setter for the context.
+     * Use with care!
+     *
+     * @param context the interpreter context
+     */
+    void setContext(Context context);
 
     /**
      * Setter for the interaction mode.

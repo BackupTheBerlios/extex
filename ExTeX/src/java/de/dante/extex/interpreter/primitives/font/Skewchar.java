@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.font;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -66,7 +67,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Skewchar extends AbstractAssignment
         implements
@@ -116,7 +117,7 @@ public class Skewchar extends AbstractAssignment
      *       de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         try {
             Font font = source.getFont(context);
@@ -128,6 +129,8 @@ public class Skewchar extends AbstractAssignment
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
     }
 
@@ -140,7 +143,7 @@ public class Skewchar extends AbstractAssignment
      */
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         source.push(the(context, source, typesetter));
     }
@@ -152,7 +155,7 @@ public class Skewchar extends AbstractAssignment
      *      de.dante.extex.typesetter.Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         try {
             Font font = source.getFont(context);
@@ -165,6 +168,8 @@ public class Skewchar extends AbstractAssignment
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
     }
 

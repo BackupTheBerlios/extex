@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
@@ -34,7 +35,7 @@ import de.dante.util.GeneralException;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -72,7 +73,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Font convertFont(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         return context.getFont(getKey(context, source));
     }
@@ -84,10 +85,10 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
      *
      * @return the key for the font register
      *
-     * @throws GeneralException in case oif an error
+     * @throws InterpreterException in case oif an error
      */
     protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (Namespace.SUPPORT_NAMESPACE_FONT) {
             return context.getNamespace() + "\b" + getName();
