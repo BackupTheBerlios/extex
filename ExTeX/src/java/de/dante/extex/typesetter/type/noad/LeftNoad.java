@@ -25,12 +25,12 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 
 /**
- * This Noad carries a delimiter which is set on te left side of the mathe
- * material following it. Tis delmitier adjusts its height to the height of the
+ * This Noad carries a delimiter which is set on the left side of the math
+ * material following it. This delmitier adjusts its height to the height of the
  * following material.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LeftNoad extends AbstractNoad {
 
