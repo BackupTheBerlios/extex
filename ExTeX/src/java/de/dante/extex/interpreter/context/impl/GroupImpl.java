@@ -57,7 +57,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -484,7 +484,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * Getter for the group level. The group level is the number of groups which
-     * are currently open. Thus this number of groups can be closed.
+     * are currently open. Thus this number of groups can be closed. Since the
+     * top-level group can not be closed this group counts as 0.
      *
      * @return the group level
      *
@@ -492,7 +493,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      */
     public long getLevel() {
 
-        return (next == null ? 1 : 1 + next.getLevel());
+        return (next == null ? 0 : 1 + next.getLevel());
     }
 
     /**
