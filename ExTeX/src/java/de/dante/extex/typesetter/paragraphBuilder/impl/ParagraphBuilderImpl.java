@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -77,7 +77,9 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * <doc name="hsize" type="register">
  * <h3>The Parameter <tt>\hsize</tt></h3>
- *
+ *  The parameter <tt>\hsize</tt> contains the horizotal size of the paragraph
+ *  to be build.
+ *  See also \parshape, \hangindent, and \hangafter.
  * </doc>
  *
  * <doc name="hyphenpenalty" type="register">
@@ -101,7 +103,14 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * <doc name="parfillskip" type="register">
  * <h3>The Parameter <tt>\parfillskip</tt></h3>
+ *  The parameter <tt>\parfillskip</tt> contains the glue which is added at the
+ *  end of each paragraph.
+ * </doc>
  *
+ * <doc name="parfillskip" type="register">
+ * <h3>The Parameter <tt>\parskip</tt></h3>
+ *  The parameter <tt>\parskip</tt> contains the glue which is added to the
+ *  vertical list before the beginnng of each paragraph.
  * </doc>
  *
  * <doc name="pretolerance" type="register">
@@ -111,7 +120,6 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * <doc name="rightskip" type="register">
  * <h3>The Parameter <tt>\rightskip</tt></h3>
- *
  * <p>
  *  The parameter <tt>\rightskip</tt> contains the glue which is inserted at the
  *  right side of each line in the paragraph. The defult is 0&nbsp;pt.
@@ -139,7 +147,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ParagraphBuilderImpl
         implements
@@ -297,7 +305,7 @@ public class ParagraphBuilderImpl
 
         // remove final node if it is glue; [TTB p99--100]
         Node node = (nodes.empty() ? null : nodes.get(nodes.size() - 1));
-        if (node != null && node instanceof GlueNode) {
+        if (node instanceof GlueNode) {
             nodes.remove(nodes.size() - 1);
         }
 
