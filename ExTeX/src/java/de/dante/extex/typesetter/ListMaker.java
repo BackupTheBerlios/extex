@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public interface ListMaker {
 
@@ -73,7 +73,12 @@ public interface ListMaker {
             throws GeneralException;
 
     /**
-     * Close the node list.
+     * Close the node list. This means that everything is done to ship the
+     * closed node list to the document writer. Nevertheless the invoking
+     * application might decide not to modify the node list and continue
+     * processing. In the other case some  nodes might be taken from the node
+     * list returned by this method. Then the processing has to continue with
+     * the reduced node list.
      *
      * @param context the typesetter options mapping a fragment of the
      *  interpreter context
