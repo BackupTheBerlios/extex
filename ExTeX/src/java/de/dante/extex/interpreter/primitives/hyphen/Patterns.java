@@ -62,7 +62,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Patterns extends AbstractHyphenationCode {
 
@@ -71,7 +71,7 @@ public class Patterns extends AbstractHyphenationCode {
      * argument of the <tt>\pattern</tt> macro.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private class TV implements TokenVisitor {
 
@@ -372,8 +372,6 @@ public class Patterns extends AbstractHyphenationCode {
                 t = source.getToken(context);
             } while (t != null && t.visit(tv, null) == null);
 
-        } catch (InterpreterException e) {
-            throw e;
         } catch (DuplicateHyphenationException e) {
             throw new InterpreterException(getLocalizer().format(
                     "TTP.DuplicatePattern"));
@@ -386,6 +384,8 @@ public class Patterns extends AbstractHyphenationCode {
         } catch (ImmutableHyphenationException e) {
             throw new InterpreterException(getLocalizer().format(
                     "TTP.LatePatterns"));
+        } catch (InterpreterException e) {
+            throw e;
         } catch (Exception e) {
             throw new InterpreterException(e);
         }
