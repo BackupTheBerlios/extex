@@ -27,13 +27,13 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.TTFReader;
+import de.dante.extex.font.type.ttf.TTFReader;
 
 /**
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class TTF2EFM {
 

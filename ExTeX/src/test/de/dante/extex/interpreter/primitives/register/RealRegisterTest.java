@@ -36,7 +36,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RealRegisterTest extends TestCase {
 
@@ -109,31 +109,85 @@ public class RealRegisterTest extends TestCase {
         assertEquals("1234.567", r.toString());
     }
 
+    //    /**
+    //     * ...
+    //     *
+    //     * catcode { }  fehlt !!!!
+    //     * @throws Exception ...
+    //     */
+    //    public void testSp4() throws Exception {
+    //
+    //        Configuration config = new ConfigurationFactory()
+    //                .newInstance("config/extex32.xml");
+    //        Configuration intcfg = config.getConfiguration("Interpreter");
+    //        InterpreterFactory intf = new InterpreterFactory(intcfg);
+    //        Interpreter interpreter = intf.newInstance();
+    //
+    //        Context context = interpreter.getContext();
+    //
+    //        //        interpreter.addStream(new TokenStreamStringImpl("\\catcode`\\{=1"));
+    //        //        interpreter.addStream(new TokenStreamStringImpl("\\catcode`\\}=2"));
+    //        //
+    //        //        interpreter.run();
+    //
+    //        interpreter
+    //                .addStream(new TokenStreamStringImpl("\\mathexpr{2+5}  nix"));
+    //        Real r = new Real(context, interpreter);
+    //        assertEquals("7.0", r.toString());
+    //    }
+
     /**
-     * ...
-     *
-     * catcode { }  fehlt !!!!
+     * pi
      * @throws Exception ...
      */
-    public void testSp4() throws Exception {
+    public void testPi() throws Exception {
 
         Configuration config = new ConfigurationFactory()
                 .newInstance("config/extex32.xml");
         Configuration intcfg = config.getConfiguration("Interpreter");
         InterpreterFactory intf = new InterpreterFactory(intcfg);
         Interpreter interpreter = intf.newInstance();
-
         Context context = interpreter.getContext();
 
-        //        interpreter.addStream(new TokenStreamStringImpl("\\catcode`\\{=1"));
-        //        interpreter.addStream(new TokenStreamStringImpl("\\catcode`\\}=2"));
-        //
-        //        interpreter.run();
-
-        interpreter
-                .addStream(new TokenStreamStringImpl("\\mathexpr{2+5}  nix"));
+        interpreter.addStream(new TokenStreamStringImpl("\\mathpi   nix"));
         Real r = new Real(context, interpreter);
-        assertEquals("7.0", r.toString());
+        assertEquals(String.valueOf(Math.PI), r.toString());
+    }
+
+    /**
+     * sin
+     * @throws Exception ...
+     */
+    public void testSin1() throws Exception {
+
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex32.xml");
+        Configuration intcfg = config.getConfiguration("Interpreter");
+        InterpreterFactory intf = new InterpreterFactory(intcfg);
+        Interpreter interpreter = intf.newInstance();
+        Context context = interpreter.getContext();
+
+        interpreter.addStream(new TokenStreamStringImpl("\\mathsin\\mathpi   nix"));
+        Real r = new Real(context, interpreter);
+        assertEquals(String.valueOf(Math.sin(Math.PI)), r.toString());
+    }
+
+    /**
+     * sin
+     * @throws Exception ...
+     */
+    public void testSin2() throws Exception {
+
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex32.xml");
+        Configuration intcfg = config.getConfiguration("Interpreter");
+        InterpreterFactory intf = new InterpreterFactory(intcfg);
+        Interpreter interpreter = intf.newInstance();
+        Context context = interpreter.getContext();
+
+        interpreter.addStream(new TokenStreamStringImpl("\\mathsin 1.0   nix"));
+        Real r = new Real(context, interpreter);
+        assertEquals("0.8414709848078965", r.toString());
     }
 
 }

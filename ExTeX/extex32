@@ -63,6 +63,6 @@ done
 
 LOCALCLASSPATH=$LOCALCLASSPATH$sep$EXTEX_HOME/bin
 
-exec java -classpath "$LOCALCLASSPATH$sep." de.dante.extex.ExTeX -configuration config/extex32.xml -texoutputs out/ $*
+exec java -classpath "$LOCALCLASSPATH$sep." de.dante.extex.ExTeX -configuration config/extex32.xml -texoutputs work/out/ $*
   
 #

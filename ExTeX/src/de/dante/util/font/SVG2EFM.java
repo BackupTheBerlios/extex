@@ -29,13 +29,13 @@ import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.SVGReader;
+import de.dante.extex.font.type.svg.SVGReader;
 
 /**
  * Convert a SVG-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class SVG2EFM {
 

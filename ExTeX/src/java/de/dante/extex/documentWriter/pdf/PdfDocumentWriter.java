@@ -53,13 +53,12 @@ import de.dante.util.GeneralException;
 import de.dante.util.Unit;
 import de.dante.util.configuration.Configuration;
 
-
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -74,13 +73,14 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * The field <tt>shippedPages</tt> ...
      */
     private int shippedPages = 0;
-    
+
     /**
      * The field <tt>cfg</tt> ...
-     */    
+     */
     private Configuration cfg = null;
-    
+
     private final boolean debug = true;
+
     private final boolean embedBase14 = true;
 
     /**
@@ -88,13 +88,16 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @param cfg the configuration
      */
     public PdfDocumentWriter(final Configuration cfg) {
-        super(); this.cfg = cfg;
+
+        super();
+        this.cfg = cfg;
     }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
+
         return shippedPages;
     }
 
@@ -102,6 +105,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
+
         return "pdf";
     }
 
@@ -109,6 +113,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
      */
     public void setOutputStream(final OutputStream outStream) {
+
         this.out = outStream;
     }
 
@@ -118,9 +123,11 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @throws IOException ...
      * @throws GeneralException ...
      */
-    public void shipout(final NodeList nodes) throws IOException, GeneralException {
+    public void shipout(final NodeList nodes) throws IOException,
+            GeneralException {
+
         newPage(WIDTH_A4, HEIGHT_A4);
-	shippedPages = pdfDoc.getPages().getCount();
+        shippedPages = pdfDoc.getPages().getCount();
         markOrigin();
         nodes.visit(this, nodes, null);
     }
@@ -130,6 +137,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @throws IOException ...
      */
     public void close() throws IOException {
+
         endPdfDocument();
     }
 
@@ -137,12 +145,12 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * pdfdoc
      */
     private PDFDocument pdfDoc = null;
-    
+
     /**
      * pdfstream
      */
     private PDFStream cs = null;
-    
+
     /**
      * pdfresource
      */
@@ -157,29 +165,29 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * operators
      */
     private PDFOperators op = null;
-    
+
     // TeX primitives should set the papersize in any way:
     // o \paperwidth   / \paperheight, 
     // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
     // o \mediawidth   / \mediaheight   <-- VTeX
-    private static final int WIDTH_A4  = 595; // "bp"
+    private static final int WIDTH_A4 = 595; // "bp"
+
     private static final int HEIGHT_A4 = 842; // "bp"
-    
+
     /**
      * fontinfo
      */
     //private FontInfo fontInfo = null;
-
     /**
      * fontstate
      */
     //private FontState fontState = null;
-
     /**
      * x,y ...
      */
-    private Dimen lastX = new Dimen(), lastY = new Dimen(), 
-      currentX = new Dimen(), currentY = new Dimen(), lastDP = new Dimen();
+    private Dimen lastX = new Dimen(), lastY = new Dimen(),
+            currentX = new Dimen(), currentY = new Dimen(),
+            lastDP = new Dimen();
 
     /**
      * onlyStroke
@@ -193,6 +201,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitAdjust(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -206,6 +215,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitAfterMath(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -219,6 +229,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitAlignedLeaders(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -232,6 +243,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitBeforeMath(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -245,6 +257,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitCenteredLeaders(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -258,6 +271,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitDiscretionary(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -271,6 +285,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitExpandedLeaders(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -284,22 +299,23 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitGlue(final Object value, final Object value2) {
+
         Node node = (Node) value;
         StringBuffer operators = new StringBuffer(256);
-	operators.append(op.fillColor(Color.BLUE));
+        operators.append(op.fillColor(Color.BLUE));
         showNode(node, operators);
         debugNode(node);
-	if (debug) {
-          if (state == HORIOZONTAL) {
-              System.out.println("==> hor. glue");
-          } else {
-              System.out.println("==> ver. glue");
-          }
-	}
+        if (debug) {
+            if (state == HORIOZONTAL) {
+                System.out.println("==> hor. glue");
+            } else {
+                System.out.println("==> ver. glue");
+            }
+        }
         setPosition(node);
         return null;
     }
-  
+
     /**
      * insertion
      * @param value     the value
@@ -307,6 +323,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitInsertion(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -320,6 +337,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitKern(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -333,6 +351,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitLigature(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -346,6 +365,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitMark(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -359,6 +379,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitPenalty(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -372,6 +393,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitRule(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -385,6 +407,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitSpace(final Object value, final Object value2) {
+
         Node node = (Node) value;
         StringBuffer operators = new StringBuffer(256);
         operators.append(op.fillColor(Color.YELLOW));
@@ -400,6 +423,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitWhatsIt(final Object value, final Object value2) {
+
         Node node = (Node) value;
         debugNode(node);
         setPosition(node);
@@ -413,21 +437,28 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitVerticalList(final Object value, final Object value2) {
+
         NodeList nodes = (NodeList) value;
         StringBuffer operators = new StringBuffer(256);
 
-        State oldstate = state; state = VERTICAL;
+        State oldstate = state;
+        state = VERTICAL;
 
-	Dimen ht = new Dimen(nodes.getHeight());
-	Dimen saveX = new Dimen(lastX); Dimen saveY = new Dimen(lastY);
+        Dimen ht = new Dimen(nodes.getHeight());
+        Dimen saveX = new Dimen(lastX);
+        Dimen saveY = new Dimen(lastY);
 
-	currentX.set(lastX); currentY.set(lastY); currentY.add(ht);
+        currentX.set(lastX);
+        currentY.set(lastY);
+        currentY.add(ht);
 
         operators.append(op.fillColor(Color.LIGHT_GRAY));
 
-        showNode(nodes, operators); debugNode(nodes);
+        showNode(nodes, operators);
+        debugNode(nodes);
 
-	currentX.set(saveX); currentY.set(saveY);
+        currentX.set(saveX);
+        currentY.set(saveY);
 
         NodeIterator it = nodes.iterator();
         while (it.hasNext()) {
@@ -453,13 +484,16 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         NodeList nodes = (HorizontalListNode) value;
 
-        State oldstate = state; state = HORIOZONTAL;
-	
-	Dimen ht = new Dimen(nodes.getHeight());
-	Dimen dp = new Dimen(nodes.getDepth());
-	
+        State oldstate = state;
+        state = HORIOZONTAL;
+
+        Dimen ht = new Dimen(nodes.getHeight());
+        Dimen dp = new Dimen(nodes.getDepth());
+
         currentX.set(lastX);
-	currentY.set(lastY); currentY.add(lastDP); currentY.add(ht);
+        currentY.set(lastY);
+        currentY.add(lastDP);
+        currentY.add(ht);
         lastDP.set(dp);
 
         debugNode(nodes);
@@ -487,6 +521,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @return null
      */
     public Object visitChar(final Object value, final Object value2) {
+
         CharNode node = (CharNode) value;
         StringBuffer operators = new StringBuffer(256);
         operators.append(op.fillColor(Color.GREEN));
@@ -504,6 +539,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     private class DebugVisitor implements NodeVisitor {
 
         public Object visitAdjust(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Adjust");
@@ -512,6 +548,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitAfterMath(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("AfterMath");
@@ -520,6 +557,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitAlignedLeaders(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("AlignedLeaders");
@@ -528,6 +566,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitBeforeMath(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("BeforeMath");
@@ -536,6 +575,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitCenteredLeaders(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("CenterLeaders");
@@ -544,32 +584,34 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitChar(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             CharNode node = (CharNode) value2;
-	    Font font = node.getTypesettingContext().getFont();
-	    
-	    if (font != null) {
-              Glyph glyph = font.getGlyph(node.getCharacter());
-	      FontFile file = glyph.getExternalFile();
+            Font font = node.getTypesettingContext().getFont();
 
-	      /*
-	      System.out.println("-----------------------------------------");
-              System.out.println("Glyph : " + node.getCharacter() + " : "
-                      + glyph.getName() + " " + glyph.getNumber() + "  aus "
-                      + glyph.getExternalFile());
-	      System.out.println("-----------------------------------------");
-              */
+            if (font != null) {
+                Glyph glyph = font.getGlyph(node.getCharacter());
+                FontFile file = glyph.getExternalFile();
 
-	      sb.append(" " + node.getCharacter() + " [" + 
-		glyph.getNumber() + "] ");
-              sb.append("Char");
-              sb.append(metric(node));
-	      sb.append(" " + file.getFile());
-	    }
-	    return null;
+                /*
+                 System.out.println("-----------------------------------------");
+                 System.out.println("Glyph : " + node.getCharacter() + " : "
+                 + glyph.getName() + " " + glyph.getNumber() + "  aus "
+                 + glyph.getExternalFile());
+                 System.out.println("-----------------------------------------");
+                 */
+
+                sb.append(" " + node.getCharacter() + " [" + glyph.getNumber()
+                        + "] ");
+                sb.append("Char");
+                sb.append(metric(node));
+                sb.append(" " + file.getFile());
+            }
+            return null;
         }
 
         public Object visitDiscretionary(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Discretionary");
@@ -578,6 +620,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitExpandedLeaders(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("ExpandedLeaders");
@@ -586,6 +629,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitGlue(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             GlueNode node = (GlueNode) value2;
             sb.append("Glue");
@@ -594,6 +638,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitHorizontalList(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("HorizontalList");
@@ -602,6 +647,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitInsertion(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Insertion");
@@ -610,6 +656,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitKern(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Kern");
@@ -618,6 +665,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitLigature(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Ligature");
@@ -626,6 +674,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitMark(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Mark");
@@ -634,6 +683,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitPenalty(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Penalty");
@@ -642,6 +692,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitRule(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Rule");
@@ -650,6 +701,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitSpace(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Space");
@@ -658,6 +710,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitVerticalList(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("VerticalList");
@@ -666,6 +719,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         public Object visitWhatsIt(Object value, Object value2) {
+
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
             sb.append("Whatsit");
@@ -674,9 +728,10 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
 
         private String metric(final Node node) {
-            return " (wd=" + node.getWidth().toString() + "\tht=" + 
-	      node.getHeight().toString() + "\tdp=" + 
-	      node.getDepth().toString() + ")";
+
+            return " (wd=" + node.getWidth().toString() + "\tht="
+                    + node.getHeight().toString() + "\tdp="
+                    + node.getDepth().toString() + ")";
         }
 
     }
@@ -685,49 +740,50 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * debug
      */
     private void debugNode(Node node) {
+
         if (debug) {
-          StringBuffer sb = new StringBuffer(256);
-          try {
-              node.visit(new DebugVisitor(), sb, node);
-          } catch (Exception e) {
-              e.printStackTrace();
-          }
-          System.out.println(sb.toString());
-	}
+            StringBuffer sb = new StringBuffer(256);
+            try {
+                node.visit(new DebugVisitor(), sb, node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(sb.toString());
+        }
     }
 
     private void showNode(Node node, StringBuffer operators) {
-	
-	Dimen wd = new Dimen(node.getWidth());
-	Dimen ht = new Dimen(node.getHeight());
-	Dimen dp = new Dimen(node.getDepth());
+
+        Dimen wd = new Dimen(node.getWidth());
+        Dimen ht = new Dimen(node.getHeight());
+        Dimen dp = new Dimen(node.getDepth());
 
         onlyStroke = false;
 
         cs.add(op.gSave());
         cs.add(operators.toString());
         cs.add(op.lineWidth(.3f));
-	
-	float rX = (float)Unit.getDimenAsBP(currentX);
-	float rY = (float)Unit.getDimenAsBP(currentY) -
-	           (float)Unit.getDimenAsBP(ht);
-        float rWD  = (float)Unit.getDimenAsBP(wd);
-	float rHT  = (float)Unit.getDimenAsBP(ht) +
-	             (float)Unit.getDimenAsBP(dp);
-		     
-	if (rHT <= 0.0) {
-	  rHT = -1.5f; 
-	}
-	
-	cs.add(op.addRectangle(rX, rY, rWD, rHT));
-	
-	if (onlyStroke)
-             cs.add(op.stroke());
+
+        float rX = (float) Unit.getDimenAsBP(currentX);
+        float rY = (float) Unit.getDimenAsBP(currentY)
+                - (float) Unit.getDimenAsBP(ht);
+        float rWD = (float) Unit.getDimenAsBP(wd);
+        float rHT = (float) Unit.getDimenAsBP(ht)
+                + (float) Unit.getDimenAsBP(dp);
+
+        if (rHT <= 0.0) {
+            rHT = -1.5f;
+        }
+
+        cs.add(op.addRectangle(rX, rY, rWD, rHT));
+
+        if (onlyStroke)
+            cs.add(op.stroke());
         else
-             cs.add(op.fillStroke());
-	      		    
-	if (!dp.le(Dimen.ZERO_PT)) { // baseline
-	    rY = (float)Unit.getDimenAsBP(currentY);
+            cs.add(op.fillStroke());
+
+        if (!dp.le(Dimen.ZERO_PT)) { // baseline
+            rY = (float) Unit.getDimenAsBP(currentY);
             cs.add(op.gSave());
             cs.add(op.setLineDash(.3f, .3f));
             cs.add(op.moveTo(rX, rY));
@@ -739,14 +795,17 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     private void setPosition(Node node) {
+
         if (state == HORIOZONTAL) {
-	    currentX.add(node.getWidth());
+            currentX.add(node.getWidth());
         } else {
-	    currentY.add(node.getHeight()); currentY.add(node.getDepth());
+            currentY.add(node.getHeight());
+            currentY.add(node.getDepth());
         }
     }
 
     private void markOrigin() {
+
         cs.add(op.gSave());
         cs.add(op.lineWidth(.6f));
         cs.add(op.strokeColor(Color.RED));
@@ -764,123 +823,149 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @throws IOException ...
      */
     private void beginPdfDocument() throws IOException {
-    
-    	Map filterMap = new java.util.HashMap();
-	List filterList = new java.util.ArrayList();
+
+        Map filterMap = new java.util.HashMap();
+        List filterList = new java.util.ArrayList();
 
         pdfDoc = new PDFDocument("");
 
-	//filterList.add("flate");
-	filterList.add("null");
-	filterMap.put(PDFFilterList.DEFAULT_FILTER, filterList);
-	filterMap.put(PDFFilterList.CONTENT_FILTER, filterList);
-	filterMap.put(PDFFilterList.IMAGE_FILTER, filterList);
-	filterMap.put(PDFFilterList.JPEG_FILTER, filterList);
-	filterMap.put(PDFFilterList.FONT_FILTER, filterList);
-	pdfDoc.setFilterMap(filterMap);	
+        //filterList.add("flate");
+        filterList.add("null");
+        filterMap.put(PDFFilterList.DEFAULT_FILTER, filterList);
+        filterMap.put(PDFFilterList.CONTENT_FILTER, filterList);
+        filterMap.put(PDFFilterList.IMAGE_FILTER, filterList);
+        filterMap.put(PDFFilterList.JPEG_FILTER, filterList);
+        filterMap.put(PDFFilterList.FONT_FILTER, filterList);
+        pdfDoc.setFilterMap(filterMap);
 
-	pdfDoc.getInfo().setProducer("ExTeX-0.00");
-	pdfDoc.getInfo().setCreator("LaTeX with hyperref");
-	pdfDoc.getInfo().setTitle("Allerlei Probiererei");
-	pdfDoc.getInfo().setAuthor("Rolf");
+        pdfDoc.getInfo().setProducer("ExTeX-0.00");
+        pdfDoc.getInfo().setCreator("LaTeX with hyperref");
+        pdfDoc.getInfo().setTitle("Allerlei Probiererei");
+        pdfDoc.getInfo().setAuthor("Rolf");
         pdfDoc.getInfo().setSubject("ExTeX-Entwicklung");
-	pdfDoc.getInfo().setKeywords("TeX, Java");
-	pdfDoc.getInfo().setCreationDate(null); // current system date
+        pdfDoc.getInfo().setKeywords("TeX, Java");
+        pdfDoc.getInfo().setCreationDate(null); // current system date
 
         op = new PDFOperators();
-	
+
         pdfDoc.outputHeader(this.out);
-	
+
     }
-    
+
     private Vector fontNameList = new Vector();
 
     private int getFontNumber(String name) {
 
-      if (fontNameList.isEmpty()) { // Preserve space for base14 fonts.
-        for (int i=0; i<14; i++) fontNameList.addElement(null);
-      }
-      
-      int idx = fontNameList.indexOf(name);
-      
-      if (idx == -1) {
-        if (name.equals("Times-Roman")) idx = 0; else
-	if (name.equals("Times-Bold")) idx = 1; else
-	if (name.equals("Times-Italic")) idx = 2; else
-	if (name.equals("Times-BoldItalic")) idx = 3; else
-	if (name.equals("Helvetica")) idx = 4; else
-	if (name.equals("Helvetica-Bold")) idx = 5; else
-	if (name.equals("Helvetica-Oblique")) idx = 6; else
-	if (name.equals("Helvetica-BoldOblique")) idx = 7; else
-	if (name.equals("Courier")) idx = 8; else
-	if (name.equals("Courier-Bold")) idx = 9; else
-	if (name.equals("Courier-Oblique")) idx = 10; else
-	if (name.equals("Courier-BoldOblique")) idx = 11; else
-	if (name.equals("Symbol")) idx = 12; else
-	if (name.equals("ZapfDingbats")) idx = 13; 
-	
-	if (idx > -1) fontNameList.setElementAt(name, idx); else {
-	  fontNameList.addElement(name); idx = fontNameList.size() - 1; 
-	}
-      }
-      
-      return ++idx;
+        if (fontNameList.isEmpty()) { // Preserve space for base14 fonts.
+            for (int i = 0; i < 14; i++)
+                fontNameList.addElement(null);
+        }
+
+        int idx = fontNameList.indexOf(name);
+
+        if (idx == -1) {
+            if (name.equals("Times-Roman"))
+                idx = 0;
+            else if (name.equals("Times-Bold"))
+                idx = 1;
+            else if (name.equals("Times-Italic"))
+                idx = 2;
+            else if (name.equals("Times-BoldItalic"))
+                idx = 3;
+            else if (name.equals("Helvetica"))
+                idx = 4;
+            else if (name.equals("Helvetica-Bold"))
+                idx = 5;
+            else if (name.equals("Helvetica-Oblique"))
+                idx = 6;
+            else if (name.equals("Helvetica-BoldOblique"))
+                idx = 7;
+            else if (name.equals("Courier"))
+                idx = 8;
+            else if (name.equals("Courier-Bold"))
+                idx = 9;
+            else if (name.equals("Courier-Oblique"))
+                idx = 10;
+            else if (name.equals("Courier-BoldOblique"))
+                idx = 11;
+            else if (name.equals("Symbol"))
+                idx = 12;
+            else if (name.equals("ZapfDingbats"))
+                idx = 13;
+
+            if (idx > -1)
+                fontNameList.setElementAt(name, idx);
+            else {
+                fontNameList.addElement(name);
+                idx = fontNameList.size() - 1;
+            }
+        }
+
+        return ++idx;
     }
-    
+
     private void debugFont(Typeface font, int nb) {
-      if (debug) {
-        boolean isEmbeddable;
-	
-        if (font instanceof FontDescriptor) 
-	  isEmbeddable = ((FontDescriptor)font).isEmbeddable();
-	else isEmbeddable = false;
-	
-	System.out.println("Font /F" + nb + ": " + font.getFontName() + 
-	  " (" + font.getFontType().getName() +
-	  ", kerning: " + font.hasKerningInfo() + 
-	  ", embedded: " + isEmbeddable + ")");
-      }    
+
+        if (debug) {
+            boolean isEmbeddable;
+
+            if (font instanceof FontDescriptor)
+                isEmbeddable = ((FontDescriptor) font).isEmbeddable();
+            else
+                isEmbeddable = false;
+
+            System.out.println("Font /F" + nb + ": " + font.getFontName()
+                    + " (" + font.getFontType().getName() + ", kerning: "
+                    + font.hasKerningInfo() + ", embedded: " + isEmbeddable
+                    + ")");
+        }
     }
-    
+
     private static int uniqueCounter = 1;
 
     /**
      * Create a quasiunique prefix for fontname 
      * @return The prefix
      * @see org.apache.fop.fonts.MultiByteFont#MultiByteFont()
-     */     
+     */
     private String uniquePrefix() {
+
         int cnt = 0;
         synchronized (this.getClass()) {
             cnt = uniqueCounter++;
         }
-        int ctm = (int)(System.currentTimeMillis() & 0xffff);
-	return new String(cnt + "E" + Integer.toHexString(ctm)); 
+        int ctm = (int) (System.currentTimeMillis() & 0xffff);
+        return new String(cnt + "E" + Integer.toHexString(ctm));
     }
+
     /**
      * Adds base14 font structures to the pdf document. 
-     */ 
+     */
     private void addBase14Fonts() {
-      String name; int nb;
-      
-      for (int i=0; i<14; i++) {
-	name = (String)fontNameList.elementAt(i);
-	if (name != null) {
-	  name = name.replaceAll("-", ""); nb = i + 1;
-	  try {
-            Class clazz = Class.forName("org.apache.fop.fonts.base14." + name);
-            Typeface font = (Typeface)clazz.newInstance(); debugFont(font, nb);
-	    PDFFont pdfFont = pdfDoc.getFactory()
-              .makeFont("F" + nb, font.getFontName(), font.getEncoding(), 
-	      font, null); 
-            pdfDoc.getResources().addFont(pdfFont);
-	  } catch (Exception e) {
-              e.printStackTrace(); 
-	  }
-	}
-      }
+
+        String name;
+        int nb;
+
+        for (int i = 0; i < 14; i++) {
+            name = (String) fontNameList.elementAt(i);
+            if (name != null) {
+                name = name.replaceAll("-", "");
+                nb = i + 1;
+                try {
+                    Class clazz = Class.forName("org.apache.fop.fonts.base14."
+                            + name);
+                    Typeface font = (Typeface) clazz.newInstance();
+                    debugFont(font, nb);
+                    PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb,
+                            font.getFontName(), font.getEncoding(), font, null);
+                    pdfDoc.getResources().addFont(pdfFont);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
-    
+
     /**
      * Embeds fonts to the pdf document. It must exist a 
      * metric file with file name 'fop-&quot;fontname&quot;.xml':<p>
@@ -903,60 +988,65 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * (How works embedding of font subsets? RN)<p>
      *
      * @param full If true, embeds also base14 fonts.
-     */    
+     */
     private void addEmbedFonts(boolean full) {
-    
-      for (int i= (full) ? 0 : 14; i<fontNameList.size(); i++) {
-	String name = (String)fontNameList.elementAt(i);
-	if (name != null) {
-	  FontReader reader = null; int nb = i + 1;
-	  try {
-              reader = new FontReader("file:font/fop-" + name + ".xml");
-	  } catch (FOPException e) {
-              e.printStackTrace(); 
-	  }
-	  Typeface font = reader.getFont(); debugFont(font, nb);
-	  // Prepend a prefix to the Adobe names.
-	  if (i < 14) name = uniquePrefix() + "+" + name;
-	  PDFFont pdfFont = pdfDoc.getFactory()
-            .makeFont("F" + nb, name, font.getEncoding(), font, 
-	    (FontDescriptor)font);
-	  pdfDoc.getResources().addFont(pdfFont);
-	}
-      }
+
+        for (int i = (full) ? 0 : 14; i < fontNameList.size(); i++) {
+            String name = (String) fontNameList.elementAt(i);
+            if (name != null) {
+                FontReader reader = null;
+                int nb = i + 1;
+                try {
+                    reader = new FontReader("file:font/fop-" + name + ".xml");
+                } catch (FOPException e) {
+                    e.printStackTrace();
+                }
+                Typeface font = reader.getFont();
+                debugFont(font, nb);
+                // Prepend a prefix to the Adobe names.
+                if (i < 14)
+                    name = uniquePrefix() + "+" + name;
+                PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb, name,
+                        font.getEncoding(), font, (FontDescriptor) font);
+                pdfDoc.getResources().addFont(pdfFont);
+            }
+        }
     }
-    
+
     private void addFonts() {
-      if (embedBase14) addEmbedFonts(true);
-      else {
-        addBase14Fonts(); addEmbedFonts(false);
-      } 
+
+        if (embedBase14)
+            addEmbedFonts(true);
+        else {
+            addBase14Fonts();
+            addEmbedFonts(false);
+        }
     }
-    
+
     /**
      * endPdfDocument Close the document
      * @throws IOException ...
-     */       
+     */
     private void endPdfDocument() throws IOException {
 
-	cs.add("BT\n");                // Begin Text
-	cs.add("20 0 0 -20 0 0 Tm\n"); // Text transformation matrix
-	cs.add("3.6 -8.0 TD\n");       // Move 
-	cs.add("/F" + getFontNumber("Helvetica-BoldOblique") + "\n");
-	cs.add("1 Tf (Fridolin (Helvetica-BoldOblique; base14)) Tj \n");
-	cs.add("0.0 -1.0 TD\n");       // Move 
-	cs.add("/F" + getFontNumber("cmr12") + "\n");
-	cs.add("1 Tf (HUGO  (cmr12; Type1)) Tj \n");
-	cs.add("0.0 -1.0 TD\n");       // Move 
-	cs.add("/F" + getFontNumber("cmtt12") + "\n");
-	cs.add("1 Tf (GUSTAV (cmtt12; TTF)) Tj \n");
-	cs.add("ET\n");                // End Text
+        cs.add("BT\n"); // Begin Text
+        cs.add("20 0 0 -20 0 0 Tm\n"); // Text transformation matrix
+        cs.add("3.6 -8.0 TD\n"); // Move 
+        cs.add("/F" + getFontNumber("Helvetica-BoldOblique") + "\n");
+        cs.add("1 Tf (Fridolin (Helvetica-BoldOblique; base14)) Tj \n");
+        cs.add("0.0 -1.0 TD\n"); // Move 
+        cs.add("/F" + getFontNumber("cmr12") + "\n");
+        cs.add("1 Tf (HUGO  (cmr12; Type1)) Tj \n");
+        cs.add("0.0 -1.0 TD\n"); // Move 
+        cs.add("/F" + getFontNumber("cmtt12") + "\n");
+        cs.add("1 Tf (GUSTAV (cmtt12; TTF)) Tj \n");
+        cs.add("ET\n"); // End Text
 
         addFonts();
-	
+
         pdfDoc.outputTrailer(this.out); // Calls also output(...).
     }
-         
+
     /**
      * newPage Creates and setups a new page
      * @param pageWD    the page width in bp
@@ -965,20 +1055,24 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     private void newPage(int pageWD, int pageHT) throws IOException {
 
-        if (pdfDoc == null) beginPdfDocument(); else pdfDoc.output(this.out);
+        if (pdfDoc == null)
+            beginPdfDocument();
+        else
+            pdfDoc.output(this.out);
 
-	currentPage = pdfDoc.getFactory()
-          .makePage(pdfDoc.getResources(), pageWD, pageHT);
-	pdfDoc.addObject(currentPage);
-	
-	cs = pdfDoc.getFactory()
-          .makeStream(PDFFilterList.CONTENT_FILTER, true);
-	currentPage.setContents(cs);
+        currentPage = pdfDoc.getFactory().makePage(pdfDoc.getResources(),
+                pageWD, pageHT);
+        pdfDoc.addObject(currentPage);
+
+        cs = pdfDoc.getFactory().makeStream(PDFFilterList.CONTENT_FILTER, true);
+        currentPage.setContents(cs);
 
         // Transform origin at bottom left to origin at top left
         cs.add(op.concat(1, 0, 0, -1, 0, pageHT));
-	
-	lastX.set(Dimen.ONE_INCH); lastY.set(Dimen.ONE_INCH); lastDP.set(0L);
+
+        lastX.set(Dimen.ONE_INCH);
+        lastY.set(Dimen.ONE_INCH);
+        lastDP.set(0L);
     }
 
     // ---------------------------------------------------------------------------
@@ -988,6 +1082,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     private static class State {
 
         public State() {
+
             super();
         }
     }

@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.extex.font.NullFont;
+import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements FontConvertible {

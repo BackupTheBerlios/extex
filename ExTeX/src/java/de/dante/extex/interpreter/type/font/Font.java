@@ -28,13 +28,13 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Font {
 
     /**
      * Return the Glyph of a <code>UnicodeChar</code>, or
-     * a empty symbol-glyph, if the character is not defined.
+     * null, if the character is not defined.
      *
      * @param c the unicodechar
      * @return the <code>Glyph</code>
@@ -42,38 +42,30 @@ public interface Font {
     Glyph getGlyph(UnicodeChar c);
 
     /**
-     * Check, if the <code>UnicodeChar</code> is defined in the font.
+     * Set the char for hyphenation
      *
-     * @param c the unicodechar
-     * @return <code>true</code>, if the glyph exists, otherwise <code>false</code>
-     */
-    boolean isDefined(UnicodeChar c);
-
-    /**
-     * ...
-     *
-     * @param hyphen ...
+     * @param hyphen the char to set
      */
     void setHyphenChar(UnicodeChar hyphen);
 
     /**
-     * ...
+     * Return the hyphenationchar
      *
-     * @return ...
+     * @return the hypenationchar
      */
     UnicodeChar getHyphenChar();
 
     /**
-     * ...
+     * Set the skewchar
      *
-     * @param skew ...
+     * @param skew the new skewchar
      */
     void setSkewChar(UnicodeChar skew);
 
     /**
-     * ...
+     * Return the skewchar
      *
-     * @return ...
+     * @return the skewxchar
      */
     UnicodeChar getSkewChar();
 
@@ -87,56 +79,60 @@ public interface Font {
     /**
      * Return the em size of the font.
      *
-     * @return ...
+     * @return em-size
      */
     Dimen getEm();
 
     /**
      * Return the ex size of the font.
      *
-     * @return ...
+     * @return ex-size
      */
     Dimen getEx();
 
     /**
      * Return font dimen size with a key.
      *
-     * @param key ...
-     * @return ...
+     * @param key   the key
+     * @return the value for the key
      */
     Dimen getFontDimen(String key);
 
     /**
      * Setter for the font dimen register.
      *
-     * @param key ...
-     * @param value ...
+     * @param key       the key
+     * @param value     the value for the key
      */
     void setFontDimen(String key, Dimen value);
 
     /**
+     * Return the font-property
+     *
+     * @param key   the key
+     * @return the value for the key
+     */
+    String getProperty(String key);
+
+    /**
+     * Setter for the font-property
+     *
+     * @param key       the key
+     * @param value     the value for the key
+     */
+    void setProperty(String key, String value);
+
+    /**
      * Return the font name.
      *
-     * @return ...
+     * @return the fontname
      */
     String getFontName();
 
     /**
-     * Return the list of all fontfiles.
-     * @return  the list of all fontfiles
+     * Return the letterspacing
+     * @return  the letterspacing
      */
-    FontFileList getFontFiles();
-
-    /**
-     * Return the letterspaced
-     * @return  the letterspaced
-     */
-    Glue getLetterSpaced();
-
-    /**
-     * Return the ligatures (on/off)
-     * @return the ligatures
-     */
-    boolean getLigatures();
+    Glue getLetterSpacing();
 
 }

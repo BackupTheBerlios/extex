@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * Glyph
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Glyph {
 
@@ -74,6 +74,7 @@ public class Glyph {
 
     /**
      * Is the glyph used?
+     * @TODO raus
      */
     private boolean isused = false;
 

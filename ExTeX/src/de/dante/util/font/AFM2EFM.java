@@ -28,13 +28,13 @@ import java.io.IOException;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
-import de.dante.extex.font.AFMReader;
+import de.dante.extex.font.type.afm.AFMReader;
 
 /**
  * Convert a AFM-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class AFM2EFM {
 
