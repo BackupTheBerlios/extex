@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ExTeX {
     /**
@@ -300,6 +300,11 @@ public class ExTeX {
                     } else if (arg.startsWith("-job-name=")) {
                         properties.setProperty("extex.jobname2", arg
                                 .substring("-job-name=".length()));
+                    } else if ("-progname".startsWith(arg)) {
+                        useArg("extex.progname", args, ++i);
+                    } else if (arg.startsWith("-progname=")) {
+                        properties.setProperty("extex.progname", arg
+                                               .substring("-progname=".length()));
                     } else if ("-version".startsWith(arg)) {
                         System.err.println(Messages
                                 .format("ExTeX.Version", properties
