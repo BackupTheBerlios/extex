@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.helping.CantUseAfterException;
+import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
@@ -41,11 +42,22 @@ import de.dante.util.GeneralException;
  * <p>
  *  TODO missing documentation
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;the&rang;
+ *      &rarr; <tt>\the</tt> &lang;internal quantity&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \the\count123  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
@@ -75,6 +87,9 @@ public class The extends AbstractCode implements ExpandableCode {
 
         Token cs = source.getToken(context);
 
+        if (cs == null) {
+            throw new EofException(printableControlSequence(context));
+        }
         if (cs instanceof CodeToken) {
 
             Code code = context.getCode((CodeToken) cs);
@@ -82,6 +97,7 @@ public class The extends AbstractCode implements ExpandableCode {
             if (code instanceof Theable) {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
                 source.push(toks);
+                return;
             }
         }
 
