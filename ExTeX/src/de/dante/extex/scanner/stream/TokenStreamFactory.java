@@ -24,21 +24,21 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 
-import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.NotObservableException;
 import de.dante.util.Observable;
 import de.dante.util.Observer;
 import de.dante.util.ObserverList;
-import de.dante.util.StringList;
-import de.dante.util.StringListIterator;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.file.FileFinder;
+import de.dante.util.file.FileFinderConfigImpl;
 
 /**
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */
@@ -56,7 +56,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
     /** ... */
     private String classname;
 
-    private FileFinder fileFinder = this;
+    private FileFinder fileFinder;
 
     /**
      * Creates a new object.
@@ -68,6 +68,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
         super();
         this.config    = config;
         this.classname = config.getAttribute("class");
+        this.fileFinder = new FileFinderConfigImpl(config);
     }
 
     /**
@@ -185,31 +186,6 @@ public class TokenStreamFactory implements FileFinder, Observable {
         }
     }
     
-    private StringList path = null;
-    
-    /**
-     * @see de.dante.extex.scanner.stream.FileFinder#findFile(java.lang.String, java.lang.String)
-     * TODO Aufrufparameter texinputs verwenden
-     */
-    public File findFile(String name, String type) throws ConfigurationException {
-        File file = new File(name);
-        if (file.canRead()) return file;
-        
-        Configuration cfg = config.getConfiguration(type);
-        StringListIterator pathIt = cfg.getValues("path").getIterator();
-        while (pathIt.hasNext()) {
-            String path = pathIt.next();
-            StringListIterator extIt = cfg.getValues("extension").getIterator();
-            while (extIt.hasNext()) {
-                String ext = extIt.next();
-                file = new File(path,file+ext);
-                if (file.canRead()) return file;
-            }
-        }
-        
-        return null;
-    }
-
     /**
      * ...
      * 
@@ -227,19 +203,13 @@ public class TokenStreamFactory implements FileFinder, Observable {
     public void setFileFinder(FileFinder finder) {
         fileFinder = finder;
     }
-
+    
     /**
-     * Setter for path. The given string is splitted at the separator stored in
-     * the system property <tt>path.separator</tt>. This is usually the
-     * value <tt>:</tt> on Unix systems and <tt>;</tt> on Windows.
-     * <p>
-     * If this property can not be found then the value <tt>:</tt> is used.
-     * </p>
-     * 
-     * @param path the path to set.
+     * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
      */
-    public void setPath(String path) {
-        this.path = new StringList(path, System.getProperty("path.separator",
-                                                            ":"));
+    public File findFile(String name, String type)
+            throws ConfigurationException {
+        openFileObservers.update(this,name);
+        return fileFinder.findFile(name,type);
     }
 }
