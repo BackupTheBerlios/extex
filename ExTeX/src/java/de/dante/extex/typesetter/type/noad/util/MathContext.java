@@ -19,7 +19,12 @@
 
 package de.dante.extex.typesetter.type.noad.util;
 
+import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.GlueComponent;
+import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 
 /**
@@ -27,9 +32,14 @@ import de.dante.extex.typesetter.type.noad.StyleNoad;
  * mathematical appearance.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathContext {
+
+    /**
+     * The constant <tt>MU_UNIT</tt> contains the unit length for the math unit.
+     */
+    private static final long MU_UNIT = 18 * 0xffff;
 
     /**
      * The field <tt>style</tt> contains the current style.
@@ -37,19 +47,21 @@ public class MathContext {
     private StyleNoad style;
 
     /**
-     * The field <tt>mu</tt> contains the current math unit.
+     * The field <tt>context</tt> contains the data object for options.
      */
-    private Glue mu;
+    private TypesetterOptions context;
 
     /**
      * Creates a new object.
      *
-     * @param theStyle the new style
+     * @param style the new style
+     * @param context the typesetter context
      */
-    public MathContext(final StyleNoad theStyle) {
+    public MathContext(final StyleNoad style, final TypesetterOptions context) {
 
         super();
-        style = theStyle;
+        this.style = style;
+        this.context = context;
     }
 
     /**
@@ -70,6 +82,57 @@ public class MathContext {
     public void setStyle(final StyleNoad style) {
 
         this.style = style;
+    }
+
+    /**
+     * Convert a muglue into a glue.
+     *
+     * From The TeXbook:
+     *
+     * <p><i>
+     * There are 18 mu to an em, where the em is taken from family~2
+     * (the math symbols family). In other words, ^|\textfont|~|2| defines the em
+     * value for |mu| in display and text styles; ^|\scriptfont|~|2| defines the
+     * em for script size material; and ^|\scriptscriptfont|~|2| defines it for
+     * scriptscript size.
+     * </i></p>
+     *
+     * @param muglue the math glue to convert
+     *
+     * @return a new instance of a glue corresponding to the parameter
+     */
+    public Glue convert(final Muskip muglue) {
+
+        Font fnt = null;
+
+        if (style == StyleNoad.TEXTSTYLE || style == StyleNoad.DISPLAYSTYLE) {
+            fnt = context.getFont(NumberedFont.key(context, "textfont", "2"));
+        } else if (style == StyleNoad.SCRIPTSTYLE) {
+            fnt = context.getFont(NumberedFont.key(context, "scriptfont", "2"));
+        } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
+            fnt = context.getFont(NumberedFont.key(context, "scriptscriptfont",
+                    "2"));
+        } else {
+            //TODO gene: impossible
+            throw new RuntimeException("impossible");
+        }
+
+        long factor = fnt.getEm().getValue();
+        GlueComponent length = new GlueComponent(muglue.getLength());
+        GlueComponent stretch = new GlueComponent(muglue.getStretch());
+        GlueComponent shrink = new GlueComponent(muglue.getShrink());
+
+        if (length.getOrder() != 0) {
+            length.multiply(factor, MU_UNIT);
+        }
+        if (stretch.getOrder() != 0) {
+            stretch.multiply(factor, MU_UNIT);
+        }
+        if (shrink.getOrder() != 0) {
+            shrink.multiply(factor, MU_UNIT);
+        }
+
+        return new Glue(length, stretch, shrink);
     }
 
 }

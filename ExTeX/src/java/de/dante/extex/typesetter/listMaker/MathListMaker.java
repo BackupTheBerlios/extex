@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -171,7 +171,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
         HorizontalListNode list = new HorizontalListNode();
 
-        noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE), context);
+        noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context), context);
         //TODO gene: ???
         return list;
     }
@@ -232,7 +232,8 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void removeLastNode() {
 
-        noads.remove(noads.size() - 1); // TODO gene: allow this?
+        throw new UnsupportedOperationException();
+        //noads.remove(noads.size() - 1); // TODO gene: allow this?
     }
 
     /**

@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
@@ -67,7 +67,7 @@ public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 
         HorizontalListNode list = new HorizontalListNode();
 
-        getNoades().typeset(list, new MathContext(StyleNoad.DISPLAYSTYLE),
+        getNoades().typeset(list, new MathContext(StyleNoad.DISPLAYSTYLE, context),
                 context);
 
         if (eqno != null) {
