@@ -25,20 +25,23 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InterpreterFactory {
     /** the configuration for this factory */
     private Configuration config;
 
-	private String classname;
+    /** ... */
+    private String classname;
+
     /**
      * Creates a new object.
      */
-    public InterpreterFactory(Configuration config) throws ConfigurationException {
+    public InterpreterFactory(Configuration config)
+                       throws ConfigurationException {
         super();
         this.config = config;
-        classname = config.getAttribute("class");
+        classname   = config.getAttribute("class");
     }
 
     /**
@@ -47,15 +50,14 @@ public class InterpreterFactory {
      * @return a new instance for the interface Interpreter
      */
     public Interpreter newInstance() throws ConfigurationException {
-        
         Interpreter interpreter;
 
         try {
-			interpreter = (Interpreter) (Class.forName(classname).getConstructor(new Class[] {
-																			Configuration.class
-																		}).newInstance(new Object[] {
-																						   config
-																					   }));
+            interpreter = (Interpreter) (Class.forName(classname).getConstructor(new Class[] {
+                                                                                     Configuration.class
+                                                                                 }).newInstance(new Object[] {
+                                                                                                    config
+                                                                                                }));
         } catch (Exception e) {
             throw new ConfigurationException("InterpreterFactory", e);
         }

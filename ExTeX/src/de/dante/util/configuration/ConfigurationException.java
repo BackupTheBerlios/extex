@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,13 +24,15 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a problem in the configuration is detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationException extends Exception {
-    /** the location for this exception */
-    public String source = null;
+    /** The message string for this exception */
     public String message = null;
-    
+
+    /** The location for this exception */
+    public String source = null;
+
     /**
      * Creates a new object.
      *
@@ -49,7 +51,7 @@ public class ConfigurationException extends Exception {
     public ConfigurationException(String message, String source) {
         super(message);
         this.message = message;
-        this.source = source;
+        this.source  = source;
     }
 
     /**
@@ -69,35 +71,25 @@ public class ConfigurationException extends Exception {
      * @return the message
      */
     public String getMessage() {
-        
-        if (getCause()!= null) {
+        if (getCause() != null) {
             return Messages.format("ConfigException.format_text",
-                                            getCause().getMessage()
-                                        );
+                                   getCause().getMessage());
         }
 
         if (source != null) {
             if (message != null) {
                 return Messages.format("ConfigException.format_text_message_location",
-                                                getText(),
-                                                message,
-                                                source
-                                            );
+                                       getText(), message, source);
             } else {
                 return Messages.format("ConfigException.format_text_location",
-                                                getText(),
-                                                source
-                                            );
+                                       getText(), source);
             }
         } else if (message != null) {
             return Messages.format("ConfigException.format_text_message",
-                                            getText(),
-                                            message
-                                        );
+                                   getText(), message);
         } else {
             return Messages.format("ConfigException.format_text",
-                                            getText()
-                                        );
+                                   getText());
         }
     }
 
