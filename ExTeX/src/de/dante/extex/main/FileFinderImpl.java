@@ -30,7 +30,7 @@ import java.io.IOException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FileFinderImpl implements FileFinder {
     /** ... */
@@ -75,7 +75,7 @@ public class FileFinderImpl implements FileFinder {
                 }
             }
         } catch (IOException e) {
-            //TODO
+            //TODO incomplete
             file = null;
         }
 

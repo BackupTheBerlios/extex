@@ -58,6 +58,8 @@
     <Define name="copy" class=""/>
     <define name="count" class="de.dante.extex.interpreter.primitives.register.NumberedCount"/>
     <Define name="countdef" class=""/>
+    <define name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal"/>
+    <Define name="realdef" class=""/>
     <Define name="cr" class=""/>
     <Define name="crcr" class=""/>
     <Define name="csname" class=""/>

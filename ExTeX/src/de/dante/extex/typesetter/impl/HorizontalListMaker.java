@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -122,8 +122,8 @@ public class HorizontalListMaker extends AbstractListMaker
         } else if (sf == 0) {
             return;
         } else if (sf >= 2000) {
-            Glue xspaceskip = null; //TODO
-            Glue spaceskip  = null; //TODO
+            Glue xspaceskip = null; //TODO unimplemented
+            Glue spaceskip  = null;
 
             if (xspaceskip != null) {
                 space = xspaceskip.copy();

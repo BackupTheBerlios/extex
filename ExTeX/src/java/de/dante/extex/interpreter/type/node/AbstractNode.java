@@ -25,7 +25,7 @@ import de.dante.extex.typesetter.Node;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractNode implements Node {
     /** This is the depth of the node.
@@ -141,6 +141,6 @@ public abstract class AbstractNode implements Node {
     protected void toString(StringBuffer sb, String prefix) {
         sb.append(prefix);
 
-        //TODO
+        //TODO incomplete
     }
 }

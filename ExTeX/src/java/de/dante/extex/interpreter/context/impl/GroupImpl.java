@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Muskip;
+import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -42,7 +43,7 @@ import de.dante.extex.scanner.Token;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
@@ -70,6 +71,11 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 * The map for the count registers
 	 */
 	private Map countMap = new HashMap();
+
+	/**
+	 * The map for the real registers
+	 */
+	private Map realMap = new HashMap();
 
 	/**
 	 * The map for the dimen registers
@@ -191,10 +197,8 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 */
 	public Catcode getCatcode(char c) {
 
-		Catcode value = (Catcode) catcodeMap.get(new Character(c)); // TODO
-		// auf
-		// UnicodeChar
-		// umstellen
+		Catcode value = (Catcode) catcodeMap.get(new Character(c));
+		// TODO auf UnicodeChar umstellen
 
 		if (value != null) {
 			return value;
@@ -241,7 +245,7 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 *         de.dante.extex.interpreter.type.Count, boolean)
 	 */
 	public void setCount(String name, Count value, boolean global) {
-		countMap.put(name, value);
+		setCount(name, value);
 
 		if (global && next != null) {
 			next.setCount(name, value, global);
@@ -514,4 +518,41 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 
 		afterGroup.add(t);
 	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.impl.Group#getReal(java.lang.String)
+	 */
+	public Real getReal(String name) {
+		Real real = (Real) (realMap.get(name));
+
+		if (real == null) {
+			if (next != null) {
+				real = next.getReal(name);
+			} else {
+				real = new Real(0);
+				setReal(name, real);
+			}
+		}
+
+		return real;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String, de.dante.extex.interpreter.type.Real, boolean)
+	 */
+	public void setReal(String name, Real value, boolean global) {
+		setReal(name, value);
+
+		if (global && next != null) {
+			next.setReal(name, value, global);
+		}
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String, de.dante.extex.interpreter.type.Real)
+	 */
+	public void setReal(String name, Real value) {
+		realMap.put(name, value);
+	}
+
 }

@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [134]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CharNode extends AbstractNode implements Node {
     /** ... */
@@ -53,7 +53,7 @@ public class CharNode extends AbstractNode implements Node {
      * @return ...
      */
     public int getSpaceFactor() {
-        return 0; // TODO
+        return 0; // TODO incomplete
     }
 
     /**
@@ -62,14 +62,14 @@ public class CharNode extends AbstractNode implements Node {
     public void toString(StringBuffer sb) {
         sb.append(character);
 
-        //TODO
+        //TODO  incomplete
     }
 
     /**
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        //TODO
+        //TODO incomplete
         return character;
     }
 

@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class End extends AbstractCode {
     /**
@@ -55,6 +55,6 @@ public class End extends AbstractCode {
      */
     public void execute(Flags prefix, Context context, TokenSource source,
             Typesetter typesetter) throws GeneralException {
-        throw new GeneralTerminateException("xxx"); //TODO
+        throw new GeneralTerminateException("xxx"); //TODO  incomplete
     }
 }

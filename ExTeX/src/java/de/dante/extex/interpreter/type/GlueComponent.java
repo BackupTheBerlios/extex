@@ -42,7 +42,7 @@ import java.io.Serializable;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GlueComponent implements Serializable {
     /** This constant contains the internal representation for 1pt
@@ -182,7 +182,7 @@ public class GlueComponent implements Serializable {
             Token t = source.scanNonSpace();
 
             if (t == null) {
-                throw new GeneralHelpingException("xxx"); //TODO
+                throw new GeneralHelpingException("xxx"); //TODO imcomplete
             }
 
             source.push(t);

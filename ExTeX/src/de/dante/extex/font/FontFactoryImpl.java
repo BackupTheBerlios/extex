@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -46,7 +46,7 @@ public class FontFactoryImpl implements FontFactory {
     public Font getInstance(String name) {
         Font font = (Font)(fontmap.get(name));
         if ( font == null ) {
-            // TODO 
+            // TODO incomplete
             font = new DummyFont(name);
         }
         return font;

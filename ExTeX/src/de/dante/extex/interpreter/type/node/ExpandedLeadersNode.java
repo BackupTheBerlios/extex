@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExpandedLeadersNode extends GlueNode implements Node {
     
@@ -46,7 +46,7 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
      * @see "TeX -- The Program [190]"
      */
     public String toString() {
-        return "xleaders "; //TODO
+        return "xleaders "; //TODO incomplete
     }
 
     /**

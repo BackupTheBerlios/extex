@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Glue implements Serializable {
     /** ... */
@@ -74,22 +74,22 @@ public class Glue implements Serializable {
     }
     
     public Glue add(Glue g) {
-        //TODO
+        //TODO incomplete
         return this;
     }
 
     public Glue multiply(long nom, long denom) {
-        //TODO
+        //TODO incomplete
         return this;
     }
 
     public Glue multiplyStretch(long nom, long denom) {
-        //TODO
+        //TODO incomplete
         return this;
     }
 
     public Glue multiplyShrink(long nom, long denom) {
-        //TODO
+        //TODO incomplete
         return this;
     }
     
@@ -100,6 +100,6 @@ public class Glue implements Serializable {
      * @see "TeX -- The Program [178,177]"
      */
     public String toString() {
-        return length.toString()+" "; //TODO
+        return length.toString()+" "; //TODO incomplete
     }
 }

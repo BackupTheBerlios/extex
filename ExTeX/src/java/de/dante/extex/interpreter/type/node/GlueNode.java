@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlueNode extends AbstractNode implements Node {
 
@@ -58,14 +58,14 @@ public class GlueNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [186]"
      */
     public String toString() {
-        return " "; //TODO
+        return " "; //TODO incomplete
     }
     
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
     public void toString(StringBuffer sb) {
-        sb.append(" "); //TODO
+        sb.append(" "); //TODO incomplete
     }
 
     /**

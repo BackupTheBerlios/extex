@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -42,7 +43,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Context extends Configurable, Serializable {
 
@@ -150,6 +151,42 @@ public interface Context extends Configurable, Serializable {
 	 * @return the count register or <code>null</code> if it is not defined
 	 */
 	public abstract Count getCount(String name);
+
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Real real}
+	 * register in the current group. Count registers are named, either with a
+	 * number or an arbitrary string. The numbered registers where limited to
+	 * 256 in TeX. This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name the name or the number of the register
+	 * @param value the new value of the register
+	 */
+	public abstract void setReal(String name, Real value);
+
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Real real}
+	 * register in all requested groups. Count registers are named, either with
+	 * a number or an arbitrary string. The numbered registers where limited to
+	 * 256 in TeX. This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name the name or the number of the register
+	 * @param value the new value of the register
+	 * @param global the indicator for the scope; <code>true</code> means all
+	 *                       groups; otherwise the current group is affected only
+	 */
+	public abstract void setReal(String name, Real value, boolean global);
+
+	/**
+	 * Getter for the {@link de.dante.extex.interpreter.type.Real real}
+	 * register. Count registers are named, either with a number or an
+	 * arbitrary string. The numbered registers where limited to 256 in TeX.
+	 * This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name the name or number of the count register
+	 * 
+	 * @return the real register or <code>null</code> if it is not defined
+	 */
+	public abstract Real getReal(String name);
 
 	/**
 	 * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}

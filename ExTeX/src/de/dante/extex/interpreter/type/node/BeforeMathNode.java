@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [147]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BeforeMathNode extends AbstractNode implements Node {
 
@@ -46,7 +46,7 @@ public class BeforeMathNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [192]"
      */
     public String toString() {
-        return "mathon"; //TODO
+        return "mathon"; //TODO incomplete
     }
 
     /**

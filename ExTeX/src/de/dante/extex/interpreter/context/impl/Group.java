@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Muskip;
+import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
@@ -42,7 +43,7 @@ import java.io.Serializable;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -151,6 +152,38 @@ public interface Group extends Tokenizer, Serializable {
 	 * @return the value of the count register or its default
 	 */
 	public abstract Count getCount(String name);
+
+	/**
+	 * Setter for the real register in the current group.
+	 * 
+	 * @param name the name of the register
+	 * @param value the value of the register
+	 */
+	public abstract void setReal(String name, Real value);
+
+	/**
+	 * Setter for a real register in the requested groups.
+	 * 
+	 * @param name the name of the real register
+	 * @param value the value of the real register
+	 * @param global the indicator for the scope; <code>true</code> means all
+	 *                       groups; otherwise the current group is affected only
+	 */
+	public abstract void setReal(String name, Real value, boolean global);
+
+	/**
+	 * Getter for the named real register in the current group. The name can
+	 * either be a string representing a number or an arbitrary string. In the
+	 * first case the behavior of the numbered real registers is emulated. The
+	 * other case can be used to store special real values.
+	 * 
+	 * As a default value 0 is returned.
+	 * 
+	 * @param name the name of the real register
+	 * 
+	 * @return the value of the real register or its default
+	 */
+	public abstract Real getReal(String name);
 
 	/**
 	 * Setter for a dimen register in the current group.

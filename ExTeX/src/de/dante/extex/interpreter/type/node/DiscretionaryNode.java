@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * 
  * @see "TeX -- The Program [145]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -46,14 +46,14 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [195]"
      */
     public String toString() {
-        return "discretionary"; //TODO
+        return "discretionary"; //TODO incomplete
     }
     
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
     public void toString(StringBuffer sb) {
-        sb.append("descretionary"); //TODO
+        sb.append("descretionary"); //TODO incomplete
     }
 
     /**

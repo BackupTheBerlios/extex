@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter;
 
+import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -40,7 +41,7 @@ import de.dante.util.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface TokenSource {
     /**
@@ -155,6 +156,16 @@ public interface TokenSource {
      */
     public abstract long scanFloat() throws GeneralException;
 
+    /**
+     * Scan a real-value
+     *
+     * @return the real value
+     *
+     * @throws GeneralException ...
+     */
+    public abstract Real scanReal() throws GeneralException;
+    
+    
     /**
      * Scan the input stream for tokens making up an integer, this is a number
      * optionally preceeded by a sign (+ or -). The number can be preceeded by

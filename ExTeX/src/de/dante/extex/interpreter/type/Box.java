@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Box extends AbstractNodeList implements Serializable, NodeList {
 
@@ -46,7 +46,7 @@ public class Box extends AbstractNodeList implements Serializable, NodeList {
      */
     public Object visit(NodeVisitor visitor, Object value, Object value2)
         throws GeneralException {
-            throw new GeneralException("unimplemented"); //TODO
+            throw new GeneralException("unimplemented"); //TODO incomplete
     }
 
 }
