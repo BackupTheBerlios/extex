@@ -1,8 +1,7 @@
-# ExTeX user properties file
-#------------------------------------------------------------------------------
-#
-extex.fonts     = src/font
-extex.typesetter= devel
+## ExTeX user properties file
+## This file is merged by ExTeX from the user's home directory and from the
+## current directory in this sequence.
+##-----------------------------------------------------------------------------
 ##
 #extex.code = \relax
 ##    This parameter contains ExTeX code to be executed directly. The
@@ -27,6 +26,7 @@ extex.typesetter= devel
 ##-----------------------------------------------------------------------------
 ##
 #extex.fonts = 
+extex.fonts = src/font
 ##    This parameter contains the name of the property indicating
 ##    where to find font files. The value is a path similar to
 ##    extex.texinputs.
@@ -125,7 +125,8 @@ extex.trace.macros = false
 ##    trace the work of the tokenizer.
 ##-----------------------------------------------------------------------------
 ##
-extex.typesetter
+#extex.typesetter =
+extex.typesetter= devel
 ##    This parameter contains the name of the typesetter to use. If it
 ##    is not set then the default from the configuration file is
 ##    used.
