@@ -18,6 +18,7 @@
   -
   -->
 <ExTeX>
+  <banner>TeX compatibility mode</banner>
 
   <!-- 
     -  The section "File" contains the search specification for TeX files.
@@ -114,17 +115,18 @@
 
     <!-- The configuration of the context implementation to use.
       -->
-    <Context class="de.dante.extex.interpreter.context.impl.ContextImpl">
+    <Context default="ExTeX">
+	  <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
+        <!-- The implementation of the group to use.
+          -->
+        <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
 
-      <!-- The implementation of the group to use.
-        -->
-      <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
+        <!-- The implementation of the typesetting context to use.
+          -->
+        <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
 
-      <!-- The implementation of the typesetting context to use.
-        -->
-      <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
-
-      <Language></Language>
+        <Language></Language>
+      </ExTeX>
 
     </Context>
 
@@ -163,7 +165,7 @@
     <define name="belowdisplayskip" class="de.dante.extex.interpreter.primitives.register.skip.NamedSkip"/>
     <define name="binoppenalty" class="de.dante.extex.interpreter.primitives.register.count.NamedCount"/>
     <Define name="botmark" class=""/>
-    <define name="box" class="de.dante.extex.interpreter.primitives.register.box.BoxPrimitive"/>
+    <define name="box" class="de.dante.extex.interpreter.primitives.register.box.NumberedBox"/>
     <define name="boxmaxdepth" class="de.dante.extex.interpreter.primitives.register.dimen.NamedDimen"/>
     <define name="brokenpenalty" class="de.dante.extex.interpreter.primitives.register.count.NamedCount"/>
     <define name="catcode" class="de.dante.extex.interpreter.primitives.register.CatcodePrimitive"/>
