@@ -157,15 +157,12 @@
 	 <TeX class="de.dante.extex.main.ErrorHandlerTeXImpl"/>
 	</ErrorHandler>
 
+    <!-- The following definitions describe the primitives available
+      -  and their association to implementing Java classes.
+      -->
     <primitives src="primitives/tex.xml"/>
     <primitives src="primitives/etex.xml"/>
 
-    <!-- The following definitions describe the primitives available
-      -  and their association to implementing Java classes.
-      -
-      -  NOTE: Only the tags "define" are used for initializing.
-      -        The tags "Define" are pure comments waiting to be activated!
-      -->
     <define name="javadef" class="de.dante.extex.interpreter.primitives.dynamic.java.JavaDef"/>
     <define name="javaload" class="de.dante.extex.interpreter.primitives.dynamic.java.JavaLoad"/>
 
