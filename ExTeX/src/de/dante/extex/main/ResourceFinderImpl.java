@@ -19,19 +19,21 @@
 package de.dante.extex.main;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.logging.Logger;
 
 import de.dante.extex.i18n.Messages;
-import de.dante.util.file.FileFinder;
+import de.dante.util.resource.ResourceFinder;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.1 $
  */
-public class FileFinderImpl implements FileFinder {
+public class ResourceFinderImpl implements ResourceFinder {
 
     /**
      * The field <tt>logger</tt> contains the logger to write output to.
@@ -43,16 +45,16 @@ public class FileFinderImpl implements FileFinder {
      *
      * @param aLogger the logger to use
      */
-    public FileFinderImpl(final Logger aLogger) {
+    public ResourceFinderImpl(final Logger aLogger) {
         super();
         this.logger = aLogger;
     }
 
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     * @see de.dante.util.resource.ResourceFinder#findResource(java.lang.String,
      *      java.lang.String)
      */
-    public File findFile(final String name, final String type) {
+    public InputStream findResource(final String name, final String type) {
 
         File file = null;
         String line = name;
@@ -79,12 +81,11 @@ public class FileFinderImpl implements FileFinder {
                     }
                 }
             } while (file == null);
+            InputStream stream = new FileInputStream(file);
+            return stream;
         } catch (IOException e) {
-            //TODO incomplete
-            file = null;
+            return null;
         }
-
-        return file;
     }
 
     /**
