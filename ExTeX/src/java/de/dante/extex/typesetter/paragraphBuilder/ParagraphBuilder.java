@@ -21,13 +21,13 @@ package de.dante.extex.typesetter.paragraphBuilder;
 
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.impl.Manager;
+import de.dante.extex.typesetter.TypesetterOptions;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ParagraphBuilder {
 
@@ -36,11 +36,18 @@ public interface ParagraphBuilder {
      *
      * @param nodes the horizontal node list containing all nodes for the
      *   paragraph
-     * @param manager the manager for lists
      *
      * @return the
      *   {@link de.dante.extex.interpreter.type.node.VerticalListNode
      *   VerticalListNode} containing the hboxes of the lines
      */
-    NodeList breakList(HorizontalListNode nodes, Manager manager);
+    NodeList build(HorizontalListNode nodes);
+
+    /**
+     * Setter for options.
+     *
+     * @param options the options to set.
+     */
+    void setOptions(TypesetterOptions options);
+
 }
