@@ -34,7 +34,7 @@ import de.dante.util.file.FileFinder;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
@@ -44,7 +44,7 @@ public interface Interpreter extends TokenSource,
      * @param fileFinder    the new filefinder
      */
     void setFileFinder(FileFinder fileFinder);
-    
+
     /**
      * Setter for the error handler.
      * The value of <code>null</code> can be used to delete the error handler
@@ -94,7 +94,6 @@ public interface Interpreter extends TokenSource,
      */
     void setTokenStreamFactory(TokenStreamFactory factory);
 
-   
     /**
      * Setter for the typesetter.
      *
@@ -106,9 +105,10 @@ public interface Interpreter extends TokenSource,
      * ...
      *
      * @param format the base name of the format file
+     *
+     * @throws IOException ...
      */
-    void loadFormat(String format)
-                             throws IOException;
+    void loadFormat(String format) throws IOException;
 
     /**
      * Process the current token streams by repeatedly reading a single token
@@ -119,6 +119,7 @@ public interface Interpreter extends TokenSource,
      * is used when the current token is an active character.
      *
      * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
      */
     void run() throws ConfigurationException, GeneralException;
 
@@ -128,6 +129,7 @@ public interface Interpreter extends TokenSource,
      * @param stream the input stream to consider
      *
      * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
      *
      * @see #run()
      */

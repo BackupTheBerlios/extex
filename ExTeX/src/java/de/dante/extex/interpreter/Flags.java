@@ -23,7 +23,7 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Flags {
     /** Symbolc constant for the empty prefix */
@@ -50,23 +50,96 @@ public class Flags {
 
     /**
      * Creates a new object.
+     * Initially No flags are set.
      */
     public Flags() {
         super();
     }
 
-    public void clear() { value = NONE;
+    /**
+     * This method clears all flags.
+     */
+    public void clear() {
+        value = NONE;
     }
 
-    public void setGlobal() { value |= GLOBAL; }
-    public void setLong() { value |= LONG; }
-    public void setOuter() { value |= OUTER; }
-    public void setImmediate() { value |= IMMEDIATE; }
-    public void setExpanded() { value |= EXPANDED; }
+    /**
+     * Setter for the global flag.
+     */
+    public void setGlobal() {
+        value |= GLOBAL;
+    }
+    
+    /**
+     * Setter for the long flag.
+     */
+    public void setLong() {
+        value |= LONG;
+    }
+    
+    /**
+     * Setter for the outer flag.
+     */
+    public void setOuter() {
+        value |= OUTER;
+    }
+    
+    /**
+     * Setter for the immediate flag.
+     */
+    public void setImmediate() {
+        value |= IMMEDIATE;
+    }
+    
+    /**
+     * Setter for the expanded flag.
+     */
+    public void setExpanded() {
+        value |= EXPANDED;
+    }
 
-    public boolean isGlobal() { return (value & GLOBAL) != 0; }
-    public boolean isLong() { return (value & LONG) != 0; }
-    public boolean isOuter() { return (value & OUTER) != 0; }
-    public boolean isImmediate() { return (value & IMMEDIATE) != 0; }
-    public boolean isExpanded() { return (value & EXPANDED) != 0; }
+    /**
+     * Getter for the global flag.
+     *
+     * @return the current value of the global flag
+     */
+    public boolean isGlobal() {
+        return (value & GLOBAL) != 0;}
+    
+    /**
+     * Getter for the long flag.
+     *
+     * @return the current value of the long flag
+     */
+    public boolean isLong() {
+        return (value & LONG) != 0;
+    }
+
+    /**
+     * Getter for the outer flag.
+     *
+     * @return the current value of the outer flag
+     */
+    public boolean isOuter() {
+        return (value & OUTER) != 0;
+    }
+
+    /**
+     * Getter for the immediate flag.
+     *
+     * @return the current value of the immediate flag
+     */
+    public boolean isImmediate() {
+        return (value & IMMEDIATE) != 0;
+    }
+
+    /**
+     * Getter for the expanded flag.
+     *
+     * @return the current value of the expanded flag
+     */
+    public boolean isExpanded() {
+        return (value & EXPANDED) != 0;
+    }
+
 }

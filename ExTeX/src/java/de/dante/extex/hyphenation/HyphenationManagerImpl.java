@@ -26,7 +26,7 @@ import java.util.Map;
  * ...
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HyphenationManagerImpl implements HyphenationManager {
 
@@ -46,10 +46,10 @@ public class HyphenationManagerImpl implements HyphenationManager {
      * @see de.dante.extex.hyphenation.HyphenationManager#createHyphenationTable(java.lang.String)
      */
     public HyphenationTable createHyphenationTable(final String index) {
-        HyphenationTable table = (HyphenationTable)(tables.get(index));
-        if ( table == null ) {
+        HyphenationTable table = (HyphenationTable) (tables.get(index));
+        if (table == null) {
             table = new HyphenationTableImpl();
-            tables.put(index,table);
+            tables.put(index, table);
         }
         return table;
     }

@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class AbstractCode implements Code {
     /**
@@ -39,6 +39,8 @@ public class AbstractCode implements Code {
 
     /**
      * Creates a new object.
+     *
+     * @param codeName the name of the primitive
      */
     public AbstractCode(final String codeName) {
         super();
@@ -55,11 +57,11 @@ public class AbstractCode implements Code {
     /**
      * Setter for the name of this code instance. This information is primarily
      * needed for debugging.
-     * 
-     * @param name the name
+     *
+     * @param theName the name
      */
-    public void setName(final String name) {
-        this.name = name;
+    public void setName(final String theName) {
+        this.name = theName;
     }
 
     /**
@@ -71,10 +73,10 @@ public class AbstractCode implements Code {
 
     /**
      * ...
-     * 
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
-     * 
+     *
      * @throws GeneralException in case of an error. This implementation does
      *             nothing; not even throwing an Exception.
      */

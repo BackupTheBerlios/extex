@@ -50,13 +50,19 @@ import de.dante.util.file.FileFinder;
 
 /**
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
+
+    /**
+     * The constant <tt>MAX_ERRORS_DEFAULT</tt> ...
+     */
+      private static final int MAX_ERRORS_DEFAULT = 100;
+
     /**
      * This calender instance contains the time and date when ExTeX has been
      * started.
@@ -76,7 +82,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     private ErrorHandler errorHandler = null;
 
     /**
-     * This is the prefix for the next invocations
+     * This is the prefix for the next invocations.
      */
     private Flags prefix = new Flags();
 
@@ -100,21 +106,22 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     private Typesetter typesetter = null;
 
     /**
-     * The count for the number of errors already encountered
+     * The count for the number of errors already encountered.
      */
     private int errorCount = 0;
 
     /**
-     * The number of errors after which the run is terminated. This value can
-     * be overwritten in the configuration.
+     * The field <tt>maxErrors</tt> contains the number of errors after which
+     * the run is terminated. This value can be overwritten in the
+     * configuration.
      */
-    private int maxErrors = 100;
+    private int maxErrors = MAX_ERRORS_DEFAULT;
 
     /**
      * The field <tt>config</tt> ...
      */
     private Configuration config;
-    
+
     /**
      * filefinder
      */
@@ -126,9 +133,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * @param configuration the configuration object to take into account
      *
      * @throws ConfigurationException in case of an error
+     * @throws GeneralException in case of another error
      */
-    public Max(final Configuration configuration) throws ConfigurationException,
-            GeneralException {
+    public Max(final Configuration configuration)
+            throws ConfigurationException, GeneralException {
         super(configuration);
         this.config = configuration;
         configure(config);
@@ -191,8 +199,8 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     /**
      * @see de.dante.extex.interpreter.Interpreter#setTypesetter(de.dante.extex.typesetter.Typesetter)
      */
-    public void setTypesetter(final Typesetter typesetter) {
-        this.typesetter = typesetter;
+    public void setTypesetter(final Typesetter theTypesetter) {
+        this.typesetter = theTypesetter;
     }
 
     /**
@@ -255,6 +263,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * used when the current token is an active character.
      *
      * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
      */
     public void run() throws ConfigurationException, GeneralException {
         if (typesetter == null) {
@@ -304,6 +313,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * @param stream the input stream to consider
      *
      * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
      *
      * @see #run()
      */
@@ -376,9 +386,9 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     }
 
     /**
-     * @see "TeX -- The Program [1063]"
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
      *      java.lang.Object)
+     * @see "TeX -- The Program [1063]"
      */
     public Object visitLeftBrace(final Object oToken, final Object ignore)
             throws GeneralException {

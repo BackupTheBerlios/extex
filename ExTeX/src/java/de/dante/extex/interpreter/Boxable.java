@@ -22,11 +22,11 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.util.GeneralException;
 
-/*
- * ...
+/**
+ * This interface dscribes the capability to ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Boxable {
 
