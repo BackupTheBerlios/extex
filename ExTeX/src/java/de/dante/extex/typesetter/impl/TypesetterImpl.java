@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public class TypesetterImpl
         implements
@@ -147,9 +147,11 @@ public class TypesetterImpl
         if (saveStack == null
                 && (node instanceof PenaltyNode
                         || node instanceof InsertionNode
-                        || node instanceof HorizontalListNode || node instanceof VerticalListNode)) {
+                        || node instanceof HorizontalListNode //
+                || node instanceof VerticalListNode)) {
 
-            pageBuilder.inspectAndBuild(listMaker.complete(options));
+            pageBuilder.inspectAndBuild((VerticalListNode) listMaker
+                    .complete(options));
         }
     }
 
@@ -334,7 +336,8 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.ListMaker#letter(
      *      Context,
-     *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws GeneralException {
@@ -361,8 +364,9 @@ public class TypesetterImpl
 
         listMaker.par();
 
-        if (saveStack.size() == 1) {
-            pageBuilder.inspectAndBuild(listMaker.complete(options));
+        if (saveStack.size() == 0) {
+            pageBuilder.inspectAndBuild((VerticalListNode) listMaker
+                    .complete(options));
         }
     }
 
@@ -434,22 +438,23 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.Typesetter#setOptions(
      *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    public void setOptions(final TypesetterOptions theOptions) {
+    public void setOptions(final TypesetterOptions options) {
 
-        options = theOptions;
+        this.options = options;
+        pageBuilder.setOptions(options);
     }
 
     /**
      * Setter for the page builder.
      *
-     * @param thePageBuilder the new page builder
+     * @param pageBuilder the new page builder
      *
      * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(
      *      de.dante.extex.typesetter.pageBuilder.PageBuilder)
      */
-    public void setPageBuilder(final PageBuilder thePageBuilder) {
+    public void setPageBuilder(final PageBuilder pageBuilder) {
 
-        pageBuilder = thePageBuilder;
+        this.pageBuilder = pageBuilder;
         pageBuilder.setDocumentWriter(documentWriter);
         if (pageBuilder instanceof LogEnabled) {
             ((LogEnabled) pageBuilder).enableLogging(logger);
