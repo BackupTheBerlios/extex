@@ -20,9 +20,11 @@
 package de.dante.extex.interpreter.context.impl;
 
 import java.io.Serializable;
-import java.util.Stack;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.NullFont;
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
@@ -55,17 +57,10 @@ import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
-import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
-import de.dante.util.file.FileFinder;
-import de.dante.util.file.FileFinderConfigImpl;
-import de.dante.util.file.FileFinderDirect;
-import de.dante.util.file.FileFinderList;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -105,7 +100,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -114,26 +109,6 @@ public class ContextImpl implements Context, Observable, Serializable {
      * configuration tag for the typesetting context.
      */
     private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
-
-    /**
-     * The constant <tt>FILE_TAG</tt> ...
-     */
-    private static final String FILE_TAG = "File";
-
-    /**
-     * The constant <tt>DEFAULT_ATTRIBUTE</tt> ...
-     */
-    private static final String DEFAULT_ATTRIBUTE = "default";
-
-    /**
-     * The constant <tt>DEFAULT_SIZE</tt> ...
-     */
-    private static final String DEFAULT_SIZE = "size";
-
-    /**
-     * The constant <tt>FONT_TAG</tt> ...
-     */
-    private static final String FONT_TAG = "Font";
 
     /**
      * The constant <tt>GROUP_TAG</tt> ...
@@ -150,7 +125,7 @@ public class ContextImpl implements Context, Observable, Serializable {
      * magnification value. This is the fallback value which can be changed in
      * the configuration.
      */
-    private static final long MAGNIFICATION_MAX = 32768;
+    private static final long MAGNIFICATION_MAX = 0x8000;
 
     /**
      * The field <tt>group</tt> contains the entry to the linked list of groups.
@@ -175,14 +150,14 @@ public class ContextImpl implements Context, Observable, Serializable {
     private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
     /**
-     * The stack for conditionals
+     * The field <tt>conditionalStack</tt> contains the  stack for conditionals.
      */
-    private Stack conditionalStack = new Stack();
+    private List conditionalStack = new ArrayList();
 
     /**
-     * The token factory implementation to use
+     * The token factory implementation to use.
      */
-    private TokenFactory tokenFactory = new TokenFactoryImpl();
+    private transient TokenFactory tokenFactory = new TokenFactoryImpl();
 
     /**
      * The field <tt>magnificationMax</tt> contains the maximal allowed
@@ -241,35 +216,6 @@ public class ContextImpl implements Context, Observable, Serializable {
                 .getConfiguration(GROUP_TAG));
         group = groupFactory.newInstance(group);
 
-        Configuration fontConfiguration = configuration
-                .getConfiguration(FONT_TAG);
-        String fontClass = fontConfiguration.getAttribute(CLASS_ATTRIBUTE);
-
-        if (fontClass == null || fontClass.equals("")) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    fontConfiguration);
-        }
-
-        try {
-            FileFinderList finder = new FileFinderList(new FileFinderDirect(
-                    new StringList("", ":")));
-            finder.add(new FileFinderConfigImpl(fontConfiguration
-                    .getConfiguration(FILE_TAG)));
-            fontFactory = (FontFactory) (Class.forName(fontClass)
-                    .getConstructor(new Class[]{FileFinder.class})
-                    .newInstance(new Object[]{finder}));
-        } catch (Exception e) {
-            throw new ConfigurationInstantiationException(e);
-        }
-
-        // default font and size
-        String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
-
-        if (defaultFont == null || defaultFont.equals("")) {
-            throw new ConfigurationMissingAttributeException(DEFAULT_ATTRIBUTE,
-                    fontConfiguration);
-        }
-
         Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
 
@@ -278,27 +224,10 @@ public class ContextImpl implements Context, Observable, Serializable {
                     configuration.toString());
         }
 
-        String size = fontConfiguration.getAttribute(DEFAULT_SIZE);
-        if (size == null) {
-            throw new ConfigurationMissingAttributeException(DEFAULT_SIZE,
-                    fontConfiguration);
-        }
-
-        long s;
-        try {
-            float f = Float.parseFloat(size);
-            s = (long) (Dimen.ONE * f);
-        } catch (NumberFormatException e) {
-            throw new ConfigurationMissingAttributeException(DEFAULT_SIZE,
-                    fontConfiguration);
-        }
-
-        Dimen fontsize = new Dimen(s);
-
         tcFactory = new TypesettingContextFactory(typesettingConfig);
         TypesettingContext typesettingContext = tcFactory.newInstance();
-        typesettingContext.setFont(fontFactory.getInstance(defaultFont,
-                                                           fontsize));
+
+        typesettingContext.setFont(new NullFont());
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
 
@@ -458,6 +387,23 @@ public class ContextImpl implements Context, Observable, Serializable {
     public Count getCount(final String name) {
 
         return group.getCount(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getDelcode(de.dante.util.UnicodeChar)
+     */
+    public Count getDelcode(final UnicodeChar c) {
+
+        return group.getDelcode(c);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setDelcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     */
+    public void setDelcode(final UnicodeChar c, final Count code,
+            final boolean global) {
+
+        group.setDelcode(c, code, global);
     }
 
     /**
@@ -656,6 +602,23 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getMathcode(de.dante.util.UnicodeChar)
+     */
+    public Count getMathcode(final UnicodeChar c) {
+
+        return group.getMathcode(c);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setMathcode(de.dante.util.UnicodeChar, Count, boolean)
+     */
+    public void setMathcode(final UnicodeChar c, final Count code,
+            final boolean global) {
+
+        group.setMathcode(c, code, global);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getMuskip(java.lang.String)
      */
     public Muskip getMuskip(final String name) {
@@ -682,6 +645,23 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getSfcode(de.dante.util.UnicodeChar)
+     */
+    public Count getSfcode(final UnicodeChar c) {
+
+        return group.getSfcode(c);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setSfcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     */
+    public void setSfcode(final UnicodeChar c, final Count code,
+            final boolean global) {
+
+        group.setSfcode(c, code, global);
+    }
+
+    /**
      * Getter for the token factory.
      *
      * @return the token factory
@@ -704,7 +684,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Color)
      */
-    public void setTypesettingContext(Color color)
+    public void setTypesettingContext(final Color color)
             throws ConfigurationException {
 
         tcFactory.newInstance(group.getTypesettingContext(), color);
@@ -713,7 +693,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Direction)
      */
-    public void setTypesettingContext(Direction direction)
+    public void setTypesettingContext(final Direction direction)
             throws ConfigurationException {
 
         tcFactory.newInstance(group.getTypesettingContext(), direction);
@@ -722,7 +702,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.type.Font)
      */
-    public void setTypesettingContext(Font font) throws ConfigurationException {
+    public void setTypesettingContext(final Font font)
+            throws ConfigurationException {
 
         tcFactory.newInstance(group.getTypesettingContext(), font);
     }
@@ -730,7 +711,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(int)
      */
-    public void setTypesettingContext(int angle) throws ConfigurationException {
+    public void setTypesettingContext(final int angle)
+            throws ConfigurationException {
 
         tcFactory.newInstance(group.getTypesettingContext(), angle);
     }
@@ -812,13 +794,15 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * ...
+     * Pop the management information for a conditional from the stack and
+     * return it.
      *
-     * @return ...
+     * @return the formerly topmost element from the conditional stack
      */
     public long popConditional() {
 
-        return ((Conditional) conditionalStack.pop()).getValue();
+        int size = conditionalStack.size();
+        return ((Conditional) conditionalStack.remove(size - 1)).getValue();
     }
 
     /**

@@ -52,7 +52,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public interface Context extends Serializable {
 
@@ -219,54 +219,23 @@ public interface Context extends Serializable {
     Count getCount(String name);
 
     /**
-     * Getter for the font factory.
+     * ...
      *
-     * @return the fontFactory.
-     */
-    FontFactory getFontFactory();
-
-    /**
-     * Setter for the font factory.
-     *
-     * @param fontFactory the fontFactory to set.
-     */
-    void setFontFactory(FontFactory fontFactory);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
-     * register in the current group. Tokens registers are named, either with a
-     * number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param toks the new value of the register
-     */
-    void setToks(String name, Tokens toks);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
-     * register in the current group. Tokens registers are named, either with a
-     * number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param toks the new value of the register
+     * @param c ...
+     * @param code ...
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
-    void setToks(String name, Tokens toks, boolean global);
+    void setDelcode(UnicodeChar c, Count code, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Tokens toks}
-     * register. Tokens registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
+     * ...
      *
-     * @param name the name or number of the token register
+     * @param c ...
      *
-     * @return the token register or <code>null</code> if it is not defined
+     * @return ...
      */
-    Tokens getToks(String name);
+    Count getDelcode(UnicodeChar c);
 
     /**
      * Setter for the named dimen register.
@@ -314,6 +283,21 @@ public interface Context extends Serializable {
     Dimen getDimen(String name);
 
     /**
+     * Getter for the font factory.
+     *
+     * @return the fontFactory.
+     */
+    FontFactory getFontFactory();
+
+    /**
+     * Setter for the font factory.
+     *
+     * @param fontFactory the fontFactory to set.
+     */
+    void setFontFactory(FontFactory fontFactory);
+
+
+    /**
      * ...
      *
      * @param name ...
@@ -339,65 +323,6 @@ public interface Context extends Serializable {
      * @return ...
      */
     Glue getGlue(String name);
-
-    /**
-     * ...
-     *
-     * @param font ...
-     *
-     * @throws ConfigurationException ...
-     */
-    void setTypesettingContext(Font font) throws ConfigurationException;
-
-    /**
-     * ...
-     *
-     * @param color ...
-     *
-     * @throws ConfigurationException ...
-     */
-    void setTypesettingContext(Color color) throws ConfigurationException;
-
-    /**
-     * ...
-     *
-     * @param direction ...
-     *
-     * @throws ConfigurationException ...
-     */
-    void setTypesettingContext(Direction direction) throws ConfigurationException;
-
-    /**
-     * ...
-     *
-     * @param angle ...
-     *
-     * @throws ConfigurationException ...
-     */
-    void setTypesettingContext(int angle) throws ConfigurationException;
-
-    /**
-     * ...
-     *
-     * @param context ...
-     */
-    void setTypesettingContext(TypesettingContext context);
-
-    /**
-     * ...
-     *
-     * @param context the processor context
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setTypesettingContext(TypesettingContext context, boolean global);
-
-    /**
-     * Getter for the typesetting context.
-     *
-     * @return the typesetting context
-     */
-    TypesettingContext getTypesettingContext();
 
     /**
      * Test whether this group is the first one, which means that there is no
@@ -535,6 +460,24 @@ public interface Context extends Serializable {
     /**
      * ...
      *
+     * @param c ...
+     * @param code ...
+     * @param global ...
+     */
+    void setMathcode(UnicodeChar c, Count code, boolean global);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     *
+     * @return ...
+     */
+    Count getMathcode(UnicodeChar c);
+
+    /**
+     * ...
+     *
      * @param name ...
      * @param value ...
      */
@@ -560,6 +503,25 @@ public interface Context extends Serializable {
     Muskip getMuskip(String name);
 
     /**
+     * ...
+     *
+     * @param c ...
+     * @param code ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setSfcode(UnicodeChar c, Count code, boolean global);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     *
+     * @return ...
+     */
+    Count getSfcode(UnicodeChar c);
+
+    /**
      * Getter for the token factory. The token factory can be used to get new
      * tokens of some kind.
      *
@@ -573,6 +535,101 @@ public interface Context extends Serializable {
      * @return the tokenizer
      */
     Tokenizer getTokenizer();
+
+    /**
+     * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+     * register in the current group. Tokens registers are named, either with a
+     * number or an arbitrary string. The numbered registers where limited to
+     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     *
+     * @param name the name or the number of the register
+     * @param toks the new value of the register
+     */
+    void setToks(String name, Tokens toks);
+
+    /**
+     * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+     * register in the current group. Tokens registers are named, either with a
+     * number or an arbitrary string. The numbered registers where limited to
+     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     *
+     * @param name the name or the number of the register
+     * @param toks the new value of the register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setToks(String name, Tokens toks, boolean global);
+
+    /**
+     * Getter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+     * register. Tokens registers are named, either with a number or an
+     * arbitrary string. The numbered registers where limited to 256 in TeX.
+     * This restriction does no longer hold for ExTeX.
+     *
+     * @param name the name or number of the token register
+     *
+     * @return the token register or <code>null</code> if it is not defined
+     */
+    Tokens getToks(String name);
+
+    /**
+     * ...
+     *
+     * @param font ...
+     *
+     * @throws ConfigurationException ...
+     */
+    void setTypesettingContext(Font font) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param color ...
+     *
+     * @throws ConfigurationException ...
+     */
+    void setTypesettingContext(Color color) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param direction ...
+     *
+     * @throws ConfigurationException ...
+     */
+    void setTypesettingContext(Direction direction) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param angle ...
+     *
+     * @throws ConfigurationException ...
+     */
+    void setTypesettingContext(int angle) throws ConfigurationException;
+
+    /**
+     * ...
+     *
+     * @param context ...
+     */
+    void setTypesettingContext(TypesettingContext context);
+
+    /**
+     * ...
+     *
+     * @param context the processor context
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setTypesettingContext(TypesettingContext context, boolean global);
+
+    /**
+     * Getter for the typesetting context.
+     *
+     * @return the typesetting context
+     */
+    TypesettingContext getTypesettingContext();
 
     /**
      * Add a token to the tokens inserted after the group has been closed.

@@ -50,7 +50,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -181,6 +181,25 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the count register or its default
      */
     Count getCount(String name);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     * @param code ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setDelcode(UnicodeChar c, Count code, boolean global);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     *
+     * @return ...
+     */
+    Count getDelcode(UnicodeChar c);
 
     /**
      * Setter for a dimen register in the current group.
@@ -357,6 +376,25 @@ public interface Group extends Tokenizer, Serializable {
     Code getMacro(String name);
 
     /**
+     * ...
+     *
+     * @param c ...
+     * @param code ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setMathcode(UnicodeChar c, Count code, boolean global);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     *
+     * @return ...
+     */
+    Count getMathcode(UnicodeChar c);
+
+    /**
      * Setter for a muskip register in all groups.
      *
      * @param name the name of the count register
@@ -422,6 +460,25 @@ public interface Group extends Tokenizer, Serializable {
      * @return ...
      */
     OutFile getOutFile(String name);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     * @param code ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setSfcode(UnicodeChar c, Count code, boolean global);
+
+    /**
+     * ...
+     *
+     * @param c ...
+     *
+     * @return ...
+     */
+    Count getSfcode(UnicodeChar c);
 
     /**
      * Setter for the skip register in the current group.

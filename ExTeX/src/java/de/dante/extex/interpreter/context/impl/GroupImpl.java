@@ -31,6 +31,7 @@ import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.ImmutableCount;
 import de.dante.extex.interpreter.type.InFile;
 import de.dante.extex.interpreter.type.Muskip;
 import de.dante.extex.interpreter.type.OutFile;
@@ -51,9 +52,25 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class GroupImpl implements Tokenizer, Group, Serializable {
+public class GroupImpl implements Group, Tokenizer, Serializable {
+
+    /**
+     * The field <tt>DELCODE_DEFAULT</tt> contains the default delcode.
+     */
+    private static final Count DELCODE_DEFAULT = new ImmutableCount(-1);
+
+    /**
+     * The field <tt>SFCODE_DEFAULT</tt> contains the default sfcode for
+     * non-letters.
+     */
+    private static final Count SFCODE_DEFAULT = new ImmutableCount(1000);
+
+    /**
+     * The field <tt>SFCODE_LETTER</tt> contains the default sfcode for letters.
+     */
+    private static final Count SFCODE_LETTER = new ImmutableCount(999);
 
     /**
      * The field <tt>next</tt> contains the next group in the linked list.
@@ -87,6 +104,11 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
     private Map countMap = new HashMap();
 
     /**
+     * The field <tt>delcodeMap</tt> contains the map for ...
+     */
+    private Map delcodeMap = new HashMap();
+
+    /**
      * The field <tt>dimenMap</tt> contains the map for the dimen registers.
      */
     private Map dimenMap = new HashMap();
@@ -116,6 +138,10 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
      * The field <tt>macroMap</tt> contains the map for the macros.
      */
     private Map macroMap = new HashMap();
+    /**
+     * The field <tt>mathcodeMap</tt> contains the map for the catcodes.
+     */
+    private Map mathcodeMap = new HashMap();
 
     /**
      * The field <tt>muskipMap</tt> contains the map for the muskip registers.
@@ -126,6 +152,11 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
      * The field <tt>outFileMap</tt> contains the map for the output files.
      */
     private Map outFileMap = new HashMap();
+
+    /**
+     * The field <tt>sfcodeMap</tt> contains the map for the space factor.
+     */
+    private Map sfcodeMap = new HashMap();
 
     /**
      * The field <tt>skipMap</tt> contains the map for the skip registers
@@ -219,7 +250,7 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
      */
     public void setBox(final String name, final Box value) {
 
-        countMap.put(name, value);
+        boxMap.put(name, value);
     }
 
     /**
@@ -353,6 +384,37 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getDelcode(de.dante.util.UnicodeChar)
+     */
+    public Count getDelcode(final UnicodeChar c) {
+
+        Count delcode = (Count) (delcodeMap.get(c));
+
+        if (delcode != null) {
+            return delcode;
+        } else if (next != null) {
+            return next.getSfcode(c);
+        }
+
+        // Fallback for predefined delcodes
+        return DELCODE_DEFAULT;
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     */
+    public void setDelcode(final UnicodeChar c, final Count code, final boolean global) {
+
+        delcodeMap.put(c, code);
+
+        if (global && next != null) {
+            next.setDelcode(c, code, global);
+        }
+    }
+
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#setDimen(java.lang.String,
      *         de.dante.extex.interpreter.type.Dimen)
      */
@@ -461,6 +523,40 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(de.dante.util.UnicodeChar)
+     */
+    public Count getMathcode(final UnicodeChar c) {
+
+        Count mathcode = (Count) (mathcodeMap.get(c));
+
+        if (mathcode == null) {
+            if (next != null) {
+                return next.getMathcode(c);
+            } else if (c.isDigit()) {
+                return new Count(c.getCodePoint() + 0x7000);
+            } else if (c.isLetter()) {
+                return new Count(c.getCodePoint() + 0x7100);
+            } else {
+                return new Count(c.getCodePoint());
+            }
+        }
+
+        return mathcode;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(de.dante.util.UnicodeChar, Count, boolean)
+     */
+    public void setMathcode(final UnicodeChar c, final Count code, final boolean global) {
+
+        mathcodeMap.put(c, code);
+
+        if (global && next != null) {
+            next.setMathcode(c, code, global);
+        }
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.impl.Group#getOutFile(java.lang.String)
      */
     public OutFile getOutFile(final String name) {
@@ -469,6 +565,7 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 
         return file;
     }
+
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(java.lang.String,
      *      de.dante.extex.interpreter.type.OutFile, boolean)
@@ -623,6 +720,39 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
     public Group getNext() {
 
         return next;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getSfcode(de.dante.util.UnicodeChar)
+     */
+    public Count getSfcode(final UnicodeChar c) {
+
+        Count sfcode = (Count) (sfcodeMap.get(c));
+
+        if (sfcode != null) {
+            return sfcode;
+        } else if (next != null) {
+            return next.getSfcode(c);
+        }
+
+        // Fallback for predefined sfcodes
+        if (c.isLetter()) {
+            return SFCODE_LETTER;
+        }
+        return SFCODE_DEFAULT;
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#setSfcode(de.dante.util.UnicodeChar, de.dante.extex.interpreter.type.Count, boolean)
+     */
+    public void setSfcode(final UnicodeChar c, final Count code, final boolean global) {
+
+        sfcodeMap.put(c, code);
+
+        if (global && next != null) {
+            next.setSfcode(c, code, global);
+        }
     }
 
     /**
