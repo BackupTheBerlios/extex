@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\vskip</code>.
- * 
+ *
  * <doc name="vskip">
  * <h3>The Primitive <tt>\vskip</tt></h3>
  * <p>
@@ -39,38 +39,33 @@ import de.dante.util.GeneralException;
  * </p>
  * <p>
  * The formal description of this primitive is the following:
- * 
+ *
  * <pre class="syntax">
- * 
+ *
  *     &amp;langvskip&amp;rang
- *         &amp;rarr 
- * <tt>
- * \vskip
- * </tt>
- *  &amp;langGlue&amp;rang  
+ *         &rarr; <tt>\vskip</tt> &lang;Glue&rang;
  * </pre>
- * 
+ *
  * </p>
  * <p>
  * Examples:
- * 
+ *
  * <pre class="TeXSample">
- * 
- *     \vskip 1em plus 1pt minus 1pt  
+ *     \vskip 1em plus 1pt minus 1pt
  * </pre>
- * 
+ *
  * </p>
  * </doc>
- * 
- * 
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Vskip extends AbstractCode {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
     public Vskip(final String name) {
