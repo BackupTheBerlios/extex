@@ -25,7 +25,6 @@ import java.util.Map;
 import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -35,7 +34,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CharNodeFactory {
 
@@ -61,7 +60,7 @@ public class CharNodeFactory {
      *
      * @return the new character node
      */
-    public Node newInstance(final TypesettingContext typesettingContext,
+    public CharNode newInstance(final TypesettingContext typesettingContext,
             final UnicodeChar uc) {
 
         Map map = (Map) cache.get(typesettingContext);
@@ -70,13 +69,13 @@ public class CharNodeFactory {
             cache.put(typesettingContext, map);
         }
 
-        Node node = (Node) map.get(uc);
+        CharNode node = (CharNode) map.get(uc);
 
         if (node == null) {
             Font font = typesettingContext.getFont();
             if (font instanceof VirtualFount) {
                 VirtualFount vf = (VirtualFount) font;
-                node = vf.getNodeList(typesettingContext, uc);
+                node = vf.getVirtualCharNode(typesettingContext, uc);
             } else {
                 node = new CharNode(typesettingContext, uc);
             }
