@@ -27,9 +27,9 @@ import de.dante.util.GeneralException;
  * count.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
-public interface CountConvertable {
+public interface CountConvertible {
 
     /**
      * This method converts a register into a count.

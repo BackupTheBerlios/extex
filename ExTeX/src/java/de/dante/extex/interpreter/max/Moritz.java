@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.CountConvertible;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FontConvertible;
@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -822,8 +822,8 @@ public abstract class Moritz implements TokenSource, Observable {
                 Code code = context.getCode(t);
                 if (code == null) {
                     throw new GeneralHelpingException("TTP.MissingNumber");
-                } else if (code instanceof CountConvertable) {
-                    return ((CountConvertable) code)
+                } else if (code instanceof CountConvertible) {
+                    return ((CountConvertible) code)
                             .convertCount(context, this);
                 } else if (code instanceof ExpandableCode) {
                     ((ExpandableCode) code).expand(Flags.NONE, context, this,

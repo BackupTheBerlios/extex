@@ -19,7 +19,7 @@
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.CountConvertible;
 import de.dante.extex.interpreter.DimenConvertible;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
@@ -35,10 +35,10 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive <code>\ uccode</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
-        Theable, CountConvertable, DimenConvertible {
+        Theable, CountConvertible, DimenConvertible {
 
     /**
      * Creates a new object.
@@ -90,7 +90,7 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.CountConvertable#convertCount(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.CountConvertible#convertCount(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertCount(final Context context, final TokenSource source)

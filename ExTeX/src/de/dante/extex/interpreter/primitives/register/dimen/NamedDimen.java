@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.primitives.register.dimen;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
-import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.CountConvertible;
 import de.dante.extex.interpreter.DimenConvertible;
 import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.ExpandableCode;
@@ -48,10 +48,10 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedDimen extends AbstractAssignment implements Advanceable,
-        ExpandableCode, CountConvertable, DimenConvertible, Multiplyable,
+        ExpandableCode, CountConvertible, DimenConvertible, Multiplyable,
         Divideable, Theable {
 
     /**
@@ -148,7 +148,7 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
     }
 
     /**
-     * @see de.dante.extex.interpreter.CountConvertable#convertCount(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.CountConvertible#convertCount(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertCount(final Context context, final TokenSource source)
