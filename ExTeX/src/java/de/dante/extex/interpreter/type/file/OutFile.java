@@ -19,9 +19,15 @@
 
 package de.dante.extex.interpreter.type.file;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.Writer;
 
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.util.GeneralException;
 
@@ -29,7 +35,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class OutFile implements Serializable {
 
@@ -41,8 +47,15 @@ public class OutFile implements Serializable {
 
     /**
      * The field <tt>file</tt> contains the file assigned to this instance.
+     * If the value is <code>null</code> then it can never be opened.
      */
-    private File file = null;
+    private File file;
+
+    /**
+     * The field <tt>writer</tt> contains the real writer assigned to this
+     * instance.
+     */
+    private transient Writer writer = null;
 
     /**
      * Creates a new object.
@@ -62,7 +75,15 @@ public class OutFile implements Serializable {
      */
     public void open() throws GeneralException {
 
-        //TODO unimplemented
+        if (file != null) {
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+            } catch (FileNotFoundException e) {
+                // ignored on purpose
+            } catch (IOException e) {
+                // ignored on purpose
+            }
+        }
     }
 
     /**
@@ -72,32 +93,47 @@ public class OutFile implements Serializable {
      */
     public void close() throws GeneralException {
 
-        if (file != null) {
-            //TODO unimplemented
-            file = null;
+        if (writer != null) {
+            try {
+                writer.close();
+            } catch (IOException e) {
+                throw new PanicException(e); //TODO ignore?
+            } finally {
+                writer = null;
+            }
         }
     }
 
     /**
-     * Check whether the out file is open.
+     * Check whether the output file is open.
      *
      * @return <code>true</code> iff the instance is open
      */
     public boolean isOpen() {
 
-        return (null != file);
+        return (null != writer);
     }
 
     /**
-     * Write some tokens to the output stream.
+     * Write some tokens to the output writer.
      *
-     * @param t tokens to write
+     * @param toks tokens to write
      *
      * @throws GeneralException in case of an error
      */
-    public void write(final Tokens t) throws GeneralException {
+    public void write(final Tokens toks) throws GeneralException {
 
-        //TODO unimplemented
+        if (writer == null) {
+            return;
+        }
+        int len = toks.length();
+        try {
+            for (int i = 0; i < len; i++) {
+                writer.write(toks.get(i).getValue());
+            }
+        } catch (IOException e) {
+            throw new PanicException(e); //TODO ignore?
+        }
     }
 
 }
