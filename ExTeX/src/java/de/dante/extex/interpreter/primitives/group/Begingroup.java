@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides an implementation for the primitive <code>\begingroup</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Begingroup extends AbstractCode {
     /**

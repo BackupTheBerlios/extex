@@ -20,11 +20,12 @@ package de.dante.extex.scanner;
 
 
 
+
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractToken implements Token {
     /** The value of the token */
@@ -91,4 +92,5 @@ public abstract class AbstractToken implements Token {
     public boolean isa(Catcode cc) {
         return getCatcode() == cc;
     }
+
 }

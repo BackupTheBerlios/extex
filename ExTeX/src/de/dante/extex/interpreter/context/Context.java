@@ -20,7 +20,7 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
-import de.dante.extex.hyphenation.Hyphenation;
+import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Interaction;
@@ -40,7 +40,7 @@ import de.dante.util.configuration.ConfigurationException;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Context extends Configurable, Serializable {
     /**
@@ -216,19 +216,7 @@ public interface Context extends Configurable, Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    public abstract Hyphenation getHyphenation(String language)
-                                        throws GeneralException;
-
-    /**
-     * ...
-     *
-     * @param index the index of the language
-     *
-     * @return ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    public abstract Hyphenation getHyphenation(int index)
+    public abstract HyphenationTable getHyphenationTable(int language)
                                         throws GeneralException;
 
     /**

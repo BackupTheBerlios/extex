@@ -51,7 +51,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * This is a reference implementation for a MAcro eXpander.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Max extends Moritz implements CatcodeVisitor,
                                            Interpreter,

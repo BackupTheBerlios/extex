@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.node.CharNode;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface NodeList extends Node {
     public abstract void add(Node node);

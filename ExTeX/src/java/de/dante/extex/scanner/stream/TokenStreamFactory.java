@@ -37,7 +37,7 @@ import de.dante.util.StringListIterator;
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */

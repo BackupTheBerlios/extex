@@ -18,14 +18,14 @@
  */
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.hyphenation.Hyphenation;
+import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.interpreter.type.Font;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
     /** ... */
@@ -38,7 +38,7 @@ public class TypesettingContextImpl implements TypesettingContext {
     private Font font;
 
     /** ... */
-    private Hyphenation hyphenation;
+    private HyphenationManager hyphenation;
 
     /** ... */
     private int angle;

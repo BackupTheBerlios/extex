@@ -42,7 +42,7 @@ import de.dante.extex.scanner.Token;
  * find the one containing the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Group extends Tokenizer, Serializable {
     /**

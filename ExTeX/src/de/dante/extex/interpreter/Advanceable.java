@@ -25,7 +25,7 @@ import de.dante.util.GeneralException;
  * This is a interface to mark those Classes which are able to advance something
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Advanceable {
     /**

@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.type.Glue;
  * This class implements a dummy font which does not contain any characters.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DummyFont implements Font {
 

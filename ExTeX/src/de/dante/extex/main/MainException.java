@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * which is meant to be used as exit status for the main program.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MainException extends GeneralException {
     /** The message for this exception */

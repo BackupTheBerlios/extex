@@ -25,7 +25,7 @@ import de.dante.extex.i18n.Messages;
  * into a MainException with an appropriate exit status. 
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MainIOException extends MainException {
     /**

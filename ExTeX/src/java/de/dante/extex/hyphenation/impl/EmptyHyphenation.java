@@ -18,15 +18,15 @@
  */
 package de.dante.extex.hyphenation.impl;
 
-import de.dante.extex.hyphenation.Hyphenation;
+import de.dante.extex.hyphenation.HyphenationTable;
 
 /**
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class EmptyHyphenation implements Hyphenation {
+public class EmptyHyphenation implements HyphenationTable {
 
     /**
      * Creates a new object.

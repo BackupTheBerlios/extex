@@ -40,7 +40,7 @@ import de.dante.extex.scanner.Token;
  * a linked list. The list itself is mixed with the pure elements of the linked list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 

@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is a reference implementation of the Typesetter interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
     /** the factory to produce glyph nodes */

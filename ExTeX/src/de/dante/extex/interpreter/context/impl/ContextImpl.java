@@ -19,12 +19,11 @@
 package de.dante.extex.interpreter.context.impl;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Stack;
 
-import de.dante.extex.hyphenation.Hyphenation;
-import de.dante.extex.hyphenation.impl.EmptyHyphenation;
+import de.dante.extex.hyphenation.HyphenationManager;
+import de.dante.extex.hyphenation.HyphenationManagerImpl;
+import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Conditional;
@@ -91,7 +90,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </ul>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ContextImpl implements Context, Serializable {
     /** The saved configuration */
@@ -103,7 +102,7 @@ public class ContextImpl implements Context, Serializable {
     private Group group = null;
 
     /** The factory to acquire a new group */
-    private GroupFactory groupFactory;
+    private transient GroupFactory groupFactory;
 
     /** The interaction mode to use */
     private Interaction interaction = null;
@@ -124,7 +123,7 @@ public class ContextImpl implements Context, Serializable {
     /** the magnification for the whole document in permille */
     private long magnification = 1000;
 
-    private Map hyphenationMap = new HashMap();
+    private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
     
     /**
      * Creates a new object.
@@ -402,28 +401,11 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenation(int)
-     */
-    public Hyphenation getHyphenation(int index)
-        throws GeneralException {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#getHyphenation(java.lang.String)
      */
-    public Hyphenation getHyphenation(String language)
+    public HyphenationTable getHyphenationTable(int language)
         throws GeneralException {
-        Hyphenation table = (Hyphenation)hyphenationMap.get(language);
-        if ( table != null ) return table;
-
-        //TODO try to load the table
-
-        table = (Hyphenation)hyphenationMap.get("");
-        if ( table != null ) return table;
-        table = new EmptyHyphenation();
-        return table;
+        return hyphenationManager.getHyphenationTable(language);
     }
 
     /**

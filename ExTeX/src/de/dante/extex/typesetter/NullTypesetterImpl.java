@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationException;
  * interface.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NullTypesetterImpl implements Typesetter {
 

@@ -25,7 +25,7 @@ import de.dante.extex.i18n.Messages;
  * but specifies an invalid value for the mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MainUnknownInteractionException extends MainException {
     /**

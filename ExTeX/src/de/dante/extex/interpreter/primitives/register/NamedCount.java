@@ -20,12 +20,14 @@ package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Advanceable;
+import de.dante.extex.interpreter.CountConvertable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 
@@ -43,9 +45,10 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class NamedCount extends AbstractCode implements Advanceable {
+public class NamedCount extends AbstractCode implements Advanceable,
+                                                        CountConvertable {
     /**
      * Creates a new object.
      *
@@ -96,14 +99,29 @@ public class NamedCount extends AbstractCode implements Advanceable {
                  throws GeneralException {
         source.scanKeyword("by");
 
-        int val = source.scanInteger();
+		long value = scanCount(context,source);
 
         Count count = context.getCount(key);
-        count.setValue(count.getValue() + val);
+        count.setValue(count.getValue() + value);
 
         if (prefix.isGlobal()) {
-            context.setCount(key, count.getValue() + val, true);
+            context.setCount(key, count.getValue() + value, true);
         }
+    }
+
+    /**
+     * ...
+     *
+     * @param context ...
+     * @param source ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException ...
+     */
+    public long convertCount(Context context, TokenSource source)
+                      throws GeneralException {
+        return convertCount(context, source, getName());
     }
 
     /**
@@ -140,6 +158,21 @@ public class NamedCount extends AbstractCode implements Advanceable {
     /**
      * ...
      *
+     * @param context ...
+     * @param source ...
+     * @param key ...
+     *
+     * @return ...
+     */
+    protected long convertCount(Context context, TokenSource source,
+                                String key) {
+        return context.getCount(key)
+                      .getValue();
+    }
+
+    /**
+     * ...
+     *
      * @param prefix ...
      * @param context the interpreter context
      * @param source ...
@@ -152,8 +185,36 @@ public class NamedCount extends AbstractCode implements Advanceable {
                    throws GeneralException {
         source.scanOptionalEquals();
 
-        long value = source.scanInteger();
+        long value = scanCount(context,source);
         context.setCount(key, value, prefix.isGlobal());
         prefix.clear();
+    }
+
+    /**
+     * ...
+     *
+     * @param context ...
+     * @param source ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException ...
+     */
+    protected long scanCount(Context context, TokenSource source)
+                      throws GeneralException {
+        Token t = source.getNextNonSpace();
+
+        if (t == null) {
+            // TODO
+            return 0;
+        } else if (t instanceof CountConvertable) {
+            return ((CountConvertable) t).convertCount(context, source);
+        } else {
+            source.push(t);
+
+            //TODO
+        }
+
+        return source.scanInteger();
     }
 }

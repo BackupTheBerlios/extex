@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * It provides some useful definitions for most of the methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractCode implements Code {
     /** This variable contains the name of this code for debugging.

@@ -41,7 +41,7 @@ import java.nio.charset.CharsetDecoder;
  * This action is performed in the superclass TokenStreamStringImpl.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamImpl extends TokenStreamBufferImpl {
     /** the decoder for the input stream */

@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.Typesetter;
  * added to the prefixes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Long extends AbstractCode {
     /**

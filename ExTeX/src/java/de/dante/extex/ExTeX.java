@@ -82,7 +82,7 @@ import java.util.logging.LogManager;
  * </ul>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ExTeX {
     /** Exit code for success

@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class Catcode {
     /** the constant for the escape catcode used to initiate control
@@ -191,7 +191,7 @@ public abstract class Catcode {
      * This inner class represents an active catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeActive extends Catcode {
         /**
@@ -222,7 +222,7 @@ public abstract class Catcode {
      * This inner class represents a comment catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeComment extends Catcode {
         /**
@@ -254,7 +254,7 @@ public abstract class Catcode {
      * This inner class represents a CR catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeCr extends Catcode {
         /**
@@ -285,7 +285,7 @@ public abstract class Catcode {
      * This inner class represents an escape catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeEscape extends Catcode {
         /**
@@ -316,7 +316,7 @@ public abstract class Catcode {
      * This inner class represents an ignore catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeIgnore extends Catcode {
         /**
@@ -347,7 +347,7 @@ public abstract class Catcode {
      * This inner class represents an invalid character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeInvalid extends Catcode {
         /**
@@ -378,7 +378,7 @@ public abstract class Catcode {
      * This inner class represents a left brace character.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeLeftBrace extends Catcode {
         /**
@@ -410,7 +410,7 @@ public abstract class Catcode {
      * This inner class represents a letter character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeLetter extends Catcode {
         /**
@@ -441,7 +441,7 @@ public abstract class Catcode {
      * This inner class represents a macro parameter character.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeMacroParam extends Catcode {
         /**
@@ -473,7 +473,7 @@ public abstract class Catcode {
      * This inner class represents a math shift character token.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeMathShift extends Catcode {
         /**
@@ -505,7 +505,7 @@ public abstract class Catcode {
      * This inner class represents an other character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeOther extends Catcode {
         /**
@@ -536,7 +536,7 @@ public abstract class Catcode {
      * This inner class represents a right brace character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeRigthBrace extends Catcode {
         /**
@@ -568,7 +568,7 @@ public abstract class Catcode {
      * This inner class represents a space character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeSpace extends Catcode {
         /**
@@ -599,7 +599,7 @@ public abstract class Catcode {
      * This inner class represents a sub mark character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeSubMark extends Catcode {
         /**
@@ -630,7 +630,7 @@ public abstract class Catcode {
      * This inner class represents a sup mark character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeSupMark extends Catcode {
         /**
@@ -661,7 +661,7 @@ public abstract class Catcode {
      * This inner class represents a tab mark character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class CatcodeTabMark extends Catcode {
         /**

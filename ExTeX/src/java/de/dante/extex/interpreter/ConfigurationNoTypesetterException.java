@@ -26,7 +26,7 @@ import de.dante.extex.i18n.Messages;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationNoTypesetterException
     extends ConfigurationException {

@@ -32,7 +32,7 @@ import java.util.Stack;
  * of tokens which can be enlarged with push() or reduced with pop().
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
     /** The Token stack for the pushback operation */

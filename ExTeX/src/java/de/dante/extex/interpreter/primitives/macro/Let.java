@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Let extends AbstractCode implements CatcodeVisitor {
     /**

@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive <code>\iftrue</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Iftrue extends AbstractIf {
 

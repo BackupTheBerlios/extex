@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
  * For ExTeX this the properties file has many similarities to TEX.POOL in TeX.
  * </p>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Messages {
     /** the name of the resource bundle to use */

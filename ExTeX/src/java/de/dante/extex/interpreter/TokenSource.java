@@ -30,7 +30,7 @@ import de.dante.util.Locator;
  * provided here as well.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface TokenSource {
     /**
