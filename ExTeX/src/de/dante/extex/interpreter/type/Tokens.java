@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Tokens implements Serializable {
 
@@ -64,25 +64,30 @@ public class Tokens implements Serializable {
          tokens.add(t);
      }
 
-    /**
-     * Creates a new object
-     * <p>
-     * Each character of the string is converted into a <code>OtherToken</code>
-     * and added to the internal list.
-     *
-     * @param context the interpreter context
-     * @param s the <code>String</code> to add
-     *
-     * @throws GeneralException if a error throws in the factory
-     */
+     /**
+      * Creates a new object
+      * <p>
+      * Each character of the string is converted into a <code>OtherToken</code>
+      * and added to the internal list. An exception is made for spaces which
+      * are converted into a <code>SpaceToken</code>.
+      *
+      * @param context the interpreter context
+      * @param s the <code>String</code> to add
+      *
+      * @throws GeneralException if a error throws in the factory
+      */
     public Tokens(final Context context, final String s)
-        throws GeneralException {
+            throws GeneralException {
 
         this();
         if (s != null && s.length() > 0) {
             TokenFactory factory = context.getTokenFactory();
+            char c;
+
             for (int i = 0; i < s.length(); i++) {
-                add(factory.newInstance(Catcode.OTHER, s.charAt(i)));
+                c = s.charAt(i);
+                add(factory.newInstance((c == ' ' ? Catcode.SPACE
+                        : Catcode.OTHER), c));
             }
         }
     }
