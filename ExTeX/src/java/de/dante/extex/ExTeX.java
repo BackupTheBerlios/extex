@@ -39,6 +39,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
+import java.util.ResourceBundle;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
@@ -51,6 +52,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interaction;
@@ -616,7 +618,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.58 $
+ * @version $Revision: 1.59 $
  */
 public class ExTeX {
 
@@ -834,6 +836,50 @@ public class ExTeX {
     }
 
     /**
+     * Log a throwable including its stack trace to the logger.
+     *
+     * @param logger the target logger
+     * @param text the prefix text to log
+     * @param e the throwable to log
+     */
+    private static void logException(final Logger logger, final String text,
+            final Throwable e) {
+
+        logger.severe(text);
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        PrintWriter pw = new PrintWriter(os);
+        e.printStackTrace(pw);
+        pw.flush();
+        logger.fine(os.toString());
+    }
+
+    /**
+     * Log a throwable including its stack trace to the logger.
+     * @param logger the target logger
+     * @param e the throwable to log
+     */
+    private static void logInternalError(final Logger logger, final Throwable e) {
+
+        //e.printStackTrace();
+
+        String msg = e.getMessage();
+        for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
+            msg = t.getMessage();
+            if ("".equals(msg)) {
+                msg = null;
+            }
+        }
+
+        if (msg == null) {
+            msg = e.getClass().getName();
+            msg = msg.substring(msg.lastIndexOf('.') + 1);
+        }
+
+        logException(logger, Messages.format("ExTeX.InternalError", msg), e);
+    }
+
+    /**
      * This is the main method which is invoked to run the whole engine from
      * the command line. It creates a new ExTeX object and invokes
      * <tt>{@link #run(java.lang.String[]) run()}</tt> on it.
@@ -860,9 +906,17 @@ public class ExTeX {
             ExTeX extex = new ExTeX(System.getProperties(), DOT_EXTEX);
             status = extex.run(args);
         } catch (Throwable e) {
-            System.err.println(Messages.format("ExTeX.SevereError", //
-                    e.toString()));
-            e.printStackTrace();
+            Logger logger = Logger.getLogger(ExTeX.class.getName());
+            logger.setUseParentHandlers(false);
+            logger.setLevel(Level.ALL);
+
+            Handler consoleHandler = new ConsoleHandler();
+            consoleHandler.setFormatter(new LogFormatter());
+            consoleHandler.setLevel(Level.WARNING);
+            logger.addHandler(consoleHandler);
+
+            logException(logger, //
+                    Messages.format("ExTeX.SevereError", e.toString()), e);
             status = EXIT_INTERNAL_ERROR;
         }
 
@@ -1028,7 +1082,8 @@ public class ExTeX {
                 Locale.setDefault(new Locale(m.group(1), m.group(2)));
             } else if ((m = Pattern.compile("^(..)[_-](..)[_-](..)$").matcher(
                     lang)).matches()) {
-                Locale.setDefault(new Locale(m.group(1), m.group(2), m
+                Locale
+                        .setDefault(new Locale(m.group(1), m.group(2), m
                                 .group(3)));
             }
         }
@@ -1036,6 +1091,7 @@ public class ExTeX {
         String bundle = (String) properties.get(PROP_POOL);
 
         if (bundle == null) {
+            HelpingException.setResource(ResourceBundle.getBundle(bundle));
             Messages.configure(bundle);
         }
     }
@@ -1199,48 +1255,6 @@ public class ExTeX {
     }
 
     /**
-     * Log a throwable including its stack trace to the logger.
-     *
-     * @param text the prefix text to log
-     * @param e the throwable to log
-     */
-    private void logException(final String text, final Throwable e) {
-
-        logger.severe(text);
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        PrintWriter pw = new PrintWriter(os);
-        e.printStackTrace(pw);
-        pw.flush();
-        logger.fine(os.toString());
-    }
-
-    /**
-     * Log a throwable including its stack trace to the logger.
-     *
-     * @param e the throwable to log
-     */
-    private void logInternalError(final Throwable e) {
-
-        e.printStackTrace();
-
-        String msg = e.getMessage();
-        for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
-            msg = t.getMessage();
-            if ("".equals(msg)) {
-                msg = null;
-            }
-        }
-
-        if (msg == null) {
-            msg = e.getClass().getName();
-            msg = msg.substring(msg.lastIndexOf('.') + 1);
-        }
-
-        logException(Messages.format("ExTeX.InternalError", msg), e);
-    }
-
-    /**
      * Creat a default font for the interpreter context.
      *
      * @param config the configuration object for the font
@@ -1303,8 +1317,8 @@ public class ExTeX {
 
         DocumentWriterFactory factory = new DocumentWriterFactory(config);
         factory.enableLogging(logger);
-        DocumentWriter docWriter = factory
-                .newInstance(properties.getProperty(PROP_OUTPUT_TYPE), options);
+        DocumentWriter docWriter = factory.newInstance(properties
+                .getProperty(PROP_OUTPUT_TYPE), options);
 
         if (outStream == null) {
             outStream = outFactory.createOutputStream(jobname, docWriter
@@ -1394,8 +1408,8 @@ public class ExTeX {
         interpreterFactory.enableLogging(logger);
 
         Interpreter interpreter = interpreterFactory.newInstance();
-        ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(config
-                .getConfiguration(TAG_ERRORHANDLER));
+        ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(
+                config.getConfiguration(TAG_ERRORHANDLER));
         errorHandlerFactory.enableLogging(logger);
         ErrorHandler errorHandler = errorHandlerFactory.newInstance(properties
                 .getProperty(PROP_ERROR_HANDLER));
@@ -1508,8 +1522,8 @@ public class ExTeX {
 
         TypesetterFactory factory = new TypesetterFactory(config);
         factory.enableLogging(logger);
-        Typesetter typesetter = factory.newInstance(
-                properties.getProperty(PROP_TYPESETTER_TYPE), context);
+        Typesetter typesetter = factory.newInstance(properties
+                .getProperty(PROP_TYPESETTER_TYPE), context);
         typesetter.setDocumentWriter(docWriter);
 
         return typesetter;
@@ -1609,7 +1623,7 @@ public class ExTeX {
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
         } catch (Throwable e) {
-            logInternalError(e);
+            logInternalError(logger, e);
         } finally {
             if (fileHandler != null) {
                 fileHandler.close();
@@ -1726,17 +1740,17 @@ public class ExTeX {
             try {
                 showBanner(null);
             } catch (MainException e1) {
-                logException(e1.getMessage(), e1);
+                logException(logger, e1.getMessage(), e1);
             }
-            logException(e.getMessage(), e);
+            logException(logger, e.getMessage(), e);
             returnCode = e.getCode();
         } catch (Throwable e) {
             try {
                 showBanner(null);
             } catch (MainException e1) {
-                logException(e1.getMessage(), e1);
+                logException(logger, e1.getMessage(), e1);
             }
-            logInternalError(e);
+            logInternalError(logger, e);
             logger.info(Messages.format("ExTeX.Logfile", properties
                     .getProperty(PROP_JOBNAME)));
 
