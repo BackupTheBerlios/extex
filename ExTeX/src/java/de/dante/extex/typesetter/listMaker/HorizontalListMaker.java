@@ -19,17 +19,24 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.language.Language;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.exception.TypesetterHelpingException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
@@ -44,7 +51,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -150,10 +157,43 @@ public class HorizontalListMaker extends AbstractListMaker {
     public NodeList complete(final TypesetterOptions context)
             throws TypesetterException {
 
-        ListManager manager = getManager();
-        //TODO gene:  USE THE LIGATURE BUILDER!!!
-        //manager.getLigatureBuilder().insertLigatures(nodes);
-        return manager.getParagraphBuilder().build(nodes);
+        if(false)
+        for (int ptr = skipToChar(0); ptr < nodes.size(); ptr = skipToChar(ptr)) {
+            CharNode node = (CharNode) nodes.get(ptr);
+            Language lang = node.getTypesettingContext().getLanguage();
+            UnicodeChar hy = node.getTypesettingContext().getFont()
+                    .getHyphenChar();
+            if (hy != null) {
+                try {
+                    Token hyphen = context.getTokenFactory().createToken(
+                            Catcode.OTHER, hy, Namespace.DEFAULT_NAMESPACE);
+                    //TODO gene:  USE THE LIGATURE BUILDER!!!
+
+                    lang.hyphenate(nodes, context, hyphen);
+                } catch (CatcodeException e) {
+                    throw new TypesetterException(e);
+                }
+            }
+        }
+
+        return getManager().getParagraphBuilder().build(nodes);
+    }
+
+    private int skipToChar(final int start) {
+
+        int size = nodes.size();
+        for (int i = start; i < size; i++) {
+            Node n = nodes.get(i);
+            if (n instanceof BeforeMathNode) {
+                do {
+                    i++;
+                } while (i < size && !(nodes.get(i) instanceof AfterMathNode));
+                i--;
+            } else if (n instanceof CharNode) {
+                return i;
+            }
+        }
+        return size;
     }
 
     /**
