@@ -76,9 +76,246 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
-public class Let extends AbstractAssignment implements TokenVisitor {
+public class Let extends AbstractAssignment {
+
+    /**
+     * The field <tt>VISITOR</tt> contains the anonymous inner class of the
+     * token visitor for the let command.
+     */
+    public static final TokenVisitor VISITOR = new TokenVisitor() {
+
+        /**
+         * The right hand side of a <code>\let</code> definition is an
+         * active character which will be used as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public Object visitActive(final ActiveCharacterToken token,
+                final Object oContext) throws GeneralException {
+
+            return ((Context) oContext).getCode(token);
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * CR character.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitCr(final CrToken token, final Object oContext)
+                throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * control sequence which will be used as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitEscape(final ControlSequenceToken token,
+                final Object oContext) throws GeneralException {
+
+            return ((Context) oContext).getCode(token);
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * left brace character which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitLeftBrace(final LeftBraceToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * letter which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitLetter(final LetterToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * macro parameter character which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitMacroParam(final MacroParamToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * math shift character which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitMathShift(final MathShiftToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is an
+         * other character which will be used as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitOther(final OtherToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * right brace character which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitRightBrace(final RightBraceToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * space character. This can not happen since spaces are absorbed here.
+         * Thus an error is raised.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitSpace(final SpaceToken token,
+                final Object oContext) throws GeneralException {
+
+            throw new ImpossibleException("unexpected space found");
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * subscript mark which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitSubMark(final SubMarkToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * superscript mark which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitSupMark(final SupMarkToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+
+        /**
+         * The right hand side of a <code>\let</code> definition is a
+         * tab mark which will be used in the form of an other
+         * character as new binding.
+         *
+         * @param token the token to find the code for
+         * @param oContext the interpreter context
+         *
+         * @return the code associated to the token
+         *
+         * @throws GeneralException in case of an error
+         */
+        public final Object visitTabMark(final TabMarkToken token,
+                final Object oContext) throws GeneralException {
+
+            return new CharCode("", token.getChar());
+        }
+    };
 
     /**
      * Creates a new object.
@@ -129,246 +366,15 @@ public class Let extends AbstractAssignment implements TokenVisitor {
 
         Code code;
         try {
-            code = (Code) t.visit(this, context, null);
+
+            code = (Code) t.visit(VISITOR, context);
+
         } catch (InterpreterException e) {
             throw e;
         } catch (Exception e) {
             throw new InterpreterException(e);
         }
         context.setCode(cs, code, prefix.isGlobal());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is an
-     * active character which will be used as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public Object visitActive(final ActiveCharacterToken token,
-            final Object oContext) throws GeneralException {
-
-        Context context = (Context) oContext;
-        return context.getCode(token);
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * CR character.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitCr(final CrToken token, final Object oContext)
-            throws GeneralException {
-
-        //TODO gene: cr unimplemented
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * control sequence which will be used as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitEscape(final ControlSequenceToken token,
-            final Object oContext) throws GeneralException {
-
-        Context context = (Context) oContext;
-        return context.getCode(token);
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * left brace character which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitLeftBrace(final LeftBraceToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * letter which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitLetter(final LetterToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * macro parameter character which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitMacroParam(final MacroParamToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * math shift character which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitMathShift(final MathShiftToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is an
-     * other character which will be used as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitOther(final OtherToken token, final Object oContext)
-            throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * right brace character which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitRightBrace(final RightBraceToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * space character. This can not happen since spaces are absorbed here.
-     * Thus an error is raised.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitSpace(final SpaceToken token, final Object oContext)
-            throws GeneralException {
-
-        throw new ImpossibleException("unexpected space found");
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * subscript mark which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitSubMark(final SubMarkToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * superscript mark which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitSupMark(final SupMarkToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
-    }
-
-    /**
-     * The right hand side of a <code>\let</code> definition is a
-     * tab mark which will be used in the form of an other
-     * character as new binding.
-     *
-     * @param token the token to find the code for
-     * @param oContext the interpreter context
-     *
-     * @return the code associated to the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    public final Object visitTabMark(final TabMarkToken token,
-            final Object oContext) throws GeneralException {
-
-        return new CharCode("", token.getChar());
     }
 
 }
