@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,13 +19,15 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This iterface describes the capabilites for an extention object to be
+ * inserted into an extension node.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Extension {
 
@@ -55,21 +57,21 @@ public interface Extension {
      *
      * @param width the new width
      */
-    void setWidth(Dimen width);
+    void setWidth(FixedDimen width);
 
     /**
      * Setter for the heigth of the node.
      *
      * @param height the new height
      */
-    void setHeight(Dimen height);
+    void setHeight(FixedDimen height);
 
     /**
      * Setter for the depth of the node.
      *
      * @param depth the nde depth
      */
-    void setDepth(Dimen depth);
+    void setDepth(FixedDimen depth);
 
     /**
      * This method puts the printable representation into the string buffer.
