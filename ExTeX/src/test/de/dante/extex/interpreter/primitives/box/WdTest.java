@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\wd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WdTest extends ExTeXLauncher {
 
@@ -92,7 +92,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "0\n");
+                "0 \n");
     }
 
     /**
