@@ -27,7 +27,7 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -98,6 +98,11 @@ public abstract class AbstractNoad implements Noad {
         // TODO gene: unimplemented
     }
 
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param sb the target string buffer
+     */
     protected void printNoad(final StringBuffer sb) {
         
         // TODO gene: unimplemented
