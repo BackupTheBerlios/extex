@@ -144,8 +144,10 @@
   <DocumentWriter default="out">
     <pdf  class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
     <dvi  class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
-    <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
-    <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <out  class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+          tree="false"/>
+    <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"
+          tree="true"/>
     <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
     <xml  class="de.dante.extex.documentWriter.xml.XMLDocumentWriter"
           encoding="ISO-8859-1"

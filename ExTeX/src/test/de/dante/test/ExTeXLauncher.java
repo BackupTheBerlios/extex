@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -50,7 +50,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -106,7 +106,7 @@ public class ExTeXLauncher extends TestCase {
      */
     private static void prepareProperties(final Properties properties) {
 
-        provide(properties, "extex.output", "text");
+        provide(properties, "extex.output", "out");
         provide(properties, "extex.interaction", "batchmode");
         provide(properties, "extex.fonts", "src/font");
     }
