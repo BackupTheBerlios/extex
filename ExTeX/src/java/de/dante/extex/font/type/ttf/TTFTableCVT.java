@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -44,9 +47,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableCVT implements TTFTable {
+public class TTFTableCVT implements TTFTable, XMLConvertible {
 
     /**
      * values
@@ -102,5 +105,22 @@ public class TTFTableCVT implements TTFTable {
             buf.append("   [" + i + "] : " + String.valueOf(values[i]) + '\n');
         }
         return buf.toString();
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "cvt");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        for (int i = 0; i < values.length; i++) {
+            Element val = new Element("values");
+            val.setAttribute("id", String.valueOf(i));
+            val.setAttribute("value", String.valueOf(values[i]));
+            table.addContent(val);
+        }
+        return table;
     }
 }

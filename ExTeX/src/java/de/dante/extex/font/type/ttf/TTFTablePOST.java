@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -80,9 +83,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTablePOST implements TTFTable {
+public class TTFTablePOST implements TTFTable, XMLConvertible {
 
     /**
      * Format 1
@@ -523,8 +526,6 @@ public class TTFTablePOST implements TTFTable {
                         : FORMAT1NAME[i];
             case FORMAT2 :
                 // TODO wrong String -> error!
-                //  System.out.println("index " + i);
-                //  System.out.println("glyhnameindex " + glyphNameIndex[i]);
                 return (glyphNameIndex[i] > FORMAT1NAME.length - 1)
                         ? psGlyphName[glyphNameIndex[i] - FORMAT1NAME.length]
                         : FORMAT1NAME[glyphNameIndex[i]];
@@ -672,5 +673,35 @@ public class TTFTablePOST implements TTFTable {
         buf.append("   underlinethick: " + String.valueOf(underlineThickness)
                 + '\n');
         return buf.toString();
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "POST");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("version", "0x" + Integer.toHexString(version));
+        table.setAttribute("isfixedpitch", String.valueOf(isFixedPitch));
+        table.setAttribute("italicangle", String.valueOf(italicAngle));
+        table.setAttribute("maxmemtype1", String.valueOf(maxMemType1));
+        table.setAttribute("maxmemtype42", String.valueOf(maxMemType42));
+        table.setAttribute("minmemtype1", String.valueOf(minMemType1));
+        table.setAttribute("minmentype42", String.valueOf(minMemType42));
+        table.setAttribute("numglyphs", String.valueOf(numGlyphs));
+        table.setAttribute("underlinepos", String.valueOf(underlinePosition));
+        table.setAttribute("underlinethickness", String
+                .valueOf(underlineThickness));
+
+        for (int i = 0; i < glyphNameIndex.length; i++) {
+            Element name = new Element("glyphname");
+            name.setAttribute("id", String.valueOf(i));
+            name.setAttribute("value", String.valueOf(glyphNameIndex[i]));
+            name.setAttribute("name", getGlyphName(i));
+            table.addContent(name);
+        }
+        return table;
     }
 }

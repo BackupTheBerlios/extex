@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -65,9 +68,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableHHEA implements TTFTable {
+public class TTFTableHHEA implements TTFTable, XMLConvertible {
 
     /**
      * version
@@ -272,5 +275,34 @@ public class TTFTableHHEA implements TTFTable {
     public short getXMaxExtent() {
 
         return xMaxExtent;
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "hhea");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("version", String.valueOf(version));
+        table.setAttribute("ascender", String.valueOf(ascender));
+        table.setAttribute("descender", String.valueOf(descender));
+        table.setAttribute("linegap", String.valueOf(lineGap));
+        table.setAttribute("advancewidthmax", String.valueOf(advanceWidthMax));
+        table.setAttribute("minleftsidebearing", String
+                .valueOf(minLeftSideBearing));
+        table.setAttribute("minrightsidebearing", String
+                .valueOf(minRightSideBearing));
+        table.setAttribute("xmaxextent", String.valueOf(xMaxExtent));
+        table.setAttribute("caretsloperise", String.valueOf(caretSlopeRise));
+        table.setAttribute("caretsloperun", String.valueOf(caretSlopeRun));
+        table
+                .setAttribute("metricdataformat", String
+                        .valueOf(metricDataFormat));
+        table
+                .setAttribute("numberofhmetrics", String
+                        .valueOf(numberOfHMetrics));
+        return table;
     }
 }

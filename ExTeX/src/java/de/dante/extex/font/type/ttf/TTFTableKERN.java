@@ -21,6 +21,10 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.apache.batik.util.XMLConstants;
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -39,9 +43,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableKERN implements TTFTable {
+public class TTFTableKERN implements TTFTable, XMLConvertible {
 
     /**
      * version
@@ -123,6 +127,22 @@ public class TTFTableKERN implements TTFTable {
         return buf.toString();
     }
 
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "kern");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("version", String.valueOf(version));
+        table.setAttribute("numberoftables", String.valueOf(nTables));
+        for (int i = 0; i < tables.length; i++) {
+            table.addContent(tables[i].toXML());
+        }
+        return table;
+    }
+
     // -----------------------------------------
     // -----------------------------------------
     // -----------------------------------------
@@ -131,7 +151,7 @@ public class TTFTableKERN implements TTFTable {
     /**
      * Abstract class for all kerntables
      */
-    public abstract static class KernSubtable {
+    public abstract static class KernSubtable implements XMLConstants {
 
         /**
          * Returns the number of kerning pairs.
@@ -184,6 +204,21 @@ public class TTFTableKERN implements TTFTable {
             return table;
         }
 
+        /**
+         * @see de.dante.util.XMLConvertible#toXML()
+         */
+        public Element toXML() {
+
+            Element kern = new Element("kern");
+            kern.setAttribute("count", String.valueOf(getKerningCount()));
+            for (int i = 0; i < getKerningCount(); i++) {
+                KerningPair kp = getKerning(i);
+                if (kp != null) {
+                    kern.addContent(kp.toXML());
+                }
+            }
+            return kern;
+        }
     }
 
     /**
@@ -449,7 +484,7 @@ public class TTFTableKERN implements TTFTable {
     /**
      * KerningPair
      */
-    public static class KerningPair {
+    public static class KerningPair implements XMLConvertible {
 
         /**
          * left
@@ -505,6 +540,17 @@ public class TTFTableKERN implements TTFTable {
 
             return value;
         }
-    }
 
+        /**
+         * @see de.dante.util.XMLConvertible#toXML()
+         */
+        public Element toXML() {
+
+            Element kp = new Element("kerningpair");
+            kp.setAttribute("left", String.valueOf(left));
+            kp.setAttribute("right", String.valueOf(right));
+            kp.setAttribute("value", String.valueOf(value));
+            return kp;
+        }
+    }
 }

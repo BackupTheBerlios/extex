@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -42,9 +45,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TableDirectory {
+public class TableDirectory implements XMLConvertible {
 
     /**
      * Version (Fixed)
@@ -230,7 +233,7 @@ public class TableDirectory {
      *  <tr><td>ULONG</td><td>length</td><td>Length of this table.</td></tr>
      * </table>
      */
-    public static class Entry {
+    public static class Entry implements XMLConvertible {
 
         /**
          * tag (ULONG)
@@ -344,13 +347,50 @@ public class TableDirectory {
             StringBuffer buf = new StringBuffer();
 
             buf.append("DirectoryEntry:\n");
-            buf.append("   tag      : " + getTagName() + '\n');
-            buf.append("   offset   : " + String.valueOf(offset) + '\n');
-            buf.append("   length   : " + String.valueOf(length) + '\n');
-            buf.append("   checksum : 0x" + Integer.toHexString(checkSum)
-                    + '\n');
+            buf.append("   tag      : ").append(getTagName()).append('\n');
+            buf.append("   offset   : ").append(offset).append('\n');
+            buf.append("   length   : ").append(length).append('\n');
+            buf.append("   checksum : 0x")
+                    .append(Integer.toHexString(checkSum)).append('\n');
 
             return buf.toString();
         }
+
+        /**
+         * @see de.dante.util.XMLConvertible#toXML()
+         */
+        public Element toXML() {
+
+            Element entry = new Element("entry");
+            entry.setAttribute("tag", getTagName());
+            entry.setAttribute("offset", String.valueOf(offset));
+            entry.setAttribute("length", String.valueOf(length));
+            entry
+                    .setAttribute("checksum", "0x"
+                            + Integer.toHexString(checkSum));
+            return entry;
+        }
+    }
+
+    /**
+     * the xml-tag for the table directory
+     */
+    private static final String TAG_TABLE_DIRECTORY = "tabledirectory";
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element td = new Element(TAG_TABLE_DIRECTORY);
+        td.setAttribute("version", String.valueOf(version));
+        td.setAttribute("numberoftables", String.valueOf(numTables));
+        td.setAttribute("searchrange", String.valueOf(searchRange));
+        td.setAttribute("entryselector", String.valueOf(entrySelector));
+        td.setAttribute("rangeshift", String.valueOf(rangeShift));
+        for (int i = 0; i < entries.length; i++) {
+            td.addContent(entries[i].toXML());
+        }
+        return td;
     }
 }

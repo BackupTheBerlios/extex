@@ -23,6 +23,9 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Vector;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -48,9 +51,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableGLYF implements TTFTable {
+public class TTFTableGLYF implements TTFTable, XMLConvertible {
 
     /**
      * buf
@@ -151,6 +154,25 @@ public class TTFTableGLYF implements TTFTable {
         return sbuf.toString();
     }
 
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "glyf");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        for (int i = 0; i < descript.length; i++) {
+            Element des = new Element("description");
+            des.setAttribute("id", String.valueOf(i));
+            Descript d = descript[i];
+            if (d != null) {
+                des.addContent(d.toXML());
+            }
+        }
+        return table;
+    }
+
     // ------------------------------------------------
     // ------------------------------------------------
     // ------------------------------------------------
@@ -224,7 +246,7 @@ public class TTFTableGLYF implements TTFTable {
      *     <tr><td>Reserved</td><td>7</td><td>This bit is reserved. Set it to zero.</td></tr>
      * </table>
      */
-    public abstract static class Descript {
+    public abstract static class Descript implements XMLConvertible {
 
         /**
          * Flag: ONCURVE
@@ -277,7 +299,7 @@ public class TTFTableGLYF implements TTFTable {
         private short yMin;
 
         /**
-         * xMax 
+         * xMax
          */
         private short xMax;
 
@@ -436,6 +458,23 @@ public class TTFTableGLYF implements TTFTable {
             for (int i = 0; i < count; i++) {
                 instructions[i] = (short) bais.read();
             }
+        }
+
+        /**
+         * @see de.dante.util.XMLConvertible#toXML()
+         */
+        public Element toXML() {
+
+            Element descript = new Element("descript");
+            descript.setAttribute("numberofcontours", String
+                    .valueOf(numberOfContours));
+            descript.setAttribute("xmin", String.valueOf(xMin));
+            descript.setAttribute("ymin", String.valueOf(yMin));
+            descript.setAttribute("xmax", String.valueOf(xMax));
+            descript.setAttribute("ymax", String.valueOf(yMax));
+
+            // TODO incomplete
+            return descript;
         }
 
     }
@@ -639,7 +678,7 @@ public class TTFTableGLYF implements TTFTable {
         }
 
         /**
-         * Returns the component index. 
+         * Returns the component index.
          * @param i the index
          * @return Returns the component index.
          */

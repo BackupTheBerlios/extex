@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -35,9 +38,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableCMAP implements TTFTable {
+public class TTFTableCMAP implements TTFTable, XMLConvertible {
 
     // -------------------------------------------------------
     // -------------------------------------------------------
@@ -830,6 +833,19 @@ public class TTFTableCMAP implements TTFTable {
             buf.append("   " + formats[i].toString() + '\n');
         }
         return buf.toString();
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "cmap");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+ 
+        // TODO incomplete
+        return table;
     }
 
     // --------------------------------------------------

@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -93,9 +96,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableHEAD implements TTFTable {
+public class TTFTableHEAD implements TTFTable, XMLConvertible {
 
     /**
      * version
@@ -385,6 +388,38 @@ public class TTFTableHEAD implements TTFTable {
         buf.append("   modified           : ").append(modified).append('\n');
         // ...
         return buf.toString();
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "head");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("version", String.valueOf(version));
+        table.setAttribute("fontrevision", String.valueOf(fontRevision));
+        table.setAttribute("checksumadjustment", String
+                .valueOf(checkSumAdjustment));
+        table.setAttribute("magicnumber", String.valueOf(magicNumber));
+        table.setAttribute("flags", String.valueOf(flags));
+        table.setAttribute("unitsperem", String.valueOf(unitsPerEm));
+        table.setAttribute("created", String.valueOf(created));
+        table.setAttribute("modified", String.valueOf(modified));
+        table.setAttribute("xmin", String.valueOf(xMin));
+        table.setAttribute("ymin", String.valueOf(yMin));
+        table.setAttribute("xmax", String.valueOf(xMax));
+        table.setAttribute("ymax", String.valueOf(yMax));
+        table.setAttribute("macstyle", String.valueOf(macStyle));
+        table.setAttribute("lowestrecppem", String.valueOf(lowestRecPPEM));
+        table.setAttribute("fontdiretionhint", String
+                .valueOf(fontDirectionHint));
+        table
+                .setAttribute("indextolocformat", String
+                        .valueOf(indexToLocFormat));
+        table.setAttribute("glyphdataformat", String.valueOf(glyphDataFormat));
+        return table;
     }
 
     /**

@@ -22,6 +22,9 @@ package de.dante.extex.font.type.ttf;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -67,9 +70,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableLOCA implements TTFTable {
+public class TTFTableLOCA implements TTFTable, XMLConvertible {
 
     /**
      * buffer
@@ -151,4 +154,22 @@ public class TTFTableLOCA implements TTFTable {
 
         return TTFFont.LOCA;
     }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "loca");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        for (int i = 0; i < offsets.length; i++) {
+            Element offset = new Element("offset");
+            offset.setAttribute("id", String.valueOf(i));
+            offset.setAttribute("value", String.valueOf(getOffset(i)));
+            table.addContent(offset);
+        }
+        return table;
+    }
+
 }

@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -34,9 +37,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableFPGM implements TTFTable {
+public class TTFTableFPGM implements TTFTable, XMLConvertible {
 
     /**
      * Create a new object.
@@ -88,6 +91,23 @@ public class TTFTableFPGM implements TTFTable {
         StringBuffer buf = new StringBuffer();
         buf.append("Table FPGM\n");
         return buf.toString();
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "fpgm");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        for (int i = 0; i < instructions.length; i++) {
+            Element ins = new Element("instructions");
+            ins.setAttribute("id", String.valueOf(i));
+            ins.setAttribute("value", String.valueOf(instructions[i]));
+            table.addContent(ins);
+        }
+        return table;
     }
 
 }

@@ -19,10 +19,17 @@
 
 package de.dante.extex.font.type.ttf;
 
+import java.io.BufferedOutputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.jdom.Document;
+import org.jdom.Element;
+import org.jdom.output.XMLOutputter;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessInputFile;
 import de.dante.util.file.random.RandomAccessInputStream;
 import de.dante.util.file.random.RandomAccessR;
@@ -31,9 +38,9 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFFont {
+public class TTFFont implements XMLConvertible {
 
     /* 51 tag types: from java.awt.font.OpenType */
 
@@ -726,7 +733,56 @@ public class TTFFont {
     public static void main(final String[] args) throws IOException {
 
         TTFFont f = new TTFFont("src/font/Gara.ttf");
-        System.out.println(f.toString());
+        // write to xml-file
+        XMLOutputter xmlout = new XMLOutputter();
+        xmlout.setEncoding("ISO-8859-1");
+        xmlout.setIndent("   ");
+        xmlout.setNewlines(true);
+        xmlout.setTrimAllWhite(true);
+        BufferedOutputStream out = new BufferedOutputStream(
+                new FileOutputStream(f.getFontFamilyName() + ".xml"));
+        Document doc = new Document(f.toXML());
+        xmlout.output(doc, out);
+        out.close();
+
     }
 
+    /**
+     * the xml-tag for the font
+     */
+    private static final String TAG_FONT = "ttffont";
+
+    /**
+     * the attrinbut for the fontname
+     */
+    private static final String ATTR_FONTNAME = "fontname";
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element font = new Element(TAG_FONT);
+
+        // name
+        if (getFontFamilyName() != null) {
+            font.setAttribute(ATTR_FONTNAME, getFontFamilyName());
+        }
+
+        // table directory
+        if (tableDirectory instanceof XMLConvertible) {
+            font.addContent(tableDirectory.toXML());
+        }
+
+        // tables
+        int[] keys = tablemap.getKeys();
+        for (int i = 0; i < keys.length; i++) {
+            TTFTable t = tablemap.get(keys[i]);
+            if (t != null && t instanceof XMLConvertible) {
+                XMLConvertible xml = (XMLConvertible) t;
+                font.addContent(xml.toXML());
+            }
+        }
+        return font;
+    }
 }

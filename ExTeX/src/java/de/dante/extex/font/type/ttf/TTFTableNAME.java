@@ -21,6 +21,9 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -46,9 +49,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableNAME implements TTFTable {
+public class TTFTableNAME implements TTFTable, XMLConvertible {
 
     /**
      * format
@@ -138,6 +141,39 @@ public class TTFTableNAME implements TTFTable {
     public static final short TRADEMARK = 7;
 
     /**
+     * ID - name
+     */
+    public static final String[] IDNAME = {"COPYRIGHTNOTICE", "FONTFAMILYNAME",
+            "FONTSUBFAMILYNAM", "UNIQUEFONTIDENTIFIER", "FULLFONTNAME",
+            "VERSIONSTRING", "POSTSCRIPTNAME", "TRADEMARK"};
+
+    /**
+     * platform unicode
+     */
+    public static final short UNICODE = 0;
+
+    /**
+     * platform macintosh
+     */
+    public static final short MACINTOSH = 1;
+
+    /**
+     * platform iso
+     */
+    public static final short ISO = 2;
+
+    /**
+     * platform microsoft
+     */
+    public static final short MICROSOFT = 3;
+
+    /**
+     * platform names
+     */
+    public static final String[] PLATFORMNAME = {"UNICOD", "MACINTOSH", "ISO",
+            "MICROSOFT"};
+
+    /**
      * Returns the record.
      * @param nameId    name id
      * @return Returns the record.
@@ -214,6 +250,23 @@ public class TTFTableNAME implements TTFTable {
         return buf.toString();
     }
 
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "NAME");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        table.setAttribute("format", String.valueOf(format));
+        table.setAttribute("count", String.valueOf(count));
+        table.setAttribute("stringoffset", String.valueOf(stringOffset));
+        for (int i = 0; i < count; i++) {
+            table.addContent(namerecords[i].toXML());
+        }
+        return table;
+    }
+
     // ----------------------------------------
     // ----------------------------------------
     // ----------------------------------------
@@ -258,27 +311,7 @@ public class TTFTableNAME implements TTFTable {
      *                     chapter, &ldquo;Character Sets.&rdquo;)</td></tr>
      * </table>
      */
-    public class NameRecord {
-
-        /**
-         * platform unicode
-         */
-        public static final short UNICODE = 0;
-
-        /**
-         * platform macintosh
-         */
-        public static final short MACINTOSH = 1;
-
-        /**
-         * platform iso
-         */
-        public static final short ISO = 2;
-
-        /**
-         * platform microsoft
-         */
-        public static final short MICROSOFT = 3;
+    public class NameRecord implements XMLConvertible {
 
         /**
          * platformId
@@ -449,6 +482,31 @@ public class TTFTableNAME implements TTFTable {
             buf.append("Name Record\n");
             buf.append("   ").append(record).append('\n');
             return buf.toString();
+        }
+
+        /**
+         * @see de.dante.util.XMLConvertible#toXML()
+         */
+        public Element toXML() {
+
+            Element namerecord = new Element("namerecord");
+            namerecord.setAttribute("platformid", String.valueOf(platformId));
+            namerecord.setAttribute("platform",
+                    platformId >= PLATFORMNAME.length
+                            ? ""
+                            : PLATFORMNAME[platformId]);
+            namerecord.setAttribute("encodingid", String.valueOf(encodingId));
+            namerecord.setAttribute("languageid", String.valueOf(languageId));
+            namerecord.setAttribute("nameid", String.valueOf(nameId));
+            namerecord.setAttribute("name", nameId >= IDNAME.length
+                    ? ""
+                    : IDNAME[nameId]);
+            namerecord.setAttribute("stringlength", String
+                    .valueOf(stringLength));
+            namerecord.setAttribute("stringoffset", String
+                    .valueOf(stringOffset));
+            namerecord.setText(record);
+            return namerecord;
         }
     }
 }

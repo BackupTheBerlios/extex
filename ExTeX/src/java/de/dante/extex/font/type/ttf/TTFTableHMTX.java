@@ -22,6 +22,9 @@ package de.dante.extex.font.type.ttf;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
+import org.jdom.Element;
+
+import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -50,9 +53,9 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class TTFTableHMTX implements TTFTable {
+public class TTFTableHMTX implements TTFTable, XMLConvertible {
 
     /**
      * buffer
@@ -86,6 +89,16 @@ public class TTFTableHMTX implements TTFTable {
     }
 
     /**
+     * length of hmetrics
+     */
+    private int hMetricslength;
+
+    /**
+     * length of lsb
+     */
+    private int lsblength;
+
+    /**
      * init
      * @param numberOfHMetrics  number of horizontal metrics
      * @param lsbCount  lsb count
@@ -95,6 +108,9 @@ public class TTFTableHMTX implements TTFTable {
         if (buf == null) {
             return;
         }
+        hMetricslength = numberOfHMetrics;
+        lsblength = lsbCount;
+
         hMetrics = new int[numberOfHMetrics];
         ByteArrayInputStream bais = new ByteArrayInputStream(buf);
         for (int i = 0; i < numberOfHMetrics; i++) {
@@ -151,5 +167,28 @@ public class TTFTableHMTX implements TTFTable {
     public int getType() {
 
         return TTFFont.HMTX;
+    }
+
+    /**
+     * @see de.dante.util.XMLConvertible#toXML()
+     */
+    public Element toXML() {
+
+        Element table = new Element("table");
+        table.setAttribute("name", "hmtx");
+        table.setAttribute("id", "0x" + Integer.toHexString(getType()));
+        for (int i = 0; i < hMetricslength; i++) {
+            Element hmetrics = new Element("hmetrics");
+            hmetrics.setAttribute("id", String.valueOf(i));
+            hmetrics.setAttribute("value", String.valueOf(hMetrics[i]));
+            table.addContent(hmetrics);
+        }
+        for (int i = 0; i < lsblength; i++) {
+            Element lsb = new Element("leftsidebearing");
+            lsb.setAttribute("id", String.valueOf(i));
+            lsb.setAttribute("value", String.valueOf(leftSideBearing[i]));
+            table.addContent(lsb);
+        }
+        return table;
     }
 }
