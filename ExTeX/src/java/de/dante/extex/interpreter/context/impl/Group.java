@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context.impl;
 
 import java.io.Serializable;
@@ -53,7 +54,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -108,7 +109,7 @@ public interface Group extends Tokenizer, Serializable {
      * @return the code associated to the name or <code>null</code> if none
      *         is defined yet
      */
-     Code getCode(CodeToken token);
+    Code getCode(CodeToken token);
 
     /**
      * Getter for the named count register in the current group. The name can

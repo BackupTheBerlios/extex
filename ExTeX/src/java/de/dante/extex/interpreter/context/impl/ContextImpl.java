@@ -36,14 +36,16 @@ import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.context.CodeChangeObserver;
 import de.dante.extex.interpreter.context.Color;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.context.CountChangeObserver;
+import de.dante.extex.interpreter.context.ContextInternals;
 import de.dante.extex.interpreter.context.Direction;
-import de.dante.extex.interpreter.context.HyphenationFactoryCarrier;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
+import de.dante.extex.interpreter.context.observer.CodeObserver;
+import de.dante.extex.interpreter.context.observer.CountObserver;
+import de.dante.extex.interpreter.context.observer.DimenObserver;
+import de.dante.extex.interpreter.context.observer.InteractionObserver;
+import de.dante.extex.interpreter.context.observer.TokensObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
@@ -81,7 +83,6 @@ import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
-import de.dante.util.observer.ObserverList;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -117,16 +118,15 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.71 $
+ * @version $Revision: 1.72 $
  */
 public class ContextImpl
         implements
-            Context,
+            ContextInternals,
             Tokenizer,
             DocumentWriterOptions,
             TypesetterOptions,
             TokenStreamOptions,
-            HyphenationFactoryCarrier,
             Observable,
             Localizable,
             Configurable,
@@ -161,18 +161,38 @@ public class ContextImpl
      * The field <tt>codeChangeObservers</tt> contains the list of observers
      * registered for change event on the code.
      */
-    private transient Map codeChangeObservers;
-
-    /**
-     * The field <tt>conditionalStack</tt> contains the stack for conditionals.
-     */
-    private List conditionalStack = new ArrayList();
+    private transient Map changeCodeObservers;
 
     /**
      * The field <tt>countChangeObservers</tt> contains the list of observers
      * registered for change event on the count registers.
      */
-    private transient Map countChangeObservers = new HashMap();
+    private transient Map changeCountObservers;
+
+    /**
+     * The field <tt>dimenChangeObservers</tt> contains the list of observers
+     * registered for change event on the count registers.
+     */
+    private transient Map changeDimenObservers;
+
+    /**
+     * The field <tt>observersInteraction</tt> contains the observer list which
+     * is used for the observers registered to receive notifications
+     * when the interaction is changed. The argument is the new interaction
+     * mode.
+     */
+    private transient List changeInteractionObservers;
+
+    /**
+     * The field <tt>toksChangeObservers</tt> contains the list of observers
+     * registered for change event on the toks registers.
+     */
+    private transient Map changeToksObservers;
+
+    /**
+     * The field <tt>conditionalStack</tt> contains the stack for conditionals.
+     */
+    private List conditionalStack = new ArrayList();
 
     /**
      * The field <tt>errorCount</tt> contains the error counter.
@@ -244,14 +264,6 @@ public class ContextImpl
     private long magnificationMax = MAGNIFICATION_MAX;
 
     /**
-     * The field <tt>observersInteraction</tt> contains the observer list which
-     * is used for the observers registered to receive notifications
-     * when the interaction is changed. The argument is the new interaction
-     * mode.
-     */
-    private transient ObserverList observersInteraction;
-
-    /**
      * The field <tt>parshape</tt> contains the object containing the
      * dimensions of the paragraph.
      */
@@ -264,20 +276,19 @@ public class ContextImpl
     private transient TokenStream standardTokenStream = null;
 
     /**
-     * The field <tt>tcFactory</tt> contains the factory to acquire new
-     * instances of a TypesettingContext.
-     */
-    private transient TypesettingContextFactory tcFactory;
-
-    /**
      * The field <tt>tokenFactory</tt> contains the token factory implementation
      * to use.
      */
     private transient TokenFactory tokenFactory;
 
     /**
+     * The field <tt>tcFactory</tt> contains the factory to acquire new
+     * instances of a TypesettingContext.
+     */
+    private transient TypesettingContextFactory typesettingContextFactory;
+
+    /**
      * Creates a new object.
-     *
      */
     public ContextImpl() {
 
@@ -335,10 +346,14 @@ public class ContextImpl
             throw new HelpingException(localizer, "TTP.TooManyRightBraces");
         }
 
-        if (group.getInteraction() != next.getInteraction()) {
+        Interaction interaction = next.getInteraction();
+        if (group.getInteraction() != interaction) {
             try {
-                observersInteraction.update(this, next.getInteraction());
-            } catch (GeneralException e) {
+                for (int i = 0; i < changeInteractionObservers.size(); i++) {
+                    ((InteractionObserver) changeInteractionObservers.get(i))
+                            .receiveInteractionChange(this, interaction);
+                }
+            } catch (Exception e) {
                 throw new InterpreterException(e);
             }
         }
@@ -368,18 +383,6 @@ public class ContextImpl
         Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
 
-        if (typesettingConfig == null) {
-            throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
-                    configuration.toString());
-        }
-
-        tcFactory = new TypesettingContextFactory(typesettingConfig);
-        TypesettingContext typesettingContext = tcFactory.newInstance();
-
-        typesettingContext.setFont(new NullFont());
-        //typesettingContext.setLanguage(config.getValue("Language"));
-        setTypesettingContext(typesettingContext);
-
         if (hyphenationManager instanceof Configurable) {
             Configuration config = configuration
                     .getConfiguration(HYPHENATION_MANAGER_TAG);
@@ -390,6 +393,20 @@ public class ContextImpl
             }
             ((Configurable) hyphenationManager).configure(config);
         }
+
+        if (typesettingConfig == null) {
+            throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
+                    configuration.toString());
+        }
+
+        typesettingContextFactory = new TypesettingContextFactory();
+        typesettingContextFactory.configure(typesettingConfig);
+        typesettingContextFactory.setHyphenationManager(hyphenationManager);
+        TypesettingContext typesettingContext = typesettingContextFactory
+                .newInstance();
+
+        typesettingContext.setFont(new NullFont());
+        setTypesettingContext(typesettingContext);
 
         magnificationMax = configuration.getValueAsInteger(
                 "maximalMagnification", (int) MAGNIFICATION_MAX);
@@ -776,10 +793,20 @@ public class ContextImpl
      * Getter for the typesetting context.
      *
      * @return the typesetting context
+     *
+     * @see de.dante.extex.typesetter.TypesetterOptions#getTypesettingContext()
      */
     public TypesettingContext getTypesettingContext() {
 
         return group.getTypesettingContext();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextInternals#getTypesettingContextFactory()
+     */
+    public TypesettingContextFactory getTypesettingContextFactory() {
+
+        return typesettingContextFactory;
     }
 
     /**
@@ -804,10 +831,15 @@ public class ContextImpl
      */
     private void init() {
 
-        countChangeObservers = new HashMap();
-        codeChangeObservers = new HashMap();
-        hyphenationManager = new HyphenationManager(); //TODO gene: make it configurable
-        observersInteraction = new ObserverList();
+        changeCodeObservers = new HashMap();
+        changeCountObservers = new HashMap();
+        changeDimenObservers = new HashMap();
+        changeToksObservers = new HashMap();
+        changeInteractionObservers = new ArrayList();
+
+        LanguageObserver languageObserver = new LanguageObserver();
+        registerCountObserver("language", languageObserver);
+        registerTokensObserver("lang", languageObserver);
     }
 
     /**
@@ -866,19 +898,60 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#registerCodeChangeObserver(
-     *      de.dante.extex.interpreter.context.CodeChangeObserver,
-     *      de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.ContextCode#registerCodeChangeObserver(
+     *      de.dante.extex.scanner.type.Token,
+     *      de.dante.extex.interpreter.context.observer.CodeChangeObserver)
      */
-    public void registerCodeChangeObserver(final CodeChangeObserver observer,
-            final Token name) {
+    public void registerCodeChangeObserver(final Token name,
+            final CodeObserver observer) {
 
-        List observerList = (List) codeChangeObservers.get(name);
+        List observerList = (List) changeCodeObservers.get(name);
         if (null == observerList) {
             observerList = new ArrayList();
-            codeChangeObservers.put(name, observerList);
+            changeCodeObservers.put(name, observerList);
         }
         observerList.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextCount#registerCountObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.CountChangeObserver)
+     */
+    public void registerCountObserver(final String name,
+            final CountObserver observer) {
+
+        List list = (List) changeCountObservers.get(name);
+        if (list == null) {
+            list = new ArrayList();
+            changeCountObservers.put(name, list);
+        }
+        list.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextDimen#registerDimenObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.DimenChangeObserver)
+     */
+    public void registerDimenObserver(final String name,
+            final DimenObserver observer) {
+
+        List list = (List) changeDimenObservers.get(name);
+        if (list == null) {
+            list = new ArrayList();
+            changeDimenObservers.put(name, list);
+        }
+        list.add(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextInteraction#registerInteractionObserver(
+     *      de.dante.extex.interpreter.context.observer.InteractionObserver)
+     */
+    public void registerInteractionObserver(final InteractionObserver observer) {
+
+        changeInteractionObservers.add(observer);
     }
 
     /**
@@ -889,23 +962,124 @@ public class ContextImpl
     public void registerObserver(final String name, final Observer observer)
             throws NotObservableException {
 
-        if ("interaction".equals(name)) {
-            observersInteraction.add(observer);
-        } else {
-            throw new NotObservableException(name);
+        throw new NotObservableException(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextTokens#registerTokensObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.TokensObserver)
+     */
+    public void registerTokensObserver(final String name,
+            final TokensObserver observer) {
+
+        List list = (List) changeToksObservers.get(name);
+        if (list == null) {
+            list = new ArrayList();
+            changeToksObservers.put(name, list);
+        }
+        list.add(observer);
+
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param t the code token to change the binding for
+     * @param code the new code binding
+     * @param observerList the list of observers
+     *
+     * @throws InterpreterException in case of a problem in an observer
+     */
+    private void runCodeObservers(final CodeToken t, final Code code,
+            final List observerList) throws InterpreterException {
+
+        try {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((CodeObserver) observerList.get(i)).receiveCodeChange(this, t,
+                        code);
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
         }
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setActive(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Code,
-     *      boolean)
+     * TODO gene: missing JavaDoc
+     *
+     * @param name the name of the count register
+     * @param count the new value
+     * @param observerList the list of observers
+     *
+     * @throws InterpreterException in case of a problem in an observer
      */
-    public void setActive(final Token token, final Code code,
-            final boolean global) {
+    private void runCountObservers(final String name, final Count count,
+            final List observerList) throws InterpreterException {
 
-        group.setCode(token, code, global);
+        try {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((CountObserver) observerList.get(i)).receiveCountChange(this,
+                        name, count);
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param name the name of the count register
+     * @param dimen the new value
+     * @param observerList the list of observers
+     *
+     * @throws InterpreterException in case of a problem in an observer
+     */
+    private void runDimenObservers(final String name, final Dimen dimen,
+            final List observerList) throws InterpreterException {
+
+        try {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((DimenObserver) observerList.get(i)).receiveDimenChange(this,
+                        name, dimen);
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param name the name of the count register
+     * @param toks the new value
+     * @param observerList the list of observers
+     *
+     * @throws InterpreterException in case of a problem in an observer
+     */
+    private void runTokensObservers(final String name, final Tokens toks,
+            final List observerList) throws InterpreterException {
+
+        try {
+            int len = observerList.size();
+            for (int i = 0; i < len; i++) {
+                ((TokensObserver) observerList.get(i)).receiveTokensChange(
+                        this, name, toks);
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -945,20 +1119,16 @@ public class ContextImpl
     public void setCode(final CodeToken t, final Code code, final boolean global)
             throws InterpreterException {
 
-        if (!(t instanceof CodeToken)) {
-            throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
-        }
         group.setCode(t, code, global);
 
-        List observerList = (List) codeChangeObservers.get(t);
+        List observerList = (List) changeCodeObservers.get(t);
         if (null != observerList) {
-            int len = observerList.size();
-            for (int i = 0; i < len; i++) {
-                ((CodeChangeObserver) observerList.get(i)).receiveCodeChange(t,
-                        code);
-            }
+            runCodeObservers(t, code, observerList);
         }
-
+        observerList = (List) changeCodeObservers.get(null);
+        if (null != observerList) {
+            runCodeObservers(t, code, observerList);
+        }
     }
 
     /**
@@ -967,20 +1137,19 @@ public class ContextImpl
      *      long, boolean)
      */
     public void setCount(final String name, final long value,
-            final boolean global) {
+            final boolean global) throws InterpreterException {
 
         Count count = new Count(value);
         group.setCount(name, count, global);
 
-        List observerList = (List) countChangeObservers.get(name);
+        List observerList = (List) changeCountObservers.get(name);
         if (null != observerList) {
-            int len = observerList.size();
-            for (int i = 0; i < len; i++) {
-                ((CountChangeObserver) observerList.get(i)).receiveCountChange(
-                        name, count);
-            }
+            runCountObservers(name, count, observerList);
         }
-
+        observerList = (List) changeCountObservers.get(null);
+        if (null != observerList) {
+            runCountObservers(name, count, observerList);
+        }
     }
 
     /**
@@ -1000,21 +1169,29 @@ public class ContextImpl
      *      de.dante.extex.interpreter.type.dimen.Dimen, boolean)
      */
     public void setDimen(final String name, final Dimen value,
-            final boolean global) {
+            final boolean global) throws InterpreterException {
 
         group.setDimen(name, value, global);
+
+        List observerList = (List) changeDimenObservers.get(name);
+        if (null != observerList) {
+            runDimenObservers(name, value, observerList);
+        }
+        observerList = (List) changeDimenObservers.get(null);
+        if (null != observerList) {
+            runDimenObservers(name, value, observerList);
+        }
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setDimen(
+     * @see de.dante.extex.interpreter.context.ContextDimen#setDimen(
      *      java.lang.String,
      *      long, boolean)
      */
     public void setDimen(final String name, final long value,
-            final boolean global) {
+            final boolean global) throws InterpreterException {
 
-        Dimen dimen = new Dimen(value);
-        group.setDimen(name, dimen, global);
+        setDimen(name, new Dimen(value), global);
     }
 
     /**
@@ -1025,7 +1202,7 @@ public class ContextImpl
      */
     public void setFont(final String name, final Font font, final boolean global) {
 
-        this.group.setFont(name, font, global);
+        group.setFont(name, font, global);
     }
 
     /**
@@ -1048,7 +1225,7 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.HyphenationFactoryCarrier#setHyphenationManager(
+     * @see de.dante.extex.hyphenation.HyphenationManagerCarrier#setHyphenationManager(
      *      de.dante.extex.hyphenation.HyphenationFactory)
      */
     public void setHyphenationManager(final HyphenationManager manager) {
@@ -1089,12 +1266,16 @@ public class ContextImpl
             final boolean global) throws InterpreterException {
 
         group.setInteraction(interaction, global);
-        try {
-            observersInteraction.update(this, interaction);
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+
+        if (group.getInteraction() != interaction) {
+            try {
+                for (int i = 0; i < changeInteractionObservers.size(); i++) {
+                    ((InteractionObserver) changeInteractionObservers.get(i))
+                            .receiveInteractionChange(this, interaction);
+                }
+            } catch (Exception e) {
+                throw new InterpreterException(e);
+            }
         }
     }
 
@@ -1178,7 +1359,8 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setParshape(de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
+     * @see de.dante.extex.interpreter.context.Context#setParshape(
+     *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
      */
     public void setParshape(final ParagraphShape shape) {
 
@@ -1225,9 +1407,18 @@ public class ContextImpl
      *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
      */
     public void setToks(final String name, final Tokens toks,
-            final boolean global) {
+            final boolean global) throws InterpreterException {
 
         group.setToks(name, toks, global);
+
+        List observerList = (List) changeToksObservers.get(name);
+        if (null != observerList) {
+            runTokensObservers(name, toks, observerList);
+        }
+        observerList = (List) changeToksObservers.get(null);
+        if (null != observerList) {
+            runTokensObservers(name, toks, observerList);
+        }
     }
 
     /**
@@ -1237,7 +1428,7 @@ public class ContextImpl
     public void setTypesettingContext(final Color color)
             throws ConfigurationException {
 
-        group.setTypesettingContext(tcFactory.newInstance(group
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
                 .getTypesettingContext(), color));
     }
 
@@ -1248,7 +1439,7 @@ public class ContextImpl
     public void setTypesettingContext(final Direction direction)
             throws ConfigurationException {
 
-        group.setTypesettingContext(tcFactory.newInstance(group
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
                 .getTypesettingContext(), direction));
     }
 
@@ -1259,7 +1450,7 @@ public class ContextImpl
     public void setTypesettingContext(final Font font)
             throws ConfigurationException {
 
-        group.setTypesettingContext(tcFactory.newInstance(group
+        group.setTypesettingContext(typesettingContextFactory.newInstance(group
                 .getTypesettingContext(), font));
     }
 
@@ -1297,15 +1488,76 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#unregisterCodeChangeObserver(de.dante.extex.interpreter.context.CodeChangeObserver, de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.ContextCode#unregisterCodeChangeObserver(
+     *      de.dante.extex.scanner.type.Token,
+     *      de.dante.extex.interpreter.context.observer.CodeChangeObserver)
      */
-    public void unregisterCodeChangeObserver(final CodeChangeObserver observer,
-            final Token name) {
+    public void unregisterCodeChangeObserver(final Token name,
+            final CodeObserver observer) {
 
-        List observerList = (List) codeChangeObservers.get(name);
+        List observerList = (List) changeCodeObservers.get(name);
         if (null == observerList) {
             return;
         }
         observerList.remove(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextCount#unregisterCountObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.CountChangeObserver)
+     */
+    public void unregisterCountObserver(final String name,
+            final CountObserver observer) {
+
+        List list = (List) changeCountObservers.get(name);
+        if (list != null) {
+            while (list.remove(observer)) {
+                // just removing the observer is enough
+            }
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextDimen#unregisterDimenObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.DimenChangeObserver)
+     */
+    public void unregisterDimenObserver(final String name,
+            final DimenObserver observer) {
+
+        List list = (List) changeDimenObservers.get(name);
+        if (list != null) {
+            while (list.remove(observer)) {
+                // just removing the observer is enough
+            }
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextInteraction#unregisterInteractionObserver(
+     *      de.dante.extex.interpreter.context.observer.InteractionObserver)
+     */
+    public void unregisterInteractionObserver(final InteractionObserver observer) {
+
+        while (changeInteractionObservers.remove(observer)) {
+            // just removing the observer is enough
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextTokens#unregisterTokensChangeObserver(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.context.observer.TokensObserver)
+     */
+    public void unregisterTokensChangeObserver(final String name,
+            final TokensObserver observer) {
+
+        List list = (List) changeToksObservers.get(name);
+        if (list != null) {
+            while (list.remove(observer)) {
+                // just removing the observer is enough
+            }
+        }
     }
 }

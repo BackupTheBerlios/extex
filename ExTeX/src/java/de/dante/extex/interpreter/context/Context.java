@@ -21,13 +21,12 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
+import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.Conditional;
-import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.font.Font;
@@ -36,7 +35,6 @@ import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -52,15 +50,19 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public interface Context
         extends
-            ContextFont,
+            ContextCode,
+            ContextCount,
             ContextDimen,
             ContextFile,
+            ContextFont,
             ContextGroup,
             ContextErrorCount,
+            ContextInteraction,
+            ContextTokens,
             Tokenizer,
             Serializable {
 
@@ -128,32 +130,6 @@ public interface Context
     Box getBox(String name);
 
     /**
-     * Convenience method to get the code assigned to a Token.
-     * If the Token is a ControlSequenceToken then the macro is returned.
-     * If the Token is a ActiveCharacterToken then the active value is returned.
-     * Otherwise <code>null</code> is returned.
-     *
-     * @param t the Token to differentiate on
-     *
-     * @return the code for the token
-     *
-     * @throws InterpreterException in case of an error
-     */
-    Code getCode(CodeToken t) throws InterpreterException;
-
-    /**
-     * Getter for the {@link de.dante.extex.interpreter.type.count.Count count}
-     * register. Count registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or number of the count register
-     *
-     * @return the count register or <code>null</code> if it is not defined
-     */
-    Count getCount(String name);
-
-    /**
      * Getter for the delimiter code mapping.
      *
      * @param c the character to which the delcode is assigned
@@ -175,7 +151,7 @@ public interface Context
     /**
      * Getter for the hyphenation record for a given language. The language is
      * used to find the hyphenation table. If the language is not known an
-     * attempt is made to load it. Otherwise the default hyphenation table is
+     * attempt is made to create it. Otherwise the default hyphenation table is
      * returned.
      *
      * @param language the name of the language to use
@@ -195,15 +171,6 @@ public interface Context
      * @return the id string
      */
     String getId();
-
-    /**
-     * Getter for the interaction. The interaction determines how verbose the
-     * actions are reported and how the interaction with the user is performed
-     * in case of an error.
-     *
-     * @return the current interaction
-     */
-    Interaction getInteraction();
 
     /**
      * Getter for the lccode mapping of upper case characters to their
@@ -281,30 +248,6 @@ public interface Context
     Tokenizer getTokenizer();
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
-     * register. Tokens registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or number of the token register
-     *
-     * @return the token register or a new one if it is not defined yet
-     */
-    Tokens getToks(String name);
-
-    /**
-     * Getter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
-     * register. Tokens registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or number of the token register
-     *
-     * @return the token register or <code>null</code> if it is not defined
-     */
-    Tokens getToksOrNull(String name);
-
-    /**
      * Getter for the typesetting context.
      *
      * @return the typesetting context
@@ -340,18 +283,6 @@ public interface Context
     void pushConditional(Locator locator, boolean value);
 
     /**
-     * Register an observer for code change events.
-     * Code change events are triggered when the assignment of a macro or
-     * active character changes. In this case the appropriate method in the
-     * observer is invoked.
-     *
-     * @param observer the observer to receive the events
-     * @param name the token to be observed. This should be a macro or
-     * active character token.
-     */
-    void registerCodeChangeObserver(CodeChangeObserver observer, Token name);
-
-    /**
      * Setter for the afterassignment token.
      *
      * @param token the afterassignment token.
@@ -385,35 +316,6 @@ public interface Context
             throws HelpingException;
 
     /**
-     * Setter for the code assigned to a Token.
-     * The Token has to be either a
-     * {@link de.dante.extex.scanner.type.ActiveCharacterToken ActiveCharacterToken}
-     * or a
-     * {@link de.dante.extex.scanner.type.ControlSequenceToken ControlSequenceToken}.
-     *
-     * @param t the Token to set the code for
-     * @param code the code for the token
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     * @throws InterpreterException In case of an error
-     */
-    void setCode(CodeToken t, Code code, boolean global)
-            throws InterpreterException;
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.count.Count count}
-     * register in all requested groups. Count registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setCount(String name, long value, boolean global);
-
-    /**
      * Setter for the delimiter code mapping.
      *
      * @param c the character to which the delcode is assigned
@@ -434,26 +336,19 @@ public interface Context
     void setGlue(String name, Glue value, boolean global);
 
     /**
+     * Setter for the hyphenation manager
+     *
+     * @param manager the hyphenatin manager
+     */
+    void setHyphenationManager(HyphenationManager manager);
+
+    /**
      * Setter for the id string. The id string is the classification of the
      * original source like given in the fmt file.
      *
      * @param id the id string
      */
     void setId(String id);
-
-    /**
-     * Setter for the interaction in all requested groups. The interaction
-     * determines how verbose the actions are reported and how the interaction
-     * with the user is performed in case of an error.
-     *
-     * @param interaction the new value of the interaction
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *
-     * @throws InterpreterException in case of an error
-     */
-    void setInteraction(Interaction interaction, boolean global)
-            throws InterpreterException;
 
     /**
      * Declare the translation from an upper case character to a lower case
@@ -541,19 +436,6 @@ public interface Context
     void setTokenFactory(TokenFactory factory);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
-     * register in the specified groups. Tokens registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param toks the new value of the register
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setToks(String name, Tokens toks, boolean global);
-
-    /**
      * Setter for the color in the current typesetting context.
      *
      * @param color the new color
@@ -605,17 +487,5 @@ public interface Context
      * @param uc uppercase equivalent
      */
     void setUccode(UnicodeChar lc, UnicodeChar uc);
-
-    /**
-     * Remove a registered observer for code change events.
-     * Code change events are triggered when the assignment of a macro or
-     * active character changes. In this case the appropriate method in the
-     * observer is invoked.
-     *
-     * @param observer the observer to receive the events
-     * @param name the token to be observed. This should be a macro or
-     * active character token.
-     */
-    void unregisterCodeChangeObserver(CodeChangeObserver observer, Token name);
 
 }

@@ -19,35 +19,39 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.interpreter.context.observer.DimenObserver;
+import de.dante.extex.interpreter.context.observer.CountObserver;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.count.Count;
 
 /**
- * This interface describes the container for all data of an interpreter
+ * This interface describes the container for count registers of an interpreter
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public interface ContextDimen {
+public interface ContextCount {
 
     /**
-     * Get the current value of the dimen register with a given name.
+     * Getter for the {@link de.dante.extex.interpreter.type.count.Count count}
+     * register. Count registers are named, either with a number or an
+     * arbitrary string. The numbered registers where limited to 256 in TeX.
+     * This restriction does not longer hold for ExTeX.
      *
-     * @param name the name or the number of the register
+     * @param name the name or number of the count register
      *
-     * @return the dimen register for the given name
+     * @return the count register or <code>null</code> if it is not defined
      */
-    Dimen getDimen(String name);
+    Count getCount(String name);
 
     /**
-     * Register an observer for dimen change events.
-     * Count change events are triggered when a value is assigned to a dimen
+     * Register an observer for count change events.
+     * Count change events are triggered when a value is assigned to a count
      * register. In this case the appropriate method in the
      * observer is invoked.
      * <p>
-     *  A single dimen register can be observed by giving a name of the dimen
+     *  A single count register can be observed by giving a name of the count
      *  register to observe. Only changes to this register tigger the
      *  notification. If this name is <code>null</code> the changes to all
      *  registers are reported to the observer.
@@ -56,11 +60,11 @@ public interface ContextDimen {
      * @param name the name or the number of the register
      * @param observer the observer to receive the events
      */
-    void registerDimenObserver(String name, DimenObserver observer);
+    void registerCountObserver(String name, CountObserver observer);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
-     * register in all requested groups. Dimen registers are named, either with
+     * Setter for the {@link de.dante.extex.interpreter.type.count.Count count}
+     * register in all requested groups. Count registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
      * 256 in TeX. This restriction does no longer hold for ExTeX.
      *
@@ -69,34 +73,19 @@ public interface ContextDimen {
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      *
-     * @throws InterpreterException in case of problems in an observer
+     * @throws InterpreterException in case if an exception in a registered
+     *  observer
      */
-    void setDimen(String name, Dimen value, boolean global)
+    void setCount(String name, long value, boolean global)
             throws InterpreterException;
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
-     * register in all requested groups. Dimen registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *
-     * @throws InterpreterException in case of problems in an observer
-     */
-    void setDimen(String name, long value, boolean global)
-            throws InterpreterException;
-
-    /**
-     * Remove a registered observer for dimen change events.
-     * Count change events are triggered when a value is assigned to a dimen
+     * Remove a registered observer for count change events.
+     * Count change events are triggered when a value is assigned to a count
      * register. In this case the appropriate method in the
      * observer is invoked.
      * <p>
-     *  A single dimen register can be observed by giving a name of the dimen
+     *  A single count register can be observed by giving a name of the count
      *  register to observe. The deregistration removes all instances of the
      *  observer for this register. If none is registered then nothing happens.
      * </p>
@@ -109,6 +98,6 @@ public interface ContextDimen {
      * @param name the name or the number of the register
      * @param observer the observer to receive the events
      */
-    void unregisterDimenObserver(String name, DimenObserver observer);
+    void unregisterCountObserver(String name, CountObserver observer);
 
 }

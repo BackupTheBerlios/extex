@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,9 +19,11 @@
 
 package de.dante.extex.interpreter.context;
 
+import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.framework.AbstractFactory;
@@ -32,7 +34,7 @@ import de.dante.util.framework.AbstractFactory;
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -43,6 +45,11 @@ public class TypesettingContextFactory extends AbstractFactory {
     private static final String CLASS_ATTRIBUTE = "class";
 
     /**
+     * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
+     */
+    private transient HyphenationManager hyphenationManager = null;
+
+    /**
      * The field <tt>theClass</tt> contains the class to instantiate. It is
      * kept here to speed up the method
      * <tt>{@link #newInstance() newInstance()}</tt>.
@@ -51,9 +58,18 @@ public class TypesettingContextFactory extends AbstractFactory {
 
     /**
      * Creates a new object.
+     */
+    public TypesettingContextFactory() {
+
+        super();
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
      *
      * @param configuration the configuration for this factory
      *
+     * @throws ConfigurationException in case of an error
      * @throws ConfigurationMissingAttributeException in case that the
      *      attribute <tt>CLASS_ATTRIBUTE</tt> is not set for the given
      *      configuration.
@@ -62,12 +78,10 @@ public class TypesettingContextFactory extends AbstractFactory {
      * @throws ConfigurationClassNotFoundException in case that the named class
      *      could not be loaded.
      */
-    public TypesettingContextFactory(final Configuration configuration)
-            throws ConfigurationMissingAttributeException,
-                ConfigurationInstantiationException,
-                ConfigurationClassNotFoundException {
+    public void configure(final Configuration configuration)
+            throws ConfigurationException {
 
-        super();
+        super.configure(configuration);
 
         String classname = configuration.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
@@ -113,27 +127,6 @@ public class TypesettingContextFactory extends AbstractFactory {
      * Factory method to acquire an instance of the TypesettingContext.
      *
      * @param context the typesetting context to clone
-     * @param font the new value for the font
-     *
-     * @return an appropriate instance of the TypesettingContext.
-     *
-     * @throws ConfigurationInstantiationException in case that the
-     *             instantiation of the class failed.
-     */
-    public TypesettingContext newInstance(final TypesettingContext context,
-            final Font font) throws ConfigurationInstantiationException {
-
-        TypesettingContext c = newInstance();
-        c.set(context);
-        c.setFont(font);
-
-        return c;
-    }
-
-    /**
-     * Factory method to acquire an instance of the TypesettingContext.
-     *
-     * @param context the typesetting context to clone
      * @param color the new value for the color
      *
      * @return an appropriate instance of the TypesettingContext.
@@ -171,6 +164,58 @@ public class TypesettingContextFactory extends AbstractFactory {
         c.setDirection(direction);
 
         return c;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @param context the typesetting context to clone
+     * @param font the new value for the font
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the class failed.
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final Font font) throws ConfigurationInstantiationException {
+
+        TypesettingContext c = newInstance();
+        c.set(context);
+        c.setFont(font);
+
+        return c;
+    }
+
+    /**
+     * Factory method to acquire an instance of the TypesettingContext.
+     *
+     * @param context the typesetting context to clone
+     * @param language the new value for the hyphenation table
+     *
+     * @return an appropriate instance of the TypesettingContext.
+     *
+     * @throws ConfigurationException in case of a configuration problem
+     */
+    public TypesettingContext newInstance(final TypesettingContext context,
+            final String language) throws ConfigurationException {
+
+        TypesettingContext c = newInstance();
+        c.set(context);
+        c.setLanguage(hyphenationManager.getHyphenationTable(language));
+
+        return c;
+    }
+
+    /**
+     * Setter for the hyphenation manager.
+     *
+     * @param hyphenationManager the new hyphenation manager
+     */
+    public void setHyphenationManager(
+            final HyphenationManager hyphenationManager) {
+
+        this.hyphenationManager = hyphenationManager;
     }
 
 }

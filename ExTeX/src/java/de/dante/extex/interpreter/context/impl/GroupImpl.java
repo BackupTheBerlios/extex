@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -48,6 +48,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
@@ -59,7 +60,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -229,13 +230,13 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * Creates a new object.
      *
-     * @param theNext the next group in the stack. If the value is
+     * @param nextGroup the next group in the stack. If the value is
      *      <code>null</code> then this is the global base
      */
-    public GroupImpl(final Group theNext) {
+    public GroupImpl(final Group nextGroup) {
 
         super();
-        this.next = theNext;
+        this.next = nextGroup;
     }
 
     /**
@@ -642,12 +643,10 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#getToksOrNull(java.lang.String)
      */
-    public Tokens getToksOrNull(String name) {
+    public Tokens getToksOrNull(final String name) {
 
         Tokens toks = (Tokens) (toksMap.get(name));
-        return toks != null ? toks : next != null
-                ? next.getToks(name)
-                : null;
+        return toks != null ? toks : next != null ? next.getToks(name) : null;
     }
 
     /**
@@ -747,6 +746,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
+     * @throws ConfigurationInstantiationException
      * @see de.dante.extex.interpreter.context.impl.Group#setCount(
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.count.Count, boolean)
@@ -895,7 +895,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * @param theNamespace the new value for the namespace
      * @param global the scoping of the assignment
      *
-     * @see de.dante.extex.interpreter.context.impl.Group#setNamespace(java.lang.String, boolean)
+     * @see de.dante.extex.interpreter.context.impl.Group#setNamespace(
+     *      java.lang.String, boolean)
      */
     public void setNamespace(final String theNamespace, final boolean global) {
 
