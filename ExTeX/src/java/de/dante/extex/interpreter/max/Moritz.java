@@ -78,7 +78,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.59 $
+ * @version $Revision: 1.60 $
  */
 public abstract class Moritz
         implements
@@ -275,9 +275,10 @@ public abstract class Moritz
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.Token, Context, Typesetter)
      */
-    public abstract void execute(final Token token)
+    public abstract void execute(final Token token, final Context context,
+            final Typesetter typesetter)
             throws InterpreterException,
                 ErrorLimitException;
 
@@ -748,6 +749,9 @@ public abstract class Moritz
      * @param token the token to push
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.TokenSource#push(
+     *      de.dante.extex.scanner.type.Token)
      */
     public void push(final Token token) throws InterpreterException {
 
@@ -776,6 +780,9 @@ public abstract class Moritz
      * @param tokens the tokens to push
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.TokenSource#push(
+     *      de.dante.extex.scanner.type.Token[])
      */
     public void push(final Token[] tokens) throws InterpreterException {
 
@@ -804,6 +811,9 @@ public abstract class Moritz
      * @param tokens the tokens to push
      *
      * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.TokenSource#push(
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
      */
     public void push(final Tokens tokens) throws InterpreterException {
 
@@ -821,8 +831,9 @@ public abstract class Moritz
 
         try {
             for (int i = tokens.length() - 1; i >= 0; i--) {
-                observersPush.update(this, tokens.get(i));
-                stream.put(tokens.get(i));
+                Token t = tokens.get(i);
+                observersPush.update(this, t);
+                stream.put(t);
             }
         } catch (InterpreterException e) {
             throw e;

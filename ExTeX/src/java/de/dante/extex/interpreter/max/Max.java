@@ -84,7 +84,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public class Max extends Moritz
         implements
@@ -280,10 +280,9 @@ public class Max extends Moritz
             } catch (InterpreterException e) {
                 if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                     throw new ErrorLimitException(maxErrors);
-                } else if (errorHandler != null) {
-                    if (!errorHandler.handleError(e, current, this, context)) {
-                        throw e;
-                    }
+                } else if (errorHandler != null && //
+                        !errorHandler.handleError(e, current, this, context)) {
+                    throw e;
                 } else {
                     throw e;
                 }
@@ -297,9 +296,10 @@ public class Max extends Moritz
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#execute(
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.extex.scanner.Token, Context, Typesetter)
      */
-    public void execute(final Token token)
+    public void execute(final Token token, final Context theContext,
+            final Typesetter typesetter)
             throws InterpreterException,
                 ErrorLimitException {
 
@@ -310,15 +310,13 @@ public class Max extends Moritz
             token.visit(this, null);
 
         } catch (InterpreterException e) {
-            if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
+            if (theContext.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                 throw new ErrorLimitException(maxErrors);
-            } else if (errorHandler != null) {
-                if (!errorHandler.handleError(e, token, this, context)) {
-                    throw e;
-                }
-            } else {
-                throw e;
+            } else if (errorHandler != null && //
+                    errorHandler.handleError(e, token, this, theContext)) {
+                return;
             }
+            throw e;
         } catch (Exception e) {
             throw new InterpreterException(e);
         }

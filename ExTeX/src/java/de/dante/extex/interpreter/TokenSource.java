@@ -48,7 +48,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public interface TokenSource {
 
@@ -84,13 +84,14 @@ public interface TokenSource {
 
     /**
      * Tries to execute a token.
-     *
      * @param token the Token to execute
+     * @param context the interpreter context
+     * @param typesetter the typesetter
      *
      * @throws InterpreterException in case of an error
      * @throws ErrorLimitException in case that the error limit has been reached
      */
-    void execute(final Token token)
+    void execute(final Token token, Context context, Typesetter typesetter)
             throws InterpreterException,
                 ErrorLimitException;
 
@@ -118,7 +119,8 @@ public interface TokenSource {
      *
      * @throws InterpreterException in case of an error
      */
-    Box getBox(Context context, Typesetter typesetter) throws InterpreterException;
+    Box getBox(Context context, Typesetter typesetter)
+            throws InterpreterException;
 
     /**
      * Get the next token from the token stream and check that it is a
@@ -186,7 +188,8 @@ public interface TokenSource {
      *
      * @throws InterpreterException in case of an error
      */
-    boolean getKeyword(Context context, String keyword) throws InterpreterException;
+    boolean getKeyword(Context context, String keyword)
+            throws InterpreterException;
 
     /**
      * Getter for the locator.
@@ -311,7 +314,8 @@ public interface TokenSource {
      * ignored.
      *
      * @param tokens the tokens to push
-     * @throws InterpreterException TODO
+     *
+     * @throws InterpreterException in case of an error
      */
     void push(Tokens tokens) throws InterpreterException;
 
@@ -495,7 +499,7 @@ public interface TokenSource {
      *    &lang;optional spaces&rang;  </pre>
      * </p>
      */
-    void skipSpace() ;
+    void skipSpace();
 
     /**
      * Send the string to the named observer. The observer must be capable to

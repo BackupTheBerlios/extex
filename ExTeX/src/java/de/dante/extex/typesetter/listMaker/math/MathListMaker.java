@@ -66,7 +66,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -75,7 +75,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private class MathMemento {
 
@@ -446,7 +446,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             if (t.isa(Catcode.LEFTBRACE)) {
                 source.executeGroup();
             } else {
-                source.execute(t);
+                source.execute(t, context, null); //TODO gene: provide typesetter argument
             }
         } catch (TypesetterException e) {
             throw e;
