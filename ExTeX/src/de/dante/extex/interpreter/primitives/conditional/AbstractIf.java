@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -72,8 +72,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        if (conditional(context, source, typesetter) ||
-                skipToElseOrFi(context, source)) {
+        if (conditional(context, source, typesetter)
+                || skipToElseOrFi(context, source)) {
             context.pushConditional(source.getLocator(), true);
         }
 
@@ -91,8 +91,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        if (conditional(context, source, typesetter) ||
-                skipToElseOrFi(context, source)) {
+        if (conditional(context, source, typesetter)
+                || skipToElseOrFi(context, source)) {
             context.pushConditional(source.getLocator(), true);
         }
     }
@@ -151,6 +151,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
                     }
                 } else if (code.isIf()) {
                     n++;
+                } else if (code.isOuter()) {
+                    
                 }
             }
         }
