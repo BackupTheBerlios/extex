@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * several extensions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileFinder implements ResourceFinder, LoggerTaker, PropertiesTaker {
 
@@ -134,6 +134,8 @@ public class FileFinder implements ResourceFinder, LoggerTaker, PropertiesTaker 
                     // Ignore unreadable files.
                     // This should not happen since it has already been
                     // tested before.
+                    logger.fine("FileFinder: Not found " + file.toString()
+                            + "\n");
                 }
             }
         }
