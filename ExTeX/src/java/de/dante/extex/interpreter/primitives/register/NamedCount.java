@@ -23,6 +23,7 @@ import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.CountConvertable;
 import de.dante.extex.interpreter.Divideable;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Multiplyable;
 import de.dante.extex.interpreter.Theable;
@@ -48,9 +49,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
-public class NamedCount extends AbstractAssignment implements
+public class NamedCount extends AbstractAssignment implements ExpandableCode,
     Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
 
     /**
@@ -94,6 +95,20 @@ public class NamedCount extends AbstractAssignment implements
 
         long value = Count.scanCount(context, source);
         context.setCount(key, value, prefix.isGlobal());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        String key = getKey(source);
+        source.push(context.getCount(key).toToks(context));
     }
 
     /**
