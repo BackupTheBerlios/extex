@@ -40,7 +40,7 @@ import de.dante.util.configuration.ConfigurationException;
  * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -48,10 +48,19 @@ public class TokenStreamStringImplTest extends TestCase {
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.12 $
+     * @version $Revision: 1.13 $
      */
     private static class MockConfiguration implements Configuration {
 
+        /**
+         * @see de.dante.util.configuration.Configuration#getValues(
+         *      de.dante.util.StringList, java.lang.String)
+         */
+        public void getValues(final StringList list, final String key) {
+
+            // TODO unimplemented
+
+        }
         /**
          * The field <tt>classname</tt> contains the name of the class to use.
          */
