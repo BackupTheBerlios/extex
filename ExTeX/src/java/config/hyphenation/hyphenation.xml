@@ -17,8 +17,14 @@
   -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   -
   -->
-<Hyphenation default="TeX">
+<Hyphenation default="ExTeX">
 
-    <TeX class="de.dante.extex.hyphenation.liang.LiangsHyphenationTable"/>
+  <TeX class="de.dante.extex.hyphenation.BaseHyphenationManager" default="Liang">
+    <Liang class="de.dante.extex.hyphenation.liang.LiangsHyphenationTable"/>
+  </TeX>
+
+  <ExTeX class="de.dante.extex.hyphenation.HyphenationManagerImpl" default="Liang">
+    <Liang class="de.dante.extex.hyphenation.liang.LiangsHyphenationTable"/>
+  </ExTeX>
 
 </Hyphenation>
