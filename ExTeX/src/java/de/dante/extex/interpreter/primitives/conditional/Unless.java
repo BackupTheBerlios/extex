@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\if</code>.
  *
  * <doc name="unless">
- * <h3>The Primitive <tt>\u005cunless</tt></h3>
+ * <h3>The Primitive <tt>&#x005c;unless</tt></h3>
  * <p><strong>Copied of the eTeX reference</strong>.</p>
  * <p>
  * TeX has, by design, a rather sparse set of conditional primitives:
@@ -42,8 +42,8 @@ import de.dante.util.GeneralException;
  * accepts both a \then (implicit) and an \else (explicit) part, they
  * fall down when used as the final \if... of a \loop ... \if
  * ... \repeat construct, since no \else is allowed after the final
- * \if.... \u005cunless allows the sense of all Boolean conditionals to be
- * inverted, and thus (for example) \u005cunless \ifeof yields true iff
+ * \if.... &#x005c;unless allows the sense of all Boolean conditionals to be
+ * inverted, and thus (for example) &#x005c;unless \ifeof yields true iff
  * end-of-file has not yet been reached.
  * </p>
  * <p>
@@ -53,12 +53,12 @@ import de.dante.util.GeneralException;
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \u005cunless\if\x\y not ok \fi  </pre>
+ *    &#x005c;unless\if\x\y not ok \fi  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Unless extends AbstractIf {
 
