@@ -58,9 +58,13 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public class FontFactoryImpl implements FontFactory, Serializable {
+
+    // TODO change
+    // > Ach ja, bei der Factory solltest du versuchen, die Instanzen beim
+    // > Einlesen wieder einzusammeln...
 
     /**
      * The field <tt>TAG_TYPE</tt> contains the name of the tag in the
@@ -77,7 +81,7 @@ public class FontFactoryImpl implements FontFactory, Serializable {
     /**
      * Fontmap
      */
-    private Map fountmap = new HashMap();
+    private Map fountmap;
 
     /**
      * the file finder
@@ -104,6 +108,7 @@ public class FontFactoryImpl implements FontFactory, Serializable {
 
         cfgType = config.getConfiguration(TAG_TYPE);
 
+        fountmap = new HashMap();
     }
 
     /**
@@ -185,6 +190,8 @@ public class FontFactoryImpl implements FontFactory, Serializable {
                 throw new ConfigurationClassNotFoundException(classname);
             }
 
+            // store fount
+            fountmap.put(key, fount);
         }
 
         return new FontImpl(fount);
@@ -265,7 +272,6 @@ public class FontFactoryImpl implements FontFactory, Serializable {
             InputStream fontfile = finder.findResource(name, EFMEXTENSION);
 
             if (fontfile != null) {
-                //System.err.println("\n FONT " + name + "  EFM");
                 try {
                     // create a document with SAXBuilder (without validate)
                     SAXBuilder builder = new SAXBuilder(false);
@@ -280,7 +286,6 @@ public class FontFactoryImpl implements FontFactory, Serializable {
                         TFMEXTENSION);
 
                 if (tfmfile != null) {
-                    //System.err.println("\n FONT " + name + "  TFM");
 
                     EncFactory ef = new EncFactory(finder);
 
@@ -315,7 +320,6 @@ public class FontFactoryImpl implements FontFactory, Serializable {
                             AFMEXTENSION);
 
                     if (afmfile != null) {
-                        //System.err.println("\n FONT " + name + "  AFM");
 
                         try {
                             AFMReader afmreader = new AFMReader(afmfile, name
@@ -344,7 +348,7 @@ public class FontFactoryImpl implements FontFactory, Serializable {
     /**
      * Font-key-class for the <code>HashMap</code>.
      */
-    private static class FountKey {
+    private static class FountKey implements Serializable {
 
         /**
          * The name of the font
