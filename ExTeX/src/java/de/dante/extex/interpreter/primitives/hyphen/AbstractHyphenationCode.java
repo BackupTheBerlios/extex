@@ -25,17 +25,43 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.util.UnicodeChar;
-import de.dante.util.UnicodeCharList;
 
 /**
- * TODO gene: Javadoc
+ * This is the abstract base class for all hyphenation related primitives.
+ * It provides common methods.
+ *
+ * <h2>Determining the Current Language</h2>
+ *
+ * <p>
+ *  In TeX the language is determined by the count register named
+ *  <tt>language</tt>. This has the disadvantage that the language is named
+ *  anonymously by an integer.
+ * </p>
+ * <p>
+ *  This base class implements an extension to this scheme. First the toks
+ *  register <tt>lang</tt> is sought. If this register is defined and not
+ *  empty then the contents is used as name of the current language. Otherwise
+ *  the count register <tt>language</tt> is used for this purpose.
+ * </p>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractHyphenationCode extends AbstractCode {
+
+    /**
+     * The field <tt>LANGUAGE_COUNT</tt> contains the name of the count register
+     * to determine the language.
+     */
+    private static final String LANGUAGE_COUNT = "language";
+
+    /**
+     * The field <tt>LANGUAGE_TOKS</tt> contains the name of the toks register
+     * to determine the language.
+     */
+    private static final String LANGUAGE_TOKS = "lang";
 
     /**
      * Creates a new object.
@@ -48,7 +74,7 @@ public abstract class AbstractHyphenationCode extends AbstractCode {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Getter for the current hyphenation table.
      *
      * @param context the interpreter context
      *
@@ -59,32 +85,15 @@ public abstract class AbstractHyphenationCode extends AbstractCode {
     protected HyphenationTable getHyphenationTable(final Context context)
             throws InterpreterException {
 
-        String index;
-        Tokens lang = context.getToksOrNull("lang");
-        if (lang != null) {
-            index = lang.toText();
-        } else {
-            Count language = context.getCount("language");
-            index = Long.toString(language.getValue());
-        }
-        return context.getHyphenationTable(index);
-    }
+        Tokens lang = context.getToksOrNull(LANGUAGE_TOKS);
+        String name = (lang != null ? lang.toText() : "");
 
-    /**
-     * Transform the <code>String</code> in lowercase (use lccode)
-     * @param s         the <code>String</code>
-     * @param context   the context
-     * @return the lowercase string
-     */
-    protected String makeLowercase(final String s, final Context context) {
-
-        UnicodeCharList ucl = new UnicodeCharList(s.length());
-        for (int i = 0; i < s.length(); i++) {
-            UnicodeChar uc = new UnicodeChar(s, i);
-            UnicodeChar lc = context.getLccode(uc);
-            ucl.add(lc.getCodePoint() > 0 ? lc : uc);
+        if (name.length() == 0) {
+            Count language = context.getCount(LANGUAGE_COUNT);
+            name = Long.toString(language.getValue());
         }
-        return ucl.toString();
+
+        return context.getHyphenationTable(name);
     }
 
 }
