@@ -382,7 +382,9 @@
   </Interpreter>
 
 	
-  <Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl"/>
+	<Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
+  		<LineBreaker class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
+ 	</Typesetter>
 
   <DocumentWriter class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
 
