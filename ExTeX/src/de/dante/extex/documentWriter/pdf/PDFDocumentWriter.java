@@ -16,14 +16,15 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
- 
 package de.dante.extex.documentWriter.pdf;
 
 // Java
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.awt.Color;
 
+// FOP
 import org.apache.fop.apps.FOPException;
 import org.apache.fop.layout.FontInfo;
 import org.apache.fop.layout.FontState;
@@ -36,14 +37,18 @@ import org.apache.fop.pdf.PDFResources;
 import org.apache.fop.pdf.PDFStream;
 import org.apache.fop.render.pdf.FontSetup;
 
+// ExTeX
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.NodeIterator;
+import de.dante.extex.interpreter.type.node.AbstractNodeList;
 
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -86,27 +91,7 @@ public class PDFDocumentWriter implements DocumentWriter {
     public void setOutputStream(final OutputStream outStream) {
         out = outStream;
     }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
-     */
-    public void shipout(final NodeList nodes) throws IOException {
-        StringBuffer sb = new StringBuffer();
-        nodes.toString(sb,"\n");
-        out.write(sb.toString().getBytes());
-        out.write('\n');
-        shippedPages++;
-    }
-
-    /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
-     */
-    public void close() throws IOException {
-      FontSetup.addToResources(this.pdfDoc, fontInfo); // ??? //
-      pdfDoc.outputTrailer(this.outputstream);
-      this.outputstream.close();
-    }
-  
+    
     private PDFDocument pdfDoc = null;
     private PDFStream currentStream = null;
     private PDFResources pdfResources = null;
@@ -114,25 +99,105 @@ public class PDFDocumentWriter implements DocumentWriter {
     private PDFPage currentPage = null;
     private PDFColor currentColor = null;
     private Page page = null; 
-    
-    /*private*/ public PDFOperators op = null;  
+    private PDFOperators op = null;  
     
     private int pageWD = 595; // "bp"
     private int pageHT = 842; // "bp"  -- A4
     // Wo abfragen? \paperwidth / \paperheight, \mediawidth / \mediaheight ???
     
-    private FileOutputStream outputstream = null;
-    
     private FontInfo fontInfo = null;
     private FontState fontState = null;
     
-    /**
-     * Opens/setups the document and the first page
-     * @param outputstream  the output file    
-     */      
-    public void open(FileOutputStream outputstream) throws IOException {
+   private float sp2bp(long sp) {
+   /*
+       So oder per Transformation? Wie genau rechnet PDF? Einstellbar?
+   */
+        return (float)((sp >> 16) * 72.0 / 72.27);
+   }
+   
+   private float lastX = 0f, lastY = 0f;
+   
+   private void showNode(Node node) {
+   
+        boolean onlyStroke = false, show = true; 
+        
+        float x = 0f, y = 0f;
+        float wd = sp2bp(node.getWidth().getValue());
+        float ht = sp2bp(node.getHeight().getValue());
+        float dp = sp2bp(node.getDepth().getValue());
+        
+        op.gSave();
+          
+        if (node.getType().equals("char")) 
+        {
+          x = lastX; y = lastY; 
+	  lastX = x + wd; lastY = y + ht + dp; 
+	  // Nur damit es weniger eintönig ist ;-)
+          op.fillColor(Color.GREEN);
+        }
+        if (node.getType().equals("horizontallist")) 
+        {
+          show = false;
+        }
+        if (node.getType().equals("verticallist"))  
+        {
+          op.fillColor(Color.LIGHT_GRAY);  //onlyStroke = true;
+        }
+        
+        if (show)
+        {
+          op.addRectangle(x, y+ht, wd, ht+dp); 
+          if (onlyStroke) op.stroke(); else op.fillStroke();
+        }
+        
+        op.gRestore();
+        
+        System.out.println(node.getType() + 
+          " (wd=" + node.getWidth().toPT() + 
+          "\tht=" + node.getHeight().toPT() +
+          "\tdp=" + node.getDepth().toPT() + ")" + "\t" +
+	  ((node.getType().equals("char")) ? node.toString() : ""));
+   }
+
+   public void shipout(final NodeList nodes) throws IOException {
+        newPage(); shippedPages++;
+        System.out.println("\n");
+          op.concat(1, 0, 0, 1, 72, 72);
+          // Hier mal testweise zu Pos. (72bp, 72bp) verschieben ...
+          processNodes(nodes);
+        System.out.println("\n");
+    }
     
-      this.outputstream = outputstream;
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     */
+    public void close() throws IOException {
+      //pdfDoc.getOutlineRoot().setTitle("Erste Schritte");
+      FontSetup.addToResources(this.pdfDoc, fontInfo); // ??? //
+      pdfDoc.outputTrailer(this.out);
+
+      // this.out.close();
+    }
+    
+    private void processNodes(final NodeList nodes) {
+      NodeIterator it = nodes.iterator(); 
+      
+      showNode(nodes);  
+      
+      System.out.println("---------------BEGIN----------------");
+      while(it.hasNext()) 
+      {
+        Node n = it.next();
+        if (n instanceof NodeList) processNodes((NodeList)n);
+        else showNode(n);
+      }
+      System.out.println("---------------END------------------"); 
+    }
+    
+    /**
+     * Opens/setups the document    
+     */      
+    public void initDocument() throws IOException {
       
       pdfDoc = new PDFDocument();
       
@@ -146,71 +211,31 @@ public class PDFDocumentWriter implements DocumentWriter {
          Wie kann man testweise Kompression ausschalten?
       */
       
-      /////////////////////////////////////////////////////////
-      
-      /* Irgendwelche Code-Fragmente zu Fonts... ????
-      
-      try {
-        FontSetup.setup(fontInfo);
-      }
-      catch (FOPException e) {
-        e.printStackTrace();
-      }
-      
-      FontInfo fi = fontState.getFontInfo();
-      
-      fontInfo = new FontInfo(fontName, metricsFile, kerning,
-                                    fontTriplets, embedFile);
-      
-      fontState = new FontState(fontState.getFontInfo(),
-                                                  name, style, weight,
-                                                  fsize * 1000, 0);
-						  
-      fontState = new FontState(fontInfo, fontFamily, fontStyle,
-                                      fontWeight, fontSize, fontVariant);
-				      						  
-      Font font = new Font(fontState.getFontFamily(), fStyle,
-                             (int)(fontState.getFontSize() / 1000));      
-      
-      try {      
-        fontState = new FontState(fontInfo, "Helvetica", "italic",
-                                      "bold", 14, 1);
-      }
-      catch (FOPException e) {
-        e.printStackTrace();
-      }	
-      
-      */
-      			      
-      /////////////////////////////////////////////////////////
-      
-      // Alles noch sehr vage ;-|
-      
       fontInfo = new FontInfo();
       
       try {
         FontSetup.setup(fontInfo);
-	fontState = new FontState(fontInfo, "Helvetica", "normal",
+        fontState = new FontState(fontInfo, "Helvetica", "normal",
                                           "normal", 12, 0);
       }
       catch (FOPException e) {
         e.printStackTrace();
       }
       
-      /////////////////////////////////////////////////////////
-      				              
       pdfResources = pdfDoc.getResources();   
            
-      pdfDoc.outputHeader(this.outputstream);
+      pdfDoc.outputHeader(this.out);
       
-      newPage();
     }
     
     /**
-     * Creates/setups a new page (update page size and transformation).
+     * Creates/setups a new page 
      */  
     public void newPage() throws IOException {
-      pdfDoc.output(this.outputstream); 
+    
+      if (pdfDoc == null) initDocument();
+    
+      pdfDoc.output(this.out); 
       
       currentStream = pdfDoc.makeStream();
 
@@ -221,6 +246,5 @@ public class PDFDocumentWriter implements DocumentWriter {
         
       // TeX/SVG-Koordinatensystem.
       op.concat(1, 0, 0, -1, 0, pageHT);
-    }
-
+    }    
 }
