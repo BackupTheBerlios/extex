@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
-  -  Copyright (C) 2003-2004 The ExTeX Group
+  -  Copyright (C) 2003-2005 The ExTeX Group
   -
   -  This library is free software; you can redistribute it and/or modify it
   -  under the terms of the GNU Lesser General Public License as published by
@@ -230,7 +230,7 @@
   <define name="hoffset"
           class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
   <define name="holdinginserts"
-          class="de.dante.extex.interpreter.primitives.typesetter.insert.Holdinginserts"/>
+          class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="hrule"
           class="de.dante.extex.interpreter.primitives.typesetter.box.Hrule"/>
   <define name="hsize"
