@@ -19,8 +19,7 @@
   -->
 <Resource>
   <Finder class="de.dante.util.resource.FileFinder"
-          default="default"
-          trace="false">
+          default="default">
     <efm>
       <extension>.efm</extension>
       <path>.</path>
@@ -43,13 +42,18 @@
     </default>
   </Finder>
   <Finder class="de.dante.util.resource.LsrFinder"
-          default="default"
-          trace="false">
+          default="default">
+    <path property="extex.fonts"></path>
     <path property="texmf.path"></path>
+    <path property="extex.texinputs"/>
+    <path property="texinputs"/>
 
     <tfm><extension>.tfm</extension></tfm>
     <efm><extension>.efm</extension></efm>
+    <afm><extension>.afm</extension></afm>
     <pfb><extension>.pfb</extension></pfb>
+    <pfa><extension>.pfa</extension></pfa>
+    <map><extension>.map</extension></map>
     <ttf><extension>.ttf</extension></ttf>
     <default><extension/></default>
   </Finder>
