@@ -21,17 +21,18 @@ package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This interface describes the capabilities of a typesetter.
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -52,16 +53,19 @@ public interface Typesetter extends ListMaker {
     CharNodeFactory getCharNodeFactory();
 
     /**
-     * Open a new horizontal box and put it in the top of the stack as current
-     * box.
+     * Getter for the manager of the list maker stack.
+     *
+     * @return the manager
      */
-    void openHbox();
+    Manager getManager();
 
     /**
-     * Open a new vertical box and put it in the top of the stack as current
+     * Open a new list maker and put it in the top of the stack as current
      * box.
+     *
+     * @param listMaker the list maker
      */
-    void openVbox();
+    void push(ListMaker listMaker);
 
     /**
      * Setter for the document writer.
@@ -80,18 +84,18 @@ public interface Typesetter extends ListMaker {
     void setLigatureBuilder(LigatureBuilder ligatureBuilder);
 
     /**
-     * Setter for the page builder.
-     *
-     * @param pageBuilder the page builder to set.
-     */
-    void setPageBuilder(PageBuilder pageBuilder);
-
-    /**
      * Setter for the typesetter specific options.
      *
      * @param options the options to use
      */
     void setOptions(TypesetterOptions options);
+
+    /**
+     * Setter for the page builder.
+     *
+     * @param pageBuilder the page builder to set.
+     */
+    void setPageBuilder(PageBuilder pageBuilder);
 
     /**
      * Setter for the paragraph builder.

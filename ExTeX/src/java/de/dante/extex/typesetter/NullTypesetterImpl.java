@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -38,7 +39,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -140,6 +141,14 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#getManager()
+     */
+    public Manager getManager() {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Typesetter#getMode()
      */
     public Mode getMode() {
@@ -148,25 +157,19 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#openHbox()
-     */
-    public void openHbox() {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#openVbox()
-     */
-    public void openVbox() {
-
-    }
-
-    /**
      * @see de.dante.extex.typesetter.Typesetter#par()
      */
     public void par() {
 
         // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#push(
+     *      de.dante.extex.typesetter.ListMaker)
+     */
+    public void push(final ListMaker listMaker) {
+
     }
 
     /**
@@ -273,5 +276,4 @@ public class NullTypesetterImpl implements Typesetter {
 
         // nothing to do
     }
-
 }

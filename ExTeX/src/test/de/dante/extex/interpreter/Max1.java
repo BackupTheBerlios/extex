@@ -29,11 +29,13 @@ import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -45,7 +47,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class Max1 extends TestCase {
 
@@ -148,6 +150,14 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.Typesetter#getManager()
+         */
+        public Manager getManager() {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.Typesetter#getMode()
          */
         public Mode getMode() {
@@ -164,27 +174,20 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#openHbox()
-         */
-        public void openHbox() {
-
-            // nothing to do
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.Typesetter#openVbox()
-         */
-        public void openVbox() {
-
-            // nothing to do
-        }
-
-        /**
          * @see de.dante.extex.typesetter.ListMaker#par()
          */
         public void par() {
 
             sb.append("\n\\par\n");
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#push(
+         *      de.dante.extex.typesetter.ListMaker)
+         */
+        public void push(final ListMaker listMaker) {
+
+            // TODO unimplemented
         }
 
         /**

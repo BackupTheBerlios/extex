@@ -31,6 +31,8 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.impl.InnerVerticalListMaker;
+import de.dante.extex.typesetter.impl.RestrictedHorizontalListMaker;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
@@ -42,7 +44,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Box implements Serializable {
 
@@ -82,9 +84,11 @@ public class Box implements Serializable {
         }
 
         if (isHorizontal) {
-            typesetter.openHbox();
+            typesetter.push(new RestrictedHorizontalListMaker(typesetter
+                    .getManager()));
         } else {
-            typesetter.openVbox();
+            typesetter
+                    .push(new InnerVerticalListMaker(typesetter.getManager()));
         }
 
         try {

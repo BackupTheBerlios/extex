@@ -53,7 +53,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class TypesetterImpl
         implements
@@ -198,7 +198,7 @@ public class TypesetterImpl
      */
     public void enableLocalization(final Localizer theLocalizer) {
 
-        this.localizer = theLocalizer;
+        localizer = theLocalizer;
     }
 
     /**
@@ -207,7 +207,7 @@ public class TypesetterImpl
      */
     public void enableLogging(final Logger theLogger) {
 
-        this.logger = theLogger;
+        logger = theLogger;
         if (pageBuilder instanceof LogEnabled) {
             ((LogEnabled) pageBuilder).enableLogging(theLogger);
         }
@@ -270,7 +270,7 @@ public class TypesetterImpl
      */
     public Node getLastNode() {
 
-        return this.listMaker.getLastNode();
+        return listMaker.getLastNode();
     }
 
     /**
@@ -306,27 +306,11 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#openHbox()
-     */
-    public void openHbox() {
-
-        push(new RestrictedHorizontalListMaker(this));
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#openVbox()
-     */
-    public void openVbox() {
-
-        push(new InnerVerticalListMaker(this));
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
 
-        this.listMaker.par();
+        listMaker.par();
     }
 
     /**
@@ -338,7 +322,7 @@ public class TypesetterImpl
             throw new PanicException(localizer, "Typesetter.EmptyStack");
         }
 
-        this.listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
+        listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
     }
 
     /**
@@ -347,8 +331,8 @@ public class TypesetterImpl
      */
     public void push(final ListMaker list) {
 
-        saveStack.add(this.listMaker);
-        this.listMaker = list;
+        saveStack.add(listMaker);
+        listMaker = list;
     }
 
     /**
@@ -374,11 +358,11 @@ public class TypesetterImpl
     /**
      * Setter for ligatureBuilder.
      *
-     * @param ligatureBuilder the ligatureBuilder to set.
+     * @param theLigatureBuilder the ligatureBuilder to set.
      */
-    public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
+    public void setLigatureBuilder(final LigatureBuilder theLigatureBuilder) {
 
-        this.ligatureBuilder = ligatureBuilder;
+        ligatureBuilder = theLigatureBuilder;
         if (ligatureBuilder instanceof LogEnabled) {
             ((LogEnabled) ligatureBuilder).enableLogging(logger);
         }
@@ -390,20 +374,20 @@ public class TypesetterImpl
      */
     public void setOptions(final TypesetterOptions theOptions) {
 
-        this.options = theOptions;
+        options = theOptions;
     }
 
     /**
      * Setter for the page builder.
      *
-     * @param pageBuilder the new page builder
+     * @param thePageBuilder the new page builder
      *
      * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(
      *      de.dante.extex.typesetter.pageBuilder.PageBuilder)
      */
-    public void setPageBuilder(final PageBuilder pageBuilder) {
+    public void setPageBuilder(final PageBuilder thePageBuilder) {
 
-        this.pageBuilder = pageBuilder;
+        pageBuilder = thePageBuilder;
         pageBuilder.setDocumentWriter(documentWriter);
         if (pageBuilder instanceof LogEnabled) {
             ((LogEnabled) pageBuilder).enableLogging(logger);
@@ -413,11 +397,11 @@ public class TypesetterImpl
     /**
      * Setter for paragraphBuilder.
      *
-     * @param paragraphBuilder the paragraphBuilder to set.
+     * @param theParagraphBuilder the paragraphBuilder to set.
      */
-    public void setParagraphBuilder(final ParagraphBuilder paragraphBuilder) {
+    public void setParagraphBuilder(final ParagraphBuilder theParagraphBuilder) {
 
-        this.paragraphBuilder = paragraphBuilder;
+        paragraphBuilder = theParagraphBuilder;
         if (paragraphBuilder instanceof LogEnabled) {
             ((LogEnabled) paragraphBuilder).enableLogging(logger);
         }
@@ -471,5 +455,18 @@ public class TypesetterImpl
     public void toggleMath() throws GeneralException {
 
         listMaker.toggleMath();
+    }
+
+    /**
+     * Getter for the manager of the list maker stack.
+     * This instance also acts as a manager.
+     *
+     * @return this instance
+     *
+     * @see de.dante.extex.typesetter.Typesetter#getManager()
+     */
+    public Manager getManager() {
+
+        return this;
     }
 }

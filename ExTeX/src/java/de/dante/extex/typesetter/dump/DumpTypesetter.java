@@ -25,11 +25,13 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -39,10 +41,11 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This class implements the typeetter interface but simply records the events
+ * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DumpTypesetter implements Typesetter {
 
@@ -138,6 +141,14 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#getManager()
+     */
+    public Manager getManager() {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#getMode()
      */
     public Mode getMode() {
@@ -146,26 +157,19 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#openHbox()
-     */
-    public void openHbox() {
-
-        // TODO unimplemented
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#openVbox()
-     */
-    public void openVbox() {
-
-        // TODO unimplemented
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
 
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#push(
+     *      de.dante.extex.typesetter.ListMaker)
+     */
+    public void push(final ListMaker listMaker) {
+
+        // TODO unimplemented
     }
 
     /**
@@ -279,5 +283,4 @@ public class DumpTypesetter implements Typesetter {
     public void toggleMath() throws GeneralException {
 
     }
-
 }
