@@ -86,7 +86,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class Max extends Moritz
         implements
@@ -691,7 +691,7 @@ public class Max extends Moritz
     public Object visitLetter(final LetterToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.add(context.getTypesettingContext(), token.getChar());
+        typesetter.treatLetter(context.getTypesettingContext(), token.getChar());
         return null;
     }
 
@@ -745,23 +745,7 @@ public class Max extends Moritz
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
             throws GeneralException {
 
-        if (typesetter.getMode() == Mode.MATH) {
-            typesetter.toggleMath();
-            return null;
-        }
-
-        Token next = getToken();
-
-        if (next == null) {
-            throw new MathHelpingException(token.toString());
-        } else if (next.isa(Catcode.MATHSHIFT)) {
-            typesetter.toggleDisplaymath();
-        } else {
-            push(next);
-            typesetter.toggleMath();
-            push(context.getToks("everymath"));
-        }
-
+        typesetter.treatMathShift(token, this);
         return null;
     }
 
@@ -781,7 +765,7 @@ public class Max extends Moritz
     public Object visitOther(final OtherToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.add(context.getTypesettingContext(), token.getChar());
+        typesetter.treatLetter(context.getTypesettingContext(), token.getChar());
         return null;
     }
 
@@ -843,13 +827,8 @@ public class Max extends Moritz
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
             throws GeneralException {
 
-        Mode mode = typesetter.getMode();
-        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
-            //TODO _ unimplemented
-            throw new RuntimeException("unimplemented");
-        }
-
-        throw new MathHelpingException(token.toString());
+        typesetter.treatSubMark(context.getTypesettingContext(), token);
+        return null;
     }
 
     /**
@@ -869,13 +848,8 @@ public class Max extends Moritz
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
             throws GeneralException {
 
-        Mode mode = typesetter.getMode();
-        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
-            //TODO ^ unimplemented
-            throw new RuntimeException("unimplemented");
-        }
-
-        throw new MathHelpingException(token.toString());
+        typesetter.treatSupMark(context.getTypesettingContext(), token);
+        return null;
     }
 
     /**
