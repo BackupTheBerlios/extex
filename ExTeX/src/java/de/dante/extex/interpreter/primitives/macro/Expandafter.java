@@ -37,11 +37,20 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p class="TeXbook">
+ * TeX first reads the token that comes immediately after <tt>\expandafter</tt>,
+ * without expanding it; let's call this token <i>t</i>. Then TeX reads the
+ * token that comes after <i>t</i> (and possibly more tokens, if that token has
+ * an argument), replacing it by its expansion. Finally TeX puts <i>t</i> back
+ * in front of that expansion.
+ * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;expandafter&rang;
- *     &rarr; <tt>\expandafter</tt> ...  </pre>
+ *     &rarr; <tt>\expandafter</tt> {@linkplain
+ *         de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *         &lang;control sequence&rang;} ...  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -52,7 +61,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Expandafter extends AbstractCode implements ExpandableCode {
 

@@ -119,7 +119,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TokenStreamFactory implements Observable {
 
@@ -161,7 +161,7 @@ public class TokenStreamFactory implements Observable {
     private ObserverList openStringObservers = new ObserverList();
 
     /**
-     * The field <tt>options</tt> contains the ...
+     * The field <tt>options</tt> contains the options for the token stream.
      */
     private TokenStreamOptions options;
 
@@ -192,7 +192,7 @@ public class TokenStreamFactory implements Observable {
     /**
      * Creates a new object.
      * @param theConfiguration the configuration to use
-     * @param theOptions TODO
+     * @param theOptions the options for the token stream
      *
      * @throws ConfigurationException in case of an error in the configuration
      */
@@ -248,7 +248,7 @@ public class TokenStreamFactory implements Observable {
     }
 
     /**
-     * Provide a new instance of a token stream.
+     * Provide a new instance of a token stream reading from a Reader.
      *
      * @param reader the reader to get new characters from
      *
@@ -282,7 +282,7 @@ public class TokenStreamFactory implements Observable {
     }
 
     /**
-     * Provide a new instance of a token stream.
+     * Provide a new instance of a token stream reading from a string.
      *
      * @param line the line of input to read from
      *
@@ -316,7 +316,7 @@ public class TokenStreamFactory implements Observable {
     }
 
     /**
-     * Provide a new instance of a token stream.
+     * Provide a new instance of a token stream reading from a file.
      *
      * @param fileName the name of the file to read
      * @param fileType the type of the file to read
@@ -387,7 +387,7 @@ public class TokenStreamFactory implements Observable {
      *
      * @param options the options to set.
      */
-    public void setOptions(TokenStreamOptions options) {
+    public void setOptions(final TokenStreamOptions options) {
 
         this.options = options;
     }
