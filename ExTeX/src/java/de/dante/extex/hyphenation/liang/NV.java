@@ -1,9 +1,9 @@
 /*
- * Copyright (final C) 2005 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (final at your
+ * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
  *
  * This library is distributed in the hope that it will be useful, but WITHOUT
@@ -19,6 +19,8 @@
 
 package de.dante.extex.hyphenation.liang;
 
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.extex.typesetter.type.node.AdjustNode;
@@ -46,9 +48,19 @@ import de.dante.util.GeneralException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 class NV implements NodeVisitor {
+
+    /**
+     * The field <tt>hyph</tt> contains the ...
+     */
+    private boolean[] isHyph;
+
+    /**
+     * The field <tt>hyphen</tt> contains the ...
+     */
+    private Tokens hyphen;
 
     /**
      * The field <tt>nodes</tt> contains the ...
@@ -59,200 +71,277 @@ class NV implements NodeVisitor {
      * Creates a new object.
      *
      * @param nodes TODO
+     * @param hyphen TODO
+     * @param hyph TODO
      */
-    public NV(final NodeList nodes) {
+    public NV(final NodeList nodes, final Tokens hyphen, final boolean[] hyph) {
 
         super();
         this.nodes = nodes;
+        this.hyphen = hyphen;
+        this.isHyph = hyph;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(final de.dante.extex.typesetter.type.node.AdjustNode, java.lang.final Object)
+     * TODO gene: missing JavaDoc
+     *
+     * @param nodes
+     * @param index
+     */
+    private final void processNodeList(final NodeList nodes, final Count index) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
+     *      de.dante.extex.typesetter.type.node.AdjustNode,
+     *      java.lang.final Object)
      */
     public final Object visitAdjust(final AdjustNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitAdjust unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(final de.dante.extex.typesetter.type.node.AfterMathNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(
+     *      de.dante.extex.typesetter.type.node.AfterMathNode,
+     *      java.lang.final Object)
      */
     public final Object visitAfterMath(final AfterMathNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitAfterMath unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(final de.dante.extex.typesetter.type.node.AlignedLeadersNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(
+     *      de.dante.extex.typesetter.type.node.AlignedLeadersNode,
+     *      java.lang.final Object)
      */
     public final Object visitAlignedLeaders(final AlignedLeadersNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitAlignedLeaders unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(final de.dante.extex.typesetter.type.node.BeforeMathNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(
+     *      de.dante.extex.typesetter.type.node.BeforeMathNode,
+     *      java.lang.final Object)
      */
     public final Object visitBeforeMath(final BeforeMathNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitBeforeMath unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(final de.dante.extex.typesetter.type.node.CenteredLeadersNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(
+     *      de.dante.extex.typesetter.type.node.CenteredLeadersNode,
+     *      java.lang.final Object)
      */
     public final Object visitCenteredLeaders(final CenteredLeadersNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitCenteredLeaders unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(final de.dante.extex.typesetter.type.node.CharNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
+     *      de.dante.extex.typesetter.type.node.CharNode,
+     *      java.lang.final Object)
      */
     public final Object visitChar(final CharNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitChar unimplemented
+        Count index = (Count) value;
+        if (isHyph[(int) index.getValue()]) {
+            nodes
+                    .add(new DiscretionaryNode(Tokens.EMPTY, hyphen,
+                            Tokens.EMPTY));
+        }
+        nodes.add(node);
+        index.add(1);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(final de.dante.extex.typesetter.type.node.DiscretionaryNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(
+     *      de.dante.extex.typesetter.type.node.DiscretionaryNode,
+     *      java.lang.final Object)
      */
     public final Object visitDiscretionary(final DiscretionaryNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitDiscretionary unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(final de.dante.extex.typesetter.type.node.ExpandedLeadersNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(
+     *      de.dante.extex.typesetter.type.node.ExpandedLeadersNode,
+     *      java.lang.final Object)
      */
     public final Object visitExpandedLeaders(final ExpandedLeadersNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitExpandedLeaders unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(final de.dante.extex.typesetter.type.node.GlueNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(
+     *      de.dante.extex.typesetter.type.node.GlueNode,
+     *      java.lang.final Object)
      */
     public final Object visitGlue(final GlueNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitGlue unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(final de.dante.extex.typesetter.type.node.HorizontalListNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(
+     *      de.dante.extex.typesetter.type.node.HorizontalListNode,
+     *      java.lang.final Object)
      */
     public final Object visitHorizontalList(final HorizontalListNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitHorizontalList unimplemented
+        processNodeList(node, (Count) value);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(final de.dante.extex.typesetter.type.node.InsertionNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(
+     *      de.dante.extex.typesetter.type.node.InsertionNode,
+     *      java.lang.final Object)
      */
     public final Object visitInsertion(final InsertionNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitInsertion unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(final de.dante.extex.typesetter.type.node.KernNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(
+     *      de.dante.extex.typesetter.type.node.KernNode,
+     *      java.lang.final Object)
      */
     public final Object visitKern(final KernNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitKern unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(final de.dante.extex.typesetter.type.node.LigatureNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(
+     *      de.dante.extex.typesetter.type.node.LigatureNode,
+     *      java.lang.final Object)
      */
     public final Object visitLigature(final LigatureNode node,
             final Object value) throws GeneralException {
 
+        Count index = (Count) value;
+        int n = node.countChars();
+        int offset = (int) index.getValue();
+        boolean needHyphen = false;
+
+        for (int i = offset; i < offset + n; i++) {
+            if (isHyph[i]) {
+                needHyphen = true;
+            }
+        }
+
+        int leftLen = node.getLeft().countChars();
+        int rightLen = node.getRight().countChars();
+
         // TODO gene: visitLigature unimplemented
-        return null;
+        throw new RuntimeException("unimplemented");
+        //return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(final de.dante.extex.typesetter.type.node.MarkNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(
+     *      de.dante.extex.typesetter.type.node.MarkNode,
+     *      java.lang.final Object)
      */
     public final Object visitMark(final MarkNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitMark unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(final de.dante.extex.typesetter.type.node.PenaltyNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(
+     *      de.dante.extex.typesetter.type.node.PenaltyNode,
+     *      java.lang.final Object)
      */
     public final Object visitPenalty(final PenaltyNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitPenalty unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(final de.dante.extex.typesetter.type.node.RuleNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(
+     *      de.dante.extex.typesetter.type.node.RuleNode,
+     *      java.lang.final Object)
      */
     public final Object visitRule(final RuleNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitRule unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(final de.dante.extex.typesetter.type.node.SpaceNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(
+     *      de.dante.extex.typesetter.type.node.SpaceNode,
+     *      java.lang.final Object)
      */
     public final Object visitSpace(final SpaceNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitSpace unimplemented
+        nodes.add(node);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(final de.dante.extex.typesetter.type.node.VerticalListNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(
+     *      de.dante.extex.typesetter.type.node.VerticalListNode,
+     *      java.lang.final Object)
      */
     public final Object visitVerticalList(final VerticalListNode node,
             final Object value) throws GeneralException {
 
-        // TODO gene: visitVerticalList unimplemented
+        processNodeList(node, (Count) value);
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(final de.dante.extex.typesetter.type.node.WhatsItNode, java.lang.final Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(
+     *      de.dante.extex.typesetter.type.node.WhatsItNode,
+     *      java.lang.final Object)
      */
     public final Object visitWhatsIt(final WhatsItNode node, final Object value)
             throws GeneralException {
 
-        // TODO gene: visitWhatsIt unimplemented
+        nodes.add(node);
         return null;
     }
+
 }

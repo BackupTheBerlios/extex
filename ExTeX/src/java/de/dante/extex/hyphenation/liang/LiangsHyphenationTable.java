@@ -26,6 +26,7 @@ import de.dante.extex.hyphenation.exception.IllegalTokenHyphenationException;
 import de.dante.extex.hyphenation.exception.IllegalValueHyphenationException;
 import de.dante.extex.hyphenation.util.NodeTraverser;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.LetterToken;
 import de.dante.extex.scanner.type.OtherToken;
@@ -65,7 +66,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -167,9 +168,13 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
             final char[] hyph, final Tokens hyphen) throws HyphenationException {
 
         boolean hasNoHyphen = true;
+        boolean[] isHyph = new boolean[hyph.length];
         for (int i = 0; i < hyph.length; i++) {
             if ((((int) hyph[i]) & 1) != 0) {
+                isHyph[i] = true;
                 hasNoHyphen = false;
+            } else {
+                isHyph[i] = false;
             }
         }
         if (hasNoHyphen) {
@@ -177,30 +182,26 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
         }
 
         HorizontalListNode nodes = new HorizontalListNode();
-        int idx = 0;
-        NV nv = new NV(nodes);
+        NV nv = new NV(nodes, hyphen, isHyph);
+        Count index = new Count(0);
 
         for (int i = 0; i < nodelist.size(); i++) {
             Node node = nodelist.get(i);
             switch (node.countChars()) {
                 case 0: // just in case; this should never happen
-                    if ((((int) hyph[idx]) & 1) != 0) {
-                        nodes.add(new DiscretionaryNode(Tokens.EMPTY, hyphen,
-                                Tokens.EMPTY));
-                    }
                     nodes.add(node);
                     break;
                 case 1:
-                    if ((((int) hyph[idx]) & 1) != 0) {
+                    if ((((int) hyph[(int) index.getValue()]) & 1) != 0) {
                         nodes.add(new DiscretionaryNode(Tokens.EMPTY, hyphen,
                                 Tokens.EMPTY));
                     }
                     nodes.add(node);
-                    idx++;
+                    index.add(1);
                     break;
                 default:
                     try {
-                        node.visit(nv, null);
+                        node.visit(nv, index);
                     } catch (GeneralException e) {
                         throw new HyphenationException(e);
                     }
