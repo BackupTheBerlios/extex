@@ -88,6 +88,10 @@
              classpath="util/Installer/IzPack/lib/compiler.jar"
              classname="com.izforge.izpack.ant.IzPackTask"/>
 
+    <target name="all"
+            description="Build nearly everything"
+            depends="installer,javadoc,checkstyle,tests" />
+
     <target name="compile"
             description="Compile the Java files (without tests)">
         <!-- create empty output directory for classes if not present -->
@@ -281,6 +285,7 @@
     	    </fileset>
     	</delete>
 		<delete dir="${target.lib}" />
+        <delete file="${tmp}/checkstyle.txt" />
     	<delete file="${target}/ExTeX-setup.jar"/>
         </target>
 
