@@ -1,3 +1,4 @@
 #
 #extex.config = tex.xml
+extex.output = tmp
 #
