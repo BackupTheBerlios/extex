@@ -32,7 +32,7 @@ import java.io.OutputStream;
  * This class provides the methods to write to the dvi-Stream.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviOutputStream {
     /**
@@ -47,6 +47,12 @@ public class DviOutputStream {
      *
      */
     private static final int BYTE_MAX_NUM = 255;
+
+
+    /**
+     * Highest Bit in a byte.
+     */
+    private static final int HIGH_BIT_IN_BYTE = 128;
 
 
     /**
@@ -123,7 +129,7 @@ public class DviOutputStream {
             writeByte((number & mask) >> shift);
 
             shift -= BITS_PER_BYTE;
-            mask >>= BITS_PER_BYTE;
+            mask >>>= BITS_PER_BYTE;
         }
 
         // TODO: exception, if the number is not written completly (TE)
@@ -171,25 +177,41 @@ public class DviOutputStream {
      * @param codes codes for one, two, ... long argument
      * @param argNumber the number for writing
      * @exception GeneralException if an error occurs
+     * @see "TTP[610]"
      */
     public void writeCodeNumberAndArg(final int[] codes, final int argNumber)
         throws GeneralException {
 
         int numberBytes = 0;
-        int number = argNumber;
+        int number = Math.abs(argNumber);
+
 
         // TODO: this is a bit quick&dirty (TE)
-        // TODO: make the output as short as possible (TE)
-        do {
+        // TODO: TTP[604] (TE)
+        while (number > BYTE_MAX_NUM) {
             number >>>= BITS_PER_BYTE;
             numberBytes++;
-        } while (number != 0);
+        }
+
+        if ((argNumber >= 0) && ((number & HIGH_BIT_IN_BYTE) != 0)) {
+            numberBytes += 2;
+        } else {
+            numberBytes += 1;
+        }
 
         writeByte(codes[numberBytes - 1]);
         writeNumber(argNumber, numberBytes);
     }
 
 
+    /**
+     * Write a command with an number as argument.
+     *
+     * @param shortCodes codes for numbers including the argument
+     * @param codes codes for longer arguments
+     * @param argNumber the argument
+     * @exception GeneralException if an error occurs
+     */
     public void writeCodeNumberAndArg(final int[] shortCodes,
                                       final int[] codes, final int argNumber)
         throws GeneralException {
