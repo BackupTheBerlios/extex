@@ -20,6 +20,7 @@
 package de.dante.extex.language.ligature.impl;
 
 import de.dante.extex.font.Glyph;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
@@ -37,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -51,92 +52,54 @@ public class LigatureBuilderImpl implements LigatureBuilder {
 
     /**
      * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
-     *      de.dante.extex.typesetter.NodeList)
+     *      de.dante.extex.typesetter.NodeList, int)
      */
-    public void insertLigatures(final NodeList list) throws HyphenationException {
+    public int insertLigatures(final NodeList list, final int start)
+            throws HyphenationException {
 
-        int size = list.size();
-        int i = 0;
-        Node node = null;
-
-        while (i < size) {
-            node = list.get(i);
-            if (node instanceof CharNode) {
-                i = processCharNodes(list, size, i, (CharNode) node);
-                size = list.size();
-            } else {
-                i++;
-            }
+        int i = start;
+        while (i < list.size() && !(list.get(i) instanceof CharNode)) {
+            i++;
         }
-    }
+        if (i >= list.size()) {
+            return i;
+        }
+        CharNode charNode = (CharNode) list.get(i);
+        TypesettingContext typesettingContext = charNode
+                .getTypesettingContext();
+        Font font = typesettingContext.getFont();
 
-    /**
-     * This method covers the case that a character node hs been detected.
-     *
-     * @param list the list of nodes to process
-     * @param theSize the size of <code>list</code>
-     * @param index the index to start with
-     * @param node the node at index <code>i</code>
-     *
-     * @return the index of the next non-CharNode or the size of
-     *   <code>list</code> if none is found
-     */
-    private int processCharNodes(final NodeList list, final int theSize,
-            final int index, final CharNode node) {
-
-        int i = index;
-        int size = theSize;
-        UnicodeChar uc1 = node.getCharacter();
-        UnicodeChar uc2;
-        Font font1 = node.getTypesettingContext().getFont();
-        Font font2;
-        CharNode n1 = node;
-        CharNode n2;
-
-        for (i++; i < size; i++) {
-            Node n = list.get(i);
-            if (!(n instanceof CharNode)) {
+        while (++i < list.size()) {
+            Node ni = list.get(i);
+            if (!(ni instanceof CharNode)) {
                 return i;
             }
-            n2 = (CharNode) n;
-            font2 = ((CharNode) n2).getTypesettingContext().getFont();
-            uc2 = ((CharNode) n2).getCharacter();
-
-            if (font2 != font1) {
-                n1 = n2;
-                font1 = font2;
-                uc1 = uc2;
-                continue;
-            }
-            //UnicodeChar lig = font1.getLigature(uc1, uc2);
-            Glyph g = font1.getGlyph(uc1);
-            if (g == null) {
-                return i; //TODO gene: DIRTY?
+            CharNode cni = (CharNode) ni;
+            if (cni.getTypesettingContext() != typesettingContext) {
+                return i;
             }
 
-            UnicodeChar lig = g.getLigature(uc2);
-            if (lig != null) {
-                CharNode ligNode = new LigatureNode(node
-                        .getTypesettingContext(), lig, n1, n2);
-                list.remove(i);
-                list.remove(--i);
-                list.add(i, ligNode);
-                uc1 = lig;
-                n1 = ligNode;
-                size--;
-                continue;
+            Glyph gc = font.getGlyph(charNode.getCharacter());
+            if (gc == null) {
+                // undefined character
+            } else {
+                UnicodeChar lig = gc.getLigature(cni.getCharacter());
+                if (lig != null) {
+                    list.remove(i--);
+                    list.remove(i);
+                    charNode = new LigatureNode(typesettingContext, lig,
+                            charNode, cni);
+                    list.add(i--, charNode);
+                } else {
+                    Dimen kern = gc.getKerning(cni.getCharacter());
+                    if (kern != null && kern.ne(Dimen.ZERO)) {
+                        list.add(i, new ImplicitKernNode(kern));
+                        i++;
+                    }
+                    charNode = cni;
+                }
             }
-
-            Dimen kern = g.getKerning(uc2);
-            if (!kern.eq(Dimen.ZERO_PT)) {
-                list.add(i, new ImplicitKernNode(kern));
-            }
-
-            n1 = n2;
-            uc1 = uc2;
-
         }
-
         return i;
     }
 

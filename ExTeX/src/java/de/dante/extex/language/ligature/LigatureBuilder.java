@@ -26,19 +26,27 @@ import de.dante.extex.typesetter.type.NodeList;
 
 /**
  * This interface describes the capability of a ligature builder.
+ * The ligature builder inserts kern nodes and constructs ligature nodes.
+ * It might use the information from the font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface LigatureBuilder extends Serializable {
 
     /**
      * Take a node list and transform character sequences into ligatures where
-     * appropriate.
+     * appropriate. The processing should extend over all characters with the
+     * same font and non-character nodes. It should return the control to the
+     * caller as soon as a character node with another font is found.
      *
      * @param list the node list to create ligatures for
-     * @throws HyphenationException TODO
+     * @param start the index in the list to start processing
+     *
+     * @return the index after last node processed
+     *
+     * @throws HyphenationException in case of an error
      */
-    void insertLigatures(NodeList list) throws HyphenationException;
+    int insertLigatures(NodeList list, int start) throws HyphenationException;
 
 }
