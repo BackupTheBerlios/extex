@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -174,7 +174,10 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
       nodeName = nodeName.substring(0, nodeName.lastIndexOf("Node"));
       // Haben wir irgendwo "regular expressions" bei der Hand?
       
-      if (nodeName.equals("Glue")) node.toString(sb, "");
+      if (nodeName.equals("Glue"))
+      {
+        sb.append("\n"); node.toString(sb, "");
+      }
       
       return nodeName + 
        " (wd=" + node.getWidth().toPT() + 

@@ -46,13 +46,14 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.extex.interpreter.type.node.AbstractNodeList;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
+import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.util.GeneralException;
 
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -167,16 +168,19 @@ public class PDFDocumentWriter implements DocumentWriter, NodeVisitor {
     }   
     
     private String debugNode(Node node){ 
+      StringBuffer sb = new StringBuffer();
       String nodeName = node.getClass().getName();    
       nodeName = nodeName.substring(nodeName.lastIndexOf('.')+1);
       nodeName = nodeName.substring(0, nodeName.lastIndexOf("Node"));
       // Haben wir irgendwo "regular expressions" bei der Hand?
-
+      
+      if (nodeName.equals("Glue")) node.toString(sb, "");
+      
       return nodeName + 
        " (wd=" + node.getWidth().toPT() + 
        "\tht=" + node.getHeight().toPT() +
        "\tdp=" + node.getDepth().toPT() + ")" + "\t" +
-       (nodeName.equals("Char") ? node.toString() : "");       
+       (nodeName.equals("Char") ? node.toString() : "") + sb.toString();
     }
     
     private void showNode(Node node) { 
