@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
   <description name="\count">
 
     <shortDesc>
@@ -5,13 +6,13 @@
       <german>
 	<code>\count</code> stellt Registers für Integer zur Verfügug. Die
 	Register werden nummeriert von <code>\count0</code> bis zu
-	<code>\count0</code><it>&lt;Integer.Max_VALUE&gt;</it>.
+	<code>\count0</code><it>Integer.Max_VALUE</it>.
       </german>
 
       <english>
 	<code>\count</code> provides registers for integer values. The
 	registers are numbered from <code>\count0</code> up to
-	<code>\count0</code><it>&lt;Integer.Max_VALUE&gt;</<it>>.
+	<code>\count0</code><it>Integer.Max_VALUE</it>.
       </english>
 
     </shortDesc>
