@@ -31,13 +31,14 @@ import de.dante.util.NotObservableException;
 import de.dante.util.Observable;
 import de.dante.util.Observer;
 import de.dante.util.ObserverList;
+import de.dante.util.StringList;
 import de.dante.util.StringListIterator;
 
 /**
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */
@@ -184,6 +185,8 @@ public class TokenStreamFactory implements FileFinder, Observable {
         }
     }
     
+    private StringList path = null;
+    
     /**
      * @see de.dante.extex.scanner.stream.FileFinder#findFile(java.lang.String, java.lang.String)
      * TODO Aufrufparameter texinputs verwenden
@@ -225,4 +228,18 @@ public class TokenStreamFactory implements FileFinder, Observable {
         fileFinder = finder;
     }
 
+    /**
+     * Setter for path. The given string is splitted at the separator stored in
+     * the system property <tt>path.separator</tt>. This is usually the
+     * value <tt>:</tt> on Unix systems and <tt>;</tt> on Windows.
+     * <p>
+     * If this property can not be found then the value <tt>:</tt> is used.
+     * </p>
+     * 
+     * @param path the path to set.
+     */
+    public void setPath(String path) {
+        this.path = new StringList(path, System.getProperty("path.separator",
+                                                            ":"));
+    }
 }
