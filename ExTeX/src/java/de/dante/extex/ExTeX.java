@@ -49,6 +49,7 @@ import java.util.regex.Pattern;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
+import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.ErrorHandler;
@@ -615,7 +616,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public class ExTeX {
 
@@ -1293,6 +1294,7 @@ public class ExTeX {
      * @param config the configuration object for the document writer
      * @param jobname the jobname to use
      * @param outFactory the output factory
+     * @param options ...
      *
      * @return the new document writer
      *
@@ -1302,12 +1304,12 @@ public class ExTeX {
      * be opened
      */
     private DocumentWriter makeDocumentWriter(final Configuration config,
-            final String jobname, final OutputFactory outFactory)
+            final String jobname, final OutputFactory outFactory, final DocumentWriterOptions options)
             throws ConfigurationException,
                 FileNotFoundException {
 
         DocumentWriter docWriter = new DocumentWriterFactory(config)
-                .newInstance(properties.getProperty(PROP_OUTPUT_TYPE));
+                .newInstance(properties.getProperty(PROP_OUTPUT_TYPE), options);
 
         if (outStream == null) {
             outStream = outFactory.createOutputStream(jobname, docWriter
@@ -1375,10 +1377,8 @@ public class ExTeX {
      * Create a new interpreter.
      *
      * @param config the configuration object for the interpreter
-     * @param typesetterConfig the configuration object for the typesetter
      * @param finder the file finder for files opened by the interpreter
      * @param factory the factory for new token streams
-     * @param docWriter the document writer
      * @param fontFactory the font factory to request the default font from
      *
      * @return the new interpreter
@@ -1388,8 +1388,7 @@ public class ExTeX {
      * @throws GeneralException in case of an error of some other kind
      */
     private Interpreter makeInterpreter(final Configuration config,
-            final Configuration typesetterConfig, final ResourceFinder finder,
-            final TokenStreamFactory factory, final DocumentWriter docWriter,
+            final ResourceFinder finder, final TokenStreamFactory factory,
             final FontFactory fontFactory)
             throws GeneralException,
                 ConfigurationException {
@@ -1414,13 +1413,6 @@ public class ExTeX {
                 makeDefaultFont(fontConfiguration, fontFactory));
 
         initializeStreams(interpreter);
-
-        Typesetter typesetter = makeTypesetter(typesetterConfig, docWriter,
-                interpreter.getContext());
-        if (typesetter instanceof LogEnabled) {
-            ((LogEnabled) typesetter).enableLogging(logger);
-        }
-        interpreter.setTypesetter(typesetter);
 
         factory.setOptions((TokenStreamOptions) interpreter.getContext());
 
@@ -1569,13 +1561,20 @@ public class ExTeX {
             FontFactory fontFactory = makeFontFactory(config
                     .getConfiguration("Fonts"));
 
-            DocumentWriter docWriter = makeDocumentWriter(config
-                    .getConfiguration("DocumentWriter"), jobname, outFactory);
-
             Interpreter interpreter = makeInterpreter(config
-                    .getConfiguration("Interpreter"), config
-                    .getConfiguration("Typesetter"), finder,
-                    tokenStreamFactory, docWriter, fontFactory);
+                    .getConfiguration("Interpreter"), finder, tokenStreamFactory,
+                    fontFactory);
+
+            DocumentWriter docWriter = makeDocumentWriter(config
+                    .getConfiguration("DocumentWriter"), jobname, outFactory,
+                    (DocumentWriterOptions) interpreter.getContext());
+
+            Typesetter typesetter = makeTypesetter(config
+            .getConfiguration("Typesetter"), docWriter, interpreter.getContext());
+            if (typesetter instanceof LogEnabled) {
+                ((LogEnabled) typesetter).enableLogging(logger);
+            }
+            interpreter.setTypesetter(typesetter);
 
             loadFormat(interpreter, properties.getProperty(PROP_FMT), jobname);
 

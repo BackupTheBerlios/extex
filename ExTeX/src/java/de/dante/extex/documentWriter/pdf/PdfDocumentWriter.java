@@ -38,6 +38,7 @@ import org.apache.fop.pdf.PDFResources;
 import org.apache.fop.pdf.PDFStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFile;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -58,7 +59,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -489,7 +490,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * Creates a new object.
      * @param theCfg the configuration
      */
-    public PdfDocumentWriter(final Configuration theCfg) {
+    public PdfDocumentWriter(final Configuration theCfg, final DocumentWriterOptions options) {
 
         super();
         this.cfg = theCfg;

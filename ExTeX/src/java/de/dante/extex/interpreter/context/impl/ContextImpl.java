@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.hyphenation.HyphenationManager;
@@ -113,11 +114,12 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class ContextImpl
         implements
             Context,
+            DocumentWriterOptions,
             TypesetterOptions,
             TokenStreamOptions,
             Observable,

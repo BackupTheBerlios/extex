@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
@@ -36,7 +37,7 @@ import de.dante.util.configuration.Configuration;
  *
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -54,7 +55,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * Creates a new object.
      * @param cfg the configuration
      */
-    public TextDocumentWriter(final Configuration cfg) {
+    public TextDocumentWriter(final Configuration cfg, final DocumentWriterOptions options) {
 
         super();
     }

@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DocumentWriterFactory {
 
@@ -69,12 +69,13 @@ public class DocumentWriterFactory {
      * The new instance is initiated with the subconfiguration describing it.
      *
      * @param type the type of the document writer
+     * @param options the dynamic access to the context
      *
      * @return the new instance
      *
      * @throws ConfigurationException in case of an error
      */
-    public DocumentWriter newInstance(final String type)
+    public DocumentWriter newInstance(final String type, final DocumentWriterOptions options)
             throws ConfigurationException {
 
         Configuration cfg = config.findConfiguration(type != null ? type : "");
@@ -102,15 +103,18 @@ public class DocumentWriterFactory {
 
         try {
             Constructor constructor = Class.forName(className)
-                    .getConstructor(new Class[]{Configuration.class});
+                    .getConstructor(new Class[]{Configuration.class, DocumentWriterOptions.class});
             docWriter = (DocumentWriter) constructor
-                    .newInstance(new Object[]{cfg});
+                    .newInstance(new Object[]{cfg, options});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
             throw new ConfigurationNoSuchMethodException(className
                                                          + "("
                                                          + Configuration.class
+                                                                 .getName()
+                                                         + ", "
+                                                         + DocumentWriterOptions.class
                                                                  .getName()
                                                          + ")");
         } catch (ClassNotFoundException e) {
