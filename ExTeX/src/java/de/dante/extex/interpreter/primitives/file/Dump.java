@@ -72,7 +72,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -116,10 +116,6 @@ public class Dump extends AbstractCode implements LogEnabled {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @return <tt>false</tt> iff the prefix should be preserved after the
-     * invocation is complete. This means that the most primitives return
-     * <tt>true</tt> and only the prefix primitives return <tt>false</tt>.
-     *
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [1303,1304]"
@@ -129,7 +125,7 @@ public class Dump extends AbstractCode implements LogEnabled {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -171,8 +167,6 @@ public class Dump extends AbstractCode implements LogEnabled {
                 }
             }
         }
-
-        return true;
     }
 
 }

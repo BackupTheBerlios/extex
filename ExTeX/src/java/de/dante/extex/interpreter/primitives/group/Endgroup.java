@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Endgroup extends AbstractCode {
 
@@ -69,12 +69,11 @@ public class Endgroup extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         context.closeGroup(typesetter, source);
-        return true;
     }
 
 }

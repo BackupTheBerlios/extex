@@ -47,7 +47,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Showthe extends The implements LogEnabled {
 
@@ -85,7 +85,7 @@ public class Showthe extends The implements LogEnabled {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -98,7 +98,6 @@ public class Showthe extends The implements LogEnabled {
             if (code != null && code instanceof Theable) {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
                 logger.info(toks.toText());
-                return true;
             }
         }
 

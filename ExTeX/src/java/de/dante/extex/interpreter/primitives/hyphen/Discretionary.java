@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -72,7 +72,7 @@ public class Discretionary extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -80,6 +80,5 @@ public class Discretionary extends AbstractCode {
         Tokens post = source.getTokens(context);
         Tokens nobreak = source.getTokens(context);
         typesetter.add(new DiscretionaryNode(pre, post, nobreak));
-        return true;
     }
 }

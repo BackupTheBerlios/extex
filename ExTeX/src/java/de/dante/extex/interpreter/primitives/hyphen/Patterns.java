@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -41,7 +41,7 @@ import de.dante.util.UnicodeCharList;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Patterns extends AbstractCode {
 
@@ -67,11 +67,11 @@ public class Patterns extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String pattern = source.scanTokensAsString().trim();
+        String pattern = source.scanTokensAsString(context).trim();
         Count language = context.getCount("language");
         HyphenationTable ht = context.getHyphenationTable((int) language
                 .getValue());
@@ -82,7 +82,6 @@ public class Patterns extends AbstractCode {
             ht.addPattern(createPatternName(pat, context), createPatternEntry(
                     pat, context));
         }
-        return true;
     }
 
     /**

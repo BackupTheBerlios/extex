@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.EqConsumer;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\leqno</code>.
@@ -51,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Leqno extends AbstractMathCode {
 
@@ -72,14 +71,13 @@ public class Leqno extends AbstractMathCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws CantUseInException {
 
         ListMaker lm = typesetter.getListMaker();
         if (!(lm instanceof EqConsumer)) {
-            throw new CantUseInException(
-                    printableControlSequence(context), //
+            throw new CantUseInException(printableControlSequence(context), //
                     typesetter.getMode().toString());
         }
 
@@ -88,11 +86,9 @@ public class Leqno extends AbstractMathCode {
             ((EqConsumer) lm).switchToNumber(true);
 
         } catch (CantUseInException e) {
-            throw new CantUseInException(
-                    printableControlSequence(context), //
+            throw new CantUseInException(printableControlSequence(context), //
                     typesetter.getMode().toString());
         }
-        return true;
     }
 
 }

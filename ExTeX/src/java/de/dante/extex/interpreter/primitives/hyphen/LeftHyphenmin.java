@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -42,8 +42,8 @@ import de.dante.util.GeneralException;
  * \lefthyphenmin=2
  * </pre>
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.12 $
  */
 public class LeftHyphenmin extends AbstractCode implements Theable {
 
@@ -67,7 +67,7 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -79,7 +79,6 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
         int lefthyphmin = (int) source.scanInteger(context);
 
         ht.setLeftHyphenmin(lefthyphmin);
-        return true;
     }
 
     /**

@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Vcenter extends AbstractMathCode {
 
@@ -71,15 +71,13 @@ public class Vcenter extends AbstractMathCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(context, source);
         nc.add(new VCenterNoad(noad));
-
-        return true;
     }
 
 }

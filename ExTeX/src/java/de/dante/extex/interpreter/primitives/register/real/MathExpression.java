@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathExpression extends AbstractMath
         implements
@@ -96,7 +96,7 @@ public class MathExpression extends AbstractMath
         Real real = new Real(0);
 
         // \mathexpr{7+5+3}
-        String expr = source.scanTokensAsString();
+        String expr = source.scanTokensAsString(context);
 
         // compile
         CompiledExpression compileexpr = null;

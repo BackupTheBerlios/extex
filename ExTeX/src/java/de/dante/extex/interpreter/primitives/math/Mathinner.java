@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -29,7 +29,8 @@ import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\mathinner</code>.
+ * This class provides an implementation for the primitive
+ * <code>\mathinner</code>.
  *
  * <doc name="mathinner">
  * <h3>The Primitive <tt>\mathinner</tt></h3>
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Mathinner extends AbstractMathCode {
 
@@ -71,14 +72,13 @@ public class Mathinner extends AbstractMathCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(context, source);
         nc.add(new InnerNoad(noad));
-        return true;
     }
 
 }

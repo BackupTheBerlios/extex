@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Aftergroup extends AbstractCode {
 
@@ -72,12 +72,13 @@ public class Aftergroup extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
-     *       de.dante.extex.interpreter.context.Context,
-     *       de.dante.extex.interpreter.TokenSource,
-     *       de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -86,8 +87,6 @@ public class Aftergroup extends AbstractCode {
             throw new EofException(printableControlSequence(context));
         }
         context.afterGroup(t);
-
-        return true;
     }
 
 }

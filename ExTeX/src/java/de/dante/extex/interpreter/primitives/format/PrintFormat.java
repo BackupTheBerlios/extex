@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -73,12 +73,11 @@ public class PrintFormat extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         source.push(the(context, source, typesetter));
-        return true;
     }
 
     /**

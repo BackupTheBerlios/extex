@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,15 +33,16 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.UnicodeCharList;
 
 /**
- * This class provides an implementation for the primitive <code>\hyphenation</code>.
+ * This class provides an implementation for the primitive
+ * <code>\hyphenation</code>.
  *
  * <p>Example:</p>
  * <pre>
  * \hyphenation{as-so-ciate as-so-ciates }
  * </pre>
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.7 $
  */
 public class Hyphenation extends AbstractCode {
 
@@ -67,11 +68,11 @@ public class Hyphenation extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String hypenation = source.scanTokensAsString();
+        String hypenation = source.scanTokensAsString(context);
         Count language = context.getCount("language");
         HyphenationTable ht = context.getHyphenationTable((int) language
                 .getValue());
@@ -81,7 +82,6 @@ public class Hyphenation extends AbstractCode {
             String pat = st.nextToken().trim();
             ht.addHyphenation(createHyphenation(pat, context), pat);
         }
-        return true;
     }
 
     /**

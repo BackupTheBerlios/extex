@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,16 +35,17 @@ import de.dante.util.GeneralException;
  * <code>\righthyphenmin</code>.
  *
  * The value are stored in the <code>HyphernationTable</code>.
- * Each <code>HyphernationTable</code> are based on <code>\language</code>
- * and have its own <code>\righthyphenmin</code>-value (different to original TeX).
+ * Each <code>HyphernationTable</code> is based on <code>\language</code>
+ * and has its own <code>\righthyphenmin</code> value (other than the original
+ * TeX).
  *
  * <p>Example:</p>
  * <pre>
  * \righthyphenmin=3
  * </pre>
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.12 $
  */
 public class RightHyphenmin extends AbstractCode implements Theable {
 
@@ -68,7 +69,7 @@ public class RightHyphenmin extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -80,7 +81,6 @@ public class RightHyphenmin extends AbstractCode implements Theable {
         int righthyphmin = (int) source.scanInteger(context);
 
         ht.setRightHyphenmin(righthyphmin);
-        return true;
     }
 
     /**

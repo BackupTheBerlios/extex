@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.Localizable;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Unless extends AbstractIf implements Localizable {
     /**

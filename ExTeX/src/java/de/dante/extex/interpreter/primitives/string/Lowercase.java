@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
@@ -78,12 +78,11 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         expand(prefix, context, source, typesetter);
-        return true;
     }
 
     /**

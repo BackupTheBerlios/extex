@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
@@ -95,7 +95,7 @@ public class Show extends AbstractCode implements LogEnabled {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -104,7 +104,6 @@ public class Show extends AbstractCode implements LogEnabled {
             throw new EofException(printableControlSequence(context));
         }
         logger.info("\n> " + meaning(t, context).toText() + ".\n");
-        return true;
     }
 
     /**

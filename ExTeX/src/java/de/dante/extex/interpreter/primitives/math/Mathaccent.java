@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Mathaccent extends AbstractMathCode {
 
@@ -80,7 +80,7 @@ public class Mathaccent extends AbstractMathCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -92,7 +92,6 @@ public class Mathaccent extends AbstractMathCode {
         }
         Noad noad = nc.scanNoad(context, source);
         nc.add(new AccentNoad(new MathGlyph((int) accent), noad));
-        return true;
     }
 
 }

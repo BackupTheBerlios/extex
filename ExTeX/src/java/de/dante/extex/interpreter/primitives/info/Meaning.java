@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Meaning extends Show {
 
@@ -73,7 +73,7 @@ public class Meaning extends Show {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -82,7 +82,6 @@ public class Meaning extends Show {
             throw new EofException(printableControlSequence(context));
         }
         source.push(meaning(t, context));
-        return true;
     }
 
 }

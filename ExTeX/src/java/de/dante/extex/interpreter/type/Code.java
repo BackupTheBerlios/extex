@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Code {
 
@@ -80,14 +80,9 @@ public interface Code {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @return <tt>false</tt> iff the prefix should be preserved after the
-     * invocation is complete. This means that the most primitives return
-     * <tt>true</tt> and only the prefix primitives return <tt>false</tt>.
-     *
      * @throws GeneralException in case of an error
      */
-    //TODO gene: return value is not used and can be eliminated
-    boolean execute(Flags prefix, Context context,
+    void execute(Flags prefix, Context context,
             TokenSource source, Typesetter typesetter) throws GeneralException;
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Bool implements Serializable {
 
@@ -89,7 +89,7 @@ public class Bool implements Serializable {
     private boolean scanBool(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token tok = source.scanNonSpace();
+        Token tok = source.scanNonSpace(context);
 
         if (tok == null) {
             throw new HelpingException("TTP.NoBoolValue");
@@ -111,13 +111,13 @@ public class Bool implements Serializable {
             return (new Bool(Count.scanCount(context, source, null))).getValue();
         }
 
-        if (source.getKeyword("true")) {
+        if (source.getKeyword(context, "true")) {
             return true;
-        } else if (source.getKeyword("false")) {
+        } else if (source.getKeyword(context, "false")) {
             return false;
-        } else if (source.getKeyword("on")) {
+        } else if (source.getKeyword(context, "on")) {
             return true;
-        } else if (source.getKeyword("off")) {
+        } else if (source.getKeyword(context, "off")) {
             return false;
         }
         throw new HelpingException("TTP.NoBoolValue");

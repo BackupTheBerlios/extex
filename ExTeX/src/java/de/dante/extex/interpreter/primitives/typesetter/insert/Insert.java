@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.insert;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Insert extends AbstractBox {
 
@@ -71,10 +72,13 @@ public class Insert extends AbstractBox {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
+        if (!typesetter.getMode().isVmode()) {
+            throw new HelpingException(getLocalizer(),"");
+        }
         long index = source.scanNumber(context);
         Box b = new Box(context, source, typesetter, false);
 

@@ -45,7 +45,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -81,7 +81,7 @@ public class Ifcase extends AbstractIf {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -91,7 +91,7 @@ public class Ifcase extends AbstractIf {
             if (skipToElseOrFi(context, source)) {
                 context.pushConditional(source.getLocator(), true);
             }
-            return true;
+            return;
         }
 
         while (val > 0) {
@@ -100,10 +100,10 @@ public class Ifcase extends AbstractIf {
                 val--;
             } else if (tag == ELSE) {
                 context.pushConditional(source.getLocator(), true);
-                return true;
+                return;
 
             } else if (tag == FI) {
-                return true;
+                return;
 
             } else {
                 throw new ImpossibleException("impossible tag encountered");
@@ -111,7 +111,6 @@ public class Ifcase extends AbstractIf {
             }
         }
         context.pushConditional(source.getLocator(), true);
-        return true;
     }
 
     /**
@@ -190,7 +189,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.15 $
+     * @version $Revision: 1.16 $
      */
     protected static final class Tag {
 

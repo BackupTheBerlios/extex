@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TransformDef extends AbstractAssignment {
 
@@ -63,11 +63,11 @@ public class TransformDef extends AbstractAssignment {
             throws GeneralException {
 
         //  \transformdef\hugo=7
-        Token tok = source.scanNonSpace();
+        Token tok = source.scanNonSpace(context);
         if (!(tok instanceof ControlSequenceToken)) {
             throw new HelpingException("TTP.MissingCtrlSeq");
         }
-        source.getOptionalEquals();
+        source.getOptionalEquals(context);
         String key = "transform#"
                 + Long.toString(Count.scanCount(context, source, typesetter));
         context.setCode(tok, new NamedTransform(key), prefix.isGlobal());

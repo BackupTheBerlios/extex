@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Left extends AbstractMathCode {
 
@@ -71,14 +71,13 @@ public class Left extends AbstractMathCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         MathDelimiter del = new MathDelimiter(context, source);
         nc.left(del);
-        return true;
     }
 
 }

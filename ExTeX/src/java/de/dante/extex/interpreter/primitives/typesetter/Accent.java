@@ -64,7 +64,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Accent extends AbstractCode {
 
@@ -93,8 +93,6 @@ public class Accent extends AbstractCode {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @return <tt>true</tt> since this is not a prefix primitive.
-     *
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.interpreter.type.Code#execute(
@@ -104,7 +102,7 @@ public class Accent extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      * @see "TTP [1123,1124,1125]"
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -177,8 +175,6 @@ public class Accent extends AbstractCode {
         }
 
         typesetter.setSpacefactor(Count.THOUSAND);
-
-        return true;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.dynamic.java;
 
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +31,6 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-
 
 /**
  * This primitive provides a binding of a macro or active character to
@@ -121,7 +121,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -142,7 +142,7 @@ public class JavaDef extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -156,9 +156,9 @@ public class JavaDef extends AbstractCode {
         Code code;
 
         try {
-            code = (Code) (Class.forName(classname)
-                    .getConstructor(new Class[]{String.class})
-                    .newInstance(new Object[]{cs.getName()}));
+            code = (Code) (Class.forName(classname).getConstructor(
+                    new Class[]{String.class}).newInstance(new Object[]{cs
+                    .getName()}));
         } catch (IllegalArgumentException e) {
             throw new GeneralException(e);
         } catch (SecurityException e) {
@@ -176,7 +176,5 @@ public class JavaDef extends AbstractCode {
                     classname);
         }
         context.setCode(cs, code, prefix.isGlobal());
-
-        return true;
     }
 }

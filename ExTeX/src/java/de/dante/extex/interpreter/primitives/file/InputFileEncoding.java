@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -42,8 +42,8 @@ import de.dante.util.configuration.ConfigurationException;
  * \inputfileencoding{encoding}{file.name}
  * </pre>
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.13 $
  */
 public class InputFileEncoding extends InputFile {
 
@@ -66,11 +66,11 @@ public class InputFileEncoding extends InputFile {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String encoding = source.scanTokensAsString();
+        String encoding = source.scanTokensAsString(context);
         String name = scanFileName(context, source);
         TokenStreamFactory factory = source.getTokenStreamFactory();
 
@@ -81,6 +81,5 @@ public class InputFileEncoding extends InputFile {
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
-        return true;
     }
 }

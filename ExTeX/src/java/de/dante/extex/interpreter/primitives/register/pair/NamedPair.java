@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NamedPair extends AbstractAssignment
         implements
@@ -60,7 +60,8 @@ public class NamedPair extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -74,7 +75,7 @@ public class NamedPair extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
 
             String key = getKey(source);
-            source.getOptionalEquals();
+            source.getOptionalEquals(context);
             Pair value = new Pair(context, source);
             contextextex.setPair(key, value, prefix.isGlobal());
 

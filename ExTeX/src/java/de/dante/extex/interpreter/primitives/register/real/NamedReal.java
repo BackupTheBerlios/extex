@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -83,7 +83,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
 
             String key = getKey(source);
-            source.getOptionalEquals();
+            source.getOptionalEquals(context);
             Real value = new Real(context, source);
             contextextex.setReal(key, value, prefix.isGlobal());
 
@@ -172,7 +172,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
             Real real = contextextex.getReal(key);
-            source.getKeyword("by", true);
+            source.getKeyword(context, "by");
             Real value = new Real(context, source);
             real.add(value);
             if (prefix.isGlobal()) {
@@ -197,7 +197,7 @@ public class NamedReal extends AbstractAssignment
 
             String key = getKey(source);
             Real real = contextextex.getReal(key);
-            source.getKeyword("by", true);
+            source.getKeyword(context, "by");
             Real value = new Real(context, source);
             real.multiply(value);
             if (prefix.isGlobal()) {
@@ -221,7 +221,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
             String key = getKey(source);
             Real real = contextextex.getReal(key);
-            source.getKeyword("by", true);
+            source.getKeyword(context, "by");
             Real value = new Real(context, source);
             real.divide(value);
             if (prefix.isGlobal()) {

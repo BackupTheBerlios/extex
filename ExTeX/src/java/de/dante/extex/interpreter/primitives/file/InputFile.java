@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -24,7 +24,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\inputfile</code>.
+ * This class provides an implementation for the primitive
+ * <code>\inputfile</code>.
  * The filename can have space in his name.
  *
  * Example:
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class InputFile extends Input {
 
@@ -43,6 +44,7 @@ public class InputFile extends Input {
      * @param name the name for debugging
      */
     public InputFile(final String name) {
+
         super(name);
     }
 
@@ -55,8 +57,9 @@ public class InputFile extends Input {
      *
      * @throws GeneralException in case of an error
      */
-    protected String scanFileName(final Context context, final TokenSource source)
-            throws GeneralException {
-        return source.scanTokensAsString();
+    protected String scanFileName(final Context context,
+            final TokenSource source) throws GeneralException {
+
+        return source.scanTokensAsString(context);
     }
 }

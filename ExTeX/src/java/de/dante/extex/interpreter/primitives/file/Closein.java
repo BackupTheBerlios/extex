@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.Flags;
@@ -59,7 +60,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Closein extends AbstractCode {
 
@@ -69,6 +70,7 @@ public class Closein extends AbstractCode {
      * @param name the name for debugging
      */
     public Closein(final String name) {
+
         super(name);
     }
 
@@ -78,9 +80,9 @@ public class Closein extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         String key = AbstractFileCode.scanInFileKey(context, source);
         InFile file = context.getInFile(key);
@@ -88,7 +90,6 @@ public class Closein extends AbstractCode {
         if (file != null) {
             file.close();
         }
-        return true;
     }
 
 }

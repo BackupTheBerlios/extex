@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Marks extends AbstractCode {
 
@@ -71,13 +71,12 @@ public class Marks extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         long index = source.scanNumber(context);
         Tokens toks = source.scanTokens(context);
         typesetter.add(new MarkNode(toks, index));
-        return true;
     }
 }
