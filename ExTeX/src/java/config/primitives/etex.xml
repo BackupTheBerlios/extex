@@ -32,7 +32,7 @@
   <Define name="currentgrouptype" class=""/>
   <Define name="detokenize" class=""/>
   <Define name="eTeXrevision" class=""/>
-  <Define name="eTeXversion" class=""/>
+  <define name="eTeXversion" class="de.dante.extex.interpreter.primitives.register.count.EtexVersion"/>
   <Define name="endL" class=""/>
   <Define name="endR" class=""/>
   <Define name="everyeof" class=""/>
@@ -40,7 +40,7 @@
   <Define name="ifcsname" class=""/>
   <define name="ifdefined" class="de.dante.extex.interpreter.primitives.conditional.Ifdefined"/>
   <Define name="interactionmode" class=""/>
-  <Define name="lastnodetype" class=""/>
+  <define name="lastnodetype" class="de.dante.extex.interpreter.primitives.register.count.Lastnodetype"/>
   <Define name="marks" class=""/>
   <Define name="middle" class=""/>
   <Define name="predisplaydirection" class=""/>
