@@ -19,13 +19,19 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
+import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.node.CharNode;
+import de.dante.extex.interpreter.type.node.ExplicitKernNode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive <code>\ </code>.
@@ -50,7 +56,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -75,21 +81,33 @@ public class ItalicCorrection extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        /*
-         Node node = typesetter.getLastNode();
+        Node node = typesetter.getLastNode();
 
-         if (node instanceof CharNode) {
-         Font font = ((LigatureNode) node).getTypesettingContext().getFont();
-         Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
-         typesetter.add(new KernNode(ic));
-         } else if (node instanceof LigatureNode) {
-         Font font = ((LigatureNode) node).getTypesettingContext().getFont();
-         Dimen ic = font.getItalicCorrection(((LigatureNode) node).getCharacter());
-         typesetter.add(new KernNode(ic));
-         }
-         */
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        if (node instanceof CharNode) {
+            Dimen ic = italicCorrection(//
+                    ((CharNode) node).getCharacter(), //
+                    ((CharNode) node).getTypesettingContext().getFont());
+            typesetter.add(new ExplicitKernNode(ic));
+        }
+        return true;
+    }
+
+    /**
+     * Determine the italic correction for a character in a font. If no
+     * information can be found in the font then opt is returned.
+     *
+     * @param uc the unicode charcter to compute the italic correction for
+     * @param font the font to use
+     *
+     * @return the italic correction
+     */
+    private Dimen italicCorrection(final UnicodeChar uc,
+            final Font font) {
+
+        Glyph g = font.getGlyph(uc);
+        if (null == g) {
+            return Dimen.ZERO_PT;
+        }
+        return g.getItalicCorrection();
     }
 }
