@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -140,19 +140,21 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
     /**
      * ...
-     *
      * @param start the index of the first node to consider
      * @param len the length of nodes
      * @param nodes the node list to take the nodes from
      * @param hlist the target list to put the nodes into
      * @param width the target width
      * @param accumulator an accumulator for the glue
+     * @param height TODO
+     * @param depth TODO
      *
      * @return the index of the first node after the ones already processed
      */
     private int breakLine(final int start, final int len,
             final HorizontalListNode nodes, final HorizontalListNode hlist,
-            final Dimen width, final Glue accumulator) {
+            final Dimen width, final Glue accumulator, final Dimen height,
+            final Dimen depth) {
 
         Node node = nodes.get(start);
         hlist.add(node);
@@ -166,12 +168,13 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
             if (w.gt(width)) {
                 if (i == start + 1) {
                     //avoid infinite loop and accept overful box
-                    i = saveNodes(nodes, i, point, hlist, accumulator);
+                    i = saveNodes(nodes, i, point, hlist, accumulator, height,
+                            depth);
                 }
                 return discartNodes(i, len, nodes);
             }
 
-            i = saveNodes(nodes, i, point, hlist, accumulator);
+            i = saveNodes(nodes, i, point, hlist, accumulator, height, depth);
         }
 
         return i;
@@ -229,7 +232,8 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
             hlist.addSkip(leftskip);
             accumulator.add(leftskip);
-            i = breakLine(i, len, nodes, hlist, wd, accumulator);
+            i = breakLine(i, len, nodes, hlist, wd, accumulator, hlist
+                    .getHeight(), hlist.getDepth());
             hlist.addSkip(rightskip);
             accumulator.add(rightskip);
 
@@ -296,7 +300,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         boolean math = false;
         int len = nodes.size();
         int i = start;
-        
+
         while (i < len && nodes.get(i) instanceof Discartable) {
             nodes.get(i).addWidthTo(width);
             i++;
@@ -375,18 +379,19 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
     /**
      * Copy nodes from one list into another.
-     *
      * @param nodes the list of nodes to consider
      * @param start the initial index
      * @param end the index of the element after the ones to save
      * @param hlist the destination list
      * @param accumulator the accumulator for the glue of the saved nodes
+     * @param height TODO
+     * @param depth TODO
      *
      * @return the index of the first node which has not been copied
      */
     private int saveNodes(final HorizontalListNode nodes, final int start,
             final int end, final HorizontalListNode hlist,
-            final Glue accumulator) {
+            final Glue accumulator, final Dimen height, final Dimen depth) {
 
         Node node;
         for (int i = start; i < end; i++) {
@@ -394,6 +399,12 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
             if (!(node instanceof PenaltyNode)) {
                 hlist.add(node);
                 node.addWidthTo(accumulator);
+            }
+            if (height.lt(node.getHeight())) {
+                height.set(node.getHeight());
+            }
+            if (depth.lt(node.getDepth())) {
+                depth.set(node.getDepth());
             }
         }
         return end;
