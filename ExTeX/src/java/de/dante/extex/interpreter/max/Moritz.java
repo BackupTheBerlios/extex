@@ -77,7 +77,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public abstract class Moritz
         implements
@@ -330,7 +330,7 @@ public abstract class Moritz
 
         if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
-            if (code != null && code instanceof CsConvertible) {
+            if (code instanceof CsConvertible) {
                 t = ((CsConvertible) code).convertCs(context, this);
             }
             return (CodeToken) t;
