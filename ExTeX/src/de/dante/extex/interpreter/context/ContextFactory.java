@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,52 +18,95 @@
  */
 package de.dante.extex.interpreter.context;
 
-import de.dante.util.configuration.Configurable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * ...
+ * 
+ * 
+ * <pre>
+ *  &lt;Context class="the.package.TheClass"&gt;
+ *  &lt;/Context&gt;
+ * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class ContextFactory implements Configurable {
-    /** the configuration for this factory */
+public class ContextFactory {
+    
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
+    
+    /**
+     * The field <tt>config</tt> contains the configuration for this factory.
+     */
     private Configuration config = null;
 
     /**
-     * Creates a new object.
+     * The field <tt>constructor</tt> contains the constructor of the class to
+     * instantiate. It is kept here to speed up the method
+     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group) newInstance}.
      */
-    public ContextFactory(Configuration config) {
+    private Constructor constructor;
+    
+    /**
+     * Creates a new object.
+     * 
+     * @param config the configuration for this factory
+     */
+    public ContextFactory(Configuration config) throws ConfigurationException {
         super();
         this.config = config;
-    }
 
-    /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
-     */
-    public void configure(Configuration config)
-                   throws ConfigurationException {
-        this.config = config;
+        String classname = config.getAttribute(CLASS_ATTRIBUTE);
+        if (classname == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
+        }
+
+        try {
+            constructor = Class.forName(classname).getConstructor(
+                    new Class[]{Configuration.class});
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
+        }
     }
 
     /**
      * Get a instance for the interface Context.
-     *
+     * 
      * @return a new instance for the interface Context
      */
     public Context newInstance() throws ConfigurationException {
-        
         Context context;
 
         try {
-            context = (Context) (Class.forName(config.getAttribute("class"))
-                    .getConstructor(new Class[]{Configuration.class})
-                    .newInstance(new Object[]{config}));
-            
-        } catch (Exception e) {
-            throw new ConfigurationException("ContextFactory", e);
+            context = (Context) (constructor.newInstance(new Object[]{config}));
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getCause();
+            if (c != null && c instanceof ConfigurationException) {
+                throw (ConfigurationException) c;
+            }
+            throw new ConfigurationInstantiationException(e);
         }
 
         return context;

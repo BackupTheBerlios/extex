@@ -41,7 +41,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is a reference implementation of the Typesetter interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
     /** the factory to produce glyph nodes */
@@ -59,7 +59,7 @@ public class TypesetterImpl implements Typesetter, Manager {
     /**
      * Creates a new object.
      */
-    public TypesetterImpl() {
+    public TypesetterImpl(Configuration config) {
         super();
         listMaker = new VerticalListMaker(this);
     }

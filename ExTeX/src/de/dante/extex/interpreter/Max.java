@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Iterator;
 
@@ -40,6 +41,7 @@ import de.dante.util.Observable;
 import de.dante.util.Observer;
 import de.dante.util.ObserverList;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
@@ -51,7 +53,7 @@ import de.dante.util.file.FileFinder;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
@@ -258,7 +260,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         }
 
         if (getTokenStreamFactory() == null) {
-            throw new ConfigurationException("TokenStreamFactory is not set",
+            throw new ConfigurationMissingException("TokenStreamFactory is not set",
                                              this.getClass().getName()+"#run()");
             //TODO: use new exception or i18n
         }
@@ -513,13 +515,13 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
             String name = cfg.getAttribute("name");
 
             if (name == null || name.equals("")) {
-                throw new ConfigurationMissingAttributeException("name");
+                throw new ConfigurationMissingAttributeException("name",cfg);
             }
 
             String classname = cfg.getAttribute("class");
 
             if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException("classname");
+                throw new ConfigurationMissingAttributeException("class",cfg);
             }
 
             try {
@@ -528,8 +530,24 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
                         .newInstance(new Object[]{name}));
                 code.set(context, cfg.getValue());
                 context.setMacro(name, code);
-            } catch (Exception e) {
+            } catch (IllegalArgumentException e) {
                 throw new ConfigurationInstantiationException(e);
+            } catch (SecurityException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InstantiationException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (IllegalAccessException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (InvocationTargetException e) {
+                Throwable c = e.getCause();
+                if (c!=null && c instanceof ConfigurationException) {
+                    throw (ConfigurationException)c;
+                }
+                throw new ConfigurationInstantiationException(e);
+            } catch (NoSuchMethodException e) {
+                throw new ConfigurationInstantiationException(e);
+            } catch (ClassNotFoundException e) {
+                throw new ConfigurationClassNotFoundException(classname,config);
             }
         }
 

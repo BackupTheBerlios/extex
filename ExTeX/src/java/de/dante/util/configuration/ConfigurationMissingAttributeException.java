@@ -26,7 +26,7 @@ import de.dante.extex.i18n.Messages;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationMissingAttributeException extends ConfigurationException {
     /**
@@ -34,10 +34,19 @@ public class ConfigurationMissingAttributeException extends ConfigurationExcepti
      *
      * @param message the message string
      */
-    public ConfigurationMissingAttributeException(String message) {
-        super(message,(String)null);
+    public ConfigurationMissingAttributeException(String message, String location) {
+        super(message,location);
     }
-
+    
+    /**
+     * Create a new object.
+     *
+     * @param message the message string
+     */
+    public ConfigurationMissingAttributeException(String message, Configuration origin) {
+        super(message,origin.toString());
+    }
+    
     /**
      * Creates a new object.
      *

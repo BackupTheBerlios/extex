@@ -88,7 +88,7 @@ import de.dante.util.file.FileFinderList;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ContextImpl implements Context, Serializable {
 
@@ -158,7 +158,7 @@ public class ContextImpl implements Context, Serializable {
         String fontClass = fontConfiguration.getAttribute("class");
 
         if (fontClass == null || fontClass.equals("")) {
-            throw new ConfigurationMissingAttributeException("classname");
+            throw new ConfigurationMissingAttributeException("class",fontConfiguration);
         }
 
         try {
@@ -175,7 +175,7 @@ public class ContextImpl implements Context, Serializable {
         String defaultFont = fontConfiguration.getAttribute("default");
 
         if (defaultFont == null || defaultFont.equals("")) {
-            throw new ConfigurationMissingAttributeException("default");
+            throw new ConfigurationMissingAttributeException("default",fontConfiguration);
         }
 
         tcFactory = new TypesettingContextFactory(config

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,13 +22,17 @@ import de.dante.extex.i18n.Messages;
 
 
 /**
- * This Exception is thrown when a configuration is requested with the path 
- * <code>null</code>> or the empty string.
- *
+ * This Exception is thrown when a configuration is requested with the path
+ * <code>null</code>> or the empty string. Alternatively it can be used when
+ * some other kind of configuration information is missing.
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationMissingException extends ConfigurationException {
+
+    private String item = "";
+    
     /**
      * Create a new object.
      *
@@ -38,6 +42,17 @@ public class ConfigurationMissingException extends ConfigurationException {
         super(message,(String)null);
     }
 
+    /**
+     * Create a new object.
+     *
+     * @param message the message string
+     * @param location the location of the missing configuration item
+     */
+    public ConfigurationMissingException(String message, String location) {
+        super(null,location);
+        item = message;
+    }
+    
     /**
      * Creates a new object.
      *
@@ -54,6 +69,6 @@ public class ConfigurationMissingException extends ConfigurationException {
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigMissingException.Text");
+        return Messages.format("ConfigurationMissingException.Text",item);
     }
 }

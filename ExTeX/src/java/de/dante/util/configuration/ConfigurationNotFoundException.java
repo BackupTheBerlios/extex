@@ -25,44 +25,34 @@ import de.dante.extex.i18n.Messages;
  * This Exception is thrown when a configuration could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationNotFoundException extends ConfigurationException {
     /**
+     * The field <tt>configName</tt> contains the name of the missing
+     * configuration.
+     */
+    private String configName;
+    
+    /**
      * Create a new object.
-     *
-     * @param message the message string
+     * 
+     * @param configName the name of the missing configuration
      * @param source the the name of the file for which this exception occurred
      */
-    public ConfigurationNotFoundException(String message,String source) {
-        super(message,source);
+    public ConfigurationNotFoundException(String configName, String source) {
+        super(null,source);
+        this.configName = configName;
     }
 
     /**
-     * Create a new object.
-     *
-     * @param message the message string
-     */
-    public ConfigurationNotFoundException(String message) {
-        super(message,(Throwable)null);
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param message message the message string
-     * @param cause the next Throwable in the list
-     */
-    public ConfigurationNotFoundException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    /**
-     * Getter for the text prefix of this ConfigException.
-     *
+     * Getter for the text prefix of this
+     * {@link de.dante.util.ConfigurationException ConfigurationException}.
+     * 
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigNotFoundException.Text");
+        return Messages.format("ConfigurationNotFoundException.Text",
+                               configName);
     }
 }

@@ -83,7 +83,7 @@ import de.dante.util.file.FileFinderPathImpl;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class ExTeX {
 	/**
@@ -433,7 +433,7 @@ public class ExTeX {
 			int pages = docWriter.getPages(); // todo: this might change
 			logger.info(Messages.format((pages == 0 ? "ExTeX.NoPages" : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), Integer.toString(pages)));
 		} catch (ConfigurationException e) {
-			e.printStackTrace();
+			//e.printStackTrace();
 			logger.throwing("de.dante.extex.ExTeX", "run", e);
 			throw new MainConfigurationException(e);
 		} catch (CharacterCodingException e) {
@@ -448,7 +448,8 @@ public class ExTeX {
 			throw new MainException(e);
 		}
 
-		// see "TeX -- The Program [1333]"
+		/* see "TeX -- The Program [1333]"
+		 */
 		logger.info(Messages.format("ExTeX.Logfile", properties.getProperty("extex.jobname")));
 	}
 

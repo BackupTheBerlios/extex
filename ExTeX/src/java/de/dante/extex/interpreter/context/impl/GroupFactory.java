@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,57 +18,96 @@
  */
 package de.dante.extex.interpreter.context.impl;
 
-import de.dante.util.configuration.Configurable;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * ...
+ * 
+ * 
+ * <pre>
+ *  &lt;Group class="the.package.TheClass"&gt;
+ *  &lt;/Group&gt;
+ * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class GroupFactory implements Configurable {
-    /** the configuration for this factory */
+public class GroupFactory {
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
+
+    /**
+     * The field <tt>config</tt> contains the configuration for this factory.
+     */
     private Configuration config = null;
 
     /**
-     * Creates a new object.
+     * The field <tt>constructor</tt> contains the constructor of the class to
+     * instantiate. It is kept here to speed up the method
+     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group) newInstance}.
      */
-    public GroupFactory(Configuration config) {
+    private Constructor constructor;
+    
+    /**
+     * Creates a new object.
+     * 
+     * @param config the configuration for this factory
+     */
+    public GroupFactory(Configuration config) throws ConfigurationException {
         super();
         this.config = config;
+
+        String classname = config.getAttribute(CLASS_ATTRIBUTE);
+        if (classname == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
+        }
+
+        try {
+            constructor = Class.forName(classname).getConstructor(
+                    new Class[]{Group.class});
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
+        }
     }
 
     /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
-     */
-    public void configure(Configuration config)
-                   throws ConfigurationException {
-        this.config = config;
-    }
-
-    /**
-     * Get a instance for the interface Group.
-     *
+     * Get a instance of a
+     * {@link de.dante.extex.interpreter.context.impl.Group Group}.
+     * 
      * @return a new instance for the interface Group
      */
     public Group newInstance(Group next) throws ConfigurationException {
-        
         Group group;
 
         try {
-            group = (Group) Class.forName(config.getAttribute("class"))
-                                        .getConstructor(new Class[] {
-                                                            Group.class
-                                                        })
-                                        .newInstance(new Object[] {next
-                                                     });
-        } catch (Exception e) {
-            throw new ConfigurationException("GroupFactory", e);
+            group = (Group) constructor.newInstance(new Object[]{next});
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getCause();
+            if (c != null && c instanceof ConfigurationException) {
+                throw (ConfigurationException) c;
+            }
+            throw new ConfigurationInstantiationException(e);
         }
-
-//        group.configure(config);
 
         return group;
     }

@@ -28,7 +28,7 @@ import de.dante.util.StringList;
  * Container for several {@link de.dante.util.configuration.Configuration Configuration} objects.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MultiConfiguration implements Configuration {
     /** The internal array of configs */
@@ -136,7 +136,7 @@ public class MultiConfiguration implements Configuration {
 
         for (int i = 0; i < configs.length; i++) {
             // TODO configs[i].addValues(key, sl);
-            throw new ConfigurationException("unimplemented");
+            throw new ConfigurationMissingException("unimplemented");
         }
 
         return sl;
@@ -154,14 +154,14 @@ public class MultiConfiguration implements Configuration {
      */
     public String getAttribute(String name) throws ConfigurationException {
         // todo unimplemented because not needed
-        throw new ConfigurationException("unimplemented");
+        throw new ConfigurationMissingException("unimplemented");
     }
     /**
      * @see de.dante.util.configuration.Configuration#getValue()
      */
     public String getValue() throws ConfigurationException {
         // todo unimplemented because not needed
-        throw new ConfigurationException("unimplemented");
+        throw new ConfigurationMissingException("unimplemented");
     }
 
 }

@@ -35,14 +35,14 @@ import de.dante.util.configuration.ConfigurationException;
  * interface.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
     /**
      * Creates a new object.
      */
-    public NullTypesetterImpl() {
+    public NullTypesetterImpl(Configuration config) {
         super();
     }
 

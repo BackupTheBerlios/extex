@@ -19,20 +19,34 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /*
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TypesettingContextFactory {
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
 
-    private Configuration config;
-    
-    private String classname;
+    /**
+     * The field <tt>config</tt> contains the configuration for this factory.
+     */
+    private Configuration config = null;
+
+    /**
+     * The field <tt>theClass</tt> contains the class to instantiate. It is
+     * kept here to speed up the method
+     * {@link #newInstance(...) newInstance}.
+     */
+    private Class theClass;
     
     /**
      * Creates a new object.
@@ -43,26 +57,37 @@ public class TypesettingContextFactory {
             throws ConfigurationException {
         super();
         this.config = config;
-        classname = config.getAttribute("class");
-        if ( classname == null ) {
-            throw new ConfigurationMissingAttributeException("class");
+
+        String classname = config.getAttribute(CLASS_ATTRIBUTE);
+        if (classname == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
+        }
+
+        try {
+            theClass = Class.forName(classname);
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
         }
     }
 
     /**
      * ...
      * 
-     * @return
-     * @throws ConfigurationException
+     * @return @throws ConfigurationException
      */
-    public TypesettingContext newInstance() throws ConfigurationException {
+    public TypesettingContext newInstance()
+            throws ConfigurationInstantiationException {
         TypesettingContext context;
 
         try {
-            context = (TypesettingContext) (Class.forName(classname)
-                    .newInstance());
-        } catch (Exception e) {
-            throw new ConfigurationException("TypesettingContextFactory", e);
+            context = (TypesettingContext) (theClass.newInstance());
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
         }
 
         return context;

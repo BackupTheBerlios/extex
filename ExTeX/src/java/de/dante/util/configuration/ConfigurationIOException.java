@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,50 +20,51 @@ package de.dante.util.configuration;
 
 import de.dante.extex.i18n.Messages;
 
+
 /**
- * This exception is thrown when a dynamically loaded class could not be found.
- *
+ * This Exception is thrown when a configuration is requested with the path
+ * <code>null</code>> or the empty string. Alternatively it can be used when
+ * some other kind of configuration information is missing.
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class ConfigurationClassNotFoundException
-    extends ConfigurationException {
-    
+public class ConfigurationIOException extends ConfigurationException {
     /**
-     * The field <tt>classname</tt> ...
+     * Create a new object.
+     *
+     * @param message the message string
      */
-    private String classname = null;
+    public ConfigurationIOException(String message) {
+        super(message,(String)null);
+    }
 
     /**
-     * Creates a new object.
-     * 
-     * @param classname ...
-     * @param config ...
+     * Create a new object.
+     *
+     * @param message the message string
+     * @param location the location of the IO configuration item
      */
-    public ConfigurationClassNotFoundException(String classname,
-            Configuration config) {
-        super(null, config.toString());
-        this.classname = classname;
+    public ConfigurationIOException(String message, String location) {
+        super(message,location);
     }
     
     /**
      * Creates a new object.
      *
+     * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationClassNotFoundException(Throwable cause) {
-        super(null, cause);
+    public ConfigurationIOException(String message, Throwable cause) {
+        super(message, cause);
     }
-    
+
     /**
      * Getter for the text prefix of this ConfigException.
-     * 
+     *
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigurationClassNotFoundException.Text",
-                               (classname != null ? //
-                                       classname : //
-                                       getCause().getMessage()));
+        return Messages.format("ConfigIOException.Text");
     }
 }

@@ -20,12 +20,13 @@ package de.dante.extex.documentWriter;
 
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
 
 /**
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DocumentWriterFactory {
     /** The configuration to use */
@@ -43,21 +44,21 @@ public class DocumentWriterFactory {
 
     /**
      * Provide a new instance of a document writer.
-     *
+     * 
      * @return the new instance
      */
     public DocumentWriter newInstance() throws ConfigurationException {
         DocumentWriter docWriter;
 
         try {
-            docWriter = (DocumentWriter) Class.forName(config.getAttribute("class"))
-                                         .newInstance();
+            docWriter = (DocumentWriter) Class.forName(
+                    config.getAttribute("class")).newInstance();
         } catch (Exception e) {
-            throw new ConfigurationException("DocumentWriterFactory", e);
+            throw new ConfigurationInstantiationException(
+                    "DocumentWriterFactory", e);
         }
 
         return docWriter;
-
 
     }
 }

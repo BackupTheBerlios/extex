@@ -24,9 +24,9 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a problem in the configuration is detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class ConfigurationException extends Exception {
+public abstract class ConfigurationException extends Exception {
     /** The message string for this exception */
     public String message = null;
 
