@@ -23,14 +23,12 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.RuleNode;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hrule</code>.
@@ -82,7 +80,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Hrule extends AbstractCode implements RuleConvertible {
 
@@ -126,8 +124,6 @@ public class Hrule extends AbstractCode implements RuleConvertible {
             typesetter.add(getRule(context, source, typesetter));
         } catch (InterpreterException e) {
             throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
     }
 
@@ -142,8 +138,9 @@ public class Hrule extends AbstractCode implements RuleConvertible {
 
         Mode mode = typesetter.getMode();
         if (mode.isHmode()) {
-            throw new HelpingException(getLocalizer(), "TTP.CantUseHrule",
-                    printableControlSequence(context));
+            typesetter.par();
+//            throw new HelpingException(getLocalizer(), "TTP.CantUseHrule",
+//                    printableControlSequence(context));
         }
         Dimen width = new Dimen(0);
         Dimen height = new Dimen(DEFAULT_RULE);
