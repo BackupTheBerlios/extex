@@ -38,8 +38,37 @@ import de.dante.util.framework.logger.LogEnabled;
  * This file finder searches for the file in different directories and with
  * several extensions.
  *
+ * <h2>Configuration</h2>
+ * ...
+ *
+ * <pre>
+ * &lt;Finder class="de.dante.util.resource.FileFinder"
+ *         default="default"&gt;
+ *   &lt;tex&gt;
+ *     &lt;path property="extex.texinputs"/&gt;
+ *     &lt;path property="texinputs"/&gt;
+ *     &lt;path&gt;.&lt;/path&gt;
+ *     &lt;extension&gt;&lt;/extension&gt;
+ *     &lt;extension&gt;.tex&lt;/extension&gt;
+ *   &lt;/tex&gt;
+ *   &lt;fmt&gt;
+ *     &lt;path property="extex.texinputs"/&gt;
+ *     &lt;path property="texinputs"/&gt;
+ *     &lt;path&gt;.&lt;/path&gt;
+ *     &lt;extension&gt;&lt;/extension&gt;
+ *     &lt;extension&gt;.fmt&lt;/extension&gt;
+ *   &lt;/fmt&gt;
+ *   &lt;default&gt;
+ *     &lt;path property="extex.texinputs"/&gt;
+ *     &lt;path property="texinputs"/&gt;
+ *     &lt;path&gt;.&lt;/path&gt;
+ *     &lt;extension&gt;&lt;/extension&gt;
+ *   &lt;/default&gt;
+ * &lt;/Finder&gt;
+ * </pre>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
 
@@ -67,7 +96,7 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
     private Logger logger = null;
 
     /**
-     * The field <tt>properties</tt> contains the ...
+     * The field <tt>properties</tt> contains the properties instance to use.
      */
     private Properties properties = null;
 
@@ -90,6 +119,19 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
         if (t != null && Boolean.valueOf(t).booleanValue()) {
             trace = true;
         }
+    }
+
+    /**
+     * Setter for the logger.
+     *
+     * @param theLogger the logger to set.
+     *
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
     }
 
     /**
@@ -218,16 +260,13 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
     }
 
     /**
-     * Setter for the logger.
+     * Getter for logger.
      *
-     * @param theLogger the logger to set.
-     *
-     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
-     *      java.util.logging.Logger)
+     * @return the logger.
      */
-    public void enableLogging(final Logger theLogger) {
+    public Logger getLogger() {
 
-        this.logger = theLogger;
+        return this.logger;
     }
 
     /**
