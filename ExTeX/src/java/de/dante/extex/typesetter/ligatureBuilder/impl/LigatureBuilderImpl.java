@@ -33,7 +33,7 @@ import de.dante.util.configuration.Configuration;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -80,9 +80,9 @@ public class LigatureBuilderImpl implements LigatureBuilder {
     private int processCharNodes(final NodeList list, int size,
             int i, final CharNode node) {
 
-        UnicodeChar uc1 = node.getCharacter();
+        UnicodeChar uc1 = ((CharNode)node).getCharacter();
         UnicodeChar uc2;
-        Font font1 = node.getTypesettingContext().getFont();
+        Font font1 = ((CharNode)node).getTypesettingContext().getFont();
         Font font2;
         Node n1 = node;
         Node n2;
@@ -110,6 +110,7 @@ public class LigatureBuilderImpl implements LigatureBuilder {
                     list.remove(--i);
                     list.add(i, ligNode);
                     uc1 = lig;
+                    n1 = ligNode;
                     size--;
                 } else {
                     n1 = n2;
