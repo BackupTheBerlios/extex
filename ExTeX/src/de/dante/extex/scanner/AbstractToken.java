@@ -23,7 +23,7 @@ package de.dante.extex.scanner;
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractToken implements Token {
     /** The value of the token */
@@ -47,12 +47,21 @@ public abstract class AbstractToken implements Token {
     public abstract Catcode getCatcode();
 
     /**
-     * Return the printable representation of this object
+     * Return the printable representation of this object.
      *
      * @return the printable representation
      */
     public abstract String toString();
 
+    /**
+     * Return the text representation of this object.
+     *
+     * @return the text representation
+     */
+    public String toText() {
+        return value;
+    }
+    
     /**
      * @see de.dante.extex.scanner.Token#getValue()
      */
