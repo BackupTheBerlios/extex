@@ -1,0 +1,127 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//3.2//EN">
+<html>
+<head>
+  <title>ExTeX: Objectives</title>
+  <meta name="Author" content="Gerd Neugebauer">
+  <meta http_equiv="Content-Type" content="text/html;CHARSET=iso-8859-1">
+</head>
+<body>
+    <h1>Objectives</h1>
+
+    <h2>Modularity</h2>
+
+    <p>ExTeX's object-oriented design (see figure) includes some main
+    modules that act without knowledge about the functioning of the
+    other modules (encapsulation). Thus the frontend with tokenisation
+    and the expansion of tokens, up to the creation of nodes are
+    exchangeable, independently from the typesetter. The same applies
+    to the backend that generates the output. A special role plays the
+    font module that provides font information to the typesetter as
+    well as to the output module.</p>
+
+    <p>Inside the main modules other subdivisons are established, making
+    subtitution or enhancement of single aspects of a function
+    possible. So the font module may be extended to new formats by
+    adding or replacing a font reader, without directly affecting
+    other parts of the program. Likewise new algorithms may be
+    integrated into the typesetter that is responsible for line
+    breaking and the structure of the page. </p>
+
+    <h2>Compatibility</h2>
+
+    <p>ExTeX will provide all of TeX's primitives. Since syntax and
+    function of some primitives (e.g. \input) leads to undesirable
+    constraints on modern systems, supplemental primitives will be
+    designed and implemented in these cases. The old variants will
+    clearly be marked obsolete. In some cases this has been done
+    already. Hardly understandable peculiarities of TeX can be
+    abandoned in favour of a clean implementation. Moreover the
+    behaviour in case of an error will not be emulated completely
+    equally. Eventually ExTeX shall be able to typeset existing
+    documents visually identically to TeX.</p>
+
+    <p>ExTeX will not be compatible regarding the strict separation of
+    iniTeX and virTeX. So far, loading of hyphenation patterns and
+    creation of format files is possible only for iniTeX. ExTeX on the
+    other hand shall be able to load hyphenation patterns globally at
+    any time, i.e. it shall not be limited to hyphenation tables that
+    are stored in the format files. Therefore it will be possible to
+    load only those hyphenation tables at runtime that are actually
+    needed. ExTeX also has the ablility to create a format under
+    particular conditions, namely outside of any group.</p>
+
+    <p>From &epsilon;-TeX mainly those facilities will be adopted whose
+    main effect is not limited to the logging messages. The additional
+    tracing primitives are not adopted to the vocabulary of ExTeX
+    because ExTeX will provide its own progressive facilities for
+    debugging purposes. The facilities of &epsilon;-TeX to toggle the
+    direction of writing will be omitted, too. These can be realised
+    with the help of &Omega;-compatible primitives on macro level.
+    Thus compatibility to real existing &epsilon;-TeX documents should
+    be obtained.</p>
+
+    <p>From &Omega; the extensions regarding the fonts will be taken, as
+    well as the feature of setting the direction of writing. However
+    ExTeX will not adopt the encoding functions of &Omega;, but
+    instead realise 16-bit capability with its own easily
+    comprehensible methodes. Here established basic facilities of Java
+    will be used.</p>
+
+    <p>There are two kinds of pdfTeX features: those controlling PDF
+    output, and those providing additional typographic features. The
+    latter shall be widely adopted. Here the problem arises that in
+    pdfTeX these primitives are prefixed with »pdf«, too. Hence new
+    names and partially other primitives will replace them in ExTeX.
+    As above, macros may be used as the connective link. In most
+    cases, e.g. with LaTeX packages like graphics or hyperref, a
+    change to a new driver is recommended. This all the more, as the
+    way to implement capabilities that are strongly depenent on the
+    backend is different in ExTeX.</p>
+
+    <h2>New Features</h2>
+
+    <p>Although ExTeX is designed so that new facilities can easily be
+    added to every main module &ndash; actually on the level of
+    primitives &ndash; ExTeX will right from start be equipped with some
+    innovations. One of these is the handling of different encodings
+    of input files. At this ExTeX uses Java's built-in facilities to
+    transfer read characters into an internal 32-bit coding.</p>
+
+    <p>As several of TeX's primitives are limited to 8-bit, and &Omega;
+    to 16-bit, new appropriate equivalents will be defined, e.g. for
+    \mathcode. On the other hand, \char will be able to handle values
+    greater than 255 directly. Actually this is an incompatibility to
+    TeX, but since TeX would report an error in this case, this
+    behaviour is compatible to existing error-free documents.</p>
+
+    <p>Expansions that do not depend on a specific output format, but are
+    – even in various ways – supported by different output
+    formats, will have their own primitives. Examples for this are the
+    begin and end of links as well as their targets./
+
+    <p>TeX knows elements that do not deal with typography of the
+    page, but they must be processed when it is outputted (\shipout).
+    Examples for this whatsits are \openout, \closeout and \write,
+    always without being prefixed with \immediate. Especially these
+    should not have any effect on page breaking, which can't be
+    guaranteed by TeX really. This deficency shall be improved in
+    ExTeX, despite arising incompatibilities.</p>
+
+    <p>Among the whatsits, the \special primitive plays a special
+    role. Depending on its meaning, it may have effects on line or
+    page breaking (e.g. if a graphic is inserted), or not (e.g. if
+    colour is changed). Apart from the fact that ExTeX will support
+    colours directly, ExTeX will have a new primitive for extensions
+    that depend on the output format. When encountering this
+    primitive, the typesetter will demand the decision whether the
+    element affects line or page breaking from the backend (see
+    IObject and Boxsize in the figure). For example, a PDF backend may
+    return the size of an image that was inserted by this primitive.</p>
+
+    <p>Medium-term ExTeX shall provide graphical elements like lines
+    of arbitrary gradient, ellipses, bezier curves etc. Also graphical
+    transformations like rotation, reflexion, or scaling shall be
+    implemented.</p>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//3.2//EN">
+<html>
+<head>
+  <title></title>
+  <meta name="Author" content="Gerd Neugebauer">
+  <meta http_equiv="Content-Type" content="text/html;CHARSET=iso-8859-1">
+  <base target="_top">
+</head>
+
+<body>
+
+    <h1>State of Implementation</h1>
+
+    <ul>
+      <li>
+	<strong>Tokenizer:</strong>
+	<p>
+	  The tokenizer generates single tokens from various sources
+	  (e.g. a file) and provides them in a stack.  The encoding of
+	  each file is taken into account, which can also be
+          set by a primitive.  All of Java's standard encodings are
+	  supported (others may be defined in special cases).
+	</p>
+	<p>
+	  Special or Unicode characters can be read in various ways:
+	</p>
+	<ul>
+	  <li> Standard TeX variant:&nbsp;<tt>^^...</tt>	   </li>
+	  <li>Unicode:&nbsp;<tt>^^^<em>Unicodename;</em></tt>	   </li>
+	  <li>Omega variant:&nbsp;<tt>^^^^<em>Hex-number</em></tt> </li>
+	</ul>
+	<p>
+	  The TokenizerStack may be shown optionally in a window (visual
+	  debugger), in order to follow the progress and generation of
+	  tokens.
+	</p>
+      </li>
+      <li>
+	<strong>Filemanager</strong>
+	<p>
+	  All files are loaded by a central FileManager.  All accesses
+	  are cached.  The FileManager searches and loads files in
+	  directories defined in <var>TEXINPUTS</var>, and
+	  additionally in given JAR archives.
+	</p>
+	<p>
+	  Newly created files are saved to the directory
+	  <var>TEXOUTPUTS</var>, or to the current one. If it is not
+	  writeable, the substitution directory <var>TEXMFOUTPUT</var>
+	  is used instead.
+	</p>
+      </li>
+      <li>
+	<strong>EqTable</strong>
+	<p>
+	  The EqTable takes all primitives, parameters etc. and stores
+	  them in the appropriate group levels.
+	</p>
+	<p>
+	  This table (the keys and their according values) may
+	  optionally be shown in a special window (visual debugger), in
+	  order to track values etc.  A filter is provided for setting
+	  the visible range.  A breakpoint mechanism allows to stop the
+	  processing if the value of an entry changes.
+	</p>
+      </li>
+      <li>
+	<strong>Log Output</strong>
+	<p>
+	  Output is generated according to the applied filter
+	  (separately for terminal and logfile).  An appropriate output
+	  encoding may be specified, too.
+	</p>
+      </li>
+      <li>
+	<strong>Registers</strong>
+	<p>
+	  Registers are not explicitly limited to a certain size.  It
+	  only depends on the counter (a 32-bit integer is used) and the
+	  available memory.
+	</p>
+      </li>
+      <li>
+	<strong>Primitives</strong>
+	<p>
+	  &hellip;&nbsp;are considered step-by-step.
+	</p>
+      </li>
+    </ul>
+</body>
+</html>

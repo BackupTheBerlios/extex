@@ -1,0 +1,24 @@
+   <div class="info">
+    Team Members
+    <div class="infoitems">
+    David Kastrup <br/>
+    Markus Kohm <br/>
+    Torsten Krüger <br/>
+    Gerd Neugebauer <br/>
+    Rolf Niepraschk <br/>
+    Michael Niedermair <br/>
+    Walter Schmidt <br/>
+    </div>
+   </div>
+   <div class="info">
+    Mailing List
+    <div class="infoitems">
+    <a href="mailto:extex-list@dante.de">extex-list@dante.de</a>
+    </div>
+   </div>
+   <div class="info">
+    Contact Address
+    <div class="infoitems">
+    <a href="mailto:extex@dante.de">extex@dante.de</a>
+    </div>
+   </div>

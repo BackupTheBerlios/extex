@@ -1,0 +1,12 @@
+   <div class="info">
+    Current State
+    <div class="infoitems">
+    Currently the internal version 0.4 is in the CVS repository.
+    </div>
+   </div>
+   <div class="info">
+    Contact Address
+    <div class="infoitems">
+    <a href="mailto:extex@dante.de">extex@dante.de</a>
+    </div>
+   </div>
