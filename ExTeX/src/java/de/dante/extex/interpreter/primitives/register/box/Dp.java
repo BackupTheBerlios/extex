@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  *        &lang;8-bit&nbsp;number&rang;} {@linkplain
  *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
  *        &lang;equals&rang;} {@linkplain
- *        de.dante.extex.interreter.type.dimen#Dimen(
+ *        de.dante.extex.interpreter.type.dimen#Dimen(
  *          de.dante.extex.interpreter.context.Context,
  *          de.dante.extex.interpreter.TokenSource)
  *        &lang;dimen&rang;}
@@ -108,7 +108,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Dp extends Setbox
         implements
