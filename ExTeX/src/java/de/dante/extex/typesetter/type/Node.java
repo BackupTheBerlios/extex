@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Node extends Knot {
 
@@ -76,6 +76,34 @@ public interface Node extends Knot {
      * @return the height
      */
     Dimen getHeight();
+
+    /**
+     * Compute the vertical size of a node.
+     * The vertical size is the size of the box enclosing the bouding
+     * box and containing the base line.
+     * <ul>
+     *  <li>
+     *   The vertical size is normally the sum of height and depth.
+     *   This normal case applies if both height and depth are not
+     *   negative.
+     *  </li>
+     *  <li>
+     *   If height is positive and the depth is negative then the
+     *   maximum of the height and the negated depth is used.
+     *  </li>
+     *  <li>
+     *   If the height is negative and the depth is positive then the
+     *   maximum of the negated height and the depth is used.
+     *  </li>
+     *  <li>
+     *   If both height and depth are negative then the negated sum of
+     *   both values is used.
+     *  </li>
+     * </ul>
+     *
+     * @return the vertcal size
+     */
+    Dimen getVerticalSize();
 
     /**
      * Getter for the width of the node.

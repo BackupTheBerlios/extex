@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -225,7 +225,37 @@ public abstract class AbstractNode implements Node {
      *
      * @param sb the output string buffer
      * @param prefix the string prepended to each line of the resulting text
+     *
+     * @see de.dante.extex.typesetter.type.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
     public abstract void toText(final StringBuffer sb, final String prefix);
 
+    /**
+     * @see de.dante.extex.typesetter.type.Node#getVerticalSize()
+     */
+    public Dimen getVerticalSize() {
+
+        Dimen h = getHeight();
+        Dimen d = new Dimen(getDepth());
+
+        if (h.ge(Dimen.ZERO)) {
+            if (d.ge(Dimen.ZERO)) {
+                d.add(h);
+            } else {
+                d.negate();
+                d.max(h);
+            }
+        } else {
+            if (d.ge(Dimen.ZERO)) {
+                d.negate();
+                d.min(h);
+                d.negate();
+            } else {
+                d.add(h);
+                d.negate();
+            }
+        }
+        return d;
+    }
 }
