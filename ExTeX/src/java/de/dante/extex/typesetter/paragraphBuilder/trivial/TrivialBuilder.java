@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -218,8 +218,9 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         Dimen wd = new Dimen();
         Dimen adjustLeftRight = new Dimen(leftskip.getLength());
         adjustLeftRight.add(rightskip.getLength());
+        FixedGlue baselineskip = options.getGlueOption("baselineskip");
         FixedGlue lineskip = options.getGlueOption("lineskip");
-        //boolean first = true;
+        FixedDimen lineskiplimit = options.getDimenOption("lineskiplimit");
         Glue accumulator = new Glue(0);
 
         while (i < len) {
@@ -239,19 +240,43 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
             spread(hlist, width, accumulator);
 
-            //if (first) {
-            //    first = false;
-            vlist.add(new GlueNode(lineskip));
-            //} else {
-            //    vlist.add(new GlueNode(lineskip));
-            //}
-            vlist.add(hlist);
-            //tracer.info(line + "");
+            addLine(vlist, hlist, baselineskip, lineskip, lineskiplimit);
             line++;
         }
 
         options.setParshape(null);
         return vlist;
+    }
+
+    /**
+     * Add a new line to a vlist.
+     * Ensure that a minimum distance between the lines exists. Usually the
+     * distance <tt>\baselineskip</tt> between the lines is desirable. For this
+     * purpose the depth of the previous line and the height of the current line
+     * is subtracted. If the remaining distance is less than
+     * <tt>\lineskiplimit</tt> then the value of <tt>\lineskip</tt> is used
+     * instead.
+     *
+     * @param vlist the target list
+     * @param hlist the line to add
+     * @param baselineskip the parameter \baselineskip
+     * @param lineskip the parameter \lineskip
+     * @param lineskiplimit the parameter \lineskiplimit
+     */
+    private void addLine(final VerticalListNode vlist,
+            final HorizontalListNode hlist, final FixedGlue baselineskip,
+            final FixedGlue lineskip, final FixedDimen lineskiplimit) {
+
+        int end = vlist.size() - 1;
+
+        Glue g = new Glue(baselineskip);
+        g.subtract(hlist.getHeight());
+        if (end >= 0) {
+            g.subtract(vlist.get(end).getDepth());
+        }
+        vlist.add(new GlueNode(g.lt(lineskiplimit) ? lineskip : g));
+
+        vlist.add(hlist);
     }
 
     /**
@@ -321,6 +346,12 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
                 node.addWidthTo(width);
                 return i;
+            } else if (node instanceof PenaltyNode) {
+                int penalty = (int) ((PenaltyNode) node).getPenalty();
+                if (penalty < INF_PENALTY) {
+                    node.addWidthTo(width);
+                    return i;
+                }
             } else if (node instanceof BeforeMathNode) {
                 math = true;
             } else if (node instanceof AfterMathNode) {
@@ -331,13 +362,6 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
                 }
                 math = false;
 
-            } else if (node instanceof PenaltyNode) {
-                int penalty = (int) ((PenaltyNode) node).getPenalty();
-                if (penalty < INF_PENALTY) {
-
-                    node.addWidthTo(width);
-                    return i;
-                }
             } else if (node instanceof DiscretionaryNode) {
 
                 //breakList.add(new BreakPoint(i, w, wd,
