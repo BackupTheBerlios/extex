@@ -81,6 +81,10 @@
       -->
     <TokenFactory class="de.dante.extex.scanner.type.TokenFactoryImpl"/>
 
+    <!-- The configuration for the hyphenation manager.
+      -->
+    <Hyphenation src="hyphenation/Hyphenation.xml" />
+
     <!-- The configuration of the context implementation to use.
       -->
     <Context default="ExTeX">
@@ -92,16 +96,9 @@
         <!-- The implementation of the typesetting context to use.
           -->
         <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
-
-        <Language></Language>
-
-        <!-- The configuration for the hyphenation manager.
-          -->
-        <Hyphenation src="hyphenation/Hyphenation.xml" />
-
       </ExTeX>
-
     </Context>
+
     <!-- The implementation of the error handler to use.
       -->
 	<ErrorHandler default="ExTeX">
