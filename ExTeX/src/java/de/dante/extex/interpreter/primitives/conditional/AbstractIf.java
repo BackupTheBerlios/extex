@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -132,7 +132,7 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
      *
      * @throws GeneralException in case of en error
      */
-    protected boolean skipToElseOrFi(final Context context,
+    protected static boolean skipToElseOrFi(final Context context,
             final TokenSource source) throws GeneralException {
 
         Code code;
