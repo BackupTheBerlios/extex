@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -90,11 +90,11 @@ public interface Context extends Tokenizer, Serializable {
     /**
      * Expand some tokens.
      *
-     * @param tokens ...
+     * @param tokens the tokens to expand
      *
      * @return ...
      *
-     * @throws GeneralException
+     * @throws GeneralException in case of an error
      */
     Tokens expand(Tokens tokens) throws GeneralException;
 
@@ -221,7 +221,8 @@ public interface Context extends Tokenizer, Serializable {
 
     /**
      * Getter for a input file register.  In the case that the named
-     * descriptor doe not exist yet a new one is returned.
+     * descriptor doe not exist yet a new one is returned. Especially if the
+     * name is <code>null</code> then the default input stream is used.
      *
      * @param name the name or the number of the file register
      *
