@@ -65,82 +65,15 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Discretionary extends AbstractCode {
-
-    /**
-     * Creates a new object.
-     *
-     * @param name the name for debugging
-     */
-    public Discretionary(final String name) {
-
-        super(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws InterpreterException {
-
-        Tokens pre = source.getTokens(context);
-        Tokens post = source.getTokens(context);
-        Tokens nobreak = source.getTokens(context);
-        CharNodeFactory cnf = new CharNodeFactory();
-        TypesettingContext tc = context.getTypesettingContext();
-
-        try {
-            typesetter.add(new DiscretionaryNode(fill(pre, tc, typesetter,
-                    context), //
-                    fill(post, tc, typesetter, context), //
-                    fill(nobreak, tc, typesetter, context)));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
-    }
-
-    /**
-     * This method creates a Node list for a list of tokens.
-     *
-     * @param tokens the tokens to put into a NodeList
-     * @param tc the typesetting context
-     * @param typesetter the typesetter
-     * @param context the interpreter context
-     *
-     * @return the node list or <code>null</code> if there are no tokens to
-     *  put into the list
-     *
-     * @throws TypesetterException in case of an error
-     */
-    private NodeList fill(final Tokens tokens, final TypesettingContext tc,
-            final Typesetter typesetter, final Context context)
-            throws TypesetterException {
-
-        if (tokens.length() == 0) {
-            return null;
-        }
-        ListManager man = new Manager(typesetter.getCharNodeFactory());
-        ListMaker hlist = new HorizontalListMaker(man);
-        NodeList nodes = new HorizontalListNode();
-
-        for (int i = 0; i < tokens.length(); i++) {
-            hlist.letter(context, tc, tokens.get(i).getChar());
-        }
-        return hlist.complete((TypesetterOptions) context);
-    }
 
     /**
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private class Manager implements ListManager {
 
@@ -223,10 +156,77 @@ public class Discretionary extends AbstractCode {
         /**
          * @see de.dante.extex.typesetter.listMaker.ListManager#push(de.dante.extex.typesetter.ListMaker)
          */
-        public void push(ListMaker listMaker) throws TypesetterException {
+        public void push(final ListMaker listMaker) throws TypesetterException {
 
             // TODO gene: push unimplemented
 
         }
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for debugging
+     */
+    public Discretionary(final String name) {
+
+        super(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws InterpreterException {
+
+        Tokens pre = source.getTokens(context);
+        Tokens post = source.getTokens(context);
+        Tokens nobreak = source.getTokens(context);
+        CharNodeFactory cnf = new CharNodeFactory();
+        TypesettingContext tc = context.getTypesettingContext();
+
+        try {
+            typesetter.add(new DiscretionaryNode(fill(pre, tc, typesetter,
+                    context), //
+                    fill(post, tc, typesetter, context), //
+                    fill(nobreak, tc, typesetter, context)));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
+    }
+
+    /**
+     * This method creates a Node list for a list of tokens.
+     *
+     * @param tokens the tokens to put into a NodeList
+     * @param tc the typesetting context
+     * @param typesetter the typesetter
+     * @param context the interpreter context
+     *
+     * @return the node list or <code>null</code> if there are no tokens to
+     *  put into the list
+     *
+     * @throws TypesetterException in case of an error
+     */
+    private NodeList fill(final Tokens tokens, final TypesettingContext tc,
+            final Typesetter typesetter, final Context context)
+            throws TypesetterException {
+
+        if (tokens.length() == 0) {
+            return null;
+        }
+        ListManager man = new Manager(typesetter.getCharNodeFactory());
+        ListMaker hlist = new HorizontalListMaker(man);
+        NodeList nodes = new HorizontalListNode();
+
+        for (int i = 0; i < tokens.length(); i++) {
+            hlist.letter(context, tc, tokens.get(i).getChar());
+        }
+        return hlist.complete((TypesetterOptions) context);
     }
 }
