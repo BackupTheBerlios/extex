@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib.develop/junit.jar"/>
-	<classpathentry kind="lib" path="lib/icu4j_2_6_1.jar"/>
-	<classpathentry kind="lib" path="lib/jdom.jar"/>
-	<classpathentry kind="lib" path="lib/batik-dom.jar"/>
-	<classpathentry kind="lib" path="lib/batik-ext.jar"/>
-	<classpathentry kind="lib" path="lib/batik-svg-dom.jar"/>
-	<classpathentry kind="output" path="bin"/>
+    <classpathentry kind="src" path="src"/>
+    <classpathentry kind="src" path="test"/>
+    <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+    <classpathentry kind="lib" path="lib/batik-dom.jar"/>
+    <classpathentry kind="lib" path="lib/batik-ext.jar"/>
+    <classpathentry kind="lib" path="lib/batik-svg-dom.jar"/>
+    <classpathentry kind="lib" path="lib/icu4j_2_6_1.jar"/>
+    <classpathentry kind="lib" path="lib/jdom.jar"/>
+    <classpathentry kind="lib" path="lib.develop/ant.jar"/>
+    <classpathentry kind="lib" path="lib.develop/junit.jar"/>
+    <classpathentry kind="output" path="bin"/>
 </classpath>
