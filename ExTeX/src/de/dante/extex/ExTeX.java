@@ -29,6 +29,7 @@ import java.nio.charset.CharacterCodingException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.Locale;
 import java.util.Properties;
 
@@ -62,6 +63,7 @@ import de.dante.util.StringList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.file.FileFinderConfigImpl;
 import de.dante.util.file.FileFinderDirect;
 import de.dante.util.file.FileFinderList;
@@ -83,10 +85,11 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class ExTeX {
-    private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
+
+	private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
     private static final String PROP_LOGGER_TEMPLATE = "extex.loggerTemplate";
     private static final String PROP_INI = "extex.ini";
     private static final String PROP_FILE = "extex.file";
@@ -103,12 +106,14 @@ public class ExTeX {
     private static final String PROP_TRACE_TOKENIZER = "extex.traceTokenizer";
     private static final String PROP_FMT = "extex.fmt";
     private static final String PROP_JOBNAME = "extex.jobname";
-
+    private static final String PROP_OUTPUT = "extex.output";
+    
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
      * development for the copyright message.
      */
     private static final int COPYRIGHT_YEAR = 2003;
+
     /**
      * The constant <tt>EXIT_OK</tt> contains the exit code of the program for
      * the success case.
@@ -227,6 +232,11 @@ public class ExTeX {
      * <td>This parameter contain the directory where output files should be
      * created.</td>
      * </tr>
+     * <tr>
+     * <td>extex.output</td>
+     * <td>dump</td>
+     * <td>This parameter contain the outputformat.</td>
+     * </tr>
      * </table>
      *
      * @param parameterProperties the properties to start with
@@ -253,6 +263,7 @@ public class ExTeX {
         propertyDefault(PROP_NOBANNER, "");
         propertyDefault(PROP_TRACE_TOKENIZER, "");
         propertyDefault(PROP_TRACE_MACROS, "");
+        propertyDefault(PROP_OUTPUT, "dump");
     }
 
     /**
@@ -361,6 +372,8 @@ public class ExTeX {
                         useArg("extex.fallbackOutputdir", args, ++i);
                     } else if ("-debug".startsWith(arg)) {
                         useDebug(args, ++i);
+                    } else if ("-output".startsWith(arg)) {
+                    	useArg(PROP_OUTPUT, args, ++i);
                     } else {
                         throw new MainUnknownOptionException(arg);
                     }
@@ -481,8 +494,7 @@ public class ExTeX {
             Typesetter typesetter = new TypesetterFactory(config
                 .getConfiguration("Typesetter")).newInstance(interpreter.getContext());
 
-            DocumentWriter docWriter = new DocumentWriterFactory(config
-                .getConfiguration("DocumentWriter")).newInstance();
+            DocumentWriter docWriter = new DocumentWriterFactory(getDocumentWriterConfig(config)).newInstance();
 
             OutputStream stream = outFactory.createOutputStream(properties
                 .getProperty(PROP_JOBNAME), docWriter.getExtension());
@@ -529,6 +541,32 @@ public class ExTeX {
     }
 
     /**
+     * Return the configobject for the DocumentWriter
+	 * @param config		the global config-object
+	 * @return	the configobject for the DocumentWriter
+	 * @throws ConfigurationException
+	 * @throws ConfigurationMissingAttributeException
+	 */
+	private Configuration getDocumentWriterConfig(Configuration config) throws ConfigurationException, ConfigurationMissingAttributeException {
+		Configuration documentwriterconfig = config.getConfiguration("DocumentWriter");
+		Iterator iterator = documentwriterconfig.iterator("WriterOutput");
+		Configuration dwcfg = null;
+		while (iterator.hasNext()) {
+			dwcfg = (Configuration) iterator.next();
+			String name = dwcfg.getAttribute("name");
+
+			if (name == null || name.equals("")) {
+				throw new ConfigurationMissingAttributeException("name", dwcfg);
+			}
+
+			if  (((String)properties.get(PROP_OUTPUT)).toLowerCase().equals(name)) {
+				break;
+			}
+		}
+		return dwcfg;
+	}
+
+	/**
      * Print the program banner to the logger stream and remember that this has
      * been done already to avoid repeating.
      */

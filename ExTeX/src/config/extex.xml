@@ -389,7 +389,10 @@
   		<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
  	</Typesetter>
 
-  <DocumentWriter class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+  <DocumentWriter>
+  	<WriterOutput name="dump" class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+  	<WriterOutput name="pdf" class="de.dante.extex.documentWriter.pdf.PDFDocumentWriter"/>
+  </DocumentWriter>  	
 
   <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"/>
 
