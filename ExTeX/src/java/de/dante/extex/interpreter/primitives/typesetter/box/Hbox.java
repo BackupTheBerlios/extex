@@ -28,6 +28,8 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -75,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -117,26 +119,14 @@ public class Hbox extends AbstractCode implements Boxable {
         try {
             if (source.getKeyword(context, "to")) {
                 Dimen d = new Dimen(context, source);
-
-                //TODO gene: afterassign
-                source.push(context.getToks("everyhbox"));
-
-                box = new Box(context, source, typesetter, true);
+                box = acquireBox(context, source, typesetter);
                 box.setWidth(d);
             } else if (source.getKeyword(context, "spread")) {
                 Dimen d = new Dimen(context, source);
-
-                //TODO gene: afterassign
-                source.push(context.getToks("everyhbox"));
-
-                box = new Box(context, source, typesetter, true);
+                box = acquireBox(context, source, typesetter);
                 box.spreadWidth(d);
             } else {
-
-                //TODO gene: afterassign
-                source.push(context.getToks("everyhbox"));
-
-                box = new Box(context, source, typesetter, true);
+                box = acquireBox(context, source, typesetter);
             }
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
@@ -147,4 +137,34 @@ public class Hbox extends AbstractCode implements Boxable {
         return box;
     }
 
+    /**
+     * Acquire a complete Box taking into account the tokens in
+     * <tt>\afterassignment</tt> and <tt>\everyhbox</tt>.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the complete Box
+     *
+     * @throws GeneralException in case of an error
+     */
+    private Box acquireBox(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        Tokens toks = context.getToks("everyhbox");
+        Token t = context.getAfterassignment();
+        Tokens insert;
+
+        if (t == null) {
+            insert = toks;
+        } else {
+            insert = new Tokens(t);
+            if (toks != null) {
+                insert.add(toks);
+            }
+        }
+
+        return new Box(context, source, typesetter, true, insert);
+    }
 }
