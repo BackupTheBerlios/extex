@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,65 +18,14 @@
  */
 package de.dante.extex.typesetter;
 
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.node.CharNode;
-
 /**
- * ...
- * 
+ * This is a marker interface for discartable nodes.
+ *
+ * @see "The TeXbook; Chapter 14, p. 95"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface NodeList extends Node {
+public interface Discartable {
 
-    /**
-     * ...
-     * 
-     * @param node ...
-     */
-    void add(Node node);
-
-    /**
-     * ...
-     * 
-     * @param node ...
-     */
-    void addGlyph(CharNode node);
-
-    /**
-     * ...
-     * 
-     * @param glue ...
-     */
-    void addSkip(Glue glue);
-
-    /**
-     * ...
-     * 
-     * @param d
-     */
-    void setShift(Dimen d);
-
-    /**
-     * ...
-     * 
-     * @return
-     */
-    Dimen getShift();
-
-    /**
-     * ...
-     * 
-     * @param d
-     */
-    void setMove(Dimen d);
-
-    /**
-     * ...
-     * 
-     * @return
-     */
-    Dimen getMove();
-    
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,19 +29,22 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RuleNode extends AbstractNode implements Node {
-    /** ... */
+    /**
+     * The field <tt>context</tt> ...
+     */
     private TypesettingContext context;
 
     /**
      * Creates a new object.
-     *
+     * 
      * @see "TeX -- The Program [139]"
      */
-    public RuleNode(Dimen width, Dimen height, Dimen depth, TypesettingContext context) {
-        super(width,height,depth);
+    public RuleNode(final Dimen width, final Dimen height, final Dimen depth,
+        final TypesettingContext context) {
+        super(width, height, depth);
         this.context = context;
     }
 
@@ -53,7 +56,7 @@ public class RuleNode extends AbstractNode implements Node {
      */
     public String toString() {
         StringBuffer sb = new StringBuffer();
-        toString(sb);
+        toString(sb, "");
         return sb.toString();
     }
 
@@ -61,7 +64,7 @@ public class RuleNode extends AbstractNode implements Node {
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      * @see "TeX -- The Program [187]"
      */
-    public void toString(StringBuffer sb) {
+    public void toString(final StringBuffer sb, String prefix) {
         sb.append("rule(");
 
         Dimen x = getHeight();
@@ -92,13 +95,14 @@ public class RuleNode extends AbstractNode implements Node {
 
         sb.append(")");
     }
-    
+
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitRule(value,value2);
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
+        return visitor.visitRule(value, value2);
     }
 
 }

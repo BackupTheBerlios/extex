@@ -25,7 +25,7 @@ import de.dante.extex.typesetter.Node;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractNode implements Node {
     /** This is the depth of the node.
@@ -33,21 +33,21 @@ public abstract class AbstractNode implements Node {
      *  A <code>null</code> value indicates
      *  a running value which has to be set or computed later.
      */
-    private Dimen depth;
+    private Dimen theDepth;
 
     /** This is the height of the node.
      *  The height is the extend of the node above the baseline.
      *  A <code>null</code> value indicates
      *  a running value which has to be set or computed later.
      */
-    private Dimen height;
+    private Dimen theHeight;
 
     /** This is the width of the node.
      *  The width is the extend of the node along the baseline.
      *  <code>null</code> indicates
      *  a running value which has to be set or computed later.
      */
-    private Dimen width;
+    private Dimen theWidth;
 
     /**
      * Creates a new object.
@@ -55,68 +55,82 @@ public abstract class AbstractNode implements Node {
      */
     public AbstractNode() {
         super();
-        this.width  = null;
-        this.height = null;
-        this.depth  = null;
+        theWidth  = new Dimen();
+        theHeight = new Dimen();
+        theDepth  = new Dimen();
     }
 
     /**
      * Creates a new object.
      *
-     * @param width the width of the node;
-     *  <code>null</code> denotes the unset value
-     * @param height the height of the node;
-     *  <code>null</code> denotes the unset value
-     * @param depth the depth of the node;
-     *  <code>null</code> denotes the unset value
+     * @param width the width of the node; <code>null</code> denotes the
+     *            unset value
      */
-    public AbstractNode(Dimen width, Dimen height, Dimen depth) {
+    public AbstractNode(final Dimen width) {
         super();
-        this.width  = width;
-        this.height = height;
-        this.depth  = depth;
+        theWidth  = width;
+        theHeight = new Dimen();
+        theDepth  = new Dimen();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param width the width of the node; <code>null</code> denotes the
+     *            unset value
+     * @param height the height of the node; <code>null</code> denotes the
+     *            unset value
+     * @param depth the depth of the node; <code>null</code> denotes the
+     *            unset value
+     */
+    public AbstractNode(final Dimen width, final Dimen height,
+        final Dimen depth) {
+        super();
+        theWidth  = width;
+        theHeight = height;
+        theDepth  = depth;
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#setDepth(de.dante.extex.interpreter.type.Dimen)
      */
-    public void setDepth(Dimen d) {
-        depth.set(d);
+    public void setDepth(final Dimen depth) {
+        theDepth.set(depth);
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#getDepth()
      */
     public Dimen getDepth() {
-        return depth;
+        return theDepth;
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#setHeight(de.dante.extex.interpreter.type.Dimen)
      */
-    public void setHeight(Dimen h) {
-        height.set(h);
+    public void setHeight(final Dimen height) {
+        theHeight.set(height);
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#getHeight()
      */
     public Dimen getHeight() {
-        return height;
+        return theHeight;
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#setWidth(de.dante.extex.interpreter.type.Dimen)
      */
-    public void setWidth(Dimen w) {
-        width.set(w);
+    public void setWidth(final Dimen width) {
+        theWidth.set(width);
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#getWidth()
      */
     public Dimen getWidth() {
-        return width;
+        return theWidth;
     }
 
     /**
@@ -126,21 +140,22 @@ public abstract class AbstractNode implements Node {
      *
      * @return ...
      */
-    protected String toString(String prefix) {
+    protected String toText(final String prefix) {
         StringBuffer sb = new StringBuffer();
-        toString(sb, prefix);
+        toText(sb, prefix);
         return sb.toString();
     }
 
     /**
      * ...
      *
-     * @param sb ...
+     * @param sb the output string buffer
      * @param prefix ...
      */
-    protected void toString(StringBuffer sb, String prefix) {
+    public void toText(final StringBuffer sb, final String prefix) {
         sb.append(prefix);
 
         //TODO incomplete
     }
+
 }

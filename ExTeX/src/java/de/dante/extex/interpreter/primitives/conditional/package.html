@@ -2,9 +2,9 @@
  <head>
   <title>ExTeX Primitives: Interaction Modes</title>
   <meta name="author">Gerd Neugebauer</meta>
-  <meta name="version">$Revision: 1.1 $</meta>
+  <meta name="version">$Revision: 1.2 $</meta>
   <meta name="copyright">
-   Copyright (C) 2003 Gerd Neugebauer
+   Copyright (C) 2003-2004 Gerd Neugebauer
 
    This library is free software; you can redistribute it and/or modify it
    under the terms of the GNU Lesser General Public License as published by
@@ -22,8 +22,35 @@
    </meta>
  </head>
  <body>
-  This package contains primitives to alter the interaction mode.
+  This package contains primitives for conditionals.
+
+  <h1>Operation</h1>
   
+  The macro expansion mechanism makes it rather simple to implement a
+  conditional. At the beginning one has to decide whether or not this branch
+  is active. In an if-then-else construction there are at most two branches,
+  whereas in a switch there might be some more.
+  <p>
+  If the current branch is active then nothing has to be done except the
+  storing of the information where the current conditional has started and its
+  branch. The further expansion is just the same as it the conditional was not
+  there.
+  </p>
+  <p>
+  If the current branch is not active then we can enter a fast skip over the
+  input tokens. Just those tokens are relevant which are related to
+  conditionals. Opening conditionals and closing conditionals are counted
+  until they balance. In a balanced state the branching macro (<tt>\else</tt>
+  or <tt>\or</tt>) or the closing conditional is sought. All other tokens are
+  simply discarted.
+  </p>
+
+  <h1>Implementation</h1>
+  
+  Conditionals are derived form the class AbstractIf. This class takes care of
+  everything except the conmstruction of an object and the evaluation of the
+  condition. Thus usually it is sufficient for the implementation of a new
+  <tt>\if*</tt> to define the constructor and the method <tt>conditional()</tt>.
   
   @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  </bodY>

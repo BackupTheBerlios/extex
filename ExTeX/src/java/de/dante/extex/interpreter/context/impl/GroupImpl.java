@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
@@ -198,8 +198,6 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	    if (box == null) {
 	        if (next != null) {
 	            box = next.getBox(name);
-	        } else {
-	            box = Box.VOID;
 	        }
 	    }
 

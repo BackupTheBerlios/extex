@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,27 +30,31 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\else</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Else extends AbstractIf {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public Else(String name) {
+    public Else(final String name) {
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter)
-               throws GeneralException {
-        if ( context.ifPop() ) {
-            if ( skipToElseOrFi(context, source) ) {
-                throw new GeneralHelpingException("TTP.ExtraOrElseFi","\\else");
+    public void execute(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+        if (context.ifPop()!=0) {
+            if (skipToElseOrFi(context, source)) {
+                throw new GeneralHelpingException("TTP.ExtraOrElseFi", "\\else");
             }
         }
 
@@ -58,13 +62,20 @@ public class Else extends AbstractIf {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractIf#conditional(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.AbstractIf#conditional(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    protected boolean conditional(Context context, TokenSource source, Typesetter typesetter) {
+    protected boolean conditional(final Context context,
+        final TokenSource source, final Typesetter typesetter) {
         return false;
     }
 
     /**
+     * This method is overwritten here since <tt>\else</tt> does not count as
+     * an opening conditional even so it is derived from
+     * {@link de.dante.extex.interpreter.AbstractIf AbstractIf}.
+     * 
      * @see de.dante.extex.interpreter.Code#isIf()
      */
     public boolean isIf() {

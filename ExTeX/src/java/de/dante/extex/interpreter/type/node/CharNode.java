@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 
@@ -30,22 +31,34 @@ import de.dante.util.UnicodeChar;
  *
  * @see "TeX -- The Program [134]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CharNode extends AbstractNode implements Node {
-    /** ... */
+    /**
+     * The field <tt>character</tt> contains the single character represented 
+     * by this node.
+     */
     private UnicodeChar character;
 
-    /** ... */
+    /**
+     * The field <tt>typesettingContext</tt> contains the typesetting context
+     */
     private TypesettingContext typesettingContext;
 
     /**
      * Creates a new object.
+     *
+     * @param context the typesetting context
+     * @param uc the unicode character
      */
-    public CharNode(TypesettingContext typesettingContext, UnicodeChar c) {
+    public CharNode(final TypesettingContext context, final UnicodeChar uc) {
         super();
-        this.typesettingContext = typesettingContext;
-        this.character          = c;
+        typesettingContext = context;
+        character          = uc;
+        Font font          = context.getFont();
+        setWidth(font.getWidth(uc));
+        setHeight(font.getHeight(uc));
+        setDepth(font.getDepth(uc));
     }
 
     /**
@@ -58,9 +71,20 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append(character.toString());
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
-    public void toString(StringBuffer sb) {
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append('\\');
+        sb.append(typesettingContext.getFont().getFontName());
+        sb.append(' ');
         sb.append(character.toString());
     }
 
@@ -72,10 +96,11 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-                 throws GeneralException {
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
         return visitor.visitChar(value, value2);
     }
 }

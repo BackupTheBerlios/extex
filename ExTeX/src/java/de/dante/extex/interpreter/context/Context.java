@@ -44,7 +44,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Context extends Serializable {
 
@@ -131,7 +131,7 @@ public interface Context extends Serializable {
      *
      * @param name the name or number of the count register
      *
-     * @return the count register or <code>null</code> if it is not defined
+     * @return the count register or <code>null</code> if it is void
      */
     Box getBox(String name);
 
@@ -427,7 +427,7 @@ public interface Context extends Serializable {
      *
      * @throws GeneralException ...
      */
-    boolean ifPop() throws GeneralException;
+    long ifPop() throws GeneralException;
 
     /**
      * ...
@@ -435,7 +435,7 @@ public interface Context extends Serializable {
      * @param locator the locator of the start
      * @param value the boolean value
      */
-    void ifPush(Locator locator, boolean value);
+    void ifPush(Locator locator, long value);
 
     /**
      * This method can be used to open another group. The current group is

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,16 +24,16 @@ import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @see "TeX -- The Program [137]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @see "TeX -- The Program [136]"
      */
     public VerticalListNode() {
@@ -41,18 +41,30 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toString(StringBuffer sb) {
-        super.toString(sb,"vlist ");
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append("(vlist ");
+        super.toText(sb, prefix);
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitVerticalList(value,value2);
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("\\vbox");
+        super.toString(sb, prefix);
+    }
+    
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
+        return visitor.visitVerticalList(value, value2);
     }
 
 }

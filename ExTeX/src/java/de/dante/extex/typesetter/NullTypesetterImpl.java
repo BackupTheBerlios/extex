@@ -19,6 +19,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
@@ -35,7 +36,7 @@ import de.dante.util.configuration.ConfigurationException;
  * interface.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -118,7 +119,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish() {
+    public void finish(Context context) {
     }
 
     /**

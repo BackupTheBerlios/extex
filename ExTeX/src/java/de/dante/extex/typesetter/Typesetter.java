@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,27 +20,50 @@ package de.dante.extex.typesetter;
 
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.util.GeneralException;
-import de.dante.util.configuration.Configurable;
 
 /**
  * ...
- * 
- * 
+ *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public interface Typesetter extends ListMaker, Configurable {
-    
-    public abstract void setDocumentWriter(DocumentWriter doc);
+public interface Typesetter extends ListMaker {
 
-    public abstract CharNodeFactory getCharNodeFactory();
+    /**
+     * Setter for the docuemnt writer.
+     * The document writer is addressed whenever a complete page has to be
+     * shipped out.
+     *
+     * @param doc the new docuemnt writer
+     */
+    void setDocumentWriter(DocumentWriter doc);
 
-    public abstract void finish() throws GeneralException;
-    
-    public abstract void shipout(Box nodes) throws GeneralException;
-    
+    /**
+     * ...
+     *
+     * @return the character node factory
+     */
+    CharNodeFactory getCharNodeFactory();
+
+    /**
+     * ...
+     * 
+     * @throws GeneralException in case of an error
+     */
+    void finish(Context context) throws GeneralException;
+
+    /**
+     * ...
+     *
+     * @param nodes
+     *
+     * @throws GeneralException in case of an error
+     */
+    void shipout(Box nodes) throws GeneralException;
+
 }

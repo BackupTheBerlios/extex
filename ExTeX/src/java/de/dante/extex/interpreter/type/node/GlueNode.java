@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,38 +17,42 @@
  *
  */
 package de.dante.extex.interpreter.type.node;
- 
+
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class GlueNode extends AbstractNode implements Node {
+public class GlueNode extends AbstractNode implements Node, Discartable {
+    /**
+     * The field <tt>theSize</tt> ...
+     */
+    private Glue theSize;
 
-    private Glue size;
     /**
      * Creates a new object.
-     * 
      */
     public GlueNode() {
         super();
-        this.size = null;
+        theSize = null;
     }
 
     /**
      * Creates a new object.
-     * 
+     *
+     * @param size the actual size
      */
-    public GlueNode(Glue size) {
+    public GlueNode(final Glue size) {
         super();
-        this.size = size;
+        theSize = size;
     }
 
     /**
@@ -57,23 +61,40 @@ public class GlueNode extends AbstractNode implements Node {
      * @return ...
      * @see "TeX -- The Program [186]"
      */
-    public String toString() {
+    public String toText() {
         return " "; //TODO incomplete
     }
-    
+
     /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toString(StringBuffer sb) {
+    public void toText(final StringBuffer sb, final String prefix) {
         sb.append(" "); //TODO incomplete
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see java.lang.Object#toString()
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitGlue(value,value2);
+    public String toString() {
+        return " "; //TODO incomplete
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb, String prefix) {
+        sb.append("\\skip ");
+        sb.append(theSize.toString());
+    }
+    
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+        return visitor.visitGlue(value, value2);
     }
 
 }
