@@ -1,6 +1,6 @@
 ; author: Sebastian Waschik
 ; created: 2004-07-26
-; RCS-ID: $Id: .prj.el,v 1.3 2004/08/28 14:20:45 plaicy Exp $
+; RCS-ID: $Id: .prj.el,v 1.4 2004/10/30 17:31:44 plaicy Exp $
 (jde-project-file-version "1.0")
 (jde-set-variables
  '(jde-project-name "ExTeX")
@@ -9,8 +9,8 @@
  '(jde-resolve-relative-paths-p t)
  '(jde-sourcepath
    (quote
-    ("./src/java"
-     "./src/test")))
+    ("./src/test"
+     "./src/java")))
  '(jde-global-classpath
    (quote
     ("./target/classes"
@@ -51,5 +51,6 @@
  '(jde-gen-k&r t)
 
  ;; xrefdb
+ ;'(jde-xref-db-base-directory "./.jde")
  '(jde-xref-store-prefixes (quote ("de.dante")))
 )
