@@ -282,7 +282,7 @@
     <Define name="showboxbreadth" class=""/>
     <Define name="showboxdepth" class=""/>
     <Define name="showlists" class=""/>
-    <Define name="showthe" class=""/>
+    <define name="showthe" class="de.dante.extex.interpreter.primitives.debugging.Showthe"/>
     <Define name="skewchar" class=""/>
     <Define name="skip" class=""/>
     <Define name="skipdef" class=""/>
