@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\mathaccent</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathTest extends ExTeXLauncher {
 
@@ -49,9 +49,9 @@ public class MathTest extends ExTeXLauncher {
                 "\\catcode`$=3 "
                 + "$a$",
                 //--- log message ---
-                "?", //TODO gene: check
+                "",
                 //--- output channel ---
-                null);
+                "a\n");
     }
 
     /**
@@ -66,9 +66,9 @@ public class MathTest extends ExTeXLauncher {
                 + "\\catcode`$=3 "
                 + "${a \\over b}$",
                 //--- log message ---
-                "?",
+                "",
                 //--- output channel ---
-                null);
+                "???"); //TODO gene: check
     }
 
 }
