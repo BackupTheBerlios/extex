@@ -139,12 +139,15 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breakes separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
+    /**
+     * The constant <tt>COMPLETE</tt> contains the ...
+     */
     private static final boolean COMPLETE = false;
-    
+
     /**
      * The constant <tt>DEVELOP</tt> contains a boolean indicating whether the
      * develop traces should be written.
@@ -173,7 +176,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
             Dimen.ZERO_PT);
 
     /**
-     * The field <tt>hangingParshape</tt> contains  data object used to
+     * The field <tt>hangingParshape</tt> contains the data object used to
      * transport the hanging paragraph shape to the appropriate places. The
      * values stored in it will be overwritten whenever this object will be
      * used for the current paragraph.
@@ -308,7 +311,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
             Breaks breaks = findOptimalBreakPoints(breakPoints, 0,
                     pretolerance, 0, 0, leftskip, rightskip, Dimen.ZERO_PT);
             if (breaks != null) {
-                parshape = null;
+                options.setParshape(null);
                 return splitNodeList(nodes, breaks, leftskip, rightskip);
             }
         }
@@ -329,7 +332,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
         Breaks breaks = findOptimalBreakPoints(breakPoints, 0, tolerance, 0, 0,
                 leftskip, rightskip, Dimen.ZERO_PT);
         if (breaks != null) {
-            parshape = null;
+            options.setParshape(null);
             return splitNodeList(nodes, breaks, leftskip, rightskip);
         }
 
@@ -342,12 +345,12 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
             breaks = findOptimalBreakPoints(breakPoints, 0, tolerance, 0, 0,
                     leftskip, rightskip, emergencystretch);
             if (breaks != null) {
-                parshape = null;
+                options.setParshape(null);
                 return splitNodeList(nodes, breaks, leftskip, rightskip);
             }
         }
 
-        parshape = null;
+        options.setParshape(null);
         return nodes;
     }
 
@@ -385,7 +388,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      */
     private int computeDemerits(final BreakPoint[] breakPoint, final int pi,
             final FixedGlue leftskip, final FixedGlue rightskip,
-            final FixedGlue lineWidth, int threshold) {
+            final FixedGlue lineWidth, final int threshold) {
 
         Glue width = new Glue(breakPoint[pi].getWidth());
         for (int i = pi - 1; i > 0 && !breakPoint[i].isActive(); i--) {
@@ -609,6 +612,8 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      */
     private void prepareParshape() {
 
+        parshape = options.getParshape();
+        
         if (parshape == null) {
             int hangafter = (int) options.getCountOption("hangafter")
                     .getValue();
@@ -643,15 +648,6 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
     public void setOptions(final TypesetterOptions options) {
 
         this.options = options;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#setParshape(
-     *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
-     */
-    public void setParshape(final ParagraphShape parshape) {
-
-        this.parshape = parshape;
     }
 
     /**

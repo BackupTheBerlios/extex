@@ -28,43 +28,23 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
-
-    /**
-     * Command line interface.
-     * @param args the arguments
-     */
-    public static void main(final String[] args) {
-
-        junit.textui.TestRunner.run(ParagraphBuilderImplTest.class);
-    }
-
-    /**
-     * ...
-     */
-    public void test1() {
-
-        ParagraphBuilder builder = new ParagraphBuilderImpl(null);
-        builder.setOptions(new MockOptions());
-        HorizontalListNode nodes = new HorizontalListNode();
-        assertEquals(0, builder.build(nodes).size());
-    }
 
     /**
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockOptions implements TypesetterOptions {
-
         /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(java.lang.String)
          */
@@ -103,5 +83,42 @@ public class ParagraphBuilderImplTest extends TestCase {
             }
             return new Glue(0);
         }
+
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getParshape()
+         */
+        public ParagraphShape getParshape() {
+
+            // TODO Auto-generated method stub
+            return null;
+        }
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#setParshape(de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
+         */
+        public void setParshape(ParagraphShape shape) {
+
+            // TODO Auto-generated method stub
+
+        }
+    }
+
+    /**
+     * Command line interface.
+     * @param args the arguments
+     */
+    public static void main(final String[] args) {
+
+        junit.textui.TestRunner.run(ParagraphBuilderImplTest.class);
+    }
+
+    /**
+     * ...
+     */
+    public void test1() {
+
+        ParagraphBuilder builder = new ParagraphBuilderImpl(null);
+        builder.setOptions(new MockOptions());
+        HorizontalListNode nodes = new HorizontalListNode();
+        assertEquals(0, builder.build(nodes).size());
     }
 }
