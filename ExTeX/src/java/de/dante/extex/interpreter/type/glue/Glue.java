@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 package de.dante.extex.interpreter.type.glue;
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -54,12 +54,25 @@ public class Glue implements Serializable, FixedGlue {
     /**
      * Creates a new object.
      *
-     * @param theLength the naturallength in scaled point
+     * @param theLength the natural length
      */
-    public Glue(final long theLength) {
+    public Glue(final Dimen theLength) {
 
         super();
-        this.length = new GlueComponent(theLength);
+        this.length = theLength.copy();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param glue the glue to clone
+     */
+    public Glue(final FixedGlue glue) {
+
+        super();
+        this.length = glue.getLength().copy();
+        this.stretch = glue.getStretch().copy();
+        this.shrink = glue.getShrink().copy();
     }
 
     /**
@@ -81,12 +94,12 @@ public class Glue implements Serializable, FixedGlue {
     /**
      * Creates a new object.
      *
-     * @param theLength the natural length
+     * @param theLength the naturallength in scaled point
      */
-    public Glue(final Dimen theLength) {
+    public Glue(final long theLength) {
 
         super();
-        this.length = theLength.copy();
+        this.length = new GlueComponent(theLength);
     }
 
     /**
@@ -108,6 +121,40 @@ public class Glue implements Serializable, FixedGlue {
         if (source.getKeyword("minus")) {
             this.shrink = new GlueComponent(context, source, true);
         }
+    }
+
+    /**
+     * Add another glue to this one.
+     * The addition is perfomred indepentently on the components.
+     *
+     * @param g the glue to add
+     */
+    public void add(final FixedGlue g) {
+
+        this.length.add(g.getLength());
+        this.stretch.add(g.getStretch());
+        this.shrink.add(g.getShrink());
+    }
+
+    /**
+     * Add a dimen to this one glue.
+     * The addition is perfomred indepentently on the components.
+     *
+     * @param g the glue to add
+     */
+    public void add(final FixedGlueComponent g) {
+
+        this.length.add(g);
+    }
+
+    /**
+     * Make a copy of this object.
+     *
+     * @return a new instance with the same internal values
+     */
+    public Glue copy() {
+
+        return new Glue(length.copy(), stretch.copy(), shrink.copy());
     }
 
     /**
@@ -146,29 +193,6 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Make a copy of this object.
-     *
-     * @return a new instance withe the same internal values
-     */
-    public Glue copy() {
-
-        return new Glue(length.copy(), stretch.copy(), shrink.copy());
-    }
-
-    /**
-     * Add another glue to this one.
-     * The addition is perfomred indepentently on the components.
-     *
-     * @param g the glue to add
-     */
-    public void add(final Glue g) {
-
-        this.length.add(g.getLength());
-        this.stretch.add(g.getStretch());
-        this.shrink.add(g.getShrink());
-    }
-
-    /**
      * Multiply the normal size by an integer fraction.
      * <p>
      *  <i>length</i> = <i>length</i> * <i>nom</i> / <i>denom</i>
@@ -183,20 +207,6 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * Multiply the stretch component by an integer fraction.
-     * <p>
-     *  <i>stretch</i> = <i>stretch</i> * <i>nom</i> / <i>denom</i>
-     * </p>
-     *
-     * @param nom nominator
-     * @param denom denominator
-     */
-    public void multiplyStretch(final long nom, final long denom) {
-
-        this.length.multiply(nom, denom);
-    }
-
-    /**
      * Multiply the shrink component by an integer fraction.
      * <p>
      *  <i>shrink</i> = <i>shrink</i> * <i>nom</i> / <i>denom</i>
@@ -206,6 +216,20 @@ public class Glue implements Serializable, FixedGlue {
      * @param denom denominator
      */
     public void multiplyShrink(final long nom, final long denom) {
+
+        this.length.multiply(nom, denom);
+    }
+
+    /**
+     * Multiply the stretch component by an integer fraction.
+     * <p>
+     *  <i>stretch</i> = <i>stretch</i> * <i>nom</i> / <i>denom</i>
+     * </p>
+     *
+     * @param nom nominator
+     * @param denom denominator
+     */
+    public void multiplyStretch(final long nom, final long denom) {
 
         this.length.multiply(nom, denom);
     }
