@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class StyleNoad implements Noad {
 
@@ -36,31 +36,41 @@ public final class StyleNoad implements Noad {
      * The constant <tt>DISPLAYSTYLE</tt> contains the value for the display
      * style.
      */
-    public static final StyleNoad DISPLAYSTYLE = new StyleNoad("textstyle");
+    public static final StyleNoad DISPLAYSTYLE = new StyleNoad("textstyle",
+            "\\displaystyle");
 
     /**
      * The constant <tt>SCRIPTSCRIPTSTYLE</tt> contains the value for the
      * scriptscript style.
      */
     public static final StyleNoad SCRIPTSCRIPTSTYLE = new StyleNoad(
-            "scriptscriptstyle");
+            "scriptscriptstyle", "\\scriptscriptstyle");
 
     /**
      * The constant <tt>SCRIPTSTYLE</tt> contains the value for the script
      * style.
      */
-    public static final StyleNoad SCRIPTSTYLE = new StyleNoad("scriptstlye");
+    public static final StyleNoad SCRIPTSTYLE = new StyleNoad("scriptstlye",
+            "\\scriptstlye");
 
     /**
      * The constant <tt>TEXTSTYLE</tt> contains the value for the text
      * style.
      */
-    public static final StyleNoad TEXTSTYLE = new StyleNoad("textstyle");
+    public static final StyleNoad TEXTSTYLE = new StyleNoad("textstyle",
+            "\\textstyle");
 
     /**
-     * The field <tt>style</tt> contains the ...
+     * The field <tt>style</tt> contains the TeX name for the style. It has the
+     * values <tt>textstyle</tt>, <tt>scriptstyle</tt>, or
+     * <tt>scriptscriptstyle</tt>.
      */
     private String style;
+
+    /**
+     * The field <tt>printName</tt> contains the printable representation.
+     */
+    private String printName;
 
     /**
      * Creates a new object.
@@ -70,10 +80,11 @@ public final class StyleNoad implements Noad {
      *
      * @param style the style
      */
-    private StyleNoad(final String style) {
+    private StyleNoad(final String style, final String printName) {
 
         super();
         this.style = style;
+        this.printName = printName;
     }
 
     /**
@@ -125,7 +136,7 @@ public final class StyleNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        //TODO gene: unimplemented
+        sb.append(printName);
     }
 
     /**
