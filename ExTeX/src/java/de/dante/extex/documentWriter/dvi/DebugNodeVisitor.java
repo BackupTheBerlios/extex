@@ -22,13 +22,14 @@ package de.dante.extex.documentWriter.dvi;
 
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
+import de.dante.extex.typesetter.Node;
 
 
 /**
  * This is a implementation of a NodeVisitor for debugging.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DebugNodeVisitor implements DebugableNodeVisitor {
     /**
@@ -163,7 +164,22 @@ public class DebugNodeVisitor implements DebugableNodeVisitor {
     public Object visitKern(final Object value, final Object value2)
         throws GeneralException {
 
-        debugMessage("visitKern");
+        StringBuffer buffer = new StringBuffer("visitKern");
+        Node node = null;
+
+        // TODO: better the visitor knows where the Node is (TE)
+        if (value instanceof Node) {
+            node = (Node) value;
+        } else if (value2 instanceof Node) {
+            node = (Node) value2;
+        }
+
+        if (value != null) {
+            buffer.append(" (");
+            buffer.append(node.getWidth().getValue());
+            buffer.append(")");
+        }
+        debugMessage(buffer.toString());
         return nodeVisitor.visitKern(value, value2);
     }
 
