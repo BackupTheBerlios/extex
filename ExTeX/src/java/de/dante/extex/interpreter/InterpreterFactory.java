@@ -31,7 +31,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class InterpreterFactory {
 
@@ -40,7 +40,9 @@ public class InterpreterFactory {
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
-    /** the configuration for this factory */
+    /**
+     * The field <tt>config</tt> contains the configuration for this factory
+     */
     private Configuration config;
 
     /**
@@ -55,7 +57,7 @@ public class InterpreterFactory {
      * @param configuration the configuration object to use
      * 
      * @throws ConfigurationException in case that the attribute <tt>classname</tt>
-     *             is kissing
+     *             is missing
      */
     public InterpreterFactory(final Configuration configuration)
             throws ConfigurationException {
