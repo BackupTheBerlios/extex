@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Currentgrouplevel
     extends AbstractCode
@@ -91,15 +91,6 @@ public class Currentgrouplevel
                         .toString());
     }
 
-    /**
-     * Get the current GroupLevel.
-     *
-     * @param context current <code>Context</code>
-     * @return the GroupLevel
-     */
-    private long getGroupLevel(final Context context) {
-        return -1; // TODO
-    }
 
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
@@ -110,7 +101,7 @@ public class Currentgrouplevel
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        return getGroupLevel(context);
+        return context.getGroupLevel();
     }
 
 
@@ -124,7 +115,7 @@ public class Currentgrouplevel
                       final Typesetter typesetter)
         throws GeneralException {
 
-        String level = Long.toString(getGroupLevel(context));
+        String level = Long.toString(context.getGroupLevel());
         return new Tokens(context, level);
     }
 }
