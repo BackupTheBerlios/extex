@@ -28,8 +28,8 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
+import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.noad.Noad;
@@ -43,7 +43,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -145,7 +145,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#getManager()
      */
-    public Manager getManager() {
+    public ListManager getManager() {
 
         return null;
     }
@@ -285,30 +285,30 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
-     *      de.dante.extex.scanner.Token, TokenSource)
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void treatMathShift(Token t, TokenSource source)
+    public void mathShift(Context context, TokenSource source, Token t)
             throws GeneralException {
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#treatSubMark(
+     * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSubMark(final TypesettingContext context, final Token t)
+    public void subscriptMark(final TypesettingContext context, final Token t)
             throws GeneralException {
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#treatSupMark(
+     * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSupMark(final TypesettingContext context, final Token t)
+    public void superscriptMark(final TypesettingContext context, final Token t)
             throws GeneralException {
 
     }
