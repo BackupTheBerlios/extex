@@ -46,9 +46,13 @@ import de.dante.util.configuration.ConfigurationException;
  *       &rarr; <tt>\input</tt> &lang;filename&rang; </pre>
  * </p>
  * <p>
- *  Examples:
+ *  Examples:<br/>
+ *  The traditional version of the file name parsing allows the following
+ *  syntax:
  *  <pre class="TeXSample">
  *    \input file.name  </pre>
+ *  If the parsing is not configured to be strict then the following syntax
+ *  is allowed as well:
  *  <pre class="TeXSample">
  *    \input{file.name}  </pre>
  * </p>
@@ -57,9 +61,16 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Input extends AbstractFileCode {
+
+    /**
+     * The field <tt>FILE_TYPE</tt> contains the file type to create an input
+     * stream for.
+     */
+    private static final String FILE_TYPE = "tex";
+    //TODO is "tex" as constant good?
 
     /**
      * Creates a new object.
@@ -89,8 +100,7 @@ public class Input extends AbstractFileCode {
         TokenStreamFactory factory = source.getTokenStreamFactory();
 
         try {
-            source.addStream(factory.newInstance(name, "tex", encoding));
-            //TODO is "tex" as constant good?
+            source.addStream(factory.newInstance(name, FILE_TYPE, encoding));
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);
         } catch (ConfigurationException e) {
