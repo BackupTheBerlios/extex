@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives;
+package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
@@ -30,8 +30,30 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\afterassignment</code>.
  *
+ * <doc>
+ * <h3>The Primitive <tt>\afterassignment</tt></h3>
+ * <p>
+ *  ...
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    <tt>\afterassignment</tt> {@linkplain
+ *    de.dante.extex.interpreter.TokenSource &lang;token&rang;} </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \afterassignment\abc  </pre>
+ *  <pre class="TeXSample">
+ *    \afterassignment X  </pre>
+ *  <pre class="TeXSample">
+ *    \afterassignment ~  </pre>
+ * </p>
+ * </doc>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public class Afterassignment extends AbstractCode {
 
