@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Muskip implements Serializable {
 
@@ -65,6 +65,12 @@ public class Muskip implements Serializable {
         }
         return value;
     }
+
+    /**
+     * The field <tt>kill</tt> contains the indicator that the following glue
+     * might be killed.
+     */
+    private boolean kill;
 
     /**
      * The field <tt>length</tt> contains the the natural length.
@@ -149,6 +155,26 @@ public class Muskip implements Serializable {
     public Dimen getLength() {
 
         return new Dimen(length.getValue());
+    }
+
+    /**
+     * Getter for kill.
+     *
+     * @return the kill
+     */
+    public boolean isKill() {
+
+        return this.kill;
+    }
+
+    /**
+     * Setter for kill.
+     *
+     * @param kill the kill to set
+     */
+    public void setKill(final boolean kill) {
+
+        this.kill = kill;
     }
 
     /**
