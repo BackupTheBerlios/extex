@@ -16,7 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives.table;
+package de.dante.extex.interpreter.primitives.table.util;
 
 import de.dante.extex.interpreter.type.tokens.Tokens;
 
