@@ -16,8 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
@@ -31,19 +33,20 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
     /**
      * The field <tt>theSize</tt> ...
      */
-    private Glue theSize;
+    private FixedGlue theSize;
 
     /**
      * Creates a new object.
      */
     public GlueNode() {
+
         super();
         theSize = null;
     }
@@ -53,7 +56,8 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      *
      * @param size the actual size
      */
-    public GlueNode(final Glue size) {
+    public GlueNode(final FixedGlue size) {
+
         super();
         theSize = size;
     }
@@ -68,6 +72,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      * @see "TeX -- The Program [186]"
      */
     public String toText() {
+
         return " "; //TODO incomplete
     }
 
@@ -76,6 +81,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      *      java.lang.String)
      */
     public void toText(final StringBuffer sb, final String prefix) {
+
         sb.append(" "); //TODO incomplete
     }
 
@@ -83,6 +89,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      * @see java.lang.Object#toString()
      */
     public String toString() {
+
         return " "; //TODO incomplete
     }
 
