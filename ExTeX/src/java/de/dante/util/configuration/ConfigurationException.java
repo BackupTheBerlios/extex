@@ -27,7 +27,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class ConfigurationException extends Exception {
 
@@ -75,13 +75,14 @@ public abstract class ConfigurationException extends Exception {
     /**
      * Creates a new object.
      *
-     * @param aMessage message the message string
-     * @param cause the next Throwable in the list
+     * @param theMessage message the message string
+     * @param theCause the next Throwable in the list
      */
-    public ConfigurationException(final String aMessage, final Throwable cause) {
+    public ConfigurationException(final String theMessage,
+            final Throwable theCause) {
 
-        super(aMessage, cause);
-        this.message = aMessage;
+        super(theMessage, theCause);
+        this.message = theMessage;
     }
 
     /**
@@ -99,7 +100,7 @@ public abstract class ConfigurationException extends Exception {
     }
 
     /**
-     * Getter for the message of this Exception.
+     * Getter for the localized message of this Exception.
      * The text is taken from the {@link de.dante.extex.i18n.Messages Messages}.
      * The key depends on the further information present:
      *
@@ -145,34 +146,33 @@ public abstract class ConfigurationException extends Exception {
      *
      * @return the message
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         if (getCause() != null) {
             for (Throwable t = getCause(); t != null; t = t.getCause()) {
-                String msg = t.getMessage();
+                String msg = t.getLocalizedMessage();
 
                 if (msg != null) {
                     if (source != null) {
                         if (message != null) {
-                            return localizer
+                            return getLocalizer()
                                     .format(
                                             "ConfigurationException.FormatCauseMessageLocation",
                                             getText(), msg, message, source);
                         } else {
-                            return localizer
+                            return getLocalizer()
                                     .format(
                                             "ConfigurationException.FormatCauseLocation",
                                             getText(), msg, source);
                         }
                     } else if (message != null) {
-                        return localizer
-                                .format(
-                                        "ConfigurationException.FormatCauseMessage",
-                                        getText(), msg, message);
+                        return getLocalizer().format(
+                                "ConfigurationException.FormatCauseMessage",
+                                getText(), msg, message);
                     } else {
-                        return localizer
-                                .format("ConfigurationException.FormatCause",
-                                        getText(), msg);
+                        return getLocalizer().format(
+                                "ConfigurationException.FormatCause",
+                                getText(), msg);
                     }
                 }
             }
@@ -180,29 +180,21 @@ public abstract class ConfigurationException extends Exception {
 
         if (source != null) {
             if (message != null) {
-                return localizer
-                        .format("ConfigurationException.FormatMessageLocation",
-                                getText(), message, source);
+                return getLocalizer().format(
+                        "ConfigurationException.FormatMessageLocation",
+                        getText(), message, source);
             } else {
-                return localizer.format("ConfigurationException.FormatLocation",
-                                       getText(), source);
+                return getLocalizer().format(
+                        "ConfigurationException.FormatLocation", getText(),
+                        source);
             }
         } else if (message != null) {
-            return localizer.format("ConfigurationException.FormatMessage",
-                                   getText(), message);
+            return getLocalizer().format(
+                    "ConfigurationException.FormatMessage", getText(), message);
         } else {
-            return localizer.format("ConfigurationException.Format", getText());
+            return getLocalizer().format("ConfigurationException.Format",
+                    getText());
         }
-    }
-
-    /**
-     * Getter for the unformatted message.
-     *
-     * @return the unformatted message
-     */
-    protected String getMessageUnformatted() {
-
-        return super.getMessage();
     }
 
     /**
@@ -214,6 +206,6 @@ public abstract class ConfigurationException extends Exception {
      */
     protected String getText() {
 
-        return localizer.format("ConfigurationException.Text");
+        return getLocalizer().format("ConfigurationException.Text");
     }
 }

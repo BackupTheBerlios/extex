@@ -56,7 +56,7 @@ import de.dante.util.framework.i18n.Localizer;
  * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HelpingException extends GeneralException {
 
@@ -70,7 +70,7 @@ public class HelpingException extends GeneralException {
      *
      * @param resource the ResourceBundle to use
      *
-     * @deprecated use the locator instead.
+     * @deprecated use the localizer instead.
      */
     public static void setResource(final ResourceBundle resource) {
 
@@ -113,8 +113,7 @@ public class HelpingException extends GeneralException {
      * @param messageTag the message
      * @param localizer the localizer to use
      */
-    public HelpingException(final Localizer localizer,
-            final String messageTag) {
+    public HelpingException(final Localizer localizer, final String messageTag) {
 
         super();
         this.tag = messageTag;
@@ -128,8 +127,8 @@ public class HelpingException extends GeneralException {
      * @param a1 the first argument
      * @param localizer the localizer to use
      */
-    public HelpingException(final Localizer localizer,
-            final String messageTag, final String a1) {
+    public HelpingException(final Localizer localizer, final String messageTag,
+            final String a1) {
 
         super();
         this.tag = messageTag;
@@ -145,8 +144,8 @@ public class HelpingException extends GeneralException {
      * @param a2 the second argument
      * @param localizer the localizer to use
      */
-    public HelpingException(final Localizer localizer,
-            final String messageTag, final String a1, final String a2) {
+    public HelpingException(final Localizer localizer, final String messageTag,
+            final String a1, final String a2) {
 
         super();
         this.tag = messageTag;
@@ -164,9 +163,8 @@ public class HelpingException extends GeneralException {
      * @param a3 the third argument
      * @param localizer the localizer to use
      */
-    public HelpingException(final Localizer localizer,
-            final String messageTag, final String a1, final String a2,
-            final String a3) {
+    public HelpingException(final Localizer localizer, final String messageTag,
+            final String a1, final String a2, final String a3) {
 
         super();
         this.tag = messageTag;
@@ -252,16 +250,16 @@ public class HelpingException extends GeneralException {
      *
      * @param name the key string for the format
      *
-     * @return ...
+     * @return the format string to use
      */
     protected String determineFormat(final String name) {
 
-        if (localizer!= null) {
+        if (localizer != null) {
             return localizer.format(name);
         }
 
-        // The following fallback should be eliminated as soon as the deprecated
-        // methods are removed.
+        // TODO The following fallback should be eliminated as soon as the
+        //       deprecated methods are removed.
 
         String format;
         try {
@@ -290,10 +288,10 @@ public class HelpingException extends GeneralException {
      *
      * @return the help information
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
-        return MessageFormat.format(determineFormat(tag), new Object[]{arg1,
-                arg2, arg3});
+        return MessageFormat.format(determineFormat(tag), //
+                new Object[]{arg1, arg2, arg3});
     }
 
 }

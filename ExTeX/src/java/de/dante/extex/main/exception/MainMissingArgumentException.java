@@ -25,7 +25,7 @@ package de.dante.extex.main.exception;
  * argument is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainMissingArgumentException extends MainException {
 
@@ -45,9 +45,9 @@ public class MainMissingArgumentException extends MainException {
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return getLocalizer().format("MainMissingArgumentException.Message",
                 super.getMessage());

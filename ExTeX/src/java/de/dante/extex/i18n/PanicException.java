@@ -20,12 +20,13 @@
 package de.dante.extex.i18n;
 
 import de.dante.util.GeneralException;
+import de.dante.util.framework.i18n.Localizer;
 
 /**
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PanicException extends GeneralException {
 
@@ -49,6 +50,11 @@ public class PanicException extends GeneralException {
      * The field <tt>arg3</tt> contains the third argument.
      */
     private String arg3 = "?";
+
+    /**
+     * The field <tt>localizer</tt> contains the ...
+     */
+    private Localizer localizer;
 
     /** the name of the message to show; cf. Messages */
     private String tag = "GeneralDetailedException.help";
@@ -126,9 +132,9 @@ public class PanicException extends GeneralException {
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return getLocalizer().format(tag, arg1, arg2, arg3);
     }

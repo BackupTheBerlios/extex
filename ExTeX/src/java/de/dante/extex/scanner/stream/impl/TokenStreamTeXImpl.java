@@ -55,7 +55,7 @@ import de.dante.util.file.InputLineDecoder;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
         implements
@@ -115,8 +115,9 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
      */
     public TokenStreamTeXImpl(final Configuration config,
             final TokenStreamOptions options, final InputStream stream,
-            final String theSource, final String encoding) throws IOException,
-            ConfigurationException {
+            final String theSource, final String encoding)
+            throws IOException,
+                ConfigurationException {
 
         super(false);
 
@@ -151,9 +152,8 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
             try {
                 bufferSize = Integer.parseInt(size);
             } catch (NumberFormatException e) {
-                throw new ConfigurationSyntaxException(e.getMessage(), config
-                        .toString()
-                        + "#" + BUFFERSIZE_ATTRIBUTE);
+                throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
+                        config.toString() + "#" + BUFFERSIZE_ATTRIBUTE);
             }
         }
         return bufferSize;
@@ -173,8 +173,9 @@ public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
      */
     public TokenStreamTeXImpl(final Configuration config,
             final TokenStreamOptions options, final Reader reader,
-            final Boolean isFile, final String theSource) throws IOException,
-            ConfigurationException {
+            final Boolean isFile, final String theSource)
+            throws IOException,
+                ConfigurationException {
 
         super(isFile.booleanValue());
 

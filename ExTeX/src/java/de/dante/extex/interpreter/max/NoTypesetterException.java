@@ -26,7 +26,7 @@ import de.dante.util.configuration.ConfigurationException;
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NoTypesetterException extends ConfigurationException {
 
@@ -51,7 +51,7 @@ public class NoTypesetterException extends ConfigurationException {
      *
      * @return the text
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return getLocalizer().format("ConfigurationNoTypesetterException.Text",
                 message);

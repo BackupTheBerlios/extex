@@ -25,7 +25,7 @@ package de.dante.extex.scanner;
  * number of characters in it.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CatcodeWrongLengthException extends CatcodeException {
 
@@ -39,9 +39,9 @@ public class CatcodeWrongLengthException extends CatcodeException {
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return getLocalizer().format("CatcodeWrongLengthException.Text", //
                                super.getMessage());

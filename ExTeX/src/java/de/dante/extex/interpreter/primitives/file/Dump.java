@@ -26,7 +26,6 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -64,7 +63,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Dump extends AbstractCode {
 
@@ -112,17 +111,17 @@ public class Dump extends AbstractCode {
             throws GeneralException {
 
         if (!context.isGlobalGroup()) {
-            throw new HelpingException("TTP.DumpInGroup");
+            throw new HelpingException(getLocalizer(), "TTP.DumpInGroup");
         }
 
         //TODO @see "TeX -- The Program [1328]"
 
-        Tokens tJobname = context.getToks("jobname");
-        if (tJobname == null) {
+        Tokens jobnameTokens = context.getToks("jobname");
+        if (jobnameTokens == null) {
             throw new PanicException("Dump.MissingJobname",
                     printableControlSequence(context));
         }
-        String jobname = tJobname.toText();
+        String jobname = jobnameTokens.toText();
         Calendar calendar = Calendar.getInstance();
 
         context.setId(jobname + " " + //
@@ -134,7 +133,8 @@ public class Dump extends AbstractCode {
         try {
             String filename = jobname + FORMAT_EXTENSION;
             stream = new FileOutputStream(filename);
-            source.update("message", Messages.format("TTP.Dumping", filename));
+            source.update("message", getLocalizer().format("TTP.Dumping",
+                    filename));
             new SerialLoader().save(stream, jobname, context);
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);

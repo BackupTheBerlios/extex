@@ -622,7 +622,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class ExTeX {
 
@@ -1265,11 +1265,11 @@ public class ExTeX {
      */
     private void logInternalError(final Throwable e) {
 
-        //e.printStackTrace();
+        e.printStackTrace();
 
-        String msg = e.getMessage();
+        String msg = e.getLocalizedMessage();
         for (Throwable t = e; t != null && msg == null; t = t.getCause()) {
-            msg = t.getMessage();
+            msg = t.getLocalizedMessage();
             if ("".equals(msg)) {
                 msg = null;
             }
@@ -1498,10 +1498,11 @@ public class ExTeX {
             logger.addHandler(fileHandler);
         } catch (SecurityException e) {
             logger.severe(localizer.format("ExTeX.LogFileError", e
-                            .getMessage()));
+                    .getLocalizedMessage()));
             fileHandler = null;
         } catch (IOException e) {
-            logger.severe(localizer.format("ExTeX.LogFileError", e.toString()));
+            logger.severe(localizer.format("ExTeX.LogFileError", e
+                    .getLocalizedMessage()));
             fileHandler = null;
         }
         return fileHandler;
@@ -1728,9 +1729,10 @@ public class ExTeX {
                         properties.setProperty(PROP_PROGNAME, arg
                                 .substring("-progname=".length()));
                     } else if ("-version".startsWith(arg)) {
-                        logger.info(localizer.format("ExTeX.Version", properties
-                                .getProperty(PROP_PROGNAME), EXTEX_VERSION,
-                                properties.getProperty("java.version")));
+                        logger.info(localizer.format("ExTeX.Version",
+                                properties.getProperty(PROP_PROGNAME),
+                                EXTEX_VERSION, properties
+                                        .getProperty("java.version")));
                         onceMore = false;
                     } else if ("-output".startsWith(arg)) {
                         useArg(PROP_OUTPUT_TYPE, args, ++i);
@@ -1767,15 +1769,15 @@ public class ExTeX {
             try {
                 showBanner(null);
             } catch (MainException e1) {
-                logException(logger, e1.getMessage(), e1);
+                logException(logger, e1.getLocalizedMessage(), e1);
             }
-            logException(logger, e.getMessage(), e);
+            logException(logger, e.getLocalizedMessage(), e);
             returnCode = e.getCode();
         } catch (Throwable e) {
             try {
                 showBanner(null);
             } catch (MainException e1) {
-                logException(logger, e1.getMessage(), e1);
+                logException(logger, e1.getLocalizedMessage(), e1);
             }
             logInternalError(e);
             logger.info(localizer.format("ExTeX.Logfile", properties

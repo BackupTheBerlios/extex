@@ -24,7 +24,7 @@ package de.dante.extex.main.exception;
  * error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainCodingException extends MainException {
 
@@ -44,9 +44,9 @@ public class MainCodingException extends MainException {
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return getLocalizer().format("MainCodingException.Message",
                 super.getMessage());

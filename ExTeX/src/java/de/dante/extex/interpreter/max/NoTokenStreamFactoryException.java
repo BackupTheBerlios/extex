@@ -16,20 +16,19 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.max;
 
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.extex.i18n.Messages;
 
 /**
  * This Exception is thrown when a TokenStreamFactory is needed but none is
  * found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class NoTokenStreamFactoryException
-    extends ConfigurationException {
+public class NoTokenStreamFactoryException extends ConfigurationException {
 
     /**
      * The field <tt>message</tt> contains the message of this exception.
@@ -42,6 +41,7 @@ public class NoTokenStreamFactoryException
      * @param aMessage the message string
      */
     public NoTokenStreamFactoryException(final String aMessage) {
+
         super(aMessage, (String) null);
         this.message = aMessage;
     }
@@ -51,11 +51,10 @@ public class NoTokenStreamFactoryException
      *
      * @return the text
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
-        return Messages
-                .format("ConfigurationNoTokenStreamFactoryException.Text",
-                        message);
+        return getLocalizer().format(
+                "ConfigurationNoTokenStreamFactoryException.Text", message);
     }
 
 }

@@ -25,7 +25,7 @@ package de.dante.extex.main.exception;
  * and is not able to perform this operation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainOutputFileNotFoundException extends MainException {
 
@@ -45,9 +45,9 @@ public class MainOutputFileNotFoundException extends MainException {
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return getLocalizer().format("MainOutputFileNotFoundException.Message",
                 super.getMessage());

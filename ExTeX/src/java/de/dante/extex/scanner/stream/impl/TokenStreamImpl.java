@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.25 $
+     * @version $Revision: 1.26 $
      */
     private static final class State {
 
@@ -166,9 +166,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             try {
                 bufferSize = Integer.parseInt(size);
             } catch (NumberFormatException e) {
-                throw new ConfigurationSyntaxException(e.getMessage(), config
-                        .toString()
-                        + "#" + BUFFERSIZE_ATTRIBUTE);
+                throw new ConfigurationSyntaxException(e.getLocalizedMessage(),
+                        config.toString() + "#" + BUFFERSIZE_ATTRIBUTE);
             }
         }
 

@@ -25,7 +25,7 @@ package de.dante.util.configuration;
  * instantiation exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ConfigurationInstantiationException extends ConfigurationException {
 
@@ -64,7 +64,7 @@ public class ConfigurationInstantiationException extends ConfigurationException 
 
         return getLocalizer().format(
                 "ConfigurationInstantiationException.Text",
-                getCause().getMessage());
+                getCause().getLocalizedMessage());
     }
 
 }

@@ -16,34 +16,50 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+package de.dante.extex.interpreter.max;
 
-package de.dante.extex.scanner;
+import de.dante.extex.scanner.TokenFactory;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.AbstractFactory;
 
 
 /**
- * This exception is thrown when something in the context of catcode creation or
- * access goes wrong.
+ * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class CatcodeVisitorException extends CatcodeException {
+class TokenFactoryFactory extends AbstractFactory {
+
+    /**
+     * The field <tt>configuration</tt> contains the configuration for
+     * this factory.
+     */
+    private Configuration configuration;
 
     /**
      * Creates a new object.
+     *
+     * @param config the configuration to use
      */
-    public CatcodeVisitorException() {
+    public TokenFactoryFactory(final Configuration config) {
 
         super();
+        this.configuration = config;
     }
 
     /**
-     * @see java.lang.Throwable#getLocalizedMessage()
+     * Instance delivering method.
+     *
+     * @return an appropriate instance
+     *
+     * @throws ConfigurationException in case of an error in the
+     *  configuration
      */
-    public String getLocalizedMessage() {
+    public TokenFactory createInstance() throws ConfigurationException {
 
-        return getLocalizer().format("CatcodeVisitorException.Text", //
-                super.getMessage());
+        return (TokenFactory) createInstanceForConfiguration(configuration,
+                TokenFactory.class);
     }
-
 }

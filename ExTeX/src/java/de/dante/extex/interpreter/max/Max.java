@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.max;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Logger;
@@ -35,7 +34,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
-import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
@@ -43,7 +41,6 @@ import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
-import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
@@ -70,14 +67,9 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Switch;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationWrapperException;
-import de.dante.util.framework.AbstractFactory;
-import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
@@ -92,7 +84,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class Max extends Moritz
         implements
@@ -101,48 +93,6 @@ public class Max extends Moritz
             LogEnabled,
             Observable,
             TokenVisitor {
-
-    /**
-     * ...
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.37 $
-     */
-    private class TokenFactoryFactory extends AbstractFactory {
-
-        /**
-         * The field <tt>configuration</tt> contains the ...
-         */
-        private Configuration configuration;
-
-        /**
-         * Creates a new object.
-         */
-        public TokenFactoryFactory(final Configuration configuration) {
-
-            super();
-            this.configuration = configuration;
-        }
-
-        /**
-         * ...
-         *
-         * @return ...
-         *
-         * @throws ConfigurationException ...
-         */
-        public TokenFactory createInstance() throws ConfigurationException {
-
-            return (TokenFactory) createInstanceForConfiguration(configuration,
-                    TokenFactory.class);
-        }
-    }
-
-    /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * to be used to extract the class name for the configuration.
-     */
-    private static final String CLASS_ATTRIBUTE = "class";
 
     /**
      * The constant <tt>MAX_ERRORS_DEFAULT</tt> contains the default value for
@@ -156,12 +106,6 @@ public class Max extends Moritz
      * per hour.
      */
     private static final int MINUTES_PER_HOUR = 60;
-
-    /**
-     * The constant <tt>NAME_ATTRIBUTE</tt> contains the name of the attribute
-     * holding the name of the primitive to define.
-     */
-    private static final String NAME_ATTRIBUTE = "name";
 
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
@@ -281,10 +225,16 @@ public class Max extends Moritz
             throw new ConfigurationWrapperException(e);
         }
 
+        PrimitiveFactory primitiveFactory = new PrimitiveFactory();
         Iterator iterator = configuration.iterator("primitives");
 
-        while (iterator.hasNext()) {
-            definePrimitives((Configuration) iterator.next(), tokenFactory);
+        try {
+            while (iterator.hasNext()) {
+                primitiveFactory.define((Configuration) iterator.next(),
+                        tokenFactory, context);
+            }
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
         }
 
         context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
@@ -294,82 +244,6 @@ public class Max extends Moritz
                 * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
 
         everyRun = configuration.findConfiguration("everyjob");
-    }
-
-    /**
-     * Scan a configuration and define the primitives found.
-     *
-     * @param configuration the configuration to scan
-     * @param tokenFactory the token factory to use
-     *
-     * @throws ConfigurationException in case of an error
-     * <ul>
-     *  <li>ConfigurationMissingAttributeException in case of a missing argument</li>
-     *  <li>ConfigurationInstantiationException in case of an error during instantiation</li>
-     *  <li>ConfigurationClassNotFoundException in case of a missing class</li>
-     *  <li>ConfigurationWrapperException in case of another error which is wrapped</li>
-     * </ul>
-     */
-    private void definePrimitives(final Configuration configuration,
-            final TokenFactory tokenFactory) throws ConfigurationException {
-
-        Iterator iterator = configuration.iterator("define");
-
-        while (iterator.hasNext()) {
-            Configuration cfg = (Configuration) iterator.next();
-            String name = cfg.getAttribute(NAME_ATTRIBUTE);
-
-            //TODO use AbstractFactory
-            if (name == null || name.equals("")) {
-                throw new ConfigurationMissingAttributeException(
-                        NAME_ATTRIBUTE, cfg);
-            }
-
-            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
-
-            if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException(
-                        CLASS_ATTRIBUTE, cfg);
-            }
-
-            try {
-                Code code = (Code) (Class.forName(classname).getConstructor(
-                        new Class[]{String.class})
-                        .newInstance(new Object[]{name}));
-                context.setCode(tokenFactory.createToken(Catcode.ESCAPE, name,
-                        Namespace.DEFAULT_NAMESPACE), code, true);
-                if (code instanceof InitializableCode) {
-                    ((InitializableCode) code).init(context, cfg.getValue());
-                }
-                if (code instanceof LogEnabled) {
-                    ((LogEnabled) code).enableLogging(logger);
-                }
-                if (code instanceof Configurable) {
-                    ((Configurable) code).configure(cfg);
-                }
-            } catch (IllegalArgumentException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (SecurityException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InstantiationException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (IllegalAccessException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InvocationTargetException e) {
-                Throwable c = e.getCause();
-                if (c != null && c instanceof ConfigurationException) {
-                    throw (ConfigurationException) c;
-                }
-                throw new ConfigurationInstantiationException(e);
-            } catch (NoSuchMethodException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname,
-                        configuration);
-            } catch (GeneralException e) {
-                throw new ConfigurationWrapperException(e);
-            }
-        }
     }
 
     /**

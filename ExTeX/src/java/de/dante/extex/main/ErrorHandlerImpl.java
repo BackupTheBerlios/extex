@@ -46,7 +46,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class ErrorHandlerImpl
         implements
@@ -171,7 +171,7 @@ public class ErrorHandlerImpl
         final TokenSource source = (TokenSource) oSource;
         final Context context = (Context) oContext;
         GeneralException ex = (GeneralException) oException;
-        showErrorLine(logger, ex.getMessage(), source.getLocator());
+        showErrorLine(logger, ex.getLocalizedMessage(), source.getLocator());
 
         try {
             boolean firstHelp = true;

@@ -24,7 +24,7 @@ package de.dante.util.configuration;
  * the expected method.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ConfigurationNoSuchMethodException extends ConfigurationException {
 
@@ -48,14 +48,14 @@ public class ConfigurationNoSuchMethodException extends ConfigurationException {
     /**
      * Creates a new object.
      *
-     * @param aClassName the name of the class which could not be found
+     * @param className the name of the class which could not be found
      * @param config the configuration in which the exception occurred.
      */
-    public ConfigurationNoSuchMethodException(final String aClassName,
+    public ConfigurationNoSuchMethodException(final String className,
             final Configuration config) {
 
         super(null, config.toString());
-        this.classname = aClassName;
+        this.classname = className;
     }
 
     /**
@@ -79,9 +79,12 @@ public class ConfigurationNoSuchMethodException extends ConfigurationException {
      */
     protected String getText() {
 
-        return getLocalizer().format("ConfigurationNoSuchMethodException.Text",
+        return getLocalizer().format(
+                "ConfigurationNoSuchMethodException.Text",
                 (classname != null //
                         ? classname //
-                        : getCause() != null ? getCause().getMessage() : ""));
+                        : getCause() != null
+                                ? getCause().getLocalizedMessage()
+                                : ""));
     }
 }

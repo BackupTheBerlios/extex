@@ -24,7 +24,7 @@ package de.dante.util.configuration;
  * illegal access.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationIllegalAccessException extends ConfigurationException {
 
@@ -51,7 +51,7 @@ public class ConfigurationIllegalAccessException extends ConfigurationException 
 
         return getLocalizer().format(
                 "ConfigurationIllegalAccessException.Text",
-                getCause().getMessage());
+                getCause().getLocalizedMessage());
     }
 
 }

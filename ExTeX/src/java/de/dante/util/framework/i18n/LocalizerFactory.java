@@ -30,7 +30,7 @@ import java.util.ResourceBundle;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public final class LocalizerFactory {
 
@@ -38,24 +38,26 @@ public final class LocalizerFactory {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class BasicLocalizer implements Localizer {
 
         /**
-         * The field <tt>bundle</tt> contains the ...
+         * The field <tt>bundle</tt> contains the resource bundle for this
+         * instance or <code>null</code> if none has been loaded yet.
          */
-        private ResourceBundle bundle;
+        private ResourceBundle bundle = null;
 
         /**
-         * The field <tt>bundleName</tt> contains the ...
+         * The field <tt>bundleName</tt> contains the name of the resource
+         * bundle to use.
          */
         private String bundleName;
 
         /**
          * Creates a new object.
          *
-         * @param name ...
+         * @param name name of the resource bundle
          */
         public BasicLocalizer(final String name) {
 
@@ -238,20 +240,22 @@ public final class LocalizerFactory {
     }
 
     /**
-     * The field <tt>BUNDLE_PREFIX</tt> contains the ...
+     * The field <tt>BUNDLE_PREFIX</tt> contains the prefix used for the
+     * resource bundle.
      */
     private static final String BUNDLE_PREFIX = "config.";
 
     /**
      * The field <tt>cache</tt> contains the ...
      */
-    private static Map cache = new HashMap();
+    private static final Map cache = new HashMap();
 
     /**
-     * ...
+     * Return the localizer associated to a given name.
      *
-     * @param name ...
-     * @return ...
+     * @param name the name of the localizer
+     *
+     * @return the localizer for the given name
      */
     public static Localizer getLocalizer(final String name) {
 

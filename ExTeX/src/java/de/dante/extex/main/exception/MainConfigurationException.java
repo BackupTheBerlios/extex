@@ -24,7 +24,7 @@ package de.dante.extex.main.exception;
  * error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MainConfigurationException extends MainException {
 
@@ -44,13 +44,13 @@ public class MainConfigurationException extends MainException {
     }
 
     /**
-     * @see java.lang.Throwable#getMessage()
+     * @see java.lang.Throwable#getLocalizedMessage()
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         Throwable cause = getCause();
-        String message = (cause != null ? cause.getMessage() : super
-                .getMessage());
+        String message = (cause != null ? cause.getLocalizedMessage() : super
+                .getLocalizedMessage());
         return getLocalizer().format("MainConfigurationException.Message",
                 (message != null ? message : ""));
     }

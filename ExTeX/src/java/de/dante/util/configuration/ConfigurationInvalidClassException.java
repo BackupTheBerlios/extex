@@ -24,7 +24,7 @@ package de.dante.util.configuration;
  * the expected interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationInvalidClassException extends ConfigurationException {
 
@@ -48,15 +48,15 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
     /**
      * Creates a new object.
      *
-     * @param aClassName the name of the class which could not be found
+     * @param className the name of the class which could not be found
      * @param config the configuration in which the problem occurred or
      * <code>null</code>
      */
-    public ConfigurationInvalidClassException(final String aClassName,
+    public ConfigurationInvalidClassException(final String className,
             final Configuration config) {
 
         super(null, config.toString());
-        this.classname = aClassName;
+        this.classname = className;
     }
 
     /**
@@ -71,10 +71,13 @@ public class ConfigurationInvalidClassException extends ConfigurationException {
      */
     protected String getText() {
 
-        return getLocalizer().format("ConfigurationInvalidClassException.Text",
+        return getLocalizer().format(
+                "ConfigurationInvalidClassException.Text",
                 (classname != null //
                         ? classname //
-                        : getCause() != null ? getCause().getMessage() : ""));
+                        : getCause() != null
+                                ? getCause().getLocalizedMessage()
+                                : ""));
     }
 
 }

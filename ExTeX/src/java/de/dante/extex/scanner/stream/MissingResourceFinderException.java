@@ -26,7 +26,7 @@ import de.dante.extex.i18n.Messages;
  * needed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MissingResourceFinderException extends ConfigurationException {
 
@@ -50,7 +50,7 @@ public class MissingResourceFinderException extends ConfigurationException {
      *
      * @return the text
      */
-    public String getMessage() {
+    public String getLocalizedMessage() {
 
         return Messages
                 .format("ConfigurationMissingFileFinderException.Text",
