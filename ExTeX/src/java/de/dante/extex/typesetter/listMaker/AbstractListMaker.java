@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.listMaker;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.MissingMathException;
+import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.Catcode;
@@ -39,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -123,7 +123,7 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
 
-        throw new GeneralException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -132,7 +132,7 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void setSpacefactor(final Count f) throws GeneralException {
 
-        throw new GeneralException();
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -174,18 +174,16 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * Notification method to deal the case that a left brace has been
-     * encountered.
+     * @see de.dante.extex.typesetter.ListMaker#leftBrace()
      */
     public void leftBrace() {
 
     }
 
     /**
-     * Notification method to deal the case that a right brace has been
-     * encountered.
+     * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
-    public void rightBrace() {
+    public void rightBrace() throws GeneralException {
 
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,7 +23,7 @@ import junit.framework.TestCase;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.MissingMathException;
+import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -55,7 +55,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class Max1 extends TestCase {
 
@@ -158,6 +158,14 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#getLastNoad()
+         */
+        public Noad getLastNoad() throws GeneralException {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.ListMaker#getLastNode()
          */
         public Node getLastNode() {
@@ -254,7 +262,7 @@ public class Max1 extends TestCase {
          * Notification method to deal the case that a right brace hs been
          * encountered.
          */
-        public void rightBrace() {
+        public void rightBrace() throws GeneralException {
 
         }
 
@@ -426,7 +434,6 @@ public class Max1 extends TestCase {
                 throws GeneralException {
 
         }
-
     }
 
     /**

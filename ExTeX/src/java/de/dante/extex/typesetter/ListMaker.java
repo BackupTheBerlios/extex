@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public interface ListMaker {
 
@@ -101,48 +101,10 @@ public interface ListMaker {
     Mode getMode();
 
     /**
-     * Emit a new paragraph.
-     * This might be a noop under certain circumstances.
-     *
-     * @throws GeneralException in case of an error
+     * Notification method to deal the case that a left brace hs been
+     * encountered.
      */
-    void par() throws GeneralException;
-
-    /**
-     * Removes the last node from the list.
-     * If the list is empty then nothing is done.
-     */
-    void removeLastNode();
-
-    /**
-     * Setter for the previous depth parameter.
-     *
-     * @param pd the prec depth parameter
-     *
-     * @throws GeneralException in case of an error
-     */
-    void setPrevDepth(Dimen pd) throws GeneralException;
-
-    /**
-     * Setter for the space factor.
-     *
-     * @param sf the space factor to set
-     *
-     * @throws GeneralException in case of an error
-     */
-    void setSpacefactor(Count sf) throws GeneralException;
-
-    /**
-     * Treat a alignment tab character.
-     *
-     * @param context the interpreter context
-     * @param source the source for new tokens
-     * @param t the actual tab token
-     *
-     * @throws GeneralException in case of an error
-     */
-    void tab(Context context, TokenSource source, Token t)
-            throws GeneralException;
+    void leftBrace();
 
     /**
      * Add a letter to the current list or treat it in some other appropriate
@@ -172,6 +134,46 @@ public interface ListMaker {
             throws GeneralException;
 
     /**
+     * Emit a new paragraph.
+     * This might be a noop under certain circumstances.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void par() throws GeneralException;
+
+    /**
+     * Removes the last node from the list.
+     * If the list is empty then nothing is done.
+     */
+    void removeLastNode();
+
+    /**
+     * Notification method to deal the case that a right brace hs been
+     * encountered.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void rightBrace() throws GeneralException;
+
+    /**
+     * Setter for the previous depth parameter.
+     *
+     * @param pd the prec depth parameter
+     *
+     * @throws GeneralException in case of an error
+     */
+    void setPrevDepth(Dimen pd) throws GeneralException;
+
+    /**
+     * Setter for the space factor.
+     *
+     * @param sf the space factor to set
+     *
+     * @throws GeneralException in case of an error
+     */
+    void setSpacefactor(Count sf) throws GeneralException;
+
+    /**
      * Treat a subscript mark. This might be meaningful in math mode only.
      *
      * @param context the interpreter context
@@ -189,22 +191,22 @@ public interface ListMaker {
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual super mark token
+     *
      * @throws GeneralException in case of an error
      */
     void superscriptMark(Context context, TokenSource source, Token t)
             throws GeneralException;
 
     /**
-     * Notification method to deal the case that a left brace hs been
-     * encountered.
+     * Treat a alignment tab character.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param t the actual tab token
+     *
+     * @throws GeneralException in case of an error
      */
-    void leftBrace();
-
-    /**
-     * Notification method to deal the case that a right brace hs been
-     * encountered.
-     */
-    void rightBrace();
-
+    void tab(Context context, TokenSource source, Token t)
+            throws GeneralException;
 
 }

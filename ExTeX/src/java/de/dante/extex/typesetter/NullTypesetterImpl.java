@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -46,10 +46,9 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class NullTypesetterImpl implements Typesetter {
-
     /**
      * Creates a new object.
      */
@@ -148,6 +147,14 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#getLastNoad()
+     */
+    public Noad getLastNoad() throws GeneralException {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
     public Node getLastNode() {
@@ -234,7 +241,7 @@ public class NullTypesetterImpl implements Typesetter {
      * Notification method to deal the case that a right brace hs been
      * encountered.
      */
-    public void rightBrace() {
+    public void rightBrace() throws GeneralException {
 
     }
 
