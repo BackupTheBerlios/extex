@@ -34,6 +34,13 @@
         <extension></extension>
         <extension>.tex</extension>
       </tex>
+      <fmt>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+        <extension>.fmt</extension>
+      </fmt>
       <default>
         <path property="extex.texinputs"/>
         <path property="texinputs"/>
@@ -49,6 +56,13 @@
         <extension></extension>
         <extension>.tex</extension>
       </tex>
+      <fmt>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+        <extension>.fmt</extension>
+      </fmt>
       <default>
         <path property="extex.texinputs"/>
         <path property="texinputs"/>
