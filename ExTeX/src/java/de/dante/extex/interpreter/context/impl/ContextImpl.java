@@ -114,7 +114,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public class ContextImpl
         implements
@@ -760,7 +760,9 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#registerCodeChangeObserver(de.dante.extex.interpreter.context.CodeChangeObserver, de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.Context#registerCodeChangeObserver(
+     *      de.dante.extex.interpreter.context.CodeChangeObserver,
+     *      de.dante.extex.scanner.Token)
      */
     public void registerCodeChangeObserver(final CodeChangeObserver observer,
             final Token name) {
@@ -789,8 +791,10 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
-     *      de.dante.extex.interpreter.type.Code, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setActive(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Code,
+     *      boolean)
      */
     public void setActive(final Token token, final Code code,
             final boolean global) {
@@ -829,10 +833,10 @@ public class ContextImpl
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setCode(
-     *      de.dante.extex.scanner.Token,
+     *      de.dante.extex.scanner.CodeToken,
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
-    public void setCode(final Token t, final Code code, final boolean global)
+    public void setCode(final CodeToken t, final Code code, final boolean global)
             throws GeneralException {
 
         if (!(t instanceof CodeToken)) {
