@@ -403,9 +403,9 @@
   </DocumentWriter>
 
   <Reader>
-	<string class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl"/>
-	<file class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl"/>
-    <reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl"/>
+	<string class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl32"/>
+	<file class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl32"/>
+    <reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl32"/>
   </Reader>
 
   <File>

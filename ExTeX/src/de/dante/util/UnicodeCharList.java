@@ -24,7 +24,7 @@ import java.util.ArrayList;
  * This class implements a <code>ArrayList</code> for <code>UnicodeChar</code>s.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UnicodeCharList {
 
@@ -79,4 +79,18 @@ public class UnicodeCharList {
 
         return list.size();
     }
+
+    /**
+     * Return the <code>UnicodeCharList</code> as <code>String</code>.
+     * @return the string of the list
+     */
+    public String toString() {
+
+        StringBuffer buf = new StringBuffer(list.size());
+        for (int i = 0; i < list.size(); i++) {
+            buf.append(get(i).toString());
+        }
+        return buf.toString();
+    }
+
 }
