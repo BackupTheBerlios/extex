@@ -19,10 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.table;
 
+import java.util.List;
+
+import de.dante.extex.i18n.EofHelpingException;
+import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -48,9 +54,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Halign extends AbstractCode {
+public class Halign extends AbstractAlign {
 
     /**
      * Creates a new object.
@@ -60,6 +66,29 @@ public class Halign extends AbstractCode {
     public Halign(final String name) {
 
         super(name);
+    }
+
+    /**
+     * ...
+     *
+     * @param preamble ...
+     * @param width the target width or <code>null</code> for the natural width
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter to use
+     *
+     * @throws GeneralException in case of an error
+     */
+    private void applyPreamble(final List preamble, final Dimen width,
+            final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        for (Token t = source.getToken(); t != null; t = source.getToken()) {
+
+            //TODO execute() unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+        throw new EofHelpingException(printableControlSequence(context));
     }
 
     /**
@@ -73,9 +102,23 @@ public class Halign extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        Dimen width = null;
+
+        if (source.getKeyword("to")) {
+            width = new Dimen(context, source);
+        }
+        Token t = source.getToken();
+        if (t == null) {
+            throw new EofHelpingException(printableControlSequence(context));
+        } else if (t.isa(Catcode.LEFTBRACE)) {
+            List preamble = getPreamble(context, source);
+            applyPreamble(preamble, width, context, source, typesetter);
+        } else {
+            throw new MissingLeftBraceHelpingException(
+                    printableControlSequence(context));
+        }
+
+        return true;
     }
 
 }
