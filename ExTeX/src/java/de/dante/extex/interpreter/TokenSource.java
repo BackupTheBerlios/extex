@@ -40,7 +40,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface TokenSource {
 
@@ -219,17 +219,6 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     Token scanNonSpace() throws GeneralException;
-
-    /**
-     * Scan the input for the next token which has not the catcode SPACE.
-     *
-     * @param token the first token to consider
-     *
-     * @return the next non-space token or <code>null</code> at EOF
-     *
-     * @throws GeneralException in case of an error
-     */
-    Token scanNonSpace(Token token) throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams. If the current input
