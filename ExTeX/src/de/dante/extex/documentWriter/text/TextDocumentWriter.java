@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.documentWriter.dump;
+package de.dante.extex.documentWriter.text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -35,11 +35,11 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  *
- * MGN eigenes Packages
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
+
     /**
      * The field <tt>out</tt> ...
      */
@@ -116,8 +116,6 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      *      java.lang.String)
      */
     public void setParameter(final String name, final String value) {
-
-        // TODO Auto-generated method stub
 
     }
 

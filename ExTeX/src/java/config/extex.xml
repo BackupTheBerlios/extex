@@ -498,7 +498,7 @@
     <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
     <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
     <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
-    <text class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
+    <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
   </DocumentWriter>
 
 </ExTeX>
