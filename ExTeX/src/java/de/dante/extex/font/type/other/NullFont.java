@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -134,7 +134,7 @@ public class NullFont implements Font, Serializable {
      */
     public String getFontName() {
 
-        return "nullFont";
+        return "nullfont";
     }
 
     /**
