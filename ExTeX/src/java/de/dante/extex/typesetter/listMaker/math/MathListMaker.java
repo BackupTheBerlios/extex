@@ -59,7 +59,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -68,9 +68,16 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MathMemento {
+
+        /**
+         * The field <tt>block</tt> contains the indicator that this memento
+         * corresponds to a block. Otherwise it corresponds to a \left-\right
+         * pair.
+         */
+        private boolean block;
 
         /**
          * The field <tt>ip</tt> contains the insertion point.
@@ -81,13 +88,6 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
          * The field <tt>noads</tt> contains the noads.
          */
         private Noad noads;
-
-        /**
-         * The field <tt>block</tt> contains the indicator that this memento
-         * corresponds to a block. Otherwise it corresponds to a \left-\right
-         * pair.
-         */
-        private boolean block;
 
         /**
          * Creates a new object.
@@ -284,9 +284,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left()
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left(
+     *      de.dante.extex.typesetter.type.MathDelimiter)
      */
-    public void left() throws GeneralException {
+    public void left(final MathDelimiter delimiter) throws GeneralException {
 
         // TODO gene: left unimplemented
 
@@ -336,6 +337,16 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#middle(
+     *      de.dante.extex.typesetter.type.MathDelimiter)
+     */
+    public void middle(final MathDelimiter delimiter) throws GeneralException {
+
+        // TODO gene: middle unimplemented
+
+    }
+
+    /**
      * Emitting a new paragraph is not supported in math mode.
      * Thus an exception is thrwon.
      *
@@ -359,9 +370,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right()
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right(
+     *      de.dante.extex.typesetter.type.MathDelimiter)
      */
-    public void right() throws GeneralException {
+    public void right(final MathDelimiter delimiter) throws GeneralException {
 
         // TODO gene: right unimplemented
 
