@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
+import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -34,25 +35,29 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
-    /** This value contains the previous depth for baseline calculations.
-     *  In contrast to TeX the value null is used to indicate that the next box 
-     *  on the vertical list should be exempt from the baseline calculations.
-     *  @see "TeX -- The Program [212]" 
+    /**
+     * This value contains the previous depth for baseline calculations. In
+     * contrast to TeX the value null is used to indicate that the next box on
+     * the vertical list should be exempt from the baseline calculations.
+     * 
+     * @see "TeX -- The Program [212]"
      */
-    private Dimen prevDepth = new Dimen(-1000*Dimen.ONE);
+    private Dimen prevDepth = new Dimen(-1000 * Dimen.ONE);
 
-    /** ... */
+    /**
+     * The field <tt>nodes</tt> contains the ...
+     */
     private VerticalListNode nodes = new VerticalListNode();
 
     /**
      * Creates a new object.
-     *
+     * 
      * @param manager the manager to ask for global changes
      */
-    public VerticalListMaker(Manager manager) {
+    public VerticalListMaker(final Manager manager) {
         super(manager);
     }
 
@@ -66,14 +71,16 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.node.CharNode)
      */
-    public void add(Node n) throws GeneralException {
+    public void add(final Node n) throws GeneralException {
         nodes.add(n);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font,
+     *      java.lang.String)
      */
-    public void add(TypesettingContext font, UnicodeChar symbol) throws GeneralException {
+    public void add(final TypesettingContext font, final UnicodeChar symbol)
+        throws GeneralException {
         ListMaker hlist = new HorizontalListMaker(manager);
         hlist.add(font, symbol);
         manager.push(hlist);
@@ -82,21 +89,23 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
-    public void addGlue(Glue g) throws GeneralException {
+    public void addGlue(final Glue g) throws GeneralException {
         // TODO Auto-generated method stub
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
      */
-    public void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException {
+    public void addSpace(final TypesettingContext typesettingContext,
+        final Count spacefactor) throws GeneralException {
         // TODO Auto-generated method stub
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#close()
      */
-    public NodeList close() {
+    public final NodeList close() {
+        propagateSizes();
         manager = null;
         return nodes;
     }
@@ -109,8 +118,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * <tt>\par</tt>s are silently ignored in vertical mode.
-     *
+     * <tt>\par</tt> s are silently ignored in vertical mode.
+     * 
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() {
@@ -120,8 +129,35 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
      */
-    public void setPrevDepth(Dimen pd) throws GeneralException {
+    public void setPrevDepth(final Dimen pd) throws GeneralException {
         prevDepth.set(pd);
     }
 
+    /**
+     * ...
+     * 
+     *  
+     */
+    private void propagateSizes() {
+        NodeIterator iter = nodes.iterator();
+        Node node;
+        Dimen width = new Dimen();
+        Dimen height = new Dimen();
+        Dimen depth = new Dimen();
+
+        while (iter.hasNext()) {
+            node = iter.next();
+            height.add(node.getHeight());
+            depth.set(node.getDepth());
+            height.add(depth);
+            if (width.lt(node.getWidth())) {
+                width.set(node.getWidth());
+            }
+        }
+
+        height.subtract(depth);
+        nodes.setWidth(width);
+        nodes.setHeight(height);
+        nodes.setDepth(depth);
+    }
 }

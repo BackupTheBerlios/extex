@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractListMaker implements ListMaker {
     /** The manager to ask for global changes.
@@ -46,7 +46,7 @@ public abstract class AbstractListMaker implements ListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public AbstractListMaker(Manager manager) {
+    public AbstractListMaker(final Manager manager) {
         super();
         this.manager = manager;
     }
@@ -59,7 +59,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
      */
-    public void setSpacefactor(Count f) throws GeneralException {
+    public void setSpacefactor(final Count f) throws GeneralException {
         throw new GeneralHelpingException("TTP.ImproperSForPD",
                                           "spacefactor");
     }
@@ -67,23 +67,25 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
      */
-    public abstract void add(Node node) throws GeneralException;
+    public abstract void add(final Node node) throws GeneralException;
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font, java.lang.String)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      */
-    public abstract void add(TypesettingContext font, UnicodeChar symbol)
-                      throws GeneralException;
+    public abstract void add(final TypesettingContext font,
+        final UnicodeChar symbol) throws GeneralException;
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
      */
-    public abstract void addGlue(Glue g) throws GeneralException;
+    public abstract void addGlue(final Glue g) throws GeneralException;
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
      */
-    public abstract void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException;
+    public abstract void addSpace(final TypesettingContext typesettingContext,
+        final Count spacefactor) throws GeneralException;
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#close()
@@ -114,7 +116,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
      */
-    public void setPrevDepth(Dimen pd) throws GeneralException {
+    public void setPrevDepth(final Dimen pd) throws GeneralException {
         throw new GeneralHelpingException("TTP.ImproperSForPD",
                                           "prevdepth");
     }

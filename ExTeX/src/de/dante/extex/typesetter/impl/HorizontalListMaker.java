@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.impl;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Count;
+import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
@@ -28,6 +29,7 @@ import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
+import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -36,20 +38,23 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
+
+    /**
+     * The constant <tt>DEFAULT_SPACEFACTOR</tt> contains the ...
+     */
     private static final int DEFAULT_SPACEFACTOR = 1000;
-	/** ... */
+
+    /**
+	 * The field <tt>nodes</tt> contains the ...
+	 */
     private HorizontalListNode nodes = new HorizontalListNode();
 
-    /** ...
-     * @see "TeX -- The Program [212]"
-     */
-    private int lang = 0;
-
-    /** ...
+    /**
+     *  ...
      * @see "TeX -- The Program [212]"
      */
     private long spacefactor = DEFAULT_SPACEFACTOR;
@@ -118,13 +123,12 @@ public class HorizontalListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace()
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.type.Count)
      */
-    public void addSpace(final TypesettingContext context,
-    		final Count sfCount) {
-        long sf    = (sfCount != null ? sfCount.getValue() : spacefactor);
-        Glue space = context.getFont()
-                            .getSpace();
+    public void addSpace(final TypesettingContext context, final Count sfCount) {
+        long sf = (sfCount != null ? sfCount.getValue() : spacefactor);
+        Glue space = context.getFont().getSpace();
 
         // gene: maybe my interpretation of the TeXbook is slightly wrong
         if (sf == DEFAULT_SPACEFACTOR) { // normal case handled first
@@ -132,23 +136,21 @@ public class HorizontalListMaker extends AbstractListMaker
             return;
         } else if (sf >= 2000) {
             Glue xspaceskip = null; //TODO unimplemented
-            Glue spaceskip  = null;
+            Glue spaceskip = null;
 
             if (xspaceskip != null) {
                 space = xspaceskip.copy();
             } else if (spaceskip != null) {
-                space = xspaceskip.copy()
-                                  .multiplyStretch(sf, DEFAULT_SPACEFACTOR)
-                                  .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
+                space = xspaceskip.copy().multiplyStretch(sf,
+                    DEFAULT_SPACEFACTOR)
+                    .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
             } else {
-                space = space.copy()
-                             .multiplyStretch(sf, DEFAULT_SPACEFACTOR)
-                             .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
+                space = space.copy().multiplyStretch(sf, DEFAULT_SPACEFACTOR)
+                    .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
             }
         } else {
-            space = space.copy()
-                         .multiplyStretch(sf, DEFAULT_SPACEFACTOR)
-                         .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
+            space = space.copy().multiplyStretch(sf, DEFAULT_SPACEFACTOR)
+                .multiplyShrink(DEFAULT_SPACEFACTOR, sf);
         }
 
         addGlue(space);
@@ -158,15 +160,9 @@ public class HorizontalListMaker extends AbstractListMaker
      * @see de.dante.extex.typesetter.ListMaker#close()
      */
     public NodeList close() {
+        propagateSizes();
         manager = null;
         return nodes;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#open()
-     */
-    public void open() {
-        // TODO Auto-generated method stub
     }
 
     /**
@@ -174,5 +170,33 @@ public class HorizontalListMaker extends AbstractListMaker
      */
     public void par() throws GeneralException {
         manager.closeTopList();
+    }
+
+    /**
+     * ...
+     * 
+     * 
+     */
+    private void propagateSizes() {
+        NodeIterator iter = nodes.iterator();
+        Node node;
+        Dimen width = new Dimen();
+        Dimen height = new Dimen();
+        Dimen depth = new Dimen();
+        
+        while ( iter.hasNext() ) {
+            node = iter.next();
+            width.add(node.getWidth());
+            if ( height.lt(node.getHeight())) { 
+                height.set(node.getHeight());
+            }
+            if ( depth.lt(node.getDepth())) { 
+                depth.set(node.getDepth());
+            }
+        }
+        
+        nodes.setWidth(width);
+        nodes.setHeight(height);
+        nodes.setDepth(depth);
     }
 }

@@ -40,10 +40,11 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 
 /**
- * This is a reference implementation of the Typesetter interface.
- *
+ * This is a reference implementation of the
+ * {@link de.dante.extex.typesetter.Typesetter Typesetter}interface.
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
     /**
