@@ -45,7 +45,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -81,7 +81,7 @@ public class EFMFont extends XMLFont implements Font {
 	/**
 	 * fontfile
 	 */
-	File fontfile;
+	private File fontfile;
 
 	/**
 	 * load the Font
@@ -127,11 +127,22 @@ public class EFMFont extends XMLFont implements Font {
 					}
 
 					// get ex
-					attr = fontgroup.getAttribute("x-height");
+					attr = fontgroup.getAttribute("XHEIGHT");
 					if (attr != null) {
 						ex = attr.getIntValue();
 					}
 
+					// fontdimen-key-values
+					List list = fontgroup.getAttributes();
+					for (int i=0; i<list.size(); i++) {
+						attr = (Attribute)list.get(i);
+						String key = attr.getName();
+						String val = attr.getValue();
+						if (val != null && val.trim().length() >0) {
+							fontdimen.put(key,val);
+						}
+					}
+					
 					// get glyph-list
 					Element font = scanForElement(fontgroup, "font");
 					if (font != null) {
@@ -145,15 +156,11 @@ public class EFMFont extends XMLFont implements Font {
 								GlyphValues gv = new GlyphValues();
 								gv.glyph_number = e.getAttributeValue("glyph-number");
 								gv.glyph_name = e.getAttributeValue("glyph-name");
-								gv.unicode = e.getAttributeValue("unicode");
 								gv.width = e.getAttributeValue("width");
 								gv.depth = e.getAttributeValue("depth");
 								gv.height = e.getAttributeValue("height");
-								gv.bllx = e.getAttributeValue("bllx");
-								gv.blly = e.getAttributeValue("blly");
-								gv.burx = e.getAttributeValue("burx");
-								gv.bury = e.getAttributeValue("bury");
-
+								gv.italic = e.getAttributeValue("italic");
+								
 								// kerning
 								List kerninglist = e.getChildren("kerning");
 								for (int k = 0; k < kerninglist.size(); k++) {
@@ -183,7 +190,7 @@ public class EFMFont extends XMLFont implements Font {
 					}
 
 					// exernal fontfile
-					String efile = font.getAttribute("filename").getValue();
+					String efile = font.getAttributeValue("filename");
 
 					if (efile != null) {
 						// externalfile = finder.findFile(efile, "pfb"); TODO change if FileFinder is okay
@@ -220,14 +227,10 @@ public class EFMFont extends XMLFont implements Font {
 	private class GlyphValues {
 		String glyph_number;
 		String glyph_name;
-		String unicode;
 		String width;
-		String bllx;
-		String blly;
-		String burx;
-		String bury;
 		String depth;
 		String height;
+		String italic;
 		HashMap kerning = new HashMap();
 		HashMap ligature = new HashMap();
 	}
@@ -269,6 +272,7 @@ public class EFMFont extends XMLFont implements Font {
 				// do nothing, use default 
 			}
 		}
+		// TODO use key 'SPACE' from getFontDimen() 
 		return rt;
 	}
 
@@ -303,14 +307,30 @@ public class EFMFont extends XMLFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#getEx()
 	 */
 	public Dimen getEx() {
-		return new Dimen(units_per_em, ex, em);
+		return new Dimen(ex * em.getValue() / units_per_em);
 	}
 
 	/**
-	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
+	 * hash for fontdimen-keys
 	 */
-	public Dimen getFontDimen(long index) {
-		return null;
+	HashMap fontdimen = new HashMap();
+	
+	/**
+	 * Return the <code>Dimen</code>-value for a key-entry.
+	 * If no key exists, ZERO-<code>Dimen</code> is returned.
+	 * 
+	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(String)
+	 */
+	public Dimen getFontDimen(String key) {
+		String val = (String)fontdimen.get(key);
+		Dimen rt = Dimen.ZERO_PT;
+		try {
+			float f = Float.parseFloat(val);
+			rt = new Dimen((long)(f * em.getValue() / units_per_em));
+		} catch (Exception e) {
+			// do nothing, use default
+		}
+		return rt;
 	}
 
 	/**
@@ -351,8 +371,8 @@ public class EFMFont extends XMLFont implements Font {
 		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
 		if (gv != null) {
 			try {
-				int d = Integer.parseInt(gv.depth);
-				rt = new Dimen(units_per_em, d, em);
+				float f = Float.parseFloat(gv.depth);
+				rt = new Dimen((long)(f * em.getValue() / units_per_em));
 			} catch (Exception e) {
 				// do nothing, return ZERO_PT
 			}
@@ -369,8 +389,8 @@ public class EFMFont extends XMLFont implements Font {
 		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
 		if (gv != null) {
 			try {
-				int h = Integer.parseInt(gv.height);
-				rt = new Dimen(units_per_em, h, em);
+				float f = Float.parseFloat(gv.height);
+				rt = new Dimen((long)(f * em.getValue() / units_per_em));
 			} catch (Exception e) {
 				// do nothing, return ZERO_PT
 			}
@@ -387,8 +407,8 @@ public class EFMFont extends XMLFont implements Font {
 		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
 		if (gv != null) {
 			try {
-				int w = Integer.parseInt(gv.width);
-				rt = new Dimen(units_per_em, w, em);
+				float f = Float.parseFloat(gv.width);
+				rt = new Dimen((long)(f * em.getValue() / units_per_em));
 			} catch (Exception e) {
 				// do nothing, return ZERO_PT
 			}
@@ -414,8 +434,8 @@ public class EFMFont extends XMLFont implements Font {
 		if (gv != null) {
 			KerningValues kv = (KerningValues) gv.kerning.get(String.valueOf(c2.getCodePoint()));
 			try {
-				int size = Integer.parseInt(kv.size);
-				rt = new Dimen(units_per_em, size, em);
+				float size = Float.parseFloat(kv.size);
+				rt = new Dimen((long)(size * em.getValue() / units_per_em));
 			} catch (Exception e) {
 				// do nothing, use default
 			}
@@ -472,6 +492,24 @@ public class EFMFont extends XMLFont implements Font {
 			GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
 			if (gv != null) {
 				rt = gv.glyph_number;
+			}
+		}
+		return rt;
+	}
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getItalic(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getItalic(UnicodeChar c) {
+		Dimen rt = Dimen.ZERO_PT;
+
+		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
+		if (gv != null) {
+			try {
+				float f = Float.parseFloat(gv.italic);
+				rt = new Dimen((long)(f * em.getValue() / units_per_em));
+			} catch (Exception e) {
+				// do nothing, return ZERO_PT
 			}
 		}
 		return rt;

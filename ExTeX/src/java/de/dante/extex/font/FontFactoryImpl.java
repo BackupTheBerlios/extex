@@ -32,7 +32,7 @@ import de.dante.util.file.FileFinder;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -63,6 +63,7 @@ public class FontFactoryImpl implements FontFactory {
 		if (font == null) {
 			font = new EFMFont(name,size,finder);
 			System.err.println(font);// TODO delete after test
+			// System.err.println(font.getFontDimen("SPACE").toPT());
 			 // UnicodeChar uc;
 			 // System.err.println((uc = font.ligature(new UnicodeChar('f'),new UnicodeChar('f'))).getCodePoint());
 			 // System.err.println(font.ligature(uc,new UnicodeChar('l')).getCodePoint());

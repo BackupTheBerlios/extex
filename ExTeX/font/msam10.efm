@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fontgroup name="MSAM V2.1" id="MSAM V2.1" default-size="10.0" empr="100" units-per-em="1000" 
+SLANT="0" SPACE="0" STRETCH="0" SHRINK="0" XHEIGHT="430" QUAD="1000" EXTRASPACE="0" 
+NUM1="676" NUM2="393" NUM3="443" DENOM1="685" DENOM2="344" SUP1="412" SUP2="362" 
+SUP3="288" SUB1="149" SUB2="247" SUPDROP="386" SUBDROP="50" DELIM1="2389" DELIM2="1010" 
+AXISHEIGHT="250">
+   <font font-name="MSAM V2.1" font-family="MSAM V2.1" type="tfm-mathsyml">
+      <glyph ID="0" glyph-number="0" width="777" height="675" depth="0" italic="0" />
+      <glyph ID="1" glyph-number="1" width="777" height="675" depth="0" italic="0" />
+      <glyph ID="2" glyph-number="2" width="777" height="675" depth="0" italic="0" />
+      <glyph ID="3" glyph-number="3" width="777" height="675" depth="0" italic="0" />
+      <glyph ID="4" glyph-number="4" width="777" height="675" depth="0" italic="0" />
+      <glyph ID="5" glyph-number="5" width="277" height="549" depth="0" italic="0" />
+      <glyph ID="6" glyph-number="6" width="666" height="692" depth="111" italic="0" />
+      <glyph ID="7" glyph-number="7" width="666" height="692" depth="111" italic="0" />
+      <glyph ID="8" glyph-number="8" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="9" glyph-number="9" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="10" glyph-number="10" width="1000" height="522" depth="13" italic="0" />
+      <glyph ID="11" glyph-number="11" width="1000" height="522" depth="13" italic="0" />
+      <glyph ID="12" glyph-number="12" width="777" height="675" depth="0" italic="0" />
+      <glyph ID="13" glyph-number="13" width="722" height="692" depth="0" italic="0" />
+      <glyph ID="14" glyph-number="14" width="888" height="692" depth="0" italic="0" />
+      <glyph ID="15" glyph-number="15" width="611" height="692" depth="0" italic="0" />
+      <glyph ID="16" glyph-number="16" width="1000" height="522" depth="13" italic="0" />
+      <glyph ID="17" glyph-number="17" width="1000" height="522" depth="13" italic="0" />
+      <glyph ID="18" glyph-number="18" width="1000" height="675" depth="180" italic="0" />
+      <glyph ID="19" glyph-number="19" width="1000" height="675" depth="180" italic="0" />
+      <glyph ID="20" glyph-number="20" width="833" height="692" depth="194" italic="0" />
+      <glyph ID="21" glyph-number="21" width="833" height="692" depth="194" italic="0" />
+      <glyph ID="22" glyph-number="22" width="416" height="692" depth="194" italic="0" />
+      <glyph ID="23" glyph-number="23" width="416" height="692" depth="194" italic="0" />
+      <glyph ID="24" glyph-number="24" width="416" height="692" depth="194" italic="0" />
+      <glyph ID="25" glyph-number="25" width="416" height="692" depth="194" italic="0" />
+      <glyph ID="26" glyph-number="26" width="1111" height="522" depth="13" italic="0" />
+      <glyph ID="27" glyph-number="27" width="1111" height="522" depth="13" italic="0" />
+      <glyph ID="28" glyph-number="28" width="1000" height="675" depth="180" italic="0" />
+      <glyph ID="29" glyph-number="29" width="1000" height="675" depth="180" italic="0" />
+      <glyph ID="30" glyph-number="30" width="500" height="692" depth="0" italic="0" />
+      <glyph ID="31" glyph-number="31" width="500" height="692" depth="0" italic="0" />
+      <glyph ID="32" glyph-number="32" width="1000" height="377" depth="-133" italic="0" />
+      <glyph ID="33" glyph-number="33" glyph-name="!" width="1388" height="377" depth="-133" italic="0" />
+      <glyph ID="34" glyph-number="34" glyph-name="&quot;" width="1000" height="549" depth="0" italic="0" />
+      <glyph ID="35" glyph-number="35" glyph-name="#" width="1000" height="549" depth="0" italic="0" />
+      <glyph ID="36" glyph-number="36" glyph-name="$" width="777" height="729" depth="229" italic="0" />
+      <glyph ID="37" glyph-number="37" glyph-name="%" width="777" height="729" depth="229" italic="0" />
+      <glyph ID="38" glyph-number="38" glyph-name="&amp;" width="777" height="729" depth="229" italic="0" />
+      <glyph ID="39" glyph-number="39" glyph-name="'" width="777" height="755" depth="255" italic="0" />
+      <glyph ID="40" glyph-number="40" glyph-name="(" width="1111" height="549" depth="0" italic="0" />
+      <glyph ID="41" glyph-number="41" glyph-name=")" width="666" height="692" depth="0" italic="0" />
+      <glyph ID="42" glyph-number="42" glyph-name="*" width="666" height="692" depth="0" italic="0" />
+      <glyph ID="43" glyph-number="43" glyph-name="+" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="44" glyph-number="44" glyph-name="," width="777" height="916" depth="81" italic="0" />
+      <glyph ID="45" glyph-number="45" glyph-name="-" width="777" height="729" depth="229" italic="0" />
+      <glyph ID="46" glyph-number="46" glyph-name="." width="777" height="729" depth="229" italic="0" />
+      <glyph ID="47" glyph-number="47" glyph-name="/" width="777" height="755" depth="255" italic="0" />
+      <glyph ID="48" glyph-number="48" glyph-name="0" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="49" glyph-number="49" glyph-name="1" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="50" glyph-number="50" glyph-name="2" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="51" glyph-number="51" glyph-name="3" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="52" glyph-number="52" glyph-name="4" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="53" glyph-number="53" glyph-name="5" width="777" height="755" depth="255" italic="0" />
+      <glyph ID="54" glyph-number="54" glyph-name="6" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="55" glyph-number="55" glyph-name="7" width="777" height="675" depth="180" italic="0" />
+      <glyph ID="56" glyph-number="56" glyph-name="8" width="274" height="549" depth="0" italic="0" />
+      <glyph ID="57" glyph-number="57" glyph-name="9" width="500" height="464" depth="-35" italic="0" />
+      <glyph ID="58" glyph-number="58" glyph-name=":" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="59" glyph-number="59" glyph-name=";" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="60" glyph-number="60" glyph-name="&lt;" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="61" glyph-number="61" glyph-name="=" width="777" height="755" depth="255" italic="0" />
+      <glyph ID="62" glyph-number="62" glyph-name="&gt;" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="63" glyph-number="63" glyph-name="?" width="777" height="675" depth="180" italic="0" />
+      <glyph ID="64" glyph-number="64" glyph-name="@" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="65" glyph-number="65" glyph-name="A" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="66" glyph-number="66" glyph-name="B" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="67" glyph-number="67" glyph-name="C" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="68" glyph-number="68" glyph-name="D" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="69" glyph-number="69" glyph-name="E" width="777" height="636" depth="136" italic="0" />
+      <glyph ID="70" glyph-number="70" glyph-name="F" width="944" height="692" depth="194" italic="0" />
+      <glyph ID="71" glyph-number="71" glyph-name="G" width="500" height="755" depth="255" italic="0" />
+      <glyph ID="72" glyph-number="72" glyph-name="H" width="722" height="549" depth="0" italic="0" />
+      <glyph ID="73" glyph-number="73" glyph-name="I" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="74" glyph-number="74" glyph-name="J" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="75" glyph-number="75" glyph-name="K" width="500" height="464" depth="-35" italic="0" />
+      <glyph ID="76" glyph-number="76" glyph-name="L" width="500" height="464" depth="-35" italic="0" />
+      <glyph ID="77" glyph-number="77" glyph-name="M" width="722" height="549" depth="0" italic="0" />
+      <glyph ID="78" glyph-number="78" glyph-name="N" width="722" height="549" depth="0" italic="0" />
+      <glyph ID="79" glyph-number="79" glyph-name="O" width="722" height="549" depth="0" italic="0" />
+      <glyph ID="80" glyph-number="80" glyph-name="P" width="777" height="692" depth="0" italic="0" />
+      <glyph ID="81" glyph-number="81" glyph-name="Q" width="777" height="885" depth="385" italic="0" />
+      <glyph ID="82" glyph-number="82" glyph-name="R" width="777" height="885" depth="385" italic="0" />
+      <glyph ID="83" glyph-number="83" glyph-name="S" width="777" height="982" depth="482" italic="0" />
+      <glyph ID="84" glyph-number="84" glyph-name="T" width="777" height="982" depth="482" italic="0" />
+      <glyph ID="85" glyph-number="85" glyph-name="U" width="750" height="675" depth="0" italic="24" />
+      <glyph ID="86" glyph-number="86" glyph-name="V" width="1000" height="636" depth="136" italic="0" />
+      <glyph ID="87" glyph-number="87" glyph-name="W" width="1000" height="636" depth="136" italic="0" />
+      <glyph ID="88" glyph-number="88" glyph-name="X" width="833" height="692" depth="0" italic="0" />
+      <glyph ID="89" glyph-number="89" glyph-name="Y" width="611" height="692" depth="194" italic="0" />
+      <glyph ID="90" glyph-number="90" glyph-name="Z" width="611" height="692" depth="194" italic="0" />
+      <glyph ID="91" glyph-number="91" glyph-name="[" width="611" height="755" depth="194" italic="0" />
+      <glyph ID="92" glyph-number="92" glyph-name="\" width="722" height="692" depth="0" italic="0" />
+      <glyph ID="93" glyph-number="93" glyph-name="]" width="722" height="692" depth="0" italic="0" />
+      <glyph ID="94" glyph-number="94" glyph-name="^" width="722" height="522" depth="35" italic="0" />
+      <glyph ID="95" glyph-number="95" glyph-name="_" width="777" height="692" depth="0" italic="0" />
+      <glyph ID="96" glyph-number="96" glyph-name="`" width="777" height="692" depth="194" italic="0" />
+      <glyph ID="97" glyph-number="97" glyph-name="a" width="777" height="692" depth="194" italic="0" />
+      <glyph ID="98" glyph-number="98" glyph-name="b" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="99" glyph-number="99" glyph-name="c" width="777" height="549" depth="35" italic="0" />
+      <glyph ID="100" glyph-number="100" glyph-name="d" width="666" height="549" depth="0" italic="0" />
+      <glyph ID="101" glyph-number="101" glyph-name="e" width="666" height="549" depth="0" italic="0" />
+      <glyph ID="102" glyph-number="102" glyph-name="f" width="760" height="549" depth="0" italic="0" />
+      <glyph ID="103" glyph-number="103" glyph-name="g" width="760" height="549" depth="0" italic="0" />
+      <glyph ID="104" glyph-number="104" glyph-name="h" width="777" height="692" depth="0" italic="0" />
+      <glyph ID="105" glyph-number="105" glyph-name="i" width="777" height="692" depth="0" italic="0" />
+      <glyph ID="106" glyph-number="106" glyph-name="j" width="777" height="755" depth="255" italic="0" />
+      <glyph ID="107" glyph-number="107" glyph-name="k" width="777" height="755" depth="255" italic="0" />
+      <glyph ID="108" glyph-number="108" glyph-name="l" width="777" height="549" depth="60" italic="0" />
+      <glyph ID="109" glyph-number="109" glyph-name="m" width="777" height="549" depth="60" italic="0" />
+      <glyph ID="110" glyph-number="110" glyph-name="n" width="1333" height="549" depth="35" italic="0" />
+      <glyph ID="111" glyph-number="111" glyph-name="o" width="1333" height="549" depth="35" italic="0" />
+      <glyph ID="112" glyph-number="112" glyph-name="p" width="500" height="692" depth="0" italic="0" />
+      <glyph ID="113" glyph-number="113" glyph-name="q" width="500" height="692" depth="0" italic="0" />
+      <glyph ID="114" glyph-number="114" glyph-name="r" width="946" height="692" depth="155" italic="0" />
+      <glyph ID="115" glyph-number="115" glyph-name="s" width="902" height="692" depth="155" italic="0" />
+      <glyph ID="116" glyph-number="116" glyph-name="t" width="666" height="692" depth="0" italic="0" />
+      <glyph ID="117" glyph-number="117" glyph-name="u" width="777" height="692" depth="81" italic="0" />
+      <glyph ID="118" glyph-number="118" glyph-name="v" width="777" height="377" depth="-133" italic="0" />
+      <glyph ID="119" glyph-number="119" glyph-name="w" width="777" height="464" depth="-35" italic="0" />
+      <glyph ID="120" glyph-number="120" glyph-name="x" width="500" height="377" depth="0" italic="0" />
+      <glyph ID="121" glyph-number="121" glyph-name="y" width="500" height="377" depth="0" italic="0" />
+      <glyph ID="122" glyph-number="122" glyph-name="z" width="833" height="692" depth="0" italic="0" />
+      <glyph ID="123" glyph-number="123" glyph-name="{" width="500" height="825" depth="0" italic="0" />
+      <glyph ID="124" glyph-number="124" glyph-name="|" width="555" height="430" depth="194" italic="0" />
+      <glyph ID="125" glyph-number="125" glyph-name="}" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="126" glyph-number="126" glyph-name="~" width="777" height="581" depth="81" italic="0" />
+      <glyph ID="127" glyph-number="127" glyph-name="" width="777" height="581" depth="81" italic="0" />
+   </font>
+</fontgroup>
+

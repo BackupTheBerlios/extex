@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -68,18 +68,10 @@ public class Dimen extends GlueComponent implements Serializable {
 		super(value);
 	}
     
-	/**
-	 * Create a new object.
-	 *
-	 * @param units_per_em	units per em (see Font)
-	 * @param val			the value
-	 * @param em			the em-size
-	 */
-	//TODO: gene: this should be eliminated since Dimen should not know
-    // anything about em etc.
-	public Dimen(int units_per_em, int val, Dimen em) {
-		super(val * em.getValue() / units_per_em);
+	public Dimen(TokenSource source, Context context) throws GeneralException {
+		super(source,context,false);
 	}
+
     
     /**
      * Creates a new object.

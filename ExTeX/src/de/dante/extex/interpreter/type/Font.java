@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Font {
 
@@ -49,6 +49,12 @@ public interface Font {
 	 */
 	public abstract Dimen getDepth(UnicodeChar c);
 
+	/**
+	 * Return the italic of a <code>UnicodeChar</code>, or
+	 * 0pt, if no character is defined.
+	 */
+	public abstract Dimen getItalic(UnicodeChar c);
+	
 	/**
 	 * Check, if the <code>UnicodeChar</code> is defined in the font.
 	 */
@@ -95,7 +101,10 @@ public interface Font {
 	 */
 	public abstract Dimen getEx();
 
-	public abstract Dimen getFontDimen(long index);
+	/**
+	 * Return font-dimen-size with a key.
+	 */
+	public abstract Dimen getFontDimen(String key);
 
 	/**
 	 * Return the fontname.

@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NullFont implements Font {
 
@@ -65,7 +65,7 @@ public class NullFont implements Font {
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
 	 */
-	public Dimen getFontDimen(long index) {
+	public Dimen getFontDimen(String key) {
 		return null;
 	}
 
@@ -122,7 +122,6 @@ public class NullFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#isExternalFont()
 	 */
 	public boolean isExternalFont() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
@@ -131,7 +130,6 @@ public class NullFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#getExternalFile()
 	 */
 	public File getExternalFile() {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -139,7 +137,14 @@ public class NullFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#getExternalID(UnicodeChar)
 	 */
 	public String getExternalID(UnicodeChar c) {
-		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getItalic(de.dante.util.UnicodeChar)
+	 */
+	public Dimen getItalic(UnicodeChar c) {
+		return null;
+	}
+
 }

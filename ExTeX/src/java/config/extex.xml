@@ -361,7 +361,7 @@
       <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
 
       <Font class="de.dante.extex.font.FontFactoryImpl"
-                   default="uplr8a" size="12">
+                   default="cmr12" size="12">
         <File>
           <efm>
             <extension>.efm</extension>
