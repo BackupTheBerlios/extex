@@ -52,10 +52,33 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
+
+    /**
+     * This is a type-save class to represent state information.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.18 $
+     */
+    private static final class State {
+
+        /**
+         * Creates a new object.
+         */
+        public State() {
+
+            super();
+        }
+    }
+
+    /**
+     * The constant <tt>BUFFERSIZE_ATTRIBUTE</tt> contains the name of the
+     * attribute used to get the buffer size.
+     */
+    private static final String BUFFERSIZE_ATTRIBUTE = "buffersize";
 
     /**
      * The constant <tt>CARET_LIMIT</tt> contains the ...
@@ -68,10 +91,10 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     private static final UnicodeChar CR = new UnicodeChar('\r');
 
     /**
-     * The constant <tt>BUFFERSIZE_ATTRIBUTE</tt> contains the name of the
-     * attribute used to get the buffer size.
+     * The constant <tt>MID_LINE</tt> contains the state for the processing in
+     * the middle of a line.
      */
-    private static final String BUFFERSIZE_ATTRIBUTE = "buffersize";
+    private static final State MID_LINE = new State();
 
     /**
      * The constant <tt>NEW_LINE</tt> contains the state for the processing at
@@ -80,27 +103,10 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     private static final State NEW_LINE = new State();
 
     /**
-     * The constant <tt>MID_LINE</tt> contains the state for the processing in
-     * the middle of a line.
-     */
-    private static final State MID_LINE = new State();
-
-    /**
      * The constant <tt>SKIP_BLANKS</tt> contains the state for the processing
      * when spaces are ignored.
      */
     private static final State SKIP_BLANKS = new State();
-
-    /**
-     * The field <tt>state</tt> contains the current state of operation.
-     */
-    private State state = NEW_LINE;
-
-    /**
-     * The field <tt>source</tt> contains the description of the source for
-     * tokens.
-     */
-    private String source;
 
     /**
      * The field <tt>in</tt> contains the buffered reader for lines.
@@ -113,6 +119,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     private String line = "";
 
     /**
+     * The field <tt>namespace</tt> contains the ...
+     */
+    private String namespace = "";
+
+    /**
      * The index in the buffer for the next character to consider. This
      * is an invariant: after a character is read this pointer has to be
      * advanced.
@@ -120,41 +131,15 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     private int pointer = 1;
 
     /**
-     * Creates a new object.
-     *
-     * @param config the configuration object for this instance; This
-     * configuration is ignored in this implementation.
-     * @param reader the reader
-     * @param isFile indicator for file streams
-     * @param theSource the description of the input source
-     *
-     * @throws IOException in case of an IO error
+     * The field <tt>source</tt> contains the description of the source for
+     * tokens.
      */
-    public TokenStreamImpl(final Configuration config, final Reader reader,
-            final Boolean isFile, final String theSource) throws IOException {
-
-        super(isFile.booleanValue());
-        this.in = new LineNumberReader(reader);
-        this.source = theSource;
-    }
+    private String source;
 
     /**
-     * Creates a new object.
-     *
-     * @param config the configuration object for this instance; This
-     * configuration is ignored in this implementation.
-     * @param theLine the string to use as source for characters
-     * @param theSource the description of the input source
-     *
-     * @throws IOException in case of an IO error
+     * The field <tt>state</tt> contains the current state of operation.
      */
-    public TokenStreamImpl(final Configuration config, final String theLine,
-            final String theSource) throws IOException {
-
-        super(false);
-        this.in = new LineNumberReader(new StringReader(theLine));
-        this.source = theSource;
-    }
+    private State state = NEW_LINE;
 
     /**
      * Creates a new object.
@@ -197,6 +182,43 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
+     * Creates a new object.
+     *
+     * @param config the configuration object for this instance; This
+     * configuration is ignored in this implementation.
+     * @param reader the reader
+     * @param isFile indicator for file streams
+     * @param theSource the description of the input source
+     *
+     * @throws IOException in case of an IO error
+     */
+    public TokenStreamImpl(final Configuration config, final Reader reader,
+            final Boolean isFile, final String theSource) throws IOException {
+
+        super(isFile.booleanValue());
+        this.in = new LineNumberReader(reader);
+        this.source = theSource;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param config the configuration object for this instance; This
+     * configuration is ignored in this implementation.
+     * @param theLine the string to use as source for characters
+     * @param theSource the description of the input source
+     *
+     * @throws IOException in case of an IO error
+     */
+    public TokenStreamImpl(final Configuration config, final String theLine,
+            final String theSource) throws IOException {
+
+        super(false);
+        this.in = new LineNumberReader(new StringReader(theLine));
+        this.source = theSource;
+    }
+
+    /**
      * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
      */
     public Locator getLocator() {
@@ -210,8 +232,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      *      de.dante.extex.scanner.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
-    public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
-            throws GeneralException {
+    protected Token getNext(final TokenFactory factory,
+            final Tokenizer tokenizer) throws GeneralException {
 
         Token t = null;
 
@@ -242,15 +264,14 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         Token t = ((TokenFactory) oFactory).newInstance(Catcode.ACTIVE,
-                                                        (UnicodeChar) uc);
+                                                        (UnicodeChar) uc,
+                                                        namespace);
         return t;
     }
 
     /**
-     * Comment
-     *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitComment(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -270,9 +291,9 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         Token t = null;
 
         if (state == MID_LINE) {
-            t = factory.newInstance(Catcode.SPACE, " ");
+            t = factory.newInstance(Catcode.SPACE, ' ');
         } else if (state == NEW_LINE) {
-            t = factory.newInstance(Catcode.ESCAPE, "par");
+            t = factory.newInstance(Catcode.ESCAPE, "par", namespace);
         }
 
         endLine();
@@ -291,13 +312,13 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
         if (atEndOfLine()) {
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
-            return factory.newInstance(Catcode.ESCAPE, "");
+            return factory.newInstance(Catcode.ESCAPE, "", namespace);
         }
 
         UnicodeChar uc = getChar(tokenizer);
 
         if (uc == null) {
-            return factory.newInstance(Catcode.ESCAPE, "");
+            return factory.newInstance(Catcode.ESCAPE, "", namespace);
 
         } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
             StringBuffer sb = new StringBuffer();
@@ -308,17 +329,19 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
             while (!atEndOfLine() && (uc = getChar(tokenizer)) != null) {
                 if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
                     pointer = savedPointer;
-                    return factory.newInstance(Catcode.ESCAPE, sb.toString());
+                    return factory.newInstance(Catcode.ESCAPE, sb.toString(),
+                                               namespace);
                 }
                 sb.append((char) (uc.getCodePoint()));
                 savedPointer = pointer;
             }
 
-            return factory.newInstance(Catcode.ESCAPE, sb.toString());
+            return factory
+                    .newInstance(Catcode.ESCAPE, sb.toString(), namespace);
 
         } else {
             state = MID_LINE;
-            return factory.newInstance(Catcode.ESCAPE, uc);
+            return factory.newInstance(Catcode.ESCAPE, uc, namespace);
 
         }
     }
@@ -347,7 +370,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
-     *      java.lang.Object, java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitLeftBrace(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -355,7 +378,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.LEFTBRACE,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -368,7 +392,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.LETTER,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -381,7 +406,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -394,7 +420,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.MATHSHIFT,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -407,7 +434,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.OTHER,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -420,7 +448,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -435,7 +464,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
         if (state == MID_LINE) {
             state = SKIP_BLANKS;
-            return factory.newInstance(Catcode.SPACE, " ");
+            return factory.newInstance(Catcode.SPACE, ' ');
         }
 
         return null;
@@ -451,7 +480,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.SUBMARK,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -464,7 +494,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.SUPMARK,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
     }
 
     /**
@@ -477,7 +508,27 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).newInstance(Catcode.TABMARK,
-                                                     (UnicodeChar) uc);
+                                                     (UnicodeChar) uc,
+                                                     namespace);
+    }
+
+    /**
+     * Checks whether the pointer is at the end of line.
+     *
+     * @return <code>true</code> iff the next reading operation would try to
+     * refill the line buffer
+     */
+    private boolean atEndOfLine() {
+
+        return (pointer > line.length());
+    }
+
+    /**
+     * End the current line.
+     */
+    private void endLine() {
+
+        pointer = line.length() + 1;
     }
 
     /**
@@ -573,25 +624,6 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * Checks whether the pointer is at the end of line.
-     *
-     * @return <code>true</code> iff the next reading operation would try to
-     * refill the line buffer
-     */
-    private boolean atEndOfLine() {
-
-        return (pointer > line.length());
-    }
-
-    /**
-     * End the current line.
-     */
-    private void endLine() {
-
-        pointer = line.length() + 1;
-    }
-
-    /**
      * Analyze a character and return its hex value, i.e. '0' to '9' are mapped
      * to 0 to 9 and 'a' to 'f' (case sensitive) are mapped to 10 to 15.
      *
@@ -630,23 +662,6 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
             return false;
         }
         return true;
-    }
-
-    /**
-     * This is a type-save class to represent state information.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.17 $
-     */
-    private static final class State {
-
-        /**
-         * Creates a new object.
-         */
-        public State() {
-
-            super();
-        }
     }
 
 }
