@@ -45,7 +45,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TableDirectory implements XMLConvertible {
 
@@ -383,7 +383,7 @@ public class TableDirectory implements XMLConvertible {
     public Element toXML() {
 
         Element td = new Element(TAG_TABLE_DIRECTORY);
-        td.setAttribute("version", String.valueOf(version));
+        td.setAttribute("version", String.valueOf((float)(version >> 0x10)));
         td.setAttribute("numberoftables", String.valueOf(numTables));
         td.setAttribute("searchrange", String.valueOf(searchRange));
         td.setAttribute("entryselector", String.valueOf(entrySelector));

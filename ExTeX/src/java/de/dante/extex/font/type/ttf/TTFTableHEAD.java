@@ -96,7 +96,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTFTableHEAD implements TTFTable, XMLConvertible {
 
@@ -398,8 +398,9 @@ public class TTFTableHEAD implements TTFTable, XMLConvertible {
         Element table = new Element("table");
         table.setAttribute("name", "head");
         table.setAttribute("id", "0x" + Integer.toHexString(getType()));
-        table.setAttribute("version", String.valueOf(version));
-        table.setAttribute("fontrevision", String.valueOf(fontRevision));
+        table.setAttribute("version", String.valueOf((float)(version >> 0x10)));
+        table.setAttribute("fontrevision", String.valueOf(Float.intBitsToFloat(fontRevision)));
+        table.setAttribute("xxxfontrevision", String.valueOf("0x"+Integer.toHexString(fontRevision)));
         table.setAttribute("checksumadjustment", String
                 .valueOf(checkSumAdjustment));
         table.setAttribute("magicnumber", String.valueOf(magicNumber));

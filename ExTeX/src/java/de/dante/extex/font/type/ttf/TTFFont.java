@@ -38,7 +38,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TTFFont implements XMLConvertible {
 
@@ -336,8 +336,8 @@ public class TTFFont implements XMLConvertible {
      * Optical bounds.
      * Table tag "opbd" in the Open Type Specification.
      */
-    public static final int OPBD = 0x6d6f7274;
-
+    //   public static final int OPBD = 0x6d6f7274;
+    // entspricht mort
     /**
      * Glyph properties.
      * Table tag "prop" in the Open Type Specification.
@@ -697,12 +697,130 @@ public class TTFFont implements XMLConvertible {
             case POST :
                 t = new TTFTablePOST(de, rar);
                 break;
+            case HDMX :
+                t = new TTFTableHDMX(de, rar);
+                break;
+            case GASP :
+                t = new TTFTableGASP(de, rar);
+                break;
+            case VDMX :
+                t = new TTFTableVDMX(de, rar);
+                break;
+            case VMTX :
+                t = new TTFTableVMTX(de, rar);
+                break;
+            case VHEA :
+                t = new TTFTableVHEA(de, rar);
+                break;
+            case TYP1 :
+                t = new TTFTableTYP1(de, rar);
+                break;
+            case BSLN :
+                t = new TTFTableBSLN(de, rar);
+                break;
+            case DSIG :
+                t = new TTFTableDSIG(de, rar);
+                break;
+            case FVAR :
+                t = new TTFTableFVAR(de, rar);
+                break;
+            case GVAR :
+                t = new TTFTableGVAR(de, rar);
+                break;
+            case CFF :
+                t = new TTFTableCFF(de, rar);
+                break;
+            case MMSD :
+                t = new TTFTableMMSD(de, rar);
+                break;
+            case MMFX :
+                t = new TTFTableMMFX(de, rar);
+                break;
+            case GDEF :
+                t = new TTFTableGDEF(de, rar);
+                break;
+            case JSTF :
+                t = new TTFTableJSTF(de, rar);
+                break;
+            case EBDT :
+                t = new TTFTableEBDT(de, rar);
+                break;
+            case EBLC :
+                t = new TTFTableEBLC(de, rar);
+                break;
+            case EBSC :
+                t = new TTFTableEBSC(de, rar);
+                break;
+            case LTSH :
+                t = new TTFTableLTSH(de, rar);
+                break;
+            case PCLT :
+                t = new TTFTablePCLT(de, rar);
+                break;
+            case ACNT :
+                t = new TTFTableACNT(de, rar);
+                break;
+            case AVAR :
+                t = new TTFTableAVAR(de, rar);
+                break;
+            case BDAT :
+                t = new TTFTableBDAT(de, rar);
+                break;
+            case BLOC :
+                t = new TTFTableBLOC(de, rar);
+                break;
+            case CVAR :
+                t = new TTFTableCVAR(de, rar);
+                break;
+            case FEAT :
+                t = new TTFTableFEAT(de, rar);
+                break;
+            case FDSC :
+                t = new TTFTableFDSC(de, rar);
+                break;
+            case FMTX :
+                t = new TTFTableFMTX(de, rar);
+                break;
+            case JUST :
+                t = new TTFTableJUST(de, rar);
+                break;
+            case LCAR :
+                t = new TTFTableLCAR(de, rar);
+                break;
+            case MORT :
+                t = new TTFTableMORT(de, rar);
+                break;
+            //            case OPBD :
+            //                t = new TTFTableOPBD(de, rar);
+            //                break;
+            case PROP :
+                t = new TTFTablePROP(de, rar);
+                break;
+            case TRAK :
+                t = new TTFTableTRAK(de, rar);
+                break;
             default :
                 t = null;
         }
         return t;
     }
 
+    /**
+     * Convert a Fixed value to a float value.
+     * <p>
+     * The Fixed point format consists of a signed,
+     * 2 s complement mantissa and an unsigned fraction.
+     * To compute the actual value, take the mantissa
+     * and add the fraction.
+     * </p>
+     * @param value the fixed value
+     * @return Returns the float-value
+     */
+    //    float convertFixed(final int value) {
+    //        int v1 = value >>0x10;
+    //        int v2 = value & 0x0f;
+    //        return v2 == 0 ? v1 : (float)v1/v2;
+    //    }
     /**
      * Returns the info for this class
      * @return Returns the info for this class
