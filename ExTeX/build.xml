@@ -1,4 +1,4 @@
-<!-- 
+<!--
   ############################################################################
   # This is the Ant build file for ExTeX
   ############################################################################
@@ -29,14 +29,14 @@
           The following targets are supported:
           all
               Build nearly everything
-          compile
-              Compile all file except the tests.        
+          compile [-Djavac.deprecation=yes]
+              Compile all file except the tests.
           jar
               Create the jar file.
           javadoc
-              Create the javadoc documentation in target/javadoc. 
+              Create the javadoc documentation in target/javadoc.
           checkstyle
-          tests
+          tests [-Dtests.haltonfailure=yes]
               Perfom all tests.
           deploy
           install -Dinstalldir=...
@@ -45,10 +45,11 @@
         </echo>
     </target>
 
+    <property name="tests.haltonfailure" value="no"/>
+    <property name="javac.deprecation" value="off" />
     <!-- configure the directories -->
     <property name="extexjarfile" value="extex"/>
     <property name="testsuitejarfile" value="testsuite"/>
-    <property name="tests.haltonfailure" value="no"/>
     <property name="src" location="src/java"/>
     <property name="src.tests" location="src/test"/>
     <property name="classes" location="target/classes"/>
@@ -100,9 +101,10 @@
         <!-- create empty output directory for classes if not present -->
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
-        <javac srcdir="${src}" 
+        <javac srcdir="${src}"
                destdir="${classes}"
-               debug="on">
+               debug="on"
+               deprecation="${javac.deprecation}">
             <classpath refid="main.class.path"/>
         </javac>
         <copy todir="${classes}">
@@ -119,7 +121,7 @@
         <!-- create empty output directory for classes if not present -->
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
-        <javac srcdir="${src.tests}" 
+        <javac srcdir="${src.tests}"
                destdir="${classes}"
                debug="on">
             <classpath refid="main.class.path"/>
@@ -223,7 +225,7 @@
             <tarfileset dir=".">
             </tarfileset>
         </tar>
-        <gzip zipfile="${tmp}/ExTeX-${DSTAMP}.tgz" 
+        <gzip zipfile="${tmp}/ExTeX-${DSTAMP}.tgz"
               src="${tmp}/ExTeX-${DSTAMP}.tar" />
         <delete file="${tmp}/ExTeX-${DSTAMP}.tar" />
     </target>
@@ -281,21 +283,21 @@
         <delete dir="${deploy}"/>
         <delete dir="${tmp.tests}"/>
         <delete dir="${javadoc}"/>
-    	<delete>
-    		<fileset dir="src/test/data">   
-    	    	<include name="*.log*" />  
-    	        <include name="*.out" />  
-    	    </fileset>
-    	</delete>
-		<delete dir="${target.lib}" />
+        <delete>
+                <fileset dir="src/test/data">
+                <include name="*.log*" />
+                <include name="*.out" />
+            </fileset>
+        </delete>
+                <delete dir="${target.lib}" />
         <delete file="${tmp}/checkstyle.txt" />
-    	<delete file="${target}/ExTeX-setup.jar"/>
+        <delete file="${target}/ExTeX-setup.jar"/>
         </target>
 
     <target name="javadoc"
             description="Create JavaDoc HTML pages.">
         <mkdir dir="${javadoc}" />
-        <javadoc 
+        <javadoc
              destdir="${javadoc}"
              overview="${src}/overview.html"
              stylesheetfile="src/javadoc/stylesheet.css"
@@ -323,7 +325,7 @@
             description="Create javadoc XML pages">
         <mkdir dir="${javadocxml}" />
         <property name="doc.params" value="-outdir ${javadocxml}"/>
-        <javadoc 
+        <javadoc
                 doclet="de.dante.tools.doclet.XMLDoclet1"
                 additionalparam="${doc.params}">
             <classpath refid="main.class.path"/>
@@ -354,7 +356,7 @@
             </fileset>
         </copy>
         <property name="doc.params" value="-properties doc/dbdoclet-extex.properties"/>
-        <javadoc 
+        <javadoc
             maxmemory="256m"
             destdir="${dbdoclet}"
             author="true"
@@ -405,12 +407,12 @@
 
     <!-- <target name="extex" description="Run ExTeX">
                 <java fork="true" classname="de.dante.extex.ExTeX">
-                        <jvmarg value="-Xms64m"/> 
-                        <jvmarg value="-Xmx128m"/> 
-                        <jvmarg value="-Xloggc:gc.log"/> 
+                        <jvmarg value="-Xms64m"/>
+                        <jvmarg value="-Xmx128m"/>
+                        <jvmarg value="-Xloggc:gc.log"/>
                 </java>
     </target> -->
-        
+
     <target name="extex32"
             depends="compile"
             description="Create a extex32.xml config file">
