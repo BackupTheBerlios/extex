@@ -24,12 +24,12 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class MathCharNoad extends AbstractNoad implements Noad {
+public class CharNoad extends AbstractNoad implements Noad {
 
     /**
      * The field <tt>family</tt> contains the font family for this character.
@@ -47,7 +47,7 @@ public class MathCharNoad extends AbstractNoad implements Noad {
      * @param fam the font family for the character
      * @param character the Unicode character representation
      */
-    public MathCharNoad(final int fam, final UnicodeChar character) {
+    public CharNoad(final int fam, final UnicodeChar character) {
 
         super();
         family = fam;
