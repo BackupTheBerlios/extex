@@ -39,7 +39,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * several extensions.
  *
  * <h2>Configuration</h2>
- * ...
+ * TODO document configuration
  *
  * <pre>
  * &lt;Finder class="de.dante.util.resource.FileFinder"
@@ -68,7 +68,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
 
