@@ -24,7 +24,7 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a dynamically loaded class could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationClassNotFoundException
     extends ConfigurationException {
@@ -45,6 +45,17 @@ public class ConfigurationClassNotFoundException
         super(null, config.toString());
         this.classname = classname;
     }
+
+    /**
+     * Creates a new object.
+     * 
+     * @param classname ...
+     * @param config ...
+     */
+    public ConfigurationClassNotFoundException(String classname) {
+        super(null);
+        this.classname = classname;
+    }
     
     /**
      * Creates a new object.
@@ -62,8 +73,9 @@ public class ConfigurationClassNotFoundException
      */
     protected String getText() {
         return Messages.format("ConfigurationClassNotFoundException.Text",
-                               (classname != null ? //
-                                       classname : //
-                                       getCause().getMessage()));
+                               (classname != null //
+                                   ? classname //
+                                   : getCause() != null ? getCause()
+                                       .getMessage() : ""));
     }
 }
