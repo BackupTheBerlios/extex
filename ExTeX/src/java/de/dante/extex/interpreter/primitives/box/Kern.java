@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *  This primitive produces a horizontal or vertical kerning. This is a (minor)
  *  adjustment of the position. The meaning depends on the current mode of the
  *  typesetter. In vertical modes it means a vertival adjustment. Otherwise it
- * means a horizontal adjustment.
+ *  means a horizontal adjustment.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Kern extends AbstractCode {
 
