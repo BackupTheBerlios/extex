@@ -24,7 +24,7 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a problem in the configuration is detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationException extends Exception {
     /** The message string for this exception */
@@ -72,8 +72,28 @@ public class ConfigurationException extends Exception {
      */
     public String getMessage() {
         if (getCause() != null) {
-            return Messages.format("ConfigException.format_text",
-                                   getCause().getMessage());
+            for (Throwable t = getCause(); t != null;
+                     t = t.getCause()) {
+                String msg = t.getMessage();
+
+                if (msg != null) {
+                    if (source != null) {
+                        if (message != null) {
+                            return Messages.format("ConfigException.format_text_cause_message_location",
+                                                   getText(), msg, message, source);
+                        } else {
+                            return Messages.format("ConfigException.format_text_cause_location",
+                                                   getText(), msg, source);
+                        }
+                    } else if (message != null) {
+                        return Messages.format("ConfigException.format_text_cause_message",
+                                               getText(), msg, message);
+                    } else {
+                        return Messages.format("ConfigException.format_text_cause",
+                                               getText(),msg);
+                    }
+                }
+            }
         }
 
         if (source != null) {
