@@ -55,7 +55,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class Moritz implements TokenSource, Observable {
     /**
@@ -154,6 +154,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @throws GeneralException in case of an error
      */
     public Token getNonSpace() throws GeneralException {
+
         for (Token t = getToken(); t != null; t = getToken()) {
             if (!(t.isa(Catcode.SPACE))) {
                 return t;
@@ -164,7 +165,7 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * Get the next token form the input streams. If the current input stream
+     * Get the next token from the input streams. If the current input stream
      * is at its end then the next one on the streamStack is used until a token
      * could be read. If all stream are at the end then <code>null</code> is
      * returned.
@@ -440,7 +441,34 @@ public abstract class Moritz implements TokenSource, Observable {
      * @throws GeneralException in case that no number is found or the end of
      *             file has been reached before an integer could be acquired
      */
+    public long getInteger() throws GeneralException {
+        Token t = getNonSpace();
+
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.MissingNumber");
+        } else if (t.equals(Catcode.OTHER, "-")) {
+            return -scanNumber();
+        } else if (t.equals(Catcode.OTHER, "+")) {
+            return scanNumber();
+        }
+
+        stream.put(t);
+        return scanNumber();
+    }
+
+    /**
+     * Scan the input stream for tokens making up an integer, this is a number
+     * optionally preceeded by a sign (+ or -). The number can be preceeded by
+     * optional whitespace. Whitespace is also ignored between the sign and the
+     * number. All non-whitespace characters must have the catcode OTHER.
+     *
+     * @return the value of the integer scanned
+     *
+     * @throws GeneralException in case that no number is found or the end of
+     *             file has been reached before an integer could be acquired
+     */
     public long scanInteger() throws GeneralException {
+
         Token t = scanNonSpace();
 
         if (t == null) {
@@ -489,22 +517,8 @@ public abstract class Moritz implements TokenSource, Observable {
      *             {@link #scanToken() scanToken()}
      */
     public Token scanNonSpace() throws GeneralException {
-        return scanNonSpace(scanToken());
-    }
 
-    /**
-     * Scan the input for the next token which has not the catcode SPACE.
-     *
-     * @param token the first token to consider
-     *
-     * @return the next non-space token or <code>null</code> at EOF
-     *
-     * @throws GeneralException in case of an error in
-     *             {@link #scanToken() scanToken()}
-     */
-    public Token scanNonSpace(final Token token) throws GeneralException {
-
-        for (Token t = token; t != null; t = scanToken()) {
+        for (Token t = scanToken(); t != null; t = scanToken()) {
             if (!(t.isa(Catcode.SPACE))) {
                 return t;
             }
@@ -577,7 +591,7 @@ public abstract class Moritz implements TokenSource, Observable {
         return scanNumber(scanNonSpace());
     }
 
-/**
+    /**
      * Scan a number with a given first token.
      *
      * @param token the first token to consider
@@ -704,7 +718,7 @@ public abstract class Moritz implements TokenSource, Observable {
         if (t == null) {
             throw new GeneralHelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "=")) {
-            stream.put(scanNonSpace());
+            stream.put(getNonSpace());
         } else {
             stream.put(t);
         }
@@ -726,10 +740,14 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * ...
+     * Tries to expand a token. If the given token is expandable then it is
+     * recursively expanded and the result is pushed.  The first not expandable
+     * token is returned.
      *
-     * @param token ...
-     * @return ...
+     * @param token the Token to expand
+     *
+     * @return the next non-expandable token or <code>null</code>
+     *
      * @throws GeneralException in case of an error
      */
     protected abstract Token expand(final Token token)
@@ -784,7 +802,8 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#skipSpace()
      */
     public void skipSpace() throws GeneralException {
-        Token t = scanNonSpace();
+
+        Token t = getNonSpace();
         if (t != null) {
             stream.put(t);
         }
