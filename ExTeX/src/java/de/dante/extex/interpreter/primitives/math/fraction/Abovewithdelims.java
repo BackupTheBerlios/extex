@@ -23,8 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.GeneralException;
 
 /**
@@ -49,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Abovewithdelims extends AbstractMathCode {
 
@@ -75,10 +77,11 @@ public class Abovewithdelims extends AbstractMathCode {
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        MathDelimiter del1 = new MathDelimiter(context, source);
+        MathDelimiter del2 = new MathDelimiter(context, source);
+        Dimen d = new Dimen(context, source);
+        nc.switchToFraction(del1, del2, d);
+        return true;
     }
 
 }

@@ -24,7 +24,8 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.GeneralException;
 
 /**
@@ -39,7 +40,7 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;span&rang;
+ *    &lang;overwithdelims&rang;
  *       &rarr; <tt>\overwithdelims</tt>  </pre>
  * </p>
  * <p>
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Overwithdelims extends AbstractMathCode {
 
@@ -76,10 +77,11 @@ public class Overwithdelims extends AbstractMathCode {
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
+        MathDelimiter del1 = new MathDelimiter(context, source);
+        MathDelimiter del2 = new MathDelimiter(context, source);
 
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        nc.switchToFraction(del1, del2, null);
+        return true;
     }
 
 }
