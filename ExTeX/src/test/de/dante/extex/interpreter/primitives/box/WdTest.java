@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\wd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class WdTest extends ExTeXLauncher {
 
@@ -114,7 +114,7 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "6.175pt\n"); // checked wih TeX
+                "6.175pt \n"); // checked wih TeX
     }
 
     /**
@@ -136,13 +136,12 @@ public class WdTest extends ExTeXLauncher {
                 //--- log message ---
                 "",
                 //--- output channel ---
-                "18.52501pt\n"); // checked wih TeX
+                "18.52501pt \n"); // checked wih TeX
     }
-
 
     /**
      * Test case checking that a hbox containing "abc" in font cmmi10 has the
-     * width 13.9051pt.
+     * width 5.28589pt.
      *
      * @throws Exception in case of an error
      */
