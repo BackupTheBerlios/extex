@@ -891,6 +891,8 @@ sub do_files
       }
     } elsif ( m/amp;\{procedure\}[^{}]*\{([^{}]*)\}/ ) {
       $xref{$1} = $outfilename;
+    } elsif( m/\\P\\D \\37\$\\\\\{([^{}]*)\}/ ) {
+      $xref{$1} = $outfilename;
     } else {
       my $s = '';
       while (m/(\\\\\{)([a-z0-9\\_]*)(\})/i) {
