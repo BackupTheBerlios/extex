@@ -20,12 +20,15 @@ package de.dante.extex.interpreter;
 
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InterpreterFactory {
     /** the configuration for this factory */
@@ -58,8 +61,20 @@ public class InterpreterFactory {
                                                                                  }).newInstance(new Object[] {
                                                                                                     config
                                                                                                 }));
-        } catch (Exception e) {
-            throw new ConfigurationException("InterpreterFactory", e);
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationInstantiationException(e);
         }
 
         return interpreter;
