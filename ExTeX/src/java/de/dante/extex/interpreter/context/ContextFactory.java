@@ -19,15 +19,8 @@
 
 package de.dante.extex.interpreter.context;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.AbstractFactory;
 
 /**
@@ -41,15 +34,9 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ContextFactory extends AbstractFactory {
-
-    /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * used to get the class name.
-     */
-    private static final String CLASS_ATTRIBUTE = "class";
 
     /**
      * Creates a new object.
@@ -80,45 +67,7 @@ public class ContextFactory extends AbstractFactory {
      */
     public Context newInstance(final String type) throws ConfigurationException {
 
-        Configuration cfg = selectConfiguration(type);
-        String className = cfg.getAttribute(CLASS_ATTRIBUTE);
-
-        if (className == null) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    cfg);
-        }
-
-        Context context;
-
-        try {
-            Constructor constructor = Class.forName(className).getConstructor(
-                    new Class[]{Configuration.class});
-            context = (Context) constructor.newInstance(new Object[]{cfg});
-        } catch (SecurityException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(className + "("
-                    + Configuration.class.getName() + ")");
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(className,
-                    getConfiguration());
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            Throwable cause = e.getCause();
-            if (cause != null && cause instanceof ConfigurationException) {
-                throw (ConfigurationException) cause;
-            }
-            throw new ConfigurationInstantiationException(e);
-        }
-
-        enableLogging(context, getLogger());
-
-        return context;
+        return (Context) createInstance(type, Context.class);
     }
 
 }
