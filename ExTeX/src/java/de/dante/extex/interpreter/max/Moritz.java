@@ -68,7 +68,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public abstract class Moritz implements TokenSource, Configurable, Observable {
 
@@ -255,14 +255,16 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     }
 
     /**
-     * Get the next token and check that it is a CodeToken. This means that only
-     * the classes ActiveCharacterToken and ControlSequenceToken are accepted.
-     * All other tokens lead to an exception.
+     * Get the next token from the token stream and check that it is a
+     * control sequence or active character.
+     * At the end of all input streams the control sequence "inaccessible"
+     * is insered and an exception is thrown. Thus thismethod will never return
+     * <code>null</code>.
      *
-     * @return the next token found
+     * @return the token read
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case that the token stream is at its end or
+     *   that the token read is not a control sequence token
      */
     public CodeToken getControlSequence() throws GeneralException {
 
