@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Discartable;
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [147]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class AfterMathNode extends AbstractNode implements Node, Discartable {
 
@@ -38,6 +39,7 @@ public class AfterMathNode extends AbstractNode implements Node, Discartable {
      * Creates a new object.
      */
     public AfterMathNode() {
+
         super();
     }
 
@@ -48,6 +50,7 @@ public class AfterMathNode extends AbstractNode implements Node, Discartable {
      * @see "TeX -- The Program [192]"
      */
     public String toString() {
+
         return "mathoff"; //TODO incomplete
     }
 
@@ -55,13 +58,16 @@ public class AfterMathNode extends AbstractNode implements Node, Discartable {
      * ...
      *
      * @param sb ...
+     * @param prefix ...
      */
     public void toString(final StringBuffer sb, final String prefix) {
+
         sb.append("mathoff"); //TODO
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visit(final NodeVisitor visitor, final Object value,

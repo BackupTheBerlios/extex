@@ -25,21 +25,23 @@ import de.dante.extex.typesetter.Node;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
     /**
-     * The field <tt>text</tt> contains the ...
+     * The field <tt>text</tt> contains the text to pass to the backend driver.
      */
     private String text;
 
     /**
      * Creates a new object.
+     *
+     * @param theText the text to pass to the backend driver
      */
     public SpecialNode(final String theText) {
         super();
-        text = theText;
+        this.text = theText;
     }
 
     /**
@@ -48,7 +50,7 @@ public class SpecialNode extends WhatsItNode implements Node {
      * @return the text.
      */
     public String getText() {
-        return text;
+        return this.text;
     }
 
 }

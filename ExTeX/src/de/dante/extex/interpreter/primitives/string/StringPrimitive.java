@@ -20,10 +20,11 @@
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -33,10 +34,12 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\string</code>.
  *
+ * @see "TeX -- the Program [69]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class StringPrimitive extends AbstractCode {
+public class StringPrimitive extends AbstractCode implements ExpandableCode {
 
     /**
      * Creates a new object.
@@ -49,13 +52,28 @@ public class StringPrimitive extends AbstractCode {
     }
 
     /**
-     * @see "TeX -- the Program [69]"
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        expand(prefix, context, source, typesetter);
+        prefix.clear();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *     de.dante.extex.interpreter.Flags,
+     *     de.dante.extex.interpreter.context.Context,
+     *     de.dante.extex.interpreter.TokenSource,
+     *     de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -68,5 +86,4 @@ public class StringPrimitive extends AbstractCode {
             source.push(new Tokens(context, t.getValue()));
         }
     }
-
 }

@@ -26,9 +26,9 @@ import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -55,14 +55,15 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontPrimitive extends AbstractAssignment {
 
     /**
-     * Default-Scale-factor
+     * The field <tt>DEFAULT_SCALE_FACTOR</tt> contains the default scale
+     * factor.
      */
-    private static final int DEFAULTSCALEFACTOR = 1000;
+    private static final int DEFAULT_SCALE_FACTOR = 1000;
 
     /**
      * Creates a new object.
@@ -87,9 +88,9 @@ public class FontPrimitive extends AbstractAssignment {
 
         Token t = source.getControlSequence();
         source.getOptionalEquals();
-        String filename = scanFontName(source);
-        int size = getFontSize(filename);
-        Dimen fontsize;
+        String fontname = scanFontName(source);
+        int size = getFontSize(fontname);
+        Dimen fontsize = null;
 
         // optional parameters 'at' and 'scaled'
         // if 'at' not used, the fontname must have a size (e.g. cmr10)
@@ -102,7 +103,8 @@ public class FontPrimitive extends AbstractAssignment {
             // \font\magnifiedfiverm=cmr5 scaled 2000
             source.skipSpace();
             long scale = source.scanInteger();
-            fontsize = new Dimen(Dimen.ONE * size * scale / DEFAULTSCALEFACTOR);
+            fontsize = new Dimen(Dimen.ONE * size * scale
+                                 / DEFAULT_SCALE_FACTOR);
         } else {
             // use size from the fontname
             fontsize = new Dimen(Dimen.ONE * size);
@@ -113,32 +115,37 @@ public class FontPrimitive extends AbstractAssignment {
             throw new GeneralHelpingException("FONT.nofontsize");
         }
 
-        // optional parameter 'letterspaced'
         Glue letterspaced = new Glue(0);
-        if (source.scanKeyword("letterspaced", true)) {
-            // \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
-            source.skipSpace();
-            letterspaced = new Glue(source, context);
-        }
-
-        // optional parameter 'letterspaced'
         boolean ligatures = true;
-        if (source.scanKeyword("noligatures", true)) {
-            // \font\myfont=cmr12 at 15pt noligatures
-            ligatures = false;
+        boolean kerning = true;
+
+        for (boolean onceMore = true; onceMore;) {
+
+            if (source.scanKeyword("letterspaced", true)) {
+                // \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
+                source.skipSpace();
+                letterspaced = new Glue(source, context);
+            } else if (source.scanKeyword("noligatures", true)) {
+                // \font\myfont=cmr12 at 15pt noligatures
+                ligatures = false;
+            } else if (source.scanKeyword("nokerning", true)) {
+                // \font\myfont=cmr12 at 15pt nokerning
+                kerning = false;
+            } else {
+                onceMore = false;
+            }
         }
 
         FontFactory ff = context.getFontFactory();
         Font font;
         try {
-            font = ff.getInstance(filename, fontsize, letterspaced, ligatures);
+            font = ff.getInstance(fontname, fontsize, letterspaced, ligatures);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
 
-        // create new primitive
         Code code = new FontCode(t.getValue(), font);
-        context.setMacro(t.getValue(), code, prefix.isGlobal());
+        context.setCode(t, code, prefix.isGlobal());
     }
 
     /**

@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive <code>\char</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
@@ -47,7 +47,8 @@ public class Char extends AbstractCode implements ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -60,7 +61,8 @@ public class Char extends AbstractCode implements ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

@@ -22,7 +22,7 @@ import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Muskip;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedMuskip extends AbstractAssignment {
     /**
@@ -51,11 +51,11 @@ public class NamedMuskip extends AbstractAssignment {
 
     /**
      * Return the key (the name of the primitive) for the register.
-     * 
+     *
      * @param source the source for new tokens
-     * 
+     *
      * @return the key for the current register
-     * 
+     *
      * @throws GeneralException in case that a derived class need to throw an
      *             Exception this one is declared.
      */
@@ -64,7 +64,8 @@ public class NamedMuskip extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -75,8 +76,7 @@ public class NamedMuskip extends AbstractAssignment {
 
         String key = getKey(source);
         source.scanOptionalEquals();
-        
-        Muskip skip = new Muskip(source, context);
+        Muskip skip = new Muskip(context, source);
         context.setMuskip(key, skip, prefix.isGlobal());
     }
 

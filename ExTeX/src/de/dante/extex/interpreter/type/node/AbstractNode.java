@@ -16,18 +16,20 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Node;
 
 /**
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractNode implements Node {
+
     /**
      * The field <tt>depth</tt> contains the depth of the node.
      * The depth is the extend of the node below the baseline.
@@ -50,10 +52,11 @@ public abstract class AbstractNode implements Node {
      * All dimensions (width, height, depth) are initially set to 0pt.
      */
     public AbstractNode() {
+
         super();
-        width  = new Dimen();
+        width = new Dimen();
         height = new Dimen();
-        depth  = new Dimen();
+        depth = new Dimen();
     }
 
     /**
@@ -62,6 +65,7 @@ public abstract class AbstractNode implements Node {
      * @param aWidth the width of the node
      */
     public AbstractNode(final Dimen aWidth) {
+
         super();
         this.width = new Dimen(aWidth);
         this.height = new Dimen();
@@ -76,7 +80,8 @@ public abstract class AbstractNode implements Node {
      * @param aDepth the depth of the node
      */
     public AbstractNode(final Dimen aWidth, final Dimen aHeight,
-        final Dimen aDepth) {
+            final Dimen aDepth) {
+
         super();
         this.width = new Dimen(aWidth);
         this.height = new Dimen(aHeight);
@@ -84,9 +89,11 @@ public abstract class AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#setDepth(de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.typesetter.Node#setDepth(
+     *      de.dante.extex.interpreter.type.Dimen)
      */
     public void setDepth(final Dimen aDepth) {
+
         depth.set(aDepth);
     }
 
@@ -94,13 +101,16 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.Node#getDepth()
      */
     public Dimen getDepth() {
+
         return depth;
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#setHeight(de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.typesetter.Node#setHeight(
+     *      de.dante.extex.interpreter.type.Dimen)
      */
     public void setHeight(final Dimen aHeight) {
+
         height.set(aHeight);
     }
 
@@ -108,13 +118,16 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.Node#getHeight()
      */
     public Dimen getHeight() {
+
         return height;
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#setWidth(de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.typesetter.Node#setWidth(
+     *      de.dante.extex.interpreter.type.Dimen)
      */
     public void setWidth(final Dimen aWidth) {
+
         width.set(aWidth);
     }
 
@@ -122,6 +135,7 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.Node#getWidth()
      */
     public Dimen getWidth() {
+
         return width;
     }
 
@@ -133,6 +147,7 @@ public abstract class AbstractNode implements Node {
      * @return the text representation of this object
      */
     protected String toText(final String prefix) {
+
         StringBuffer sb = new StringBuffer();
         toText(sb, prefix);
         return sb.toString();
@@ -145,6 +160,7 @@ public abstract class AbstractNode implements Node {
      * @param prefix the string prepended to each line of the resulting text
      */
     public void toText(final StringBuffer sb, final String prefix) {
+
         sb.append(prefix);
 
         //TODO incomplete

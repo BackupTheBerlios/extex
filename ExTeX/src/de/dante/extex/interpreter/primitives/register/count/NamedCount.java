@@ -21,17 +21,17 @@ package de.dante.extex.interpreter.primitives.register.count;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Advanceable;
-import de.dante.extex.interpreter.CountConvertible;
-import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Multiplyable;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.arithmetic.Advanceable;
+import de.dante.extex.interpreter.type.arithmetic.Divideable;
+import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedCount extends AbstractAssignment implements ExpandableCode,
         Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
@@ -66,7 +66,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Advanceable#advance(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -83,7 +84,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -100,7 +102,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -114,7 +117,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.CountConvertible#convertCount(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertCount(final Context context, final TokenSource source)
@@ -126,7 +130,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -147,7 +152,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -163,7 +169,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#set(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.Code#set(
+     *      de.dante.extex.interpreter.context.Context,
      *      java.lang.String)
      */
     public void set(final Context context, final String value)
@@ -179,7 +186,8 @@ public class NamedCount extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Tokens the(final Context context, final TokenSource source)

@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [137]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -40,11 +41,13 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      * @see "TeX -- The Program [136]"
      */
     public VerticalListNode() {
+
         super();
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.NodeList#addSkip(
+     *      de.dante.extex.interpreter.type.Glue)
      */
     public void addSkip(final Glue glue) {
 
@@ -58,6 +61,7 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      *      java.lang.String)
      */
     public void toText(final StringBuffer sb, final String prefix) {
+
         sb.append("(vlist ");
         super.toText(sb, prefix);
     }
@@ -67,28 +71,31 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
+
         sb.append("\\vbox");
         super.toString(sb, prefix);
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visit(final NodeVisitor visitor, final Object value,
-        final Object value2) throws GeneralException {
+            final Object value2) throws GeneralException {
 
         return visitor.visitVerticalList(value, value2);
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.node.AbstractNodeList#updateDimensions(de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.interpreter.type.node.AbstractNodeList#updateDimensions(
+     *      de.dante.extex.typesetter.Node)
      */
     protected void updateDimensions(final Node node) {
 
         getWidth().max(node.getWidth());
-        getHeight().add(node.getHeight());  //TODO incorrect
-        getDepth().add(node.getDepth());    //TODO incorrect
+        getHeight().add(node.getHeight()); //TODO incorrect
+        getDepth().add(node.getDepth()); //TODO incorrect
     }
 
 }

@@ -19,10 +19,11 @@
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.LetterToken;
 import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.Token;
@@ -36,9 +37,9 @@ import de.dante.util.UnicodeChar;
  * <code>\lowercase</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Lowercase extends AbstractCode {
+public class Lowercase extends AbstractCode implements ExpandableCode {
 
     /**
      * Creates a new object.
@@ -51,7 +52,8 @@ public class Lowercase extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -60,11 +62,25 @@ public class Lowercase extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
+        expand(prefix, context, source, typesetter);
+        prefix.clear();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(Flags prefix, Context context, TokenSource source,
+            Typesetter typesetter) throws GeneralException {
+
         Tokens toks = source.getTokens();
 
         if (toks == null) {
             throw new RuntimeException("unimplemented");
-            //TODO unmplemented
+            //TODO unimplemented
         }
         Token[] result = new Token[toks.length()];
         TokenFactory factory = context.getTokenFactory();
@@ -85,5 +101,4 @@ public class Lowercase extends AbstractCode {
 
         source.push(result);
     }
-
 }

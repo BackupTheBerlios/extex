@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.count;
 
 import de.dante.extex.interpreter.TokenSource;
@@ -40,7 +41,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NumberedCount extends NamedCount {
 
@@ -50,14 +51,17 @@ public class NumberedCount extends NamedCount {
      * @param name the name for debugging
      */
     public NumberedCount(final String name) {
+
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.primitives.register.count.NamedCount#getKey(de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.primitives.register.count.NamedCount#getKey(
+     *      de.dante.extex.interpreter.TokenSource)
      */
     protected String getKey(final TokenSource source) throws GeneralException {
 
         return getName() + "#" + Long.toString(source.scanNumber());
     }
+
 }

@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -30,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [155]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
@@ -45,6 +46,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
      * @see "TeX -- The Program [156]"
      */
     public KernNode(final Dimen kern) {
+
         super();
         theKern.set(kern);
     }
@@ -52,10 +54,13 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     /**
      * ...
      *
+     * @param prefix ...
+     *
      * @return ...
      * @see "TeX -- The Program [191]"
      */
     public String toText(final String prefix) {
+
         return "kern " + theKern.toString();
     }
 
@@ -64,6 +69,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
      *      java.lang.String)
      */
     public void toText(final StringBuffer sb, final String prefix) {
+
         sb.append("kern ");
         theKern.toString(sb);
     }
@@ -73,6 +79,7 @@ public class KernNode extends AbstractNode implements Node, Discartable {
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
+
         sb.append("\\kern ");
         theKern.toString(sb);
     }

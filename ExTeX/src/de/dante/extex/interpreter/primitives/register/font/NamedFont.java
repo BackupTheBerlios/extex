@@ -21,10 +21,10 @@ package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.FontConvertible;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -47,18 +47,27 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        // TODO Auto-generated method stub
-        throw new RuntimeException("unimplemented");
+        String key = getKey(source);
+        source.scanOptionalEquals();
+
+        Font font = source.getFont();
+        context.setFont(key, font, prefix.isGlobal());
     }
 
     /**
-     * @see de.dante.extex.interpreter.FontConvertible#convertFont(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.type.font.FontConvertible#convertFont(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public Font convertFont(final Context context, final TokenSource source)
             throws GeneralException {

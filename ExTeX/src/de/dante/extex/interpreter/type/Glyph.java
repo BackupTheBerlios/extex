@@ -21,13 +21,14 @@ package de.dante.extex.interpreter.type;
 
 import java.util.HashMap;
 
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.util.UnicodeChar;
 
 /**
  * Glyph
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Glyph {
 

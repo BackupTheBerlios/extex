@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.Count;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
@@ -31,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [157]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discartable {
 
@@ -43,22 +44,24 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
     /**
      * Creates a new object.
      *
-     * @param penalty the penalty value
+     * @param thePenalty the penalty value
      *
      * @see "TeX -- The Program [158]"
      */
-    public PenaltyNode(final Count penalty) {
-        this(penalty.getValue());
+    public PenaltyNode(final Count thePenalty) {
+
+        this(thePenalty.getValue());
     }
 
     /**
      * Creates a new object.
      *
-     * @param penalty the penalty value
+     * @param thePenalty the penalty value
      */
-    public PenaltyNode(final long penalty) {
+    public PenaltyNode(final long thePenalty) {
+
         super();
-        this.penalty = penalty;
+        this.penalty = thePenalty;
     }
 
     /**
@@ -70,6 +73,7 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
 
         return penalty;
     }
+
     /**
      * ...
      *
@@ -77,7 +81,10 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
      * @see "TeX -- The Program [194]"
      */
     public String toString() {
-        return "penalty " + Long.toString(penalty); //TODO: i18n
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
     }
 
     /**
@@ -87,7 +94,7 @@ public class PenaltyNode extends AbstractNode implements Node, Discartable {
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("penalty ");
-        sb.append(Long.toString(penalty));
+        sb.append(Long.toString(penalty)); //TODO i18n
     }
 
     /**

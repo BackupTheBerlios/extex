@@ -18,14 +18,11 @@
  */
 package de.dante.extex.interpreter.primitives.register.skip;
 
-import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -41,7 +38,7 @@ import de.dante.util.GeneralException;
  *
  *
  * <h3>Possible Extension</h3>
- * Allow an expandable expression instead of the number to defined real named
+ * Allow an expandable expression instead of the number to define real named
  * counters.
  *
  * <p>Example</p>
@@ -53,7 +50,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "skip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Skipdef extends AbstractAssignment {
 
@@ -67,7 +64,8 @@ public class Skipdef extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.AbstractAssignment#assign(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -76,24 +74,11 @@ public class Skipdef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.scanToken();
+        Token cs = source.getControlSequence();
+        source.scanOptionalEquals();
+        //todo: unfortunately we have to know the internal format of the key:-(
+        String key = "skip#" + Long.toString(Count.scanCount(context, source));
+        context.setCode(cs, new NamedSkip(key), prefix.isGlobal());
 
-        if (cs instanceof ControlSequenceToken) {
-            source.scanOptionalEquals();
-            //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "skip#" + Long.toString(Count.scanCount(context, source));
-            context.setMacro(cs.getValue(), new NamedSkip(key), prefix.isGlobal());
-            return;
-
-        } else if (cs instanceof ActiveCharacterToken) {
-            source.scanOptionalEquals();
-            //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "skip#" + Long.toString(Count.scanCount(context, source));
-            context.setActive(cs.getValue(), new NamedSkip(key), prefix.isGlobal());
-            return;
-
-        }
-
-        throw new GeneralHelpingException("TTP.MissingCtrlSeq");
     }
 }

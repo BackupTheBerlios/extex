@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedToks extends AbstractAssignment implements Theable {
 
@@ -56,7 +56,8 @@ public class NamedToks extends AbstractAssignment implements Theable {
     /**
      * Return the register value as <code>Tokens</code> for <code>\the</code>.
      *
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Tokens the(final Context context, final TokenSource source)
@@ -66,7 +67,8 @@ public class NamedToks extends AbstractAssignment implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -83,7 +85,7 @@ public class NamedToks extends AbstractAssignment implements Theable {
 
     /**
      * Set the value for the register...
-     * 
+     *
      * @param context the interpreter context
      * @param value the value for the tokens
      *

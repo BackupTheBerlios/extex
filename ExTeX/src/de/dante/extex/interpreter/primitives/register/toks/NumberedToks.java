@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NumberedToks extends NamedToks {
 
@@ -53,6 +53,8 @@ public class NumberedToks extends NamedToks {
      *
      * @param context the interpreter context
      * @param value the value for the tokens
+     *
+     * @throws GeneralException ...
      */
     public void set(final Context context, final String value)
         throws GeneralException {

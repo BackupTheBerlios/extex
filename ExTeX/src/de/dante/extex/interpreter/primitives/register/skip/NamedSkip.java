@@ -23,8 +23,8 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedSkip extends AbstractAssignment implements Theable {
 
@@ -67,7 +67,8 @@ public class NamedSkip extends AbstractAssignment implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -78,7 +79,6 @@ public class NamedSkip extends AbstractAssignment implements Theable {
 
         String key = getKey(source);
         source.scanOptionalEquals();
-        
         Glue g = new Glue(source, context);
         context.setGlue(key, g, prefix.isGlobal());
     }
@@ -99,7 +99,8 @@ public class NamedSkip extends AbstractAssignment implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Tokens the(final Context context, final TokenSource source)

@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
@@ -28,23 +29,34 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class SpaceNode extends AbstractNode implements Node {
 
     /**
      * The field <tt>width</tt> contains the width of the space to insert.
      */
-    private Glue theWidth;
+    private Glue width;
 
     /**
      * Creates a new object.
      *
-     * @param width the width of the space
+     * @param theWidth the width of the space
      */
-    public SpaceNode(final Glue width) {
-        super(width.getLength());
-        theWidth = width;
+    public SpaceNode(final Glue theWidth) {
+
+        super(theWidth.getLength());
+        this.width = theWidth;
+    }
+
+    /**
+     * Getter for width.
+     *
+     * @return the width.
+     */
+    public Glue getGlueWidth() {
+
+        return this.width;
     }
 
     /**
@@ -52,6 +64,7 @@ public class SpaceNode extends AbstractNode implements Node {
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
+
         sb.append("\\space");
     }
 
@@ -59,6 +72,7 @@ public class SpaceNode extends AbstractNode implements Node {
      * @see java.lang.Object#toString()
      */
     public String toString() {
+
         return " ";
     }
 
@@ -66,7 +80,8 @@ public class SpaceNode extends AbstractNode implements Node {
      * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
      *      java.lang.String)
      */
-    public void toText(final StringBuffer sb, String prefix) {
+    public void toText(final StringBuffer sb, final String prefix) {
+
         sb.append(" ");
     }
 

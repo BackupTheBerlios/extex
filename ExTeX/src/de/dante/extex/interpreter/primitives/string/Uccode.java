@@ -19,14 +19,14 @@
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.CountConvertible;
-import de.dante.extex.interpreter.DimenConvertible;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for the primitive <code>\ uccode</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {
@@ -50,7 +50,8 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -66,7 +67,8 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -80,7 +82,8 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Tokens the(final Context context, final TokenSource source)
@@ -90,7 +93,8 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.CountConvertible#convertCount(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertCount(final Context context, final TokenSource source)
@@ -101,7 +105,8 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     }
 
     /**
-     * @see de.dante.extex.interpreter.DimenConvertible#convertDimen(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public long convertDimen(final Context context, final TokenSource source)

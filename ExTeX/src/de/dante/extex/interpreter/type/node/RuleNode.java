@@ -16,10 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
@@ -29,8 +30,8 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.7 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -41,19 +42,19 @@ public class RuleNode extends AbstractNode implements Node {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param width ...
      * @param height ...
      * @param depth ...
-     * @param context the typographic context
+     * @param theContext the typographic context
      *
      * @see "TeX -- The Program [139]"
      */
     public RuleNode(final Dimen width, final Dimen height, final Dimen depth,
-            final TypesettingContext context) {
+            final TypesettingContext theContext) {
 
         super(width, height, depth);
-        this.context = context;
+        this.context = theContext;
     }
 
     /**
@@ -65,6 +66,7 @@ public class RuleNode extends AbstractNode implements Node {
 
         return context;
     }
+
     /**
      * ...
      *
@@ -73,6 +75,7 @@ public class RuleNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [187]"
      */
     public String toString() {
+
         StringBuffer sb = new StringBuffer();
         toString(sb, "");
         return sb.toString();
@@ -110,7 +113,8 @@ public class RuleNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visit(final NodeVisitor visitor, final Object value,
