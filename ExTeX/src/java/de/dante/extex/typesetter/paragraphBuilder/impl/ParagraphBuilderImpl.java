@@ -138,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breakes separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
@@ -228,7 +228,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      * @param t ... given t >= 0
      * @param s ...
      *
-     * @return the comuted badness
+     * @return the computed badness
      *
      * @see "TTP [108]"
      */
@@ -379,7 +379,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      * @param leftskip the skip to be included at the left end of each line
      * @param rightskip the skip to be included at the right end of each line
      * @param lineWidth the size of the current line
-     * @param threshold TODO
+     * @param threshold ...
      *
      * @return ...
      */

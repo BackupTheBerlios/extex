@@ -26,7 +26,7 @@ import de.dante.util.GeneralException;
  * requested to be registered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NotObservableException extends GeneralException {
     /**
@@ -51,7 +51,7 @@ public class NotObservableException extends GeneralException {
     /**
      * Create a new object.
      *
-     * @param cause ...
+     * @param cause the cause for this exception
      */
     public NotObservableException(final Throwable cause) {
         super(cause);
