@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -27,15 +27,193 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.ActiveCharacterToken;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.CrToken;
+import de.dante.extex.scanner.type.LeftBraceToken;
+import de.dante.extex.scanner.type.LetterToken;
+import de.dante.extex.scanner.type.MacroParamToken;
+import de.dante.extex.scanner.type.MathShiftToken;
+import de.dante.extex.scanner.type.OtherToken;
+import de.dante.extex.scanner.type.RightBraceToken;
+import de.dante.extex.scanner.type.SpaceToken;
+import de.dante.extex.scanner.type.SubMarkToken;
+import de.dante.extex.scanner.type.SupMarkToken;
+import de.dante.extex.scanner.type.TabMarkToken;
+import de.dante.extex.scanner.type.TokenVisitor;
 
 /**
  * This class holds an output file onto which tokens can be wrtitten.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class OutFile implements Serializable {
+
+    /**
+     * This anonymous inner class is used with the visitor pattern to map the
+     * tokens to appropriate print strings.
+     */
+    private static final TokenVisitor VISITOR = new TokenVisitor() {
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitActive(
+         *      de.dante.extex.scanner.type.ActiveCharacterToken,
+         *      java.lang.Object)
+         */
+        public Object visitActive(final ActiveCharacterToken token,
+                final Object w) throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitCr(
+         *      de.dante.extex.scanner.type.CrToken, java.lang.Object)
+         */
+        public Object visitCr(final CrToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitEscape(
+         *      de.dante.extex.scanner.type.ControlSequenceToken,
+         *      java.lang.Object)
+         */
+        public Object visitEscape(final ControlSequenceToken token,
+                final Object w) throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            ((Writer) w).write(token.getName());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitLeftBrace(
+         *      de.dante.extex.scanner.type.LeftBraceToken,
+         *      java.lang.Object)
+         */
+        public Object visitLeftBrace(final LeftBraceToken token,
+                final Object w) throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitLetter(
+         *      de.dante.extex.scanner.type.LetterToken,
+         *      java.lang.Object)
+         */
+        public Object visitLetter(final LetterToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitMacroParam(
+         *      de.dante.extex.scanner.type.MacroParamToken,
+         *      java.lang.Object)
+         */
+        public Object visitMacroParam(final MacroParamToken token,
+                final Object w) throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitMathShift(
+         *      de.dante.extex.scanner.type.MathShiftToken,
+         *      java.lang.Object)
+         */
+        public Object visitMathShift(final MathShiftToken token,
+                final Object w) throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitOther(
+         *      de.dante.extex.scanner.type.OtherToken,
+         *      java.lang.Object)
+         */
+        public Object visitOther(final OtherToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitRightBrace(
+         *      de.dante.extex.scanner.type.RightBraceToken,
+         *      java.lang.Object)
+         */
+        public Object visitRightBrace(final RightBraceToken token,
+                final Object w) throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitSpace(
+         *      de.dante.extex.scanner.type.SpaceToken,
+         *      java.lang.Object)
+         */
+        public Object visitSpace(final SpaceToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitSubMark(
+         *      de.dante.extex.scanner.type.SubMarkToken,
+         *      java.lang.Object)
+         */
+        public Object visitSubMark(final SubMarkToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitSupMark(
+         *      de.dante.extex.scanner.type.SupMarkToken,
+         *      java.lang.Object)
+         */
+        public Object visitSupMark(final SupMarkToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.scanner.type.TokenVisitor#visitTabMark(
+         *      de.dante.extex.scanner.type.TabMarkToken,
+         *      java.lang.Object)
+         */
+        public Object visitTabMark(final TabMarkToken token, final Object w)
+                throws Exception {
+
+            ((Writer) w).write(token.getChar().getCodePoint());
+            return null;
+        }
+    };
 
     /**
      * The field <tt>file</tt> contains the file assigned to this instance.
@@ -58,22 +236,6 @@ public class OutFile implements Serializable {
 
         super();
         this.file = name;
-    }
-
-    /**
-     * Open the current file.
-     */
-    public void open() {
-
-        if (file != null) {
-            try {
-                writer = new BufferedWriter(new FileWriter(file));
-            } catch (FileNotFoundException e) {
-                // ignored on purpose
-            } catch (IOException e) {
-                // ignored on purpose
-            }
-        }
     }
 
     /**
@@ -103,13 +265,32 @@ public class OutFile implements Serializable {
     }
 
     /**
+     * Open the current file.
+     */
+    public void open() {
+
+        if (file != null) {
+            try {
+                writer = new BufferedWriter(new FileWriter(file));
+            } catch (FileNotFoundException e) {
+                // ignored on purpose
+            } catch (IOException e) {
+                // ignored on purpose
+            }
+        }
+    }
+
+    /**
      * Write some tokens to the output writer.
      *
      * @param toks tokens to write
      *
-     * @throws IOException in case of an error
+     * @throws InterpreterException in case of an error
+     * @throws IOException in case of an IO error
      */
-    public void write(final Tokens toks) throws IOException {
+    public void write(final Tokens toks)
+            throws InterpreterException,
+                IOException {
 
         if (writer == null) {
             return;
@@ -117,9 +298,17 @@ public class OutFile implements Serializable {
         int len = toks.length();
 
         for (int i = 0; i < len; i++) {
-            writer.write(toks.get(i).getChar().getCodePoint());
-            //TODO gene: check whether cs can arrive here
+            try {
+
+                toks.get(i).visit(VISITOR, null);
+
+            } catch (IOException e) {
+                throw e;
+            } catch (InterpreterException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new InterpreterException(e);
+            }
         }
     }
-
 }
