@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,38 +17,53 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.register.toks;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Count;
+import de.dante.extex.scanner.ActiveCharacterToken;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for the primitive
- * <code>\chardef</code>.
+ * This class provides an implementation for the primitive <code>\toksdef</code>.
  *
  * <p>Example</p>
  * <pre>
- * \chardef\abc=45
- * \chardef\abc 54
+ * \toksdef\abc=45
+ * \toksdef\abc 54
  * </pre>
  *
+ *
+ * <h3>Possible Extension</h3>
+ * Allow an expandable expression instead of the number to defined real named
+ * counters.
+ *
+ * <p>Example</p>
+ * <pre>
+ * \toksdef\abc={xyz\the\count0}
+ * \toksdef\abc {def}
+ * </pre>
+ * To protect the buildin registers one might consider to use the key
+ * "#<i>name</i>" or "toks#<i>name</i>".
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class Chardef extends AbstractAssignment {
+public class Toksdef extends AbstractAssignment {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Chardef(final String name) {
+    public Toksdef(final String name) {
 
         super(name);
     }
@@ -63,10 +78,19 @@ public class Chardef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
-        UnicodeChar uc = source.scanCharacterCode();
-        context.setCode(cs, new CharFixed("", uc), prefix.isGlobal());
-    }
+        Token cs = source.scanToken();
 
+        if (cs instanceof ControlSequenceToken || //
+            cs instanceof ActiveCharacterToken) {
+
+            source.scanOptionalEquals();
+            //todo: unfortunately we have to know the internal format of the key:-(
+            String key = "toks#"
+                         + Long.toString(Count.scanCount(context, source));
+            context.setCode(cs, new NamedToks(key), prefix.isGlobal());
+
+        } else {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        }
+    }
 }

@@ -16,40 +16,57 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+package de.dante.extex.interpreter.primitives.register.count;
 
-package de.dante.extex.interpreter.primitives.register;
-
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Count;
+import de.dante.extex.scanner.ActiveCharacterToken;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\chardef</code>.
+ * <code>\countdef</code>.
  *
  * <p>Example</p>
  * <pre>
- * \chardef\abc=45
- * \chardef\abc 54
+ * \countdef\abc=45
+ * \countdef\abc 54
+ * \catcode`!=13
+ * \countdef!=46
+ * \countdef! 55
  * </pre>
  *
+ *
+ * <h3>Possible Extension</h3>
+ * Allow an expandable expression instead of the number to defined real named
+ * counters.
+ *
+ * <p>Example</p>
+ * <pre>
+ * \countdef\abc={xyz\the\count0}
+ * \countdef\abc {def}
+ * </pre>
+ * To protect the buildin registers one might consider to use the key
+ * "#<i>name</i>" or "count#<i>name</i>".
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class Chardef extends AbstractAssignment {
+public class Countdef extends AbstractAssignment {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Chardef(final String name) {
-
+    public Countdef(final String name) {
         super(name);
     }
 
@@ -63,10 +80,24 @@ public class Chardef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getControlSequence();
-        source.scanOptionalEquals();
-        UnicodeChar uc = source.scanCharacterCode();
-        context.setCode(cs, new CharFixed("", uc), prefix.isGlobal());
-    }
+        Token cs = source.getToken();
 
+        if (cs instanceof ControlSequenceToken) {
+            source.scanOptionalEquals();
+            //todo: unfortunately we have to know the internal format of the key:-(
+            String key = "count#" + Long.toString(Count.scanCount(context, source));
+            context.setMacro(cs.getValue(), new NamedCount(key), prefix.isGlobal());
+            return;
+
+        } else if (cs instanceof ActiveCharacterToken) {
+            source.scanOptionalEquals();
+            //todo: unfortunately we have to know the internal format of the key:-(
+            String key = "count#" + Long.toString(Count.scanCount(context, source));
+            context.setActive(cs.getValue(), new NamedCount(key), prefix.isGlobal());
+            return;
+
+        }
+
+        throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+    }
 }

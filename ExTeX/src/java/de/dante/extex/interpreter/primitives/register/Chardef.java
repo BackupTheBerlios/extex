@@ -19,19 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.primitives.MacroCode;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
@@ -44,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Chardef extends AbstractAssignment {
 
@@ -68,23 +63,10 @@ public class Chardef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getToken();
-
-        if (cs instanceof ControlSequenceToken) {
-            source.scanOptionalEquals();
-            Tokens toks = new Count(context, source).toToks(context);
-            context.setMacro(cs.getValue(), new MacroCode("", new Flags(),
-                    Tokens.EMPTY, toks), prefix.isGlobal());
-
-        } else if (cs instanceof ActiveCharacterToken) {
-            source.scanOptionalEquals();
-            Tokens toks = new Count(context, source).toToks(context);
-            context.setActive(cs.getValue(), new MacroCode("", new Flags(),
-                    Tokens.EMPTY, toks), prefix.isGlobal());
-
-        } else {
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        }
+        Token cs = source.getControlSequence();
+        source.scanOptionalEquals();
+        UnicodeChar uc = source.scanCharacterCode();
+        context.setCode(cs, new CharFixed("", uc), prefix.isGlobal());
     }
 
 }
