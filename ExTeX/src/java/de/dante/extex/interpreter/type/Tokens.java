@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Tokens implements Serializable {
 
@@ -80,16 +80,7 @@ public class Tokens implements Serializable {
             throws GeneralException {
 
         this();
-        if (s != null && s.length() > 0) {
-            TokenFactory factory = context.getTokenFactory();
-            char c;
-
-            for (int i = 0; i < s.length(); i++) {
-                c = s.charAt(i);
-                add(factory.newInstance((c == ' ' ? Catcode.SPACE
-                        : Catcode.OTHER), c));
-            }
-        }
+        add(context.getTokenFactory(), s);
     }
 
     /**
@@ -115,7 +106,8 @@ public class Tokens implements Serializable {
      * @param t The token to add
      */
      public void add(final Token t) {
-          tokens.add(t);
+
+         tokens.add(t);
      }
 
     /**
@@ -127,6 +119,32 @@ public class Tokens implements Serializable {
         int len = toks.length();
         for (int i = 0; i < len; i++) {
             tokens.add(toks.get(i));
+        }
+    }
+
+    /**
+     * Add all characters from the given String to the list of Tokens.
+     * If the string is <code>null</code> then it is ignored: i.e. it is treated
+     * like the empty string.
+     * The Tokens all have the catcode OTHER with exception of spaces which
+     * have the catcode SPACE.
+     *
+     * @param factory the TokenFactory to acquire new Tokens from
+     * @param s the String to add
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void add(final TokenFactory factory, final String s)
+    	throws GeneralException {
+
+        if (s != null && s.length() > 0) {
+            char c;
+
+            for (int i = 0; i < s.length(); i++) {
+                c = s.charAt(i);
+                tokens.add(factory.newInstance((c == ' ' ? Catcode.SPACE
+                        : Catcode.OTHER), c));
+            }
         }
     }
 
