@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public interface ListMaker {
 
@@ -144,7 +144,8 @@ public interface ListMaker {
     /**
      * Add a letter to the current list or treat it in some other appropriate
      * way.
-     * @param context TODO
+     *
+     * @param context the interpreter context
      * @param tc the typesetting context
      * @param uc the character
      *
@@ -157,6 +158,7 @@ public interface ListMaker {
      * Treat a math shift character.
      * Usually this leads to entering or leaving math mode -- maybe after
      * inspection of a following token.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual math shift character token
@@ -168,6 +170,7 @@ public interface ListMaker {
 
     /**
      * Treat a subscript mark. This might be meaningful in math mode only.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual sub mark token
@@ -179,6 +182,7 @@ public interface ListMaker {
 
     /**
      * Treat a superscript mark. This might be meaningful in math mode only.
+     *
      * @param context the interpreter context
      * @param source the source for new tokens
      * @param t the actual super mark token
