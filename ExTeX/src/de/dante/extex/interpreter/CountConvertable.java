@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,10 +23,11 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This is an interface which describes the feature to be convertibe into a 
+ * count.
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface CountConvertable {
     /**
@@ -35,7 +36,7 @@ public interface CountConvertable {
      * @param context the interpreter context
      * @param source the source for new tokens
      *
-     * @return ...
+     * @return the converted value
      *
      * @throws GeneralException in case of an error
      */

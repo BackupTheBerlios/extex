@@ -53,7 +53,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
@@ -302,7 +302,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
             }
         }
 
-        typesetter.finish();
+        typesetter.finish(context);
 
         //TODO TTP[1335]
     }

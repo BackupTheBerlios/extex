@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,7 +23,7 @@ package de.dante.util;
  * This is a bse class for exceptions which carry a return code.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GeneralException extends Exception {
     /** the exit code attribute */
@@ -38,8 +38,10 @@ public class GeneralException extends Exception {
 
     /**
      * Creates a new object.
+     *
+     * @param code the exit code
      */
-    public GeneralException(int code) {
+    public GeneralException(final int code) {
         super();
         exitCode = code;
     }
@@ -49,7 +51,7 @@ public class GeneralException extends Exception {
      *
      * @param message the message
      */
-    public GeneralException(String message) {
+    public GeneralException(final String message) {
         super(message);
     }
 
@@ -59,7 +61,7 @@ public class GeneralException extends Exception {
      * @param message the message
      * @param cause the cause for a chained exception
      */
-    public GeneralException(String message, Throwable cause) {
+    public GeneralException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
@@ -68,7 +70,7 @@ public class GeneralException extends Exception {
      *
      * @param cause the cause for a chained exception
      */
-    public GeneralException(Throwable cause) {
+    public GeneralException(final Throwable cause) {
         super(cause);
     }
 

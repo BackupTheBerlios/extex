@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -16,48 +16,27 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.type.node;
+package de.dante.extex.typesetter;
 
-import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.util.UnicodeChar;
-
-import java.util.HashMap;
-import java.util.Map;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.node.HorizontalListNode;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class CharNodeFactory {
-    /** ... */
-    private Map cache = new HashMap();
-
-    /**
-     * Creates a new object.
-     */
-    public CharNodeFactory() {
-        super();
-    }
+public interface LineBreaker {
 
     /**
      * ...
      *
-     * @param typesettingContext ...
-     * @param c ...
+     * @param nodes ...
+     * @param context ...
      *
      * @return ...
      */
-    public CharNode newInstance(final TypesettingContext typesettingContext,
-            final UnicodeChar c) {
-        CharNode n = (CharNode) cache.get(c);
+    NodeList breakLines(HorizontalListNode nodes, Context context);
 
-        if (n == null) {
-            n = new CharNode(typesettingContext, c);
-            cache.put(c, n);
-        }
-
-        return n;
-    }
 }

@@ -25,32 +25,33 @@ import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SpaceNode extends AbstractNode implements Node {
 
     /**
      * The field <tt>width</tt> contains the width of the space to insert.
      */
-    private Glue width;
+    private Glue theWidth;
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param width the width of the space
      */
-    public SpaceNode(Glue width) {
-        super();
-        this.width = width;
+    public SpaceNode(final Glue width) {
+        super(width.getLength());
+        theWidth = width;
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toString(StringBuffer sb) {
-        sb.append(" ");
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("\\space");
     }
 
     /**
@@ -61,11 +62,20 @@ public class SpaceNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitSpace(value,value2);
+    public void toText(final StringBuffer sb, String prefix) {
+        sb.append(" ");
+    }
+    
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
+        return visitor.visitSpace(value, value2);
     }
 
 }

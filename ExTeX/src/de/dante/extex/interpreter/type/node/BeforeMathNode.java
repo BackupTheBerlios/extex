@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,22 +18,23 @@
  */
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @see "TeX -- The Program [147]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class BeforeMathNode extends AbstractNode implements Node {
+public class BeforeMathNode extends AbstractNode
+            implements Node, Discartable {
 
     /**
      * Creates a new object.
-     * 
      */
     public BeforeMathNode() {
         super();
@@ -52,16 +53,17 @@ public class BeforeMathNode extends AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
-    public void toString(StringBuffer sb) {
+    public void toString(final StringBuffer sb, String prefix) {
         sb.append("mathon");
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitBeforeMath(value,value2);
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+        return visitor.visitBeforeMath(value, value2);
     }
 
 }

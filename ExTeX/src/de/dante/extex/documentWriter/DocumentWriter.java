@@ -18,9 +18,11 @@
  */
 package de.dante.extex.documentWriter;
 
-import java.io.OutputStream;
+import java.io.IOException;
+import java.io.Writer;
 
 import de.dante.extex.typesetter.NodeList;
+import de.dante.util.GeneralException;
 
 /**
  * This is the interface to the backend of the system. The document has to be
@@ -28,7 +30,7 @@ import de.dante.extex.typesetter.NodeList;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface DocumentWriter {
     /**
@@ -45,21 +47,34 @@ public interface DocumentWriter {
      *
      * @param os the output stream
      */
-    void setOutputStream(OutputStream os);
+    void setWriter(Writer writer);
 
     /**
      * Getter for the number of pages already produced.
      *
-     * @return the number of pages
+     * @return the number of pages already shipped out
      */
     int getPages();
 
     /**
      * This is the entry point for the document writer. Here it receives a
-     * complete node list to be sent to the output writer.
+     * complete node list to be sent to the output writer. It can be assumed
+     * that all values for width, height, and depth of the node lists are
+     * properly filled. Thus all information should be present to place the
+     * ink on the paper.
      *
      * @param nodes the nodes to send
+     *
+     * @throws GeneralException iun case of an error
+     * @throws IOException in cayse that a writing operation fails
      */
-    void shipout(NodeList nodes);
+    void shipout(NodeList nodes) throws GeneralException, IOException;
 
+    /**
+     * This method is invoked upon the end of the processing.
+     *
+     * @throws GeneralException in case of an error
+     * @throws IOException in cayse that a writing operation fails
+     */
+    void close() throws GeneralException, IOException;
 }

@@ -24,16 +24,16 @@ import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @see "TeX -- The Program [146]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WhatsItNode extends AbstractNode implements Node {
-    
+
     /**
      * Creates a new object.
-     * 
+     *
      */
     public WhatsItNode() {
         super();
@@ -42,7 +42,7 @@ public class WhatsItNode extends AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
-    public void toString(StringBuffer sb) {
+    public void toString(StringBuffer sb, String prefix) {
         sb.append("whatsit");
     }
 

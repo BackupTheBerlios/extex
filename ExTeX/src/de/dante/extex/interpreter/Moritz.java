@@ -50,7 +50,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -61,7 +61,7 @@ public abstract class Moritz implements TokenSource, Observable {
     private static final long MAX_CHAR_CODE = Integer.MAX_VALUE; //TODO: find a good value
 
     /**
-     * The interpreter context. well, the two of them (max and Moritz) are more
+     * The interpreter context. well, the two of them (Max and Moritz) are more
      * closely linked than I like it.
      */
     private Context context;
@@ -185,32 +185,28 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     public Tokens getTokens() throws GeneralException {
         Tokens toks = new Tokens();
+        Token token = getNonSpace();
 
-        if (!scanLeftBrace()) {
-            throw new GeneralException("missing leftbrace");
-
-            // TODO change to configfile
+        if (token == null) {
+            //TODO: handle EOF
+        } else if ( ! token.isa(Catcode.LEFTBRACE)) {
+            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            //TODO call the error handler
         }
 
-        Token tok;
+        int balance = 1;
 
-        for (int balance = 1; ; ) {
-            tok = getToken();
+        for (token = getToken(); token != null; token = getToken()) {
 
-            //TODO: ERROR this code loops forever at EOF
-            // cf. scanTokens for a sane implementation
-            if (tok != null) {
-                if (tok.getCatcode() == Catcode.LEFTBRACE) {
-                    ++balance;
-                } else if (tok.getCatcode() == Catcode.RIGHTBRACE
-                           && --balance == 0) {
-                    break;
-                }
-
-                toks.add(tok);
+            if (token.isa(Catcode.LEFTBRACE)) {
+                ++balance;
+            } else if (token.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
+                break;
             }
-        }
 
+            toks.add(token);
+        }
+        
         return toks;
     }
 
@@ -255,6 +251,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#closeNextFileStream()
      */
     public void closeNextFileStream() {
+        throw new RuntimeException("unimplemented");
         // TODO unimplemented; needed for \endinput
     }
 
@@ -360,6 +357,7 @@ public abstract class Moritz implements TokenSource, Observable {
     /**
      * @see de.dante.extex.interpreter.TokenSource#scanFloat()
      */
+    //TODO: gene: this method should be moved out of here
     public long scanFloat() throws GeneralException {
         long value = 0;
         boolean neg = false;
@@ -505,7 +503,8 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @return the next non-space token or <code>null</code> at EOF
      *
-     * @throws GeneralException in case of an error
+     * @throws GeneralException in case of an error in
+     *             {@link #scanToken() scanToken()}
      */
     public Token scanNonSpace() throws GeneralException {
         return scanNonSpace(scanToken());
@@ -513,12 +512,13 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
-     *
+     * 
      * @param token the first token to consider
-     *
+     * 
      * @return the next non-space token or <code>null</code> at EOF
      * 
-     * @throws GeneralException in case of an error
+     * @throws GeneralException in case of an error in
+     *             {@link #scanToken() scanToken()}
      */
     public Token scanNonSpace(final Token token) throws GeneralException {
         for (Token t=token; t != null; t = scanToken()) {
@@ -547,25 +547,26 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     public Tokens scanTokens() throws GeneralException {
         Tokens toks = new Tokens();
+        Token token = getNonSpace();
 
-        if (!scanLeftBrace()) {
-            throw new GeneralException("missing leftbrace");
-
-            // TODO change to configfile
+        if (token == null) {
+            //TODO: handle EOF
+        } else if ( ! token.isa(Catcode.LEFTBRACE)) {
+            throw new GeneralHelpingException("TTP.MissingLeftBrace");
+            //TODO call the error handler
         }
 
-        Token tok;
         int balance = 1;
 
-        for (tok = scanToken(); tok != null; tok = scanToken()) {
+        for (token = scanToken(); token != null; token = scanToken()) {
 
-            if (tok.isa(Catcode.LEFTBRACE)) {
+            if (token.isa(Catcode.LEFTBRACE)) {
                 ++balance;
-            } else if (tok.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
+            } else if (token.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
                 break;
             }
 
-            toks.add(tok);
+            toks.add(token);
         }
 
         return toks;
@@ -692,28 +693,6 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     protected void setContext(final Context theContext) {
         context = theContext;
-    }
-
-    /**
-     * Scan for a <code>LeftBraceToken</code> and skip all <code>SpaceToken</code>.
-     * In case of success the brace is eaten up and <code>true</code> is
-     * returned. In case of failure the first non-space token is left on the
-     * input stream and <code>false</code> is returned.
-     *
-     * @return <code>true</code>, if the <code>LeftBraceToken</code> is
-     *         found, otherwise <code>false</code>
-     *
-     * @throws GeneralException ...
-     */
-    protected boolean scanLeftBrace() throws GeneralException {
-        Token tok = scanNonSpace();
-
-        if (tok.isa(Catcode.LEFTBRACE)) {
-            return true;
-        }
-
-        push(tok);
-        return false;
     }
 
     /**

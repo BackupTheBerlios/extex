@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,7 +27,7 @@ import java.util.List;
  * This is a type-safe incarnation of an {@link Iterator Iterator}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class StringListIterator {
     /** The internal value */
@@ -38,7 +38,7 @@ public class StringListIterator {
      *
      * @param val a {@link java.util.Vector Vector} of the elements to traverse
      */
-    public StringListIterator(List val) {
+    public StringListIterator(final List val) {
         super();
         iterator = val.iterator();
     }

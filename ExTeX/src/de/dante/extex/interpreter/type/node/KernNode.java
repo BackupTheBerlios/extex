@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,29 +19,32 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @see "TeX -- The Program [155]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class KernNode extends AbstractNode implements Node {
+public class KernNode extends AbstractNode implements Node, Discartable {
+    /**
+     * The field <tt>kern</tt> ...
+     */
+    private Dimen theKern;
 
-    private Dimen kern;
-    
     /**
      * Creates a new object.
-     * 
+     *
      * @see "TeX -- The Program [156]"
      */
-    public KernNode(Dimen kern) {
+    public KernNode(final Dimen kern) {
         super();
-        this.kern.set(kern);
+        theKern.set(kern);
     }
 
     /**
@@ -50,24 +53,35 @@ public class KernNode extends AbstractNode implements Node {
      * @return ...
      * @see "TeX -- The Program [191]"
      */
-    public String toString() {
-        return "kern "+kern.toString();
+    public String toText(final String prefix) {
+        return "kern " + theKern.toString();
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public void toString(StringBuffer sb) {
-        sb.append("kern");
-        kern.toString(sb);
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append("kern ");
+        theKern.toString(sb);
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitKern(value,value2);
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("\\kern ");
+        theKern.toString(sb);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+        return visitor.visitKern(value, value2);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,7 +26,7 @@ package de.dante.util.configuration;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Configurable {
     /**
@@ -34,8 +34,7 @@ public interface Configurable {
      *
      * @param config the configuration object to consider
      *
-     * @throws ConfigException in case that something went wrong
+     * @throws ConfigurationException in case that something went wrong
      */
-    public abstract void configure(Configuration config)
-                            throws ConfigurationException;
+    void configure(Configuration config) throws ConfigurationException;
 }

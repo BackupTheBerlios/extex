@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,6 @@
  */
 package de.dante.extex.scanner;
 
-
-
 /**
  * This class provides a type-save enumeration of the category codes for
  * characters.
@@ -32,57 +30,104 @@ package de.dante.extex.scanner;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class Catcode {
-    /** the constant for the escape catcode used to initiate control
-     *  sequences
+    /**
+     * The constant <tt>ESCAPE</tt> contains the unique object representing the
+     * escape catcode used to initiate control sequences.
      */
     public static final Catcode ESCAPE = new CatcodeEscape();
 
-    /** the constant for the left brace catcode */
+    /**
+     * The constant <tt>LEFTBRACE</tt> contains the unique object representing
+     * the left brace catcode. 
+     */
     public static final Catcode LEFTBRACE = new CatcodeLeftBrace();
 
-    /** the constant for the right brace catcode */
+    /**
+     * The constant <tt>RIGHTBRACE</tt> contains the unique object representing
+     * the right brace catcode.
+     */
     public static final Catcode RIGHTBRACE = new CatcodeRigthBrace();
 
-    /** the constant for the math shift catcode */
+    /**
+     * The constant <tt>MATHSHIFT</tt> contains the unique object representing
+     * the math shift catcode.
+     */
     public static final Catcode MATHSHIFT = new CatcodeMathShift();
 
-    /** the constant for the tab mark catcode */
+    /**
+     * The constant <tt>TABMARK</tt> contains the unique object representing
+     * the tab mark catcode.
+     */
     public static final Catcode TABMARK = new CatcodeTabMark();
 
-    /** the constant for the cr catcode */
+    /**
+     * The constant <tt>CR</tt> contains the unique object representing the
+     * cr catcode.
+     */
     public static final Catcode CR = new CatcodeCr();
 
-    /** the constant for the macro param catcode */
+    /**
+     * The constant <tt>MACROPARAM</tt> contains the unique object representing
+     * the macro param catcode.
+     */
     public static final Catcode MACROPARAM = new CatcodeMacroParam();
 
-    /** the constant for the super mark catcode */
+    /**
+     * The constant <tt>SUPMARK</tt> contains the unique object representing
+     * the super mark catcode.
+     */
     public static final Catcode SUPMARK = new CatcodeSupMark();
 
-    /** the constant for the sub mark catcode */
+    /**
+     * The constant <tt>SUBMARK</tt> contains the unique object representing
+     * the sub mark catcode.
+     */
     public static final Catcode SUBMARK = new CatcodeSubMark();
 
-    /** the constant for the ignore catcode */
+    /**
+     * The constant <tt>IGNORE</tt> contains the unique object representing
+     * the ignore catcode.
+     */
     public static final Catcode IGNORE = new CatcodeIgnore();
 
-    /** the constant for the space catcode */
+    /**
+     * The constant <tt>SPACE</tt> contains the unique object representing
+     * the space catcode.
+     */
     public static final Catcode SPACE = new CatcodeSpace();
 
-    /** the constant for the letter catcode */
+    /**
+     * The constant <tt>LETTER</tt> contains the unique object representing
+     * the letter catcode.
+     */
     public static final Catcode LETTER = new CatcodeLetter();
 
-    /** the constant for the other catcode */
+    /**
+     * The constant <tt>OTHER</tt> contains the unique object representing
+     * the other catcode.
+     */
     public static final Catcode OTHER = new CatcodeOther();
 
-    /** the constant for the active catcode */
+    /**
+     * The constant <tt>ACTIVE</tt> contains the unique object representing
+     * the active catcode.
+     */
     public static final Catcode ACTIVE = new CatcodeActive();
 
-    /** the constant for the comment catcode */
+    /**
+     * The constant <tt>COMMENT</tt> contains the unique object representing
+     * the comment catcode. A comment is started with this catcode and lasts
+     * to the end of the line.
+     */
     public static final Catcode COMMENT = new CatcodeComment();
 
-    /** the constant for the invalid catcode */
+    /**
+     * The constant <tt>INVALID</tt> contains the unique object representing
+     * the invalid catcode.
+     */
     public static final Catcode INVALID = new CatcodeInvalid();
 
     /** This is an array of catcodes where the integer catcode can be used as
@@ -107,7 +152,10 @@ public abstract class Catcode {
                                                   INVALID
                                               };
 
-    /** the string representation of the catcode */
+    /**
+     * The field <tt>name</tt> contains the string representation of the
+     * catcode for debugging.
+     */
     private String name;
 
     /** the integer representation of the catcode */
@@ -121,7 +169,7 @@ public abstract class Catcode {
      * @param code the numerical value
      * @param name the string representation
      */
-    private Catcode(int code, String name) {
+    private Catcode(final int code, final String name) {
         super();
         this.code = code;
         this.name = name;
@@ -137,7 +185,7 @@ public abstract class Catcode {
      * @throws CatcodeException in case that the catcode is not in the
      * allowed range
      */
-    public static Catcode toCatcode(int code) throws CatcodeException {
+    public static Catcode toCatcode(final int code) throws CatcodeException {
         if (code < 0 || code >= catcodes.length) {
             throw new CatcodeException(Integer.toString(code));
         }
@@ -183,14 +231,14 @@ public abstract class Catcode {
      *
      * @return some return value form the visit
      */
-    public abstract Object visit(CatcodeVisitor visitor, Object value,
-                                 Object value2) throws Exception;
+    public abstract Object visit(final CatcodeVisitor visitor,
+        final Object value, final Object value2) throws Exception;
 
     /**
      * This inner class represents an active catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeActive extends Catcode {
         /**
@@ -211,8 +259,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object value,
-                            Object value2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object value,
+            final Object value2) throws Exception {
             return visitor.visitActive(value, value2);
         }
     }
@@ -221,7 +269,7 @@ public abstract class Catcode {
      * This inner class represents a comment catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeComment extends Catcode {
         /**
@@ -243,8 +291,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitComment(arg1, arg2);
         }
     }
@@ -253,7 +301,7 @@ public abstract class Catcode {
      * This inner class represents a CR catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeCr extends Catcode {
         /**
@@ -274,8 +322,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitCr(arg1, arg2);
         }
     }
@@ -284,7 +332,7 @@ public abstract class Catcode {
      * This inner class represents an escape catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeEscape extends Catcode {
         /**
@@ -305,8 +353,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitEscape(arg1, arg2);
         }
     }
@@ -315,7 +363,7 @@ public abstract class Catcode {
      * This inner class represents an ignore catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeIgnore extends Catcode {
         /**
@@ -336,8 +384,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitIgnore(arg1, arg2);
         }
     }
@@ -346,7 +394,7 @@ public abstract class Catcode {
      * This inner class represents an invalid character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeInvalid extends Catcode {
         /**
@@ -367,8 +415,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitInvalid(arg1, arg2);
         }
     }
@@ -377,7 +425,7 @@ public abstract class Catcode {
      * This inner class represents a left brace character.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeLeftBrace extends Catcode {
         /**
@@ -399,8 +447,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitLeftBrace(arg1, arg2);
         }
     }
@@ -409,7 +457,7 @@ public abstract class Catcode {
      * This inner class represents a letter character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeLetter extends Catcode {
         /**
@@ -430,8 +478,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitLetter(arg1, arg2);
         }
     }
@@ -440,7 +488,7 @@ public abstract class Catcode {
      * This inner class represents a macro parameter character.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeMacroParam extends Catcode {
         /**
@@ -462,8 +510,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitMacroParam(arg1, arg2);
         }
     }
@@ -472,7 +520,7 @@ public abstract class Catcode {
      * This inner class represents a math shift character token.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeMathShift extends Catcode {
         /**
@@ -494,8 +542,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitMathShift(arg1, arg2);
         }
     }
@@ -504,7 +552,7 @@ public abstract class Catcode {
      * This inner class represents an other character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeOther extends Catcode {
         /**
@@ -525,8 +573,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitOther(arg1, arg2);
         }
     }
@@ -535,7 +583,7 @@ public abstract class Catcode {
      * This inner class represents a right brace character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeRigthBrace extends Catcode {
         /**
@@ -557,8 +605,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitRightBrace(arg1, arg2);
         }
     }
@@ -567,7 +615,7 @@ public abstract class Catcode {
      * This inner class represents a space character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeSpace extends Catcode {
         /**
@@ -588,8 +636,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitSpace(arg1, arg2);
         }
     }
@@ -598,7 +646,7 @@ public abstract class Catcode {
      * This inner class represents a sub mark character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeSubMark extends Catcode {
         /**
@@ -619,8 +667,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2) throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2) throws Exception {
             return visitor.visitSubMark(arg1, arg2);
         }
     }
@@ -629,7 +677,7 @@ public abstract class Catcode {
      * This inner class represents a sup mark character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeSupMark extends Catcode {
         /**
@@ -650,8 +698,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2)  throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2)  throws Exception {
             return visitor.visitSupMark(arg1, arg2);
         }
     }
@@ -660,7 +708,7 @@ public abstract class Catcode {
      * This inner class represents a tab mark character catcode.
      *
      * @author $Author: gene $
-     * @version $Revision: 1.4 $
+     * @version $Revision: 1.5 $
      */
     private static class CatcodeTabMark extends Catcode {
         /**
@@ -681,8 +729,8 @@ public abstract class Catcode {
          *
          * @return some return value form the visit
          */
-        public Object visit(CatcodeVisitor visitor, Object arg1,
-                            Object arg2)  throws Exception {
+        public Object visit(final CatcodeVisitor visitor, final Object arg1,
+            final Object arg2)  throws Exception {
             return visitor.visitTabMark(arg1, arg2);
         }
     }

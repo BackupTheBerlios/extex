@@ -24,16 +24,16 @@ import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MarkNode extends AbstractNode implements Node {
-    
+
     /**
      * Creates a new object.
-     * 
+     *
      */
     public MarkNode() {
         super();
@@ -52,7 +52,7 @@ public class MarkNode extends AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
      */
-    public void toString(StringBuffer sb) {
+    public void toString(StringBuffer sb, String prefix) {
         sb.append("mark "); //TODO
     }
 

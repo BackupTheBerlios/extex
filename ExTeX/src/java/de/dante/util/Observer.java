@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,11 @@ package de.dante.util;
 
 
 /**
- * An Observer is a object which is able to receive a notification from an 
+ * An Observer is a object which is able to receive a notification from an
  * {@link de.dante.util.Observable Observable}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Observer {
     /**
@@ -34,5 +34,6 @@ public interface Observer {
      * @param observable the object which initiates the method call
      * @param item some arbitrary parameter passed to the Observer
      */
-    public abstract void update(Observable observable, Object item);
+    void update(Observable observable, Object item);
+
 }

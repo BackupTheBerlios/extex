@@ -18,18 +18,30 @@
  */
 package de.dante.extex.documentWriter.dump;
 
-import java.io.OutputStream;
+import java.io.IOException;
+import java.io.Writer;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.util.GeneralException;
 
 /**
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
+
+    /**
+     * The field <tt>out</tt> ...
+     */
+    private Writer out = null;
+
+    /**
+     * The field <tt>shippedPages</tt> ...
+     */
+    private int shippedPages = 0;
 
     /**
      * Creates a new object.
@@ -42,26 +54,39 @@ public class DumpDocumentWriter implements DocumentWriter {
      * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
      */
     public int getPages() {
-        return 0;
+        return shippedPages;
     }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
      */
     public String getExtension() {
-        return ".out";
+        return "out";
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setWriter(java.io.Writer)
      */
-    public void setOutputStream(final OutputStream os) {
+    public void setWriter(final Writer outStream) {
+        out = outStream;
     }
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
      */
-    public void shipout(final NodeList nodes) {
-        // TODO unimplemented
+    public void shipout(final NodeList nodes) throws GeneralException,
+        IOException {
+        StringBuffer sb = new StringBuffer();
+        nodes.toString(sb,"\n");
+        out.write(sb.toString());
+        out.write('\n');
+        shippedPages++;
     }
+
+    /**
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     */
+    public void close() throws GeneralException, IOException {
+    }
+
 }

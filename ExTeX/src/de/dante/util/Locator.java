@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,11 @@ package de.dante.util;
 
 
 /**
- * The locator is the container for the information about the name of a file 
+ * The locator is the container for the information about the name of a file
  * and the current line number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Locator {
     /** the name of the file */
@@ -36,18 +36,18 @@ public class Locator {
     /**
      * Creates a new object.
      *
-     * @param filename the file name
-     * @param lineno the line number
+     * @param fileName the file name
+     * @param lineNo the line number
      */
-    public Locator(String filename, int lineno) {
+    public Locator(final String fileName, final int lineNo) {
         super();
-        this.filename = filename;
-        this.lineno   = lineno;
+        this.filename = fileName;
+        this.lineno   = lineNo;
     }
-    
+
     /**
      * Getter for the file name.
-     * 
+     *
      * @return the line file name or <code>null</code>
      */
     public String getFilename() {
@@ -56,7 +56,7 @@ public class Locator {
 
     /**
      * Getter for the line number.
-     * 
+     *
      * @return the line number
      */
     public int getLineno() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,22 +27,22 @@ package de.dante.util;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Observable {
     /**
-     * This method registers an Observer for a named action.
-     * The name is used to distinguish several actions to be monitored.
-     * It is modeled as String since it should be readable and it is not
-     * expected to have too much impact on the performance. It is not expected 
-     * that this method is calld too often
+     * This method registers an Observer for a named action. The name is used
+     * to distinguish several actions to be monitored. It is modeled as String
+     * since it should be readable and it is not expected to have too much
+     * impact on the performance. It is not expected that this method is calld
+     * too often
      *
      * @param name the name of the action to be observed
      * @param observer the Observer to be invoked
      *
-     * @throws NotObservableException in case that the name does not match
-     * any of the observable actions.
+     * @throws NotObservableException in case that the name does not match any
+     *             of the observable actions.
      */
-    public abstract void registerObserver(String name, Observer observer)
-                                   throws NotObservableException;
+    void registerObserver(final String name, final Observer observer)
+            throws NotObservableException;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,9 +27,9 @@ import java.util.List;
  * {@link java.lang.String String}s. This class is meant to be used as a
  * type-save replacement for the generic classes implementing the
  * {@link java.util.List List} interface.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class StringList extends ArrayList implements List {
     /**
@@ -45,31 +45,31 @@ public class StringList extends ArrayList implements List {
      *
      * @param s the initial String
      */
-    public StringList(String s) {
+    public StringList(final String s) {
         super();
         add(s);
     }
 
     /**
      * Creates a new object and initiates it with some String value.
-     * 
+     *
      * @param s the initial String
      * @param sepRegex the seprator regular expression
      */
-    public StringList(String s, String sepRegex) {
+    public StringList(final String s, final String sepRegex) {
         super();
         String[] sl = s.split(sepRegex);
         for (int i = 0; i < sl.length; i++) {
             add(sl[i]);
         }
     }
-    
+
     /**
      * Creates a new object and fills it with values from the given Collection.
      *
      * @param c a collection of initial elements
      */
-    public StringList(Collection c) {
+    public StringList(final Collection c) {
         super(c);
     }
 
@@ -91,7 +91,7 @@ public class StringList extends ArrayList implements List {
      * @return the i<sup>th</sup> element or <code>null</code> if none is
      * found
      */
-    public String getString(int i) {
+    public String getString(final int i) {
         return (String) super.get(i);
     }
 
@@ -100,7 +100,7 @@ public class StringList extends ArrayList implements List {
      *
      * @param s the string to add
      */
-    public void add(String s) {
+    public void add(final String s) {
         super.add(s);
     }
 }

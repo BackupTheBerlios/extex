@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractIf extends AbstractCode {
 
@@ -59,10 +59,10 @@ public abstract class AbstractIf extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
         if (conditional(context, source, typesetter)) {
-            context.ifPush(source.getLocator(), true);
+            context.ifPush(source.getLocator(), 1);
         } else {
             if (skipToElseOrFi(context, source)) {
-                context.ifPush(source.getLocator(), true);
+                context.ifPush(source.getLocator(), 1);
             }
         }
 

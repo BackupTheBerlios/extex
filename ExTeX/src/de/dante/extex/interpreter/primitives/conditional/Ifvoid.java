@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,21 +22,21 @@ import de.dante.extex.interpreter.AbstractIf;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\iftrue</code>.
+ * This class provides an implementation for the primitive <code>\ifvoid</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class Iftrue extends AbstractIf {
-
+public class Ifvoid extends AbstractIf {
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public Iftrue(final String name) {
+    public Ifvoid(final String name) {
         super(name);
     }
 
@@ -46,8 +46,23 @@ public class Iftrue extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter) {
-        return true;
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+        String key = getKey(source);
+        return (context.getBox(key)==null);
+    }
+
+    /**
+     * Return the key (the number) for the register.
+     *
+     * @param source the source for new tokens
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    protected String getKey(TokenSource source) throws GeneralException {
+        return "box#" + Long.toString(source.scanNumber());
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Message extends AbstractCode {
 
@@ -39,18 +39,24 @@ public class Message extends AbstractCode {
 	 *
 	 * @param name the name for tracing and debugging
 	 */
-	public Message(String name) {
+	public Message(final String name) {
 		super(name);
 	}
 
-	/**
-	 * Scan the next tokens (between braces) and
-	 * put the vlaue (as text) on the log.
-	 * 
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
-	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		source.update("message", source.scanTokens().toText());
-		prefix.clear();
-	}
+    /**
+     * Scan the next tokens (between braces) and put the value (as text) on the
+     * log. In fact only the source is informed that there is something to
+     * write out. This is done using the observer pattern.
+     *
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+        source.update("message", source.scanTokens().toText());
+        prefix.clear();
+    }
 }

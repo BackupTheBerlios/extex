@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.Typesetter;
  * This class provides an implementation for the primitive <code>\ifhmode</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Ifhmode extends AbstractIf {
     /**
@@ -36,17 +36,18 @@ public class Ifhmode extends AbstractIf {
      *
      * @param name the name for debugging
      */
-    public Ifhmode(String name) {
+    public Ifhmode(final String name) {
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.AbstractIf#conditional(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    protected boolean conditional(Context context, TokenSource source,
-                                  Typesetter typesetter) {
+    protected boolean conditional(final Context context,
+        final TokenSource source, final Typesetter typesetter) {
         Mode mode = typesetter.getMode();
-        return (mode == Mode.HORIZONTAL ||
-               mode == Mode.RESTRICTED_HORIZONTAL);
+        return (mode == Mode.HORIZONTAL || mode == Mode.RESTRICTED_HORIZONTAL);
     }
 }
