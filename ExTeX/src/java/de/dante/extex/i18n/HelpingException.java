@@ -16,7 +16,10 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.i18n;
+
+import java.util.ResourceBundle;
 
 import de.dante.util.GeneralException;
 
@@ -50,9 +53,24 @@ import de.dante.util.GeneralException;
  * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HelpingException extends GeneralException {
+
+    /**
+     * The field <tt>bundle</tt> contains the ...
+     */
+    private static ResourceBundle bundle = null;
+
+    /**
+     * ...
+     *
+     * @param resource the ResourceBundle to use
+     */
+    public static void configure(final ResourceBundle resource) {
+        bundle = resource;
+    }
+
     /**
      * The field <tt>arg1</tt> contains the first argument.
      */
@@ -81,6 +99,7 @@ public class HelpingException extends GeneralException {
      * @param messageTag the message
      */
     public HelpingException(final String messageTag) {
+
         super();
         tag = messageTag;
     }
@@ -92,6 +111,7 @@ public class HelpingException extends GeneralException {
      * @param a1 the first argument
      */
     public HelpingException(final String messageTag, final String a1) {
+
         super();
         tag = messageTag;
         this.arg1 = a1;
@@ -106,6 +126,7 @@ public class HelpingException extends GeneralException {
      */
     public HelpingException(final String messageTag, final String a1,
             final String a2) {
+
         super();
         tag = messageTag;
         this.arg1 = a1;
@@ -122,6 +143,7 @@ public class HelpingException extends GeneralException {
      */
     public HelpingException(final String messageTag, final String a1,
             final String a2, final String a3) {
+
         super();
         tag = messageTag;
         this.arg1 = a1;
@@ -135,6 +157,7 @@ public class HelpingException extends GeneralException {
      * @param e the cause
      */
     public HelpingException(final Throwable e) {
+
         super();
     }
 
@@ -144,6 +167,7 @@ public class HelpingException extends GeneralException {
      * @return the help information
      */
     public String getHelp() {
+
         return Messages.format(tag + ".help", arg1, arg2, arg3);
     }
 
@@ -153,6 +177,7 @@ public class HelpingException extends GeneralException {
      * @return the help information
      */
     public String getMessage() {
+
         return Messages.format(tag, arg1, arg2, arg3);
     }
 
