@@ -20,7 +20,6 @@
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -64,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Def extends AbstractAssignment {
 
