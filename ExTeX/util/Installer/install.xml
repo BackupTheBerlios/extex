@@ -54,6 +54,9 @@
       <file src="extex" targetdir="$INSTALL_PATH"/>
       <parsable targetfile="$INSTALL_PATH/extex"/>
       <executable targetfile="$INSTALL_PATH/extex" stage="never"/>
+      <file src="extex.bat" targetdir="$INSTALL_PATH"/>
+      <parsable targetfile="$INSTALL_PATH/extex.bat"/>
+      <executable targetfile="$INSTALL_PATH/extex.bat"/>
       <file src="../../target/lib/extex.jar" targetdir="$INSTALL_PATH/lib"/>
       <file src=".extex" targetdir="$INSTALL_PATH"/>
     </pack>
