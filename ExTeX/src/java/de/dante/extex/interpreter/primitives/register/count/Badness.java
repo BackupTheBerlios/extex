@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Badness extends AbstractCode implements CountConvertible, Theable {
 
@@ -65,10 +65,11 @@ public class Badness extends AbstractCode implements CountConvertible, Theable {
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         String key = getName();
         Count c = context.getCount(key);
@@ -87,17 +88,18 @@ public class Badness extends AbstractCode implements CountConvertible, Theable {
             throws GeneralException {
 
         throw new HelpingException("TTP.CantUseIn",
-                printableControlSequence(context),
-                typesetter.getMode().toString());
+                printableControlSequence(context), typesetter.getMode()
+                        .toString());
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         String key = getName();
         return new Tokens(context, context.getCount(key).toString());
