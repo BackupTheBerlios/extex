@@ -16,18 +16,34 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.pageBuilder.impl;
 
-import de.dante.extex.typesetter.pageBuilder.PageBuilder;
+import java.io.IOException;
 
+import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.i18n.PanicException;
+import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.pageBuilder.PageBuilder;
+import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PageBuilderImpl implements PageBuilder {
+
+    /**
+     * The field <tt>documentWriter</tt> contains the ...
+     */
+    private DocumentWriter documentWriter = null;
+
+    /**
+     * The field <tt>vlist</tt> contains the ...
+     */
+    private NodeList vlist;
 
     /**
      * Creates a new object.
@@ -37,4 +53,68 @@ public class PageBuilderImpl implements PageBuilder {
         super();
     }
 
+    /**
+     * ...
+     *
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#close()
+     */
+    public void close() throws GeneralException {
+
+        try {
+            documentWriter.close();
+        } catch (IOException e) {
+            throw new PanicException(e);
+        }
+
+    }
+
+    /**
+     * This method is used when the page builder has received its last nodes.
+     * It indicates that now the pages should be written out.
+     * <p>
+     * Nevertheless some shipouts might come afterwards.
+     * </p>
+     *
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#flush()
+     */
+    public void flush() throws GeneralException {
+
+        // TODO unimplemented
+    }
+
+    /**
+     * Setter for the document writer.
+     * This has to be provided before the page builder can be active.
+     *
+     * @param docWriter the new document writer to use
+     *
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
+     *      de.dante.extex.documentWriter.DocumentWriter)
+     */
+    public void setDocumentWriter(final DocumentWriter docWriter) {
+
+        this.documentWriter = docWriter;
+    }
+
+    /**
+     * This is the entry point for the page builder. Here it receives a
+     * complete node list to be sent to the output writer. It can be assumed
+     * that all values for width, height, and depth of the node lists are
+     * properly filled.
+     *
+     * @param nodes the nodes to send
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#shipout(
+     *      de.dante.extex.typesetter.NodeList)
+     */
+    public void shipout(final NodeList nodes) throws GeneralException {
+
+        try {
+            this.documentWriter.shipout(nodes);
+        } catch (IOException e) {
+            throw new PanicException(e);
+        }
+    }
 }

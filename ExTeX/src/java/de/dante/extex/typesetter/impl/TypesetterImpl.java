@@ -52,7 +52,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
@@ -209,13 +209,10 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void finish() throws GeneralException {
 
         par();
-        //TODO invoke page builder
-        try {
-            documentWriter.shipout(listMaker.close());
-            documentWriter.close();
-        } catch (IOException e) {
-            throw new PanicException(e);
-        }
+        pageBuilder.shipout(listMaker.close());
+        //TODO test that nothing is left behind
+        pageBuilder.flush();
+        pageBuilder.close();
     }
 
     /**
@@ -338,6 +335,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void setDocumentWriter(final DocumentWriter writer) {
 
         documentWriter = writer;
+        pageBuilder.setDocumentWriter(writer);
     }
 
     /**
@@ -370,6 +368,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void setPageBuilder(final PageBuilder pageBuilder) {
 
         this.pageBuilder = pageBuilder;
+        pageBuilder.setDocumentWriter(documentWriter);
     }
 
     /**
@@ -413,11 +412,7 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
      */
     public void shipout(final NodeList nodes) throws GeneralException {
 
-        try {
-            documentWriter.shipout(nodes);
-        } catch (IOException e) {
-            throw new PanicException(e);
-        }
+        pageBuilder.shipout(nodes);
     }
 
     /**
