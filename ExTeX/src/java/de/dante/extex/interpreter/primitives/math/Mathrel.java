@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.extex.typesetter.type.noad.RelNoad;
+import de.dante.extex.typesetter.type.noad.RelationNoad;
 import de.dante.util.GeneralException;
 
 /**
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Mathrel extends AbstractMathCode {
 
@@ -77,7 +77,7 @@ public class Mathrel extends AbstractMathCode {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.scanNoad(context, source);
-        nc.add(new RelNoad(noad));
+        nc.add(new RelationNoad(noad));
         return true;
     }
 
