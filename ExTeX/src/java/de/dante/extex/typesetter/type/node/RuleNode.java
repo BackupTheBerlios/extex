@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [138]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -40,16 +40,6 @@ public class RuleNode extends AbstractNode implements Node {
      * The field <tt>context</tt> the typographic context.
      */
     private TypesettingContext context;
-
-    /**
-     * The field <tt>move</tt> contains the ...
-     */
-    private Dimen move = new Dimen(0);
-
-    /**
-     * The field <tt>shift</tt> contains the ...
-     */
-    private Dimen shift = new Dimen(0);
 
     /**
      * Creates a new object.
@@ -76,46 +66,6 @@ public class RuleNode extends AbstractNode implements Node {
     public TypesettingContext getContext() {
 
         return context;
-    }
-
-    /**
-     * Getter for move.
-     *
-     * @return the move
-     */
-    public Dimen getMove() {
-
-        return this.move;
-    }
-
-    /**
-     * Getter for shift.
-     *
-     * @return the shift
-     */
-    public Dimen getShift() {
-
-        return this.shift;
-    }
-
-    /**
-     * Setter for move.
-     *
-     * @param move the move to set
-     */
-    public void setMove(Dimen move) {
-
-        this.move = move;
-    }
-
-    /**
-     * Setter for shift.
-     *
-     * @param shift the shift to set
-     */
-    public void setShift(Dimen shift) {
-
-        this.shift = shift;
     }
 
     /**
