@@ -50,7 +50,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -105,22 +105,7 @@ public class FontFactoryImpl implements FontFactory {
     public Font getInstance(final String name, final Dimen size)
             throws GeneralException, ConfigurationException {
 
-        return getInstance(name, size, new Glue(0), true);
-    }
-
-    /**
-     * @see de.dante.extex.font.FontFactory#getInstance(
-     *      java.lang.String,
-     *      de.dante.extex.interpreter.type.dimen.Dimen,
-     *      de.dante.extex.interpreter.type.glue.Glue,
-     *      boolean)
-     * @deprecated
-     */
-    public Font getInstance(final String name, final Dimen size,
-            final Glue letterspaced, final boolean ligatures)
-            throws GeneralException, ConfigurationException {
-
-        return getInstance(name, size, letterspaced, ligatures, true);
+        return getInstance(name, size, new Glue(0), true, true);
     }
 
     /**
