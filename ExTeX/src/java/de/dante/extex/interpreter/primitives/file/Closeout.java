@@ -19,6 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -27,6 +30,7 @@ import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.node.WhatsItCloseNode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This class provides an implementation for the primitive
@@ -60,9 +64,14 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
-public class Closeout extends AbstractCode {
+public class Closeout extends AbstractCode implements LogEnabled {
+
+    /**
+     * The field <tt>logger</tt> contains the logger to use.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -75,7 +84,21 @@ public class Closeout extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * Setter for the logger.
+     *
+     * @param theLogger the new logger
+     *
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -89,7 +112,11 @@ public class Closeout extends AbstractCode {
         if (prefix.isImmediate()) {
             OutFile file = context.getOutFile(key);
             if (file != null) {
-                file.close();
+                try {
+                    file.close();
+                } catch (IOException e) {
+                    logger.info(e.getLocalizedMessage() + "\n");
+                }
             }
         } else {
             typesetter.add(new WhatsItCloseNode(key));

@@ -19,22 +19,30 @@
 
 package de.dante.extex.interpreter.type.node;
 
+import java.io.IOException;
+import java.util.logging.Logger;
+
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class WhatsItCloseNode extends WhatsItNode {
-
+public class WhatsItCloseNode extends WhatsItNode implements LogEnabled {
     /**
-     * The field <tt>key</tt> contains the ...
+     * The field <tt>key</tt> contains the key of the outfile to close.
      */
     private String key;
+
+    /**
+     * The field <tt>logger</tt> contains the logger to use.
+     */
+    private Logger logger = null;
 
     /**
      * Creates a new object.
@@ -53,6 +61,8 @@ public class WhatsItCloseNode extends WhatsItNode {
      *
      * @param context the interpreter context
      *
+     * @throws GeneralException in case of an error
+     *
      * @see de.dante.extex.typesetter.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context)
      */
@@ -60,7 +70,25 @@ public class WhatsItCloseNode extends WhatsItNode {
 
         OutFile file = context.getOutFile(key);
         if (file != null) {
-            file.close();
+            try {
+                file.close();
+            } catch (IOException e) {
+                logger.info(e.getLocalizedMessage() + "\n");
+            }
         }
     }
+
+    /**
+     * Setter for the logger.
+     *
+     * @param theLogger the new logger
+     *
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
+        this.logger = theLogger;
+    }
+
 }
