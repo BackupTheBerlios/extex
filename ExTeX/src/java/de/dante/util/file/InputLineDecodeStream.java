@@ -36,7 +36,7 @@ import java.util.ArrayList;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class InputLineDecodeStream implements InputLineDecoder {
@@ -110,9 +110,8 @@ public class InputLineDecodeStream implements InputLineDecoder {
                 // add '\r' for a tex-line
                 barr.add(new Byte((byte) '\r'));
                 break;
-            } else {
-                barr.add(new Byte((byte) ib));
             }
+            barr.add(new Byte((byte) ib));
         }
 
         if (barr.size() == 0) {

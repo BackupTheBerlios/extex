@@ -25,9 +25,8 @@ import java.util.StringTokenizer;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.InterpreterNumberFormatException;
 import de.dante.extex.interpreter.type.real.Real;
-import de.dante.util.GeneralException;
 
 /**
  * Pair (tow real-values)
@@ -35,7 +34,7 @@ import de.dante.util.GeneralException;
  * <p>[x-real] [y-real]</p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Pair implements Serializable {
 
@@ -119,17 +118,15 @@ public class Pair implements Serializable {
                 if (st.hasMoreTokens()) {
                     xval = new Real(st.nextToken());
                 } else {
-                    throw new HelpingException("TTP.NumberFormatError",
-                            s);
+                    throw new InterpreterNumberFormatException(s);
                 }
                 if (st.hasMoreTokens()) {
                     yval = new Real(st.nextToken());
                 } else {
-                    throw new HelpingException("TTP.NumberFormatError",
-                            s);
+                    throw new InterpreterNumberFormatException(s);
                 }
             } catch (NumberFormatException e) {
-                throw new HelpingException("TTP.NumberFormatError", s);
+                throw new InterpreterNumberFormatException(s);
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,15 +25,14 @@ import java.util.StringTokenizer;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.InterpreterNumberFormatException;
 import de.dante.extex.interpreter.type.real.Real;
-import de.dante.util.GeneralException;
 
 /**
  * Transform (transformation with six values)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Transform implements Serializable {
 
@@ -169,12 +168,11 @@ public class Transform implements Serializable {
                     if (st.hasMoreTokens()) {
                         val[i] = new Real(st.nextToken());
                     } else {
-                        throw new HelpingException(
-                                "TTP.NumberFormatError", s);
+                        throw new InterpreterNumberFormatException(s);
                     }
                 }
             } catch (NumberFormatException e) {
-                throw new HelpingException("TTP.NumberFormatError", s);
+                throw new InterpreterNumberFormatException(s);
             }
         }
     }
