@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -154,14 +154,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
             final Object oContext) throws GeneralException {
 
         Context context = (Context) oContext;
-        Code code = context.getCode(token);
-
-        if (code == null) {
-            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken",
-                    token.toString());
-        }
-
-        return code;
+        return context.getCode(token);
     }
 
     /**
@@ -197,14 +190,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
             final Object oContext) throws GeneralException {
 
         Context context = (Context) oContext;
-        Code code = context.getCode(token);
-
-        if (code == null) {
-            throw new UndefinedControlSequenceException(//
-                    printable(context, token));
-        }
-
-        return code;
+        return context.getCode(token);
     }
 
     /**
