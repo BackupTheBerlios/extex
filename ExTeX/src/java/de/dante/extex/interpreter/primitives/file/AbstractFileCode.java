@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -56,11 +56,12 @@ public abstract class AbstractFileCode extends AbstractCode
     public static final int MAX_OUT_FILE_NO = 15;
 
     /**
-     * ...
+     * Scan the input source for some tokens making up the key for an infile
+     * register. Currently only numbers in a certain range are allowed.
      *
      * @param source the token source to read from
      *
-     * @return the key read
+     * @return the key read in the form of a String
      *
      * @throws GeneralException in case of a failure
      */
@@ -79,11 +80,14 @@ public abstract class AbstractFileCode extends AbstractCode
     }
 
     /**
-     * ...
+     * Scan the input source for some tokens making up the key for an outfile
+     * register. Currently only numbers in a certain range are allowed.
+     * Neagtive numbers are treated special. An empty string is returned
+     * in this case.
      *
      * @param source the token source to read from
      *
-     * @return the key read
+     * @return the key read in the form of a String
      *
      * @throws GeneralException in case of a failure
      */
