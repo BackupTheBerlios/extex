@@ -22,12 +22,12 @@ package de.dante.extex.format.dvi.exception;
  * DVI: undefined opcode exception.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviUndefinedOpcodeException extends DviException {
 
     /**
-     * Create anew object.
+     * Create a new object.
      */
     public DviUndefinedOpcodeException() {
 
@@ -35,7 +35,7 @@ public class DviUndefinedOpcodeException extends DviException {
     }
 
     /**
-     * Create a new opject.#
+     * Create a new object.
      *
      * @param message   the message
      */

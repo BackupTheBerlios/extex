@@ -23,12 +23,12 @@ package de.dante.extex.format.dvi.exception;
  * DVI: exception
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DviException extends Exception {
 
     /**
-     * Create anew object.
+     * Create a new object.
      */
     public DviException() {
 
@@ -36,7 +36,7 @@ public class DviException extends Exception {
     }
 
     /**
-     * Create a new opject.#
+     * Create a new object.
      *
      * @param message   the message
      */
