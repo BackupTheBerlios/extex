@@ -57,8 +57,8 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
- * @version $Revision: 1.7 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.8 $
  */
 public class Vskip extends AbstractCode {
 
