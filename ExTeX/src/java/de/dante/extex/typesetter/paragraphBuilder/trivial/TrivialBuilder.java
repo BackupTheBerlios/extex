@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -139,7 +139,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
     }
 
     /**
-     * TODO gene: missing JavaDoc.
+     * Analyze a node list and cut off the first line.
      *
      * @param start the index of the first node to consider
      * @param len the length of nodes
@@ -147,7 +147,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
      * @param hlist the target list to put the nodes into
      * @param width the target width
      * @param accumulator an accumulator for the glue
-     * @param height the accumulator for te height
+     * @param height the accumulator for the height
      * @param depth the accuulator for the depth
      *
      * @return the index of the first node after the ones already processed
