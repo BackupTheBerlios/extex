@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Accent extends AbstractCode {
 
@@ -156,10 +156,10 @@ public class Accent extends AbstractCode {
         } else if (token.isa(Catcode.LEFTBRACE)) {
             source.push(token);
 
-            throw new RuntimeException("unimplemented"); //TODO
+            throw new RuntimeException("unimplemented"); //TODO unimplemented 
 
         } else {
-            throw new RuntimeException("unimplemented"); //TODO
+            throw new RuntimeException("unimplemented"); //TODO unimplemented
         }
 
         typesetter.setSpacefactor(Count.THOUSAND);
