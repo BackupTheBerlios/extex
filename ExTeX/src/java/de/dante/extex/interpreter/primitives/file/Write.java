@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.node.WhatsItWriteNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -44,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Write extends AbstractCode {
 
@@ -59,7 +60,8 @@ public class Write extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -69,13 +71,15 @@ public class Write extends AbstractCode {
             throws GeneralException {
 
         long no = source.scanInteger();
+        String key = Long.toString(no);
+        FileKeyValidator.validateOutFile(no, key);
 
         if (prefix.isImmediate()) {
             Tokens toks = source.scanTokens();
             writeImmediate(no, toks, context, source);
         } else {
             Tokens toks = source.getTokens();
-            write(no, toks);
+            typesetter.add(new WhatsItWriteNode(key, toks));
         }
 
         return true;
@@ -96,7 +100,7 @@ public class Write extends AbstractCode {
             throws GeneralException {
 
         if (no < 0) {
-            source.update("log", toks.toText());
+            source.update("message", toks.toText());
             return;
         }
 
@@ -107,18 +111,6 @@ public class Write extends AbstractCode {
         } else {
             file.write(toks);
         }
-    }
-
-    /**
-     * Write with delay.
-     *
-     * @param no the number of the write register
-     * @param toks the tokens to write
-     */
-    private void write(final long no, final Tokens toks) {
-
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
 }
