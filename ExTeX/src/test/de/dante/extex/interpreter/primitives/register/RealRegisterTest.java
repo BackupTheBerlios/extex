@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.register;
 import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
 import de.dante.util.configuration.Configuration;
@@ -35,7 +36,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RealRegisterTest extends TestCase {
 
@@ -67,10 +68,10 @@ public class RealRegisterTest extends TestCase {
                 .newInstance("config/extex32.xml");
         Configuration intcfg = config.getConfiguration("Interpreter");
         InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter source = intf.newInstance();
+        Interpreter interpreter = intf.newInstance();
 
-        source.addStream(new TokenStreamStringImpl("1234"));
-        Real r = new Real(null, source);
+        interpreter.addStream(new TokenStreamStringImpl("1234   nix"));
+        Real r = new Real(null, interpreter);
         assertEquals("1234.0", r.toString());
     }
 
@@ -84,10 +85,10 @@ public class RealRegisterTest extends TestCase {
                 .newInstance("config/extex32.xml");
         Configuration intcfg = config.getConfiguration("Interpreter");
         InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter source = intf.newInstance();
+        Interpreter interpreter = intf.newInstance();
 
-        source.addStream(new TokenStreamStringImpl("1234.567"));
-        Real r = new Real(null, source);
+        interpreter.addStream(new TokenStreamStringImpl("1234.567     nix"));
+        Real r = new Real(null, interpreter);
         assertEquals("1234.567", r.toString());
     }
 
@@ -101,38 +102,38 @@ public class RealRegisterTest extends TestCase {
                 .newInstance("config/extex32.xml");
         Configuration intcfg = config.getConfiguration("Interpreter");
         InterpreterFactory intf = new InterpreterFactory(intcfg);
-        Interpreter source = intf.newInstance();
+        Interpreter interpreter = intf.newInstance();
 
-        source.addStream(new TokenStreamStringImpl("1234,567"));
-        Real r = new Real(null, source);
+        interpreter.addStream(new TokenStreamStringImpl("1234,567    nix"));
+        Real r = new Real(null, interpreter);
         assertEquals("1234.567", r.toString());
     }
 
-    //    /**
-    //     * ...
-    //     * @throws Exception ...
-    //     */
-    //    public void testSp4() throws Exception {
-    //
-    //        Configuration config = new ConfigurationFactory()
-    //                .newInstance("config/extex32.xml");
-    //        Configuration intcfg = config.getConfiguration("Interpreter");
-    //        Configuration typesettercfg = config.getConfiguration("Typesetter");
-    //
-    //        InterpreterFactory intf = new InterpreterFactory(intcfg);
-    //        Interpreter interpreter = intf.newInstance();
-    //        ContextExtension context = (ContextExtension) interpreter.getContext();
-    //
-    //        interpreter.addStream(new TokenStreamStringImpl("\\real7=1234,567"));
-    //
-    //        Typesetter typesetter = new TypesetterFactory(typesettercfg)
-    //          .newInstance((Context)context);
-    //
-    //        interpreter.setTypesetter(typesetter);
-    //        interpreter.run();
-    //
-    //        Real r = context.getReal("real#7");
-    //        assertEquals("1234.567", r.toString());
-    //    }
+    /**
+     * ...
+     *
+     * catcode { }  fehlt !!!!
+     * @throws Exception ...
+     */
+    public void testSp4() throws Exception {
+
+        Configuration config = new ConfigurationFactory()
+                .newInstance("config/extex32.xml");
+        Configuration intcfg = config.getConfiguration("Interpreter");
+        InterpreterFactory intf = new InterpreterFactory(intcfg);
+        Interpreter interpreter = intf.newInstance();
+
+        Context context = interpreter.getContext();
+
+        //        interpreter.addStream(new TokenStreamStringImpl("\\catcode`\\{=1"));
+        //        interpreter.addStream(new TokenStreamStringImpl("\\catcode`\\}=2"));
+        //
+        //        interpreter.run();
+
+        interpreter
+                .addStream(new TokenStreamStringImpl("\\mathexpr{2+5}  nix"));
+        Real r = new Real(context, interpreter);
+        assertEquals("7.0", r.toString());
+    }
 
 }

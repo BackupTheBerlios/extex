@@ -27,5 +27,6 @@
 	<classpathentry kind="lib" path="lib/icu4j_2_8.jar"/>
 	<classpathentry kind="var" path="JDK_HOME/lib/tools.jar"/>
 	<classpathentry kind="lib" path="lib/avalon-framework-4.1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jel.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

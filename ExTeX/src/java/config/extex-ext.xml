@@ -25,12 +25,13 @@
 	extkill="true"   -> element is delete in the originnal-document
 	
 	@author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-    @version $Revision: 1.4 $
+    @version $Revision: 1.5 $
 -->
 <ExTeX>
     <Interpreter extappend="true">
         <define name="real" class="de.dante.extex.interpreter.primitives.register.real.NumberedReal"/>
         <define name="realdef" class="de.dante.extex.interpreter.primitives.register.real.RealDef"/>
+        <define name="mathexpr" class="de.dante.extex.interpreter.primitives.register.real.MathExpression"/>
         <define name="pair" class="de.dante.extex.interpreter.primitives.register.pair.NumberedPair"/>
         <define name="pairdef" class="de.dante.extex.interpreter.primitives.register.pair.PairDef"/>
         <define name="transform" class="de.dante.extex.interpreter.primitives.register.transform.NumberedTransform"/>
