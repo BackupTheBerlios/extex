@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.26 $
+     * @version $Revision: 1.27 $
      */
     private static final class State {
 
@@ -226,6 +226,130 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
+     * Checks whether the pointer is at the end of line.
+     *
+     * @return <code>true</code> iff the next reading operation would try to
+     * refill the line buffer
+     */
+    private boolean atEndOfLine() {
+
+        return (pointer > line.length());
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public boolean isEof() throws GeneralException {
+
+        if (!super.isEof()) {
+            return false;
+        }
+
+        for (;;) {
+
+            if (pointer < line.length()) {
+                return false;
+            }
+
+            try {
+                if (!refill()) {
+                    return true;
+                }
+            } catch (IOException e) {
+                throw new MainIOException(e);
+            }
+
+            pointer = 0;
+        }
+    }
+
+    /**
+     * End the current line.
+     */
+    private void endLine() {
+
+        pointer = line.length() + 1;
+    }
+
+    /**
+     * Return the next character to process.
+     * The pointer is advanced and points to the character returned.
+     * <p>
+     * This operation might involve that an additional bunch of characters is
+     * read in (with {@link #refill() refill()}).
+     * </p>
+     *
+     * @param tokenizer the classifier for characters
+     *
+     * @return the character or <code>null</code> if no more character is
+     * available
+     *
+     * @throws MainIOException in the rare case that an IOException has
+     * occurred.
+     */
+    private UnicodeChar getChar(final Tokenizer tokenizer)
+            throws MainIOException {
+
+        UnicodeChar uc = getRawChar();
+
+        if (uc == null) {
+            do {
+                try {
+                    if (!refill()) {
+                        return null;
+                    }
+                } catch (IOException e) {
+                    throw new MainIOException(e);
+                }
+
+                pointer = 0;
+                uc = getRawChar();
+            } while (uc == null);
+
+            state = NEW_LINE;
+        }
+
+        if (tokenizer.getCatcode(uc) == Catcode.SUPMARK) {
+
+            int savePointer = pointer;
+            UnicodeChar c = getRawChar();
+
+            if (uc.equals(c)) {
+                c = getRawChar();
+                if (c == null) {
+                    return new UnicodeChar(0);
+                }
+                int hexHigh = hex2int(c.getCodePoint());
+                if (hexHigh >= 0) {
+                    savePointer = pointer;
+                    uc = getRawChar();
+                    if (uc == null) {
+                        uc = new UnicodeChar(hexHigh);
+                    } else {
+                        int hexLow = hex2int(uc.getCodePoint());
+                        if (hexLow < 0) {
+                            pointer = savePointer;
+                            uc = new UnicodeChar(hexHigh);
+                        } else {
+                            uc = new UnicodeChar((hexHigh << 4) + hexLow);
+                        }
+                    }
+                } else if (c != null) {
+                    hexHigh = c.getCodePoint();
+                    uc = new UnicodeChar(((hexHigh < CARET_LIMIT) ? hexHigh
+                            + CARET_LIMIT : hexHigh - CARET_LIMIT));
+                }
+            } else {
+                pointer = savePointer;
+            }
+        }
+
+        return uc;
+    }
+
+    /**
      * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
      */
     public Locator getLocator() {
@@ -259,6 +383,61 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
         } while (t == null);
 
         return t;
+    }
+
+    /**
+     * Get the next character from the input line.
+     *
+     * @return the next raw character or <code>null</code> if none is available.
+     */
+    private UnicodeChar getRawChar() {
+
+        if (pointer < line.length()) {
+            return new UnicodeChar(line, pointer++);
+        }
+
+        return (pointer++ > line.length() ? null : CR);
+    }
+
+    /**
+     * Analyze a character and return its hex value, i.e. '0' to '9' are mapped
+     * to 0 to 9 and 'a' to 'f' (case sensitive) are mapped to 10 to 15.
+     *
+     * @param c the character code to analyze
+     *
+     * @return the integer value of a hex digit or -1 if no hex digit is given
+     */
+    private int hex2int(final int c) {
+
+        if ('0' <= c && c <= '9') {
+            return c - '0';
+        } else if ('a' <= c && c <= 'f') {
+            return c - 'a' + 10;
+            //} else if ('A' <= c && c <= 'F') {
+            //    return c - 'A' + 10;
+        } else {
+            return -1;
+        }
+    }
+
+    /**
+     * Get the next line from the input reader to be processed.
+     *
+     * @return <code>true</code> iff the next line could be acquired.
+     *
+     * @throws IOException in case of some kind of IO error
+     */
+    protected boolean refill() throws IOException {
+
+        if (in == null) {
+            return false;
+        }
+        if ((line = in.readLine()) == null) {
+            in.close();
+            in = null;
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -532,156 +711,6 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         return ((TokenFactory) oFactory).createToken(Catcode.TABMARK,
                 (UnicodeChar) uc, tokenizer.getNamespace());
-    }
-
-    /**
-     * Checks whether the pointer is at the end of line.
-     *
-     * @return <code>true</code> iff the next reading operation would try to
-     * refill the line buffer
-     */
-    private boolean atEndOfLine() {
-
-        return (pointer > line.length());
-    }
-
-    /**
-     * End the current line.
-     */
-    private void endLine() {
-
-        pointer = line.length() + 1;
-    }
-
-    /**
-     * Return the next character to process.
-     * The pointer is advanced and points to the character returned.
-     * <p>
-     * This operation might involve that an additional bunch of characters is
-     * read in (with {@link #refill() refill()}).
-     * </p>
-     *
-     * @param tokenizer the classifier for characters
-     *
-     * @return the character or <code>null</code> if no more character is
-     * available
-     *
-     * @throws MainIOException in the rare case that an IOException has
-     * occurred.
-     */
-    private UnicodeChar getChar(final Tokenizer tokenizer)
-            throws MainIOException {
-
-        UnicodeChar uc = getRawChar();
-
-        if (uc == null) {
-            do {
-                try {
-                    if (!refill()) {
-                        return null;
-                    }
-                } catch (IOException e) {
-                    throw new MainIOException(e);
-                }
-
-                pointer = 0;
-                uc = getRawChar();
-            } while (uc == null);
-
-            state = NEW_LINE;
-        }
-
-        if (tokenizer.getCatcode(uc) == Catcode.SUPMARK) {
-
-            int savePointer = pointer;
-            UnicodeChar c = getRawChar();
-
-            if (uc.equals(c)) {
-                c = getRawChar();
-                if (c == null) {
-                    return new UnicodeChar(0);
-                }
-                int hexHigh = hex2int(c.getCodePoint());
-                if (hexHigh >= 0) {
-                    savePointer = pointer;
-                    uc = getRawChar();
-                    if (uc == null) {
-                        uc = new UnicodeChar(hexHigh);
-                    } else {
-                        int hexLow = hex2int(uc.getCodePoint());
-                        if (hexLow < 0) {
-                            pointer = savePointer;
-                            uc = new UnicodeChar(hexHigh);
-                        } else {
-                            uc = new UnicodeChar((hexHigh << 4) + hexLow);
-                        }
-                    }
-                } else if (c != null) {
-                    hexHigh = c.getCodePoint();
-                    uc = new UnicodeChar(((hexHigh < CARET_LIMIT) ? hexHigh
-                            + CARET_LIMIT : hexHigh - CARET_LIMIT));
-                }
-            } else {
-                pointer = savePointer;
-            }
-        }
-
-        return uc;
-    }
-
-    /**
-     * Get the next character from the input line.
-     *
-     * @return the next raw character or <code>null</code> if none is available.
-     */
-    private UnicodeChar getRawChar() {
-
-        if (pointer < line.length()) {
-            return new UnicodeChar(line, pointer++);
-        }
-
-        return (pointer++ > line.length() ? null : CR);
-    }
-
-    /**
-     * Analyze a character and return its hex value, i.e. '0' to '9' are mapped
-     * to 0 to 9 and 'a' to 'f' (case sensitive) are mapped to 10 to 15.
-     *
-     * @param c the character code to analyze
-     *
-     * @return the integer value of a hex digit or -1 if no hex digit is given
-     */
-    private int hex2int(final int c) {
-
-        if ('0' <= c && c <= '9') {
-            return c - '0';
-        } else if ('a' <= c && c <= 'f') {
-            return c - 'a' + 10;
-            //} else if ('A' <= c && c <= 'F') {
-            //    return c - 'A' + 10;
-        } else {
-            return -1;
-        }
-    }
-
-    /**
-     * Get the next line from the input reader to be processed.
-     *
-     * @return <code>true</code> iff the next line could be acquired.
-     *
-     * @throws IOException in case of some kind of IO error
-     */
-    protected boolean refill() throws IOException {
-
-        if (in == null) {
-            return false;
-        }
-        if ((line = in.readLine()) == null) {
-            in.close();
-            in = null;
-            return false;
-        }
-        return true;
     }
 
 }
