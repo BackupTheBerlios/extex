@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [155]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
@@ -57,16 +57,19 @@ public class KernNode extends AbstractNode implements Node, Discartable {
      */
     public String toText(final String prefix) {
 
-        return "kern " + theKern.toString();
+        StringBuffer sb = new StringBuffer();
+        toText(sb, prefix);
+        return sb.toString();
     }
 
     /**
      * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
      *      java.lang.String)
+     * @see "TeX -- The Program [191]"
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
-        sb.append("kern ");
+        sb.append("kern");
         theKern.toString(sb);
     }
 

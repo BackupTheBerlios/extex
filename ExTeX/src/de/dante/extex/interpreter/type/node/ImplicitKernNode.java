@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * distinguishable for the sake of some fine differentiations in TeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ImplicitKernNode extends KernNode {
 
@@ -40,5 +40,17 @@ public class ImplicitKernNode extends KernNode {
 
         super(kern);
     }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     * @see "TeX -- The Program [191]"
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+
+        sb.append("kern ");
+        getWidth().toString(sb);
+    }
+
 
 }
