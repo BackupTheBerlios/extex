@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -239,13 +239,13 @@ public class FontPrimitive extends AbstractAssignment
 
         StringBuffer sb = new StringBuffer((char) t.getChar().getCodePoint());
 
-        for (t = source.getToken(context); t != null
-                && !(t instanceof SpaceToken); t = source.getToken(context)) {
+        while (t != null && !(t instanceof SpaceToken)) {
             if (t instanceof ControlSequenceToken) {
                 source.push(t);
                 break;
             }
             sb.append((char) t.getChar().getCodePoint());
+            t = source.getToken(context);
         }
 
         return sb.toString();
