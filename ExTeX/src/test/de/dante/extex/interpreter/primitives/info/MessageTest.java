@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MessageTest extends ExTeXLauncher {
 
@@ -78,5 +78,27 @@ public class MessageTest extends ExTeXLauncher {
                 "Missing `{' inserted",
                 null);
     }
+
+    /**
+     * Test case checking that \message prints its plain argument.
+     *
+     * @throws Exception in case of an error
+     */
+    /*
+    public void testMessage1() throws Exception {
+
+        Properties properties = System.getProperties();
+        properties.setProperty("extex.config", "extex");
+
+        runCode(properties,
+                "\\errorstopmode"
+                + "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\message{Hello world!}"
+                + "\\end ",
+                "Hello world!",
+                "");
+    }
+    */
 
 }
