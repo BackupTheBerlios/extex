@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
@@ -80,7 +80,10 @@ public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
         String key = getKey(source, context);
         Box box = context.getBox(key);
-        context.setBox(key, box, prefix.isGlobal());
+        if (box != null) {
+            typesetter.add(box.getNodes());
+            context.setBox(key, null, prefix.isGlobal());
+        }
         return true;
     }
 
