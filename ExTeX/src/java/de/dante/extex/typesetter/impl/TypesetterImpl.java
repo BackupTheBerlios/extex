@@ -56,7 +56,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class TypesetterImpl
         implements
@@ -502,8 +502,8 @@ public class TypesetterImpl
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void tab(Context context, TokenSource source, final Token t)
-            throws GeneralException {
+    public void tab(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
         listMaker.tab(context, source, t);
     }
