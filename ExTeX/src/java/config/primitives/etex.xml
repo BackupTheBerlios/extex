@@ -38,7 +38,7 @@
   <Define name="everyeof" class=""/>
   <Define name="firstmarks" class=""/>
   <Define name="ifcsname" class=""/>
-  <Define name="ifDefined" class=""/>
+  <define name="ifdefined" class="de.dante.extex.interpreter.primitives.conditional.Ifdefined"/>
   <Define name="interactionmode" class=""/>
   <Define name="lastnodetype" class=""/>
   <Define name="marks" class=""/>

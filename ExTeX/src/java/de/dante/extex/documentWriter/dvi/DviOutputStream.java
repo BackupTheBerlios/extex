@@ -32,7 +32,7 @@ import java.io.OutputStream;
  * This class provides the methods to write to the dvi-Stream.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviOutputStream {
     /**
@@ -177,7 +177,7 @@ public class DviOutputStream {
      * @param codes codes for one, two, ... long argument
      * @param argNumber the number for writing
      * @exception GeneralException if an error occurs
-     * @see "TTP[610]"
+     * @see "TTP [610]"
      */
     public void writeCodeNumberAndArg(final int[] codes, final int argNumber)
         throws GeneralException {
@@ -187,7 +187,7 @@ public class DviOutputStream {
 
 
         // TODO: this is a bit quick&dirty (TE)
-        // TODO: TTP[604] (TE)
+        // TODO: TTP [604] (TE)
         while (number > BYTE_MAX_NUM) {
             number >>>= BITS_PER_BYTE;
             numberBytes++;

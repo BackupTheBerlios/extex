@@ -46,14 +46,14 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DviWriter {
 
     /**
      * Typeset character and move right.
      *
-     * @see "TTP[586]"
+     * @see "TeX -- The Program [586]"
      */
     private static final int[] DVI_SET_CHAR_NUM
         = {0,   1,   2,   3,   4,   5,   6,   7,
@@ -292,7 +292,7 @@ public class DviWriter {
 
     /**
      * The dvi-file Version.Describe constant <code>DVI_VERSION</code> here.
-     * @see "TTP[587]"
+     * @see "TeX -- The Program [587]"
      *
      */
     private static final int DVI_VERSION = 2;
@@ -300,7 +300,7 @@ public class DviWriter {
 
     /**
      * Code of the trailing bytes in the dvi-file.
-     * @see "TTP[590]"
+     * @see "TeX -- The Program [590]"
      *
      */
     private static final int DVI_TRAILING_BYTE = 223;
@@ -331,7 +331,7 @@ public class DviWriter {
      * Dvi file base units per metre.
      *
      * @see #SP_NUMERATOR
-     * @see "TTP[587]"
+     * @see "TeX -- The Program [587]"
      *
      */
     private static final int DVI_BASE_SIZE_PER_METRE = 100000;
@@ -341,7 +341,7 @@ public class DviWriter {
      * Scale points in a point (pt).
      *
      * @see #SP_PER_POINT
-     * @see "TTP[587]"
+     * @see "TeX -- The Program [587]"
      *
      */
     private static final int SP_PER_POINT = 65536;
@@ -351,7 +351,7 @@ public class DviWriter {
      * Numberator for converting points to centimetre.
      *
      * @see #SP_NUMERATOR
-     * @see "TTP[587]"
+     * @see "TeX -- The Program [587]"
      *
      */
     private static final int NUMERATOR_PT_TO_CM = 254;
@@ -360,7 +360,7 @@ public class DviWriter {
      * Denominator for converting points to centimetre.
      *
      * @see #SP_DENOMINATOR
-     * @see "TTP[587]"
+     * @see "TeX -- The Program [587]"
      *
      */
     private static final int DENOMINATOR_PT_TO_CM = 7227;
@@ -380,7 +380,7 @@ public class DviWriter {
      * Describes the unit of messurement (sp).  1sp={@link
      * #SP_NUMERATOR SP_NUMERATOR}/<code>SP_DENOMINATOR</code>*10^-7&nbsp;m.
      *
-     * @see "TTP[586]"
+     * @see "TeX -- The Program [586]"
      */
     private static final int SP_DENOMINATOR
         = DENOMINATOR_PT_TO_CM * SP_PER_POINT;
@@ -589,7 +589,7 @@ public class DviWriter {
         appendZeroFilledToBuffer(comment, hour);
         appendZeroFilledToBuffer(comment, minute);
 
-        // write preamble, see TTP[587]
+        // write preamble, see TTP [587]
         dviOutputStream.writeByte(DVI_PRE);
         dviOutputStream.writeByte(DVI_VERSION);
         dviOutputStream.writeNumber(SP_NUMERATOR, BYTES_PER_QUADRUPLE);
@@ -614,7 +614,7 @@ public class DviWriter {
                                        + "maybe beginDviFile was not called");
         }
 
-        // write postamble beginning, see TTP[590]
+        // write postamble beginning, see TTP [590]
         dviOutputStream.writeByte(DVI_POST);
         dviOutputStream.writeNumber(lastBop, BYTES_PER_QUADRUPLE);
         dviOutputStream.writeNumber(SP_NUMERATOR, BYTES_PER_QUADRUPLE);
@@ -627,7 +627,7 @@ public class DviWriter {
 
         writeFontDefinitions();
 
-        // write postpreamble ending, see TTP[591]
+        // write postpreamble ending, see TTP [591]
         dviOutputStream.writeByte(DVI_POST_POST);
         dviOutputStream.writeNumber(postPosition, BYTES_PER_QUADRUPLE);
         dviOutputStream.writeByte(DVI_VERSION);
@@ -709,7 +709,7 @@ public class DviWriter {
         String area = "";
         String fontName = font.getFontName();
 
-        // see TTP[588]
+        // see TTP [588]
         dviOutputStream.writeCodeNumberAndArg(DVI_FNT_DEF, fontNumber);
         dviOutputStream.writeNumber(checksum, BYTES_PER_QUADRUPLE);
         dviOutputStream.writeNumber(scale, BYTES_PER_QUADRUPLE);
@@ -824,7 +824,7 @@ public class DviWriter {
      *
      * @param node a <code>RuleNode</code>
      * @exception GeneralException if an error occurs
-     * @see "TTP[585]"
+     * @see "TeX -- The Program [585]"
      */
     public void writeNode(final RuleNode node) throws GeneralException {
         int width = convertToInt(node.getWidth().getValue());
