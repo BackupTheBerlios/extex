@@ -25,15 +25,15 @@ import org.apache.fop.fonts.FontDescriptor;
 import org.apache.fop.fonts.FontType;
 import org.apache.fop.fonts.Typeface;
 
-import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.font.Font;
 
 /**
  * Font-Adapter for a efm-font with FOP.
- * 
+ *
  * TODO incomplete; Gerd
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EfmFopFont extends Typeface implements FontDescriptor {
 

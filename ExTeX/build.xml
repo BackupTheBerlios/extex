@@ -169,7 +169,7 @@
         <mkdir dir="${javadocxml}" />
         <property name="doc.params" value="-outdir ${javadocxml}"/>
         <javadoc 
-	    	doclet="de.dante.util.doclet.XMLDoclet1"
+	    	doclet="de.dante.tools.doclet.XMLDoclet1"
     		additionalparam="${doc.params}">
             <classpath refid="main.class.path"/>
             <classpath refid="test.class.path"/>
@@ -257,7 +257,7 @@
 	</target> -->
 	
     <target name="extex32" depends="compile" description="Create a extex32.xml config-file">
-		<java fork="true" classname="de.dante.extex.plugin.CreateConfig">
+		<java fork="true" classname="de.dante.tools.plugin.CreateConfig">
 			<arg value="src/config/extex.xml"/>
 			<arg value="src/config/extex-ext.xml"/>
 			<arg value="src/config/extex32.xml"/>

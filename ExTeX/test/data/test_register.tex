@@ -1,0 +1,163 @@
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+
+
+%%%%%%%%%%%%
+%%
+%% registers
+
+
+%% toks
+
+\toks0 {=}
+
+1: = : \the\toks0
+
+%% numbered count
+
+%% oktal and hex integers
+%% (not yet implmented in ExTeX)
+
+\count50='123
+2: 83 : \the\count50
+
+\count60="123
+3: 291 : \the\count60
+
+%% from here decimal
+
+\count40=12
+4: 12 : \the\count40
+
+\multiply \count40 by 3
+5: 36 : \the\count40
+
+\advance \count40 by -6
+6: 30 : \the\count40
+
+\divide \count40 by 8
+7: 3 : \the\count40
+
+\advance \count40 by 10
+8: 13 : \the\count40
+
+%% named count
+
+\countdef\nase = 40
+9: 13 : \the\nase
+
+\advance \nase by 5
+10: 18 : \the\nase
+
+\multiply\nase by 4579
+11: 82422 : \the\nase
+
+\divide\nase by 3
+12: 27474 : \the\nase
+
+\multiply\nase by 78164
+13: 2147477736 : \the\nase
+
+\divide\nase by -133
+14: -16146449 : \the\nase
+
+\multiply \nase by -0
+15: 0 : \the\nase
+
+%% numbered dimen
+
+\dimen2=1pt
+16: 1.0pt : \the\dimen2
+
+\multiply\dimen2 by 2
+17: 2.0pt : \the\dimen2
+
+17a: \dimen32 = 1.5\dimen2
+3.0pt : \the\dimen32
+
+\advance\dimen2 by 3em
+18: 32.00005pt : \the\dimen2
+
+\advance\dimen2 by -100000sp
+19: 30.47417pt : \the\dimen2
+
+\divide\dimen2 by 2
+20: 15.23708pt : \the\dimen2
+
+%% named dimen
+
+\dimendef\hand = 2
+21: 15.23708pt : \the\hand
+
+\advance\hand by -.23708pt
+22: 15.0pt : \the\hand
+
+\divide\hand by 7
+23: 2.14285pt : \the\hand
+
+\multiply\hand by 7
+24: 14.99997pt : \the\hand
+
+\advance\hand by -13.99997pt
+25: 1.0pt : \the\hand
+
+
+%% The remaining can't be used with original TeX
+
+%% numbered real
+
+% \real3=2.5
+% real3 (2.5): \the\real3
+
+% \advance\real3 by 22.5
+% plus 22.5: \the\real3
+
+% \divide\real3 by 3
+% durch 3: \the\real3
+
+% \multiply\real3 by 3
+% mal 3: \the\real3
+
+% \divide\real3 by 3
+% durch 3: \the\real3
+
+% \advance\real3 by -.3333333333333333
+% minus .3333333333333333: \the\real3
+
+% % \divide\real3 by 0
+% % durch NULL: \the\real3
+
+%% named real
+
+% \realdef\bart=3
+% bart (real3): \the\bart
+
+% \divide\bart by 3
+% durch 3: \the\bart
+
+% \advance\bart by 2,456789
+% plus 2,456789: \the\bart
+
+% \multiply\bart by ,1
+% mal .1: \the\bart
+
+% \advance\bart by -.5123455666666666
+% minus .5123455666666666: \the\bart
+
+% \the\toks0
+
+% \realdef\haar=40
+% haar (real40) leer: \the\haar
+
+% \real40=1.41421357
+% real40 jetzt: \the\real40
+
+% haar jetzt (als 000.00000) \the\printformat{000.00000}\haar
+
+% haar jetzt (als 00,000000) \the\printformat{00,000000}\haar
+
+% haar nochmal: \the\haar
+
+% \the\toks0
+
+\end

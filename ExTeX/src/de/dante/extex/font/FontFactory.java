@@ -19,9 +19,9 @@
 
 package de.dante.extex.font;
 
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface FontFactory {
 

@@ -23,11 +23,11 @@ import java.io.File;
 
 import org.jdom.Document;
 
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.FontFile;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.PfbFontFile;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontFile;
+import de.dante.extex.interpreter.type.font.PfbFontFile;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
@@ -39,7 +39,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EFMType1AFMFont extends EFMFont implements Font {
 

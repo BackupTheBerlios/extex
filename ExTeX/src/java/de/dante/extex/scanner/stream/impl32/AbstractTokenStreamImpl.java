@@ -16,13 +16,14 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.impl32;
 
 import java.io.IOException;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.main.MainIOException;
+import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.Token;
@@ -45,10 +46,12 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
-        implements TokenStream, CatcodeVisitor {
+        implements
+            TokenStream,
+            CatcodeVisitor {
 
     /**
      * new line
@@ -93,6 +96,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * Creates a new object. The input buffer is initially empty.
      */
     protected AbstractTokenStreamImpl() {
+
         super();
     }
 
@@ -106,6 +110,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
      */
     public Locator getLocator() {
+
         return new Locator(getSource(), getLineno(), toString(), pointer);
     }
 
@@ -114,6 +119,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @return the name of the source
      */
     protected String getSource() {
+
         return "<buffer>";
     }
 
@@ -122,6 +128,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @return the linenumber
      */
     protected int getLineno() {
+
         return 1;
     }
 
@@ -129,7 +136,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @see de.dante.extex.scanner.stream.impl32.TokenStreamBaseImpl#getNext(de.dante.extex.scanner.TokenFactory,
      *      de.dante.extex.interpreter.Tokenizer)
      */
-    public Token getNext(final TokenFactory factory, final Tokenizer tokenizer) throws GeneralException {
+    public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
+            throws GeneralException {
 
         Token t = null;
         int c;
@@ -146,7 +154,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
 
             try {
                 UnicodeChar uc = new UnicodeChar(c);
-                t = (Token) tokenizer.getCatcode(uc).visit(this, factory, tokenizer, uc);
+                t = (Token) tokenizer.getCatcode(uc).visit(this, factory,
+                        tokenizer, uc);
             } catch (Exception e) {
                 throw new GeneralException(e);
             }
@@ -158,11 +167,13 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
      */
-    public Object visitActive(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitActive(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        Token t = ((TokenFactory) oFactory).newInstance(Catcode.ACTIVE, (UnicodeChar) uc);
+        Token t = ((TokenFactory) oFactory).newInstance(Catcode.ACTIVE,
+                (UnicodeChar) uc);
         return t;
     }
 
@@ -171,7 +182,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      *
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
      */
-    public Object visitComment(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitComment(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         endLine();
         return null;
@@ -180,7 +192,9 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
      */
-    public Object visitCr(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitCr(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
+
         TokenFactory factory = (TokenFactory) oFactory;
         Token t = null;
 
@@ -197,14 +211,16 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
      */
-    public Object visitEscape(final Object oFactory, final Object oTokenizer, final Object uchar) throws GeneralException {
+    public Object visitEscape(final Object oFactory, final Object oTokenizer,
+            final Object uchar) throws GeneralException {
 
         TokenFactory factory = (TokenFactory) oFactory;
         Tokenizer tokenizer = (Tokenizer) oTokenizer;
         int c = getChar(tokenizer);
         UnicodeChar uc;
 
-        if (c < 0 || tokenizer.getCatcode((uc = new UnicodeChar(c))) == Catcode.CR) {
+        if (c < 0
+                || tokenizer.getCatcode((uc = new UnicodeChar(c))) == Catcode.CR) {
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
             return factory.newInstance(Catcode.ESCAPE, "");
         } else if (tokenizer.getCatcode(uc) == Catcode.LETTER) {
@@ -212,7 +228,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
             sb.append((char) c);
             int position = pointer;
 
-            while ((c = getChar(tokenizer)) >= 0 && tokenizer.getCatcode(new UnicodeChar(c)) == Catcode.LETTER) {
+            while ((c = getChar(tokenizer)) >= 0
+                    && tokenizer.getCatcode(new UnicodeChar(c)) == Catcode.LETTER) {
                 sb.append((char) c);
                 position = pointer;
             }
@@ -224,7 +241,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
             return factory.newInstance(Catcode.ESCAPE, sb.toString());
         } else {
             state = MID_LINE;
-            return factory.newInstance(Catcode.ESCAPE, Character.toString((char) c));
+            return factory.newInstance(Catcode.ESCAPE, Character
+                    .toString((char) c));
         }
     }
 
@@ -232,7 +250,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitIgnore(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitIgnore(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         return null;
     }
@@ -241,7 +260,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitInvalid(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitInvalid(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
@@ -252,69 +272,82 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitLeftBrace(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitLeftBrace(final Object oFactory,
+            final Object oTokenizer, final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.LEFTBRACE, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.LEFTBRACE,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitLetter(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitLetter(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
-        return ((TokenFactory) oFactory).newInstance(Catcode.LETTER, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.LETTER,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitMacroParam(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitMacroParam(final Object oFactory,
+            final Object oTokenizer, final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
      */
-    public Object visitMathShift(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitMathShift(final Object oFactory,
+            final Object oTokenizer, final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MATHSHIFT, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.MATHSHIFT,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
      */
-    public Object visitOther(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitOther(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.OTHER, getSingleChar());
+        return ((TokenFactory) oFactory).newInstance(Catcode.OTHER,
+                getSingleChar());
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object,java.lang.Object)
      */
-    public Object visitRightBrace(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitRightBrace(final Object oFactory,
+            final Object oTokenizer, final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
      * @see "The TeXbook [Chapter 8, page 47]"
      */
-    public Object visitSpace(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitSpace(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         TokenFactory factory = (TokenFactory) oFactory;
 
@@ -329,31 +362,37 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSubMark(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitSubMark(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.SUBMARK, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.SUBMARK,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSupMark(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitSupMark(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.SUPMARK, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.SUPMARK,
+                (UnicodeChar) uc);
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitTabMark(final Object oFactory, final Object oTokenizer, final Object uc) throws GeneralException {
+    public Object visitTabMark(final Object oFactory, final Object oTokenizer,
+            final Object uc) throws GeneralException {
 
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.TABMARK, (UnicodeChar) uc);
+        return ((TokenFactory) oFactory).newInstance(Catcode.TABMARK,
+                (UnicodeChar) uc);
     }
 
     /**
@@ -365,6 +404,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      *             derived class
      */
     protected boolean refill() throws IOException {
+
         pointer = -1;
         state = NEW_LINE;
         return false;
@@ -453,7 +493,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                                 c = (char) scanHex(maxhexdigits, tokenizer);
                             } else {
                                 // 0100 = 64
-                                c = (char) ((hex < 0100) ? hex + 0100
+                                c = (char) ((hex < 0100)
+                                        ? hex + 0100
                                         : hex - 0100);
                                 pointer++;
                             }
@@ -541,7 +582,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * scan a hex number (max. n digits)
      * @return int-value of hexnumber
      */
-    private int scanHex(final int n, final Tokenizer tokenizer) throws MainIOException, GeneralException {
+    private int scanHex(final int n, final Tokenizer tokenizer)
+            throws MainIOException, GeneralException {
 
         int hexvalue = 0;
         int i = 0;
@@ -596,6 +638,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * @return unicodename as <code>String</code>
      */
     private String scanUnicodeName() throws GeneralException {
+
         StringBuffer buf = new StringBuffer(30);
         while (true) {
             if (pointer < bufferLength()) {
@@ -610,7 +653,8 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
                 } else {
                     // one char found?
                     if (buf.length() == 0) {
-                        throw new GeneralHelpingException("TTP.NoLetterFoundAfter");
+                        throw new GeneralHelpingException(
+                                "TTP.NoLetterFoundAfter");
                     }
                     // ';' not use in the name
                     pointer++;
@@ -628,6 +672,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * End the current line
      */
     private void endLine() {
+
         pointer = bufferLength();
     }
 
@@ -654,7 +699,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static class State {
 
@@ -662,6 +707,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
          * Creates a new object.
          */
         public State() {
+
             super();
         }
     }

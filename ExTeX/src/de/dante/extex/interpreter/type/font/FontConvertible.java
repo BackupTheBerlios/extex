@@ -20,7 +20,6 @@ package de.dante.extex.interpreter.type.font;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Font;
 import de.dante.util.GeneralException;
 
 /**
@@ -28,7 +27,7 @@ import de.dante.util.GeneralException;
  * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface FontConvertible {
 

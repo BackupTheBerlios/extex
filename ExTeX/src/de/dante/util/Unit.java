@@ -18,14 +18,14 @@
 
 package de.dante.util;
 
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.GlueComponent;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.GlueComponent;
 
 /**
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class Unit {
 

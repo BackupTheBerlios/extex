@@ -29,14 +29,14 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.FontFile;
-import de.dante.extex.interpreter.type.FontFileList;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.Glyph;
-import de.dante.extex.interpreter.type.Kerning;
-import de.dante.extex.interpreter.type.Ligature;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontFile;
+import de.dante.extex.interpreter.type.font.FontFileList;
+import de.dante.extex.interpreter.type.font.Glyph;
+import de.dante.extex.interpreter.type.font.Kerning;
+import de.dante.extex.interpreter.type.font.Ligature;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
@@ -46,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public abstract class EFMFont implements Font {
 

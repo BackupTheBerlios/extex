@@ -16,17 +16,18 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner.stream.impl32;
 
+import java.util.Stack;
+
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
-
-import java.util.Stack;
 
 /**
  * This is the base implementation of a token stream. It has an internal stack
@@ -34,7 +35,7 @@ import java.util.Stack;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -47,6 +48,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      * Creates a new object.
      */
     public TokenStreamBaseImpl() {
+
         super();
     }
 
@@ -54,13 +56,15 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
      */
     public Locator getLocator() {
-        return new Locator(null, 0,null,0);
+
+        return new Locator(null, 0, null, 0);
     }
 
     /**
      * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
      */
     public boolean closeFileStream() {
+
         stack.setSize(0);
         return false;
     }
@@ -69,15 +73,17 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @see de.dante.extex.token.TokenStream#get()
      */
     public Token get(TokenFactory factory, Tokenizer tokenizer)
-        throws GeneralException {
+            throws GeneralException {
+
         return (stack.size() == 0 ? //
-            getNext(factory, tokenizer) : (Token) stack.pop());
+                getNext(factory, tokenizer) : (Token) stack.pop());
     }
 
     /**
      * @see de.dante.extex.token.TokenStream#put(Token)
      */
     public void put(Token token) {
+
         if (token != null) {
             stack.push(token);
         }
@@ -87,11 +93,12 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @see de.dante.extex.token.TokenStream#put(Tokens)
      */
     public void put(Tokens toks) {
+
         if (toks != null) {
             stack.push(toks);
         }
     }
-    
+
     /**
      * Get the next token when the stack is empty.
      * This method is meant to be overloaded by derived classes.
@@ -99,7 +106,8 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @return the next Token or <code>null</code>
      */
     protected Token getNext(TokenFactory factory, Tokenizer tokenizer)
-        throws GeneralException {
+            throws GeneralException {
+
         return null;
     }
 
@@ -107,6 +115,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
      */
     public boolean isFileStream() {
+
         return false;
     }
 }

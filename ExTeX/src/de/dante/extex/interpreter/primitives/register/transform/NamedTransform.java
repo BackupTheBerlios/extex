@@ -25,8 +25,8 @@ import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
-import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.interpreter.type.Transform;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.interpreter.type.transform.Transform;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedTransform extends AbstractAssignment implements Theable {
 

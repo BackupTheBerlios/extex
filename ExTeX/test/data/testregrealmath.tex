@@ -1,0 +1,27 @@
+%
+% @version $Revision: 1.1 $ $Date: 2004/05/03 15:37:57 $
+%
+% Test für Register real mit math expr
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+%
+%
+7+5*2 = \mathexpr{7+5*2}
+
+% 7+5/0 = \mathexpr{7+5/0}
+
+%7+5*2+x+2+3 = \mathexpr{7+5*2+x+2+3}
+
+sin(5) = \mathexpr{sin(5)}
+
+sin(5) = \the\mathexpr{sin(5)}
+
+\real7= \mathexpr{cos(50)}
+cos(50) = \the\real7
+
+\real8=\mathexpr{1*random()}
+random = \the\real8
+
+\count2000=\mathexpr{4*5}
+4*5 = \the\count2000

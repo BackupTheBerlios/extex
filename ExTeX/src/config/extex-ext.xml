@@ -25,7 +25,7 @@
 	extkill="true"   -> element is delete in the originnal-document
 	
 	@author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-    @version $Revision: 1.5 $
+    @version $Revision: 1.6 $
 -->
 <ExTeX>
     <Interpreter extappend="true">
@@ -38,6 +38,8 @@
         <define name="transformdef" class="de.dante.extex.interpreter.primitives.register.transform.TransformDef"/>
         <define name="bool" class="de.dante.extex.interpreter.primitives.register.bool.NumberedBool"/>
         <define name="booldef" class="de.dante.extex.interpreter.primitives.register.bool.BoolDef"/>
+        <define name="hashtoks" class="de.dante.extex.interpreter.primitives.register.hash.toks.NumberedHashToks"/>
+        <define name="hashtoksdef" class="de.dante.extex.interpreter.primitives.register.hash.toks.HashToksDef"/>
         <define name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
         <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.toks.NamedToks">ISO8859-1</define>
         <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>

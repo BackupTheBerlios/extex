@@ -24,10 +24,11 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
-import de.dante.extex.interpreter.type.Bool;
-import de.dante.extex.interpreter.type.Pair;
-import de.dante.extex.interpreter.type.Real;
-import de.dante.extex.interpreter.type.Transform;
+import de.dante.extex.interpreter.type.bool.Bool;
+import de.dante.extex.interpreter.type.hash.toks.HashToks;
+import de.dante.extex.interpreter.type.pair.Pair;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.transform.Transform;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -38,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements
@@ -179,5 +180,36 @@ public class ContextExtensionImpl extends ContextImpl
     public void setTransform(final String name, final Transform value) {
 
         ((GroupExtension) getGroup()).setTransform(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#getHashToks(
+     *      java.lang.String)
+     */
+    public HashToks getHashToks(final String name) {
+
+        return ((GroupExtension) getGroup()).getHashToks(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setHashToks(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.HashToks,
+     *      boolean)
+     */
+    public void setHashToks(final String name, final HashToks value,
+            final boolean global) {
+
+        ((GroupExtension) getGroup()).setHashToks(name, value, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setHashToks(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.HashToks)
+     */
+    public void setHashToks(final String name, final HashToks value) {
+
+        ((GroupExtension) getGroup()).setHashToks(name, value);
     }
 }

@@ -23,16 +23,17 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.impl.Group;
-import de.dante.extex.interpreter.type.Bool;
-import de.dante.extex.interpreter.type.Pair;
-import de.dante.extex.interpreter.type.Real;
-import de.dante.extex.interpreter.type.Transform;
+import de.dante.extex.interpreter.type.bool.Bool;
+import de.dante.extex.interpreter.type.hash.toks.HashToks;
+import de.dante.extex.interpreter.type.pair.Pair;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.transform.Transform;
 
 /**
  * This is the implementation of a group object with ExTeX-functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface GroupExtension extends Group, Tokenizer, Serializable {
 
@@ -161,5 +162,36 @@ public interface GroupExtension extends Group, Tokenizer, Serializable {
      * @return the value of the register or its default
      */
     Transform getTransform(String name);
+
+    /**
+     * Setter for the hash-toks register in the current group.
+     *
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    void setHashToks(String name, HashToks value);
+
+    /**
+     * Setter for a hash-toks register in the requested groups.
+     *
+     * @param name the name of the register
+     * @param value the value of the register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setHashToks(String name, HashToks value, boolean global);
+
+    /**
+     * Getter for the named hash-toks register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered hash-toks registers is emulated. The
+     * other case can be used to store special hash-toks values.
+     *
+     * As a default value <code>null</code> is returned.
+     *
+     * @param name the name of the register
+     * @return the value of the register or its default
+     */
+    HashToks getHashToks(String name);
 
 }

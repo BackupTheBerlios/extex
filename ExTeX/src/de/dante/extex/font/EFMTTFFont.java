@@ -23,11 +23,11 @@ import java.io.File;
 
 import org.jdom.Document;
 
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.FontFile;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.TtfFontFile;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontFile;
+import de.dante.extex.interpreter.type.font.TtfFontFile;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
@@ -38,7 +38,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EFMTTFFont extends EFMFont implements Font {
 

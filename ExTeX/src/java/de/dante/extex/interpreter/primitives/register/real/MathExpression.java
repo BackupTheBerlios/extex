@@ -23,16 +23,17 @@ import gnu.jel.CompilationException;
 import gnu.jel.CompiledExpression;
 import gnu.jel.Evaluator;
 import gnu.jel.Library;
+
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.CountConvertible;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Real;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.real.RealConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -47,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathExpression extends AbstractCode
         implements

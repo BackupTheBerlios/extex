@@ -26,10 +26,11 @@ import java.util.Map;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.impl.Group;
 import de.dante.extex.interpreter.context.impl.GroupImpl;
-import de.dante.extex.interpreter.type.Bool;
-import de.dante.extex.interpreter.type.Pair;
-import de.dante.extex.interpreter.type.Real;
-import de.dante.extex.interpreter.type.Transform;
+import de.dante.extex.interpreter.type.bool.Bool;
+import de.dante.extex.interpreter.type.hash.toks.HashToks;
+import de.dante.extex.interpreter.type.pair.Pair;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.transform.Transform;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.util.GeneralException;
 
@@ -37,7 +38,7 @@ import de.dante.util.GeneralException;
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements
@@ -65,6 +66,11 @@ public class GroupExtensionImpl extends GroupImpl
      * The map for the transform registers
      */
     private Map transformMap = new HashMap();
+
+    /**
+     * The map for the hash-toks registers
+     */
+    private Map hashtoksMap = new HashMap();
 
     /**
      * The next group in the linked list
@@ -265,5 +271,52 @@ public class GroupExtensionImpl extends GroupImpl
     public void setTransform(final String name, final Transform value) {
 
         transformMap.put(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#getHashToks(
+     *      java.lang.String)
+     */
+    public HashToks getHashToks(final String name) {
+
+        HashToks hashtoks = (HashToks) (hashtoksMap.get(name));
+
+        if (hashtoks == null) {
+            if (nextext != null) {
+                hashtoks = nextext.getHashToks(name);
+            } else {
+                hashtoks = new HashToks();
+                setHashToks(name, hashtoks);
+            }
+        }
+
+        return hashtoks;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setHashToks(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.HashToks,
+     *      boolean)
+     */
+    public void setHashToks(final String name, final HashToks value,
+            final boolean global) {
+
+        setHashToks(name, value);
+
+        if (global && nextext != null) {
+            nextext.setHashToks(name, value, global);
+        }
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setHashToks(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.HashToks)
+     */
+    public void setHashToks(final String name, final HashToks value) {
+
+        hashtoksMap.put(name, value);
     }
 }

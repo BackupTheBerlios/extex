@@ -25,12 +25,12 @@ import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Real;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.real.RealConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 

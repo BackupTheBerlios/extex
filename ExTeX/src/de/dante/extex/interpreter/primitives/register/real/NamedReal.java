@@ -20,18 +20,18 @@
 package de.dante.extex.interpreter.primitives.register.real;
 
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Advanceable;
-import de.dante.extex.interpreter.CountConvertible;
-import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Multiplyable;
-import de.dante.extex.interpreter.RealConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
-import de.dante.extex.interpreter.type.Real;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.arithmetic.Advanceable;
+import de.dante.extex.interpreter.type.arithmetic.Divideable;
+import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.real.RealConvertible;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedReal extends AbstractAssignment
         implements

@@ -1,0 +1,22 @@
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+
+% extex ignoriert Groﬂ- und Kleinschreibung bei hexwerten, tex will nur Grossbuchstaben
+% okay?
+
+\count50='123
+1: 83 : \the\count50
+
+\count60="123
+2: 291 : \the\count60
+
+\count70="FF00
+3: 65280 : \the\count70
+
+\count80="FEDCBA0
+4: 267242400 : \the\count80
+
+\count90=12345
+5: 12345 : \the\count90
+
+\end
