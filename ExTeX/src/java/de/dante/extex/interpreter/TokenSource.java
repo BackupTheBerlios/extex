@@ -40,7 +40,7 @@ import de.dante.util.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface TokenSource {
     /**
@@ -55,7 +55,7 @@ public interface TokenSource {
      *
      * @return the next non-space token or <code>null</code> at EOF
      */
-    public abstract Token getNextNonSpace() throws GeneralException;
+    public abstract Token getNonSpace() throws GeneralException;
 
     /**
      * Get the next token form the input streams. If the current input stream
@@ -66,7 +66,7 @@ public interface TokenSource {
      * @return the next token or <code>null</code>
      * @see "TeX -- The Program [332]"
      */
-    public abstract Token getNextToken() throws GeneralException;
+    public abstract Token getToken() throws GeneralException;
 
     /**
      * Get the next tokens form the input streams between <code>{</code> and
@@ -76,7 +76,7 @@ public interface TokenSource {
      *
      * @return the next tokens or <code>null</code>
      */
-    public abstract Tokens getNextTokens() throws GeneralException;
+    public abstract Tokens getTokens() throws GeneralException;
 
     /**
      * ...
@@ -156,15 +156,6 @@ public interface TokenSource {
     public abstract long scanFloat() throws GeneralException;
 
     /**
-     * ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException ...
-     */
-    public abstract Tokens scanGroup() throws GeneralException;
-
-    /**
      * Scan the input stream for tokens making up an integer, this is a number
      * optionally preceeded by a sign (+ or -). The number can be preceeded by
      * optional whitespace. Whitespace is also ignored between the sign and the
@@ -200,7 +191,7 @@ public interface TokenSource {
      *
      * @return the next non-space token or <code>null</code> at EOF
      */
-    public abstract Token scanNextNonSpace() throws GeneralException;
+    public abstract Token scanNonSpace() throws GeneralException;
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
@@ -210,7 +201,7 @@ public interface TokenSource {
      *
      * @return the next non-space token or <code>null</code> at EOF
      */
-    public abstract Token scanNextNonSpace(Token t)
+    public abstract Token scanNonSpace(Token t)
                                     throws GeneralException;
 
     /**
@@ -221,7 +212,7 @@ public interface TokenSource {
      *
      * @return the next token or <code>null</code>
      */
-    public abstract Token scanNextToken() throws GeneralException;
+    public abstract Token scanToken() throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between <code>{</code>
@@ -231,7 +222,7 @@ public interface TokenSource {
      *
      * @return the next tokens or <code>null</code>
      */
-    public abstract Tokens scanNextTokens() throws GeneralException;
+    public abstract Tokens scanTokens() throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between <code>{</code>
@@ -282,6 +273,7 @@ public interface TokenSource {
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      */
+    //gene: this method is subject to be eliminated in favor of getKeyword().
     public void scanOptionalEquals() throws GeneralException;
 
     /**
