@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.type;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.Flags;
@@ -38,7 +39,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 
@@ -125,6 +126,23 @@ public class AbstractCode implements Code, Localizable, Serializable {
     }
 
     /**
+     * Return the printable version of a token for error messages.
+     *
+     * @param context the processing context
+     * @param token the token to get a printable representation for
+     *
+     * @return the control sequence including the escape character
+     */
+    protected String printable(final Context context, final Token token) {
+
+        if (token instanceof ControlSequenceToken) {
+            return context.esc("")
+                    + ((ControlSequenceToken) token).getChar().getCodePoint();
+        }
+        return token.getChar().toString();
+    }
+
+    /**
      * Attach the current escape character in front of the name and return the
      * result.
      * <p>
@@ -142,20 +160,17 @@ public class AbstractCode implements Code, Localizable, Serializable {
     }
 
     /**
-     * Return the printable version of a token for error messages.
+     * Restore the internal state when the instance is loaded from file.
      *
-     * @param context the processing context
-     * @param token the token to get a printable representation for
+     * @return the object which should be used instead of the one read
      *
-     * @return the control sequence including the escape character
+     * @throws ObjectStreamException in case of an error
      */
-    protected String printable(final Context context, final Token token) {
+    public Object readResolve() throws ObjectStreamException {
 
-        if (token instanceof ControlSequenceToken) {
-            return context.esc("")
-                    + ((ControlSequenceToken) token).getChar().getCodePoint();
-        }
-        return token.getChar().toString();
+        //System.err.println(this.getClass().getName());
+        //TODO gene: unimplemented
+        return this;
     }
 
     /**

@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.context.impl;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -115,7 +116,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.66 $
+ * @version $Revision: 1.67 $
  */
 public class ContextImpl
         implements
@@ -230,7 +231,7 @@ public class ContextImpl
      * maginification value. This is initialized to MAGNIFICATION_MAX and
      * may be overwritten from within the configuration.
      */
-    private transient long magnificationMax = MAGNIFICATION_MAX;
+    private long magnificationMax = MAGNIFICATION_MAX;
 
     /**
      * The field <tt>observersInteraction</tt> contains the observer list which
@@ -794,6 +795,20 @@ public class ContextImpl
         conditionalStack.add(isIfThenElse
                 ? new Conditional(locator)
                 : new ConditionalSwitch(locator));
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @return ...
+     * @throws ObjectStreamException ...
+     */
+    public Object readResolve() throws ObjectStreamException {
+
+        countChangeObservers = new HashMap();
+        hyphenationManager = new HyphenationManagerImpl();
+        observersInteraction = new ObserverList();
+        return this;
     }
 
     /**
