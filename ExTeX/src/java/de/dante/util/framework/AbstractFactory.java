@@ -65,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
@@ -134,13 +134,13 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      * The field <tt>configuration</tt> contains the configuration of the
      * factory which is also passed to the new instances.
      */
-    private Configuration configuration = null;
+    private transient Configuration configuration = null;
 
     /**
      * The field <tt>logger</tt> contains the logger to pass to the new
      * typesetters.
      */
-    private Logger logger = null;
+    private transient Logger logger = null;
 
     /**
      * Creates a new factory object.

@@ -26,7 +26,6 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
@@ -40,10 +39,11 @@ import de.dante.util.UnicodeCharList;
  * \patterns{.ach4 .ad4der .af1t}
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class Patterns extends AbstractCode {
+public class Patterns extends AbstractHyphenationCode {
 
     /**
      * Creates a new object.
@@ -72,20 +72,18 @@ public class Patterns extends AbstractCode {
             throws InterpreterException {
 
         String pattern = source.scanTokensAsString(context).trim();
-        Count language = context.getCount("language");
-        HyphenationTable ht = context.getHyphenationTable((int) language
-                .getValue());
+        HyphenationTable table = getHyphenationTable(context);
 
         StringTokenizer st = new StringTokenizer(pattern);
         while (st.hasMoreTokens()) {
             String pat = st.nextToken().trim();
-            ht.addPattern(createPatternName(pat, context), createPatternEntry(
-                    pat, context));
+            table.addPattern(createPatternName(pat, context),
+                    createPatternEntry(pat, context));
         }
     }
 
     /**
-     * Cretate the entry for the <code>HyphenationTable</code>.
+     * Create the entry for the <code>HyphenationTable</code>.
      * <p>
      * Each character must have before and after a digit. If no digit
      * is present, the value are zero.
@@ -162,20 +160,4 @@ public class Patterns extends AbstractCode {
         return rt;
     }
 
-    /**
-     * Transform the <code>String</code> in lowercase (use lccode)
-     * @param s         the <code>String</code>
-     * @param context   the context
-     * @return the lowercase string
-     */
-    private String makeLowercase(final String s, final Context context) {
-
-        UnicodeCharList ucl = new UnicodeCharList(s.length());
-        for (int i = 0; i < s.length(); i++) {
-            UnicodeChar uc = new UnicodeChar(s, i);
-            UnicodeChar lc = context.getLccode(uc);
-            ucl.add(lc.getCodePoint() > 0 ? lc : uc);
-        }
-        return ucl.toString();
-    }
 }

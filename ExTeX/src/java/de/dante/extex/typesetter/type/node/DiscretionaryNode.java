@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
@@ -43,7 +43,7 @@ public class DiscretionaryNode extends AbstractNode implements Node {
 
     /**
      * The field <tt>postBreak</tt> contains the Tokens to be inserted at the
-     * beginning of th next ine in case of a line breaking at this position.
+     * beginning of the next line in case of a line breaking at this position.
      */
     private Tokens postBreak;
     /**
@@ -123,7 +123,23 @@ public class DiscretionaryNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("discretionary"); //TODO gene: toString() incomplete
+        String pre = prefix + ".";
+        sb.append("\\discretionary");
+        if (preBreak != null) {
+            sb.append("\n");
+            sb.append(pre);
+            preBreak.toString(sb);
+        }
+        if (postBreak != null) {
+            sb.append("\n");
+            sb.append(pre);
+            postBreak.toString(sb);
+        }
+        if (noBreak != null) {
+            sb.append("\n");
+            sb.append(pre);
+            noBreak.toString(sb);
+        }
     }
 
     /**

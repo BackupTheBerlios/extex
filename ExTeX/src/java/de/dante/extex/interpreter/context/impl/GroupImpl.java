@@ -59,7 +59,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -637,6 +637,17 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         return toks != null ? toks : next != null
                 ? next.getToks(name)
                 : new Tokens();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.Group#getToksOrNull(java.lang.String)
+     */
+    public Tokens getToksOrNull(String name) {
+
+        Tokens toks = (Tokens) (toksMap.get(name));
+        return toks != null ? toks : next != null
+                ? next.getToks(name)
+                : null;
     }
 
     /**

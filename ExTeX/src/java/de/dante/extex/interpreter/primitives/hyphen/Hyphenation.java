@@ -19,18 +19,27 @@
 
 package de.dante.extex.interpreter.primitives.hyphen;
 
-import com.ibm.icu.util.StringTokenizer;
-
 import de.dante.extex.hyphenation.HyphenationTable;
+import de.dante.extex.hyphenation.exception.HyphenationException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
-import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
+import de.dante.extex.interpreter.primitives.register.CharCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.LeftBraceToken;
+import de.dante.extex.scanner.type.LetterToken;
+import de.dante.extex.scanner.type.OtherToken;
+import de.dante.extex.scanner.type.RightBraceToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.UnicodeChar;
-import de.dante.util.UnicodeCharList;
 
 /**
  * This class provides an implementation for the primitive
@@ -41,10 +50,11 @@ import de.dante.util.UnicodeCharList;
  * \hyphenation{as-so-ciate as-so-ciates }
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Hyphenation extends AbstractCode {
+public class Hyphenation extends AbstractHyphenationCode {
 
     /**
      * Creates a new object.
@@ -57,10 +67,41 @@ public class Hyphenation extends AbstractCode {
     }
 
     /**
-     * Scan for hyphenation-values and store this values
-     * in the <code>HyphernationTable</code>.
-     * The <code>HyphernationTable</code> are based on the
-     * value from <code>\language</code>.
+     * Cretate the name for the <code>HyphenationTable</code>.
+     *
+     * @param pattern the pattern
+     * @param context the interpreter context
+     *
+     * @return  the name
+     *
+     * @throws CatcodeException
+     */
+    private Tokens createHyphenation(final Tokens pattern, final Context context)
+            throws CatcodeException {
+
+        Tokens ret = new Tokens();
+        TokenFactory tokenFactory = context.getTokenFactory();
+        Token t;
+
+        for (int i = 0; i < pattern.length(); i++) {
+            t = pattern.get(i);
+            if (!t.equals(Catcode.OTHER, '-')) {
+
+                UnicodeChar uc = t.getChar();
+                UnicodeChar lc = context.getLccode(uc);
+                ret.add(tokenFactory.createToken(Catcode.OTHER, //
+                        lc == null ? uc : lc, ""));
+            }
+        }
+
+        return ret;
+    }
+
+    /**
+     * Scan for hyphenation values and store these values in the
+     * <code>HyphernationTable</code>.
+     * The index for the <code>HyphernationTable</code> is based on the
+     * value from the count register <code>\language</code>.
      *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -72,50 +113,67 @@ public class Hyphenation extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        String hypenation = source.scanTokensAsString(context);
-        Count language = context.getCount("language");
-        HyphenationTable ht = context.getHyphenationTable((int) language
-                .getValue());
+        HyphenationTable table = getHyphenationTable(context);
 
-        StringTokenizer st = new StringTokenizer(hypenation);
-        while (st.hasMoreTokens()) {
-            String pat = st.nextToken().trim();
-            ht.addHyphenation(createHyphenation(pat, context), pat);
+        Token t = source.getNonSpace(context);
+        if (!(t instanceof LeftBraceToken)) {
+            throw new MissingLeftBraceException(
+                    printableControlSequence(context));
         }
+
+        try {
+            for (t = source.getNonSpace(context); !(t instanceof RightBraceToken); t = source
+                    .getNonSpace(context)) {
+                if (!isWordConstituent(t, context)) {
+                    throw new InterpreterException(getLocalizer().format(
+                            "TTP.ImproperHyphen",
+                            printableControlSequence(context)));
+                }
+                Tokens word = new Tokens();
+                do {
+                    word.add(t);
+                    t = source.getToken(context);
+                } while (isWordConstituent(t, context));
+
+                table.addHyphenation(createHyphenation(word, context), context);
+            }
+        } catch (CatcodeException e) {
+            throw new InterpreterException(e);
+        } catch (HyphenationException e) {
+            throw new InterpreterException(e);
+        }
+
     }
 
     /**
-     * Cretate the name for the <code>HyphenationTable</code>.
+     * This method checks that the given token is a word constituent.
+     * This means that the token is either
+     * <ul>
+     * <li>a letter token, or</li>
+     * <li>a other token, or</li>
+     * <li>a code token defined with <tt>\chardef</tt>.</li>
+     * </ul>
      *
-     * @param pattern   the pattern
-     * @param context   the context
-     * @return  the name
+     * @param t the token to analyze
+     * @param context the interpreter context
+     *
+     * @return <code>true</code> iff the token is
+     *
+     * @throws InterpreterException in case of an error
      */
-    private String createHyphenation(final String pattern, final Context context) {
+    private boolean isWordConstituent(final Token t, final Context context)
+            throws InterpreterException {
 
-        String rt = "";
-        String hyphenchar = new UnicodeChar((int) context.getCount(
-                "defaulthyphenchar").getValue()).toString();
-        if (pattern != null) {
-            rt = makeLowercase(pattern.replaceAll(hyphenchar, ""), context);
+        if (t == null) {
+            return false;
+        } else if (t instanceof LetterToken || t instanceof OtherToken) {
+            return true;
+        } else if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            return (code instanceof CharCode);
         }
-        return rt;
+
+        return false;
     }
 
-    /**
-     * Transform the <code>String</code> in lowercase (use lccode)
-     * @param s         the <code>String</code>
-     * @param context   the context
-     * @return the lowercase string
-     */
-    private String makeLowercase(final String s, final Context context) {
-
-        UnicodeCharList ucl = new UnicodeCharList(s.length());
-        for (int i = 0; i < s.length(); i++) {
-            UnicodeChar uc = new UnicodeChar(s, i);
-            UnicodeChar lc = context.getLccode(uc);
-            ucl.add(lc.getCodePoint() > 0 ? lc : uc);
-        }
-        return ucl.toString();
-    }
 }

@@ -24,12 +24,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\lefthyphenmin</code>.
@@ -43,10 +40,11 @@ import de.dante.util.GeneralException;
  * \lefthyphenmin=2
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class LeftHyphenmin extends AbstractCode implements Theable {
+public class LeftHyphenmin extends AbstractHyphenationCode implements Theable {
 
     /**
      * Creates a new object.
@@ -72,14 +70,11 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Count language = context.getCount("language");
-        HyphenationTable ht = context.getHyphenationTable((int) language
-                .getValue());
-
+        HyphenationTable table = getHyphenationTable(context);
         source.getOptionalEquals(context);
-        int lefthyphmin = (int) source.scanInteger(context);
+        long lefthyphenmin = source.scanInteger(context);
 
-        ht.setLeftHyphenmin(lefthyphmin);
+        table.setLeftHyphenmin(lefthyphenmin);
     }
 
     /**
@@ -93,13 +88,7 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
             final Typesetter typesetter)
             throws InterpreterException {
 
-        Count language = context.getCount("language");
-        try {
-            HyphenationTable ht = context.getHyphenationTable((int) language
-                    .getValue());
-            return new Tokens(context, String.valueOf(ht.getLeftHyphenmin()));
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        HyphenationTable table = getHyphenationTable(context);
+        return new Tokens(context, String.valueOf(table.getLeftHyphenmin()));
     }
 }

@@ -52,7 +52,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.48 $
+ * @version $Revision: 1.49 $
  */
 public interface Context
         extends
@@ -184,7 +184,7 @@ public interface Context
      *
      * @throws InterpreterException in case of an error
      */
-    HyphenationTable getHyphenationTable(int language)
+    HyphenationTable getHyphenationTable(String language)
             throws InterpreterException;
 
     /**
@@ -288,9 +288,21 @@ public interface Context
      *
      * @param name the name or number of the token register
      *
-     * @return the token register or <code>null</code> if it is not defined
+     * @return the token register or a new one if it is not defined yet
      */
     Tokens getToks(String name);
+
+    /**
+     * Getter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
+     * register. Tokens registers are named, either with a number or an
+     * arbitrary string. The numbered registers where limited to 256 in TeX.
+     * This restriction does no longer hold for ExTeX.
+     *
+     * @param name the name or number of the token register
+     *
+     * @return the token register or <code>null</code> if it is not defined
+     */
+    Tokens getToksOrNull(String name);
 
     /**
      * Getter for the typesetting context.

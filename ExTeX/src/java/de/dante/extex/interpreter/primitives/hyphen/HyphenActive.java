@@ -24,12 +24,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hyphenactive</code>.
@@ -44,10 +41,11 @@ import de.dante.util.GeneralException;
  * \hyphenactive=1  % no
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class HyphenActive extends AbstractCode implements Theable {
+public class HyphenActive extends AbstractHyphenationCode implements Theable {
 
     /**
      * Creates a new object.
@@ -72,16 +70,10 @@ public class HyphenActive extends AbstractCode implements Theable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        Count language = context.getCount("language");
-        HyphenationTable ht = context.getHyphenationTable((int) language
-                .getValue());
-
+        HyphenationTable table = getHyphenationTable(context);
         source.getOptionalEquals(context);
-        boolean active = true;
-        if (source.scanInteger(context) != 0) {
-            active = false;
-        }
-        ht.setHyphenActive(active);
+        boolean active = (source.scanInteger(context) == 0);
+        table.setHyphenActive(active);
     }
 
     /**
@@ -94,17 +86,7 @@ public class HyphenActive extends AbstractCode implements Theable {
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
-        try {
-            Count language = context.getCount("language");
-            HyphenationTable ht = context.getHyphenationTable((int) language
-                    .getValue());
-            String value = "0";
-            if (!ht.isHyphenActive()) {
-                value = "1";
-            }
-            return new Tokens(context, value);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        HyphenationTable table = getHyphenationTable(context);
+        return new Tokens(context, (table.isHyphenActive() ? "0" : "1"));
     }
 }

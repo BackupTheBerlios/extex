@@ -98,6 +98,10 @@
 
     </Context>
 
+    <!-- The configuration for the hyphenation manager.
+      -->
+    <Hyphenation src="hyphenation/Hyphenation.xml" />
+
     <!-- The implementation of the error handler to use.
       -->
 	<ErrorHandler default="ExTeX">

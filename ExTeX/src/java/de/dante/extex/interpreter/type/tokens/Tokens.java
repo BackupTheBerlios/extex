@@ -39,7 +39,7 @@ import de.dante.extex.scanner.type.TokenFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -62,14 +62,20 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object
+     * <p>
+     * Each character is converted into a <code>OtherToken</code>
+     * and added to the internal list.
      *
-     * @param t the initial token
+     * @param context the interpreter context
+     * @param num the number to add
+     *
+     * @throws InterpreterException in case of an error
      */
-    public Tokens(final Token t) {
+    public Tokens(final Context context, final long num)
+            throws InterpreterException {
 
-        super();
-        tokens.add(t);
+        this(context, Long.toString(num));
     }
 
     /**
@@ -96,20 +102,14 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
-     * Creates a new object
-     * <p>
-     * Each character is converted into a <code>OtherToken</code>
-     * and added to the internal list.
+     * Creates a new object.
      *
-     * @param context the interpreter context
-     * @param num the number to add
-     *
-     * @throws InterpreterException in case of an error
+     * @param t the initial token
      */
-    public Tokens(final Context context, final long num)
-            throws InterpreterException {
+    public Tokens(final Token t) {
 
-        this(context, Long.toString(num));
+        super();
+        tokens.add(t);
     }
 
     /**
@@ -120,19 +120,6 @@ public class Tokens implements Serializable, FixedTokens {
     public void add(final Token t) {
 
         tokens.add(t);
-    }
-
-    /**
-     * Add another token list to the end of the Tokens.
-     *
-     * @param toks the tokens to add
-     */
-    public void add(final Tokens toks) {
-
-        int len = toks.length();
-        for (int i = 0; i < len; i++) {
-            tokens.add(toks.get(i));
-        }
     }
 
     /**
@@ -163,6 +150,40 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
+     * Add another token list to the end of the Tokens.
+     *
+     * @param toks the tokens to add
+     */
+    public void add(final Tokens toks) {
+
+        int len = toks.length();
+        for (int i = 0; i < len; i++) {
+            tokens.add(toks.get(i));
+        }
+    }
+
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(final Object object) {
+
+        if (!(object instanceof Tokens)) {
+            return false;
+        }
+        Tokens toks = (Tokens) object;
+        if (toks.length() != length()) {
+            return false;
+        }
+        for (int i = 0; i < length(); i++) {
+            if (!get(i).equals(toks.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Get a specified token from the toks register.
      *
      * @param i the index for the token to get
@@ -173,6 +194,18 @@ public class Tokens implements Serializable, FixedTokens {
     public Token get(final int i) {
 
         return (i >= 0 && i < tokens.size() ? (Token) (tokens.get(i)) : null);
+    }
+
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+
+        int hash = length();
+        for (int i = 0; i < length(); i++) {
+            hash += get(i).getChar().getCodePoint();
+        }
+        return hash;
     }
 
     /**
@@ -198,6 +231,38 @@ public class Tokens implements Serializable, FixedTokens {
             return null;
         }
         return (Token) tokens.remove(tokens.size() - 1);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.tokens.FixedTokens#show(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     */
+    public void show(final Context context, final Tokens toks)
+            throws CatcodeException {
+
+        TokenFactory factory = context.getTokenFactory();
+        Token t;
+
+        for (int i = 0; i < tokens.size(); i++) {
+            t = (Token) (tokens.get(i));
+            if (t instanceof ControlSequenceToken) {
+                long esc = context.getCount("escapechar").getValue();
+                if (esc >= 0) {
+                    toks.add(factory.createToken(Catcode.OTHER, (char) (esc),
+                            Namespace.DEFAULT_NAMESPACE));
+                }
+                toks.add(factory, t.toString());
+            } else if (t instanceof MacroParamToken) {
+                toks.add(factory.createToken(Catcode.OTHER, '#',
+                        Namespace.DEFAULT_NAMESPACE));
+                toks.add(factory.createToken(Catcode.OTHER, t.getChar(),
+                        Namespace.DEFAULT_NAMESPACE));
+            } else {
+                toks.add(factory.createToken(Catcode.OTHER, t.getChar(),
+                        Namespace.DEFAULT_NAMESPACE));
+            }
+        }
     }
 
     /**
@@ -237,38 +302,6 @@ public class Tokens implements Serializable, FixedTokens {
         }
 
         return sb.toString();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.type.tokens.FixedTokens#show(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.type.tokens.Tokens)
-     */
-    public void show(final Context context, final Tokens toks)
-            throws CatcodeException {
-
-        TokenFactory factory = context.getTokenFactory();
-        Token t;
-
-        for (int i = 0; i < tokens.size(); i++) {
-            t = (Token) (tokens.get(i));
-            if (t instanceof ControlSequenceToken) {
-                long esc = context.getCount("escapechar").getValue();
-                if (esc >= 0) {
-                    toks.add(factory.createToken(Catcode.OTHER, (char) (esc),
-                            Namespace.DEFAULT_NAMESPACE));
-                }
-                toks.add(factory, t.toString());
-            } else if (t instanceof MacroParamToken) {
-                toks.add(factory.createToken(Catcode.OTHER, '#',
-                        Namespace.DEFAULT_NAMESPACE));
-                toks.add(factory.createToken(Catcode.OTHER, t.getChar(),
-                        Namespace.DEFAULT_NAMESPACE));
-            } else {
-                toks.add(factory.createToken(Catcode.OTHER, t.getChar(),
-                        Namespace.DEFAULT_NAMESPACE));
-            }
-        }
     }
 
 }

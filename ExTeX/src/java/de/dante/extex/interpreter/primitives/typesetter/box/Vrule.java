@@ -26,9 +26,9 @@ import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.RuleNode;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hrule</code>.
@@ -79,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Vrule extends AbstractCode implements RuleConvertible {
 
@@ -123,8 +123,6 @@ public class Vrule extends AbstractCode implements RuleConvertible {
             typesetter.add(getRule(context, source, typesetter));
         } catch (InterpreterException e) {
             throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
         }
     }
 
@@ -137,6 +135,10 @@ public class Vrule extends AbstractCode implements RuleConvertible {
     public RuleNode getRule(final Context context, final TokenSource source,
             final Typesetter typesetter) throws InterpreterException {
 
+        Mode mode = typesetter.getMode();
+        if (mode.isVmode()) {
+            typesetter.par();
+        }
         Dimen width = new Dimen(DEFAULT_RULE);
         Dimen height = new Dimen(0);
         Dimen depth = new Dimen(0);

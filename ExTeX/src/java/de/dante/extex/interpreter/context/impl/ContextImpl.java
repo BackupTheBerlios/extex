@@ -29,9 +29,8 @@ import java.util.Map;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.other.NullFont;
-import de.dante.extex.hyphenation.HyphenationManager;
+import de.dante.extex.hyphenation.HyphenationFactory;
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
@@ -116,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.68 $
+ * @version $Revision: 1.69 $
  */
 public class ContextImpl
         implements
@@ -196,7 +195,7 @@ public class ContextImpl
     /**
      * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
-    private transient HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+    private transient HyphenationFactory hyphenationManager;
 
     /**
      * The field <tt>id</tt> contains the is string.
@@ -239,7 +238,7 @@ public class ContextImpl
      * when the interaction is changed. The argument is the new interaction
      * mode.
      */
-    private transient ObserverList observersInteraction = new ObserverList();
+    private transient ObserverList observersInteraction;
 
     /**
      * The field <tt>parshape</tt> contains the object containing the
@@ -272,7 +271,7 @@ public class ContextImpl
     protected ContextImpl() {
 
         super();
-        codeChangeObservers = new HashMap();
+        init();
     }
 
     /**
@@ -582,13 +581,12 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
+     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(String)
      */
-    public HyphenationTable getHyphenationTable(final int language)
+    public HyphenationTable getHyphenationTable(final String language)
             throws InterpreterException {
 
-        return hyphenationManager.getHyphenationTable(Integer
-                .toString(language));
+        return hyphenationManager.getHyphenationTable(language);
     }
 
     /**
@@ -721,6 +719,14 @@ public class ContextImpl
     }
 
     /**
+     * @see de.dante.extex.interpreter.context.Context#getToksOrNull(java.lang.String)
+     */
+    public Tokens getToksOrNull(final String name) {
+
+        return group.getToksOrNull(name);
+    }
+
+    /**
      * @see de.dante.extex.scanner.stream.TokenStreamOptions#getToksOption(
      *      java.lang.String)
      */
@@ -754,6 +760,17 @@ public class ContextImpl
     public int incrementErrorCount() {
 
         return ++errorCount;
+    }
+
+    /**
+     * Initialize the internal state of the instance.
+     */
+    private void init() {
+
+        countChangeObservers = new HashMap();
+        codeChangeObservers = new HashMap();
+        hyphenationManager = new HyphenationFactory();
+        observersInteraction = new ObserverList();
     }
 
     /**
@@ -807,9 +824,7 @@ public class ContextImpl
      */
     public Object readResolve() throws ObjectStreamException {
 
-        countChangeObservers = new HashMap();
-        hyphenationManager = new HyphenationManagerImpl();
-        observersInteraction = new ObserverList();
+        init();
         return this;
     }
 

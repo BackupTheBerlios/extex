@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
@@ -51,143 +50,24 @@ import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 
 /**
- * This class store the values for hyphenations and
- * hypernate words.
+ * This class stores the values for hyphenations and
+ * hypernates words.
  *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
+public class LiangsHyphenationTable extends BaseHyphenationTable
+        implements
+            NodeVisitor {
 
     /**
-     * Creates a new object.
-     */
-    public HyphenationTableImpl() {
-
-        super();
-    }
-
-    /**
-     * Map for hyphenation
-     */
-    private Map hypmap = new HashMap();
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#addHyphenation(
-     *      java.lang.String, java.lang.String)
-     */
-    public void addHyphenation(final String word, final String hyphword) {
-
-        hypmap.put(word, hyphword);
-    }
-
-    /**
-     * Map for hyphenation-pattern
-     */
-    private Map patmap = new HashMap();
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#addPattern(
-     *      java.lang.String, java.lang.String)
-     */
-    public void addPattern(final String word, final String pattern) {
-
-        patmap.put(word, pattern);
-    }
-
-    /**
-     * lefthyphenmin
-     */
-    private int lefthyphnemin;
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#getLeftHyphenmin()
-     */
-    public int getLeftHyphenmin() {
-
-        return lefthyphnemin;
-    }
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#setLeftHyphenmin(int)
-     */
-    public void setLeftHyphenmin(final int left) {
-
-        lefthyphnemin = left;
-    }
-
-    /**
-     * righthyphenmin
-     */
-    private int righthyphenmin;
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#getRightHyphenmin()
-     */
-    public int getRightHyphenmin() {
-
-        return righthyphenmin;
-    }
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#setRightHyphenmin(int)
-     */
-    public void setRightHyphenmin(final int right) {
-
-        righthyphenmin = right;
-    }
-
-    /**
-     * hyphenactive
-     */
-    private boolean hyphenactive = true;
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#isHyphenActive()
-     */
-    public boolean isHyphenActive() {
-
-        return hyphenactive;
-    }
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#setHyphenActive(boolean)
-     */
-    public void setHyphenActive(final boolean active) {
-
-        hyphenactive = active;
-    }
-
-    /**
-     * @see de.dante.extex.hyphenation.HyphenationTable#hyphenate(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.type.node.HorizontalListNode)
-     */
-    public HorizontalListNode hyphenate(final Context context,
-            final HorizontalListNode nodelist) throws GeneralException {
-
-        if (hyphenactive) {
-            HyphValues hv = new HyphValues(context);
-            HorizontalListNode parent = new HorizontalListNode();
-            hv.setParent(parent);
-         //   nodelist.visit(this, nodelist, hv);
-            // TODO incomplete
-            // MGN hier gehts weiter!!!
-           // return parent;
-        }
-        return nodelist;
-    }
-
-    /**
-     * Container for hyphnevalues
+     * This class provides a container for hyphen values.
+     *
+     * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+     * @version $Revision: 1.1 $
      */
     private static class HyphValues {
-
-        /**
-         * state
-         */
-        private State state = NORMAL;
 
         /**
          * The context
@@ -198,6 +78,11 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
          * The parent
          */
         private NodeList parent;
+
+        /**
+         * state
+         */
+        private State state = NORMAL;
 
         /**
          * The word
@@ -212,14 +97,6 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
             super();
             context = acontext;
-        }
-
-        /**
-         * Create e new word
-         */
-        public void newWord() {
-
-            word = new ArrayList();
         }
 
         /**
@@ -240,6 +117,14 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
         }
 
         /**
+         * @return Returns the parent.
+         */
+        public NodeList getParent() {
+
+            return parent;
+        }
+
+        /**
          * @return Returns the state.
          */
         public State getState() {
@@ -248,19 +133,11 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
         }
 
         /**
-         * @param astate The state to set.
+         * Create e new word
          */
-        public void setState(final State astate) {
+        public void newWord() {
 
-            state = astate;
-        }
-
-        /**
-         * @return Returns the parent.
-         */
-        public NodeList getParent() {
-
-            return parent;
+            word = new ArrayList();
         }
 
         /**
@@ -270,22 +147,15 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
             parent = aparent;
         }
+
+        /**
+         * @param astate The state to set.
+         */
+        public void setState(final State astate) {
+
+            state = astate;
+        }
     }
-
-    /**
-     * word
-     */
-    private static final State WORD = new State();
-
-    /**
-     * ignore
-     */
-    private static final State IGNORE = new State();
-
-    /**
-     * normal
-     */
-    private static final State NORMAL = new State();
 
     /**
      * Class State
@@ -301,10 +171,68 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
         }
     }
 
-    // ---------------------------------------------------------
-    // ---------------------------------------------------------
-    // ---------------------------------------------------------
-    // ---------------------------------------------------------
+    /**
+     * ignore
+     */
+    private static final State IGNORE = new State();
+
+    /**
+     * normal
+     */
+    private static final State NORMAL = new State();
+
+    /**
+     * word
+     */
+    private static final State WORD = new State();
+
+    /**
+     * Map for hyphenation pattern
+     */
+    private Map patmap = new HashMap();
+
+    /**
+     * Creates a new object.
+     */
+    public LiangsHyphenationTable() {
+
+        super();
+    }
+
+    /**
+     * @see de.dante.extex.hyphenation.HyphenationTable#addPattern(
+     *      java.lang.String, java.lang.String)
+     */
+    public void addPattern(final String word, final String pattern) {
+
+        patmap.put(word, pattern);
+    }
+
+    /**
+     * @see de.dante.extex.hyphenation.HyphenationTable#hyphenate(
+     *      de.dante.extex.interpreter.type.node.HorizontalListNode,
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
+            final Context context) throws GeneralException {
+
+        if (!isHyphenActive()) {
+            return nodelist;
+        }
+
+        HorizontalListNode nodes = super.hyphenate(nodelist, context);
+        if (nodes != nodelist) {
+            return nodes;
+        }
+
+        HyphValues hv = new HyphValues(context);
+        HorizontalListNode parent = new HorizontalListNode();
+        hv.setParent(parent);
+        //   nodelist.visit(this, nodelist, hv);
+        // TODO gene: incomplete
+        // return parent;
+        return nodelist;
+    }
 
     /**
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
@@ -321,7 +249,6 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      */
     public Object visitAfterMath(final AfterMathNode node, final Object value2) {
 
-        
         HyphValues hv = (HyphValues) value2;
         hv.setState(NORMAL);
         hv.getParent().add(node);
@@ -333,7 +260,8 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(
      *      AlignedLeadersNode, java.lang.Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode value,
+            final Object value2) {
 
         return null;
     }
@@ -355,7 +283,8 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(
      *      CenteredLeadersNode, java.lang.Object)
      */
-    public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object value) {
+    public Object visitCenteredLeaders(final CenteredLeadersNode node,
+            final Object value) {
 
         return null;
     }
@@ -382,7 +311,8 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(
      *      DiscretionaryNode, java.lang.Object)
      */
-    public Object visitDiscretionary(final DiscretionaryNode node, final Object value) {
+    public Object visitDiscretionary(final DiscretionaryNode node,
+            final Object value) {
 
         return null;
     }
@@ -391,7 +321,8 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(
      *      ExpandedLeadersNode, java.lang.Object)
      */
-    public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value) {
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+            final Object value) {
 
         return null;
     }
@@ -409,7 +340,8 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(
      *      HorizontalListNode, java.lang.Object)
      */
-    public Object visitHorizontalList(final HorizontalListNode node, final Object value) {
+    public Object visitHorizontalList(final HorizontalListNode node,
+            final Object value) {
 
         HyphValues hv = (HyphValues) value;
 
@@ -492,7 +424,8 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(
      *      VerticalListNode, java.lang.Object)
      */
-    public Object visitVerticalList(final VerticalListNode node, final Object value) {
+    public Object visitVerticalList(final VerticalListNode node,
+            final Object value) {
 
         return null;
     }

@@ -53,7 +53,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -297,6 +297,21 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the toks register or its default
      */
     Tokens getToks(String name);
+
+    /**
+     * Getter for the named toks register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered toks registers is emulated. The
+     * other case can be used to store special toks values.
+     *
+     * Note: The number of toks registers is not limited to 256 as in TeX.
+     *
+     * @param name the name of the toks register
+     *
+     * @return the value of the toks register or <code>null</code> if none is
+     *  defined
+     */
+    Tokens getToksOrNull(String name);
 
     /**
      * Getter for the typesetting context.
