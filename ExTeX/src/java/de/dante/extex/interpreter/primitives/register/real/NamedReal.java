@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -131,9 +131,9 @@ public class NamedReal extends AbstractAssignment
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         if (context instanceof ContextExtension) {
@@ -253,9 +253,9 @@ public class NamedReal extends AbstractAssignment
     /**
      * @see de.dante.extex.interpreter.CountConvertable#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         if (context instanceof ContextExtension) {

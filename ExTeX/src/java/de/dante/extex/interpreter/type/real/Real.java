@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Real implements Serializable {
 
@@ -112,10 +112,10 @@ public class Real implements Serializable {
                         .getValue();
             } else if (code != null && code instanceof CountConvertible) {
                 return (new Real(((CountConvertible) code).convertCount(
-                        context, source))).getValue();
+                        context, source, null))).getValue();
             } else if (code != null && code instanceof DimenConvertible) {
                 return (new Real(((DimenConvertible) code).convertDimen(
-                        context, source))).getValue();
+                        context, source, null))).getValue();
             }
         }
 

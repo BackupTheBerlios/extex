@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CharCode extends AbstractCode implements ExpandableCode, CountConvertible {
 
@@ -90,9 +90,9 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         return character.getCodePoint();

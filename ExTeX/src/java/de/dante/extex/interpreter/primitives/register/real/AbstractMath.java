@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * e.g. sin, cos, ...
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractMath extends AbstractCode
         implements
@@ -77,9 +77,9 @@ public abstract class AbstractMath extends AbstractCode
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         Real real = calculate(context, source);
@@ -100,9 +100,9 @@ public abstract class AbstractMath extends AbstractCode
     /**
      * @see de.dante.extex.interpreter.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         return calculate(context, source).getLong();

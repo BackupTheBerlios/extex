@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class CountPrimitive extends AbstractCount implements ExpandableCode,
         Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
@@ -97,7 +97,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
         String key = getKey(source, context.getNamespace());
         source.getKeyword("by");
 
-        long value = Count.scanCount(context, source);
+        long value = Count.scanCount(context, source, null);
         value += context.getCount(key).getValue();
 
         context.setCount(key, value, prefix.isGlobal());
@@ -117,7 +117,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
         String key = getKey(source, context.getNamespace());
         source.getOptionalEquals();
 
-        long value = Count.scanCount(context, source);
+        long value = Count.scanCount(context, source, typesetter);
         context.setCount(key, value, prefix.isGlobal());
     }
 
@@ -139,9 +139,9 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         String key = getKey(source, context.getNamespace());
@@ -161,7 +161,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
         String key = getKey(source, context.getNamespace());
         source.getKeyword("by");
 
-        long value = Count.scanCount(context, source);
+        long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
             throw new HelpingException("TTP.ArithOverflow");
@@ -183,7 +183,7 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
         String key = getKey(source, context.getNamespace());
         source.getKeyword("by");
 
-        long value = Count.scanCount(context, source);
+        long value = Count.scanCount(context, source, null);
         value *= context.getCount(key).getValue();
         context.setCount(key, value, prefix.isGlobal());
     }
@@ -191,9 +191,9 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         String key = getKey(source, context.getNamespace());

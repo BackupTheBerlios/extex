@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.Flags;
@@ -54,10 +55,14 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class Lccode extends AbstractAssignment implements ExpandableCode,
-        Theable, CountConvertible, DimenConvertible {
+public class Lccode extends AbstractAssignment
+        implements
+            ExpandableCode,
+            Theable,
+            CountConvertible,
+            DimenConvertible {
 
     /**
      * Creates a new object.
@@ -65,6 +70,7 @@ public class Lccode extends AbstractAssignment implements ExpandableCode,
      * @param name the name for tracing and debugging
      */
     public Lccode(final String name) {
+
         super(name);
     }
 
@@ -97,27 +103,27 @@ public class Lccode extends AbstractAssignment implements ExpandableCode,
             throws GeneralException {
 
         UnicodeChar ucCode = source.scanCharacterCode();
-        source.push(the(context, source));
+        source.push(the(context, source, typesetter));
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
-        return new Tokens(context, convertCount(context, source));
+        return new Tokens(context, convertCount(context, source, typesetter));
     }
 
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         UnicodeChar ucCode = source.scanCharacterCode();
         return context.getLccode(ucCode).getCodePoint();
@@ -126,12 +132,12 @@ public class Lccode extends AbstractAssignment implements ExpandableCode,
     /**
      * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source)
-            throws GeneralException {
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
-        return convertCount(context, source);
+        return convertCount(context, source, typesetter);
     }
 
 }

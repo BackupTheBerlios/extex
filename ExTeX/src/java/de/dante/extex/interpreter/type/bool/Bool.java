@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Bool implements Serializable {
 
@@ -97,7 +97,7 @@ public class Bool implements Serializable {
             Code code = context.getCode(tok);
             if (code != null && code instanceof CountConvertible) {
                 return (new Bool(((CountConvertible) code).convertCount(
-                        context, source))).getValue();
+                        context, source, null))).getValue();
             } else if (code != null && code instanceof RealConvertible) {
                 return (new Bool(((((RealConvertible) code).convertReal(
                         context, source)).getLong()))).getValue();
@@ -108,7 +108,7 @@ public class Bool implements Serializable {
 
         source.push(tok);
         if (tok.getChar().isDigit()) {
-            return (new Bool(Count.scanCount(context, source))).getValue();
+            return (new Bool(Count.scanCount(context, source, null))).getValue();
         }
 
         if (source.getKeyword("true")) {

@@ -55,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {
@@ -98,26 +98,26 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
             throws GeneralException {
 
         UnicodeChar ucCode = source.scanCharacterCode();
-        source.push(the(context, source));
+        source.push(the(context, source, typesetter));
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
-        return new Tokens(context, convertCount(context, source));
+        return new Tokens(context, convertCount(context, source, typesetter));
     }
 
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         UnicodeChar ucCode = source.scanCharacterCode();
@@ -127,11 +127,11 @@ public class Uccode extends AbstractAssignment implements ExpandableCode,
     /**
      * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source)
+    public long convertDimen(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
-        return convertCount(context, source);
+        return convertCount(context, source, typesetter);
     }
 }

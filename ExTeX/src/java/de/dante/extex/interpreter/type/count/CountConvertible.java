@@ -16,11 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.count;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -28,7 +29,7 @@ import de.dante.util.GeneralException;
  * count.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CountConvertible {
 
@@ -37,15 +38,15 @@ public interface CountConvertible {
      * It might be necessary to read further tokens to determine which value to
      * use. For instance an additional register number might be required. In
      * this case the additional arguments Context and TokenSource can be used.
-     *
      * @param context the interpreter context
      * @param source the source for new tokens
+     * @param typesetter TODO
      *
      * @return the converted value
      *
      * @throws GeneralException in case of an error
      */
-    long convertCount(Context context, TokenSource source)
+    long convertCount(Context context, TokenSource source, Typesetter typesetter)
             throws GeneralException;
 
 }

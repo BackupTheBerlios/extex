@@ -69,7 +69,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "skip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Skipdef extends AbstractAssignment {
 
@@ -96,7 +96,7 @@ public class Skipdef extends AbstractAssignment {
         Token cs = source.getControlSequence();
         source.getOptionalEquals();
         //todo: unfortunately we have to know the internal format of the key:-(
-        String key = "skip#" + Long.toString(Count.scanCount(context, source));
+        String key = "skip#" + Long.toString(Count.scanCount(context, source, typesetter));
         context.setCode(cs, new SkipParameter(key), prefix.isGlobal());
 
     }

@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ToksPrimitive extends AbstractToks implements Theable {
 
@@ -75,9 +75,9 @@ public class ToksPrimitive extends AbstractToks implements Theable {
      *
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         return context.getToks(getKey(source, context.getNamespace()));

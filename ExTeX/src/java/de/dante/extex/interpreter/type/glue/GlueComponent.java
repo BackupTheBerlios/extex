@@ -34,6 +34,7 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -52,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -635,6 +636,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     protected void set(final Context context, final TokenSource source,
             final boolean fixed) throws GeneralException {
 
+        Typesetter typesetter = null;
+
         Token t = source.scanNonSpace();
         if (t == null) {
             throw new HelpingException("TTP.IllegalUnit");
@@ -692,7 +695,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 if (code instanceof DimenConvertible) {
                     value = value
                             * ((DimenConvertible) code).convertDimen(context,
-                                    source) / ONE;
+                                    source, typesetter) / ONE;
                 } else {
                     throw new HelpingException("TTP.IllegalUnit");
                 }

@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -76,16 +76,16 @@ public class PrintFormat extends AbstractCode implements Theable {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.push(the(context, source));
+        source.push(the(context, source, typesetter));
         return true;
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         // \the\printformat{pattern}\real7

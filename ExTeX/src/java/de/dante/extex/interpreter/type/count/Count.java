@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.count;
 
 import java.io.Serializable;
@@ -26,6 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -34,7 +36,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -67,7 +69,7 @@ public class Count implements Serializable, FixedCount {
             throws GeneralException {
 
         super();
-        value = scanCount(context, source);
+        value = scanCount(context, source, null);
     }
 
     /**
@@ -94,16 +96,17 @@ public class Count implements Serializable, FixedCount {
 
     /**
      * Scan the input stream for a count value.
-     *
      * @param context the processor context
      * @param source the source for new tokens
+     * @param typesetter TODO
      *
      * @return the value of the count
      *
      * @throws GeneralException in case of an error
      */
     public static long scanCount(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Token t = source.getNonSpace();
 
@@ -114,7 +117,8 @@ public class Count implements Serializable, FixedCount {
 
         Code code = context.getCode(t);
         if (code != null && code instanceof CountConvertible) {
-            return ((CountConvertible) code).convertCount(context, source);
+            return ((CountConvertible) code).convertCount(context, source,
+                    typesetter);
         }
 
         source.push(t);
@@ -129,6 +133,7 @@ public class Count implements Serializable, FixedCount {
      * @param val the value to add to
      */
     public void add(final long val) {
+
         value += val;
     }
 
@@ -155,6 +160,7 @@ public class Count implements Serializable, FixedCount {
      * @return the value
      */
     public long getValue() {
+
         return value;
     }
 
@@ -177,6 +183,7 @@ public class Count implements Serializable, FixedCount {
      * @see #setValue(long)
      */
     public void set(final long l) {
+
         value = l;
     }
 
@@ -188,6 +195,7 @@ public class Count implements Serializable, FixedCount {
      * @see #set(long)
      */
     public void setValue(final long l) {
+
         value = l;
     }
 

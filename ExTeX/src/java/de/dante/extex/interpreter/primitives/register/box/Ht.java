@@ -66,7 +66,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     CountConvertible, DimenConvertible {
@@ -113,15 +113,15 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
 
-        source.push(the(context, source));
+        source.push(the(context, source, typesetter));
     }
 
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
         throws GeneralException {
 
         Box box = context.getBox(getKey(source, context.getNamespace()));
@@ -132,20 +132,20 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
         throws GeneralException {
 
-        return convertDimen(context, source);
+        return convertDimen(context, source, typesetter);
     }
 
     /**
      * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source)
+    public long convertDimen(final Context context, final TokenSource source, Typesetter typesetter)
         throws GeneralException {
 
         Box b = context.getBox(getKey(source, context.getNamespace()));

@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DimenPrimitive extends AbstractDimen implements Advanceable,
         ExpandableCode, CountConvertible, DimenConvertible, Multiplyable,
@@ -119,9 +119,9 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
     /**
      * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source)
+    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         String key = getKey(source);
@@ -132,12 +132,12 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
     /**
      * @see de.dante.extex.interpreter.type.dimen.DimenConvertible#convertDimen(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source)
+    public long convertDimen(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
-        return convertCount(context, source);
+        return convertCount(context, source, typesetter);
     }
 
     /**
@@ -151,7 +151,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
 
         String key = getKey(source);
         source.getKeyword("by");
-        long value = Count.scanCount(context, source);
+        long value = Count.scanCount(context, source, null);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
         context.setDimen(key, d, prefix.isGlobal());
 
@@ -169,7 +169,7 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
 
         String key = getKey(source);
         source.getKeyword("by");
-        long value = Count.scanCount(context, source);
+        long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
             throw new HelpingException("TTP.ArithOverflow");
@@ -184,9 +184,9 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
     /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
             throws GeneralException {
 
         String key = getKey(source);

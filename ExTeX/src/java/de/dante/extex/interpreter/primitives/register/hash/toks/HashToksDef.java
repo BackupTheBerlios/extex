@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HashToksDef extends AbstractAssignment {
 
@@ -70,7 +70,7 @@ public class HashToksDef extends AbstractAssignment {
         }
         source.getOptionalEquals();
         String key = "hashtoks#"
-                + Long.toString(Count.scanCount(context, source));
+                + Long.toString(Count.scanCount(context, source, typesetter));
         context.setCode(tok, new NamedHashToks(key), prefix.isGlobal());
     }
 }

@@ -16,12 +16,13 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -30,20 +31,21 @@ import de.dante.util.GeneralException;
  * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Theable {
 
     /**
      * This method is the getter for the description of the primitive.
-     *
      * @param context the interpreter context
      * @param source the source for further tokens to qualify the request
+     * @param typesetter TODO
      *
      * @return the description of the primitive as list of Tokens
      *
      * @throws GeneralException in case of an error
      */
-    Tokens the(Context context, TokenSource source) throws GeneralException;
+    Tokens the(Context context, TokenSource source, Typesetter typesetter)
+            throws GeneralException;
 
 }

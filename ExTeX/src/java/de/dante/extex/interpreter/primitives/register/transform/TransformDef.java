@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TransformDef extends AbstractAssignment {
 
@@ -69,7 +69,7 @@ public class TransformDef extends AbstractAssignment {
         }
         source.getOptionalEquals();
         String key = "transform#"
-                + Long.toString(Count.scanCount(context, source));
+                + Long.toString(Count.scanCount(context, source, typesetter));
         context.setCode(tok, new NamedTransform(key), prefix.isGlobal());
     }
 }

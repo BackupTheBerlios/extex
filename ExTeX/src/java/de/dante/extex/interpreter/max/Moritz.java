@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -962,7 +962,7 @@ public abstract class Moritz implements TokenSource, Observable {
                     throw new HelpingException("TTP.MissingNumber");
                 } else if (code instanceof CountConvertible) {
                     return ((CountConvertible) code)
-                            .convertCount(context, this);
+                            .convertCount(context, this, getTypesetter());
                 } else if (code instanceof ExpandableCode) {
                     ((ExpandableCode) code).expand(Flags.NONE, context, this,
                             getTypesetter());
