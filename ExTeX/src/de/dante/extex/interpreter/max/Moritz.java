@@ -59,15 +59,15 @@ import de.dante.util.observer.ObserverList;
  * This class provides the layer above the input streams and the tokenizer. It
  * has additional methods for parsing. The details of the token streams are
  * mostly hidden.
- * 
+ *
  * <p>
  * This class is the companion to Max. (The name is a joke for friends of
  * Wilhelm Busch)
  * </p>
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -154,7 +154,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param configuration
      *            the configuration to use
      */
@@ -166,7 +166,7 @@ public abstract class Moritz implements TokenSource, Observable {
     /**
      * Put a given stream on top of the stream stack. The reading occurs on this
      * new stream before resorting to the previous streams.
-     * 
+     *
      * @param theStream
      *            the new stream to read from
      */
@@ -238,9 +238,9 @@ public abstract class Moritz implements TokenSource, Observable {
      * Get the next token and check that it is a CodeToken. This means that only
      * the classes ActiveCharacterToken and ControlSequenceToken are accepted.
      * All other tokens lead to an exception.
-     * 
+     *
      * @return the next token found
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
      */
@@ -291,7 +291,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * optionally preceeded by a sign (+ or -). The number can be preceeded by
      * optional whitespace. Whitespace is also ignored between the sign and the
      * number. All non-whitespace characters must have the catcode OTHER.
-     * 
+     *
      * @return the value of the integer scanned
      * 
      * @throws GeneralException
@@ -337,12 +337,12 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Scan a number with a given first token.
-     * 
+     *
      * @param token
      *            the first token to consider
-     * 
+     *
      * @return the value of the integer scanned
-     * 
+     *
      * @throws GeneralException
      *             in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
@@ -456,10 +456,10 @@ public abstract class Moritz implements TokenSource, Observable {
     /**
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
-     * 
+     *
      * @see de.dante.extex.interpreter.TokenSource#getOptionalEquals()
      */
     public void getOptionalEquals() throws GeneralException {
@@ -480,9 +480,9 @@ public abstract class Moritz implements TokenSource, Observable {
      * at its end then the next one on the streamStack is used until a token
      * could be read. If all stream are at the end then <code>null</code> is
      * returned.
-     * 
+     *
      * @return the next token or <code>null</code>
-     * 
+     *
      * @throws GeneralException
      *             in case of another error
      */
@@ -540,7 +540,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Getter for the token stream factory.
-     * 
+     *
      * @return the token stream factory
      */
     public TokenStreamFactory getTokenStreamFactory() {
@@ -550,17 +550,17 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Getter for the typesetter.
-     * 
+     *
      * @return the typesetter
      */
     public abstract Typesetter getTypesetter();
 
     /**
      * Push back a token onto the input stream for subsequent reading.
-     * 
+     *
      * @param token
      *            the token to push
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
      */
@@ -572,10 +572,10 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
-     * 
+     *
      * @param tokens
      *            the tokens to push
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
      */
@@ -591,10 +591,10 @@ public abstract class Moritz implements TokenSource, Observable {
      * Push back a list of tokens onto the input stream for subsequent reading.
      * In case that the argument is <code>null</code> then it is silently
      * ignored.
-     * 
+     *
      * @param tokens
      *            the tokens to push
-     * 
+     *
      * @throws GeneralException
      *             in case that the stream is already closed
      */
@@ -620,7 +620,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * This method can be used to register observers for certain events.
-     * 
+     *
      * The following events are currently supported: <table>
      * <tr>
      * <th>Name</th>
@@ -651,7 +651,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * <td>...</td>
      * </tr>
      * </table>
-     * 
+     *
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
      *      de.dante.util.observer.Observer)
      */
@@ -695,9 +695,9 @@ public abstract class Moritz implements TokenSource, Observable {
      * optionally preceeded by a sign (+ or -). The number can be preceeded by
      * optional whitespace. Whitespace is also ignored between the sign and the
      * number. All non-whitespace characters must have the catcode OTHER.
-     * 
+     *
      * @return the value of the integer scanned
-     * 
+     *
      * @throws GeneralException
      *             in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
@@ -723,13 +723,13 @@ public abstract class Moritz implements TokenSource, Observable {
      * tokens are found then they are removed from the input stream and
      * <code>true</code> is returned. Otherwise all tokens are left in the
      * input stream and <code>false</code> is returned.
-     * 
+     *
      * @param s
      *            the tokens to scan
-     * 
+     *
      * @return <code>true</code> iff the tokens could have been successfully
      *         removed from the input stream
-     * 
+     *
      * @throws GeneralException
      *             in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
@@ -760,9 +760,9 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Scan the input for the next token which has not the catcode SPACE.
-     * 
+     *
      * @return the next non-space token or <code>null</code> at EOF
-     * 
+     *
      * @throws GeneralException
      *             in case of an error in {@link #scanToken() scanToken()}
      */
@@ -781,9 +781,9 @@ public abstract class Moritz implements TokenSource, Observable {
      * Scan the input stream for tokens making up a number, this means a
      * sequence of digits with catcode OTHER. Alternative notations for a number
      * may exist. The number can be preceeded by optional whitespace.
-     * 
+     *
      * @return the value of the integer scanned
-     * 
+     *
      * @throws GeneralException
      *             in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
@@ -795,12 +795,12 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Scan a number with a given first token.
-     * 
+     *
      * @param token
      *            the first token to consider
-     * 
+     *
      * @return the value of the integer scanned
-     * 
+     *
      * @throws GeneralException
      *             in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
@@ -953,9 +953,9 @@ public abstract class Moritz implements TokenSource, Observable {
     /**
      * Expand tokens from the input stream until an unexpandable token is found.
      * This unexpandable token is returned.
-     * 
+     *
      * @return the next unexpandable token
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
      */
@@ -1006,8 +1006,10 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Setter for the token stream factory.
-     * 
+     *
      * @param factory the token stream factory
+     *
+     * @throws ConfigurationException ...
      */
     public void setTokenStreamFactory(final TokenStreamFactory factory)
             throws ConfigurationException {
@@ -1047,14 +1049,14 @@ public abstract class Moritz implements TokenSource, Observable {
     /**
      * Scans the input token stream for a given sequence of tokens. Those tokens
      * may have the catcodes <tt>LETTER</tt> or <tt>OTHER</tt>.
-     * 
+     *
      * @param s
      *            the string to use as reference
      * @param i
      *            the index in s to start working at
-     * 
+     *
      * @return <code>true</code> iff the keyword has been found
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
      */
@@ -1081,12 +1083,12 @@ public abstract class Moritz implements TokenSource, Observable {
      * Tries to expand a token. If the given token is expandable then it is
      * recursively expanded and the result is pushed. The first not-expandable
      * token is returned.
-     * 
+     *
      * @param token
      *            the Token to expand
-     * 
+     *
      * @return the next non-expandable token or <code>null</code>
-     * 
+     *
      * @throws GeneralException
      *             in case of an error
      */
@@ -1094,7 +1096,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Setter for the context.
-     * 
+     *
      * @param theContext
      *            the context to use
      */
