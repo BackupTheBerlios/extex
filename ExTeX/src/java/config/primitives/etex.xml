@@ -92,10 +92,10 @@
           class=""/>
   <define name="lastnodetype"
           class="de.dante.extex.interpreter.primitives.register.count.Lastnodetype"/>
-  <Define name="marks"
-          class=""/>
-  <Define name="middle"
-          class=""/>
+  <define name="marks"
+          class="de.dante.extex.interpreter.primitives.typesetter.mark.Marks"/>
+  <define name="middle"
+          class="de.dante.extex.interpreter.primitives.math.delimiter.Middle"/>
   <Define name="muexpr"
           class=""/>
   <Define name="numexpr"
