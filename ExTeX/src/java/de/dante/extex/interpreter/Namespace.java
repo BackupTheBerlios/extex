@@ -20,17 +20,74 @@ package de.dante.extex.interpreter;
 
 
 /**
- * ...
+ * This class contains the definitions for namespaces. It is not a class which
+ * is supposed to be instanciated.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Namespace {
+public final class Namespace {
 
     /**
      * The constant <tt>DEFAULT_NAMESPACE</tt> contains the name of the default
      * namespace.
      */
     public static final String DEFAULT_NAMESPACE = "";
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_BOX</tt> contains the flag
+     * indicating whether or not the namespace should be used for box
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_BOX = false;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_COUNT</tt> contains the flag
+     * indicating whether or not the namespace should be used for count
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_COUNT = false;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_DEF</tt> contains the indicator that
+     * namespaces should be honoured. In this case the lookup for Code is
+     * also performed in the default namespace if not found in the current one.
+     */
+    public static final boolean SUPPORT_NAMESPACE_DEF = true;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_DIMEN</tt> contains the flag
+     * indicating whether or not the namespace should be used for dimen
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_DIMEN = false;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_TOKS</tt> contains the flag
+     * indicating whether or not the namespace should be used for toks
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_TOKS = false;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_SKIP</tt> contains the flag
+     * indicating whether or not the namespace should be used for toks
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_SKIP = false;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_MUSKIP</tt> contains the flag
+     * indicating whether or not the namespace should be used for toks
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_MUSKIP = false;
+
+    /**
+     * The constant <tt>SUPPORT_NAMESPACE_FONT</tt> contains the flag
+     * indicating whether or not the namespace should be used for toks
+     * registers.
+     */
+    public static final boolean SUPPORT_NAMESPACE_FONT = false;
 
 }
