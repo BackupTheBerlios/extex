@@ -20,13 +20,48 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.type.Real;
+
 /**
  * This interface describes the container for all data of an interpreter
  * context for the ExTeX-functions.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ContextExTeX extends Serializable, Context {
 
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Real real}
+	 * register in the current group. Real registers are named, either with a
+	 * number or an arbitrary string.
+	 * 
+	 * @param name the name or the number of the register
+	 * @param value the new value of the register
+	 */
+	public abstract void setReal(String name, Real value);
+
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Real real}
+	 * register in all requested groups. Real registers are named, either with
+	 * a number or an arbitrary string.
+	 * 
+	 * @param name the name or the number of the register
+	 * @param value the new value of the register
+	 * @param global the indicator for the scope; <code>true</code> means all
+	 *            groups; otherwise the current group is affected only
+	 */
+	public abstract void setReal(String name, Real real, boolean global);
+
+	/**
+	 * Getter for the {@link de.dante.extex.interpreter.type.Real real}
+	 * register. Real registers are named, either with a number or an
+	 * arbitrary string.
+	 * 
+	 * @param name the name or number of the real register
+	 * 
+	 * @return the real register or <code>null</code> if it is not defined
+	 */
+	public abstract Real getReal(String name);
+	
 }
