@@ -39,6 +39,7 @@ import de.dante.extex.scanner.type.RightBraceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -52,7 +53,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Hyphenation extends AbstractHyphenationCode {
 
@@ -135,7 +136,8 @@ public class Hyphenation extends AbstractHyphenationCode {
                     t = source.getToken(context);
                 } while (isWordConstituent(t, context));
 
-                table.addHyphenation(createHyphenation(word, context), context);
+                table.addHyphenation(createHyphenation(word, context),
+                        (TypesetterOptions) context);
             }
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
