@@ -26,9 +26,9 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.nio.CharBuffer;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
@@ -52,7 +52,7 @@ import de.dante.util.file.InputLineDecoder;
  * This class implements a 32 bit token stream.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStream32Impl extends AbstractTokenStreamImpl
         implements

@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.nio.CharBuffer;
 import java.util.Stack;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.main.exception.MainIOException;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -44,7 +44,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class TokenStreamBaseImpl32
         implements
