@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface ListMaker {
 
@@ -94,7 +94,7 @@ public interface ListMaker {
     void toggleMath() throws GeneralException;
 
     /**
-     * ZToggle the displaymath mode.
+     * Toggle the displaymath mode.
      *
      * @throws GeneralException in case of an error
      */

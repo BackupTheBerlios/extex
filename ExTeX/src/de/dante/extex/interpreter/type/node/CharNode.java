@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -43,6 +43,11 @@ public class CharNode extends AbstractNode implements Node {
      * by this node.
      */
     private UnicodeChar character;
+
+    /**
+     * The field <tt>glyph</tt> contains the ...
+     */
+    private Glyph glyph;
 
     /**
      * The field <tt>typesettingContext</tt> contains the typesetting context
@@ -60,7 +65,7 @@ public class CharNode extends AbstractNode implements Node {
         super();
         typesettingContext = context;
         character = uc;
-        Glyph glyph = context.getFont().getGlyph(uc);
+        glyph = context.getFont().getGlyph(uc);
 
         if (glyph != null) {
             setWidth(glyph.getWidth());
@@ -74,6 +79,26 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
+     * Getter for character.
+     *
+     * @return the character.
+     */
+    public UnicodeChar getCharacter() {
+
+        return this.character;
+    }
+
+    /**
+     * Getter for glyph.
+     *
+     * @return the glyph.
+     */
+    public Glyph getGlyph() {
+
+        return this.glyph;
+    }
+
+    /**
      * Getter for the space factor
      *
      * @return the space factor
@@ -84,12 +109,25 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-     *      java.lang.String)
+     * Getter for typesettingContext.
+     *
+     * @return the typesettingContext.
      */
-    public void toText(final StringBuffer sb, final String prefix) {
+    public TypesettingContext getTypesettingContext() {
 
-        sb.append(character.toString());
+        return this.typesettingContext;
+    }
+
+    /**
+     * This method returns the printable representation.
+     * This is meant to produce a exaustive form as it is used in tracing
+     * output to the log file.
+     *
+     * @return the printable representation
+     */
+    public String toString() {
+
+        return this.character.toString();
     }
 
     /**
@@ -111,15 +149,12 @@ public class CharNode extends AbstractNode implements Node {
     }
 
     /**
-     * This method returns the printable representation.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @return the printable representation
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public String toString() {
+    public void toText(final StringBuffer sb, final String prefix) {
 
-        return character.toString();
+        sb.append(this.character.toString());
     }
 
     /**
@@ -131,25 +166,4 @@ public class CharNode extends AbstractNode implements Node {
 
         return visitor.visitChar(value, value2);
     }
-
-    /**
-     * Getter for character.
-     *
-     * @return the character.
-     */
-    public UnicodeChar getCharacter() {
-
-        return character;
-    }
-
-    /**
-     * Getter for typesettingContext.
-     *
-     * @return the typesettingContext.
-     */
-    public TypesettingContext getTypesettingContext() {
-
-        return typesettingContext;
-    }
-
 }

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -32,7 +33,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [143]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LigatureNode extends AbstractNode implements Node {
 
@@ -50,7 +51,12 @@ public class LigatureNode extends AbstractNode implements Node {
     /**
      * The field <tt>list</tt> contains the ...
      */
-    private UnicodeChar[] list;
+    private Node first;
+
+    /**
+     * The field <tt>second</tt> contains the ...
+     */
+    private Node second;
 
     /**
      * Creates a new object.
@@ -60,11 +66,14 @@ public class LigatureNode extends AbstractNode implements Node {
      *
      * @see "TeX -- The Program [144]"
      */
-    public LigatureNode(final TypesettingContext context, final UnicodeChar uc) {
+    public LigatureNode(final TypesettingContext context, final UnicodeChar uc,
+            final Node n1, final Node n2) {
 
         super();
         typesettingContext = context;
         character = uc;
+        first = n1;
+        second = n2;
         Glyph glyph = context.getFont().getGlyph(uc);
 
         if (glyph != null) {
@@ -118,6 +127,7 @@ public class LigatureNode extends AbstractNode implements Node {
      * @see "TeX -- The Program [193]"
      */
     public String toString() {
+
         return "lig "; //TODO
     }
 
