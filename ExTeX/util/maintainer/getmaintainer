@@ -1,0 +1,14 @@
+#!/bin/sed -f
+# author: Sebastian Waschik
+# created: 2004-07-11
+# RCS-ID: $Id: getmaintainer,v 1.1 2004/08/11 20:49:22 plaicy Exp $
+
+s/^.*@author.*<[aA][^>]*>\([^<]*\)<.*$/\1/
+s/^.*<meta.*name="author".*content="\([^"]*\).*$/\1/
+
+t end
+d
+b
+
+:end
+q
