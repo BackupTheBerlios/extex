@@ -20,9 +20,11 @@
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.scanner.ActiveCharacterToken;
@@ -73,7 +75,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -106,7 +108,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     }
 
     /**
-     * ...
+     * Assign a new meaning to a control sequence.
+     * This is the core of the primitive <code>\let</code>.
      *
      * @param prefix the flags to consider
      * @param context the processor context
@@ -136,7 +139,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is an
+     * active character which will be used as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -159,7 +163,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * CR character.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -176,7 +181,8 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * control sequence which will be used as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -192,14 +198,16 @@ public class Let extends AbstractAssignment implements TokenVisitor {
         Code code = context.getCode(token);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", (token).toString());
+            throw new HelpingException("TTP.UndefinedToken", token.toString());
         }
 
         return code;
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * left brace character which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -211,12 +219,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitLeftBrace(final LeftBraceToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * letter which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -228,12 +237,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitLetter(final LetterToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * macro parameter character which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -245,12 +255,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitMacroParam(final MacroParamToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * math shift character which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -262,12 +273,12 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitMathShift(final MathShiftToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is an
+     * other character which will be used as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -279,12 +290,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitOther(final OtherToken token, final Object oContext)
             throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * right brace character which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -296,12 +308,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitRightBrace(final RightBraceToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * space character. This can not happen since spaces are absorbed here.
+     * Thus an error is raised.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -313,12 +326,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitSpace(final SpaceToken token, final Object oContext)
             throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new PanicException("unexpected space detected");
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * subscript mark which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -330,12 +344,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitSubMark(final SubMarkToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * superscript mark which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -347,12 +362,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitSupMark(final SupMarkToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
     /**
-     * ...
+     * The right hand side of a <code>\let</code> definition is a
+     * tab mark which will be used in the form of an other
+     * character as new binding.
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
@@ -364,8 +380,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitTabMark(final TabMarkToken token,
             final Object oContext) throws GeneralException {
 
-        // TODO unimplemented
-        throw new RuntimeException("unimplemented");
+        return new CharCode("", token.getChar());
     }
 
 }
