@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ActiveCharacterTokenTest extends TestCase {
 
@@ -34,207 +34,181 @@ public class ActiveCharacterTokenTest extends TestCase {
         junit.textui.TestRunner.run(ActiveCharacterTokenTest.class);
     }
 
+    private static Token t = new ActiveCharacterToken("x");
+
     /*
      */
     public void testGetCatcode() {
-        Token t = new ActiveCharacterToken("x");
         assertEquals(Catcode.ACTIVE,t.getCatcode());
     }
 
     /*
      */
     public void testToString() {
-        Token t = new ActiveCharacterToken("x");
         assertEquals("the active character x",t.toString());
     }
 
     /*
      */
     public void testToText() {
-        Token t = new ActiveCharacterToken("x");
         assertEquals("x",t.toText());
     }
 
     /*
      */
     public void testGetValue() {
-        Token t = new ActiveCharacterToken("x");
         assertEquals("x",t.getValue());
     }
 
     /*
      */
     public void testEqualsToken0() {
-        Token t = new ActiveCharacterToken(" ");
         assertTrue(t.equals(t));
      }
 
     /*
      */
     public void testEqualsToken1() {
-        Token t = new ActiveCharacterToken(" ");
+        Token t1 = new ActiveCharacterToken(" ");
         Token t2 = new OtherToken(" ");
-        assertFalse(t.equals(t2));
+        assertFalse(t1.equals(t2));
     }
 
     /*
      */
     public void testEqualsCatcodeString0() {
-        Token t = new ActiveCharacterToken("");
-        assertTrue(t.equals(Catcode.ACTIVE,""));
+        assertTrue(t.equals(Catcode.ACTIVE,"x"));
     }
 
     /*
      */
     public void testEqualsCatcodeString1() {
-        Token t = new ActiveCharacterToken("");
         assertFalse(t.equals(Catcode.ACTIVE," "));
     }
     
     /*
      */
     public void testEqualsCatcodeString2() {
-        Token t = new ActiveCharacterToken("");
         assertFalse(t.equals(Catcode.OTHER," "));
     }
 
     /*
      */
     public void testEqualsCatcodechar0() {
-        Token t = new ActiveCharacterToken(" ");
-        assertTrue(t.equals(Catcode.ACTIVE,' '));
+        assertTrue(t.equals(Catcode.ACTIVE,'x'));
     }
 
     /*
      */
     public void testEqualsCatcodechar1() {
-        Token t = new ActiveCharacterToken("");
-        assertFalse(t.equals(Catcode.OTHER,' '));
+        assertFalse(t.equals(Catcode.OTHER,'x'));
     }
 
     /*
      */
     public void testEqualschar0() {
-        Token t = new ActiveCharacterToken(" ");
-        assertTrue(t.equals(' '));
+        assertTrue(t.equals('x'));
     }
 
     /*
      */
     public void testEqualschar1() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.equals('.'));
     }
 
     /*
      */
     public void testIsa0() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.SPACE));
     }
 
     /*
      */
     public void testIsa1() {
-        Token t = new ActiveCharacterToken(" ");
         assertTrue(t.isa(Catcode.ACTIVE));
     }
 
     /*
      */
     public void testIsa2() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.COMMENT));
     }
 
     /*
      */
     public void testIsa3() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.CR));
     }
 
     /*
      */
     public void testIsa4() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.ESCAPE));
     }
 
     /*
      */
     public void testIsa5() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.IGNORE));
     }
 
     /*
      */
     public void testIsa6() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.INVALID));
     }
 
     /*
      */
     public void testIsa7() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.LEFTBRACE));
     }
 
     /*
      */
     public void testIsa8() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.LETTER));
     }
 
     /*
      */
     public void testIsa9() {
-        Token t = new ActiveCharacterToken(" ");
-        assertFalse(t.isa(Catcode.MACPARAM));
+        assertFalse(t.isa(Catcode.MACROPARAM));
     }
 
     /*
      */
     public void testIsa10() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.MATHSHIFT));
     }
 
     /*
      */
     public void testIsa11() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.OTHER));
     }
 
     /*
      */
     public void testIsa12() {
-        Token t = new ActiveCharacterToken(" ");
-        assertFalse(t.isa(Catcode.RIGTHBRACE));
+        assertFalse(t.isa(Catcode.RIGHTBRACE));
     }
 
     /*
      */
     public void testIsa13() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.SUBMARK));
     }
 
     /*
      */
     public void testIsa14() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.SUPMARK));
     }
 
     /*
      */
     public void testIsa15() {
-        Token t = new ActiveCharacterToken(" ");
         assertFalse(t.isa(Catcode.TABMARK));
     }
     

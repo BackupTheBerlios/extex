@@ -24,7 +24,7 @@ import junit.framework.TestCase;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class SpaceTokenTest extends TestCase {
 
@@ -34,45 +34,41 @@ public class SpaceTokenTest extends TestCase {
         junit.textui.TestRunner.run(SpaceTokenTest.class);
     }
 
+    private static Token t = new SpaceToken("x");
+
     /*
      */
     public void testGetCatcode() {
-        Token t = new SpaceToken("");
         assertEquals(Catcode.SPACE,t.getCatcode());
     }
 
     /*
      */
     public void testToString() {
-        Token t = new SpaceToken("");
         assertEquals("blank space  ",t.toString());
     }
 
     /*
      */
     public void testToText() {
-        Token t = new SpaceToken("");
         assertEquals(" ",t.toText());
     }
 
     /*
      */
     public void testGetValue() {
-        Token t = new SpaceToken("");
         assertEquals(" ",t.getValue());
     }
 
     /*
      */
     public void testEqualsToken0() {
-        Token t = new SpaceToken(" ");
         assertTrue(t.equals(t));
      }
 
     /*
      */
     public void testEqualsToken1() {
-        Token t = new SpaceToken(" ");
         Token t2 = new ActiveCharacterToken(" ");
         assertFalse(t.equals(t2));
     }
@@ -80,154 +76,132 @@ public class SpaceTokenTest extends TestCase {
     /*
      */
     public void testEqualsCatcodeString0() {
-        Token t = new SpaceToken("");
         assertTrue(t.equals(Catcode.SPACE," "));
     }
 
     /*
      */
     public void testEqualsCatcodeString1() {
-        Token t = new SpaceToken("");
         assertFalse(t.equals(Catcode.ACTIVE," "));
     }
 
     /*
      */
     public void testEqualsCatcodechar0() {
-        Token t = new SpaceToken("");
         assertTrue(t.equals(Catcode.SPACE,' '));
     }
 
     /*
      */
     public void testEqualsCatcodechar1() {
-        Token t = new SpaceToken("");
         assertFalse(t.equals(Catcode.ACTIVE,' '));
     }
 
     /*
      */
     public void testEqualschar0() {
-        Token t = new SpaceToken(" ");
         assertTrue(t.equals(' '));
     }
 
     /*
      */
     public void testEqualschar1() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.equals('.'));
     }
 
     /*
      */
     public void testIsa0() {
-        Token t = new SpaceToken(" ");
         assertTrue(t.isa(Catcode.SPACE));
     }
 
     /*
      */
     public void testIsa1() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.ACTIVE));
     }
 
     /*
      */
     public void testIsa2() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.COMMENT));
     }
 
     /*
      */
     public void testIsa3() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.CR));
     }
 
     /*
      */
     public void testIsa4() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.ESCAPE));
     }
 
     /*
      */
     public void testIsa5() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.IGNORE));
     }
 
     /*
      */
     public void testIsa6() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.INVALID));
     }
 
     /*
      */
     public void testIsa7() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.LEFTBRACE));
     }
 
     /*
      */
     public void testIsa8() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.LETTER));
     }
 
     /*
      */
     public void testIsa9() {
-        Token t = new SpaceToken(" ");
-        assertFalse(t.isa(Catcode.MACPARAM));
+        assertFalse(t.isa(Catcode.MACROPARAM));
     }
 
     /*
      */
     public void testIsa10() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.MATHSHIFT));
     }
 
     /*
      */
     public void testIsa11() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.OTHER));
     }
 
     /*
      */
     public void testIsa12() {
-        Token t = new SpaceToken(" ");
-        assertFalse(t.isa(Catcode.RIGTHBRACE));
+        assertFalse(t.isa(Catcode.RIGHTBRACE));
     }
 
     /*
      */
     public void testIsa13() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.SUBMARK));
     }
 
     /*
      */
     public void testIsa14() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.SUPMARK));
     }
 
     /*
      */
     public void testIsa15() {
-        Token t = new SpaceToken(" ");
         assertFalse(t.isa(Catcode.TABMARK));
     }
     

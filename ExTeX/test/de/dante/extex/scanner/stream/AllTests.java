@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.scanner;
+package de.dante.extex.scanner.stream;
 
 import junit.framework.Test;
 import junit.framework.TestSuite;
@@ -25,7 +25,7 @@ import junit.framework.TestSuite;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class AllTests {
 
@@ -34,22 +34,10 @@ public class AllTests {
     }
 
     public static Test suite() {
-        TestSuite suite = new TestSuite("Test for de.dante.extex.scanner");
+        TestSuite suite = new TestSuite(
+                "Test for de.dante.extex.scanner.stream");
         //$JUnit-BEGIN$
-        suite.addTestSuite(SpaceTokenTest.class);
-        suite.addTestSuite(ActiveCharacterTokenTest.class);
-        suite.addTestSuite(LetterTokenTest.class);
-        suite.addTestSuite(ControlSequenceTokenTest.class);
-        suite.addTestSuite(OtherTokenTest.class);
-        suite.addTestSuite(CrTokenTest.class);
-        suite.addTestSuite(LeftBraceTokenTest.class);
-        suite.addTestSuite(RightBraceTokenTest.class);
-        suite.addTestSuite(MacroParamTokenTest.class);
-        suite.addTestSuite(MathShiftTokenTest.class);
-        suite.addTestSuite(SubMarkTokenTest.class);
-        suite.addTestSuite(SupMarkTokenTest.class);
-        suite.addTestSuite(TabMarkTokenTest.class);
-        suite.addTestSuite(CatcodeTest.class);
+
         //$JUnit-END$
         return suite;
     }

@@ -25,7 +25,7 @@ import junit.framework.TestSuite;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AllTests {
 
@@ -36,12 +36,20 @@ public class AllTests {
     public static Test suite() {
         TestSuite suite = new TestSuite("Test for de.dante.extex.scanner");
         //$JUnit-BEGIN$
-        suite.addTestSuite(TokenStreamStringImplTest.class);
         suite.addTestSuite(SpaceTokenTest.class);
         suite.addTestSuite(ActiveCharacterTokenTest.class);
         suite.addTestSuite(LetterTokenTest.class);
         suite.addTestSuite(ControlSequenceTokenTest.class);
         suite.addTestSuite(OtherTokenTest.class);
+        suite.addTestSuite(CrTokenTest.class);
+        suite.addTestSuite(LeftBraceTokenTest.class);
+        suite.addTestSuite(RightBraceTokenTest.class);
+        suite.addTestSuite(MacroParamTokenTest.class);
+        suite.addTestSuite(MathShiftTokenTest.class);
+        suite.addTestSuite(SubMarkTokenTest.class);
+        suite.addTestSuite(SupMarkTokenTest.class);
+        suite.addTestSuite(TabMarkTokenTest.class);
+        suite.addTestSuite(CatcodeTest.class);
         //$JUnit-END$
         return suite;
     }

@@ -24,40 +24,40 @@ import junit.framework.TestCase;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class LetterTokenTest extends TestCase {
+public class MathShiftTokenTest extends TestCase {
 
     /*
      */
     public static void main(String[] args) {
-        junit.textui.TestRunner.run(LetterTokenTest.class);
+        junit.textui.TestRunner.run(MathShiftTokenTest.class);
     }
 
-    private static Token t = new LetterToken("x");
+    private static Token t = new MathShiftToken("*");
 
     /*
      */
     public void testGetCatcode() {
-        assertEquals(Catcode.LETTER,t.getCatcode());
+        assertEquals(Catcode.MATHSHIFT,t.getCatcode());
     }
 
     /*
      */
     public void testToString() {
-        assertEquals("the letter x",t.toString());
+        assertEquals("math shift character *",t.toString());
     }
 
     /*
      */
     public void testToText() {
-        assertEquals("x",t.toText());
+        assertEquals("*",t.toText());
     }
 
     /*
      */
     public void testGetValue() {
-        assertEquals("x",t.getValue());
+        assertEquals("*",t.getValue());
     }
 
     /*
@@ -69,39 +69,39 @@ public class LetterTokenTest extends TestCase {
     /*
      */
     public void testEqualsToken1() {
-        Token t1 = new LetterToken(" ");
-        Token t2 = new OtherToken(" ");
+        Token t1 = new MathShiftToken(" ");
+        Token t2 = new SpaceToken(" ");
         assertFalse(t1.equals(t2));
     }
 
     /*
      */
     public void testEqualsCatcodeString0() {
-        assertTrue(t.equals(Catcode.LETTER,"x"));
+        assertTrue(t.equals(Catcode.MATHSHIFT,"*"));
     }
 
     /*
      */
     public void testEqualsCatcodeString1() {
-        assertFalse(t.equals(Catcode.OTHER,"x"));
+        assertFalse(t.equals(Catcode.LETTER,"*"));
     }
 
     /*
      */
     public void testEqualsCatcodechar0() {
-        assertTrue(t.equals(Catcode.LETTER,'x'));
+        assertTrue(t.equals(Catcode.MATHSHIFT,'*'));
     }
 
     /*
      */
     public void testEqualsCatcodechar1() {
-        assertFalse(t.equals(Catcode.OTHER,' '));
+        assertFalse(t.equals(Catcode.LETTER,'*'));
     }
 
     /*
      */
     public void testEqualschar0() {
-        assertTrue(t.equals('x'));
+        assertTrue(t.equals('*'));
     }
 
     /*
@@ -161,7 +161,7 @@ public class LetterTokenTest extends TestCase {
     /*
      */
     public void testIsa8() {
-        assertTrue(t.isa(Catcode.LETTER));
+        assertFalse(t.isa(Catcode.LETTER));
     }
 
     /*
@@ -173,7 +173,7 @@ public class LetterTokenTest extends TestCase {
     /*
      */
     public void testIsa10() {
-        assertFalse(t.isa(Catcode.MATHSHIFT));
+        assertTrue(t.isa(Catcode.MATHSHIFT));
     }
 
     /*
