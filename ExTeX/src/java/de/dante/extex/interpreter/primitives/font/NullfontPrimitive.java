@@ -49,10 +49,16 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NullfontPrimitive extends AbstractCode
         implements FontConvertible {
+
+    /**
+     * The field <tt>nullFont</tt> contains the font encapsulated in this
+     * primitive.
+     */
+    private Font nullFont = new NullFont();
 
     /**
      * Creates a new object.
@@ -72,7 +78,7 @@ public class NullfontPrimitive extends AbstractCode
     public Font convertFont(final Context context, final TokenSource source)
             throws GeneralException {
 
-        return new NullFont();
+        return nullFont;
     }
 
 }
