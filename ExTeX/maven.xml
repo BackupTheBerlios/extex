@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!-- ================================================================== -->
-<!--  $Id: maven.xml,v 1.1 2004/06/04 08:19:12 gene Exp $              -->
+<!--  $Id: maven.xml,v 1.2 2004/07/10 08:58:31 gene Exp $              -->
 <!-- ================================================================== -->
 
 <project xmlns:j="jelly:core">
@@ -11,14 +11,11 @@
     <path id="main.class.path">
       <fileset dir="lib">
         <include name="*.jar"/>
-        <exclude name="junit.jar"/>
-        <exclude name="ant.jar"/>
       </fileset>
     </path>
     <mkdir dir="${classes}"/>
     <!-- compile the application code -->
-    <javac srcdir="${src}" 
-           excludes="de/dante/tools/*"
+    <javac srcdir="src/java" 
            destdir="${classes}"
            debug="on">
       <classpath refid="main.class.path"/>
@@ -45,7 +42,7 @@
     <mkdir dir="${javadoc}" />
     <javadoc 
        destdir="${javadoc}"
-       overview="src/overview.html"
+       overview="src/java/overview.html"
        author="true"
        version="true"
        use="true"
@@ -56,10 +53,10 @@
        nodeprecatedlist="false"
        nodeprecated="false">
       <classpath refid="main.class.path"/>
-      <packageset dir="${src}" defaultexcludes="yes"/>
+      <packageset dir="src/java" defaultexcludes="yes"/>
     </javadoc>
     <copy todir="${javadoc}">
-      <fileset dir="src">
+      <fileset dir="src/java">
         <include name="**/*.gif"/>
         <include name="**/*.png"/>
       </fileset>
