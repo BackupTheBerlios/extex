@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamespaceTest extends ExTeXLauncher {
 
@@ -67,7 +67,7 @@ public class NamespaceTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n");
     }
 

@@ -19,20 +19,18 @@
 
 package de.dante.extex.interpreter.max;
 
-import java.util.Properties;
-
 import de.dante.test.ExTeXLauncher;
 
 /**
- * This is a test suite for the primitive <tt>\namespace</tt>.
+ * This is a test suite for the the interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MaxTest extends ExTeXLauncher {
 
     /**
-     * Constructor for TabMarkTest.
+     * Constructor for MaxTest.
      *
      * @param arg the name
      */
@@ -48,13 +46,14 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testTabMark() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`&=4\\relax"
                 + "&"
-                + "\\end ", "Misplaced alignment tab character &", "\n");
+                + "\\end ",
+                //--- log message ---
+                "Misplaced alignment tab character &",
+                //--- output channel ---
+                "\n");
     }
 
     /**
@@ -64,13 +63,14 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testSupMark() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`^=7\\relax"
                 + "^"
-                + "\\end ", "Missing $ inserted", "\n");
+                + "\\end ",
+                //--- log message ---
+                "Missing $ inserted",
+                //--- output channel ---
+                "\n");
     }
 
     /**
@@ -80,13 +80,14 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testSubMark() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`_=8\\relax"
                 + "_"
-                + "\\end ", "Missing $ inserted", "\n");
+                + "\\end ",
+                //--- log message ---
+                "Missing $ inserted",
+                //--- output channel ---
+                "\n");
     }
 
     /**
@@ -96,14 +97,13 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testMacroParam() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`#=6\\relax"
                 + "#"
                 + "\\end ",
+                //--- log message ---
                 "You can't use `macro parameter character #' in vertical mode",
+                //--- output channel ---
                 "\n");
     }
 
@@ -115,14 +115,13 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testUndefinedAcive() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`~=13\\relax"
                 + "~"
                 + "\\end ",
+                //--- log message ---
                 "Undefined control sequence",
+                //--- output channel ---
                 "\n");
     }
 
@@ -134,13 +133,12 @@ public class MaxTest extends ExTeXLauncher {
      */
     public void testUndefinedCs() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\UNDEF"
                 + "\\end ",
+                //--- log message ---
                 "Undefined control sequence",
+                //--- output channel ---
                 "\n");
     }
 

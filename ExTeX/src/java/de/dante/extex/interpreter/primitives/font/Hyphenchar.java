@@ -39,7 +39,7 @@ import de.dante.util.UnicodeChar;
  * <doc name="hyphenchar">
  * <h3>The Primitive <tt>\hyphenchar</tt></h3>
  * <p>
- *  ...
+ *  TODO documentation missing
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -58,7 +58,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Hyphenchar extends AbstractCode implements ExpandableCode {
 

@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MessageTest extends ExTeXLauncher {
 
@@ -54,7 +54,7 @@ public class MessageTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "Missing `{' inserted",
-                //--- output chanel ---
+                //--- output channel ---
                 null);
     }
 
@@ -71,7 +71,7 @@ public class MessageTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "Missing `{' inserted",
-                //--- output chanel ---
+                //--- output channel ---
                 null);
     }
 
@@ -90,7 +90,63 @@ public class MessageTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "Hello world!",
-                //--- output chanel ---
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * Test case checking that \message prints its plain argument.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMessage2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\batchmode"
+                + "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\message{Hello world!}"
+                + "\\end ",
+                //--- log message ---
+                "Hello world!",
+                //--- output channel ---
+                "");
+    }
+    /**
+     * Test case checking that \message prints its plain argument.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMessage3() throws Exception {
+
+        runCode(//--- input code ---
+                "\\nonstopmode"
+                + "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\message{Hello world!}"
+                + "\\end ",
+                //--- log message ---
+                "Hello world!",
+                //--- output channel ---
+                "");
+    }
+
+    /**
+     * Test case checking that \message prints its plain argument.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testMessage4() throws Exception {
+
+        runCode(//--- input code ---
+                "\\scrollmode"
+                + "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\message{Hello world!}"
+                + "\\end ",
+                //--- log message ---
+                "Hello world!",
+                //--- output channel ---
                 "");
     }
 

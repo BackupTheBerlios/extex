@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Or extends AbstractIf {
 
@@ -69,7 +69,7 @@ public class Or extends AbstractIf {
                     printableControlSequence(context));
         } else if (skipToElseOrFi(context, source)) {
             throw new HelpingException(getLocalizer(), "TTP.ExtraOrElseFi",
-                    printableControlSequence(context, "else"));
+                    context.esc("else"));
         }
 
         return true;

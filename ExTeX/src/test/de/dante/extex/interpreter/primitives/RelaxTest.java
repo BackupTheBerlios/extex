@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class RelaxTest extends ExTeXLauncher {
 
@@ -59,7 +59,7 @@ public class RelaxTest extends ExTeXLauncher {
                 "\\relax",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n");
     }
 
@@ -74,7 +74,7 @@ public class RelaxTest extends ExTeXLauncher {
                 "abc\\relax def",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\nabcdef \n");
     }
 
@@ -88,7 +88,7 @@ public class RelaxTest extends ExTeXLauncher {
                 "\\relax ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n");
     }
 
@@ -102,7 +102,7 @@ public class RelaxTest extends ExTeXLauncher {
                 "\\relax         ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n");
     }
 
@@ -116,7 +116,7 @@ public class RelaxTest extends ExTeXLauncher {
                 "\\relax %1234 ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n");
     }
 

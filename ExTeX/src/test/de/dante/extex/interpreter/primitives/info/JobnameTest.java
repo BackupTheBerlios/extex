@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class JobnameTest extends ExTeXLauncher {
 
@@ -55,7 +55,7 @@ public class JobnameTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n\\nullFont t\\nullFont e\\nullFont x"
                 + "\\nullFont p\\nullFont u\\nullFont t\n");
     }
@@ -78,7 +78,7 @@ public class JobnameTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\n\\nullFont j\\nullFont o\\nullFont b\n");
     }
 }

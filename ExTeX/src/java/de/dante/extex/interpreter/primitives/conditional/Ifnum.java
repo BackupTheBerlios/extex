@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Ifnum extends AbstractIf {
 
@@ -105,7 +105,7 @@ public class Ifnum extends AbstractIf {
             // fall-through
             }
         }
-        //TODO pushback the tokens read
+
         throw new HelpingException(getLocalizer(), "TTP.IllegalIfnumOp");
     }
 }

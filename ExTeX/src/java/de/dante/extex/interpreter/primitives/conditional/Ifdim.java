@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Ifdim extends AbstractIf {
 
@@ -101,7 +101,7 @@ public class Ifdim extends AbstractIf {
             // Fal through to error handling
             }
         }
-        //TODO pushback the tokens read
+
         throw new HelpingException(getLocalizer(), "TTP.IllegalIfnumOp",
                 printableControlSequence(context));
     }

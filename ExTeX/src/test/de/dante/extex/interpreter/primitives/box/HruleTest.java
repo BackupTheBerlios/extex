@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hrule</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HruleTest extends ExTeXLauncher {
 
@@ -58,7 +58,7 @@ public class HruleTest extends ExTeXLauncher {
                 + "\\end ",
                 //--- log message ---
                 "",
-                //--- output chanel ---
+                //--- output channel ---
                 "\\vbox(0.4pt+0.0pt)x0.0pt\n.\\rule(0.4pt+0.0pt)x0.0pt\n");
         //TODO is this correct?
     }

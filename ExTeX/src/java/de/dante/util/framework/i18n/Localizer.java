@@ -22,10 +22,11 @@ package de.dante.util.framework.i18n;
 import java.io.PrintStream;
 
 /**
- * ...
+ * The localizer is a convenience class which joins the features of a resource
+ * bundle with the features of a message formatter..
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Localizer {
 
