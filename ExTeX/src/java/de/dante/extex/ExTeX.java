@@ -592,7 +592,8 @@ import de.dante.util.resource.ResourceFinderFactory;
  *  </li>
  *  <li>Java must be configured to find the jar files from the ExTeX
  *   distribution. This can be acomplished by setting the environment variable
- *   <tt>JAVA_HOME</tt>. See the documentation of your Java system for details.
+ *   <tt>CLASSPATH</tt> or <tt>JAVA_HOME</tt>. See the documentation of your
+ *   Java system for details.
  *  </li>
  * </ul>
  * <p>
@@ -614,7 +615,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class ExTeX {
 
