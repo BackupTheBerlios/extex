@@ -13,7 +13,7 @@ Usage:
   <!-- configure the directories -->
   <property name="jarfile" value="extex"/>
   <property name="src" location="src"/>
-  <property name="test.src" location="test"/>
+  <property name="src.test" location="test"/>
   <property name="classes" location="tmp/classes"/>
   <property name="javadoc" location="doc/javadoc"/>
   <property name="tmp" location="tmp"/>
@@ -26,6 +26,16 @@ Usage:
       <exclude name="ant.jar"/>
     </fileset>
   </path>
+  <path id="test.class.path">
+    <fileset dir="lib">
+      <include name="*.jar"/>
+      <exclude name="ant.jar"/>
+    </fileset>
+    <fileset dir="lib.develop">
+      <include name="*.jar"/>
+      <exclude name="ant.jar"/>
+    </fileset>
+  </path>
 
   <target name="compile"
        	  description="Compile the Java files (without tests)">
@@ -35,6 +45,31 @@ Usage:
     <javac srcdir="${src}" 
            destdir="${classes}"
            debug="on">
+       <classpath refid="main.class.path"/>
+    </javac>
+    <copy todir="${classes}">
+      <fileset dir="src">
+        <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
+        <include name="**/ExTeX-PL"/>
+      </fileset>
+    </copy>
+  </target>
+
+  <target name="compile.test"
+       	  description="Compile the Java files (with tests)">
+    <!-- create empty output directory for classes if not present -->
+    <mkdir dir="${classes}"/>
+    <!-- compile the application code -->
+    <javac srcdir="${src}" 
+           destdir="${classes}"
+           debug="on">
+       <classpath refid="main.class.path"/>
+    </javac>
+    <javac srcdir="${src.test}" 
+           destdir="${classes}"
+           debug="on">
+       <classpath refid="main.class.path"/>
        <classpath refid="main.class.path"/>
     </javac>
     <copy todir="${classes}">
