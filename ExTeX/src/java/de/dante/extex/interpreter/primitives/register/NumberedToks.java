@@ -18,11 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
@@ -36,7 +32,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NumberedToks extends NamedToks {
 
@@ -50,27 +46,13 @@ public class NumberedToks extends NamedToks {
 	}
 
 	/**
-	 * Scan the key (the number) and call <code>expand()</code> 
-	 * from the superclass.
-	 * 
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-	 *         de.dante.extex.interpreter.context.Context,
-	 *         de.dante.extex.interpreter.TokenSource,
-	 *         de.dante.extex.typesetter.Typesetter)
+	 * Return the key (the number) for the register.
+	 *
+	 * @param source 	the tokensource
+	 * @return Return the key for the register
+	 * @throws GeneralException, if a error ocoured
 	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		String key = getName() + "#" + Long.toString(source.scanNumber());
-		super.expand(prefix, context, source, key);
+	protected String getKey(final TokenSource source) throws GeneralException {
+		return getName() + "#" + Long.toString(source.scanNumber());
 	}
-
-    /**
-     * Return the register value as <code>Tokens</code> for <code>\the</code>.
-     * 
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
-     */
-    public Tokens the(Context context, TokenSource source)
-        throws GeneralException {
-        String key = getName() + "#" + Long.toString(source.scanNumber());
-        return context.getToks(key);
-    }
 }

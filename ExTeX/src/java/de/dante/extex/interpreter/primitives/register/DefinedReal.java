@@ -22,44 +22,43 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\real</code>.
- * It sets the named real register to the value given,
- * and as a side effect all prefixes are zeroed.
- *
- * <p>
- * All features are inherited from 
- * {@link de.dante.extex.interpreter.type.NamedReal Real}. Just the key 
- * has to be provided under which this Real has to be stored. This key is
- * constructed from the name, a hash mark and the running number.
- * </p>
+ * This class provides an implementation for a defined <code>\real</code>-register
+ * with <code>\realdef</code>.
  * 
- * <p>Example</p>
- * <pre>
- * \real12=345.67
- * </pre>
- *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class NumberedReal extends NamedReal {
+public class DefinedReal extends NamedReal {
 
 	/**
 	 * Creates a new object.
 	 *
 	 * @param name the name for debugging
 	 */
-	public NumberedReal(String name) {
+	public DefinedReal(String name, String regname, long number) {
 		super(name);
+		this.number = number;
+		this.regname = regname;
 	}
+
+	/**
+	 * the number for the register
+	 */
+	private long number;
+
+	/**
+	 * the name of the register
+	 */
+	private String regname;
 
 	/**
 	 * Return the key (the number) for the register.
 	 *
 	 * @param source 	the tokensource
-	 * @return Return the key
-	 * @throws GeneralException, if an ecxeption was occured
+	 * @return Return the key for the register
+	 * @throws GeneralException, if a error ocoured
 	 */
-	protected String getKey(final TokenSource source) throws GeneralException {
-		return getName() + "#" + Long.toString(source.scanNumber());
+	protected String getKey(TokenSource source) throws GeneralException {
+		return regname + "#" + Long.toString(number);
 	}
 }

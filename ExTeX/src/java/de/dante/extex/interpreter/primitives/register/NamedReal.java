@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NamedReal extends AbstractCode implements Theable, Advanceable, Multiplyable, Divideable, RealConvertable {
 
@@ -81,10 +81,10 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	}
 
 	/**
-	 * ...
+	 * set the value
 	 *
-	 * @param context the interpreter context
-	 * @param value ...
+	 * @param context	the interpreter context
+	 * @param value 		the new value as Real
 	 */
 	public void set(Context context, Real value) throws GeneralException {
 		if (context instanceof ContextExtension) {
@@ -96,10 +96,10 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	}
 
 	/**
-	 * ...
+	 * Set the value
 	 *
-	 * @param context the interpreter context
-	 * @param value ...
+	 * @param context	the interpreter context
+	 * @param value 		the new value as String
 	 */
 	public void set(Context context, String value) throws GeneralException {
 		if (context instanceof ContextExtension) {
@@ -131,7 +131,7 @@ public class NamedReal extends AbstractCode implements Theable, Advanceable, Mul
 	 *
 	 * @return ...
 	 */
-	protected String getKey(TokenSource source) throws GeneralException {
+	protected String getKey(final TokenSource source) throws GeneralException {
 		return getName();
 	}
 

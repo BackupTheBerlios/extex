@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NumberedReal extends NamedReal {
 
@@ -59,7 +59,7 @@ public class NumberedReal extends NamedReal {
 	 * @return Return the key
 	 * @throws GeneralException, if an ecxeption was occured
 	 */
-	protected String getKey(TokenSource source) throws GeneralException {
+	protected String getKey(final TokenSource source) throws GeneralException {
 		return getName() + "#" + Long.toString(source.scanNumber());
 	}
 }

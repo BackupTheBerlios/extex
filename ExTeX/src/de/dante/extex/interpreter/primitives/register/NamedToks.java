@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\toks</code>.
  * It sets the named toks register to the value given, and as a side effect all
  * prefixes are zeroed.
- * 
+ * <p>
  * Example
  * 
  * <pre>
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NamedToks extends AbstractCode implements Theable {
 
@@ -57,8 +57,8 @@ public class NamedToks extends AbstractCode implements Theable {
 	 * 
 	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
 	 */
-	public Tokens the(Context context, TokenSource source) throws GeneralException {
-		return context.getToks(getName());
+	public Tokens the(final Context context, final TokenSource source) throws GeneralException {
+		return context.getToks(getKey(source));
 	}
 
 	/**
@@ -67,8 +67,14 @@ public class NamedToks extends AbstractCode implements Theable {
 	 *      de.dante.extex.interpreter.TokenSource,
 	 *      de.dante.extex.typesetter.Typesetter)
 	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		expand(prefix, context, source, getName());
+	public void execute(final Flags prefix, final Context context, final TokenSource source, Typesetter typesetter) throws GeneralException {
+		//  \encoding{UTF-8}   or   \encoding={UTF-8}
+		String key = getKey(source);
+		source.scanOptionalEquals();
+		Tokens toks = source.getTokens();
+		context.setToks(key, toks, prefix.isGlobal());
+		prefix.clear();
+		doAfterAssignment(context, source);
 	}
 
 	/**
@@ -92,19 +98,13 @@ public class NamedToks extends AbstractCode implements Theable {
 	}
 
 	/**
-	 * Expand
-	 * <p>
-	 * Scan the tokens between <code>{</code> and <code>}</code> and store it.
+	 * Return the key (the name of the primitive) for the register.
 	 * 
-	 * @param prefix the prefix flags
-	 * @param context the interpreter context
-	 * @param source the tokensource
-	 * @param key the key
-	 * @throws GeneralException
+	 * @param source the source for new tokens
+	 * @return the key for the current register
+	 * @throws GeneralException in case that a derived class need to throw an Exception this on e is declared.
 	 */
-	protected void expand(Flags prefix, Context context, TokenSource source, String key) throws GeneralException {
-		Tokens toks = source.getTokens();
-		context.setToks(key, toks, prefix.isGlobal());
-		prefix.clear();
+	protected String getKey(final TokenSource source) throws GeneralException {
+		return getName();
 	}
 }

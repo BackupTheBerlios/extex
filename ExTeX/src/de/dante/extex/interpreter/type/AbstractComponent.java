@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Abstract class for all components e.g. <code>Count</code>, <code>Dimen</code>, ...
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractComponent implements Serializable {
 
@@ -78,6 +78,8 @@ public abstract class AbstractComponent implements Serializable {
 				return ((CountConvertable) code).convertCount(context, source);
 			} else if (code != null && code instanceof DimenConvertable) {
 				return ((DimenConvertable) code).convertDimen(context, source);
+			} else if (code != null && code instanceof RealConvertable) {
+				return ((RealConvertable) code).convertReal(context, source).getLong();
 			}
 		}
 		source.push(t);
@@ -198,7 +200,10 @@ public abstract class AbstractComponent implements Serializable {
 				return new Dimen(((DimenConvertable) code).convertDimen(context, source));
 			} else if (code != null && code instanceof CountConvertable) {
 				numberfound = true;
-				value = ((CountConvertable) code).convertCount(context, source)*ONE;
+				value = ((CountConvertable) code).convertCount(context, source) * ONE;
+			} else if (code != null && code instanceof RealConvertable) {
+				numberfound = true;
+				value = ((RealConvertable) code).convertReal(context, source).getLong() * ONE;
 			}
 		}
 		if (!numberfound) {
@@ -375,22 +380,30 @@ public abstract class AbstractComponent implements Serializable {
 	 * @throws GeneralException, in case of an error
 	 */
 	public Real scanReal(Context context, TokenSource source) throws GeneralException {
-		StringBuffer sb = new StringBuffer(32);
 		long value = 0;
 		boolean neg = false;
-		Token t = source.scanNonSpace();
 
+		// get number
+		Token t = source.scanNonSpace();
 		if (t == null) {
 			throw new GeneralHelpingException("TTP.MissingNumber");
-		} else if (t instanceof RealConvertable) { // TODO incomplete, see getCount
-			return ((RealConvertable) t).convertReal(context, source);
 		} else if (t.equals(Catcode.OTHER, "-")) {
 			neg = true;
 			t = source.scanNonSpace();
 		} else if (t.equals(Catcode.OTHER, "+")) {
 			t = source.scanNonSpace();
+		} else if (t instanceof ControlSequenceToken) {
+			Code code = context.getMacro(t.getValue());
+			if (code != null && code instanceof CountConvertable) {
+				return new Real(((CountConvertable) code).convertCount(context, source));
+			} else if (code != null && code instanceof DimenConvertable) {
+				return new Real(((DimenConvertable) code).convertDimen(context, source));
+			} else if (code != null && code instanceof RealConvertable) {
+				return ((RealConvertable) code).convertReal(context, source);
+			}
 		}
 
+		StringBuffer sb = new StringBuffer(32);
 		if (neg) {
 			sb.append('-');
 		}
