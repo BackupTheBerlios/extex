@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,30 +18,110 @@
  */
 package de.dante.test;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Properties;
+import java.util.logging.Handler;
+import java.util.logging.Logger;
+import java.util.logging.StreamHandler;
 
+import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
+import de.dante.extex.logging.LogFormatter;
 
 
-public class ExTeXLauncher {
+/**
+ * ...
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.3 $
+ */
+public class ExTeXLauncher extends TestCase {
 
-    private Properties properties = new Properties();
-    
-    public ExTeXLauncher(final String profile) {
-        super();
-        if (profile.indexOf('*') >= 0) {
-            properties.setProperty("extex.traceTokenizer", "true");
-        }
-        properties.setProperty("extex.logger",
-                               "de.dante.extex.logging.BufferLogger");
-//        BufferLogger.setProfile(profile);
+    /**
+     * Creates a new object.
+     *
+     * @param arg ...
+     */
+    public ExTeXLauncher(final String arg) {
+        super(arg);
     }
 
-    public String run(final String code) throws Exception {
+    /**
+     * ...
+     *
+     * @param code ...
+     *
+     * @throws Exception in case of an error
+     */
+    public void runCode(final String code, final String log, final String out)
+            throws Exception {
+
+        Properties properties = System.getProperties();
+        properties.setProperty("extex.code", code);
+        properties.setProperty("extex.output", "text");
+        properties.setProperty("extex.file", "");
+        properties.setProperty("extex.interaction", "batchmode");
+
         ExTeX main = new ExTeX(properties);
-        properties.setProperty("extex.code",code);
+
+        Logger logger = Logger.getLogger("test");
+        logger.setUseParentHandlers(false);
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        Handler handler = new StreamHandler(bytes, new LogFormatter());
+        logger.addHandler(handler);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        main.setOutStream(stream);
+
         main.run();
-//        return BufferLogger.close();
-        return null; //TODO
+
+        handler.close();
+        logger.removeHandler(handler);
+        if (log != null) {
+            assertEquals(log, bytes.toString());
+        }
+        if (out != null) {
+            assertEquals(out, stream.toString());
+        }
     }
+
+    /**
+     * ...
+     *
+     * @param file the name of the file to read from
+     *
+     * @return the contents of the log file
+     *
+     * @throws Exception in case of an error
+     */
+    public String runFile(final String file) throws Exception {
+
+        Properties properties = System.getProperties();
+        properties.setProperty("extex.code", "");
+        properties.setProperty("extex.output", "text");
+        properties.setProperty("extex.file", file);
+        properties.setProperty("extex.jobname", file);
+        properties.setProperty("extex.interaction", "batchmode");
+
+        ExTeX main = new ExTeX(properties);
+
+        Logger logger = Logger.getLogger("test");
+        logger.setUseParentHandlers(false);
+
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        Handler handler = new StreamHandler(bytes, new LogFormatter());
+        logger.addHandler(handler);
+        main.setLogger(logger);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        main.setOutStream(stream);
+
+        main.run();
+
+        handler.close();
+        logger.removeHandler(handler);
+        return bytes.toString();
+   }
+
 }
