@@ -33,9 +33,9 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MathList implements Noad {
+public class MathList extends AbstractNoad implements Noad, NSSNoad {
 
     /**
      * The field <tt>list</tt> is the container for the elements of this node
@@ -54,11 +54,11 @@ public class MathList implements Noad {
     /**
      * Add an arbitrary knot to the list.
      *
-     * @param knot the knot to add
+     * @param noad the noad to add
      */
-    public void add(final Knot knot) {
+    public void add(final Noad noad) {
 
-        list.add(knot);
+        list.add(noad);
     }
 
     /**
@@ -80,9 +80,9 @@ public class MathList implements Noad {
      * @return the node at position <i>index</i> of <code>null</code> if index
      * is out of bounds
      */
-    public Knot get(final int index) {
+    public Noad get(final int index) {
 
-        return (Knot) list.get(index);
+        return (Noad) list.get(index);
     }
 
     /**
