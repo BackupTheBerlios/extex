@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- ================================================================== -->
+<!--  $Id: maven.xml,v 1.1 2004/06/04 08:19:12 gene Exp $              -->
+<!-- ================================================================== -->
+
+<project xmlns:j="jelly:core">
+
+  <goal name="java:compile">
+    <property name="src" location="src"/>
+    <property name="classes" location="target/classes"/>
+    <path id="main.class.path">
+      <fileset dir="lib">
+        <include name="*.jar"/>
+        <exclude name="junit.jar"/>
+        <exclude name="ant.jar"/>
+      </fileset>
+    </path>
+    <mkdir dir="${classes}"/>
+    <!-- compile the application code -->
+    <javac srcdir="${src}" 
+           excludes="de/dante/tools/*"
+           destdir="${classes}"
+           debug="on">
+      <classpath refid="main.class.path"/>
+      <exclude name="de/dante/tools/**"/>
+    </javac>
+    <copy todir="${classes}">
+      <fileset dir="src">
+        <include name="**/*.properties"/>
+        <include name="**/*.xml"/>
+        <include name="**/ExTeX-PL"/>
+      </fileset>
+    </copy>
+  </goal>
+
+  <goal name="javadoc:generate">
+    <property name="javadoc" location="target/docs/apidocs"/>
+    <path id="main.class.path">
+      <fileset dir="lib">
+        <include name="*.jar"/>
+        <exclude name="junit.jar"/>
+        <exclude name="ant.jar"/>
+      </fileset>
+    </path>
+    <mkdir dir="${javadoc}" />
+    <javadoc 
+       destdir="${javadoc}"
+       overview="src/overview.html"
+       author="true"
+       version="true"
+       use="true"
+       splitindex="true"
+       notree="false"
+       nonavbar="false"
+       noindex="false"
+       nodeprecatedlist="false"
+       nodeprecated="false">
+      <classpath refid="main.class.path"/>
+      <packageset dir="${src}" defaultexcludes="yes"/>
+    </javadoc>
+    <copy todir="${javadoc}">
+      <fileset dir="src">
+        <include name="**/*.gif"/>
+        <include name="**/*.png"/>
+      </fileset>
+    </copy>
+  </goal>
+
+</project>
