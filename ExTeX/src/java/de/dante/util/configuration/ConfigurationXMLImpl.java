@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -110,15 +110,20 @@ public class ConfigurationXMLImpl implements Configuration {
      *
      * @param aResource the name of the resource to be used; i.e. the file name
      *
+     * @throws ConfigurationInvalidResourceException in case that the given
+     *  resource name is nullor empty
      * @throws ConfigurationNotFoundException in case that the named path does
-     * not lead to a resource
+     *  not lead to a resource
      * @throws ConfigurationSyntaxException in case that the resource contains
-     * syntax errors
-     * @throws ConfigurationException in case of an IO exception while reading
-     * the resource
+     *  syntax errors
+     * @throws ConfigurationIOException in case of an IO exception while
+     *  reading the resource
      */
     public ConfigurationXMLImpl(final String aResource)
-            throws ConfigurationException {
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
 
         super();
 
@@ -177,7 +182,8 @@ public class ConfigurationXMLImpl implements Configuration {
      */
     public String getAttribute(final String name) {
 
-        return this.root.getAttribute(name);
+        return (this.root.getAttributeNode(name) == null ? null : //
+                this.root.getAttribute(name));
     }
 
     /**
@@ -263,12 +269,22 @@ public class ConfigurationXMLImpl implements Configuration {
      *
      * @return the sub-configuration or <code>null</code> if none was found
      *
-     * @throws ConfigurationException in case of an error
+     * @throws ConfigurationInvalidResourceException in case that the given
+     *  resource name is nullor empty
+     * @throws ConfigurationNotFoundException in case that the named path does
+     *  not lead to a resource
+     * @throws ConfigurationSyntaxException in case that the resource contains
+     *  syntax errors
+     * @throws ConfigurationIOException in case of an IO exception while
+     *  reading the resource
      *
      * @see #getConfiguration(String)
      */
     public Configuration findConfiguration(final String name)
-            throws ConfigurationException {
+            throws ConfigurationInvalidResourceException,
+            ConfigurationNotFoundException,
+            ConfigurationSyntaxException,
+            ConfigurationIOException {
 
         for (Node node = root.getFirstChild(); node != null; node = node
                 .getNextSibling()) {
@@ -276,7 +292,7 @@ public class ConfigurationXMLImpl implements Configuration {
                 String src = ((Element) node).getAttribute("src");
 
                 return (src != null && !src.equals("") //
-                ? new ConfigurationXMLImpl(base + src)
+                        ? new ConfigurationXMLImpl(base + src)
                         : new ConfigurationXMLImpl((Element) node, base,
                                 resource));
             }
@@ -334,7 +350,7 @@ public class ConfigurationXMLImpl implements Configuration {
         for (Node node = root.getFirstChild(); node != null; node = node
                 .getNextSibling()) {
             if (key.equals(node.getNodeName())
-                && attribute.equals(((Element) node).getAttribute("name"))) {
+                    && attribute.equals(((Element) node).getAttribute("name"))) {
                 return new ConfigurationXMLImpl((Element) node, base, resource);
             }
         }
@@ -502,8 +518,8 @@ public class ConfigurationXMLImpl implements Configuration {
 
         for (int pi = 0; pi < PATHS.length; pi++) {
             for (int ei = 0; ei < EXTENSIONS.length; ei++) {
-                InputStream stream = classLoader
-                        .getResourceAsStream(PATHS[pi] + name + EXTENSIONS[ei]);
+                InputStream stream = classLoader.getResourceAsStream(PATHS[pi]
+                        + name + EXTENSIONS[ei]);
 
                 if (stream != null) {
                     return stream;

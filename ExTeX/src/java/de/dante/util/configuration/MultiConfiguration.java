@@ -28,9 +28,10 @@ import de.dante.util.StringList;
 /**
  * Container for several
  * {@link de.dante.util.configuration.Configuration Configuration} objects.
+ * They can be treated as if they where contained in one configuration.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MultiConfiguration implements Configuration {
 
@@ -84,7 +85,10 @@ public class MultiConfiguration implements Configuration {
      *      java.lang.String)
      */
     public Configuration findConfiguration(final String key)
-            throws ConfigurationException {
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
 
         List v = new ArrayList();
 
@@ -101,7 +105,11 @@ public class MultiConfiguration implements Configuration {
             case 1:
                 return (Configuration) v.get(0);
             default:
-                return new MultiConfiguration((Configuration[]) v.toArray());
+                try {
+                    return new MultiConfiguration((Configuration[]) v.toArray());
+                } catch (ConfigurationException e) {
+                    throw new RuntimeException("unexpected exception", e);
+                }
         }
     }
 
@@ -124,7 +132,7 @@ public class MultiConfiguration implements Configuration {
 
         if (v.size() == 0) {
             throw new ConfigurationNotFoundException(null, key + "["
-                                                           + attribute + "]");
+                    + attribute + "]");
         }
 
         if (v.size() == 1) {
@@ -171,7 +179,7 @@ public class MultiConfiguration implements Configuration {
     /**
      * @see de.dante.util.configuration.Configuration#getValues(java.lang.String)
      */
-    public StringList getValues(final String key) throws ConfigurationException {
+    public StringList getValues(final String key) {
 
         StringList sl = new StringList();
 
@@ -186,7 +194,7 @@ public class MultiConfiguration implements Configuration {
     /**
      * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
      */
-    public Iterator iterator(final String key) throws ConfigurationException {
+    public Iterator iterator(final String key) {
 
         return new MultiConfigurationIterator(configs, key);
     }
@@ -197,7 +205,7 @@ public class MultiConfiguration implements Configuration {
      */
     public String getAttribute(final String name) {
 
-        // todo unimplemented because not needed
+        // todo unimplemented because not needed, yet
         throw new RuntimeException("unimplemented");
     }
 
@@ -206,7 +214,7 @@ public class MultiConfiguration implements Configuration {
      */
     public String getValue() throws ConfigurationException {
 
-        // todo unimplemented because not needed
+        // todo unimplemented because not needed, yet
         throw new RuntimeException("unimplemented");
     }
 

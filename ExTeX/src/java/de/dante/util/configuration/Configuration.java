@@ -51,7 +51,7 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Configuration {
 
@@ -125,17 +125,28 @@ public interface Configuration {
      * used.
      * </p>
      * <p>
-     * If there are no tags with the given name then an exception is thrown.
+     * If there are no tags with the given name then <code>null</code> is
+     * returned.
      * </p>
      *
      * @param key the tag name of the sub-configuration
      *
      * @return the sub-configuration or <code>null</code> if none is found
      *
-     * @throws ConfigurationException in case of an error in the configuration
+     * @throws ConfigurationInvalidResourceException in case that the given
+     *  resource name is nullor empty
+     * @throws ConfigurationNotFoundException in case that the named path does
+     *  not lead to a resource
+     * @throws ConfigurationSyntaxException in case that the resource contains
+     *  syntax errors
+     * @throws ConfigurationIOException in case of an IO exception while
+     *  reading the resource
      */
     Configuration findConfiguration(String key)
-        throws ConfigurationException;
+        throws ConfigurationInvalidResourceException,
+        ConfigurationNotFoundException,
+        ConfigurationSyntaxException,
+        ConfigurationIOException;
 
     /**
      * Extract a sub-configuration with a given name and a given attribute.
@@ -237,10 +248,8 @@ public interface Configuration {
      * @param key the name of the tags
      *
      * @return the list of values
-     *
-     * @throws ConfigurationException in case that something went wrong
      */
-    StringList getValues(String key) throws ConfigurationException;
+    StringList getValues(String key);
 
     /**
      * Retrieve an iterator over all items of a sub-configuration.
@@ -248,9 +257,7 @@ public interface Configuration {
      * @param key the name of the sub-configuration
      *
      * @return the iterator
-     *
-     * @throws ConfigurationException in case that something went wrong
      */
-    Iterator iterator(String key) throws ConfigurationException;
+    Iterator iterator(String key);
 
 }
