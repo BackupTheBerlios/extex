@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.24 $
+     * @version $Revision: 1.25 $
      */
     private static final class State {
 
@@ -120,11 +120,6 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * The field <tt>line</tt> contains the current line of input.
      */
     private String line = "";
-
-    /**
-     * The field <tt>namespace</tt> contains the currently used namespace.
-     */
-    private String namespace = Namespace.DEFAULT_NAMESPACE;
 
     /**
      * The index in the buffer for the next character to consider. This
@@ -276,9 +271,10 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         state = MID_LINE;
 
-        Token t = ((TokenFactory) oFactory).createToken(Catcode.ACTIVE,
-                (UnicodeChar) uc, namespace);
-        return t;
+        TokenFactory tokenFactory = (TokenFactory) oFactory;
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
+        return tokenFactory.createToken(Catcode.ACTIVE, (UnicodeChar) uc,
+                tokenizer.getNamespace());
     }
 
     /**
@@ -300,12 +296,15 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
             final Object uc) throws GeneralException {
 
         TokenFactory factory = (TokenFactory) oFactory;
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         Token t = null;
 
         if (state == MID_LINE) {
-            t = factory.createToken(Catcode.SPACE, ' ', namespace);
+            t = factory.createToken(Catcode.SPACE, ' ', tokenizer
+                    .getNamespace());
         } else if (state == NEW_LINE) {
-            t = factory.createToken(Catcode.ESCAPE, "par", namespace);
+            t = factory.createToken(Catcode.ESCAPE, "par", tokenizer
+                    .getNamespace());
         }
 
         endLine();
@@ -321,6 +320,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
 
         TokenFactory factory = (TokenFactory) oFactory;
         Tokenizer tokenizer = (Tokenizer) oTokenizer;
+        String namespace = tokenizer.getNamespace();
 
         if (atEndOfLine()) {
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
@@ -387,10 +387,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitLeftBrace(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.LEFTBRACE,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -400,10 +401,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitLetter(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.LETTER,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -413,10 +415,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitMacroParam(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.MACROPARAM,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -426,10 +429,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitMathShift(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.MATHSHIFT,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -439,10 +443,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitOther(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.OTHER,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -452,10 +457,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitRightBrace(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.RIGHTBRACE,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -494,10 +500,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitSubMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.SUBMARK,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -507,10 +514,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitSupMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.SUPMARK,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
@@ -520,10 +528,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
     public Object visitTabMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
 
+        Tokenizer tokenizer = (Tokenizer) oTokenizer;
         state = MID_LINE;
 
         return ((TokenFactory) oFactory).createToken(Catcode.TABMARK,
-                (UnicodeChar) uc, namespace);
+                (UnicodeChar) uc, tokenizer.getNamespace());
     }
 
     /**
