@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group
+ * Copyright (C) 2004-2005 The ExTeX Group
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,6 +39,7 @@ import org.apache.fop.pdf.PDFStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.documentWriter.SingleDocumentStream;
 import de.dante.extex.font.FontFile;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -59,11 +60,15 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
-public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
+public class PdfDocumentWriter
+        implements
+            DocumentWriter,
+            SingleDocumentStream,
+            NodeVisitor {
 
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#setParameter(java.lang.String,
@@ -74,6 +79,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         // TODO Auto-generated method stub
 
     }
+
     // -------------------------------------------------
 
     /**
@@ -106,7 +112,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             return null;
         }
 
-        public Object visitAlignedLeaders(final Object value, final Object value2) {
+        public Object visitAlignedLeaders(final Object value,
+                final Object value2) {
 
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
@@ -124,7 +131,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             return null;
         }
 
-        public Object visitCenteredLeaders(final Object value, final Object value2) {
+        public Object visitCenteredLeaders(final Object value,
+                final Object value2) {
 
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
@@ -137,24 +145,27 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
             StringBuffer sb = (StringBuffer) value;
             CharNode node = (CharNode) value2;
-            Font font = null; FontFile file = null;
+            Font font = null;
+            FontFile file = null;
             Glyph glyph = null;
 
             font = node.getTypesettingContext().getFont();
 
             if (font != null) {
-              glyph = font.getGlyph(node.getCharacter()); }
+                glyph = font.getGlyph(node.getCharacter());
+            }
 
             sb.append(" " + node.getCharacter() + " [Nb="
-              + ((glyph != null) ? glyph.getNumber() : "??") + "] ");
+                    + ((glyph != null) ? glyph.getNumber() : "??") + "] ");
             sb.append("Char");
             sb.append(metric(node));
 
             if (glyph != null) {
-              file = glyph.getExternalFile(); }
+                file = glyph.getExternalFile();
+            }
 
             sb.append(" filename="
-              + ((file != null) ? "" + file.getFile() : "??"));
+                    + ((file != null) ? "" + file.getFile() : "??"));
 
             /*
              System.out.println("-----------------------------------------");
@@ -176,7 +187,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             return null;
         }
 
-        public Object visitExpandedLeaders(final Object value, final Object value2) {
+        public Object visitExpandedLeaders(final Object value,
+                final Object value2) {
 
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
@@ -194,7 +206,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             return null;
         }
 
-        public Object visitHorizontalList(final Object value, final Object value2) {
+        public Object visitHorizontalList(final Object value,
+                final Object value2) {
 
             StringBuffer sb = (StringBuffer) value;
             Node node = (Node) value2;
@@ -314,19 +327,30 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     // o \paperwidth   / \paperheight,
     // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
     // o \mediawidth   / \mediaheight   <-- VTeX
-    private static final int WIDTH_A4 = 595;  // "bp"
+    private static final int WIDTH_A4 = 595; // "bp"
+
     private static final int HEIGHT_A4 = 842; // "bp"
 
     private static final int LAST_BASE_FONT = 14;
+
     private static final int BUFFER_SIZE = 256;
+
     private static final int ONE_INCH_IN_BP = 72;
+
     private static final int MARKER_RADIUS = 5;
+
     private static final float THIN_LINE = 0.3f;
+
     private static final float THICK_LINE = 0.6f;
+
     private static final float DASH_LEN = 0.3f;
+
     private static final float DASH_DISTANCE = 0.3f;
+
     private static final float DUMMY_HEIGHT = -1.5f;
+
     private static final int UNIQUE_MASK = 0xffff;
+
     private static final int NOT_FOUND = -1;
 
     /**
@@ -413,8 +437,6 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     private static final int ZAPFDINGBATS_ID = 14;
 
-
-
     /**
      * The field <tt>cfg</tt> ...
      */
@@ -490,7 +512,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * Creates a new object.
      * @param theCfg the configuration
      */
-    public PdfDocumentWriter(final Configuration theCfg, final DocumentWriterOptions options) {
+    public PdfDocumentWriter(final Configuration theCfg,
+            final DocumentWriterOptions options) {
 
         super();
         this.cfg = theCfg;
@@ -558,7 +581,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
                 FontReader reader = null;
                 int nb = i + 1;
                 try {
-                    reader = new FontReader("file:src/font/fop-" + name + ".xml");
+                    reader = new FontReader("file:src/font/fop-" + name
+                            + ".xml");
                 } catch (FOPException e) {
                     e.printStackTrace();
                 }
@@ -566,7 +590,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
                 debugFont(font, nb);
                 // Prepend a prefix to the Adobe names.
                 if (i < LAST_BASE_FONT) {
-                  name = uniquePrefix() + "+" + name; }
+                    name = uniquePrefix() + "+" + name;
+                }
                 PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb, name,
                         font.getEncoding(), font, (FontDescriptor) font);
                 pdfDoc.getResources().addFont(pdfFont);
@@ -698,61 +723,49 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         if (fontNameList.isEmpty()) { // Preserve space for the base fonts.
             for (int i = 0; i < LAST_BASE_FONT; i++) {
-                fontNameList.addElement(null); }
+                fontNameList.addElement(null);
+            }
         }
 
         int idx = fontNameList.indexOf(name);
 
         if (idx == NOT_FOUND) {
-          if (name.equals("Times-Roman"))           {
-            idx = TIMESROMAN_ID - 1;
-          } else
-          if (name.equals("Times-Bold"))            {
-            idx = TIMESBOLD_ID - 1;
-          } else
-          if (name.equals("Times-Italic"))          {
-            idx = TIMESITALIC_ID - 1;
-          } else
-          if (name.equals("Times-BoldItalic"))      {
-            idx = TIMESBOLDITALIC_ID - 1;
-          } else
-          if (name.equals("Helvetica"))             {
-            idx = HELVETICA_ID - 1;
-          } else
-          if (name.equals("Helvetica-Bold"))        {
-            idx = HELVETICABOLD_ID - 1;
-          } else
-          if (name.equals("Helvetica-Oblique"))     {
-            idx = HELVETICAOBLIQUE_ID - 1;
-          } else
-          if (name.equals("Helvetica-BoldOblique")) {
-            idx = HELVETICABOLDOBLIQUE_ID - 1;
-          } else
-          if (name.equals("Courier"))               {
-            idx = COURIER_ID - 1;
-          } else
-          if (name.equals("Courier-Bold"))          {
-            idx = COURIERBOLD_ID - 1;
-          } else
-          if (name.equals("Courier-Oblique"))       {
-            idx = COURIEROBLIQUE_ID - 1;
-          } else
-          if (name.equals("Courier-BoldOblique"))   {
-            idx = COURIERBOLDOBLIQUE_ID - 1;
-          } else
-          if (name.equals("Symbol"))                {
-            idx = SYMBOL_ID - 1;
-          } else
-          if (name.equals("ZapfDingbats"))          {
-            idx = ZAPFDINGBATS_ID - 1;
-          }
+            if (name.equals("Times-Roman")) {
+                idx = TIMESROMAN_ID - 1;
+            } else if (name.equals("Times-Bold")) {
+                idx = TIMESBOLD_ID - 1;
+            } else if (name.equals("Times-Italic")) {
+                idx = TIMESITALIC_ID - 1;
+            } else if (name.equals("Times-BoldItalic")) {
+                idx = TIMESBOLDITALIC_ID - 1;
+            } else if (name.equals("Helvetica")) {
+                idx = HELVETICA_ID - 1;
+            } else if (name.equals("Helvetica-Bold")) {
+                idx = HELVETICABOLD_ID - 1;
+            } else if (name.equals("Helvetica-Oblique")) {
+                idx = HELVETICAOBLIQUE_ID - 1;
+            } else if (name.equals("Helvetica-BoldOblique")) {
+                idx = HELVETICABOLDOBLIQUE_ID - 1;
+            } else if (name.equals("Courier")) {
+                idx = COURIER_ID - 1;
+            } else if (name.equals("Courier-Bold")) {
+                idx = COURIERBOLD_ID - 1;
+            } else if (name.equals("Courier-Oblique")) {
+                idx = COURIEROBLIQUE_ID - 1;
+            } else if (name.equals("Courier-BoldOblique")) {
+                idx = COURIERBOLDOBLIQUE_ID - 1;
+            } else if (name.equals("Symbol")) {
+                idx = SYMBOL_ID - 1;
+            } else if (name.equals("ZapfDingbats")) {
+                idx = ZAPFDINGBATS_ID - 1;
+            }
 
-          if (idx > NOT_FOUND) {
-              fontNameList.setElementAt(name, idx);
-          } else {
-              fontNameList.addElement(name);
-              idx = fontNameList.size() - 1;
-          }
+            if (idx > NOT_FOUND) {
+                fontNameList.setElementAt(name, idx);
+            } else {
+                fontNameList.addElement(name);
+                idx = fontNameList.size() - 1;
+            }
         }
 
         return ++idx;
@@ -766,9 +779,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         return shippedPages;
     }
 
-   /**
-    * Draws a marker at the position 1in from the left and 1in from top.
-    */
+    /**
+     * Draws a marker at the position 1in from the left and 1in from top.
+     */
     private void markOrigin() {
 
         cs.add(op.gSave());
@@ -792,9 +805,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     private void newPage(final int pageWD, final int pageHT) throws IOException {
 
         if (pdfDoc == null) {
-          beginPdfDocument();
+            beginPdfDocument();
         } else {
-          pdfDoc.output(this.out);
+            pdfDoc.output(this.out);
         }
 
         currentPage = pdfDoc.getFactory().makePage(pdfDoc.getResources(),
@@ -840,15 +853,15 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * @throws IOException ...
      * @throws GeneralException ...
      */
-    public void shipout(final NodeList nodes) throws IOException,
-            GeneralException {
+    public void shipout(final NodeList nodes)
+            throws IOException,
+                GeneralException {
 
         newPage(WIDTH_A4, HEIGHT_A4);
         shippedPages = pdfDoc.getPages().getCount();
         markOrigin();
         nodes.visit(this, nodes, null);
     }
-
 
     /**
      * Draws a colored box with the dimensions of the node.
@@ -869,10 +882,10 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         float rX = (float) Unit.getDimenAsBP(currentX);
         float rY = (float) Unit.getDimenAsBP(currentY)
-                 - (float) Unit.getDimenAsBP(ht);
+                - (float) Unit.getDimenAsBP(ht);
         float rWD = (float) Unit.getDimenAsBP(wd);
         float rHT = (float) Unit.getDimenAsBP(ht)
-                  + (float) Unit.getDimenAsBP(dp);
+                + (float) Unit.getDimenAsBP(dp);
 
         if (rHT <= 0.0) {
             rHT = DUMMY_HEIGHT;
@@ -881,9 +894,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         cs.add(op.addRectangle(rX, rY, rWD, rHT));
 
         if (onlyStroke) {
-          cs.add(op.stroke());
+            cs.add(op.stroke());
         } else {
-          cs.add(op.fillStroke());
+            cs.add(op.fillStroke());
         }
 
         if (!dp.le(Dimen.ZERO_PT)) { // baseline
@@ -1216,9 +1229,11 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         operators.append(op.fillColor(Color.LIGHT_GRAY));
 
-        showNode(nodes, operators); debugNode(nodes);
+        showNode(nodes, operators);
+        debugNode(nodes);
 
-        currentX.set(saveX); currentY.set(saveY);
+        currentX.set(saveX);
+        currentY.set(saveY);
 
         NodeIterator it = nodes.iterator();
         while (it.hasNext()) {

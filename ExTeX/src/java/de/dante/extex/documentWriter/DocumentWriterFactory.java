@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -19,15 +19,19 @@
 
 package de.dante.extex.documentWriter;
 
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
+
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.file.OutputFactory;
 import de.dante.util.framework.AbstractFactory;
 
 /**
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class DocumentWriterFactory extends AbstractFactory {
 
@@ -48,19 +52,49 @@ public class DocumentWriterFactory extends AbstractFactory {
     /**
      * Provide a new instance of a document writer.
      * The new instance is initiated with the sub-configuration describing it.
+     * <p>
+     * If the generated instance implements the interface SingleDocumentStream
+     * then the method setOutputStream of this interface is invoked.
+     * </p>
+     * <p>
+     * If the generated instance implements the interface MultipleDocumentStream
+     * then the method setOutputStreamFactory of this interface is invoked.
+     * </p>
      *
      * @param type the type of the document writer
      * @param options the dynamic access to the readable part of the context
+     * @param outStream the firts and primary output stream or
+     *  <code>null</code> if none given
+     * @param outFactory the factory for further output streams
+     * @param basename the base name of the output stream
      *
      * @return the new instance
      *
-     * @throws ConfigurationException in case of an error
+     * @throws ConfigurationException in case of a configuration problem
+     * @throws FileNotFoundException in case of a problem opening the output
+     *  stream
      */
     public DocumentWriter newInstance(final String type,
-            final DocumentWriterOptions options) throws ConfigurationException {
+            final DocumentWriterOptions options, final OutputStream outStream,
+            final OutputFactory outFactory, final String basename)
+            throws FileNotFoundException,
+                ConfigurationException {
 
-        return (DocumentWriter) createInstance(type, DocumentWriter.class,
-                DocumentWriterOptions.class, options);
+        DocumentWriter documentWriter = (DocumentWriter) createInstance(type,
+                DocumentWriter.class, DocumentWriterOptions.class, options);
+
+        if (documentWriter instanceof SingleDocumentStream) {
+            OutputStream stream = (outStream != null
+                    ? outStream
+                    : outFactory.createOutputStream(basename, documentWriter
+                            .getExtension()));
+            ((SingleDocumentStream) documentWriter).setOutputStream(stream);
+        }
+        if (documentWriter instanceof MultipleDocumentStream) {
+            ((MultipleDocumentStream) documentWriter)
+                    .setOutputStreamFactory(outFactory);
+        }
+        return documentWriter;
     }
 
 }

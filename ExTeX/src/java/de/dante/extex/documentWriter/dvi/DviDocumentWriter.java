@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -17,12 +17,12 @@
  *
  */
 
-// created: 2004-07-27
 package de.dante.extex.documentWriter.dvi;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
+import de.dante.extex.documentWriter.SingleDocumentStream;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
@@ -45,16 +45,18 @@ import de.dante.util.framework.i18n.Localizer;
 import java.io.IOException;
 import java.io.OutputStream;
 
-
-
-
 /**
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class DviDocumentWriter implements DocumentWriter, Localizable {
+public class DviDocumentWriter
+        implements
+            DocumentWriter,
+            SingleDocumentStream,
+            Localizable {
+
     // TODO: docu (TE)
     /*
      * TODO:
@@ -63,13 +65,11 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      * (TE)
      */
 
-
     /**
      * The constant <code>DEBUG</code> turn debug on or off.
      *
      */
     private final boolean DEBUG = false;
-
 
     /**
      * Configuration of ExTeX.
@@ -77,20 +77,17 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      */
     private Configuration configuration = null;
 
-
     /**
      * DviWriter used to write the DviFile.
      *
      */
     private DviWriter dviWriter = null;
 
-
     /**
      * Set iff we are at the beginning of the dvi-file.
      *
      */
     private boolean isBeginDviFile = true;
-
 
     /**
      * Saves the current font.  Need the check if there is a font
@@ -99,20 +96,17 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      */
     private Font currentFont = null;
 
-
     /**
      * Visitor for the nodes.
      *
      */
     private InspectableNodeVisitor visitor = null;
 
-
     /**
      * Options of the document writer.
      *
      */
     private DocumentWriterOptions documentWriterOptions = null;
-
 
     /**
      * Current mode (<code>{@link
@@ -129,14 +123,14 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      */
     private Localizer localizer = null;
 
-
     /**
      * Internal <code>NodeVisitor</code> of this class.
      *
      */
     private final class DviVisitor
-        implements NodeVisitor,
-                   InspectableNodeVisitor {
+            implements
+                NodeVisitor,
+                InspectableNodeVisitor {
 
         /**
          * Writer for the dvi code.  The writer knows the dvi format.
@@ -151,26 +145,25 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
          */
         private NodeVisitor visitor = this;
 
-
-
         /**
          * Creates a new instance.
          *
          * @param theDviWriter writer for the dvi output
          */
-        public DviVisitor (final DviWriter theDviWriter) {
+        public DviVisitor(final DviWriter theDviWriter) {
+
             dviWriter = theDviWriter;
         }
 
-
         public void setVisitor(final NodeVisitor theVisitor) {
+
             // this method is needed for debugging
 
             visitor = theVisitor;
         }
 
-
         private void writeNodes(final NodeList nodes) throws GeneralException {
+
             NodeIterator iterator = nodes.iterator();
 
             dviWriter.saveCurrentPositions();
@@ -189,65 +182,59 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             dviWriter.restoreCurrentPositions();
         }
 
+        private GeneralException confusion(final String node)
+                throws GeneralException {
 
-        private GeneralException confusion(final String node) throws GeneralException {
             final String argument;
 
             if (localizer == null) {
                 argument = "ExTeX.DocumentWriterWrongNode: " + node;
             } else {
-                argument = localizer.format("ExTeX.DocumentWriterWrongNode", node);
+                argument = localizer.format("ExTeX.DocumentWriterWrongNode",
+                        node);
             }
 
-            return new PanicException(localizer, "TTP.Confusion",
-                                      argument);
+            return new PanicException(localizer, "TTP.Confusion", argument);
 
         }
 
         public Object visitAdjust(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
-
 
         public Object visitAfterMath(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
-
 
         public Object visitAlignedLeaders(final Object value,
-                                          final Object value2)
-            throws GeneralException {
+                final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
-
 
         public Object visitBeforeMath(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
-
 
         public Object visitCenteredLeaders(final Object value,
-                                           final Object value2)
-            throws GeneralException {
+                final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-
         public Object visitChar(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             CharNode node = (CharNode) value;
             Font font = node.getTypesettingContext().getFont();
@@ -262,27 +249,22 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
-        public Object visitDiscretionary(final Object value,
-                                         final Object value2)
-            throws GeneralException {
+        public Object visitDiscretionary(final Object value, final Object value2)
+                throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
-
 
         public Object visitExpandedLeaders(final Object value,
-                                           final Object value2)
-            throws GeneralException {
+                final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-
         public Object visitGlue(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             GlueNode node = (GlueNode) value;
 
@@ -291,14 +273,11 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
         public Object visitHorizontalList(final Object value,
-                                          final Object value2)
-            throws GeneralException {
+                final Object value2) throws GeneralException {
 
             NodeList nodes = (NodeList) value;
             Mode oldMode = mode;
-
 
             mode = Mode.HORIZONTAL;
 
@@ -308,16 +287,14 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
         public Object visitInsertion(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             throw confusion("insertion");
         }
 
-
         public Object visitKern(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             KernNode node = (KernNode) value;
 
@@ -326,9 +303,8 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
         public Object visitLigature(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             LigatureNode node = (LigatureNode) value;
 
@@ -337,32 +313,28 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
         public Object visitMark(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             throw confusion("mark");
         }
 
-
         public Object visitPenalty(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             throw confusion("penalty");
         }
 
-
         public Object visitRule(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             dviWriter.writeNode((RuleNode) value);
 
             return null;
         }
 
-
         public Object visitSpace(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             SpaceNode node = (SpaceNode) value;
 
@@ -371,9 +343,8 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
         public Object visitVerticalList(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             NodeList nodes = (NodeList) value;
             Mode oldMode = mode;
@@ -386,17 +357,14 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
             return null;
         }
 
-
         public Object visitWhatsIt(final Object value, final Object value2)
-            throws GeneralException {
+                throws GeneralException {
 
             dviWriter.writeNode((WhatsItNode) value);
             return null;
         }
 
     } // end class DviVisitor
-
-
 
     /**
      * Creates a new instance.
@@ -405,12 +373,12 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      * @param options options for <code>DviDocumentWriter</code>
      */
     public DviDocumentWriter(final Configuration theCfg,
-                             final DocumentWriterOptions options) {
+            final DocumentWriterOptions options) {
+
         super();
         this.configuration = theCfg;
         documentWriterOptions = options;
     }
-
 
     /**
      * This method is invoked upon the end of the processing.  End of
@@ -420,9 +388,9 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      * @exception IOException if an error occurs
      */
     public void close() throws GeneralException, IOException {
+
         dviWriter.endDviFile();
     }
-
 
     /**
      * Getter for the extension associated with dvi output.
@@ -430,9 +398,9 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      * @return normally "dvi"
      */
     public String getExtension() {
+
         return "dvi";
     }
-
 
     /**
      * Setter for the output stream.  This method throws no exception.
@@ -443,6 +411,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      * @param writer an <code>OutputStream</code> value
      */
     public void setOutputStream(final OutputStream writer) {
+
         dviWriter = new DviWriter(writer, documentWriterOptions);
         visitor = new DviVisitor(dviWriter);
 
@@ -451,16 +420,15 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
         }
     }
 
-
     /**
      * Get the number of written pages until now.
      *
      * @return the number of written pages
      */
     public int getPages() {
+
         return dviWriter.getPages();
     }
-
 
     /**
      * This is the entry point for the document writer.  Exceptions of
@@ -471,7 +439,8 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      * @exception IOException if an error occurs
      */
     public void shipout(final NodeList nodes)
-        throws GeneralException, IOException {
+            throws GeneralException,
+                IOException {
 
         GeneralException error;
 
@@ -499,7 +468,6 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
         }
     }
 
-
     /**
      * Setter of an named parameter.  This Documentwriter supports no
      * parameters yet.
@@ -520,6 +488,7 @@ public class DviDocumentWriter implements DocumentWriter, Localizable {
      *      de.dante.util.framework.i18n.Localizer)
      */
     public void enableLocalization(final Localizer theLocalizer) {
+
         localizer = theLocalizer;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,6 +31,7 @@ import com.ibm.icu.text.DecimalFormat;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.documentWriter.SingleDocumentStream;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.node.AdjustNode;
 import de.dante.extex.interpreter.type.node.AfterMathNode;
@@ -64,9 +65,13 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
+public class XMLDocumentWriter
+        implements
+            DocumentWriter,
+            SingleDocumentStream,
+            NodeVisitor {
 
     /**
      * DIN-A4 width
@@ -320,8 +325,9 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
     /**
      * @see de.dante.extex.documentWriter.DocumentWriter#shipout(de.dante.extex.typesetter.NodeList)
      */
-    public void shipout(final NodeList nodes) throws IOException,
-            GeneralException {
+    public void shipout(final NodeList nodes)
+            throws IOException,
+                GeneralException {
 
         // try {
         Element page = new Element("page");

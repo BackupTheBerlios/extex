@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,6 +24,7 @@ import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.documentWriter.SingleDocumentStream;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
@@ -36,9 +37,13 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
+public class TextDocumentWriter
+        implements
+            DocumentWriter,
+            SingleDocumentStream,
+            NodeVisitor {
 
     /**
      * The field <tt>out</tt> ...
@@ -55,7 +60,8 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
      * @param cfg       the configuration
      * @param options   the options
      */
-    public TextDocumentWriter(final Configuration cfg, final DocumentWriterOptions options) {
+    public TextDocumentWriter(final Configuration cfg,
+            final DocumentWriterOptions options) {
 
         super();
     }

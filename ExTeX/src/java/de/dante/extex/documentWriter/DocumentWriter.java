@@ -29,9 +29,9 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public interface DocumentWriter extends SingleDocumentStream {
+public interface DocumentWriter {
 
     /**
      * Getter for the extension associated with this kind of output. For
@@ -81,4 +81,5 @@ public interface DocumentWriter extends SingleDocumentStream {
      * @param value the value of the parameter
      */
     void setParameter(String name, String value);
+
 }
