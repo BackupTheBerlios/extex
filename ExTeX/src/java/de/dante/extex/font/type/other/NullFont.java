@@ -20,6 +20,8 @@
 package de.dante.extex.font.type.other;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.BoundingBox;
@@ -33,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -106,11 +108,17 @@ public class NullFont implements Font, Serializable {
     }
 
     /**
+     * map for fontdimen
+     */
+    private Map fdmap = new HashMap();
+
+    /**
      * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
      *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setFontDimen(final String key, final Dimen value) {
 
+        fdmap.put(key, value);
     }
 
     /**
@@ -126,7 +134,7 @@ public class NullFont implements Font, Serializable {
      */
     public Dimen getFontDimen(final String key) {
 
-        return null;
+        return (Dimen) fdmap.get(key);
     }
 
     /**
@@ -161,15 +169,6 @@ public class NullFont implements Font, Serializable {
 
         return null;
     }
-
-    //    /**
-    //     * @see de.dante.extex.interpreter.type.font.Font#setProperty(
-    //     *      java.lang.String,
-    //     *      java.lang.String)
-    //     */
-    //    public void setProperty(final String key, final String value) {
-    //
-    //    }
 
     /**
      * @see de.dante.extex.font.type.Fount#getCheckSum()
