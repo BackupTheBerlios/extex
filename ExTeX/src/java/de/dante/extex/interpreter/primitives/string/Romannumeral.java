@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 
@@ -80,7 +80,8 @@ public class Romannumeral extends AbstractCode implements ExpandableCode {
         Tokens toks = new Tokens();
         TokenFactory factory = context.getTokenFactory();
         //String magic = "m2d5c2l5x2v5i";
-        char [] magic = {'m','2','d','5','c','2','l','5','x','2','v','5','i'};
+        char[] magic = {'m', '2', 'd', '5', 'c', '2', 'l', '5', 'x', '2', 'v',
+                '5', 'i'};
         int j = 0;
         int v = 1000;
 

@@ -37,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * <code>\ uppercase</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Uppercase extends AbstractCode {
 
@@ -78,6 +78,7 @@ public class Uppercase extends AbstractCode {
             throws GeneralException {
 
         Tokens toks = source.getTokens();
+        String namespace = context.getNamespace();
 
         if (toks == null) {
             throw new RuntimeException("unimplemented");
@@ -94,7 +95,7 @@ public class Uppercase extends AbstractCode {
                 if (uc != null && //
                     uc.getCodePoint() != 0 && //
                     !uc.equals(t.getChar())) {
-                    t = factory.newInstance(t.getCatcode(), uc);
+                    t = factory.newInstance(t.getCatcode(), uc, namespace);
                 }
             }
             result[i] = t;
