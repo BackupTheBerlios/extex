@@ -419,7 +419,7 @@
   <define name="nulldelimiterspace"
           class="de.dante.extex.interpreter.primitives.register.dimen.DimenParameter"/>
   <define name="nullfont"
-          class="de.dante.extex.interpreter.primitives.font.NullfontPrimitive"/>
+          class="de.dante.extex.interpreter.primitives.register.font.NullfontPrimitive"/>
   <define name="number"
           class="de.dante.extex.interpreter.primitives.string.Number"/>
   <define name="omit"
