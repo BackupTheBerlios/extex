@@ -1,0 +1,710 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN"><html><head><title>The e-TeX Short Reference Manual</title>
+   
+   <meta name="GENERATOR" content="Mozilla/3.0Gold (Win95; I) [Netscape]"></head>
+
+<body>
+
+
+<center><p>The e-TeX Short Reference Manual</p></center>
+
+<center><p>NTS team<br>
+October 1996</p></center>
+
+<p>Derived from a paper originally presented as:
+
+</p><center><p>Philip Taylor, "e-TeX: a 100%-compatible successor to TeX"<br>
+(Following humbly in the footsteps of the Grand Wizard) </p></center>
+
+<p>in: Proceedings of the Ninth European TeX Conference EuroTeX'95, September
+4-8, 1995, Arnhem, The Netherlands, pp. 359-370. 
+
+</p><p>
+</p><hr>
+
+<h2>Table of Contents</h2>
+
+<ol>
+<li><a href="#Introduction">Introduction</a> </li>
+
+<li><a href="#Installation">Installation</a> </li>
+
+<li><a href="#NewFeatures">The new features</a> </li>
+
+<li><a href="#WhatNext">What next?</a> </li>
+</ol>
+
+<p>
+</p><hr>
+
+<h2>Table of new commands</h2>
+
+<ul>
+<li><tt><a href="#beginL">\beginL</a></tt> </li>
+
+<li><tt><a href="#beginR">\beginR</a></tt> </li>
+
+<li><tt><a href="#botmarks">\botmarks</a></tt> </li>
+
+<li><tt><a href="#detokenize">\detokenize</a></tt> </li>
+
+<li><tt><a href="#endL">\endL</a></tt> </li>
+
+<li><tt><a href="#endR">\endR</a></tt> </li>
+
+<li><tt><a href="#eTeXrevision">\eTeXrevision</a></tt> </li>
+
+<li><tt><a href="#eTeXversion">\eTeXversion</a></tt> </li>
+
+<li><tt><a href="#everyeof">\everyeof</a></tt> </li>
+
+<li><tt><a href="#firstmarks">\firstmarks</a></tt> </li>
+
+<li><tt><a href="#currentgrouplevel">\currentgrouplevel</a></tt> </li>
+
+<li><tt><a href="#currentgrouptype">\currentgrouptype</a></tt> </li>
+
+<li><tt><a href="#ifcsname">\ifcsname</a></tt> </li>
+
+<li><tt><a href="#ifdefined">\ifdefined</a></tt> </li>
+
+<li><tt><a href="#interactionmode">\interactionmode</a></tt> </li>
+
+<li><tt><a href="#lastnodetype">\lastnodetype</a></tt> </li>
+
+<li><tt><a href="#marks">\marks</a></tt> </li>
+
+<li><tt><a href="#middle">\middle</a></tt> </li>
+
+<li><tt><a href="#predisplaydirection">\predisplaydirection</a></tt> </li>
+
+<li><tt><a href="#protected">\protected</a></tt> </li>
+
+<li><tt><a href="#readline">\readline</a></tt> </li>
+
+<li><tt><a href="#scantokens">\scantokens</a></tt> </li>
+
+<li><tt><a href="#showgroups">\showgroups</a></tt> </li>
+
+<li><tt><a href="#showtokens">\showtokens</a></tt> </li>
+
+<li><tt><a href="#splitfirstmarks">\splitfirstmarks</a></tt> </li>
+
+<li><tt><a href="#splitbotmarks">\splitbotmarks</a></tt> </li>
+
+<li><tt><a href="#TeXXeTstate">\TeXXeTstate</a></tt> </li>
+
+<li><tt><a href="#topmarks">\topmarks</a></tt> </li>
+
+<li><tt><a href="#tracingassigns">\tracingassigns</a></tt> </li>
+
+<li><a href="#AdditionalTracingInformation"><tt>\tracingcommands</tt> -
+additional details</a> </li>
+
+<li><tt><a href="#tracinggroups">\tracinggroups</a></tt> </li>
+
+<li><tt><a href="#tracingifs">\tracingifs</a></tt> </li>
+
+<li><tt><a href="#tracingscantokens">\tracingscantokens</a></tt> </li>
+
+<li><tt><a href="#unexpanded">\unexpanded</a></tt> </li>
+
+<li><tt><a href="#unless">\unless</a></tt> </li>
+</ul>
+
+<p>
+</p><hr><a name="Introduction"></a>
+
+<h1>1 Introduction</h1>
+
+<p>e-TeX is the first concrete result of an international research &amp;
+development project, the <i>NTS</i> Project, which was established under
+the ægis of DANTE e.V. during 1992. The aims of the project are to perpetuate
+and develop the spirit and philosophy of TeX, whilst respecting Knuth's
+wish that TeX should remain frozen. 
+
+</p><p>The group were very concerned that unless there existed some evolutionary
+flexibility within which TeX could react to changing needs and environments,
+it might all too soon become eclipsed by more modern yet less sophisticated
+systems. Accordingly they agreed to investigate a possible successor or
+successors to TeX, successors which would enshrine and encapsulate all
+that was best in TeX whilst being freed from the evolutionary constraints
+which Knuth had placed on TeX itself. To avoid any suggestion that it was
+TeX which the group sought to develop against Knuth's wishes, a working
+title of <i>NTS</i> (for New Typesetting System) was chosen for the project.
+
+
+</p><p>During the initial meetings of the <i>NTS</i> group, it became clear
+that there were two possible approaches to developments based on TeX: an
+evolutionary path which would simply continue where Knuth had left off,
+and which would use as its basis the source code of TeX itself 
+(i.e. <tt><a href="#TeX.Web">TeX.Web</a></tt>);
+the other a revolutionary path which would be based on a completely new
+implementation of TeX, using a modern rapid-prototyping language which
+could allow individual components of the system to be modified or replaced
+in a simple and straightforward manner. The group agreed that the latter
+(revolutionary) approach had much greater potential, but were aware that
+the re-implementation would be non-trivial, and would require external
+funding to bring it to fruition in finite time; accordingly they agreed
+to concentrate their initial efforts on the former (evolutionary) path,
+and set to work to specify and implement a direct derivative of TeX which
+became known as e-TeX (the <i>e</i> of e-TeX may be read as <i>extended</i>,
+<i>enhanced</i>, <i>evolutionary</i> or <i>European</i> at will(!), and
+is also an acknowledgement of the parallel developments which have lead
+the LaTeX 3 team to modify their initial goal and to release an interim
+LaTeX, LaTeX2e, which is directly derived from the LaTeX sources. 
+
+</p><p>The group took as the starting point for the development of e-TeX the
+many contributions which had been made on <tt><a href="#NTS-L">NTS-L</a></tt>
+(the open mailing list on which discussions pertinent to e-TeX &amp; <i>NTS</i>
+take place), together with the extremely interesting list of ideas which
+Knuth gives at the end of <tt><a href="#TeX82.Bug">TeX82.Bug</a></tt>,
+and which he describes as <i>`Possibly nice ideas that will not be implemented'</i>
+(and which he contrasts with <i>`Bad ideas that will not be implemented'</i>!).
+Individual members of the group also contributed ideas of their own which
+had not necessarily been discussed publicly. All proposals were then subjected
+to a rigorous vetting procedure to ensure that they conformed to the e-TeX
+philosophy, which may be summarised as follows: 
+
+</p><blockquote>
+<p>e-TeX will in all ways demonstrate its affinity to, and derivation from,
+Knuth's TeX; it will be implemented as a change-file to 
+<tt><a href="#TeX.Web">TeX.Web</a></tt>,
+and will not exploit features which could only be achieved by using a particular
+implementation, operating system or language; it will be capable of being
+used successfully on a machine as small as an 80286-based PC or similar.
+
+
+</p><p>At format-generation time, a user will have the option of generating
+either a TeX-compatible format or an e-TeX format; if the TeX-compatible
+format is subsequently used in conjunction with e-TeX, the result will
+be <a name="TripCompatible"></a><i>Trip-compatible</i> (i.e. indistinguishable
+from TeX proper). If an e-TeX format is generated and used in conjunction
+with e-TeX, then provided that none of the new e-TeX primitives are used,
+the results will be identical to those which would be produced using TeX
+proper. If an e-TeX format is used in conjunction with e-TeX and if one
+or more of the new e-TeX primitives are used, then those portions of the
+document which are affected by the new primitive(s) may be processed in
+a manner unique to e-TeX; other portions of the document will be processed
+in a manner identical to that of TeX proper. Only if an e-TeX format is
+used in conjunction with e-TeX and if an explicit assignment is made to
+one of the <a name="EnhancedMode"></a><i>enhanced-mode</i> variables to
+enable that particular enhanced mode will e-TeX behave in a manner which
+may be distinguishable from that of TeX even if no other reference to an
+e-TeX primitive occurs anywhere in the document. (These modes of operation
+are referred to as <a name="CompatibilityMode"></a><i>compatibility-mode</i>,
+<a name="ExtendedMode"></a><i>extended-mode</i> and <i>enhanced-mode</i>
+respectively.) 
+
+</p><p>All new e-TeX primitives will be syntactically identical to existing
+TeX primitives: that is, they will be either <i>control-words</i> or <i>control-symbols</i>
+within a normal category code régime. Where an analogous primitive exists
+within TeX, the corresponding e-TeX primitive(s) will occupy the same syntactic
+niche. Every effort will be made to ensure that new e-TeX primitives fit
+into the existing set of TeX datatypes; no new datatype will be introduced
+unless it is absolutely essential. 
+</p></blockquote>
+
+<p>In brief, this implies that e-TeX will follow the principle of least
+surprise: an existing TeX user, on using e-TeX for the first time, should
+not be surprised by e-TeX's behaviour, and should be able to take advantage
+of new e-TeX features without having either to unlearn some aspects of
+TeX or to learn some new e-TeX philosophy. 
+
+</p><p>
+</p><hr><a name="Installation"></a>
+
+<h1>2 Installation</h1>
+
+<p>It is intended that e-TeX be available ready-compiled for those systems
+for which pre-compiled binaries are the norm (e.g. MS-DOS, VMS, ...); for
+other systems such as Unix(TM), e-TeX is supplied as a change-file which
+will need to be applied to <tt><a href="#TeX.Web">TeX.Web</a></tt> in the
+normal way. However, since there will already be an implementation-specific
+change-file for the system of interest, some means will be required of
+merging <tt><a href="#TeX.Web">TeX.Web</a></tt> with not one but (at least)
+two change-files; possibilities include <i><a href="#PatchWeb">PatchWeb</a></i>,
+<i><a href="#Tie">Tie</a></i>, etc., but if none of these are available
+then <i><a href="#WebMerge">WebMerge</a></i>, a TeX script, is supplied
+and can be used as a slower but satisfactory alternative. In practice,
+two or three change-files will be needed: the e-TeX system-independent
+change-file, the TeX system-dependent change-file, and perhaps a small
+e-TeX system-dependent change-file. The system-independent e-TeX change-file
+is supplied as part of the e-TeX kit, and sample system-dependent e-TeX
+change-files are also supplied which may be used as a guide to those places
+at which system-dependent interactions are to be expected: an experienced
+implementor should have little difficulty in modifying one of these to
+produce an e-TeX system-dependent change-file for the system of interest.
+Once e-TeX has been tangled and woven, it should be compiled and linked
+in the normal way. 
+
+</p><p>Once a working binary (or binaries, for those systems which have separate
+executables for <tt>IniTeX</tt> and <tt>VirTeX</tt>) has been acquired
+or produced, the next step will be to generate a suitable format file or
+files. Whilst e-TeX can be used in conjunction with <tt><a href="#Plain.TeX-TODO">Plain.TeX</a></tt>
+to produce a Plain <i>e-format</i>, it is better to use the supplied 
+<tt><a href="#etex.src">etex.src</a></tt>
+file which supplements the e-TeX primitives with additional useful control
+sequences. 
+
+</p><p>When generating the format file, and regardless of the format source
+used, one fundamental decision must be made: is e-TeX to generate a <i><a href="#CompatibilityMode">compatibility
+mode</a></i> format, or an <i><a href="#ExtendedMode">extended mode</a></i>
+format? If the former, <i>all</i> e-TeX <a name="extension"></a>extensions
+and <a name="enhancement"></a>enhancements will be disabled, the format
+will contain only the TeX-defined set of primitives, and any subsequent
+use of the format in conjunction with e-TeX will result in completely TeX-compatible
+behaviour and semantics, including compatibility at the level of the <a href="#Trip">Trip</a>
+test. If the latter option, however, is selected, then all extensions present
+in e-TeX will automatically be activated, and the format file will contain
+not only the TeX-defined set of primitives but also those defined by e-TeX
+itself; any subsequent use of such a format in conjunction with e-TeX will
+result in e-TeX operating in <i><a href="#ExtendedMode">extended mode</a></i>;
+documents which contains no references to any of the e-TeX-defined primitives
+will continue to generate results identical to those which would have been
+produced were the document processed by TeX, but compatibility at the <a href="#Trip">Trip</a>-test
+level can no longer be accomplished, and of course any document which makes
+reference to an e-TeX primitive will generate results which could not have
+been accomplished using TeX. It should be noted that neither a <i><a href="#CompatibilityMode">compatibility
+mode</a></i> format nor an <i><a href="#ExtendedMode">extended mode</a></i>
+format may be used in conjunction with TeX itself; they are only suitable
+for use in conjunction with e-TeX, since formats are not in general portable.
+Finally it should be emphasised that even if an <i><a href="#ExtendedMode">extended
+mode</a></i> format is generated, any document processed using such a format
+but not referencing any e-TeX-defined primitive will produce results identical
+to those which would have been produced had the same document been processed
+using TeX; only if the document makes an explicit assignment to one of
+the <i><a href="#EnhancedMode">enhanced mode</a></i> state variables (<tt><a href="#TeXXetstate">\TeXXeTstate</a></tt>
+is the only instance of these in V1 of e-TeX) will compatibility with TeX
+be compromised: e-TeX is then said to be operating in <i><a href="#EnhancedMode">enhanced
+mode</a></i> rather than <i><a href="#ExtendedMode">extended mode</a></i>.
+
+
+</p><p>The choice between generating a <i><a href="#CompatibilityMode">compatibility
+mode</a></i> format and an <i><a href="#ExtendedMode">extended mode</a></i>
+format is made at the point of specifying the format source file: assuming
+that the operating system supports command-line entry with parameters,
+then a normal TeX format-generation command would probably resemble: 
+
+</p><pre>        initex plain \dump
+</pre>
+
+<p>or if the more verbose interactive form is preferred: 
+
+</p><pre>        initex
+        **plain
+        *\dump
+</pre>
+
+<p>With e-TeX, exactly the same command will achieve exactly the same effect,
+and the format generated will be a <i><a href="#CompatibilityMode">compatibility-mode</a></i>
+format; thus assuming that the Ini-version of e-TeX is invoked with the
+command <tt>einitex</tt>, the following will both generate <i><a href="#CompatibilityMode">compatibility-mode</a></i>
+formats: 
+
+</p><pre>        einitex plain \dump
+</pre>
+
+<p>and 
+
+</p><pre>        einitex
+        **plain
+        *\dump
+</pre>
+
+<p>In order to generate an <i><a href="#ExtendedMode">extended mode</a></i>
+format, the file-specification for the format source file must be preceded
+by an asterisk (<tt>*</tt>); whilst this may seem an inelegant mechanism,
+it has the great advantage that it avoids almost all system dependencies
+(Graphical user interface (GUI) systems excepted, of course), and the asterisk
+as a component element of a filename is a very remote possibility (most
+filing systems reserve the asterisk as a `wild card' character, which can
+therefore not form a part of a real file name <i>per se</i>). Thus to generate
+an <i><a href="#ExtendedMode">extended mode</a></i> Plain format, the following
+dialogue may be used: 
+
+</p><pre>        einitex *plain \dump
+</pre>
+
+<p>or 
+
+</p><pre>        einitex
+        ***plain
+        *\dump
+</pre>
+
+<p>and to generate an <i><a href="#ExtendedMode">extended mode</a></i>
+<tt>etex.src</tt> format, the following instead: 
+
+</p><pre>        einitex *etex.src \dump
+</pre>
+
+<p>or 
+
+</p><pre>        einitex
+        ***etex.src
+        *\dump
+</pre>
+
+<p>Once suitable formats have been generated, they can then be used in
+conjunction both with <i>e-IniTeX</i> and <i>e-VirTeX</i> without further
+formality: in particular, no asterisk is needed (nor should be used!) if
+a format is specified, since the format implicitly defines (depending as
+its mode of generation) in which mode (compatibilty or extended) e-TeX
+will operate. Thus, for example, if a <tt>plain</tt> format had been generated
+in <i><a href="#CompatibilityMode">compatibility mode</a></i>, and an <tt>etex</tt>
+format had been generated in <i><a href="#ExtendedMode">extended mode</a></i>,
+then both: 
+
+</p><pre>        einitex &amp;Plain
+</pre>
+
+<p>and 
+
+</p><pre>        evirtex &amp;plain
+</pre>
+
+<p>will cause e-TeX to process any subsequent commands in <i><a href="#CompatibilityMode">compatibility
+mode</a></i>. On the other hand, both 
+
+</p><pre>        einitex &amp;etex
+</pre>
+
+<p>and 
+
+</p><pre>        eVirTeX &amp;etex
+</pre>
+
+<p>will cause e-TeX to process any subsequent commands in <i><a href="#ExtendedMode">extended
+mode</a></i>, <b>but only because the <tt>etex</tt> format was generated
+in <i><a href="#ExtendedMode">extended mode</a></i></b>: it is not the
+<b>name</b> of the format, nor is it the contents of the <b>source</b>
+of the format, which determine the mode of operation -- it is the <b>mode
+of operation</b> which was used when the format was generated. Any format
+generated in <i><a href="#CompatibilityMode">compatibility mode</a></i>
+will cause e-TeX to operate in <i><a href="#CompatibilityMode">compatibility
+mode</a></i> whenever it is used, whilst the equivalent format, built from
+the same source but generated in <i><a href="#ExtendedMode">extended mode,</a></i>
+will cause e-TeX to operate in <i><a href="#ExtendedMode">extended mode</a></i>
+whenever it is used. 
+
+</p><p>Although e-TeX is completely TeX-compatible, and there is therefore
+no real reason why any system should need both TeX and e-TeX, it is anticipated
+that until complete confidence exists in the compatibility of e-TeX many
+sites and users will prefer to retain instances of each. For this reason
+it is intended that change-files and binaries should ensure that both TeX
+and e-TeX can happily co-exist on any system by a careful choice of name-spaces.
+In the case of the reference VMS implementation, for example, this
+is accomplished by using the prefix "etex_" for each logical
+name which defines the e-TeX environment, in contrast to the prefix "tex_"
+which defines the analogous TeX environment; the "etex_*" logical
+names are defined as search lists which first reference an e-TeX specific
+location followed by the analogous location for TeX.
+
+</p><p>
+</p><hr><a name="NewFeatures"></a>
+
+<h1>3 The new features</h1>
+
+<p>Bearing in mind the contraints outlined in the introduction, the group
+identified 35 new primitives which they believed would give
+added functionality to e-TeX without compromising its compatibility with
+TeX; of the 35 new primitives, 29 are extensions (which by definition
+do not affect the semantics of existing TeX documents), whilst just six
+(all concerned with the implementation of <a href="#TeX--XeT">TeX--XeT</a>)
+are associated with an enhancement. In addition to the new primitives,
+additional functionality was added to some existing primitives, and TeX's
+behaviour in some unusual boundary conditions was made more robust (this
+last has been subsumed in the most recent version of TeX, so this is no
+longer e-TeX-specific). 
+
+</p><p>The new features are listed and briefly described below, clustered together
+to indicate related functionality.
+The technical terms used below to
+describe syntax entities as defined in <i><tt><a href="#TeXbook">The TeXbook.</a></tt></i>
+
+</p><h2>3.1 Additional control over expansion</h2>
+
+<ul>
+<li><tt><a href="#protected">\protected</a></tt> </li>
+
+<li><tt><a href="#detokenize">\detokenize</a></tt> </li>
+
+<li><tt><a href="#unexpanded">\unexpanded</a></tt> </li>
+</ul>
+
+<dl><dt><a name="protected"></a><tt>\protected</tt> </dt><dd>is a prefix, analogous to <tt>\long</tt>, <tt>\outer</tt>, and <tt>\global</tt>;
+it associates with the macro being defined an attribute which inhibits
+expansion of the macro in expansion-only contexts (for example, within
+the parameter text of a <tt>\write</tt> or <tt>\edef</tt>); if, however,
+the parser or command processor (TeX's `oesophagus' and `stomach', in
+Knuth's alimentary paradigm) is currently demanding a <i>command</i>, then
+the <tt>\protected</tt> macro will expand in the normal way. This behaviour
+is identical to that displayed by the explicit expansion of a token-list
+register through the use of <tt>\the</tt>; the same model is used elsewhere
+in e-TeX to achieve a consistent paradigm for <i>partial expansion</i>.
+</dd><dt><a name="detokenize"></a><tt>\detokenize</tt>, </dt><dd>when followed by a <i>&lt;general text&gt;</i>, expands to yield a
+sequence of character tokens of <tt>\catcode</tt> 10 (<i>space</i>) or
+12 (<i>other</i>) corresponding to a decomposition of the tokens of the
+<i>&lt;balanced text&gt;</i> of the unexpanded <i>&lt;general text&gt;&gt;</i>;
+c.f. <tt>\showtokens</tt>. The effect is rather as if <tt><a href="#scantokens">\scantokens</a></tt>
+(q.v.) were applied to the <i>&lt;general text&gt;</i> within a régime
+in which only <tt>\catcodes</tt> 10 and 12 existed. Note that in order
+to preserve the boundaries between <i>control words</i> and any following
+<i>letter</i>, a <i>space</i> is yielded after each control word including
+the last. </dd><dt><a name="unexpanded"></a><tt>\unexpanded</tt>, </dt><dd>when followed by a <i>&lt;general text&gt;</i>, expands to yield the
+<i>&lt;balanced text&gt;</i> of the unexpanded <i>&lt;general text&gt;</i>.
+No further expansion will occur if e-TeX is currently performing a <tt>\write</tt>,
+<tt>\edef</tt>, etc., but further expansion will occur if the parser or
+command processor is currently demanding a <i>command</i>. The effect is
+as if the <i>&lt;general text&gt;</i> were assigned to a token list register,
+and the latter were then partially expanded using <tt>\the</tt>, but no
+assignment actually takes place; thus <tt>\unexpanded</tt> can be used
+in expansion-only contexts. </dd></dl>
+
+<h2>3.2 Provision for re-scanning already read text</h2>
+
+<ul>
+<li><tt><a href="#readline">\readline</a></tt> </li>
+
+<li><tt><a href="#scantokens">\scantokens</a></tt> </li>
+</ul>
+
+<dl><dt><a name="readline"></a><tt>\readline</tt> </dt><dd>is analogous to <tt>\read</tt>, but treats each character as if it
+were currently of <tt>\catcode</tt> 10 (<i>space</i>) or 12 (<i>other</i>);
+the text thus read is therefore suitable for being scanned and re-scanned
+(using <tt><a href="#scantokens">\scantokens</a></tt>, q.v.) under different
+<tt>\catcode</tt> régimes. </dd><dt><a name="scantokens"></a><tt>\scantokens</tt>, </dt><dd>when followed by a <i>&lt;general text&gt;</i>, decomposes the <i>&lt;balanced
+text&gt;</i> of the <i>&lt;general text&gt;</i> into the corresponding
+sequence of characters as if the <i>&lt;balanced text&gt;</i> were written
+unexpanded to a file; it then uses TeX's <tt>\input</tt> mechanism to re-process
+these characters under the current <tt>\catcode</tt> régime. As the <tt>\input</tt>
+mechanism is used, even hex notation (<tt>^^xy</tt>) will be re-interpreted.
+Parentheses and a single space representing the <i>pseudo-file</i> will
+be displayed if <tt><a href="#tracingscantokens">\tracingscantokens</a></tt>
+(q.v.) is positive and non-zero. </dd></dl>
+
+<h2>3.3 Environmental enquiries</h2>
+
+<ul>
+<li><tt><a href="#eTeXrevision">\eTeXrevision</a></tt> </li>
+
+<li><tt><a href="#eTeXversion">\eTeXversion</a></tt> </li>
+
+<li><tt><a href="#currentgrouplevel">\currentgrouplevel</a></tt> </li>
+
+<li><tt><a href="#currentgrouptype">\currentgrouptype</a></tt> </li>
+
+<li><tt><a href="#ifcsname">\ifcsname</a></tt> </li>
+
+<li><tt><a href="#ifdefined">\ifdefined</a></tt> </li>
+
+<li><tt><a href="#lastnodetype">\lastnodetype</a></tt> </li>
+</ul>
+
+<dl><dt><a name="eTeXrevision"></a><tt>\eTeXrevision</tt>: </dt><dd>an primitive which expands to yield a sequence of character tokens
+of <tt>\catcode</tt> 12 (<i>other</i>; these represent the minor component
+of the combined version/revision number. Pre-release versions will be characterised
+by an initial <i>minus</i> sign (<tt>-</tt>), whilst post-release versions
+will be implicitly positive; both will contain an explicit leading decimal
+point, which will follow any minus sign present. </dd><dt><a name="eTeXversion"></a><tt>\eTeXversion</tt>: </dt><dd>an internal read-only integer representing the major component of the
+combined version/revision number. </dd><dt><a name="currentgrouplevel"></a><tt>\currentgrouplevel</tt>: </dt><dd>an internal read-only integer which returns the current group level
+(i.e. depth of nesting). </dd><dt><a name="currentgrouptype"></a><tt>\currentgrouptype</tt>: </dt><dd>an internal read-only integer which returns the type of the innermost
+group as an integer in the range 0..16. Textual definitions of these types
+may be provided through an associated macro library, but it is intended
+that these definitions shall be easily replaceable by national language
+versions in environments within which English language texts are sub-optimal.
+</dd><dt><a name="ifcsname"></a><tt>\ifcsname</tt>: </dt><dd>similar in effect to the sequence <tt>\unless</tt> <tt>\expandafter</tt>
+<tt>\ifx</tt> <tt>\expandafter</tt> <tt>\relax</tt> <tt>\csname</tt> but
+avoids the side-effect of the <i>cs-name</i> being ascribed the value <tt>\relax</tt>,
+and also does not rely on <tt>\relax</tt> having its canonical meaning.
+No hash-table entry is used if <i>cs-name</i> does not exist. (<tt><a href="#unless">\unless</a></tt>
+is explained below.) </dd><dt><a name="ifdefined"></a><tt>\ifdefined</tt>: </dt><dd>similar in effect to <tt><a href="#unless">\unless</a></tt> <tt>\ifx</tt>
+<tt>\undefined</tt>, but does not require <tt>\undefined</tt> to actually
+be undefined, since no explicit comparison is made with any particular
+control sequence. </dd><dt><a name="lastnodetype"></a><tt>\lastnodetype</tt>: </dt><dd>an internal read-only integer which returns the type of the last node
+on the current list as an integer in the range -1..15+ (only values -1..15
+are defined in the first release, but future releases may define additional
+values). Textual definitions of these types may be provided through an
+associated macro library. </dd></dl>
+
+<h2>3.4 Generalisation of the <tt>\mark</tt> concept: a class of <tt>\marks</tt></h2>
+
+<ul>
+<li><tt><a href="#marks">\marks</a></tt> </li>
+
+<li><tt><a href="#botmarks">\botmarks</a></tt> </li>
+
+<li><tt><a href="#firstmarks">\firstmarks</a></tt> </li>
+
+<li><tt><a href="#topmarks">\topmarks</a></tt> </li>
+
+<li><tt><a href="#splitfirstmarks">\splitfirstmarks</a></tt> </li>
+
+<li><tt><a href="#splitbotmarks">\splitbotmarks</a></tt> </li>
+</ul>
+
+<dl><dt><a name="marks"></a><tt>\marks</tt>: </dt><dd>this is one of Knuth's `possibly good ideas', listed at the end of <tt><a href="#TeX82.Bug">TeX82.Bug</a></tt>; whereas TeX has only one <tt>\mark</tt>,
+which has to be over-loaded if more than one class of information is to be
+saved (e.g. over-loading is necessary if separate information for recto and
+verso pages is to be maintained), e-TeX has a whole class of <tt>\marks</tt>
+(256, in the first release); thus rather than writing <tt>\mark</tt>
+<i>&lt;general text&gt;</i> as in TeX, in e-TeX one writes <tt>\marks</tt>
+<i>8-bit number</i> <i>&lt;general text&gt;</i>. For example,
+<tt>\marks 0</tt> could be used to retain information for the verso page,
+whilst <tt>\marks 1</tt> could retain information for the recto. There are
+equivalent classes for the five <tt>\marks</tt> variables <a name="botmarks"></a><tt>\botmarks</tt>, <a name="firstmarks"></a><tt>\firstmarks</tt>, <a name="topmarks"></a><tt>\topmarks</tt>, <a name="splitfirstmarks"></a><tt>\splitfirstmarks</tt> and <a name="splittopmarks"></a><tt>\splitbotmarks</tt>. It should be noted that
+<tt>\marks 0</tt> and <tt>\mark</tt> are in fact identical, as are
+<tt>\topmarks 0</tt> and \<tt>topmark</tt>, \<tt>botmarks 0</tt> and
+<tt>\botmark</tt> and so on.</dd></dl>
+
+<h2>3.5 Bi-directional typesetting: the <a href="#TeX--XeT">TeX--XeT</a>
+primitives</h2>
+
+<ul>
+<li><tt><a href="#TeXXeTstate">\TeXXeTstate</a></tt> </li>
+
+<li><tt><a href="#beginL">\beginL</a></tt> </li>
+
+<li><tt><a href="#beginR">\beginR</a></tt> </li>
+
+<li><tt><a href="#endL">\endL</a></tt> </li>
+
+<li><tt><a href="#endR">\endR</a></tt> </li>
+
+<li><tt><a href="#predisplaydirection">\predisplaydirection</a></tt> </li>
+</ul>
+
+<p><a href="#TeX--XeT">TeX--XeT</a> was developed by Peter Breitenlohner
+based on the original <a href="http://www.uni-mainz.de/%7Eknappen/TeX-XeT-TODO">TeX-XeT</a> of Donald Knuth
+and Pierre MacKay; whereas <a href="#TeX-XeT">TeX-XeT</a> generated non-standard
+<i>DVI</i> files, <a href="#TeX--XeT">TeX--XeT</a> generates perfectly
+normal <i>DVI</i> files which can therefore be processed by standard <i>DVI</i>
+drivers (assuming, of course, that the necessary fonts are available).
+Both systems permit the direction of typesetting (conventionally left-to-right
+in Western documents) to be reversed for part or all of a document, which
+is particularly useful when setting languages such as Hebrew or Arabic.
+
+
+</p><dl><dt><a name="beginL"></a><tt>\beginL</tt>: </dt><dd>indicates the start of a region (e.g. a section of text, or a pre-constructed
+<i>box</i>) which should be set left-to-right; </dd><dt><a name="beginR"></a><tt>\beginR</tt>: </dt><dd>indicates the start of a region which should be set right-to-left;
+</dd><dt><a name="endL"></a><tt>\endL</tt>: </dt><dd>indicates the end of a region which should be set left-to-right; </dd><dt><a name="endR"></a><tt>\endR</tt>: </dt><dd>indicates the end of a region which should be set right-to-left; </dd><dt><a name="TeXXeTstate"></a><tt>\TeXXeTstate</tt>: </dt><dd>an internal read/write integer, its value is zero or negative to indicate
+that <a href="#TeX--XeT">TeX--XeT</a> features are not to be used; a positive
+value indicates that they may be used. As the internal data structures
+built by <a href="#TeX--XeT">TeX--XeT</a> differ from those built by TeX,
+and as the typesetting of a document by <a href="#TeX--XeT">TeX--XeT</a>
+may therefore differ from that performed by TeX, <tt>\TeXXeTstate</tt>
+defaults to zero, and even if set positive during format creation will
+be re-set to zero before the format is dumped. Explicit user action therefore
+is required to enable <a href="#TeX--XeT">TeX--XeT</a> semantics, and <a href="#TeX--XeT">TeX--XeT</a>
+is therefore classed as an <i><a href="#enhancement">enhancement</a></i>,
+not simply an <i><a href="#extension">extension</a></i>. </dd><dt><a name="predisplaydirection"></a><tt>\predisplaydirection</tt>: </dt><dd>an internal read/write integer, initialised by e-TeX to indicate the
+direction of the last partial paragraph before a display; it is used to
+control the placement of elements such as equation numbers, and can be
+explictly set to affect this placement. </dd></dl>
+
+<h2>3.6 Additional debugging features</h2>
+
+<ul>
+<li><tt><a href="#interactionmode">\interactionmode</a></tt> </li>
+
+<li><tt><a href="#showgroups">\showgroups</a></tt> </li>
+
+<li><tt><a href="#showtokens">\showtokens</a></tt> </li>
+
+<li><tt><a href="#tracingassigns">\tracingassigns</a></tt> </li>
+
+<li><tt><a href="#tracinggroups">\tracinggroups</a></tt> </li>
+
+<li><tt><a href="#tracingifs">\tracingifs</a></tt> </li>
+
+<li><tt><a href="#tracingscantokens">\tracingscantokens</a></tt> </li>
+
+<li><a href="#AdditionalTracingInformation">Additional detail for <tt>\tracingcommands</tt></a>
+</li>
+</ul>
+
+<dl><dt><a name="interactionmode"></a><tt>\interactionmode</tt>: </dt><dd>whereas in TeX there exist only explicit commands such as <tt>\scrollmode</tt>,
+<tt>\errorstopmode</tt>, etc., in e-TeX read/write access is provided via
+<tt>\interactionmode</tt> (an internal integer); assigning a numeric value
+sets the associated mode, whilst the current mode may be ascertained by
+interrogating its value. Symbolic definitions of these values may be provided
+through an associated macro library. </dd><dt><a name="showgroups"></a><tt>\showgroups</tt>: </dt><dd><i>(e-)TeX</i> has many different classes of <i>group</i>, which should
+normally be properly balanced and nested; if a nesting or imbalance error
+occurs, it can be <i>very</i> difficult to track down the source of the
+problem. <tt>\showgroups</tt> causes e-TeX to display the level and type
+of all active groups from the point within which it was called. </dd><dt><a name="showtokens"></a><tt>\showtokens</tt>, </dt><dd>when followed by a <i>&lt;general text&gt;</i>, displays a sequence
+of characters corresponding to the decomposition of the <i>&lt;balanced
+text&gt;</i> of the unexpanded <i>&lt;general text&gt;</i>; c.f. <tt><a href="#detokenize">\detokenize</a></tt>.
+</dd><dt><a name="tracinggroups"></a><tt>\tracinggroups</tt>: </dt><dd>a further aid to debugging runaway-group problems, <tt>\tracinggroups</tt>
+(an internal read/write integer) causes e-TeX to trace entry and exit to
+every group while set to a positive non-zero value. </dd><dt><a name="tracingscantokens"></a><tt>\tracingscantokens</tt>: </dt><dd>an internal read/write integer, assigning it a positive non-zero value
+will cause an open-parenthesis and space to be displayed whenever <tt><a href="#scantokens">\scantokens</a></tt>
+is invoked; the matching close-parenthesis will be recorded when the scan
+is complete. If a traceback occurs during the expansion of <tt><a href="#scantokens">\scantokens</a></tt>,
+the first displayed line number will reflect the logical line number of
+the pseudo-file created from the parameter to <tt><a href="#scantokens">\scantokens</a></tt>;
+thus enabling <tt>\tracingscantokens</tt> can assist in identifying why
+an seemingly irrational line number is shewn as the source of error (the
+traceback always continues until the line number of the actual source file
+is displayed). </dd><dt><a name="AdditionalTracingInformation"></a>Additional tracing information:
+</dt><dd>If <tt>\tracingcommands</tt> is greater than 2, additional information
+is displayed. [More detail needed here!] </dd></dl>
+
+<h2>3.7 Miscellaneous primitives</h2>
+
+<ul>
+<li><tt><a href="#everyeof">\everyeof</a></tt> </li>
+
+<li><tt><a href="#middle">\middle</a></tt> </li>
+
+<li><tt><a href="#unless">\unless</a></tt> </li>
+</ul>
+
+<dl><dt><a name="everyeof"></a><tt>\everyeof</tt>: </dt><dd>this is another of Knuth's `possibly good ideas', listed at the end of
+<tt><a href="#TeX82.Bug">TeX82.Bug</a></tt>; analogous to the other
+<tt>\every...</tt> primitives, it takes as parameter a <i>&lt;balanced
+text&gt;</i>, the tokens of which are inserted when the end of a file (either
+real or virtual, if <tt><a href="#scantokens">\scantokens</a></tt> is used) is
+reached. This allows <tt>\input</tt> statements to be used within the
+replacement text of <tt>\edef</tt>s, and allows totally arbitrary files to be
+<tt>\input</tt> within an e-TeX conditional, since the necessary <tt>\fi</tt>
+can be inserted before e-TeX complains that it has fallen off the end of the
+file. It should be noted that the <code>\everyeof</code> tokens are <em>not</em>
+inserted if the end-of-file is forced through the use of <code>\endinput</code>.
+</dd><dt><a name="middle"></a><tt>\middle</tt>: </dt><dd>analogous to TeX's <tt>\left</tt> and <tt>\right</tt>, <tt>\middle</tt>
+specifies that the following delimiter is to serve both as a right and
+left delimiter; it will be set with spacing appropriate to a right delimiter
+w.r.t. the preceding atom(s), and with spacing appropriate to a left delimiter
+w.r.t. the succeeding atom(s). </dd><dt><a name="unless"></a><tt>\unless</tt>: </dt><dd>TeX has, by design, a rather sparse set of conditional primitives:
+<tt>\ifeof</tt>, <tt>\ifodd</tt>, <tt>\ifvoid</tt>, etc., have no complementary
+counterparts. Whilst this normally poses no problems since each accepts
+both a <tt>\then</tt> (implicit) and an <tt>\else</tt> (explicit) part,
+they fall down when used as the final <tt>\if...</tt> of a <tt>\loop ...
+\if ... \repeat</tt> construct, since no <tt>\else</tt> is allowed after
+the final <tt>\if...</tt>. <tt>\unless</tt> allows the sense of all Boolean
+conditionals to be inverted, and thus (for example) <tt>\unless</tt> <tt>\ifeof</tt>
+yields <i>true</i> iff end-of-file has <i>not</i> yet been reached. </dd></dl>
+
+<hr>
+
+<h2>References:</h2>
+
+<dl><dt><a name="TeX.Web"></a><b><tt>TeX.Web</tt></b> </dt><dd>CTAN: <a href="ftp://ftp.dante.de/tex-archive/systems/knuth/tex/tex.web">tex-archive/systems/knuth/tex/tex.web</a>
+</dd><dt><a name="TeX82.Bug"></a><b><tt>TeX82.Bug</tt></b> </dt><dd>CTAN: <a href="ftp://ftp.dante.de/tex-archive/systems/knuth/errata/tex82.bug">tex-archive/systems/knuth/errata/tex82.bug</a>
+</dd><dt><a name="Trip"></a><b><tt>Trip</tt> test</b> </dt><dd>CTAN: <a href="ftp://ftp.dante.de/tex-archive/systems/knuth/tex/tripman.tex">tex-archive/systems/knuth/tex/tripman.tex</a>
+</dd><dt><a name="Plain.TeX"></a><b><tt>Plain.TeX</tt></b> </dt><dd>CTAN: <a href="ftp://ftp.dante.de/tex-archive/systems/knuth/lib/plain.tex">tex-archive/systems/knuth/lib/plain.tex</a>
+</dd><dt><a name="TeX--XeT"></a><b>TeX--XeT</b> </dt><dd>CTAN: <a href="ftp://ftp.dante.de/tex-archive/systems/knuth/tex--xet/">tex-archive/systems/knuth/tex--xet</a>
+</dd><dt><a name="etex.src"></a><b><tt>etex.src</tt></b></dt><dd><a href="file://www.rhbnc.ac.uk/e-TeX/etex.src">etex.src</a></dd><dt><a name="NTS-L"></a><b>Discussion List <tt>NTS-L</tt></b> </dt><dd>Subscribe with e-mail to the Listserver program <a href="mailto:listserv@vm.urz.uni-heidelberg.de">listserv@vm.urz.uni-heidelberg.de</a>.
+</dd><dt><a name="Tie"></a><b>Tie</b> (written in C) </dt><dd>CTAN: <a href="ftp://ftp.tex.ac.uk/tex-archive/web/tie/">tex-archive/web/tie</a>
+</dd><dt><a name="WebMerge"></a><b>WebMerge</b> (written in TeX) </dt><dd><a href="file://www.rhbnc.ac.uk/e-TeX/webmerge.tex">webmerge.tex</a></dd><dt><a name="PatchWeb"></a><b>PatchWeb</b> (for PC, bundled with "dos-tp") </dt><dd>CTAN: <a href="ftp://ftp.dante.de/tex-archive/systems/msdos/dos-tp/">tex-archive/systems/msdos/dos-tp/</a>
+</dd></dl>
+
+<p>
+</p><hr>
+
+<address>The NTS team</address>
+
+<p>(Put on the WWW by Bernd Raichle, Member of the NTS group; subsequently
+updated by Philip Taylor, with corrections by Peter Breitenlohner.) 
+
+</p></body></html>
