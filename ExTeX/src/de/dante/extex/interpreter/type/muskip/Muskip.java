@@ -32,21 +32,28 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Muskip implements Serializable {
 
-    /** ... */
+    /**
+     * The field <tt>length</tt> contains the the natural length.
+     */
     private GlueComponent length = new GlueComponent(0);
 
-    /** ... */
+    /**
+     * The field <tt>shrink</tt> contains the shrinkability specification.
+     */
     private GlueComponent shrink = new GlueComponent(0);
 
-    /** ... */
+    /**
+     * The field <tt>stretch</tt> contains the stretchability specification.
+     */
     private GlueComponent stretch = new GlueComponent(0);
 
     /**
      * Creates a new object.
+     * All components are 0.
      */
     public Muskip() {
 
@@ -56,9 +63,9 @@ public class Muskip implements Serializable {
     /**
      * Creates a new object.
      *
-     * @param theLength ...
-     * @param theStretch ...
-     * @param theShrink ...
+     * @param theLength the natural length
+     * @param theStretch the stretchability
+     * @param theShrink the shrinkability
      */
     public Muskip(final GlueComponent theLength,
             final GlueComponent theStretch, final GlueComponent theShrink) {
@@ -71,8 +78,9 @@ public class Muskip implements Serializable {
 
     /**
      * Creates a new object.
+     * Strechablity and shrinkability are 0.
      *
-     * @param theLength ...
+     * @param theLength the natural length
      */
     public Muskip(final Dimen theLength) {
 
@@ -92,12 +100,12 @@ public class Muskip implements Serializable {
             throws GeneralException {
 
         super();
-        this.length = new Dimen(getMu(context, source));
+        this.length = new Dimen(scanMu(context, source));
         if (source.scanKeyword("plus")) {
-            this.stretch = new GlueComponent(getMu(context, source));
+            this.stretch = new GlueComponent(scanMu(context, source));
         }
         if (source.scanKeyword("minus")) {
-            this.shrink = new GlueComponent(getMu(context, source));
+            this.shrink = new GlueComponent(scanMu(context, source));
         }
     }
 
@@ -111,7 +119,7 @@ public class Muskip implements Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    private long getMu(final Context context, final TokenSource source)
+    private long scanMu(final Context context, final TokenSource source)
             throws GeneralException {
 
         Token t = source.getToken();
