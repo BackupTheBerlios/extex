@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -21,13 +21,12 @@ package de.dante.extex.i18n;
 
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
-import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PanicException extends GeneralException {
 
@@ -58,43 +57,10 @@ public class PanicException extends GeneralException {
     private Localizer localizer;
 
     /**
-     * The field <tt>tag</tt> contains the name of he message format in the
+     * The field <tt>tag</tt> contains the name of the message format in the
      * localizer.
      */
     private String tag;
-
-    /**
-     * Creates a new object.
-     *
-     * @param messageTag the name of the message in the file <i>
-     *            messages.properties</i>
-     */
-    public PanicException(final String messageTag) {
-
-        super(PANIC_ERROR_CODE);
-        this.tag = messageTag;
-        this.arg1 = "?";
-        this.arg2 = "?";
-        this.arg3 = "?";
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param messageTag the name of the message in the file <i>
-     *            messages.properties</i>
-     * @param a1 the first parameter
-     *
-     * @deprecated missing localizer
-     */
-    public PanicException(final String messageTag, final String a1) {
-
-        super(PANIC_ERROR_CODE);
-        this.tag = messageTag;
-        this.arg1 = a1;
-        this.arg2 = "?";
-        this.arg3 = "?";
-    }
 
     /**
      * Creates a new object.
@@ -109,8 +75,6 @@ public class PanicException extends GeneralException {
         this.localizer = localizer;
         this.tag = messageTag;
         this.arg1 = "?";
-        this.arg2 = "?";
-        this.arg3 = "?";
     }
 
     /**
@@ -128,65 +92,6 @@ public class PanicException extends GeneralException {
         this.localizer = localizer;
         this.tag = messageTag;
         this.arg1 = a1;
-        this.arg2 = "?";
-        this.arg3 = "?";
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param localizer the localizer to use
-     * @param messageTag the name of the message in the file <i>
-     *            messages.properties</i>
-     * @param a1 the first parameter
-     * @param a2 the second parameter
-     */
-    public PanicException(final Localizer localizer, final String messageTag,
-            final String a1, final String a2) {
-
-        super(PANIC_ERROR_CODE);
-        this.localizer = localizer;
-        this.tag = messageTag;
-        this.arg1 = a1;
-        this.arg2 = a2;
-        this.arg3 = "?";
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param localizer the localizer to use
-     * @param messageTag the name of the message in the file <i>
-     *            messages.properties</i>
-     * @param a1 the first parameter
-     * @param a2 the second parameter
-     * @param a3 the third parameter
-     */
-    public PanicException(final Localizer localizer, final String messageTag,
-            final String a1, final String a2, final String a3) {
-
-        super(PANIC_ERROR_CODE);
-        this.localizer = localizer;
-        this.tag = messageTag;
-        this.arg1 = a1;
-        this.arg2 = a2;
-        this.arg3 = a3;
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param e the cause
-     */
-    public PanicException(final Throwable e) {
-
-        super(PANIC_ERROR_CODE);
-        this.localizer = LocalizerFactory.getLocalizer(PanicException.class
-                .getName());
-        this.tag = "PanicException.help";
-        this.arg1 = "?";
-        this.arg2 = "?";
-        this.arg3 = "?";
     }
 
     /**
@@ -194,7 +99,7 @@ public class PanicException extends GeneralException {
      */
     public String getLocalizedMessage() {
 
-        return getLocalizer().format(tag, arg1, arg2, arg3);
+        return getLocalizer().format(tag, arg1);
     }
 
     /**
