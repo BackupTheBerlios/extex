@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface Font {
 
@@ -60,12 +60,12 @@ public interface Font {
 
 	/**
 	 * Return the italic correction of a <code>UnicodeChar</code>, or
-	 * 0pt, if the character is not defined.
+	 * 0, if the character is not defined.
 	 * 
 	 * @param c ...
 	 * @return ...
 	 */
-	Dimen getItalic(UnicodeChar c);
+	float getItalic(UnicodeChar c);
 	
 	/**
 	 * Check, if the <code>UnicodeChar</code> is defined in the font.
@@ -136,16 +136,6 @@ public interface Font {
 	 * @return ...
 	 */
 	String getFontName();
-
-	/**
-	 * Check, if the font has an external file 
-	 * (e.g. a type 1 pfb-file).
-	 *
-	 * @return ...
-	 *
-	 * @deprecated since the same can be checked with getExternalFile()
-	 */
-	boolean isExternalFont();
 	
 	/**
 	 * Return the <code>File</code> object of a external font file or 
@@ -161,5 +151,4 @@ public interface Font {
 	 * @return the external ID, or <code>null</code>, if none exists.
 	 */
 	String getExternalID(UnicodeChar c);
-
 }
