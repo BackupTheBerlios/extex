@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Cr extends AbstractCode {
 
@@ -78,7 +78,7 @@ public class Cr extends AbstractCode {
 
         ListMaker maker = typesetter.getListMaker();
         if (maker instanceof AlignmentList) {
-            ((AlignmentList) maker).cr();
+            ((AlignmentList) maker).cr(context, source);
         } else {
             throw new HelpingException(getLocalizer(), "TTP.MisplacedCrSpan",
                     printableControlSequence(context));

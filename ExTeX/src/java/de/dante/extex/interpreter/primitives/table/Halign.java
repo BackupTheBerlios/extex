@@ -59,7 +59,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -139,7 +139,7 @@ public class Halign extends AbstractAlign implements Boxable {
         } else if (t.isa(Catcode.LEFTBRACE)) {
             List preamble = getPreamble(context, source);
             typesetter.push(new HAlignListMaker(typesetter.getManager(),
-                    preamble, width));
+                    context, source, preamble, width));
         } else {
             throw new MissingLeftBraceHelpingException(
                     printableControlSequence(context));
