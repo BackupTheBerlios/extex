@@ -94,13 +94,14 @@
         <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
 
         <Language></Language>
+
+        <!-- The configuration for the hyphenation manager.
+          -->
+        <Hyphenation src="hyphenation/Hyphenation.xml" />
+
       </ExTeX>
 
     </Context>
-
-    <!-- The configuration for the hyphenation manager.
-      -->
-    <Hyphenation src="hyphenation/Hyphenation.xml" />
 
     <!-- The implementation of the error handler to use.
       -->
