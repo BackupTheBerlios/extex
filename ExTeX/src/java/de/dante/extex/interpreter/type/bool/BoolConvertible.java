@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * This is an interface which describes the feature to be convertibe into a bool.
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface BoolConvertible {
 
@@ -39,6 +39,6 @@ public interface BoolConvertible {
      * @return the converted value
      * @throws GeneralException in case of an error
      */
-    Bool convertBoot(Context context, TokenSource source)
+    Bool convertBool(Context context, TokenSource source)
             throws GeneralException;
 }

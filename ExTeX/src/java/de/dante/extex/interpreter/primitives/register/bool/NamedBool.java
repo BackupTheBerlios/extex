@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NamedBool extends AbstractAssignment
         implements
@@ -157,11 +157,11 @@ public class NamedBool extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.bool.BoolConvertible#convertBoot(
+     * @see de.dante.extex.interpreter.type.bool.BoolConvertible#convertBool(
      *     de.dante.extex.interpreter.context.Context,
      *     de.dante.extex.interpreter.TokenSource)
      */
-    public Bool convertBoot(final Context context, final TokenSource source)
+    public Bool convertBool(final Context context, final TokenSource source)
             throws GeneralException {
 
         if (context instanceof ContextExtension) {
