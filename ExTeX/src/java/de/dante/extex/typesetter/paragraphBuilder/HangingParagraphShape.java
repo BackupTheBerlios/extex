@@ -26,20 +26,32 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HangingParagraphShape extends ParagraphShape {
 
+    /**
+     * The field <tt>hsize</tt> contains the width of the line.
+     */
     private FixedDimen hsize;
 
+    /**
+     * The field <tt>hangafter</tt> contains the number of lines to start or
+     * end hanging.
+     */
     private int hangafter;
 
+    /**
+     * The field <tt>hangindent</tt> contains the amount of indentation.
+     */
     private FixedDimen hangindent;
 
     /**
      * Creates a new object.
      *
-     * @param hsize ...
+     * @param hangafter the number of lines to start or end hanging
+     * @param hangindent the amount of indentation
+     * @param hsize the width of the line
      */
     public HangingParagraphShape(final int hangafter,
             final FixedDimen hangindent, final FixedDimen hsize) {
@@ -73,7 +85,7 @@ public class HangingParagraphShape extends ParagraphShape {
      *
      * @param hsize the hsize to set.
      */
-    public void setHsize(FixedDimen hsize) {
+    public void setHsize(final FixedDimen hsize) {
 
         this.hsize = hsize;
     }
@@ -82,7 +94,7 @@ public class HangingParagraphShape extends ParagraphShape {
      *
      * @param hangafter the hangafter to set.
      */
-    public void setHangafter(int hangafter) {
+    public void setHangafter(final int hangafter) {
 
         this.hangafter = hangafter;
     }
@@ -91,7 +103,7 @@ public class HangingParagraphShape extends ParagraphShape {
      *
      * @param hangindent the hangindent to set.
      */
-    public void setHangindent(FixedDimen hangindent) {
+    public void setHangindent(final FixedDimen hangindent) {
 
         this.hangindent = hangindent;
     }
