@@ -1,4 +1,5 @@
 ..xml
+*.dvi
 *.externalToolBuilders
 *.lck
 *.log
@@ -7,6 +8,7 @@
 *.pdf
 .xvpics
 build.properties
+prj.el
 target
 tmp
 work
