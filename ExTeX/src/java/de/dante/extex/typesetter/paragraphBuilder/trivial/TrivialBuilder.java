@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.logging.LogFormatter;
+import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.FixedParagraphShape;
@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
