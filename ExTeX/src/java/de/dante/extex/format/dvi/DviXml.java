@@ -23,7 +23,6 @@ import java.io.IOException;
 
 import org.jdom.Element;
 
-import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.format.dvi.exception.DVIException;
 import de.dante.extex.format.dvi.exception.DVIUndefinedOpcodeException;
 import de.dante.util.file.random.RandomAccessR;
@@ -36,7 +35,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviXml implements DviInterpreter {
@@ -1566,11 +1565,8 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readByteAsInt();
             int c = rar.readInt();
-            TFMFixWord s = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
-            TFMFixWord d = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
-
+            int s = rar.readInt();
+            int d = rar.readInt();
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
 
@@ -1584,8 +1580,8 @@ public class DviXml implements DviInterpreter {
             }
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", s.toStringComma());
-            element.setAttribute("designsize", d.toStringComma());
+            element.setAttribute("scalefactor", String.valueOf(s));
+            element.setAttribute("designsize", String.valueOf(d));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
@@ -1609,10 +1605,8 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readShort();
             int c = rar.readInt();
-            TFMFixWord s = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
-            TFMFixWord d = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+            int s = rar.readInt();
+            int d = rar.readInt();
 
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
@@ -1627,8 +1621,8 @@ public class DviXml implements DviInterpreter {
             }
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", s.toStringComma());
-            element.setAttribute("designsize", d.toStringComma());
+            element.setAttribute("scalefactor", String.valueOf(s));
+            element.setAttribute("designsize", String.valueOf(d));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
@@ -1652,10 +1646,8 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readInt24();
             int c = rar.readInt();
-            TFMFixWord s = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
-            TFMFixWord d = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+            int s = rar.readInt();
+            int d = rar.readInt();
 
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
@@ -1670,8 +1662,8 @@ public class DviXml implements DviInterpreter {
             }
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", s.toStringComma());
-            element.setAttribute("designsize", d.toStringComma());
+            element.setAttribute("scalefactor", String.valueOf(s));
+            element.setAttribute("designsize", String.valueOf(d));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
@@ -1695,10 +1687,8 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readInt();
             int c = rar.readInt();
-            TFMFixWord s = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
-            TFMFixWord d = new TFMFixWord(rar.readInt(),
-                    TFMFixWord.FIXWORDDENOMINATOR);
+            int s = rar.readInt();
+            int d = rar.readInt();
 
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
@@ -1713,8 +1703,8 @@ public class DviXml implements DviInterpreter {
             }
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", s.toStringComma());
-            element.setAttribute("designsize", d.toStringComma());
+            element.setAttribute("scalefactor", String.valueOf(s));
+            element.setAttribute("designsize", String.valueOf(d));
             if (bufa.length() >= 0) {
                 System.out.println("bufa :" + bufa.toString());
                 element.setAttribute("area", bufa.toString());
