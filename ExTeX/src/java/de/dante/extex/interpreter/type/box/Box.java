@@ -21,8 +21,9 @@ package de.dante.extex.interpreter.type.box;
 
 import java.io.Serializable;
 
+import javax.naming.OperationNotSupportedException;
+
 import de.dante.extex.i18n.EofHelpingException;
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -48,7 +49,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Box implements Serializable {
 
@@ -326,14 +327,15 @@ public class Box implements Serializable {
      *
      * @return a new vertical node list with the material
      *
-     * @throws HelpingException in case that the Box is not a vlist
+     * @throws OperationNotSupportedException in case that the Box is not a vlist
      *
      * @see "TTP [977]"
      */
-    public VerticalListNode vsplit(final Dimen height) throws HelpingException {
+    public VerticalListNode vsplit(final Dimen height)
+            throws OperationNotSupportedException {
 
         if (!isVbox()) {
-            throw new HelpingException(getLocalizer(), "..."); //TODO gene: i18n
+            throw new OperationNotSupportedException("vsplit");
         }
 
         //TODO gene: vsplit unimplemented
