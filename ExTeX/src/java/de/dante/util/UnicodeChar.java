@@ -26,7 +26,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class UnicodeChar {
 
@@ -226,24 +226,35 @@ public class UnicodeChar {
 	private static final UnicodeChar C9 = new UnicodeChar('9');
 	private static final UnicodeChar Ca = new UnicodeChar('a');
 	private static final UnicodeChar Cf = new UnicodeChar('f');
+	private static final UnicodeChar CA = new UnicodeChar('A');
+	private static final UnicodeChar CF = new UnicodeChar('F');
 
 	/**
-	 * Check, if the letter is a hexdigit (0-9, a-f)
+	 * Check, if the letter is a hexdigit (0-9, a-f, A-F)
 	 * @return	<code>true</code>, if the letter is a hexdigit, otherwise <code>false</code>
 	 */
 	public boolean isHexDigit() {
-		return ((code >= C0.getCodePoint() && code <= C9.getCodePoint()) || (code >= Ca.getCodePoint() && code <= Cf.getCodePoint()));
+		return (
+			(code >= C0.getCodePoint() && code <= C9.getCodePoint())
+				|| (code >= Ca.getCodePoint() && code <= Cf.getCodePoint())
+				|| (code >= CA.getCodePoint() && code <= CF.getCodePoint()));
 	}
 
 	/**
 	 * Convert a hexdigit to a int-value.<p>
-	 * '0' to 0, ... '9' to 9, 'a' to 10, 'f' to 15
+	 * '0' to 0, ... '9' to 9, 'a','A' to 10, 'f','F' to 15
 	 * @return	int-value
 	 */
 	public int getHexDigit() {
-		return (code <= C9.getCodePoint()) ? code - C0.getCodePoint() : code - Ca.getCodePoint() + 10;
+		if (code >= C0.getCodePoint() || code <= C9.getCodePoint()) {
+			return code - C0.getCodePoint();
+		} else if (code >= Ca.getCodePoint() || code <= Cf.getCodePoint()) {
+			return code - Ca.getCodePoint() + 10;
+		} else {
+			return code - CA.getCodePoint() + 10;
+		}
 	}
-	
+
 	/**
 	 * Return the ASCII-char of the character (if possible)
 	 * @return	ASCII-char
@@ -251,7 +262,7 @@ public class UnicodeChar {
 	public char getASCIIChar() {
 		return toString().charAt(0);
 	}
-	
+
 	/**
 	 * Return the count of char16 of the code
 	 * @return the count of char16 for this code
@@ -270,5 +281,5 @@ public class UnicodeChar {
 	public static synchronized int charAt(String s, int idx) {
 		return UTF16.charAt(s, idx);
 	}
-		
+
 }

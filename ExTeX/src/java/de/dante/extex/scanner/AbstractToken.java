@@ -24,14 +24,14 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractToken implements Token {
 
@@ -97,6 +97,9 @@ public abstract class AbstractToken implements Token {
      * @see de.dante.extex.scanner.Token#getChar()
      */
     public UnicodeChar getChar() {
+    	if (uniCode == null) {
+    		uniCode = new UnicodeChar(getValue(),0);
+    	}
         return uniCode;
     }
     
