@@ -21,10 +21,12 @@ package de.dante.extex.hyphenation.exception;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This exception signals that an illegal value token has been encountered in a
+ * hyphenation pattern. A value token must have the catcode OTHER and a digit
+ * as its character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IllegalValueHyphenationException extends HyphenationException {
 

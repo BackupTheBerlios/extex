@@ -21,10 +21,11 @@ package de.dante.extex.hyphenation.exception;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This exception signals that an attempt has been made to assign a pattern
+ * which already has a hyphenation code assigned to it.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ImmutableHyphenationException extends HyphenationException {
 

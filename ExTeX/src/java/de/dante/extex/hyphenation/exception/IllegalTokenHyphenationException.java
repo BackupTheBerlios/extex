@@ -21,10 +21,11 @@ package de.dante.extex.hyphenation.exception;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This exception signals that an illegal token has been encountered in a
+ * hyphenation pattern.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IllegalTokenHyphenationException extends HyphenationException {
 

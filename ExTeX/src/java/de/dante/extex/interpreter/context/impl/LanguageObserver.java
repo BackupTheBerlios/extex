@@ -27,10 +27,16 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This observer is meant for keeping the current typesetting context in sync
+ * with the registers <tt>\language</tt> and <tt>\lang</tt>.
+ * <p>
+ *  The toks register <tt>\lang</tt> is considered first. Only if this register
+ *  is not set or it is empty then the cont register <tt>\language</tt> is
+ *  taken into accout.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LanguageObserver implements CountObserver, TokensObserver {
 
@@ -51,7 +57,7 @@ public class LanguageObserver implements CountObserver, TokensObserver {
     public void receiveCountChange(final ContextInternals context,
             final String name, final Count value) throws ConfigurationException {
 
-        if ("language".equals(name)) {
+        if ("language".equals(name)) { // this should never fail; just to be sure
             Tokens lang = context.getToks("lang");
             if (lang == null || lang.length() == 0) {
                 context.getTypesettingContextFactory().newInstance(
@@ -70,7 +76,7 @@ public class LanguageObserver implements CountObserver, TokensObserver {
             final String name, final Tokens value)
             throws ConfigurationException {
 
-        if ("lang".equals(name)) {
+        if ("lang".equals(name)) { // this should never fail; just to be sure
             context.getTypesettingContextFactory().newInstance(
                     context.getTypesettingContext(), value.toString());
         }

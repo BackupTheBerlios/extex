@@ -22,10 +22,11 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.hyphenation.HyphenationManagerCarrier;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes the abilities of a Context together with some
+ * internal methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ContextInternals extends Context, HyphenationManagerCarrier {
 

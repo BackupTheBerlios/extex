@@ -22,10 +22,11 @@ package de.dante.extex.hyphenation.exception;
 import de.dante.util.GeneralException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class is the base class for all exceptions in the hyphenation
+ * components.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HyphenationException extends GeneralException {
 

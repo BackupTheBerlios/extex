@@ -118,7 +118,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.72 $
+ * @version $Revision: 1.73 $
  */
 public class ContextImpl
         implements
@@ -983,7 +983,7 @@ public class ContextImpl
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method is able to invoke all observers for a code change event.
      *
      * @param t the code token to change the binding for
      * @param code the new code binding
@@ -1008,7 +1008,7 @@ public class ContextImpl
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method is able to invoke all observers for a count change event.
      *
      * @param name the name of the count register
      * @param count the new value
@@ -1033,7 +1033,7 @@ public class ContextImpl
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method is able to invoke all observers for a dimen change event.
      *
      * @param name the name of the count register
      * @param dimen the new value
@@ -1058,7 +1058,7 @@ public class ContextImpl
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method is able to invoke all observers for a toks change event.
      *
      * @param name the name of the count register
      * @param toks the new value
