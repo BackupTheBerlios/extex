@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-import de.dante.extex.interpreter.type.Code;
 
 
 /**
@@ -50,7 +50,7 @@ import de.dante.extex.interpreter.type.Code;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Ifdefined extends AbstractIf {
 
@@ -75,7 +75,7 @@ public class Ifdefined extends AbstractIf {
             throws GeneralException {
 
 
-        Token token = source.getControlSequence(context);
+        CodeToken token = source.getControlSequence(context);
         Code code = context.getCode(token);
 
         // TODO: is this correct? (TE)

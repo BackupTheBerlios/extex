@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -99,13 +100,11 @@ public class PrintFormat extends AbstractCode implements Theable {
         Token cs = source.getToken(context);
 
         if (!(cs instanceof ControlSequenceToken)) {
-            char esc = (char) (context.getCount("escapechar").getValue());
-            // TODO change char to UnicodeChar
-            throw new HelpingException(getLocalizer(), "TTP.CantUseAfter", cs
-                    .toString(), Character.toString(esc) + getName());
+            throw new CantUseAfterException(cs.toText(),
+                    printableControlSequence(context));
         }
 
-        Code code = context.getCode(cs);
+        Code code = context.getCode((CodeToken) cs);
 
         if (code == null) {
             throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", cs

@@ -34,6 +34,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -50,7 +51,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public interface Context
         extends
@@ -128,8 +129,7 @@ public interface Context
      *
      * @throws GeneralException in case of an error
      */
-    //TODO gene: change the signature to use CodeToken instead of Token
-    Code getCode(Token t) throws GeneralException;
+    Code getCode(CodeToken t) throws GeneralException;
 
     /**
      * Getter for the {@link de.dante.extex.interpreter.type.count.Count count}

@@ -39,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathDelimiter {
 
@@ -99,7 +99,7 @@ public class MathDelimiter {
                     init(del);
                     return;
                 }
-            } else if (context.getCode(t) instanceof Delimiter) {
+            } else if (context.getCode((CodeToken) t) instanceof Delimiter) {
                 long del = source.scanNumber(context);
                 init(del);
                 return;
