@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -140,7 +140,7 @@ public abstract class AbstractFileCode extends AbstractCode
             throws ConfigurationException {
 
         String strict = config.getAttribute("strict");
-        strictTeX = (strict != null && Boolean.getBoolean(strict));
+        strictTeX = (strict != null && Boolean.valueOf(strict).booleanValue());
     }
 
     /**

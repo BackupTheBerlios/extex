@@ -78,7 +78,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public abstract class Moritz
         implements
@@ -246,7 +246,7 @@ public abstract class Moritz
 
         Configuration cfg = config.findConfiguration("ExtendedRegisterNames");
         if (cfg != null) {
-            extendedRegisterNames = Boolean.getBoolean(cfg.getValue());
+            extendedRegisterNames = Boolean.valueOf(cfg.getValue()).booleanValue();
         }
 
     }
