@@ -19,35 +19,17 @@
 
 package de.dante.extex.documentWriter;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.AbstractFactory;
 
 /**
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class DocumentWriterFactory extends AbstractFactory {
-
-    /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * used to get the class name.
-     */
-    private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The field <tt>config</tt> contains the configuration to use.
-     */
-    private Configuration config;
 
     /**
      * Creates a new object.
@@ -60,16 +42,15 @@ public class DocumentWriterFactory extends AbstractFactory {
             throws ConfigurationException {
 
         super();
-        this.config = configuration;
         configure(configuration);
     }
 
     /**
      * Provide a new instance of a document writer.
-     * The new instance is initiated with the subconfiguration describing it.
+     * The new instance is initiated with the sub-configuration describing it.
      *
      * @param type the type of the document writer
-     * @param options the dynamic access to the context
+     * @param options the dynamic access to the readable part of the context
      *
      * @return the new instance
      *
@@ -78,48 +59,8 @@ public class DocumentWriterFactory extends AbstractFactory {
     public DocumentWriter newInstance(final String type,
             final DocumentWriterOptions options) throws ConfigurationException {
 
-        Configuration cfg = selectConfiguration(type);
-        String className = cfg.getAttribute(CLASS_ATTRIBUTE);
-
-        if (className == null) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    cfg);
-        }
-
-        DocumentWriter docWriter;
-
-        try {
-            Constructor constructor = Class.forName(className).getConstructor(
-                    new Class[]{Configuration.class,
-                            DocumentWriterOptions.class});
-            docWriter = (DocumentWriter) constructor.newInstance(//
-                    new Object[]{cfg, options});
-        } catch (SecurityException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(className + "("
-                    + Configuration.class.getName() + ", "
-                    + DocumentWriterOptions.class.getName() + ")");
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(className, config);
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            Throwable c = e.getCause();
-            if (c != null && c instanceof ConfigurationException) {
-                throw (ConfigurationException) c;
-            }
-            throw new ConfigurationInstantiationException(e);
-        }
-
-        enableLogging(docWriter, getLogger());
-
-        return docWriter;
-
+        return (DocumentWriter) createInstance(type, DocumentWriter.class,
+                DocumentWriterOptions.class, options);
     }
 
 }
