@@ -27,7 +27,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TypesetterTest extends ExTeXLauncher {
 
@@ -50,15 +50,16 @@ public class TypesetterTest extends ExTeXLauncher {
 
         Properties properties = getProps();
         properties.setProperty("extex.typesetter", "devel");
-        properties.setProperty("extex.output", "xml");
+        properties.setProperty("extex.output", "out");
 
         runCode(properties,
                 //--- input code ---
                 "\\catcode`{=1\n" //
                 + "\\catcode`}=2\n" //
                 + "\\font\\fnt=cmtt12\\fnt\n" //
-                + "\\hsize=1000pt\n" //
-                + "\\vsize=600pt\n" //
+                + "\\hsize=800pt\n" //
+                + "\\vsize=500pt\n" //
+                + "\\parskip=20pt\n" //
                 + "\n" //
                 + "Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam\n" //
                 + "nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat\n" //
