@@ -1,26 +1,28 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.extex.interpreter.primitives.register.count;
 
+import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.util.GeneralException;
 
 /**
@@ -38,9 +40,11 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class IntegerParameter extends CountPrimitive {
+public class IntegerParameter extends CountPrimitive
+        implements
+            InitializableCode {
 
     /**
      * Creates a new object.
@@ -61,6 +65,31 @@ public class IntegerParameter extends CountPrimitive {
             throws GeneralException {
 
         return getName();
+    }
+
+    /**
+     * Initialize the Code with some value coming from a String.
+     *
+     * @param context the interpreter context
+     * @param value the source of information for the initialization
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context, java.lang.String)
+     */
+    public void init(final Context context, final String value)
+            throws GeneralException {
+
+        if (!value.equals("")) {
+            try {
+                long val = Long.parseLong(value);
+                context.setCount(getKey(null, context), val, true);
+            } catch (NumberFormatException e) {
+                throw new GeneralException(Messages.format(
+                        "IntegerParameter.InitError", value));
+            }
+        }
     }
 
 }
