@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,8 +16,8 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.typesetter.type.noad;
 
+package de.dante.extex.typesetter.type.noad;
 
 /**
  * This is the abstract base class for Noads.
@@ -27,7 +27,7 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractNoad implements Noad {
 
@@ -71,6 +71,36 @@ public abstract class AbstractNoad implements Noad {
     }
 
     /**
+     * TODO gene: missing JavaDoc
+     *
+     * @param sb the target string buffer
+     */
+    protected void printNoad(final StringBuffer sb) {
+
+        // TODO gene: unimplemented
+    }
+
+    /**
+     * Setter for the subscript.
+     *
+     * @param subscript the subscript to set.
+     */
+    public void setSubscript(final Noad subscript) {
+
+        this.subscript = subscript;
+    }
+
+    /**
+     * Setter for the superscript.
+     *
+     * @param superscript the superscript to set.
+     */
+    public void setSuperscript(final Noad superscript) {
+
+        this.superscript = superscript;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
      */
     protected String stringName() {
@@ -95,37 +125,7 @@ public abstract class AbstractNoad implements Noad {
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        // TODO gene: unimplemented
-    }
-
-    /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param sb the target string buffer
-     */
-    protected void printNoad(final StringBuffer sb) {
-        
-        // TODO gene: unimplemented
-    }
-
-    /**
-     * Setter for the subscript.
-     *
-     * @param subscript the subscript to set.
-     */
-    public void setSubscript(final Noad subscript) {
-
-        this.subscript = subscript;
-    }
-
-    /**
-     * Setter for the superscript.
-     *
-     * @param superscript the superscript to set.
-     */
-    public void setSuperscript(final Noad superscript) {
-
-        this.superscript = superscript;
+        toString(sb);
     }
 
 }
