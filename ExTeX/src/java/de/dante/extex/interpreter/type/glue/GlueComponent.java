@@ -55,7 +55,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -307,8 +307,21 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public boolean eq(final FixedGlueComponent d) {
 
         return (d != null && //
-                value == d.getValue() && //
-        order == d.getOrder());
+                value == d.getValue() && order == d.getOrder());
+    }
+
+    /**
+     * Compares the current instance with another GlueComponent for equality.
+     *
+     * @param d the other GlueComponent to compare to. If this parameter is
+     * <code>null</code> then the comparison fails.
+     *
+     * @return <code>false</code> iff <i>|this| == |d| and ord(this) == ord(d)</i>
+     */
+    public boolean ne(final FixedGlueComponent d) {
+
+        return (d != null && //
+        (value != d.getValue() || order != d.getOrder()));
     }
 
     /**
@@ -544,8 +557,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * Subtract a Glue component from this glue.
      * If the order of the other glue component is the same as the current one
-     * then the values are subtracted.
-     * ...
+     * then the values are subtracted. Otherwise the greater order determines
+     * which glue to use.
      *
      * @param g the GlueCoponent to subtract
      */
@@ -585,6 +598,21 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      */
     public void toString(final StringBuffer sb) {
 
+        toString(sb, 'p', 't');
+    }
+
+    /**
+     * Determine the printable representation of the object and append it to
+     * the given StringBuffer.
+     *
+     * @param sb the output string buffer
+     * @param c1 the first character for the length of order 0
+     * @param c2 the second character for the length of order 0
+     *
+     * @see #toString(StringBuffer)
+     */
+    public void toString(final StringBuffer sb, final char c1, final char c2) {
+
         long val = getValue();
 
         if (val < 0) {
@@ -623,8 +651,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         } while (val > delta);
 
         if (order == 0) {
-            sb.append('p');
-            sb.append('t');
+            sb.append(c1);
+            sb.append(c2);
         } else if (order > 0) {
             sb.append('f');
             sb.append('i');
