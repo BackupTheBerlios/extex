@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Mathcode extends AbstractAssignment {
 
@@ -65,7 +65,8 @@ public class Mathcode extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -77,7 +78,6 @@ public class Mathcode extends AbstractAssignment {
         UnicodeChar charCode = source.scanCharacterCode();
         source.getOptionalEquals();
         Count mathCode = new Count(source.scanNumber());
-
         context.setMathcode(charCode, mathCode, prefix.isGlobal());
     }
 }
