@@ -1,25 +1,27 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
+import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.Node;
@@ -40,10 +42,15 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.18 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
+
+    /**
+     * The field <tt>DEVELOP</tt> contains the ...
+     */
+    private static final boolean DEVELOP = true;
 
     /**
      * The field <tt>size</tt> contains the glue specification for this node.
@@ -68,7 +75,60 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      */
     public void addWidthTo(final Glue glue) {
 
-        glue.add(size);
+        glue.add(this.size);
+    }
+
+    /**
+     * ...
+     *
+     * @param nom ...
+     * @param denom ...
+     * @param sum ...
+     *
+     * @see de.dante.extex.typesetter.Node#spread(long, long, FixedDimen)
+     */
+    public void spread(final long nom, final long denom, final FixedDimen sum) {
+
+        if (nom > denom) {
+            FixedGlueComponent s = this.size.getStretch();
+            if (s.getOrder() == 0) {
+                getWidth().add(
+                        Math.min(s.getValue(), sum.getValue() * nom / denom));
+            } else {
+                getWidth().add(sum.getValue() * nom / denom);
+            }
+        } else if (nom < denom) {
+
+            FixedGlueComponent s = this.size.getShrink();
+            if (s.getOrder() == 0) {
+                getWidth().add(Math.max(0, sum.getValue() * nom / denom));
+            } else {
+                getWidth().add(sum.getValue() * nom / denom);
+            }
+        }
+    }
+
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        return " "; //TODO incomplete
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+
+        sb.append("\\skip ");
+        sb.append(this.size.toString());
+        if (DEVELOP && !getWidth().eq(size.getLength())) {
+            sb.append(" [");
+            sb.append(getWidth().toString());
+            sb.append(']');
+        }
     }
 
     /**
@@ -95,22 +155,14 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
     }
 
     /**
-     * @see java.lang.Object#toString()
+     * @see de.dante.extex.typesetter.Node#visit(
+     *      de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object)
      */
-    public String toString() {
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
 
-        return " "; //TODO incomplete
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-
-        sb.append('\\');
-        sb.append("skip ");
-        sb.append(size.toString());
+        return visitor.visitGlue(this, value);
     }
 
     /**
@@ -123,16 +175,4 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
 
         return visitor.visitGlue(value, value2);
     }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(
-     *      de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value)
-            throws GeneralException {
-
-        return visitor.visitGlue(this, value);
-    }
-
 }

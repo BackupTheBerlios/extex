@@ -19,6 +19,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.type.Knot;
 import de.dante.util.GeneralException;
@@ -37,7 +38,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface Node extends Knot {
 
@@ -89,6 +90,15 @@ public interface Node extends Knot {
      * @param glue the glue to add to.
      */
     void addWidthTo(Glue glue);
+
+    /**
+     * Adjust the width of a flexible node. This method is a noop for any but
+     * the flexible nodes.
+     * @param nom ...
+     * @param denom ...
+     * @param sum ...
+     */
+    void spread(long nom, long denom, FixedDimen sum);
 
     /**
      * This method puts the printable representation into the string buffer.
