@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -178,26 +178,23 @@ public class ConfigurationXMLImpl implements Configuration {
      * <tt>.xml</tt> and/or prepending <tt>config/</tt> if the path is not
      * sufficient to find the resource.
      * </p>
+     *
+     * <h3>Example</h3>
      * <p>
-     * Example
-     *
+     * Consider the following creation of an instance of this class
      * <pre>
-     *  cfg = new XMLConfig("cfg");
+     *  cfg = new ConfigurationXMLImpl("cfg");
      * </pre>
-     *
-     *
-     * TODO gene: documentation incomplete
-     *
-     * searches the following files on the classpath:
-     *
+     * Then the following files are searched on the classpath until one is
+     * found:
      * <pre>
-     *  cfg cfg.xml config/cfg config/cfg.xml
+     *    cfg   cfg.xml   config/cfg   config/cfg.xml
      * </pre>
-     *
-     *
-     *
-     *
      * </p>
+     *
+     *
+     *
+     *
      *
      * @param theResource the name of the resource to be used;
      * i.e. the file name
