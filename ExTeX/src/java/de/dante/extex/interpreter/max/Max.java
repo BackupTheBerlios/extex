@@ -26,7 +26,6 @@ import java.util.Iterator;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
@@ -40,11 +39,24 @@ import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.CrToken;
+import de.dante.extex.scanner.LeftBraceToken;
+import de.dante.extex.scanner.LetterToken;
+import de.dante.extex.scanner.MacroParamToken;
+import de.dante.extex.scanner.MathShiftToken;
+import de.dante.extex.scanner.OtherToken;
+import de.dante.extex.scanner.RightBraceToken;
+import de.dante.extex.scanner.SpaceToken;
+import de.dante.extex.scanner.SubMarkToken;
+import de.dante.extex.scanner.SupMarkToken;
+import de.dante.extex.scanner.TabMarkToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.TokenVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Mode;
@@ -71,14 +83,14 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Max extends Moritz
         implements
             Interpreter,
             TokenSource,
             Observable,
-            CatcodeVisitor {
+            TokenVisitor {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
@@ -317,7 +329,7 @@ public class Max extends Moritz
         current = getToken()) {
             observersExpand.update(this, current);
             try {
-                current.getCatcode().visit(this, current, null, null);
+                current.visit(this, null, null);
             } catch (PanicException e) {
                 throw e; //TODO report the problem and terminate
             } catch (GeneralException e) {
@@ -360,7 +372,7 @@ public class Max extends Moritz
         while (t != null) { //TODO ???
             if (t instanceof CodeToken) {
                 observersMacro.update(this, t);
-                code = context.getCode(t);
+                code = context.getCode((CodeToken) t);
             } else {
                 return t;
             }
@@ -607,21 +619,19 @@ public class Max extends Moritz
      * This visit method is invoked on an active token.
      * In TeX this is e.g. ~.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitActive(
+     *      de.dante.extex.scanner.ActiveCharacterToken, java.lang.Object)
      */
-    public Object visitActive(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitActive(final ActiveCharacterToken token,
+            final Object ignore) throws GeneralException {
 
-        Token token = (Token) oToken;
         Code code = context.getCode(token);
         if (code == null) {
             throw new HelpingException("TTP.UndefinedToken", //
@@ -634,71 +644,42 @@ public class Max extends Moritz
     }
 
     /**
-     * This visit method is invoked on a comment token.
-     * In TeX this normally is a %.
-     * <p>
-     * A comment is ignored. This should never happen since comments are eaten
-     * up in the scanner already.
-     * </p>
-     *
-     * @param oToken the first argument to pass is the token to expand.
-     * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
-     *
-     * @return <code>null</code>
-     *
-     * @throws GeneralException in case of an error
-     *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitComment(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
-
-        throw new PanicException(Messages.format("TTP.Confusion", getClass()
-                .getName()));
-    }
-
-    /**
      * This visit method is invoked on a cr token.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitCr(
+     *      de.dante.extex.scanner.CrToken, java.lang.Object)
      */
-    public Object visitCr(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitCr(final CrToken token, final Object ignore)
+            throws GeneralException {
 
         //TODO unimplemented
-        throw new GeneralException("unimplemented");
+        throw new RuntimeException("unimplemented");
     }
 
     /**
      * This visit method is invoked on an escape token.
      * In TeX this normally means a control sequence.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitEscape(
+     *      de.dante.extex.scanner.ControlSequenceToken, java.lang.Object)
      */
-    public Object visitEscape(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitEscape(final ControlSequenceToken token,
+            final Object ignore) throws GeneralException {
 
-        Token token = (Token) oToken;
         observersMacro.update(this, token);
         Code code = context.getCode(token);
         if (code == null) {
@@ -712,61 +693,21 @@ public class Max extends Moritz
     }
 
     /**
-     * This visit method is invoked on an ignore token.
-     *
-     * @param oToken the first argument to pass is the token to expand.
-     * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
-     *
-     * @return <code>null</code>
-     *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitIgnore(final Object oToken, final Object ignore,
-            final Object ignore2) {
-
-        return null;
-    }
-
-    /**
-     * This visit method is invoked on an invalid token.
-     *
-     * @param oToken the first argument to pass is the token to expand.
-     * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
-     *
-     * @return <code>null</code>
-     *
-     * @throws GeneralException in case of an error
-     *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visitInvalid(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
-
-        throw new HelpingException("TTP.InvalidChar", ((Token) oToken)
-                .getValue());
-    }
-
-    /**
      * This visit method is invoked on a left brace token.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
      * @see "TeX -- The Program [1063]"
+     * @see de.dante.extex.scanner.TokenVisitor#visitLeftBrace(
+     *      de.dante.extex.scanner.LeftBraceToken, java.lang.Object)
      */
-    public Object visitLeftBrace(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitLeftBrace(final LeftBraceToken token, final Object ignore)
+            throws GeneralException {
 
         try {
             context.openGroup();
@@ -779,22 +720,19 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a letter token.
-     *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitLetter(
+     *      de.dante.extex.scanner.LetterToken, java.lang.Object)
      */
-    public Object visitLetter(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitLetter(final LetterToken token, final Object ignore)
+            throws GeneralException {
 
-        Token token = (Token) oToken;
         typesetter.add(context.getTypesettingContext(), token.getChar());
         return null;
     }
@@ -803,42 +741,51 @@ public class Max extends Moritz
      * This visit method is invoked on a macro parameter token.
      * In TeX this normally is a #.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitMacroParam(
+     *      de.dante.extex.scanner.MacroParamToken, java.lang.Object)
      */
-    public Object visitMacroParam(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitMacroParam(final MacroParamToken token,
+            final Object ignore) throws GeneralException {
 
-        throw new HelpingException("TTP.CantUseIn",
-                ((Token) oToken).toString(), typesetter.getMode().toString());
+        throw new HelpingException("TTP.CantUseIn", token.toString(),
+                typesetter.getMode().toString());
     }
 
     /**
      * This visit method is invoked on a math shift token.
      * In TeX this normally is a $.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     *
+     *
+     * <doc name="everymath" type="register">
+     * <h3>The Parameter <tt>\everymath</tt></h3>
+     *
+     * <p>
+     *
+     * </p>
+     * </doc>
+     *
+     *
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [1137]"
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitMathShift(
+     *      de.dante.extex.scanner.MathShiftToken, java.lang.Object)
      */
-    public Object visitMathShift(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitMathShift(final MathShiftToken token, final Object ignore)
+            throws GeneralException {
 
         if (typesetter.getMode() == Mode.MATH) {
             typesetter.toggleMath();
@@ -854,6 +801,7 @@ public class Max extends Moritz
         } else {
             push(next);
             typesetter.toggleMath();
+            push(context.getToks("everymath"));
         }
 
         return null;
@@ -862,21 +810,19 @@ public class Max extends Moritz
     /**
      * This visit method is invoked on an other token.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitOther(
+     *      de.dante.extex.scanner.OtherToken, java.lang.Object)
      */
-    public Object visitOther(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitOther(final OtherToken token, final Object ignore)
+            throws GeneralException {
 
-        Token token = (Token) oToken;
         typesetter.add(context.getTypesettingContext(), token.getChar());
         return null;
     }
@@ -884,20 +830,19 @@ public class Max extends Moritz
     /**
      * This visit method is invoked on a right brace token.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [1067]"
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitRightBrace(
+     *      de.dante.extex.scanner.RightBraceToken, java.lang.Object)
      */
-    public Object visitRightBrace(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitRightBrace(final RightBraceToken token,
+            final Object ignore) throws GeneralException {
 
         context.closeGroup(typesetter, this);
         return null;
@@ -906,19 +851,18 @@ public class Max extends Moritz
     /**
      * This visit method is invoked on a space token.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitSpace(
+     *      de.dante.extex.scanner.SpaceToken, java.lang.Object)
      */
-    public Object visitSpace(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitSpace(final SpaceToken token, final Object ignore)
+            throws GeneralException {
 
         typesetter.addSpace(context.getTypesettingContext(), null);
         return null;
@@ -928,24 +872,23 @@ public class Max extends Moritz
      * This visit method is invoked on a sub mark token.
      * In TeX this normally is a _.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitSubMark(
+     *      de.dante.extex.scanner.SubMarkToken, java.lang.Object)
      */
-    public Object visitSubMark(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitSubMark(final SubMarkToken token, final Object ignore)
+            throws GeneralException {
 
         Mode mode = typesetter.getMode();
         if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
             //TODO unimplemented
-            throw new GeneralException("unimplemented");
+            throw new RuntimeException("unimplemented");
         }
 
         throw new HelpingException("TTP.MissingDollar");
@@ -955,24 +898,23 @@ public class Max extends Moritz
      * This visit method is invoked on a sup mark token.
      * In TeX this normally is a ^.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitSupMark(
+     *      de.dante.extex.scanner.SupMarkToken, java.lang.Object)
      */
-    public Object visitSupMark(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitSupMark(final SupMarkToken token, final Object ignore)
+            throws GeneralException {
 
         Mode mode = typesetter.getMode();
         if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
             //TODO unimplemented
-            throw new GeneralException("unimplemented");
+            throw new RuntimeException("unimplemented");
         }
 
         throw new HelpingException("TTP.MissingDollar");
@@ -982,21 +924,19 @@ public class Max extends Moritz
      * This visit method is invoked on a tab mark token.
      * In TeX this normally is a &.
      *
-     * @param oToken the first argument to pass is the token to expand.
+     * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
-     * @param ignore2 the third argument is ignored
      *
      * @return <code>null</code>
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.scanner.TokenVisitor#visitTabMark(
+     *      de.dante.extex.scanner.TabMarkToken, java.lang.Object)
      */
-    public Object visitTabMark(final Object oToken, final Object ignore,
-            final Object ignore2) throws GeneralException {
+    public Object visitTabMark(final TabMarkToken token, final Object ignore)
+            throws GeneralException {
 
-        //TODO unimplemented
-        throw new GeneralException("unimplemented");
+        throw new RuntimeException("unimplemented");
     }
 }
