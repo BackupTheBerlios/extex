@@ -24,7 +24,7 @@ package de.dante.extex.typesetter.type;
  * In fact it is a finite enumeration which exposes the values as constants.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class MathClass {
 
@@ -32,9 +32,20 @@ public abstract class MathClass {
      * This is a inner class for a binary operator.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class BinaryMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('2');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -50,9 +61,20 @@ public abstract class MathClass {
      * This is a inner class for closing.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class ClosingMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('5');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -68,9 +90,20 @@ public abstract class MathClass {
      * This is a inner class for large operators.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class LargeMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('1');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -86,9 +119,20 @@ public abstract class MathClass {
      * This is a inner class for opening.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class OpeningMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('4');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -104,9 +148,20 @@ public abstract class MathClass {
      * This is a inner class for ordinary characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class OrdinaryMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('0');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -122,9 +177,20 @@ public abstract class MathClass {
      * This is a inner class for punctation marks.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class PunctationMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('6');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -140,9 +206,20 @@ public abstract class MathClass {
      * This is a inner class for relation symbols.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class RelationMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('3');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -158,9 +235,20 @@ public abstract class MathClass {
      * This is a inner class for variable width characters.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private static final class VariableMathClass extends MathClass {
+
+        /**
+         * Append the printable representation of the  current instance to the
+         * string buffer.
+         *
+         * @param sb the target string buffer
+         */
+        public void toString(final StringBuffer sb) {
+
+            sb.append('7');
+        }
 
         /**
          * @see de.dante.extex.typesetter.type.MathClass#visit(
@@ -269,7 +357,7 @@ public abstract class MathClass {
 
         if (n < 0 || n >= MC.length) {
             //TODO gene: error unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new ArrayIndexOutOfBoundsException("MC");
         }
         return MC[n];
     }
@@ -281,6 +369,14 @@ public abstract class MathClass {
 
         super();
     }
+
+    /**
+     * Append the printable representation of the  current instance to the
+     * string buffer.
+     *
+     * @param sb the target string buffer
+     */
+    public abstract void toString(final StringBuffer sb);
 
     /**
      * Call a method in the visitor depending on the type.
