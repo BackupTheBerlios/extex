@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface DocumentWriter {
     /**
@@ -78,4 +78,11 @@ public interface DocumentWriter {
      */
     void close() throws GeneralException, IOException;
 
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param value ...
+     */
+    void setParameter(String name, String value);
 }
