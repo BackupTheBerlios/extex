@@ -120,7 +120,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class TokenStreamFactory extends AbstractFactory implements Observable {
 
@@ -136,7 +136,6 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
      * vakue is zero then no buffer at all should be used.
      */
     //private int bufferSize = -1;
-
     /**
      * The field <tt>configuration</tt> contains the configuration for this
      * instance.
@@ -164,7 +163,7 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
     /**
      * The field <tt>options</tt> contains the options for the token stream.
      */
-    private TokenStreamOptions options;
+    private TokenStreamOptions options = null;
 
     /**
      * The field <tt>readerConstructor</tt> contains the constructor for the
@@ -192,19 +191,18 @@ public class TokenStreamFactory extends AbstractFactory implements Observable {
 
     /**
      * Creates a new object.
-     *
      * @param theConfiguration the configuration to use
-     * @param theOptions the options for the token stream
+     * @param tag the tag name of the sub-configuration to use
      *
      * @throws ConfigurationException in case of an error in the configuration
      */
     public TokenStreamFactory(final Configuration theConfiguration,
-            final TokenStreamOptions theOptions) throws ConfigurationException {
+            final String tag)
+            throws ConfigurationException {
 
         super();
         configure(theConfiguration);
-        this.configuration = selectConfiguration("base");
-        this.options = theOptions;
+        this.configuration = selectConfiguration(tag);
         String classname = configuration.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
             throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
