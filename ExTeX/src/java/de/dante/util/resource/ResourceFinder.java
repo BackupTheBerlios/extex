@@ -32,12 +32,13 @@ import de.dante.util.configuration.ConfigurationException;
  * implementations. Even an interaction with the user can be envisioned.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ResourceFinder {
 
     /**
-     * Find a resource which can be opened for reading.
+     * Find a resource which can be used for reading. If the search fails then
+     * <code>null</code> is returned.
      *
      * @param name the base name of the resource
      * @param type the type, i.e. the extension

@@ -33,7 +33,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ConfigurationFactory {
 
@@ -55,14 +55,17 @@ public class ConfigurationFactory {
      *
      * @return a new Configuration object
      *
-     * @throws ConfigurationInvalidNameException in case that the source is
-     *             <code>null</code>
-     * @throws ConfigurationInstantiationException in case of some kind of
-     *             error during instantiation
-     * @throws ConfigurationClassNotFoundException in case that the class could
-     *             not be found
-     * @throws ConfigurationException in case that the creation of the
-     *             Configuration fails
+     * @throws ConfigurationException in case of an error. Especially
+     * <ul>
+     *  <li>ConfigurationInvalidNameException in case that the source is
+     *             <code>null</code></li>
+     *  <li>ConfigurationInstantiationException in case of some kind of
+     *             error during instantiation</li>
+     *  <li>ConfigurationClassNotFoundException in case that the class could
+     *             not be found</li>
+     *  <li>ConfigurationException in case that the creation of the
+     *             Configuration fails</li>
+     * </ul>
      */
     public Configuration newInstance(final String source)
         throws ConfigurationException {
