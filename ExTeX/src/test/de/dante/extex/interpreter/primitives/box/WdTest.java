@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\wd</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WdTest extends ExTeXLauncher {
 
@@ -96,8 +96,8 @@ public class WdTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a hbox with "x" in font cmtt12 has the width
-     * 6.175pt.
+     * Test case checking that a hbox containing "x" in font cmtt12 has the
+     * width 6.175pt.
      *
      * @throws Exception in case of an error
      */
@@ -118,8 +118,8 @@ public class WdTest extends ExTeXLauncher {
     }
 
     /**
-     * Test case checking that a hbox with "abc" in font cmtt12 has the width
-     * 18.52501pt.
+     * Test case checking that a hbox containing "abc" in font cmtt12 has the
+     * width 18.52501pt.
      *
      * @throws Exception in case of an error
      */
@@ -139,4 +139,26 @@ public class WdTest extends ExTeXLauncher {
                 "18.52501pt\n"); // checked wih TeX
     }
 
+
+    /**
+     * Test case checking that a hbox containing "abc" in font cmmi10 has the
+     * width 13.9051pt.
+     *
+     * @throws Exception in case of an error
+     */
+    public void testWd11() throws Exception {
+
+        runCode(//--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\relax"
+                + "\\font\\fnt cmmi10 "
+                + "\\setbox123=\\hbox{\\fnt a} "
+                + "\\the\\wd123 "
+                + "\\end",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "5.28589pt \n"); // checked wih TeX
+    }
 }
