@@ -49,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -195,7 +195,7 @@ public abstract class Moritz implements TokenSource, Observable {
 			if (tok != null) {
 				if (tok.getCatcode() == Catcode.LEFTBRACE) {
 					++balance;
-				} else if (tok.getCatcode() == Catcode.RIGTHBRACE && --balance == 0) {
+				} else if (tok.getCatcode() == Catcode.RIGHTBRACE && --balance == 0) {
 					break;
 				}
 
@@ -545,7 +545,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
 			if (tok.isa(Catcode.LEFTBRACE)) {
 				++balance;
-			} else if (tok.isa(Catcode.RIGTHBRACE) && --balance <= 0) {
+			} else if (tok.isa(Catcode.RIGHTBRACE) && --balance <= 0) {
 				break;
 			}
 

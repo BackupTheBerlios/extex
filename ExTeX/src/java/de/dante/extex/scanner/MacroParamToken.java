@@ -30,7 +30,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MacroParamToken extends AbstractToken implements Token {
     /**
@@ -46,7 +46,7 @@ public class MacroParamToken extends AbstractToken implements Token {
      * @see de.dante.extex.scanner.Token#getCatcode()
      */
     public Catcode getCatcode() {
-        return Catcode.MACPARAM;
+        return Catcode.MACROPARAM;
     }
 
     /**

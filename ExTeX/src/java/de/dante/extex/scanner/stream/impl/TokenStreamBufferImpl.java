@@ -40,7 +40,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 /**
  * This class contains an implementation of a token stream which is fed from a
@@ -53,7 +53,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
@@ -287,7 +287,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
             throws GeneralException {
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.MACPARAM, buffer
+        return ((TokenFactory) oFactory).newInstance(Catcode.MACROPARAM, buffer
                 .get(pointer));
     }
 
@@ -320,7 +320,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
             throws GeneralException {
         state = MID_LINE;
 
-        return ((TokenFactory) oFactory).newInstance(Catcode.RIGTHBRACE, buffer
+        return ((TokenFactory) oFactory).newInstance(Catcode.RIGHTBRACE, buffer
                 .get(pointer));
     }
 
