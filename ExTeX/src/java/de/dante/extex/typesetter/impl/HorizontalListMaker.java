@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -25,7 +25,9 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
+import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -39,15 +41,12 @@ import de.dante.util.UnicodeChar;
  * Maker for a horizontal list.
  * <p>
  * After <code>par()</code>, the linebreak and hyphenation are applied.
- * <p>
- * When the horizontal list are closed, the paragraph is split into lines. It
- * use the linebreaker, which is defined with <code>\linebreaker</code>. Is
- * the named linebreaker not found, it use the linebreaker with the name
- * <tt>default</tt>.
+ * </p>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -101,8 +100,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
      *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void add(final TypesettingContext context,
-            final UnicodeChar symbol) {
+    public void add(final TypesettingContext context, final UnicodeChar symbol) {
 
         CharNode c = getManager().getCharNodeFactory().newInstance(context,
                 symbol);
@@ -175,7 +173,23 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
         getManager().getLigatureBuilder().insertLigatures(nodes);
         ParagraphBuilder builder = getManager().getParagraphBuilder();
 
-        //TODO: paragraph breaking without additional hyphenation points
+        // remove final node if it is glue; [TTB p99--100]
+        Node node = getLastNode();
+        if (node != null && node instanceof GlueNode) {
+            nodes.remove(nodes.size() - 1);
+        }
+
+        // [TTB p100]
+        nodes.add(new PenaltyNode(10000));
+        nodes.add(new GlueNode(getManager().getOptions().getGlueOption(
+                "parfillskip")));
+        nodes.add(new PenaltyNode(-10000));
+
+        long pretolerance = getManager().getOptions().getCountOption(
+                "pretolerance").getValue();
+        if (pretolerance > 0) {
+            //TODO: paragraph breaking without additional hyphenation points
+        }
         //TODO: insert optional hyphenation positions
         //TODO: paragraph breaking second pass
         //TODO: paragraph breaking third pass
@@ -215,8 +229,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 
         long sf = f.getValue();
         if (sf <= 0) {
-            throw new HelpingException("TTP.BadSpaceFactor", Long
-                    .toString(sf));
+            throw new HelpingException("TTP.BadSpaceFactor", Long.toString(sf));
         }
         spacefactor = sf;
     }
