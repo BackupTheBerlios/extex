@@ -116,7 +116,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public class ContextImpl
         implements
@@ -798,10 +798,12 @@ public class ContextImpl
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method is mapps instances to their normal representations if
+     * required. It is used during the deserialization.
      *
-     * @return ...
-     * @throws ObjectStreamException ...
+     * @return the normalized object
+     *
+     * @throws ObjectStreamException in case of an error
      */
     public Object readResolve() throws ObjectStreamException {
 
