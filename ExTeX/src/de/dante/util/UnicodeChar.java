@@ -29,7 +29,7 @@ import com.ibm.icu.text.UTF16;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class UnicodeChar {
 
@@ -88,6 +88,18 @@ public class UnicodeChar {
 
         super();
         this.code = UTF16.charAt(s, index);
+    }
+
+    /**
+     * Init with a char32 from a String at position idx.
+     *
+     * @param sb the <code>StringBuffer</code>
+     * @param index the position in the string
+     */
+    public UnicodeChar(final StringBuffer sb, final int index) {
+
+        super();
+        this.code = UTF16.charAt(sb, index);
     }
 
     /**
