@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -89,7 +89,7 @@ public abstract class AbstractListMaker implements ListMaker {
 	/**
 	 * @see de.dante.extex.typesetter.ListMaker#close()
 	 */
-	public abstract NodeList close();
+	public abstract NodeList close() throws GeneralException;
 
 	/**
 	 * @see de.dante.extex.typesetter.ListMaker#par()

@@ -18,6 +18,8 @@
  */
 package de.dante.extex.typesetter.impl;
 
+import java.util.Map;
+
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Count;
@@ -35,11 +37,16 @@ import de.dante.util.UnicodeChar;
 /**
  * Maker for a horizontal list.
  * <p>
- * After <code>par()</code>, the hyphenation is made.
+ * After <code>par()</code>, the linebreak and hyphenation is made.
+ * <p>
+ * When the horizontal list are closed, the paragraph is split into lines.
+ * It use the linebreaker, which is defined with <code>\linebreaker</code>.
+ * Is the named linebreaker not found, it use the linebreaker with
+ * the name <tt>default</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -151,8 +158,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 	/**
 	 * @see de.dante.extex.typesetter.ListMaker#close()
 	 */
-	public NodeList close() {
-		//propagateSizes();
+	public NodeList close() throws GeneralException {
 		if (!nodes.isLineBreak()) {
 			NodeList nl = makeLineBreak();
 			manager = null;
@@ -164,8 +170,17 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 	/**
 	 * make the linebreak
 	 */
-	private NodeList makeLineBreak() {
-		LineBreaker lb = manager.getLineBreaker();
+	private NodeList makeLineBreak() throws GeneralException {
+		Map linebreakerMap = manager.getLineBreakerMap();
+		String lbname = manager.getContext().getToks("linebreaker").toText();
+		if (lbname == null || lbname.trim().length() == 0) {
+			lbname = "default";
+		}
+
+		LineBreaker lb = (LineBreaker) linebreakerMap.get(lbname);
+		if (lb == null) {
+			throw new GeneralException("no linebreaker found"); // TODO change
+		}
 		return lb.breakLines(nodes, manager);
 	}
 
@@ -175,32 +190,4 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 	public void par() throws GeneralException {
 		manager.closeTopList();
 	}
-
-	//	/**
-	//	 * ...
-	//	 * 
-	//	 * 
-	//	 */
-	//	private void propagateSizes() {
-	//		NodeIterator iter = nodes.iterator();
-	//		Node node;
-	//		Dimen width = new Dimen();
-	//		Dimen height = new Dimen();
-	//		Dimen depth = new Dimen();
-	//
-	//		while (iter.hasNext()) {
-	//			node = iter.next();
-	//			width.add(node.getWidth());
-	//			if (height.lt(node.getHeight())) {
-	//				height.set(node.getHeight());
-	//			}
-	//			if (depth.lt(node.getDepth())) {
-	//				depth.set(node.getDepth());
-	//			}
-	//		}
-	//
-	//		nodes.setWidth(width);
-	//		nodes.setHeight(height);
-	//		nodes.setDepth(depth);
-	//	}
 }

@@ -354,6 +354,7 @@
     <Define name="xleaders" class=""/>
     <Define name="xspaceskip" class=""/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
+    <define name="linebreaker" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
 
     <Context class="de.dante.extex.interpreter.context.impl.extension.ContextExtensionImpl">
 
@@ -383,7 +384,8 @@
 
 	
 	<Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
-  		<LineBreaker class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
+  		<LineBreaker name="default" class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
+  		<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
  	</Typesetter>
 
   <DocumentWriter class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>

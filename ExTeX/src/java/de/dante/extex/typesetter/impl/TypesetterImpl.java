@@ -19,6 +19,9 @@
 package de.dante.extex.typesetter.impl;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Stack;
 
 import de.dante.extex.documentWriter.DocumentWriter;
@@ -49,9 +52,12 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * This is a reference implementation of the
  * {@link de.dante.extex.typesetter.Typesetter Typesetter}interface.
  * 
+ * The class load all <code>LineBreaker</code>classes, wich are defined
+ * in <tt>extex.xml</tt>.
+ * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -64,6 +70,11 @@ public class TypesetterImpl implements Typesetter, Manager {
 	 * The constant <tt>CLASS_ATTRIBUTE</tt> ...
 	 */
 	private static final String CLASS_ATTRIBUTE = "class";
+
+	/**
+	 * The constant <tt>NAME_ATTRIBUTE</tt> ...
+	 */
+	private static final String NAME_ATTRIBUTE = "name";
 
 	/**
 	 * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
@@ -90,9 +101,9 @@ public class TypesetterImpl implements Typesetter, Manager {
 	private Stack saveStack = new Stack();
 
 	/**
-	 * The <code>LineBreaker</code>
+	 * The hash for the <code>LineBreaker</code>s
 	 */
-	private LineBreaker linebreaker;
+	private Map linebreakerMap = new HashMap();
 
 	/**
 	 * Creates a new object.
@@ -103,18 +114,29 @@ public class TypesetterImpl implements Typesetter, Manager {
 		super();
 		this.context = context;
 
-		// LineBreaker
-		Configuration linebreakerConfiguration = config.getConfiguration(LINEBREAKER_TAG);
-		String lbClass = linebreakerConfiguration.getAttribute(CLASS_ATTRIBUTE);
+		// load all LineBreaker
+		Iterator iterator = config.iterator(LINEBREAKER_TAG);
 
-		if (lbClass == null || lbClass.equals("")) {
-			throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE, linebreakerConfiguration);
-		}
+		while (iterator.hasNext()) {
+			Configuration cfg = (Configuration) iterator.next();
+			String name = cfg.getAttribute(NAME_ATTRIBUTE);
 
-		try {
-			linebreaker = (LineBreaker) (Class.forName(lbClass).newInstance());
-		} catch (Exception e) {
-			throw new ConfigurationInstantiationException(e);
+			if (name == null || name.equals("")) {
+				throw new ConfigurationMissingAttributeException(NAME_ATTRIBUTE, cfg);
+			}
+
+			String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
+
+			if (classname == null || classname.equals("")) {
+				throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE, cfg);
+			}
+
+			try {
+				LineBreaker linebreaker = (LineBreaker) (Class.forName(classname).newInstance());
+				linebreakerMap.put(name,linebreaker);
+			} catch (Exception e) {
+				throw new ConfigurationInstantiationException(e);
+			}
 		}
 
 		// vertical list
@@ -125,7 +147,7 @@ public class TypesetterImpl implements Typesetter, Manager {
 	 * The context
 	 */
 	private Context context;
-
+	
 	/**
 	 * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
 	 */
@@ -300,9 +322,9 @@ public class TypesetterImpl implements Typesetter, Manager {
 	}
 
 	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#getLineBreaker()
+	 * @see de.dante.extex.typesetter.impl.Manager#getLineBreakerMap()
 	 */
-	public LineBreaker getLineBreaker() {
-		return linebreaker;
+	public Map getLineBreakerMap() {
+		return linebreakerMap;
 	}
 }
