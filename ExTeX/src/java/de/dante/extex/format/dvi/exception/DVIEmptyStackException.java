@@ -16,17 +16,31 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.font.type.vf.command.dvi;
-
+package de.dante.extex.format.dvi.exception;
 
 /**
- * Abstract cass for DVI Command.
+ * DVI: stack is empty!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public abstract class DVICommand {
+public class DVIEmptyStackException extends DVIException {
 
-    //public static final 
-    
+    /**
+     * Create anew object.
+     */
+    public DVIEmptyStackException() {
+
+        super();
+    }
+
+    /**
+     * Create a new opject.#
+     *
+     * @param message   the message
+     */
+    public DVIEmptyStackException(final String message) {
+
+        super(message);
+    }
 }
