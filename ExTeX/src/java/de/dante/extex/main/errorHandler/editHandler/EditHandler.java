@@ -23,15 +23,16 @@ import de.dante.util.framework.i18n.Localizer;
 
 
 /**
- * ...
+ * This interface describes the possibility to edit a file at a certain
+ * location.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface EditHandler {
 
     /**
-     * ...
+     * Edit a file at a location.
      *
      * @param localizer the localizer to acquire texts from
      * @param locator the locator for the place to edit

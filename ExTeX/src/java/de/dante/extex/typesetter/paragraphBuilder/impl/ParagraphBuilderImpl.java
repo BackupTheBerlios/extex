@@ -139,12 +139,13 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, HyphenationEnabled {
 
     /**
-     * The constant <tt>COMPLETE</tt> contains the ...
+     * The constant <tt>COMPLETE</tt> contains the indicator that the
+     * implementation is complete.
      */
     private static final boolean COMPLETE = false;
 
@@ -346,43 +347,10 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
     }
 
     /**
-     * ...
-     *
-     * @param nodes
-     * @param hyphenpenalty
-     * @param exhyphenpenalty
-     * @param leftskip
-     * @param rightskip
-     *
-     * @return ...
-     */
-    private NodeList pass1(final HorizontalListNode nodes,
-            final int hyphenpenalty, final int exhyphenpenalty,
-            final FixedGlue leftskip, final FixedGlue rightskip) {
-
-        int pretolerance = (int) options.getCountOption("pretolerance")
-                .getValue();
-        if (pretolerance > 0) {
-            if (tracer != null) {
-                tracer.log(Level.FINE, "@firstpass\n");
-            }
-            BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
-                    exhyphenpenalty);
-            Breaks breaks = findOptimalBreakPoints(breakPoints, 0,
-                    pretolerance, 0, 0, leftskip, rightskip, Dimen.ZERO_PT);
-            if (breaks != null) {
-                options.setParshape(null);
-                return splitNodeList(nodes, breaks, leftskip, rightskip);
-            }
-        }
-        return null;
-    }
-
-    /**
-     * ...
+     * Collect the active break points.
      *
      * @param breakPoint the list of possible break points
-     * @param depth ...
+     * @param depth the number of active break points
      *
      * @return a breaks container
      */
@@ -480,6 +448,16 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
     }
 
     /**
+     * Setter for hyphenator.
+     *
+     * @param theHyphenator the hyphenator to set
+     */
+    public void enableHyphenation(final Hyphenator theHyphenator) {
+
+        this.hyphenator = theHyphenator;
+    }
+
+    /**
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
@@ -490,6 +468,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
 
     /**
      * Compute a optimal list of break positions.
+     *
      * @param breakPoint the list of possible break points
      * @param line the starting line number
      * @param threshold the threshold for the penalties of a single line
@@ -542,7 +521,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
     }
 
     /**
-     * ...
+     * Find all admissible break points.
      *
      * @param nodes the horizontal node list containing all nodes for the
      *  paragraph
@@ -635,6 +614,41 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
     }
 
     /**
+     * Try paragraph building with the pass 1 algorithm: no hyphenations are
+     * taken into account.
+     *
+     * @param nodes the node list to work on
+     * @param hyphenpenalty the penalty for hyphenation
+     * @param exhyphenpenalty the extra penalty subsequent hyphenation
+     * @param leftskip the glue for the left side
+     * @param rightskip the glue for the right side
+     *
+     * @return the resulting vertical node list or <code>null</code> if this
+     *  attempt has not been successful
+     */
+    private NodeList pass1(final HorizontalListNode nodes,
+            final int hyphenpenalty, final int exhyphenpenalty,
+            final FixedGlue leftskip, final FixedGlue rightskip) {
+
+        int pretolerance = (int) options.getCountOption("pretolerance")
+                .getValue();
+        if (pretolerance > 0) {
+            if (tracer != null) {
+                tracer.log(Level.FINE, "@firstpass\n");
+            }
+            BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
+                    exhyphenpenalty);
+            Breaks breaks = findOptimalBreakPoints(breakPoints, 0,
+                    pretolerance, 0, 0, leftskip, rightskip, Dimen.ZERO_PT);
+            if (breaks != null) {
+                options.setParshape(null);
+                return splitNodeList(nodes, breaks, leftskip, rightskip);
+            }
+        }
+        return null;
+    }
+
+    /**
      * Initializes the field <tt>parshape</tt> if not set already.
      * For this purpose the options are considered.
      *
@@ -658,16 +672,6 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
                 parshape = fixedParshape;
             }
         }
-    }
-
-    /**
-     * Setter for hyphenator.
-     *
-     * @param hyphenator the hyphenator to set
-     */
-    public void enableHyphenation(final Hyphenator hyphenator) {
-
-        this.hyphenator = hyphenator;
     }
 
     /**

@@ -23,10 +23,11 @@ import de.dante.util.Locator;
 import de.dante.util.framework.i18n.Localizer;
 
 /**
- * ...
+ * This is a dummy implementation for an EditHandler which just prints the
+ * location to the error stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EditHandlerTeXImpl implements EditHandler {
 

@@ -34,7 +34,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -121,7 +121,9 @@ public abstract class AbstractNode implements Node {
      *
      * @see de.dante.extex.typesetter.Node#atShipping(Context, Typesetter)
      */
-    public void atShipping(final Context context, Typesetter typesetter) throws GeneralException {
+    public void atShipping(final Context context, Typesetter typesetter)
+            throws GeneralException {
+
     }
 
     /**
@@ -184,21 +186,22 @@ public abstract class AbstractNode implements Node {
      * @see de.dante.extex.typesetter.Node#setWidth(
      *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
-    public void setWidth(final FixedDimen aWidth) {
+    public void setWidth(final FixedDimen theWidth) {
 
-        width.set(aWidth);
+        width.set(theWidth);
     }
 
     /**
      * Adjust the width of a flexible node. This method is a noop for any but
      * the flexible nodes.
      *
-     * @param width the desired with
+     * @param theWidth the desired with
      * @param sum the total sum of the glues
      *
      * @see de.dante.extex.typesetter.Node#spread(FixedDimen, FixedGlueComponent)
      */
-    public void spread(final FixedDimen width, final FixedGlueComponent sum) {
+    public void spread(final FixedDimen theWidth, final FixedGlueComponent sum) {
+
     }
 
     /**

@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -55,8 +55,6 @@ public class PageBuilderImpl implements PageBuilder {
     }
 
     /**
-     * ...
-     *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#close()
      */
     public void close() throws GeneralException {

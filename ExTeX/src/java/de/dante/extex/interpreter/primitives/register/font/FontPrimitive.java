@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -39,12 +40,30 @@ import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\font</code>.
- * <p>Example:</p>
- * <pre>
- * \font\myfont=cmr12 at 15pt
- * \font\magnifiedfiverm=cmr5 scaled 2000
- * \font\second=cmr10 at 12truept
- * </pre>
+ * 
+ * <doc name="font">
+ * <h3>The Primitive <tt>\font</tt></h3>
+ * <p>
+ *  The primitive <tt>\font</tt> 
+ *  TODO documentation missing
+ * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;font&rang;
+ *      &rarr; <tt>\font</tt> ... </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \font\myfont=cmr12 at 15pt
+ *  <pre class="TeXSample">
+ *    \font\magnifiedfiverm=cmr5 scaled 2000
+ *  <pre class="TeXSample">
+ *    \font\second=cmr10 at 12truept  </pre>
+ * </p>
+ * </doc>
+ *
  *
  * <h3>Possible Extension</h3>
  * <p>Example</p>
@@ -57,7 +76,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -141,11 +160,11 @@ public class FontPrimitive extends AbstractAssignment
             }
         }
 
-        FontFactory ff = context.getFontFactory();
+        FontFactory factory = context.getFontFactory();
         Font font;
         try {
-            font = ff.getInstance(fontname, fontsize, letterspaced, ligatures,
-                    kerning);
+            font = factory.getInstance(fontname, fontsize, letterspaced,
+                    ligatures, kerning);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
@@ -193,13 +212,15 @@ public class FontPrimitive extends AbstractAssignment
 
     /**
      * scan the filename until a <code>SpaceToken</code>.
-     * @param context TODO
+     *
+     * @param context the interpreter context
      * @param source the source for new tokens
+     *
      * @return the file name as string
      *
      * @throws GeneralException in case of an error
      */
-    private String scanFontName(Context context, final TokenSource source)
+    private String scanFontName(final Context context, final TokenSource source)
             throws GeneralException {
 
         Token t = source.scanNonSpace();
@@ -211,8 +232,12 @@ public class FontPrimitive extends AbstractAssignment
 
         StringBuffer sb = new StringBuffer(t.getValue());
 
-        for (t = source.scanToken(); t != null && !(t instanceof SpaceToken); t = source
-                .scanToken()) {
+        for (t = source.getToken(); t != null && !(t instanceof SpaceToken); t = source
+                .getToken()) {
+            if (t instanceof ControlSequenceToken) {
+                source.push(t);
+                break;
+            }
             sb.append(t.getValue());
         }
 

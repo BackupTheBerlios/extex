@@ -26,10 +26,12 @@ import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.type.Knot;
 
 /**
- * ...
+ * This class provides a container for Noads and Nodes.
+ *
+ * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathList implements Noad {
 

@@ -31,10 +31,12 @@ import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.util.UnicodeChar;
 
 /**
- * ...
+ * This class provides an implementation for a ligature builder.
+ * Kerning and ligatures are inserted according to the specification from the
+ * font.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
@@ -68,7 +70,7 @@ public class LigatureBuilderImpl implements LigatureBuilder {
     }
 
     /**
-     * ...
+     * This method covers the case that a character node hs been detected.
      *
      * @param list the list of nodes to process
      * @param theSize the size of <code>list</code>

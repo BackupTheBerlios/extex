@@ -25,13 +25,13 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This node represents a glyph which can be broken if required.
  *
  * @see "TeX -- The Program [145]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 

@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.NodeList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
     /**
@@ -85,7 +85,8 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      */
     public void add(final int index, final Node node) {
 
-        this.list.add(index, node);
+        list.add(index, node);
+        updateDimensions(node);
     }
 
     /**
@@ -104,7 +105,8 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      */
     public void addGlyph(final CharNode node) {
 
-        add(node);
+        list.add(node);
+        updateDimensions(node);
     }
 
     /**
@@ -186,7 +188,8 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
      */
     public Node remove(final int index) {
 
-        return (Node) this.list.remove(index);
+        Node node = (Node) list.remove(index);
+        return node;
     }
 
     /**

@@ -24,10 +24,10 @@ import de.dante.util.GeneralException;
 
 
 /**
- * ...
+ * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface PageBuilder {
 
