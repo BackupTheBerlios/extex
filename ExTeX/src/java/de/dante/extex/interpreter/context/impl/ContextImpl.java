@@ -114,7 +114,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class ContextImpl
         implements
@@ -225,7 +225,8 @@ public class ContextImpl
     private transient ObserverList observersInteraction = new ObserverList();
 
     /**
-     * The field <tt>parshape</tt> contains the ...
+     * The field <tt>parshape</tt> contains the object containing the
+     * dimensions of the paragraph.
      */
     private ParagraphShape parshape = null;
 
