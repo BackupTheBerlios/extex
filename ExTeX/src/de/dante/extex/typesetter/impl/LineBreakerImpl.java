@@ -21,6 +21,7 @@ package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.GlueComponent;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.LineBreaker;
@@ -32,7 +33,7 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation for a <code>LineBreaker</code>.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LineBreakerImpl implements LineBreaker {
 
@@ -122,7 +123,7 @@ public class LineBreakerImpl implements LineBreaker {
      */
     private void addParSkipBefore(final VerticalListNode vln, final Manager manager) {
 
-        vln.addSkip(new Glue(Dimen.ONE * 20)); // TODO change
+        vln.addSkip(new Glue(GlueComponent.ONE * 20)); // TODO change
     }
 
     /**
@@ -132,7 +133,7 @@ public class LineBreakerImpl implements LineBreaker {
      */
     private void addParSkipAfter(final VerticalListNode vln, final Manager manager) {
 
-        vln.addSkip(new Glue(Dimen.ONE * 20)); // TODO change
+        vln.addSkip(new Glue(GlueComponent.ONE * 20)); // TODO change
     }
 
     /**
@@ -142,7 +143,7 @@ public class LineBreakerImpl implements LineBreaker {
      */
     private void addLineSkip(final VerticalListNode vln, final Manager manager) {
 
-        vln.addSkip(new Glue(Dimen.ONE * 12)); // TODO change
+        vln.addSkip(new Glue(GlueComponent.ONE * 12)); // TODO change
     }
 
     /**

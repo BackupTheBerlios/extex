@@ -1,4 +1,4 @@
-/*
+/*O
  * Copyright (C) 2004 Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
@@ -18,8 +18,8 @@
  */
 package de.dante.extex.typesetter.impl;
 
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.GlueComponent;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.LineBreaker;
@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation for a <code>LineBreaker</code>.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LineBreakerXXXImpl implements LineBreaker {
 
@@ -48,7 +48,7 @@ public class LineBreakerXXXImpl implements LineBreaker {
 
         VerticalListNode vlnode = new VerticalListNode();
 
-        vlnode.addSkip(new Glue(Dimen.ONE * 12));
+        vlnode.addSkip(new Glue(GlueComponent.ONE * 12));
         //gene: trashed because of merge
         //        nodes.setLineBreak(true);
         vlnode.add(nodes);

@@ -129,7 +129,13 @@
         <delete dir="${classes}"/>
         <delete dir="${deploy}"/>
         <delete dir="${javadoc}"/>
-    </target>
+    	<delete>
+    	<fileset dir="testdata">   
+    		<include name="*.log*" />  
+    		<include name="*.out" />  
+		</fileset>
+    	</delete>
+ 	</target>
 
 
     <target name="javadoc"

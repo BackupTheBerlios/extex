@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
@@ -157,7 +157,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
          //   nodelist.visit(this, nodelist, hv);
             // TODO incomplete
             // MGN hier gehts weiter!!!
-            return parent;
+           // return parent;
         }
         return nodelist;
     }

@@ -19,12 +19,13 @@
 package de.dante.util;
 
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.GlueComponent;
 
 /**
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Unit {
 
@@ -80,7 +81,7 @@ public class Unit {
      */
     public static double getDimenAsPT(final Dimen value) {
 
-        return ((double) value.getValue()) / Dimen.ONE;
+        return ((double) value.getValue()) / GlueComponent.ONE;
     }
 
     /**
