@@ -45,7 +45,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -176,6 +176,13 @@ public class NullTypesetterImpl implements Typesetter {
 
         return null;
     }
+    /**
+     * Notification method to deal the case that a left brace hs been
+     * encountered.
+     */
+    public void leftBrace() {
+
+    }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
@@ -206,6 +213,14 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#removeLastNode()
      */
     public void removeLastNode() {
+
+    }
+
+    /**
+     * Notification method to deal the case that a right brace hs been
+     * encountered.
+     */
+    public void rightBrace() {
 
     }
 

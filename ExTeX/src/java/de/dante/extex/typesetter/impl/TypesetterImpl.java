@@ -63,7 +63,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class TypesetterImpl
         implements
@@ -155,19 +155,6 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.type.noad.Noad)
-     */
-    public void add(final Noad noad) throws GeneralException {
-
-        if (listMaker instanceof NoadConsumer) {
-            ((NoadConsumer) listMaker).add(noad);
-        } else {
-            throw new MathHelpingException("???");
-        }
-    }
-
-    /**
      * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
      *      de.dante.extex.interpreter.type.muskip.Muskip)
      */
@@ -175,6 +162,19 @@ public class TypesetterImpl
 
         if (listMaker instanceof NoadConsumer) {
             ((NoadConsumer) listMaker).add(glue);
+        } else {
+            throw new MathHelpingException("???");
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
+        if (listMaker instanceof NoadConsumer) {
+            ((NoadConsumer) listMaker).add(noad);
         } else {
             throw new MathHelpingException("???");
         }
@@ -359,6 +359,15 @@ public class TypesetterImpl
     }
 
     /**
+     * Notification method to deal the case that a left brace hs been
+     * encountered.
+     */
+    public void leftBrace() {
+
+        listMaker.leftBrace();
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -409,6 +418,15 @@ public class TypesetterImpl
         if (listMaker != null) {
             listMaker.removeLastNode();
         }
+    }
+
+    /**
+     * Notification method to deal the case that a right brace hs been
+     * encountered.
+     */
+    public void rightBrace() {
+
+        listMaker.rightBrace();
     }
 
     /**

@@ -54,7 +54,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class Max1 extends TestCase {
 
@@ -188,6 +188,14 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * Notification method to deal the case that a left brace hs been
+         * encountered.
+         */
+        public void leftBrace() {
+
+        }
+
+        /**
          * @see de.dante.extex.typesetter.ListMaker#mathShift(
          *      Context, TokenSource, de.dante.extex.scanner.Token)
          */
@@ -227,6 +235,14 @@ public class Max1 extends TestCase {
         public void removeLastNode() {
 
             // nothing to do
+        }
+
+        /**
+         * Notification method to deal the case that a right brace hs been
+         * encountered.
+         */
+        public void rightBrace() {
+
         }
 
         /**

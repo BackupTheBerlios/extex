@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public interface ListMaker {
 
@@ -193,5 +193,18 @@ public interface ListMaker {
      */
     void superscriptMark(Context context, TokenSource source, Token t)
             throws GeneralException;
+
+    /**
+     * Notification method to deal the case that a left brace hs been
+     * encountered.
+     */
+    void leftBrace();
+
+    /**
+     * Notification method to deal the case that a right brace hs been
+     * encountered.
+     */
+    void rightBrace();
+
 
 }
