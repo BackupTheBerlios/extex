@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hfill&rang;
- *        := <tt>\hfill</tt>  </pre>
+ *        &rarr; <tt>\hfill</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Hfill extends AbstractCode {
 

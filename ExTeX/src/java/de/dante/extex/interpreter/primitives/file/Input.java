@@ -38,17 +38,23 @@ import de.dante.util.configuration.ConfigurationException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;input&rang;
+ *       &rarr; <tt>\input</tt> &lang;filename&rang; </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \input file.name  </pre>
+ * </p>
  * </doc>
  *
- * Example:
- *
- * <pre>
- *  \input file.name
- * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Input extends AbstractFileCode {
 

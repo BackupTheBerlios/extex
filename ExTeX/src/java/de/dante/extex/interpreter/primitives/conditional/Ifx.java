@@ -36,13 +36,12 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;if&rang;
- *     := <tt>\ifx</tt> {@linkplain
+ *    &lang;ifx&rang;
+ *     &rarr; <tt>\ifx</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken()
  *       &lang;token<sub>1</sub>&rang;} {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken()
  *       &lang;token<sub>2</sub>&rang;}; &lang;true text&rang; <tt>\fi</tt>
- *
  *      |  <tt>\ifx</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken()
  *       &lang;token<sub>1</sub>&rang;} {@linkplain
@@ -57,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Ifx extends AbstractIf {
 

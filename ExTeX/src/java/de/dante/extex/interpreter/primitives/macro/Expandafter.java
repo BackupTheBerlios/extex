@@ -40,7 +40,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\expandafter</tt> ...  </pre>
+ *    &lang;expandafter&rang;
+ *     &rarr; <tt>\expandafter</tt> ...  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -51,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Expandafter extends AbstractCode implements ExpandableCode {
 

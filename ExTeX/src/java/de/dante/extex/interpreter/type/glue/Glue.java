@@ -23,6 +23,7 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -56,7 +57,7 @@ public class Glue implements Serializable, FixedGlue {
      *
      * @param theLength the natural length
      */
-    public Glue(final Dimen theLength) {
+    public Glue(final FixedDimen theLength) {
 
         super();
         this.length = theLength.copy();
@@ -138,13 +139,24 @@ public class Glue implements Serializable, FixedGlue {
 
     /**
      * Add a dimen to this one glue.
-     * The addition is perfomred indepentently on the components.
+     * The addition is performed indepentently on the components.
      *
      * @param g the glue to add
      */
     public void add(final FixedGlueComponent g) {
 
         this.length.add(g);
+    }
+
+    /**
+     * Subtract a dimen to this one glue.
+     * The subtraction is performed indepentently on the components.
+     *
+     * @param g the glue to add
+     */
+    public void subtract(final FixedGlueComponent g) {
+
+        this.length.subtract(g);
     }
 
     /**
@@ -175,9 +187,9 @@ public class Glue implements Serializable, FixedGlue {
      *
      * @return the shrink.
      */
-    public Dimen getShrink() {
+    public FixedGlueComponent getShrink() {
 
-        return new Dimen(shrink.getValue());
+        return (FixedGlueComponent) shrink;
     }
 
     /**
@@ -187,9 +199,9 @@ public class Glue implements Serializable, FixedGlue {
      *
      * @return the stretch.
      */
-    public GlueComponent getStretch() {
+    public FixedGlueComponent getStretch() {
 
-        return new Dimen(stretch.getValue());
+        return (FixedGlueComponent) stretch;
     }
 
     /**

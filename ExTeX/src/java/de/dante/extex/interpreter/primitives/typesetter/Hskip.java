@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hskip&rang;
- *        := <tt>\hskip</tt> &lang;Glue&rang;  </pre>
+ *        &rarr; <tt>\hskip</tt> &lang;Glue&rang;  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Hskip extends AbstractCode {
 

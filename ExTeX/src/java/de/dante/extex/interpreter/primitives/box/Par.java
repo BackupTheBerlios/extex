@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;par&rang;
- *        := <tt>\par</tt>  </pre>
+ *        &rarr; <tt>\par</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Par extends AbstractCode {
     /**

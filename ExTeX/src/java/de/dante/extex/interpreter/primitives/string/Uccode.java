@@ -43,7 +43,8 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>&#5c;uccode</tt> &lang;...&rang; </pre>
+ *    &lang;uccode&rang;
+ *        &rarr; <tt>&#5c;uccode</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -54,7 +55,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Uccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {

@@ -37,10 +37,13 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ *  <pre class="syntax">
+ *    &lang;ifcase&rang;
+ *     &rarr; <tt>\ifcase</tt> ...  </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -181,7 +184,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     protected static final class Tag {
 

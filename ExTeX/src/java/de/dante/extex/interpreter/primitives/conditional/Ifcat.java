@@ -33,10 +33,13 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ *  <pre class="syntax">
+ *    &lang;ifcat&rang;
+ *     &rarr; <tt>\ifcat</tt>  ... </pre>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ifcat extends AbstractIf {
     /**

@@ -42,7 +42,8 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\lccode</tt> &lang;...&rang; </pre>
+ *    &lang;lccode&rang;
+ *        &rarr; <tt>\lccode</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -53,7 +54,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Lccode extends AbstractAssignment implements ExpandableCode,
         Theable, CountConvertible, DimenConvertible {

@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;hss&rang;
- *        := <tt>\hss</tt>  </pre>
+ *        &rarr; <tt>\hss</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Hss extends AbstractCode {
 

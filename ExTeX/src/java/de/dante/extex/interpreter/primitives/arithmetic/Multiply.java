@@ -44,10 +44,10 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;multiply&rang;
- *     := <tt>\multiply</tt> &lang;multiplyable&rang;
+ *     &rarr; <tt>\multiply</tt> &lang;multiplyable&rang;
  *
  *   &lang;multiplyable&rang;
- *     := &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber()
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  *      &lang;8-bit&nbsp;number&rang;}
  *
  *   &lang;optional <tt>by</tt>&rang;
- *     := [by]
+ *     &rarr; [by]
  *      |  &lang;optional spaces&rang;
  *   </pre>
  * </p>
@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Multiply extends AbstractAssignment {
     /**

@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;penalty&rang;
- *        := <tt>\penalty</tt> {@linkplain
+ *        &rarr; <tt>\penalty</tt> {@linkplain
  *    de.dante.extex.interpreter.TokenSource#scanNumber()
  *    &lang;8-bit&nbsp;number&rang;}  </pre>
  * </p>
@@ -62,7 +62,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Penalty extends AbstractCode {
 

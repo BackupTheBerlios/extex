@@ -43,10 +43,10 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;divide&rang;
- *     := <tt>\divide</tt> &lang;dividable&rang;
+ *     &rarr; <tt>\divide</tt> &lang;dividable&rang;
  *
  *   &lang;dividable&rang;
- *     := &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber()
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  *      &lang;8-bit&nbsp;number&rang;}
  *
  *   &lang;optional <tt>by</tt>&rang;
- *     := [by]
+ *     &rarr; [by]
  *      |  &lang;optional spaces&rang;
  *   </pre>
  * </p>
@@ -76,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Divide extends AbstractAssignment {
     /**

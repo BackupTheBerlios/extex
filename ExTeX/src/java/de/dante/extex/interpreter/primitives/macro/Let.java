@@ -42,7 +42,14 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\let</tt> &lang;control sequence&rang; ... </pre>
+ *    &lang;let&rang;
+ *      &rarr; <tt>\let</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *        &lang;control sequence&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *      &lang;equals&rang;} {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getToken()
+ *       &lang;token&rang;}  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -51,8 +58,9 @@ import de.dante.util.GeneralException;
  * </p>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Let extends AbstractAssignment implements CatcodeVisitor {
 

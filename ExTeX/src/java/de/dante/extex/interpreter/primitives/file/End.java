@@ -37,7 +37,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\end</tt>  </pre>
+ *    &lang;end&rang;
+ *       &rarr; <tt>\end</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -52,7 +53,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class End extends AbstractCode {
 

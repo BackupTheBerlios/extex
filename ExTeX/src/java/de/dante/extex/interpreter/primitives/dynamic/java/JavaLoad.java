@@ -43,7 +43,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The general form of this primitive is
  * <pre class="syntax">
- *   \javaload&lang;<i>tokens</i>&rang; </pre>
+ *   &lang;javaload&rang;
+ *       &rarr; \javaload&lang;<i>tokens</i>&rang; </pre>
  * </p>
  * <p>
  *  The &lang;<i>tokens</i>&rang; is any specification of a list of
@@ -87,7 +88,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class JavaLoad extends AbstractCode {
 

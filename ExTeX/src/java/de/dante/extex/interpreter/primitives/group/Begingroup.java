@@ -38,7 +38,8 @@ import de.dante.util.configuration.ConfigurationException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\begingroup</tt>  </pre>
+ *    &lang;begingroup&rang;
+ *      &rarr; <tt>\begingroup</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -48,7 +49,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Begingroup extends AbstractCode {
     /**

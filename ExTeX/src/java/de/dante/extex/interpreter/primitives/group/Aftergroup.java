@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;aftergroup&rang;
- *     := <tt>\aftergroup</tt> {@linkplain
+ *     &rarr; <tt>\aftergroup</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getToken()
  *       &lang;token&rang;}   </pre>
  * </p>
@@ -56,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Aftergroup extends AbstractCode {
 

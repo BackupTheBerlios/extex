@@ -40,7 +40,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\noexpand</tt>  </pre>
+ *    &lang;noexpand&rang;
+ *      &rarr; <tt>\noexpand</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Noexpand extends AbstractCode implements ExpandableCode {
 

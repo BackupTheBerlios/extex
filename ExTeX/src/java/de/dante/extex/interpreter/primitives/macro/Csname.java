@@ -48,7 +48,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\csname ...\endcsname</tt>  </pre>
+ *    &lang;csname&rang;
+ *     &rarr; <tt>\csname</tt> &lang;...&rang; <tt>\endcsname</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -58,7 +59,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Csname extends AbstractCode implements ExpandableCode,
         CsConvertible {

@@ -40,7 +40,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\nonstopmode</tt>  </pre>
+ *    &lang;nonstopmode&rang;
+ *      &rarr; <tt>\nonstopmode</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Nonstopmode extends AbstractAssignment {
 

@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;space primitive&rang;
- *        := <tt>\ </tt>  </pre>
+ *        &rarr; <tt>\ </tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Space extends AbstractCode {
 

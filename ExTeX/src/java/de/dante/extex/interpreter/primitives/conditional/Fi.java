@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;fi&rang;
- *     := <tt>\fi</tt>  </pre>
+ *     &rarr; <tt>\fi</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Fi extends AbstractCode implements ExpandableCode {
 

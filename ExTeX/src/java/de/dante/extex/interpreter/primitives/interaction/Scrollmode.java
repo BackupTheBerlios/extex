@@ -40,7 +40,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\scrollmode</tt>  </pre>
+ *    &lang;scrollmode&rang;
+ *      &rarr; <tt>\scrollmode</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Scrollmode extends AbstractAssignment {
 

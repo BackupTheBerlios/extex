@@ -40,7 +40,8 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\char</tt> &lang;...&rang; </pre>
+ *    &lang;char&rang;
+ *        &rarr; <tt>\char</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +51,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 

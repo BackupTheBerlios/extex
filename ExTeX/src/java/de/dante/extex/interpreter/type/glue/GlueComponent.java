@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -145,6 +145,18 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
 
         super();
         this.value = theValue;
+    }
+
+    /**
+     * Creates a new object with a fixed width.
+     *
+     * @param theValue the fixed value
+     */
+    public GlueComponent(final FixedGlueComponent component) {
+
+        super();
+        this.value = component.getValue();
+        this.order = component.getOrder();
     }
 
     /**
@@ -247,6 +259,22 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         int o = g.getOrder();
         if (order == o) {
             value += g.getValue();
+        } else if (order < o) {
+            order = o;
+            value = g.getValue();
+        }
+    }
+
+    /**
+     * ...
+     *
+     * @param g the GlueCoponent to subtract
+     */
+    public void subtract(final FixedGlueComponent g) {
+
+        int o = g.getOrder();
+        if (order == o) {
+            value -= g.getValue();
         } else if (order < o) {
             order = o;
             value = g.getValue();

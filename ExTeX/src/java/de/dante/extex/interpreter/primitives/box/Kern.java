@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;kern&rang;
- *        := <tt>\kern</tt>&lang;dimen&rang;  </pre>
+ *        &rarr; <tt>\kern</tt>&lang;dimen&rang;  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Kern extends AbstractCode {
 

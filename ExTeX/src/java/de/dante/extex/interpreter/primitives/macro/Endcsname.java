@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.HelpingException;
@@ -40,7 +41,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\endscsname</tt>  </pre>
+ *    &lang;endcsname&rang;
+ *     &rarr; <tt>\endscsname</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -49,21 +51,25 @@ import de.dante.util.GeneralException;
  * </p>
  * </doc>
  *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Endcsname extends AbstractCode {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Endcsname(final String name) {
+
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -71,8 +77,6 @@ public class Endcsname extends AbstractCode {
     public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
-
-        prefix.clear();
 
         throw new HelpingException("TTP.ExtraEndcsname",
                 printableControlSequence(context));

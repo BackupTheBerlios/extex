@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;romannumeral&rang;
- *        := <tt>\romannumeral</tt> {@linkplain
+ *        &rarr; <tt>\romannumeral</tt> {@linkplain
  *           de.dante.extex.interpreter.TokenSource#scanInteger()
  *           &lang;number&rang;} </pre>
  * </p>
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Romannumeral extends AbstractCode implements ExpandableCode {
 

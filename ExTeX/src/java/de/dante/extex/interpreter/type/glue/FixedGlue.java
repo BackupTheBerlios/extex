@@ -30,9 +30,16 @@ import de.dante.util.GeneralException;
  * the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FixedGlue {
+
+    /**
+     * Make a copy of this object.
+     *
+     * @return a new instance with the same internal values
+     */
+    Glue copy();
 
     /**
      * Getter for the length.
@@ -50,7 +57,7 @@ public interface FixedGlue {
      *
      * @return the shrink.
      */
-    Dimen getShrink();
+    FixedGlueComponent getShrink();
 
     /**
      * Getter for stretch.
@@ -59,14 +66,7 @@ public interface FixedGlue {
      *
      * @return the stretch.
      */
-    GlueComponent getStretch();
-
-    /**
-     * Make a copy of this object.
-     *
-     * @return a new instance with the same internal values
-     */
-    Glue copy();
+    FixedGlueComponent getStretch();
 
     /**
      * Provide a string representation of this instance.

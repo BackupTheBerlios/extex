@@ -44,7 +44,8 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>&#5c;uppercase</tt> &lang;...&rang; </pre>
+ *    &lang;uppercase&rang;
+ *        &rarr; <tt>&#5c;uppercase</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -55,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Uppercase extends AbstractCode {
 

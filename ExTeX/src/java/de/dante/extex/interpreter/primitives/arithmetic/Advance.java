@@ -44,10 +44,10 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;advance&rang;
- *     := <tt>\advance</tt> &lang;advancable&rang;
+ *     &rarr; <tt>\advance</tt> &lang;advancable&rang;
  *
  *   &lang;advancable&rang;
- *     := &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber()
  *      &lang;8-bit&nbsp;number&rang;}
  *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; &lang;dimen&rang;
@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; &lang;muglue&rang;
  *
  *   &lang;optional <tt>by</tt>&rang;
- *     := [by]
+ *     &rarr; [by]
  *      |  &lang;optional spaces&rang;
  *   </pre>
  * </p>
@@ -71,7 +71,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Advance extends AbstractAssignment {
 

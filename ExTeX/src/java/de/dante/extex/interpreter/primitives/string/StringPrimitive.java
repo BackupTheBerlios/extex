@@ -46,7 +46,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\string</tt> &lang;token&rang; </pre>
+ *    &lang;string&rang;
+ *        &rarr; <tt>\string</tt> &lang;token&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -59,7 +60,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 

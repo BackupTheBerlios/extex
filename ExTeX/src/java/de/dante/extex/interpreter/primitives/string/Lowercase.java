@@ -44,7 +44,8 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\lowercase</tt> &lang;...&rang; </pre>
+ *    &lang;lowercase&rang;
+ *        &rarr; <tt>\lowercase</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -55,7 +56,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
