@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 class NV implements NodeVisitor {
 
@@ -87,7 +87,7 @@ class NV implements NodeVisitor {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method uniformly handles any node lists.
      *
      * @param list the node list to process
      * @param index the index in the word to start with
