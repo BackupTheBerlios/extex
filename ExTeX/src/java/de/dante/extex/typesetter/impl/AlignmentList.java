@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface AlignmentList {
 
@@ -58,9 +58,11 @@ public interface AlignmentList {
 
     /**
      * ...
+     * @param context TODO
+     * @param source TODO
      *
      * @throws GeneralException in case of an error
      */
-    void span() throws GeneralException;
+    void span(Context context, TokenSource source) throws GeneralException;
 
 }
