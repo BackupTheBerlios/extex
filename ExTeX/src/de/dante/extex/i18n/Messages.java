@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,7 +40,7 @@ import java.util.ResourceBundle;
  * For ExTeX this the properties file has many similarities to TEX.POOL in TeX.
  * </p>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Messages {
     /** the name of the resource bundle to use */
@@ -134,6 +134,31 @@ public class Messages {
                                         a,
                                         b,
                                         c
+                                    });
+    }
+
+    /**
+     * Apply the given argument to the format string stored in the resource
+     * bundle under the given key.
+     * The argument object's value of toString() replaces the substring
+     * <tt>'{0}'</tt>, <tt>'{1}'</tt>, <tt>'{2}'</tt>, and <tt>'{3}'</tt> 
+     * in the format.
+     *
+     * @param fmt the key in the resource bundle to search for
+     * @param a the Object used for the substring <tt>{0}</tt>
+     * @param b the Object used for the substring <tt>{1}</tt>
+     * @param c the Object used for the substring <tt>{2}</tt>
+     * @param d the Object used for the substring <tt>{3}</tt>
+     *
+     * @return the expanded format string
+     */
+    public static String format(String fmt, Object a, Object b, Object c, Object d) {
+        return MessageFormat.format(format(fmt),
+                                    new Object[] {
+                                        a,
+                                        b,
+                                        c,
+                                        d
                                     });
     }
 
