@@ -21,7 +21,9 @@ package de.dante.extex.interpreter.primitives.register.box;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.util.GeneralException;
 
@@ -50,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Setbox extends BoxParameter implements Code, Serializable {
 
@@ -68,16 +70,22 @@ public class Setbox extends BoxParameter implements Code, Serializable {
      * Return the key (the number) for the box register.
      *
      * @param source the source for new tokens
-     * @param namespace the namespace to use
+     * @param context the interpreter context to use
      *
      * @return the key for the box register
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(final TokenSource source, final String namespace)
+    protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        return "box#" + Long.toString(source.scanNumber());
+        String number = Long.toString(source.scanNumber());
+
+        if (Namespace.SUPPORT_NAMESPACE_BOX) {
+            return context.getNamespace() + "box#" + number;
+        } else {
+            return "box#" + number;
+        }
     }
 
 }

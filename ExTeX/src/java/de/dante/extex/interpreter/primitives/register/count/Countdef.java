@@ -78,7 +78,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "count#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Countdef extends AbstractCount {
 
@@ -105,7 +105,7 @@ public class Countdef extends AbstractCount {
 
         Token cs = source.getControlSequence();
         source.getOptionalEquals();
-        String key = getKey(source);
+        String key = getKey(source, context);
         context.setCode(cs, new IntegerParameter(key), prefix.isGlobal());
     }
 

@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class DimenPrimitive extends AbstractDimen
         implements
@@ -78,7 +78,7 @@ public class DimenPrimitive extends AbstractDimen
     public void advance(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         source.getKeyword("by");
 
         Dimen d = new Dimen(context, source);
@@ -99,7 +99,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         Tokens toks = context.getDimen(key).toToks(context.getTokenFactory());
         source.push(toks);
     }
@@ -115,7 +115,7 @@ public class DimenPrimitive extends AbstractDimen
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         source.getOptionalEquals();
 
         Dimen dimen = new Dimen(context, source);
@@ -130,7 +130,7 @@ public class DimenPrimitive extends AbstractDimen
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         Dimen d = context.getDimen(key);
         return (d != null ? d.getValue() : 0);
     }
@@ -155,7 +155,7 @@ public class DimenPrimitive extends AbstractDimen
     public void multiply(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         source.getKeyword("by");
         long value = Count.scanCount(context, source, null);
         Dimen d = new Dimen(context.getDimen(key).getValue() * value);
@@ -173,7 +173,7 @@ public class DimenPrimitive extends AbstractDimen
     public void divide(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         source.getKeyword("by");
         long value = Count.scanCount(context, source, null);
 
@@ -195,7 +195,7 @@ public class DimenPrimitive extends AbstractDimen
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        String key = getKey(source);
+        String key = getKey(source, context);
         return context.getDimen(key).toToks(context.getTokenFactory());
     }
 

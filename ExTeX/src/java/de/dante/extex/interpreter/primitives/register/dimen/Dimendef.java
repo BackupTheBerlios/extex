@@ -69,7 +69,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Dimendef extends AbstractDimen {
 
@@ -96,7 +96,7 @@ public class Dimendef extends AbstractDimen {
 
         Token cs = source.getControlSequence();
         source.getOptionalEquals();
-        String key = getKey(source, context.getNamespace());
+        String key = getKey(source, context);
         context.setCode(cs, new DimenParameter(key), prefix.isGlobal());
     }
 

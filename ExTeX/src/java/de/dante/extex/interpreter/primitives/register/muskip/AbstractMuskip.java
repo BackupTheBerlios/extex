@@ -19,7 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.register.muskip;
 
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.util.GeneralException;
 
@@ -28,7 +30,7 @@ import de.dante.util.GeneralException;
  * numbered muskip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractMuskip extends AbstractAssignment {
 
@@ -47,34 +49,23 @@ public abstract class AbstractMuskip extends AbstractAssignment {
      * register.
      *
      * @param source the source for new tokens
-     * @param namespace the namespace to use
+     * @param context the interpreter context to use
      *
      * @return the key for the current register
      *
      * @throws GeneralException in case that a derived class need to throw an
      *             Exception this on e is declared.
      */
-    protected String getKey(final TokenSource source, final String namespace)
+    protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        return "muskip#" + Long.toString(source.scanNumber());
-    }
+        String number = Long.toString(source.scanNumber());
 
-    /**
-     * Return the key (the name of the primitive) for the numbered skip
-     * register.
-     *
-     * @param source the source for new tokens
-     *
-     * @return the key for the current register
-     *
-     * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this on e is declared.
-     */
-    protected String getKey(final TokenSource source)
-            throws GeneralException {
-
-        return "muskip#" + Long.toString(source.scanNumber());
+        if (Namespace.SUPPORT_NAMESPACE_SKIP) {
+            return context.getNamespace() + "muskip#" + number;
+        } else {
+            return "muskip#" + number;
+        }
     }
 
 }
