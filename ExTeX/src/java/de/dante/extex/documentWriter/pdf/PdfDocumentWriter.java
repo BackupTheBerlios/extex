@@ -38,18 +38,21 @@ import org.apache.fop.render.pdf.FontSetup;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.GeneralException;
+import de.dante.util.Unit;
 
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.3 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.4 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -64,13 +67,18 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      * The field <tt>shippedPages</tt> ...
      */
     private int shippedPages = 0;
+    
+    /**
+     * The field <tt>cfg</tt> ...
+     */    
+    private Configuration cfg = null;
 
     /**
      * Creates a new object.
      * @param    cfg the configuration
      */
     public PdfDocumentWriter(final Configuration cfg) {
-        super();
+        super(); this.cfg = cfg;
     }
 
     /**
@@ -182,12 +190,8 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     /**
      * x,y ...
      */
-    private float lastX, lastY, currentX, currentY;
-
-    /**
-     * lastDP
-     */
-    private float lastDP = 0.0f;
+    private Dimen lastX = new Dimen(), lastY = new Dimen(), 
+      currentX = new Dimen(), currentY = new Dimen(), lastDP = new Dimen();
 
     /**
      * onlyStroke
@@ -421,25 +425,20 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         NodeList nodes = (NodeList) value;
         StringBuffer operators = new StringBuffer(256);
 
-        State oldstate = state;
-        state = VERTICAL;
-        // float wd = (float) nodes.getWidth().toBP();
-        float ht = (float) nodes.getHeight().toBP();
-        // float dp = (float) nodes.getDepth().toBP();        
-        // the upper left corner of the main vbox has an offset of 1in. 
-        lastX = currentX = 72;
-        lastY = currentY = 72 + ht;
-        lastDP = 0.0f;
-        System.out.println("\n");
+        State oldstate = state; state = VERTICAL;
+	
+	Dimen ht = new Dimen(nodes.getHeight());
+	Dimen saveX = new Dimen(lastX); Dimen saveY = new Dimen(lastY);
+	
+	currentX.set(lastX); lastY.add(ht);
+	currentY.set(lastY);
 
         operators.append(op.fillColor(Color.LIGHT_GRAY));
-        showNode(nodes, operators);
-        debugNode(nodes);
+	
+        showNode(nodes, operators); debugNode(nodes);
 
-        lastX = 72;
-        lastY = 72 - ht;
-        lastDP = ht;
-
+        lastX.set(saveX); lastY.set(saveY); lastY.subtract(ht); lastDP.set(ht);
+	
         NodeIterator it = nodes.iterator();
         while (it.hasNext()) {
             Node node = it.next();
@@ -448,19 +447,6 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             } catch (Exception e) {
                 e.printStackTrace(); // TODO: handle exception
             }
-            //                if (n instanceof HorizontalListNode)
-            //                {
-            //                    state = HORIOZONTAL;
-            //                    wd = (float)n.getWidth().toBP();
-            //                    ht = (float)n.getHeight().toBP();
-            //                    dp = (float)n.getDepth().toBP();
-            //                    currentX = lastX; currentY = lastY + lastDP + ht;
-            //                    lastDP = dp;
-            //                    System.out.println(debugNode(n));
-            //                    processNodes((NodeList)n);
-            //                    lastY = currentY;
-            //                }
-            //                else showNode(n);
         }
 
         state = oldstate;
@@ -475,24 +461,20 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     public Object visitHorizontalList(final Object value, final Object value2) {
 
-        NodeList n = (HorizontalListNode) value;
-        //StringBuffer operators = new StringBuffer(256);
+        NodeList nodes = (HorizontalListNode) value;
 
-        State oldstate = state;
-        state = HORIOZONTAL;
+        State oldstate = state; state = HORIOZONTAL;
+	
+	Dimen ht = new Dimen(nodes.getHeight());
+	Dimen dp = new Dimen(nodes.getDepth());
+	
+        currentX.set(lastX);
+	currentY.set(lastY); currentY.add(lastDP); currentY.add(ht);
+        lastDP.set(dp);
 
-        //float wd = (float) n.getWidth().toBP();
-        float ht = (float) n.getHeight().toBP();
-        float dp = (float) n.getDepth().toBP();
-        currentX = lastX;
-        currentY = lastY + lastDP + ht;
-        lastDP = dp;
+        debugNode(nodes);
 
-        // operators.append(op.fillColor(Color.CYAN));
-        // showNode(n, operators);
-        debugNode(n);
-
-        NodeIterator it = n.iterator();
+        NodeIterator it = nodes.iterator();
         while (it.hasNext()) {
             Node node = it.next();
             try {
@@ -502,7 +484,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             }
 
         }
-        setPosition(n);
+        setPosition(nodes);
         lastY = currentY;
         state = oldstate;
         return null;
@@ -601,7 +583,6 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             GlueNode node = (GlueNode) value2;
             sb.append("Glue");
             sb.append(metric(node));
-            //sb.append("  " + node.getWidth().toPT());
             return null;
         }
 
@@ -707,35 +688,37 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     // ------------------------------------------------------
 
     private void showNode(Node node, StringBuffer operators) {
-
-        float wd = (float) node.getWidth().toBP();
-        float ht = (float) node.getHeight().toBP();
-        float dp = (float) node.getDepth().toBP();
+	
+	Dimen wd = new Dimen(node.getWidth());
+	Dimen ht = new Dimen(node.getHeight());
+	Dimen dp = new Dimen(node.getDepth());
 
         onlyStroke = false;
-        //        markOrigin = false;
-        // operators = new StringBuffer(256);
-
-        //      try {
-        //            node.visit(this, node, null);
-        //        } catch (GeneralException e) {
-        //            e.printStackTrace();
-        //        }
 
         cs.add(op.gSave());
         cs.add(operators.toString());
         cs.add(op.lineWidth(.3f));
-        cs.add(op.addRectangle(currentX, currentY - ht, wd, ht + dp));
+	
+	float rX = (float)Unit.getDimenAsBP(currentX);
+	float rY = (float)Unit.getDimenAsBP(currentY) -
+	           (float)Unit.getDimenAsBP(ht);
+        float rWD  = (float)Unit.getDimenAsBP(wd);
+	float rHT  = (float)Unit.getDimenAsBP(ht) +
+	             (float)Unit.getDimenAsBP(dp);
+
+	cs.add(op.addRectangle(rX, rY, rWD, rHT));
+	
         if (onlyStroke)
             cs.add(op.stroke());
         else
             cs.add(op.fillStroke());
-
-        if (dp > 0.0) { // baseline
+	    
+	if (!dp.le(Dimen.ZERO_PT)) { // baseline
+	    rY = (float)Unit.getDimenAsBP(currentY);
             cs.add(op.gSave());
             cs.add(op.setLineDash(.3f, .3f));
-            cs.add(op.moveTo(currentX, currentY));
-            cs.add(op.rLineTo(wd, 0f));
+            cs.add(op.moveTo(rX, rY));
+            cs.add(op.rLineTo(rWD, 0f));
             cs.add(op.stroke());
             cs.add(op.gRestore());
         }
@@ -743,13 +726,10 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     private void setPosition(Node node) {
-        float wd = (float) node.getWidth().toBP();
-        float ht = (float) node.getHeight().toBP();
-        float dp = (float) node.getDepth().toBP();
         if (state == HORIOZONTAL) {
-            currentX += wd;
+	    currentX.add(node.getWidth());
         } else {
-            currentY += ht + dp;
+	    currentY.add(node.getHeight()); currentY.add(node.getDepth());
         }
     }
 
@@ -766,52 +746,6 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         cs.add(op.gRestore());
     }
 
-    //    // Getestet mit "./extex -output pdf testdata/testlinebreak"
-    //    //
-    //    private void processNodes(final NodeList nodes) {
-    //        //      NodeIterator it = nodes.iterator();
-    //        //       float lastDP = 0.0f; float wd; float ht; float dp;
-    //
-    //        try {
-    //            nodes.visit(this, nodes, null);
-    //        } catch (Exception e) {
-    //            e.printStackTrace(); // TODO: handle exception
-    //        }
-    //
-    //        //      if (nodes instanceof VerticalListNode)
-    //        //      {
-    //        //          state = VERTICAL;
-    //        //        wd = (float)nodes.getWidth().toBP();
-    //        //        ht = (float)nodes.getHeight().toBP();
-    //        //        dp = (float)nodes.getDepth().toBP();
-    //        //        lastX = currentX = 72; lastY = currentY = 72 + ht;
-    //        //        // Basepoint setzen, so dass linke obere Ecke der
-    //        //        // Vbox bei 1in Offset erscheint.
-    //        //        lastDP = 0.0f;
-    //        //        System.out.println("\n");
-    //        //        showNode(nodes);
-    //        //        lastX = 72; lastY = 72 - ht; lastDP = ht;
-    //        //      }
-    //
-    //        //      while(it.hasNext())
-    //        //      {
-    //        //        Node n = it.next();
-    //        //        if (n instanceof HorizontalListNode)
-    //        //        {
-    //        //            state = HORIOZONTAL;
-    //        //          wd = (float)n.getWidth().toBP();
-    //        //          ht = (float)n.getHeight().toBP();
-    //        //          dp = (float)n.getDepth().toBP();
-    //        //          currentX = lastX; currentY = lastY + lastDP + ht;
-    //        //          lastDP = dp;
-    //        //          System.out.println(debugNode(n));
-    //        //          processNodes((NodeList)n);
-    //        //          lastY = currentY;
-    //        //        }
-    //        //        else showNode(n);
-    //        //      }
-    //    }
-
     /**
      * Opens/setups the document
      */
@@ -822,12 +756,14 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         pdfDoc.setProducer("ExTeX-0.00"); // Where is this defined?
 
         /*
+
          How can we set the following?
-         
+
          /Author, /Title, /Creator, /Keywords, /CreationDate 
-         
+
          How can we switch off the compression?
-         */
+
+        */
 
         fontInfo = new FontInfo();
 
@@ -847,7 +783,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
-     * Creates/setups a new page
+     * Creates and setups a new page
      */
     private void newPage() throws IOException {
 
@@ -862,6 +798,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         // TeX/SVG-Koordinatensystem.
         cs.add(op.concat(1, 0, 0, -1, 0, pageHT));
+	
+	lastX.set(Dimen.ONE_INCH); lastY.set(Dimen.ONE_INCH); 
+	lastDP.setValue(0L);
     }
 
     // ---------------------------------------------------------------------------
