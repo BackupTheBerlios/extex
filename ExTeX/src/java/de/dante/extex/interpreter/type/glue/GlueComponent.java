@@ -55,7 +55,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -632,7 +632,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 sb.append('l');
             }
         } else {
-            throw new RuntimeException("This can't happen."); //TODO incomplete
+            throw new RuntimeException(getLocalizer().format("Illegal.Order",
+                    Integer.toString(order)));
         }
     }
 
