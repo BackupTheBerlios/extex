@@ -21,7 +21,6 @@ package de.dante.extex.language.hyphenation.liang;
 
 import java.util.logging.Logger;
 
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -35,6 +34,7 @@ import de.dante.extex.language.hyphenation.util.NodeTraverser;
 import de.dante.extex.scanner.type.LetterToken;
 import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
@@ -114,7 +114,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -226,7 +226,8 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
      *      Token)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final Context context, final Token hyphen) throws GeneralException {
+            final TypesetterOptions context, final Token hyphen)
+            throws HyphenationException {
 
         if (!isHyphenActive()) {
             return nodelist;

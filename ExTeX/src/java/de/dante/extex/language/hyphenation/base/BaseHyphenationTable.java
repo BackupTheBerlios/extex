@@ -22,7 +22,6 @@ package de.dante.extex.language.hyphenation.base;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.ModifiableLanguage;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
@@ -31,6 +30,7 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNode;
@@ -38,7 +38,6 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -46,7 +45,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BaseHyphenationTable implements ModifiableLanguage {
 
@@ -64,7 +63,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     private boolean hyphenactive = true;
 
     /**
-     * The field <tt>lefthyphenmin</tt> contains the ...
+     * The field <tt>lefthyphenmin</tt> contains the minimum distance from the
+     * left side of a word before hyphenation is performed.
      */
     private long lefthyphenmin = 0;
 
@@ -74,7 +74,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     private LigatureBuilder ligatureBuilder = null;
 
     /**
-     * The field <tt>righthyphenmin</tt> contains the ...
+     * The field <tt>righthyphenmin</tt> contains the minimum distance from the
+     * right side of a word before hyphenation is performed.
      */
     private long righthyphenmin = 0;
 
@@ -89,9 +90,9 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     /**
      * @see de.dante.extex.language.Language#addHyphenation(
      *      de.dante.extex.interpreter.type.tokens.Tokens,
-     *      de.dante.extex.interpreter.context.Context)
+     *      TypesetterOptions)
      */
-    public void addHyphenation(final Tokens word, final Context context)
+    public void addHyphenation(final Tokens word, final TypesetterOptions context)
             throws HyphenationException {
 
         try {
@@ -120,7 +121,7 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      * @throws CatcodeException in case of an error
      */
     protected Tokens createHyphenation(final Tokens pattern,
-            final Context context) throws CatcodeException {
+            final TypesetterOptions context) throws CatcodeException {
 
         Tokens ret = new Tokens();
         TokenFactory tokenFactory = context.getTokenFactory();
@@ -148,6 +149,10 @@ public class BaseHyphenationTable implements ModifiableLanguage {
         return lefthyphenmin;
     }
 
+    /**
+     * @see de.dante.extex.language.ModifiableLanguage#setLigatureBuilder(
+     *      de.dante.extex.language.ligature.LigatureBuilder)
+     */
     public void setLigatureBuilder(final LigatureBuilder builder) {
 
         this.ligatureBuilder = builder;
@@ -167,7 +172,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
      *      de.dante.extex.interpreter.context.Context, Token)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final Context context, final Token hyphen) throws GeneralException {
+            final TypesetterOptions context, final Token hyphen)
+            throws HyphenationException {
 
         if (!hyphenactive || nodelist.size() == 0) {
             return nodelist;
@@ -194,18 +200,22 @@ public class BaseHyphenationTable implements ModifiableLanguage {
         TokenFactory factory = context.getTokenFactory();
         Tokens list = new Tokens();
 
-        for (int i = 0; i < nodelist.size(); i++) {
-            n = nodelist.get(i);
-            if (n instanceof CharNode) {
-                list.add(factory.createToken(Catcode.OTHER, ((CharNode) n)
-                        .getCharacter(), ""));
-            } else if (n instanceof LigatureNode) {
-                list.add(factory.createToken(Catcode.OTHER, ((LigatureNode) n)
-                        .getCharacter(), "")); //TODO gene: check
-            } else {
-                //TODO gene: ???
-                return nodelist;
+        try {
+            for (int i = 0; i < nodelist.size(); i++) {
+                n = nodelist.get(i);
+                if (n instanceof CharNode) {
+                    list.add(factory.createToken(Catcode.OTHER, ((CharNode) n)
+                            .getCharacter(), ""));
+                } else if (n instanceof LigatureNode) {
+                    list.add(factory.createToken(Catcode.OTHER,
+                            ((LigatureNode) n).getCharacter(), "")); //TODO gene: check
+                } else {
+                    //TODO gene: ???
+                    return nodelist;
+                }
             }
+        } catch (CatcodeException e) {
+            throw new HyphenationException(e);
         }
 
         Tokens word = (Tokens) exceptionMap.get(list);
@@ -231,11 +241,12 @@ public class BaseHyphenationTable implements ModifiableLanguage {
 
     /**
      * @see de.dante.extex.language.ligature.LigatureBuilder#insertLigatures(
-     *      de.dante.extex.typesetter.type.NodeList)
+     *      de.dante.extex.typesetter.type.NodeList, int)
      */
-    public void insertLigatures(final NodeList list) throws HyphenationException {
+    public int insertLigatures(final NodeList list, int start)
+            throws HyphenationException {
 
-        this.ligatureBuilder.insertLigatures(list);
+        return this.ligatureBuilder.insertLigatures(list, start);
     }
 
     /**
@@ -249,7 +260,8 @@ public class BaseHyphenationTable implements ModifiableLanguage {
     /**
      * @see de.dante.extex.language.Language#setHyphenActive(boolean)
      */
-    public void setHyphenActive(final boolean active) throws HyphenationException {
+    public void setHyphenActive(final boolean active)
+            throws HyphenationException {
 
         hyphenactive = active;
     }

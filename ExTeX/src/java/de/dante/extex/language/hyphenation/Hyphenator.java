@@ -21,12 +21,11 @@ package de.dante.extex.language.hyphenation;
 
 import java.io.Serializable;
 
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
-import de.dante.util.GeneralException;
 
 /**
  * Interface for the <code>HyphenationTable</code>.
@@ -37,7 +36,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Hyphenator extends Serializable {
 
@@ -49,7 +48,7 @@ public interface Hyphenator extends Serializable {
      *
      * @throws HyphenationException in case of an error
      */
-    void addHyphenation(Tokens word, Context context)
+    void addHyphenation(Tokens word, TypesetterOptions context)
             throws HyphenationException;
 
     /**
@@ -64,14 +63,16 @@ public interface Hyphenator extends Serializable {
     /**
      * Return the value for lefthyphenmin
      * @return  lefthyphenmin
-     * @throws HyphenationException TODO
+     *
+     * @throws HyphenationException in case of an error
      */
     long getLeftHyphenmin() throws HyphenationException;
 
     /**
      * Return the value for righthyphenmin
      * @return  righthyphenmin
-     * @throws HyphenationException TODO
+     *
+     * @throws HyphenationException in case of an error
      */
     long getRightHyphenmin() throws HyphenationException;
 
@@ -84,38 +85,43 @@ public interface Hyphenator extends Serializable {
      *
      * @return a nodelist with hyphenation marks inserted
      *
-     * @throws GeneralException in case of an error
+     * @throws HyphenationException in case of an error
      */
-    HorizontalListNode hyphenate(HorizontalListNode nodelist, Context context,
-            Token hyphen) throws GeneralException;
+    HorizontalListNode hyphenate(HorizontalListNode nodelist,
+            TypesetterOptions context, Token hyphen)
+            throws HyphenationException;
 
     /**
      * Return <code>true</code>, if hyphenation is active,
      * otherwise <code>false</code>;
      *
      * @return hyphenactive
-     * @throws HyphenationException TODO
+     *
+     * @throws HyphenationException in case of an error
      */
     boolean isHyphenActive() throws HyphenationException;
 
     /**
      * Set the value for hyphenactive
      * @param active the new value
-     * @throws HyphenationException TODO
+     *
+     * @throws HyphenationException in case of an error
      */
     void setHyphenActive(boolean active) throws HyphenationException;
 
     /**
      * Set the value for lefthyphenmin
      * @param left the new value
-     * @throws HyphenationException TODO
+     *
+     * @throws HyphenationException in case of an error
      */
     void setLeftHyphenmin(long left) throws HyphenationException;
 
     /**
      * Set the value for righthyphenmin
      * @param right the new value
-     * @throws HyphenationException TODO
+     *
+     * @throws HyphenationException in case of an error
      */
     void setRightHyphenmin(long right) throws HyphenationException;
 }
