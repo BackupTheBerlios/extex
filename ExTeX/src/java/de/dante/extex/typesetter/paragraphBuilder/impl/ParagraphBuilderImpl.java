@@ -34,9 +34,9 @@ import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.typesetter.Discartable;
 import de.dante.extex.typesetter.HyphenationEnabled;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.hyphenator.Hyphenator;
 import de.dante.extex.typesetter.paragraphBuilder.FixedParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.HangingParagraphShape;
-import de.dante.extex.typesetter.paragraphBuilder.Hyphenator;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.Node;
@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class ParagraphBuilderImpl
         implements

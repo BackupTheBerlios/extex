@@ -18,7 +18,7 @@
  */
 package de.dante.extex.typesetter;
 
-import de.dante.extex.typesetter.paragraphBuilder.Hyphenator;
+import de.dante.extex.typesetter.hyphenator.Hyphenator;
 
 
 /**
@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.paragraphBuilder.Hyphenator;
  * hyphenator.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface HyphenationEnabled {
 
