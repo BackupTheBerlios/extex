@@ -24,7 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.type.Delimiter;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.util.GeneralException;
 
 /**
@@ -50,16 +50,16 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MathDelimiter extends AbstractMathCode {
+public class Delimiter extends AbstractMathCode {
 
     /**
      * Creates a new object.
      *
      * @param name the name for tracing and debugging
      */
-    public MathDelimiter(final String name) {
+    public Delimiter(final String name) {
 
         super(name);
     }
@@ -75,8 +75,7 @@ public class MathDelimiter extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long delcode = source.scanNumber();
-        Delimiter del = new Delimiter(delcode);
+        MathDelimiter del = new MathDelimiter(source);
 
         //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
