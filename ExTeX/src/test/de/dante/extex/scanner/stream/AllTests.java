@@ -25,9 +25,9 @@ import junit.framework.TestSuite;
  * Test suite for all tests in this package.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class AllTests {
+public final class AllTests {
 
     /**
      * Creates a new object.
@@ -40,7 +40,7 @@ public class AllTests {
      * @param args the arguments
      */
     public static void main(final String[] args) {
-        junit.textui.TestRunner.run(AllTests.class);
+        junit.textui.TestRunner.run(suite());
     }
 
     /**
