@@ -34,7 +34,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EFMType1AFMFont extends EFMFont implements Font {
 
@@ -64,9 +64,9 @@ public class EFMType1AFMFont extends EFMFont implements Font {
                 + getFontName()
                 + (getExternalFile() != null
                         ? " (" + getExternalFile() + ")"
-                        : "") + " with size " + getEmsize().toPT()
+                        : "") + " with size " + getEmsize().toString()
                 + " unitsperem = " + getUnitsperem() + " ex = " + getEx()
-                + " em = " + getEm().toPT() + " (with " + getEmpr() + "%)"
+                + " em = " + getEm().toString() + " (with " + getEmpr() + "%)"
                 + " number of glyphs = " + getGylphMapSize() + " >";
     }
 

@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.register;
 
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
@@ -46,9 +46,9 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class NamedReal extends AbstractCode
+public class NamedReal extends AbstractAssignment
         implements
             Theable,
             Advanceable,
@@ -67,24 +67,24 @@ public class NamedReal extends AbstractCode
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.AbstractAssignment#assign(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+    public void assign(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         if (context instanceof ContextExtension) {
 
             ContextExtension contextextex = (ContextExtension) context;
+
             String key = getKey(source);
             source.scanOptionalEquals();
             Real value = new Real(context, source);
             contextextex.setReal(key, value, prefix.isGlobal());
-            prefix.clear();
-            //gene: better use the base class AbstractAssignment
-            // doAfterAssignment(context, source);
+
         } else {
             throw new MainExTeXExtensionException();
         }
@@ -97,7 +97,8 @@ public class NamedReal extends AbstractCode
      * @param value      the new value as Real
      * @throws GeneralException ...
      */
-    public void set(final Context context, final Real value) throws GeneralException {
+    public void set(final Context context, final Real value)
+            throws GeneralException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -114,7 +115,8 @@ public class NamedReal extends AbstractCode
      * @param value      the new value as String
      * @throws GeneralException ...
      */
-    public void set(final Context context, final String value) throws GeneralException {
+    public void set(final Context context, final String value)
+            throws GeneralException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -160,8 +162,8 @@ public class NamedReal extends AbstractCode
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void advance(final Flags prefix, final Context context, final TokenSource source)
-            throws GeneralException {
+    public void advance(final Flags prefix, final Context context,
+            final TokenSource source) throws GeneralException {
 
         if (context instanceof ContextExtension) {
 
@@ -185,8 +187,8 @@ public class NamedReal extends AbstractCode
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void multiply(final Flags prefix, final Context context, final TokenSource source)
-            throws GeneralException {
+    public void multiply(final Flags prefix, final Context context,
+            final TokenSource source) throws GeneralException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -209,8 +211,8 @@ public class NamedReal extends AbstractCode
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public void divide(final Flags prefix, final Context context, final TokenSource source)
-            throws GeneralException {
+    public void divide(final Flags prefix, final Context context,
+            final TokenSource source) throws GeneralException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;

@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
@@ -45,9 +45,9 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class FontValue extends AbstractCode implements Theable {
+public class FontValue extends AbstractAssignment implements Theable {
 
     /**
      * Creates a new object.
@@ -60,12 +60,13 @@ public class FontValue extends AbstractCode implements Theable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 

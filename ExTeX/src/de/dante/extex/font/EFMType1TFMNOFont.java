@@ -32,7 +32,7 @@ import de.dante.util.file.FileFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EFMType1TFMNOFont extends EFMFont implements Font {
 
@@ -110,9 +110,9 @@ public class EFMType1TFMNOFont extends EFMFont implements Font {
                 + getFontName()
                 + (getExternalFile() != null
                         ? " (" + getExternalFile() + ")"
-                        : "") + " with size " + getEmsize().toPT()
+                        : "") + " with size " + getEmsize().toString()
                 + " unitsperem = " + getUnitsperem() + " ex = " + getEx()
-                + " em = " + getEm().toPT() + " (with " + getEmpr() + "%)"
+                + " em = " + getEm().toString() + " (with " + getEmpr() + "%)"
                 + " number of glyphs = " + getGylphMapSize() + " >";
     }
 

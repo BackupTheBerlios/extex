@@ -29,7 +29,7 @@ import org.jdom.Element;
  * This class read a TFM-file. <p>See for more information TFtoPL
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TFMReader implements FontMetric {
 
@@ -2079,8 +2079,9 @@ public class TFMReader implements FontMetric {
             AuxLigKern alk = ligAuxTab[start];
             if (alk.meansRestart()) {
                 start = alk.restartIndex();
-                if (start < ligAuxLen && alk.activity == AuxLigKern.UNREACHABLE)
+                if (start < ligAuxLen && alk.activity == AuxLigKern.UNREACHABLE){
                     alk.activity = AuxLigKern.PASSTHROUGH;
+                }
             }
         }
         return start;

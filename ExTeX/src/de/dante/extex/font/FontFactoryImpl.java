@@ -22,6 +22,7 @@ package de.dante.extex.font;
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import org.jdom.Attribute;
 import org.jdom.Document;
@@ -40,7 +41,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -55,6 +56,11 @@ public class FontFactoryImpl implements FontFactory {
     private FileFinder finder;
 
     /**
+     * the logger
+     */
+    private Logger logger;
+
+    /**
      * Creates a new object.
      *
      * @param fileFinder ...
@@ -63,6 +69,7 @@ public class FontFactoryImpl implements FontFactory {
 
         super();
         finder = fileFinder;
+        logger = Logger.getLogger(getClass().getName());
     }
 
     /**
@@ -88,12 +95,20 @@ public class FontFactoryImpl implements FontFactory {
 
             if (type == TYPE1) {
                 font = new EFMType1AFMFont(doc, filename, size, finder);
+            } else if (type == TFMNORMAL) {
+                font = new EFMType1TFMNOFont(doc, filename, size, finder);
+            } else if (type == TFMMATHEXT) {
+                font = new EFMType1TFMMathextFont(doc, filename, size, finder);
+            } else if (type == TFMMATHSYML) {
+                font = new EFMType1TFMMathsymlFont(doc, filename, size, finder);
             } else {
                 // UNKNOWN
                 throw new ConfigurationIOException("unknown font-type");
                 // TODO i18n
             }
-            System.err.println(font);
+            // ---------------
+//            logger.info(font.toString());
+            // -----------------------------
             // TODO delete after test
         }
         return font;
@@ -111,6 +126,12 @@ public class FontFactoryImpl implements FontFactory {
         Attribute typeattr = font.getAttribute("type");
         if ("type1".equals(typeattr.getValue().toLowerCase())) {
             return TYPE1;
+        } else if ("tfm-mathsyml".equals(typeattr.getValue().toLowerCase())) {
+            return TFMMATHSYML;
+        } else if ("tfm-mathext".equals(typeattr.getValue().toLowerCase())) {
+            return TFMMATHEXT;
+        } else if ("tfm-normal".equals(typeattr.getValue().toLowerCase())) {
+            return TFMNORMAL;
         }
         return UNKNOWN;
     }
@@ -119,6 +140,21 @@ public class FontFactoryImpl implements FontFactory {
      * type1-font
      */
     private static final Type TYPE1 = new Type();
+
+    /**
+     * tfm-normal
+     */
+    private static final Type TFMNORMAL = new Type();
+
+    /**
+     * tfm-mathext
+     */
+    private static final Type TFMMATHEXT = new Type();
+
+    /**
+     * tfm-mathsyml
+     */
+    private static final Type TFMMATHSYML = new Type();
 
     /**
      * unknown
