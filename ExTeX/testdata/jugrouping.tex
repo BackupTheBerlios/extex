@@ -1,0 +1,36 @@
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+
+%%%%%%%%%%%
+%%
+%% grouping
+
+\count7=13
+{%
+  \count7=15
+  \the\count7
+}%
+\the\count7
+
+\count8=111
+\begingroup
+  \aftergroup x
+{
+        \count8=222
+        \the\count8
+        {
+                \advance\count8 by \count7
+                \the\count8
+                \global\advance\count7 by 1
+        }
+        \the\count8
+}
+  \aftergroup y
+  \count8=999
+  \the\count8
+\endgroup
+\the\count7
+\the\count8
+
+
+\end
