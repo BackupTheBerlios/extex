@@ -29,13 +29,15 @@ import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class represents a long integer value.
+ * It is used for instance as count register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Count implements Serializable {
+
     /**
      * The constant <tt>ZERO</tt> contains the count register with the value 0.
      * This count register is in fact immutable.
@@ -59,6 +61,7 @@ public class Count implements Serializable {
      * @param aValue the value
      */
     public Count(final long aValue) {
+
         super();
         this.value = aValue;
     }
@@ -108,11 +111,12 @@ public class Count implements Serializable {
         return source.scanInteger();
     }
 
-
     /**
      * Setter for the value.
      *
      * @param l the new value
+     *
+     * @see #set(long)
      */
     public void setValue(final long l) {
         value = l;
@@ -128,7 +132,19 @@ public class Count implements Serializable {
     }
 
     /**
-     * Increment the value.
+     * Setter for the value.
+     *
+     * @param l the new value
+     *
+     * @see #setValue(long)
+     */
+    public void set(final long l) {
+        value = l;
+    }
+
+    /**
+     * Add a long to the value.
+     * This operation modifies the value.
      *
      * @param val the value to add to
      */
@@ -137,35 +153,73 @@ public class Count implements Serializable {
     }
 
     /**
-     * ...
+     * Divide the value by a long.
+     * This operation modifies the value.
      *
-     * @param val ...
+     * @param denom the denominator to divide by
      *
      * @throws GeneralException in case of a division by zero
      */
-    public void divide(final long val) throws GeneralException {
-        if (val == 0) {
+    public void divide(final long denom) throws GeneralException {
+
+        if (denom == 0) {
             throw new GeneralHelpingException("TTP.ArithOverflow");
         }
 
-        value /= val;
+        value /= denom;
     }
 
     /**
-     * ...
+     * Multiply the value with a factor.
+     * This operation modifies the value.
      *
-     * @param val ...
+     * @param factor the factor to multiply with
      */
-    public void multiply(final long val) {
-        value *= val;
+    public void multiply(final long factor) {
+
+        value *= factor;
     }
 
     /**
-     * Return the value as <code>String</code>
+     * Determine the printable representation of the object.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the Count.
      *
-     * @return the value as <code>String</code>
+     * @return the printable representation
+     *
+     * @see #toString(StringBuffer)
      */
     public String toString() {
+
         return Long.toString(value);
     }
+
+    /**
+     * Determine the printable representation of the object.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the Count.
+     *
+     * @param sb the target string buffer
+     *
+     * @see #toString()
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append(value);
+    }
+
+    /**
+     * Determine the printable representation of the object.
+     * The value returned is exactely the string which would be produced by
+     * TeX to print the Count.
+     *
+     * @param context the interpreter context
+     *
+     * @throws GeneralException in case of an error
+     */
+    public Tokens toToks(final Context context) throws GeneralException {
+
+        return new Tokens(context, Long.toString(value));
+    }
+
 }
