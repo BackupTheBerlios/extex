@@ -20,14 +20,11 @@
 package de.dante.extex.interpreter.primitives.math;
 
 import de.dante.extex.i18n.MathHelpingException;
-import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.NoadConsumer;
-import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
 /**
@@ -35,7 +32,7 @@ import de.dante.util.GeneralException;
  * It tries to ensure that the primitive is invoked in math mode only.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractMathCode extends AbstractCode {
 
@@ -50,57 +47,22 @@ public abstract class AbstractMathCode extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public boolean execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
-
-        if (!typesetter.getMode().isMath()) {
-
-            throw new MathHelpingException(printableControlSequence(context));
-        }
-        return true;
-    }
-
-    /**
-     * Scan some Noads.
-     *
-     * @param context the interpreter context
-     * @param source the source for new tokens
-     * @param typesetter the typesetter
-     *
-     * @return ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    protected Noad scanNoad(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
-
-        return getListMaker(typesetter).scanNoad(context, source);
-    }
-
-    /**
      * Get the current list maker as Noad consumer. If the current list maker is
      * not of the proper type then an exception is thrown.
      *
+     * @param context the interpreter context
      * @param typesetter the master typesetter
      *
      * @return the current list maker
      *
      * @throws GeneralException in case of an error
      */
-    protected NoadConsumer getListMaker(final Typesetter typesetter)
-            throws GeneralException {
+    protected NoadConsumer getListMaker(final Context context,
+            final Typesetter typesetter) throws GeneralException {
 
         ListMaker lm = typesetter.getListMaker();
         if (!(lm instanceof NoadConsumer)) {
-            //TODO error unimplemented
-            throw new RuntimeException("unimplemented");
+            throw new MathHelpingException(printableControlSequence(context));
         }
         return (NoadConsumer) lm;
     }
