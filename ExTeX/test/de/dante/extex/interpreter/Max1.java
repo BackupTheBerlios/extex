@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-import de.dante.extex.scanner.stream.impl.TokenStreamStringImpl;
+import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Max1 extends TestCase {
 

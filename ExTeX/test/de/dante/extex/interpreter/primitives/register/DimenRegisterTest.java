@@ -22,14 +22,14 @@ import junit.framework.TestCase;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.scanner.stream.impl.TokenStreamStringImpl;
+import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  *
  * @author gene
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DimenRegisterTest extends TestCase {
 
