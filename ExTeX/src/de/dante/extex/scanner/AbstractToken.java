@@ -24,14 +24,14 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractToken implements Token {
 
@@ -116,21 +116,21 @@ public abstract class AbstractToken implements Token {
     public boolean equals(Token t) {
         return this == t ||
                (getCatcode() == t.getCatcode() &&
-               value.equals(t.getValue()));
+               getValue().equals(t.getValue()));
     }
 
     /**
      * @see de.dante.extex.scanner.Token#equals(Catcode,String)
      */
     public boolean equals(Catcode cc, String s) {
-        return getCatcode() == cc && value.equals(s);
+        return getCatcode() == cc && getValue().equals(s);
     }
 
     /**
      * @see de.dante.extex.scanner.Token#equals(de.dante.extex.scanner.Catcode, char)
      */
     public boolean equals(Catcode cc, char c) {
-        return getCatcode() == cc && value.length() == 1 &&
+        return getCatcode() == cc && getValue().length() == 1 &&
                value.charAt(0) == c;
     }
 
@@ -138,7 +138,7 @@ public abstract class AbstractToken implements Token {
      * @see de.dante.extex.scanner.Token#equals(char)
      */
     public boolean equals(char c) {
-        return value.length() == 1 && value.charAt(0) == c;
+        return value.length() == 1 && getValue().charAt(0) == c;
     }
 
     /**
