@@ -25,8 +25,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.CharBuffer;
 
-import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.util.file.InputLineDecodeStream;
 
 /**
@@ -34,7 +34,7 @@ import de.dante.util.file.InputLineDecodeStream;
  * which is fed from a File. It use 32bit characters.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamFileImpl32 extends TokenStreamBaseImpl32
         implements

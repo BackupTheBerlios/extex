@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.max;
 
-import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.AbstractFactory;
@@ -28,7 +28,7 @@ import de.dante.util.framework.AbstractFactory;
  * This class provides a factory for token factories.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class TokenFactoryFactory extends AbstractFactory {
 

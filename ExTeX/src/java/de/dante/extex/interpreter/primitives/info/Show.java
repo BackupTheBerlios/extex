@@ -29,9 +29,9 @@ import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.Showable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.logger.LogEnabled;
@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 

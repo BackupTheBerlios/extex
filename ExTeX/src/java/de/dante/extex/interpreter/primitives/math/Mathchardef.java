@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.util.MathcharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Mathchardef extends AbstractAssignment {
 

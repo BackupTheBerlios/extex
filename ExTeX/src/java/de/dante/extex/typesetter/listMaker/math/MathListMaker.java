@@ -33,8 +33,8 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.AbstractListMaker;
@@ -65,7 +65,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -74,7 +74,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private class MathMemento {
 

@@ -30,9 +30,9 @@ import de.dante.extex.interpreter.primitives.table.util.PreambleItem;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -40,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This is the abstract base class for alinments.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class AbstractAlign extends AbstractCode {
 

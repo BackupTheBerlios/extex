@@ -30,13 +30,13 @@ import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.main.exception.MainIOException;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeException;
-import de.dante.extex.scanner.CatcodeVisitor;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.CatcodeVisitor;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -52,7 +52,7 @@ import de.dante.util.file.InputLineDecoder;
  * This class implements a 32 bit token stream.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStream32Impl extends AbstractTokenStreamImpl
         implements
@@ -391,7 +391,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     // ------------------------------------------------
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitActive(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitActive(final Object oFactory, final Object oTokenizer,
@@ -406,7 +406,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitComment(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitComment(final Object oFactory, final Object oTokenizer,
@@ -417,7 +417,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitCr(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitCr(final Object oFactory, final Object oTokenizer,
@@ -440,7 +440,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitEscape(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitEscape(final Object oFactory, final Object oTokenizer,
@@ -487,7 +487,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitIgnore(final Object oFactory, final Object oTokenizer,
@@ -497,7 +497,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitInvalid(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitInvalid(final Object oFactory, final Object oTokenizer,
@@ -509,7 +509,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLeftBrace(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitLeftBrace(final Object oFactory,
@@ -523,7 +523,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLetter(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitLetter(final Object oFactory, final Object oTokenizer,
@@ -537,7 +537,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMacroParam(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitMacroParam(final Object oFactory,
@@ -551,7 +551,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMathShift(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitMathShift(final Object oFactory,
@@ -565,7 +565,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitOther(java.lang.Object,
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitOther(final Object oFactory, final Object oTokenizer,
@@ -579,7 +579,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitRightBrace(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitRightBrace(final Object oFactory,
@@ -603,7 +603,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
      *
      * @throws CatcodeException in case of an error
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSpace(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      * @see "The TeXbook [Chapter 8, page 47]"
      */
@@ -622,7 +622,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSubMark(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitSubMark(final Object oFactory, final Object oTokenizer,
@@ -636,7 +636,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSupMark(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitSupMark(final Object oFactory, final Object oTokenizer,
@@ -650,7 +650,7 @@ public class TokenStream32Impl extends AbstractTokenStreamImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitTabMark(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitTabMark(final Object oFactory, final Object oTokenizer,

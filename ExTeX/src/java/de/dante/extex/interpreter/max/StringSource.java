@@ -22,8 +22,8 @@ package de.dante.extex.interpreter.max;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
@@ -32,7 +32,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class StringSource extends Moritz {
 

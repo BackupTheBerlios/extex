@@ -26,9 +26,9 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.InitializableCode;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -47,7 +47,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PrimitiveFactory extends AbstractFactory {
 

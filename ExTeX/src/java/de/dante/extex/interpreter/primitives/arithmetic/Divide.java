@@ -28,8 +28,8 @@ import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceExce
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.arithmetic.Divideable;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -79,7 +79,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Divide extends AbstractAssignment {
 

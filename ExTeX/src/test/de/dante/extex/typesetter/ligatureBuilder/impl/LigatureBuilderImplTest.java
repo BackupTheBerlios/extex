@@ -33,7 +33,7 @@ import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.scanner.ActiveCharacterTokenTest;
+import de.dante.extex.scanner.type.ActiveCharacterTokenTest;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
@@ -47,7 +47,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -55,7 +55,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockFont extends NullFont {
 
@@ -106,7 +106,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MockGlyph implements Glyph {
 

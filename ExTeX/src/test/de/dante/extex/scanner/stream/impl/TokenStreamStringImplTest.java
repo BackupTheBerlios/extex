@@ -27,10 +27,10 @@ import junit.framework.TestCase;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.TokenFactory;
-import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.scanner.type.TokenFactoryImpl;
 import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -40,7 +40,7 @@ import de.dante.util.configuration.ConfigurationException;
  * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
@@ -48,7 +48,7 @@ public class TokenStreamStringImplTest extends TestCase {
      * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private static class MockConfiguration implements Configuration {
 

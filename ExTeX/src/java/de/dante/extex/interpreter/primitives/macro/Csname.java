@@ -29,12 +29,12 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeException;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.SpaceToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.SpaceToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Csname extends AbstractCode
         implements

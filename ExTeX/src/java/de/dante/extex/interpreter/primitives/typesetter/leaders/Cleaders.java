@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Cleaders extends AbstractCode {
 

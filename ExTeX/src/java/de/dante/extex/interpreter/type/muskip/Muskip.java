@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Muskip implements Serializable {
 

@@ -24,8 +24,8 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizable;
@@ -38,7 +38,7 @@ import de.dante.util.framework.i18n.Localizer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class AbstractCode implements Code, Localizable, Serializable {
 

@@ -19,8 +19,8 @@
 
 package de.dante.extex.scanner.stream.impl32;
 
-import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * String.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamStringImpl extends AbstractTokenStreamImpl
         implements

@@ -25,8 +25,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.macro.Let;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.primitives.namespace.Namespace
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Import extends Let {
 

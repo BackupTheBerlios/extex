@@ -22,7 +22,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 
 
@@ -50,7 +50,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Ifdefined extends AbstractIf {
 

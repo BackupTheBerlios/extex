@@ -22,15 +22,15 @@ package de.dante.extex.scanner.stream.impl32;
 import java.io.IOException;
 import java.nio.charset.CharacterCodingException;
 
-import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.CatcodeVisitor;
 
 /**
  * This class contains an implementation of a token stream which is fed from a
  * StringArray. It use 32 bit characters.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamStringArrayImpl32 extends TokenStreamBaseImpl32
         implements

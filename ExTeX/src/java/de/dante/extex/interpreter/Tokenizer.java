@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.type.Catcode;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -26,7 +26,7 @@ import de.dante.util.UnicodeChar;
  * the catcodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Tokenizer {
 

@@ -27,15 +27,15 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
 
 /**
  * A Hash for Tokens.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HashToks implements Serializable {
 

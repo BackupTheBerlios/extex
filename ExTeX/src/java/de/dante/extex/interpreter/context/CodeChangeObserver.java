@@ -19,7 +19,7 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Token;
 
 
 /**
@@ -27,7 +27,7 @@ import de.dante.extex.scanner.Token;
  * change of a code assignment for a macro or an  active character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface CodeChangeObserver {
 

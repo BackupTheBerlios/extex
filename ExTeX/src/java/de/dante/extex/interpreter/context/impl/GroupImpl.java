@@ -40,10 +40,10 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -58,7 +58,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 

@@ -29,22 +29,22 @@ import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceExce
 import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.CrToken;
-import de.dante.extex.scanner.LeftBraceToken;
-import de.dante.extex.scanner.LetterToken;
-import de.dante.extex.scanner.MacroParamToken;
-import de.dante.extex.scanner.MathShiftToken;
-import de.dante.extex.scanner.OtherToken;
-import de.dante.extex.scanner.RightBraceToken;
-import de.dante.extex.scanner.SpaceToken;
-import de.dante.extex.scanner.SubMarkToken;
-import de.dante.extex.scanner.SupMarkToken;
-import de.dante.extex.scanner.TabMarkToken;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenVisitor;
+import de.dante.extex.scanner.type.ActiveCharacterToken;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.CrToken;
+import de.dante.extex.scanner.type.LeftBraceToken;
+import de.dante.extex.scanner.type.LetterToken;
+import de.dante.extex.scanner.type.MacroParamToken;
+import de.dante.extex.scanner.type.MathShiftToken;
+import de.dante.extex.scanner.type.OtherToken;
+import de.dante.extex.scanner.type.RightBraceToken;
+import de.dante.extex.scanner.type.SpaceToken;
+import de.dante.extex.scanner.type.SubMarkToken;
+import de.dante.extex.scanner.type.SupMarkToken;
+import de.dante.extex.scanner.type.TabMarkToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 

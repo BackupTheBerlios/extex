@@ -27,10 +27,10 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeException;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class PageBuilderImpl implements PageBuilder {
 

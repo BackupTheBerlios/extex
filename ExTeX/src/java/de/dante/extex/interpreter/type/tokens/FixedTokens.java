@@ -20,7 +20,7 @@
 package de.dante.extex.interpreter.type.tokens;
 
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
 
 /**
@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FixedTokens {
 

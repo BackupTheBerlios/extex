@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
-import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
@@ -57,7 +57,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Unless extends AbstractIf implements Localizable {
     /**

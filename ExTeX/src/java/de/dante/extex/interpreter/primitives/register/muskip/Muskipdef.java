@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.primitives.register.muskip;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -68,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "muskip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Muskipdef extends AbstractMuskip {
 

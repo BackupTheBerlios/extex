@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.CatcodeVisitor;
 
 /**
  * This class contains an implementation of a token stream which is fed from a
@@ -33,7 +33,7 @@ import de.dante.extex.scanner.stream.TokenStream;
  * The class ignore the encoding in <tt>\inputencoding</tt>!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamReaderImpl32 extends TokenStreamBaseImpl32
         implements

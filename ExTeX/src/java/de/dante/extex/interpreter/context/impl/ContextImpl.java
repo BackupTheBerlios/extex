@@ -59,12 +59,12 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.FixedTokens;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
@@ -115,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.62 $
+ * @version $Revision: 1.63 $
  */
 public class ContextImpl
         implements

@@ -27,11 +27,11 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.CatcodeException;
-import de.dante.extex.scanner.LetterToken;
-import de.dante.extex.scanner.OtherToken;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.type.CatcodeException;
+import de.dante.extex.scanner.type.LetterToken;
+import de.dante.extex.scanner.type.OtherToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -60,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 

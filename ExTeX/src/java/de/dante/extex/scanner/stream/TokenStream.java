@@ -19,14 +19,14 @@
 package de.dante.extex.scanner.stream;
 
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 
 /**
  * This interface describes the features of a stream capable of delivering
- * {@link de.dante.extex.scanner.Token Token}s. In fact it is a pushback stream
+ * {@link de.dante.extex.scanner.type.Token Token}s. In fact it is a pushback stream
  * since Tokens already read can be pushed back onto the stream for further
  * reading.
  * <p>
@@ -36,7 +36,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface TokenStream {
 

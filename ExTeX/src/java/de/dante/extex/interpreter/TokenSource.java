@@ -26,10 +26,10 @@ import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -37,7 +37,7 @@ import de.dante.util.observer.NotObservableException;
 
 /**
  * This interface describes a class to acquire
- * {@link de.dante.extex.scanner.Token Token}s from.
+ * {@link de.dante.extex.scanner.type.Token Token}s from.
  * Beside the pure getter for the next token some higher-level parsing methods
  * are provided here as well.
  *
@@ -48,7 +48,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public interface TokenSource {
 
@@ -199,7 +199,7 @@ public interface TokenSource {
 
     /**
      * Get the next token which has not the catcode
-     * {@link de.dante.extex.scanner.Catcode#SPACE SPACE}.
+     * {@link de.dante.extex.scanner.type.Catcode#SPACE SPACE}.
      *
      * @param context the interpreter context
      *
@@ -341,7 +341,7 @@ public interface TokenSource {
      *   &lang;number&rang; </pre>
      * <p>
      *  A number consists of a non-empty sequence of digits with catcode
-     *  {@link de.dante.extex.scanner.Catcode#OTHER OTHER}. The number is
+     *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}. The number is
      *  optionally precceded by whitespace and a sign <tt>+</tt> or <tt>-</tt>.
      * </p>
      * <p>
@@ -405,7 +405,7 @@ public interface TokenSource {
      *   &lang;8-bit number&rang; </pre>
      * <p>
      *  A number consists of a non-empty sequence of digits with catcode
-     *  {@link de.dante.extex.scanner.Catcode#OTHER OTHER}.
+     *  {@link de.dante.extex.scanner.type.Catcode#OTHER OTHER}.
      *  The check for a maximal value of 255 is not performed in ExTeX.
      * </p>
      * </doc>

@@ -38,7 +38,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.main.exception.MainException;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
 
 /**
@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +54,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.19 $
+     * @version $Revision: 1.20 $
      */
     private class EHandler implements ErrorHandler {
 

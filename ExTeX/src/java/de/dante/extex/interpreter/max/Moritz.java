@@ -42,16 +42,16 @@ import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.OtherToken;
-import de.dante.extex.scanner.RightBraceToken;
-import de.dante.extex.scanner.SpaceToken;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.OtherToken;
+import de.dante.extex.scanner.type.RightBraceToken;
+import de.dante.extex.scanner.type.SpaceToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
@@ -78,7 +78,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public abstract class Moritz
         implements

@@ -45,25 +45,25 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.CrToken;
-import de.dante.extex.scanner.LeftBraceToken;
-import de.dante.extex.scanner.LetterToken;
-import de.dante.extex.scanner.MacroParamToken;
-import de.dante.extex.scanner.MathShiftToken;
-import de.dante.extex.scanner.OtherToken;
-import de.dante.extex.scanner.RightBraceToken;
-import de.dante.extex.scanner.SpaceToken;
-import de.dante.extex.scanner.SubMarkToken;
-import de.dante.extex.scanner.SupMarkToken;
-import de.dante.extex.scanner.TabMarkToken;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
-import de.dante.extex.scanner.TokenVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.type.ActiveCharacterToken;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.ControlSequenceToken;
+import de.dante.extex.scanner.type.CrToken;
+import de.dante.extex.scanner.type.LeftBraceToken;
+import de.dante.extex.scanner.type.LetterToken;
+import de.dante.extex.scanner.type.MacroParamToken;
+import de.dante.extex.scanner.type.MathShiftToken;
+import de.dante.extex.scanner.type.OtherToken;
+import de.dante.extex.scanner.type.RightBraceToken;
+import de.dante.extex.scanner.type.SpaceToken;
+import de.dante.extex.scanner.type.SubMarkToken;
+import de.dante.extex.scanner.type.SupMarkToken;
+import de.dante.extex.scanner.type.TabMarkToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
+import de.dante.extex.scanner.type.TokenVisitor;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Switch;
@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public class Max extends Moritz
         implements
@@ -633,7 +633,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitActive(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitActive(
      *      de.dante.extex.scanner.ActiveCharacterToken, java.lang.Object)
      */
     public Object visitActive(final ActiveCharacterToken token,
@@ -663,7 +663,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitCr(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitCr(
      *      de.dante.extex.scanner.CrToken, java.lang.Object)
      */
     public Object visitCr(final CrToken token, final Object ignore)
@@ -684,7 +684,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitEscape(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitEscape(
      *      de.dante.extex.scanner.ControlSequenceToken, java.lang.Object)
      */
     public Object visitEscape(final ControlSequenceToken token,
@@ -716,7 +716,7 @@ public class Max extends Moritz
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [1063]"
-     * @see de.dante.extex.scanner.TokenVisitor#visitLeftBrace(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitLeftBrace(
      *      de.dante.extex.scanner.LeftBraceToken, java.lang.Object)
      */
     public Object visitLeftBrace(final LeftBraceToken token, final Object ignore)
@@ -741,7 +741,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitLetter(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitLetter(
      *      de.dante.extex.scanner.LetterToken, java.lang.Object)
      */
     public Object visitLetter(final LetterToken token, final Object ignore)
@@ -763,7 +763,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitMacroParam(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitMacroParam(
      *      de.dante.extex.scanner.MacroParamToken, java.lang.Object)
      */
     public Object visitMacroParam(final MacroParamToken token,
@@ -796,7 +796,7 @@ public class Max extends Moritz
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [1137]"
-     * @see de.dante.extex.scanner.TokenVisitor#visitMathShift(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitMathShift(
      *      de.dante.extex.scanner.MathShiftToken, java.lang.Object)
      */
     public Object visitMathShift(final MathShiftToken token, final Object ignore)
@@ -816,7 +816,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitOther(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitOther(
      *      de.dante.extex.scanner.OtherToken, java.lang.Object)
      */
     public Object visitOther(final OtherToken token, final Object ignore)
@@ -839,7 +839,7 @@ public class Max extends Moritz
      * @throws GeneralException in case of an error
      *
      * @see "TeX -- The Program [1067]"
-     * @see de.dante.extex.scanner.TokenVisitor#visitRightBrace(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitRightBrace(
      *      de.dante.extex.scanner.RightBraceToken, java.lang.Object)
      */
     public Object visitRightBrace(final RightBraceToken token,
@@ -860,7 +860,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitSpace(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitSpace(
      *      de.dante.extex.scanner.SpaceToken, java.lang.Object)
      */
     public Object visitSpace(final SpaceToken token, final Object ignore)
@@ -881,7 +881,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitSubMark(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitSubMark(
      *      de.dante.extex.scanner.SubMarkToken, java.lang.Object)
      */
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
@@ -902,7 +902,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitSupMark(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitSupMark(
      *      de.dante.extex.scanner.SupMarkToken, java.lang.Object)
      */
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
@@ -923,7 +923,7 @@ public class Max extends Moritz
      *
      * @throws GeneralException in case of an error
      *
-     * @see de.dante.extex.scanner.TokenVisitor#visitTabMark(
+     * @see de.dante.extex.scanner.type.TokenVisitor#visitTabMark(
      *      de.dante.extex.scanner.TabMarkToken, java.lang.Object)
      */
     public Object visitTabMark(final TabMarkToken token, final Object ignore)

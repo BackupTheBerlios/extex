@@ -34,11 +34,11 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.GeneralException;
@@ -52,7 +52,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public interface Context
         extends
@@ -366,9 +366,9 @@ public interface Context
     /**
      * Setter for the code assigned to a Token.
      * The Token has to be either a
-     * {@link de.dante.extex.scanner.ActiveCharacterToken ActiveCharacterToken}
+     * {@link de.dante.extex.scanner.type.ActiveCharacterToken ActiveCharacterToken}
      * or a
-     * {@link de.dante.extex.scanner.ControlSequenceToken ControlSequenceToken}.
+     * {@link de.dante.extex.scanner.type.ControlSequenceToken ControlSequenceToken}.
      *
      * @param t the Token to set the code for
      * @param code the code for the token

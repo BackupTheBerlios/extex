@@ -26,7 +26,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Glue implements Serializable, FixedGlue {
 

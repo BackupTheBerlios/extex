@@ -24,11 +24,11 @@ import java.io.IOException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.main.exception.MainIOException;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.CatcodeVisitor;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CatcodeVisitor;
+import de.dante.extex.scanner.type.Token;
+import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -46,7 +46,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -165,7 +165,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
      */
     public Object visitActive(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -180,7 +180,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     /**
      * Comment
      *
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
      */
     public Object visitComment(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -190,7 +190,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
      */
     public Object visitCr(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -209,7 +209,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
      */
     public Object visitEscape(final Object oFactory, final Object oTokenizer,
             final Object uchar) throws GeneralException {
@@ -247,7 +247,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object)
      */
     public Object visitIgnore(final Object oFactory, final Object oTokenizer,
@@ -257,7 +257,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitInvalid(java.lang.Object,
      *      java.lang.Object)
      */
     public Object visitInvalid(final Object oFactory, final Object oTokenizer,
@@ -269,7 +269,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLeftBrace(java.lang.Object,
      *      java.lang.Object)
      */
     public Object visitLeftBrace(final Object oFactory,
@@ -282,7 +282,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitLetter(java.lang.Object,
      *      java.lang.Object)
      */
     public Object visitLetter(final Object oFactory, final Object oTokenizer,
@@ -294,7 +294,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMacroParam(java.lang.Object,
      *      java.lang.Object)
      */
     public Object visitMacroParam(final Object oFactory,
@@ -307,7 +307,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
      */
     public Object visitMathShift(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -319,7 +319,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
      */
     public Object visitOther(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -331,7 +331,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitRigthBrace(java.lang.Object,java.lang.Object)
      */
     public Object visitRightBrace(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -343,7 +343,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
      * @see "The TeXbook [Chapter 8, page 47]"
      */
     public Object visitSpace(final Object oFactory, final Object oTokenizer,
@@ -360,7 +360,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
      */
     public Object visitSubMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -372,7 +372,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
      */
     public Object visitSupMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -384,7 +384,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.type.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
      */
     public Object visitTabMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -699,7 +699,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static class State {
 

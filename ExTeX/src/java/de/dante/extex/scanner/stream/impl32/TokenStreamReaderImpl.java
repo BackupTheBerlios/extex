@@ -23,8 +23,8 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
 
-import de.dante.extex.scanner.CatcodeVisitor;
 import de.dante.extex.scanner.stream.TokenStream;
+import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * The class ignore the encoding in <tt>\inputencoding</tt>!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamReaderImpl extends AbstractTokenStreamImpl
         implements
