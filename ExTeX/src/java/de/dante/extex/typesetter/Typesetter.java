@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -51,6 +51,13 @@ public interface Typesetter extends ListMaker {
      * @return the character node factory
      */
     CharNodeFactory getCharNodeFactory();
+
+    /**
+     * Getter for the current list maker..
+     *
+     * @return the top list maker or <code>null</code> if the stack is empty
+     */
+    ListMaker getListMaker();
 
     /**
      * Getter for the manager of the list maker stack.

@@ -41,7 +41,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -128,6 +128,14 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#getLastNode()
      */
     public Node getLastNode() {
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#getListMaker()
+     */
+    public ListMaker getListMaker() {
 
         return null;
     }
@@ -278,7 +286,8 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
      *      de.dante.extex.scanner.Token, TokenSource)
      */
-    public void treatMathShift(Token t, TokenSource source) throws GeneralException {
+    public void treatMathShift(Token t, TokenSource source)
+            throws GeneralException {
 
     }
 

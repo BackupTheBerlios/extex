@@ -49,7 +49,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Max1 extends TestCase {
 
@@ -137,6 +137,14 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#getLastNode()
          */
         public Node getLastNode() {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#getListMaker()
+         */
+        public ListMaker getListMaker() {
 
             return null;
         }
@@ -313,7 +321,8 @@ public class Max1 extends TestCase {
          * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
          *      de.dante.extex.scanner.Token, TokenSource)
          */
-        public void treatMathShift(Token t, TokenSource source) throws GeneralException {
+        public void treatMathShift(Token t, TokenSource source)
+                throws GeneralException {
 
         }
 
