@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,33 +17,35 @@
  *
  */
 
-package de.dante.extex.interpreter.exception;
+package de.dante.extex.interpreter.exception.helping;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a math macro is encountered outside a math
- * mode.
+ * This exception is raised when a macro is encouterend in a mode for which it
+ * is not meant.
  * <p>
  *  The localization format is taken from the Localizer under the key
- *  <tt>TTP.MissingDollar</tt>.
+ *  <tt>TTP.CantUseIn</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class MissingMathException extends HelpingException {
+public class CantUseInException extends HelpingException {
 
     /**
      * Creates a new object.
      *
      * @param macro the name of the macro in which the eof has been encoutered
+     * @param mode the current mode
      */
-    public MissingMathException(final String macro) {
+    public CantUseInException(final String macro, final String mode) {
 
-        super(LocalizerFactory.getLocalizer(MissingMathException.class.getName()),
-                "TTP.MissingDollar", macro);
+        super(LocalizerFactory.getLocalizer(//
+                CantUseInException.class.getName()),
+                "TTP.CantUseIn", macro, mode);
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,35 +17,37 @@
  *
  */
 
-package de.dante.extex.interpreter.exception;
+package de.dante.extex.interpreter.exception.helping;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a macro is encouterend in a mode for which it
- * is not meant.
+ * This exception is raised when a situation is detected where the continuation
+ * is illegal.
  * <p>
  *  The localization format is taken from the Localizer under the key
- *  <tt>TTP.CantUseIn</tt>.
+ *  <tt>TTP.CantUseAfter</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class CantUseInException extends HelpingException {
+public class CantUseAfterException extends HelpingException {
 
     /**
      * Creates a new object.
      *
-     * @param macro the name of the macro in which the eof has been encoutered
-     * @param mode the current mode
+     * @param cause the name of the macro in which the condition has been
+     *  encoutered
+     * @param predecessor the preceeding token
      */
-    public CantUseInException(final String macro, final String mode) {
+    public CantUseAfterException(final String cause,
+            final String predecessor) {
 
         super(LocalizerFactory.getLocalizer(//
-                CantUseInException.class.getName()),
-                "TTP.CantUseIn", macro, mode);
+                CantUseAfterException.class.getName()),
+                "TTP.CantUseAfter", cause, predecessor);
     }
 
 }

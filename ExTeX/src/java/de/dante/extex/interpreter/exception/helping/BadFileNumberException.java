@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -17,37 +17,36 @@
  *
  */
 
-package de.dante.extex.interpreter.exception;
+package de.dante.extex.interpreter.exception.helping;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * This exception is raised when a situation is detected where the continuation
- * is illegal.
+ * This exception is raised when a illegal file reference has been encoutered.
  * <p>
  *  The localization format is taken from the Localizer under the key
- *  <tt>TTP.CantUseAfter</tt>.
+ *  <tt>TTP.BadFileNumber</tt>.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class CantUseAfterException extends HelpingException {
+public class BadFileNumberException extends HelpingException {
 
     /**
      * Creates a new object.
      *
-     * @param cause the name of the macro in which the condition has been
-     *  encoutered
-     * @param predecessor the preceeding token
+     * @param value the illegal file reference
+     * @param min the minimum for numerical values
+     * @param max the maximum for numerical values
      */
-    public CantUseAfterException(final String cause,
-            final String predecessor) {
+    public BadFileNumberException(final String value, final String min,
+            final String max) {
 
         super(LocalizerFactory.getLocalizer(//
-                CantUseAfterException.class.getName()),
-                "TTP.CantUseAfter", cause, predecessor);
+                BadFileNumberException.class.getName()), "TTP.BadFileNumber",
+                value, min, max);
     }
 
 }
