@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -147,11 +147,12 @@ public class HorizontalListMaker extends AbstractListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList complete(TypesetterOptions context)
+    public NodeList complete(final TypesetterOptions context)
             throws TypesetterException {
 
         ListManager manager = getManager();
-        manager.getLigatureBuilder().insertLigatures(nodes);
+        //TODO gene:  USE THE LIGATURE BUILDER!!!
+        //manager.getLigatureBuilder().insertLigatures(nodes);
         return manager.getParagraphBuilder().build(nodes);
     }
 
@@ -223,6 +224,8 @@ public class HorizontalListMaker extends AbstractListMaker {
 
     /**
      * Add a character node to the list.
+     *
+     * @param context the interpreter context
      * @param tc the typesetting context for the symbol
      * @param symbol the symbol to add
      *
@@ -231,8 +234,8 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void letter(Context context, final TypesettingContext tc,
-            final UnicodeChar symbol) throws TypesetterException {
+    public void letter(final Context context, final TypesettingContext tc,
+            final UnicodeChar symbol) {
 
         CharNode c = getManager().getCharNodeFactory().newInstance(tc, symbol);
         nodes.add(c);

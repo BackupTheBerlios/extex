@@ -21,8 +21,6 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
-import de.dante.extex.hyphenation.HyphenationManager;
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -33,6 +31,8 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.language.Language;
+import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
@@ -50,7 +50,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.50 $
+ * @version $Revision: 1.51 $
  */
 public interface Context
         extends
@@ -160,7 +160,7 @@ public interface Context
      *
      * @throws InterpreterException in case of an error
      */
-    HyphenationTable getHyphenationTable(String language)
+    Language getLanguage(String language)
             throws InterpreterException;
 
     /**
@@ -340,7 +340,7 @@ public interface Context
      *
      * @param manager the hyphenatin manager
      */
-    void setHyphenationManager(HyphenationManager manager);
+    void setLanguageManager(LanguageManager manager);
 
     /**
      * Setter for the id string. The id string is the classification of the

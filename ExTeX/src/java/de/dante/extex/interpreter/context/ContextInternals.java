@@ -19,16 +19,16 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.hyphenation.HyphenationManagerCarrier;
+import de.dante.extex.language.LanguageManagerCarrier;
 
 /**
  * This interface describes the abilities of a Context together with some
  * internal methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public interface ContextInternals extends Context, HyphenationManagerCarrier {
+public interface ContextInternals extends Context, LanguageManagerCarrier {
 
     /**
      * Getter for the typesetting context factory.

@@ -81,9 +81,9 @@
       -->
     <TokenFactory class="de.dante.extex.scanner.type.TokenFactoryImpl"/>
 
-    <!-- The configuration for the hyphenation manager.
+    <!-- The configuration for the language manager.
       -->
-    <Hyphenation src="hyphenation/Hyphenation.xml" />
+    <Language src="language/language.xml" />
 
     <!-- The configuration of the context implementation to use.
       -->

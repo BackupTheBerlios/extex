@@ -77,9 +77,9 @@
       -->
     <Font name=""/>
 
-    <!-- The configuration for the hyphenation manager.
+    <!-- The configuration for the language manager.
       -->
-    <Hyphenation src="hyphenation/Hyphenation.xml" />
+    <Language src="language/language.xml" />
 
     <!-- The configuration of the token factory.
       -->
@@ -128,12 +128,10 @@
 	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
-      <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
     </TeX>
     <devel class="de.dante.extex.typesetter.impl.TypesetterImpl">
       <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.trivial.TrivialBuilder"/>
-      <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
     </devel>
   </Typesetter>
 

@@ -20,8 +20,6 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.hyphenation.HyphenationManager;
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
@@ -43,6 +41,8 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.language.Language;
+import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
@@ -63,7 +63,7 @@ import de.dante.util.observer.Observer;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MockContext implements Context {
 
@@ -235,9 +235,9 @@ public class MockContext implements Context {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getLanguage(java.lang.String)
      */
-    public HyphenationTable getHyphenationTable(final String language)
+    public Language getLanguage(final String language)
             throws InterpreterException {
 
         throw new RuntimeException("unimplemented");
@@ -559,9 +559,9 @@ public class MockContext implements Context {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setHyphenationManager(de.dante.extex.hyphenation.HyphenationManager)
+     * @see de.dante.extex.interpreter.context.Context#setLanguageManager(de.dante.extex.hyphenation.HyphenationManager)
      */
-    public void setHyphenationManager(final HyphenationManager manager) {
+    public void setLanguageManager(final LanguageManager manager) {
 
         throw new RuntimeException("unimplemented");
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by
@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.max.Max;
 import de.dante.extex.typesetter.hyphenator.Hyphenator;
-import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.configuration.Configuration;
@@ -49,7 +48,7 @@ import de.dante.util.framework.AbstractFactory;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TypesetterFactory extends AbstractFactory {
 
@@ -65,25 +64,6 @@ public class TypesetterFactory extends AbstractFactory {
 
         super();
         configure(configuration);
-    }
-
-    /**
-     * Make a new ligature builder according to the specification in the
-     * configuration. The sub-configuration <code>LigatureBuilder</code> is used
-     * to determine the requested properties.
-     *
-     * @param config the configuration to use
-     *
-     * @return the new instance
-     *
-     * @throws ConfigurationException in case of an configuration error
-     */
-    private LigatureBuilder makeLigatureBuilder(final Configuration config)
-            throws ConfigurationException {
-
-        Configuration cfg = config.getConfiguration("LigatureBuilder");
-        return (LigatureBuilder) createInstanceForConfiguration(cfg,
-                LigatureBuilder.class);
     }
 
     /**
@@ -162,7 +142,6 @@ public class TypesetterFactory extends AbstractFactory {
         ParagraphBuilder parBuilder = makeParagraphBuilder(cfg);
         parBuilder.setOptions((TypesetterOptions) context);
         typesetter.setParagraphBuilder(parBuilder);
-        typesetter.setLigatureBuilder(makeLigatureBuilder(cfg));
         typesetter.setPageBuilder(makePageBuilder(cfg, context, typesetter));
         typesetter.setOptions((TypesetterOptions) context);
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -19,9 +19,9 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.context.color.RgbColor;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.language.Language;
 
 /**
  * This implementation of a typesetting context provides the required
@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -61,7 +61,7 @@ public class TypesettingContextImpl implements TypesettingContext {
      * The field <tt>hyphenation</tt> contains the hyphenation table for the
      * current language.
      */
-    private HyphenationTable hyphenation;
+    private Language language;
 
     /**
      * Creates a new object filled with default values.
@@ -72,21 +72,7 @@ public class TypesettingContextImpl implements TypesettingContext {
         this.font = null;
         this.color = RgbColor.BLACK;
         this.direction = Direction.LR;
-        this.hyphenation = null;
-    }
-
-    /**
-     * Creates a new object (copy constructor).
-     *
-     * @param tc the typesetting context to copy
-     */
-    public TypesettingContextImpl(final TypesettingContext tc) {
-
-        super();
-        this.font = tc.getFont();
-        this.color = tc.getColor();
-        this.direction = tc.getDirection();
-        this.hyphenation = tc.getHyphenation();
+        this.language = null;
     }
 
     /**
@@ -101,7 +87,59 @@ public class TypesettingContextImpl implements TypesettingContext {
         this.font = theFont;
         this.color = RgbColor.BLACK;
         this.direction = Direction.LR;
-        this.hyphenation = null;
+        this.language = null;
+    }
+
+    /**
+     * Creates a new object (copy constructor).
+     *
+     * @param tc the typesetting context to copy
+     */
+    public TypesettingContextImpl(final TypesettingContext tc) {
+
+        super();
+        this.font = tc.getFont();
+        this.color = tc.getColor();
+        this.direction = tc.getDirection();
+        this.language = tc.getLanguage();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.TypesettingContext#getColor()
+     */
+    public Color getColor() {
+
+        return this.color;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.TypesettingContext#getDirection()
+     */
+    public Direction getDirection() {
+
+        return this.direction;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.TypesettingContext#getFont()
+     */
+    public Font getFont() {
+
+        if (this.font == null) {
+            throw new IllegalStateException("font undefined");
+        }
+        return this.font;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.TypesettingContext#getLanguage()
+     */
+    public Language getLanguage() {
+
+        if (this.font == null) {
+            throw new IllegalStateException("language undefined");
+        }
+        return this.language;
     }
 
     /**
@@ -113,7 +151,7 @@ public class TypesettingContextImpl implements TypesettingContext {
         this.font = context.getFont();
         this.color = context.getColor();
         this.direction = Direction.LR;
-        this.hyphenation = context.getHyphenation();
+        this.language = context.getLanguage();
     }
 
     /**
@@ -126,28 +164,12 @@ public class TypesettingContextImpl implements TypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#getColor()
-     */
-    public Color getColor() {
-
-        return this.color;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setDirection(
      *       de.dante.extex.interpreter.context.Direction)
      */
     public void setDirection(final Direction theDirection) {
 
         this.direction = theDirection;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#getDirection()
-     */
-    public Direction getDirection() {
-
-        return this.direction;
     }
 
     /**
@@ -160,28 +182,12 @@ public class TypesettingContextImpl implements TypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#getFont()
-     */
-    public Font getFont() {
-
-        return this.font;
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(
-     *      HyphenationTable)
+     *      de.dante.extex.language.Language)
      */
-    public void setLanguage(final HyphenationTable table) {
+    public void setLanguage(final Language language) {
 
-        this.hyphenation = table;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#getHyphenation()
-     */
-    public HyphenationTable getHyphenation() {
-
-        return this.hyphenation;
+        this.language = language;
     }
 
 }

@@ -36,7 +36,6 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.VerticalListMaker;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -60,7 +59,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.61 $
+ * @version $Revision: 1.62 $
  */
 public class TypesetterImpl
         implements
@@ -80,11 +79,6 @@ public class TypesetterImpl
      * producing the output.
      */
     private DocumentWriter documentWriter;
-
-    /**
-     * The field <tt>ligatureBuilder</tt> contains the ligature builder to use.
-     */
-    private LigatureBuilder ligatureBuilder;
 
     /**
      * The field <tt>listMaker</tt> contains the current list maker for
@@ -226,9 +220,6 @@ public class TypesetterImpl
         if (paragraphBuilder instanceof LogEnabled) {
             ((LogEnabled) paragraphBuilder).enableLogging(theLogger);
         }
-        if (ligatureBuilder instanceof LogEnabled) {
-            ((LogEnabled) ligatureBuilder).enableLogging(theLogger);
-        }
     }
 
     /**
@@ -283,14 +274,6 @@ public class TypesetterImpl
     public Node getLastNode() {
 
         return listMaker.getLastNode();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.listMaker.ListManager#getLigatureBuilder()
-     */
-    public LigatureBuilder getLigatureBuilder() {
-
-        return ligatureBuilder;
     }
 
     /**
@@ -442,20 +425,6 @@ public class TypesetterImpl
         documentWriter = writer;
         pageBuilder.setDocumentWriter(writer);
     }
-
-    /**
-     * Setter for ligatureBuilder.
-     *
-     * @param theLigatureBuilder the ligatureBuilder to set.
-     */
-    public void setLigatureBuilder(final LigatureBuilder theLigatureBuilder) {
-
-        ligatureBuilder = theLigatureBuilder;
-        if (ligatureBuilder instanceof LogEnabled) {
-            ((LogEnabled) ligatureBuilder).enableLogging(logger);
-        }
-    }
-
     /**
      * @see de.dante.extex.typesetter.Typesetter#setOptions(
      *      de.dante.extex.typesetter.TypesetterOptions)

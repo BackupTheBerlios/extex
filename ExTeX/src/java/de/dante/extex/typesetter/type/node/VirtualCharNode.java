@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
@@ -46,7 +46,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class NL extends AbstractNodeList {
 
@@ -178,7 +178,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     /**
      * @see de.dante.extex.typesetter.type.node.CharNode#getChars()
      */
-    public UnicodeChar[] getChars() {
+    public CharNode[] getChars() {
 
         return this.nodes.getChars();
     }

@@ -21,6 +21,8 @@ package de.dante.extex.typesetter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -34,9 +36,15 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LigatureNode extends CharNode implements Node {
+
+    /**
+     * The field <tt>chars</tt> contains the cache of the list of plain char
+     * nodes contained.
+     */
+    private CharNode[] chars;
 
     /**
      * The field <tt>left</tt> contains the first node combined in the
@@ -48,19 +56,6 @@ public class LigatureNode extends CharNode implements Node {
      * The field <tt>second</tt> contains the node combined in the ligature.
      */
     private CharNode right;
-
-    /**
-     * The field <tt>chars</tt> contains the ...
-     */
-    private UnicodeChar[] chars;
-
-    /**
-     * @see de.dante.extex.typesetter.type.Node#getChars()
-     */
-    public UnicodeChar[] getChars() {
-
-        return chars;
-    }
 
     /**
      * Creates a new object.
@@ -78,9 +73,9 @@ public class LigatureNode extends CharNode implements Node {
         super(context, uc);
         this.left = left;
         this.right = right;
-        UnicodeChar[] uc1 = left.getChars();
-        UnicodeChar[] uc2 = right.getChars();
-        chars = new UnicodeChar[uc1.length + uc2.length];
+        CharNode[] uc1 = left.getChars();
+        CharNode[] uc2 = right.getChars();
+        chars = new CharNode[uc1.length + uc2.length];
         for (int i = 0; i < uc1.length; i++) {
             chars[i] = uc1[i];
         }
@@ -95,6 +90,14 @@ public class LigatureNode extends CharNode implements Node {
     public int countChars() {
 
         return chars.length;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#getChars()
+     */
+    public CharNode[] getChars() {
+
+        return chars;
     }
 
     /**
@@ -128,8 +131,19 @@ public class LigatureNode extends CharNode implements Node {
      */
     public String toString() {
 
-        return " (ligature " + left.toString() + " " + right.toString() + ")";
+        return " (ligature " + left.toString() + "." + right.toString() + ")";
         //TODO gene: toString() incomplete
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.Node#visit(
+     *      de.dante.extex.typesetter.type.NodeVisitor,
+     *      java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value)
+            throws GeneralException {
+
+        return visitor.visitLigature(this, value);
     }
 
 }

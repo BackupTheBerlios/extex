@@ -29,8 +29,6 @@ import java.util.Map;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.other.NullFont;
-import de.dante.extex.hyphenation.HyphenationManager;
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
@@ -62,6 +60,8 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.FixedTokens;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.language.Language;
+import de.dante.extex.language.LanguageManager;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.scanner.type.Catcode;
@@ -118,7 +118,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.73 $
+ * @version $Revision: 1.74 $
  */
 public class ContextImpl
         implements
@@ -217,16 +217,9 @@ public class ContextImpl
     private transient GroupFactory groupFactory;
 
     /**
-     * The field <tt>HYPHENATION_MANAGER_TAG</tt> contains the tag of the
-     * configuration to select the sub-configuration for the hyphenation
-     * manager.
+     * The field <tt>languageManager</tt> contains the language manager.
      */
-    private final String HYPHENATION_MANAGER_TAG = "Hyphenation";
-
-    /**
-     * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
-     */
-    private HyphenationManager hyphenationManager;
+    private LanguageManager languageManager;
 
     /**
      * The field <tt>id</tt> contains the is string.
@@ -383,6 +376,7 @@ public class ContextImpl
         Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
 
+        /*
         if (hyphenationManager instanceof Configurable) {
             Configuration config = configuration
                     .getConfiguration(HYPHENATION_MANAGER_TAG);
@@ -393,6 +387,7 @@ public class ContextImpl
             }
             ((Configurable) hyphenationManager).configure(config);
         }
+        */
 
         if (typesettingConfig == null) {
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
@@ -401,7 +396,7 @@ public class ContextImpl
 
         typesettingContextFactory = new TypesettingContextFactory();
         typesettingContextFactory.configure(typesettingConfig);
-        typesettingContextFactory.setHyphenationManager(hyphenationManager);
+        typesettingContextFactory.setLanguageManager(languageManager);
         TypesettingContext typesettingContext = typesettingContextFactory
                 .newInstance();
 
@@ -631,13 +626,13 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(String)
+     * @see de.dante.extex.interpreter.context.Context#getLanguage(String)
      */
-    public HyphenationTable getHyphenationTable(final String language)
+    public Language getLanguage(final String language)
             throws InterpreterException {
 
         try {
-            return hyphenationManager.getHyphenationTable(language);
+            return languageManager.getLanguage(language);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }
@@ -1225,12 +1220,12 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.hyphenation.HyphenationManagerCarrier#setHyphenationManager(
-     *      de.dante.extex.hyphenation.HyphenationFactory)
+     * @see de.dante.extex.language.LanguageManagerCarrier#setLanguageManager(
+     *      de.dante.extex.language.LanguageManager)
      */
-    public void setHyphenationManager(final HyphenationManager manager) {
+    public void setLanguageManager(final LanguageManager manager) {
 
-        this.hyphenationManager = manager;
+        this.languageManager = manager;
     }
 
     /**

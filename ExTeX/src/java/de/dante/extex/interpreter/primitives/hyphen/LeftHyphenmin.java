@@ -19,14 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.hyphen;
 
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.language.Language;
+import de.dante.extex.language.hyphenation.exception.HyphenationException;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\lefthyphenmin</code>.
@@ -42,7 +44,7 @@ import de.dante.extex.typesetter.Typesetter;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class LeftHyphenmin extends AbstractHyphenationCode implements Theable {
 
@@ -70,11 +72,18 @@ public class LeftHyphenmin extends AbstractHyphenationCode implements Theable {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
-        HyphenationTable table = getHyphenationTable(context);
+        Language table = getHyphenationTable(context);
         source.getOptionalEquals(context);
         long lefthyphenmin = source.scanInteger(context);
 
-        table.setLeftHyphenmin(lefthyphenmin);
+        try {
+            table.setLeftHyphenmin(lefthyphenmin);
+        } catch (HyphenationException e) {
+            if (e.getCause() instanceof ConfigurationException) {
+                throw new InterpreterException(e.getCause());
+            }
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -88,7 +97,14 @@ public class LeftHyphenmin extends AbstractHyphenationCode implements Theable {
             final Typesetter typesetter)
             throws InterpreterException {
 
-        HyphenationTable table = getHyphenationTable(context);
-        return new Tokens(context, String.valueOf(table.getLeftHyphenmin()));
+        Language table = getHyphenationTable(context);
+        try {
+            return new Tokens(context, String.valueOf(table.getLeftHyphenmin()));
+        } catch (HyphenationException e) {
+            if (e.getCause() instanceof ConfigurationException) {
+                throw new InterpreterException(e.getCause());
+            }
+            throw new InterpreterException(e);
+        }
     }
 }

@@ -19,8 +19,8 @@
 
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.language.LanguageManager;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
@@ -34,7 +34,7 @@ import de.dante.util.framework.AbstractFactory;
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -47,7 +47,7 @@ public class TypesettingContextFactory extends AbstractFactory {
     /**
      * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
-    private transient HyphenationManager hyphenationManager = null;
+    private transient LanguageManager hyphenationManager = null;
 
     /**
      * The field <tt>theClass</tt> contains the class to instantiate. It is
@@ -208,7 +208,7 @@ public class TypesettingContextFactory extends AbstractFactory {
 
         TypesettingContext c = newInstance();
         c.set(context);
-        c.setLanguage(hyphenationManager.useHyphenationTable(language));
+        c.setLanguage(hyphenationManager.getLanguage(language));
 
         return c;
     }
@@ -218,8 +218,8 @@ public class TypesettingContextFactory extends AbstractFactory {
      *
      * @param hyphenationManager the new hyphenation manager
      */
-    public void setHyphenationManager(
-            final HyphenationManager hyphenationManager) {
+    public void setLanguageManager(
+            final LanguageManager hyphenationManager) {
 
         this.hyphenationManager = hyphenationManager;
     }

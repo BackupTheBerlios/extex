@@ -32,7 +32,6 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -48,7 +47,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -235,19 +234,6 @@ public class NullTypesetterImpl implements Typesetter {
     public void setDocumentWriter(final DocumentWriter doc) {
 
         // nothing to do
-    }
-
-    /**
-     * Setter for the ligature builder.
-     * Since the ligature builder is not needed this is a noop.
-     *
-     * @param ligatureBuilder the new ligature builder
-     *
-     * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(
-     *      de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
-     */
-    public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
-
     }
 
     /**

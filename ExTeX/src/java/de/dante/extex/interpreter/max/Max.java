@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.hyphenation.HyphenationManagerFactory;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
@@ -45,6 +44,7 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.language.LanguageManagerFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.type.ActiveCharacterToken;
@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.65 $
+ * @version $Revision: 1.66 $
  */
 public class Max extends Moritz
         implements
@@ -101,10 +101,10 @@ public class Max extends Moritz
     private static final String CONTEXT_TAG = "Context";
 
     /**
-     * The field <tt>HYPHENATION_TAG</tt> contains the name of the tag for the
-     * configuration of the hyphenation manager.
+     * The field <tt>LANGUAGE_TAG</tt> contains the name of the tag for the
+     * configuration of the language manager.
      */
-    private static final String HYPHENATION_TAG = "Hyphenation";
+    private static final String LANGUAGE_TAG = "Language";
 
     /**
      * The constant <tt>MAX_ERRORS_DEFAULT</tt> contains the default value for
@@ -266,15 +266,15 @@ public class Max extends Moritz
     private void configureHyhenation(final Configuration configuration)
             throws ConfigurationException {
 
-        HyphenationManagerFactory factory = new HyphenationManagerFactory();
+        LanguageManagerFactory factory = new LanguageManagerFactory();
         factory.enableLogging(logger);
-        Configuration cfg = configuration.findConfiguration(HYPHENATION_TAG);
+        Configuration cfg = configuration.findConfiguration(LANGUAGE_TAG);
         if (cfg == null) {
-            throw new ConfigurationMissingException(HYPHENATION_TAG,
+            throw new ConfigurationMissingException(LANGUAGE_TAG,
                     configuration.toString());
         }
         factory.configure(cfg);
-        context.setHyphenationManager(factory.newInstance(""));
+        context.setLanguageManager(factory.newInstance(""));
     }
 
     /**

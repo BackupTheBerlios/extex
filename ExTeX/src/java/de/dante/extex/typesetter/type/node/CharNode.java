@@ -22,6 +22,7 @@ package de.dante.extex.typesetter.type.node;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
@@ -34,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -43,11 +44,6 @@ public class CharNode extends AbstractNode implements Node {
      * by this node.
      */
     private UnicodeChar character;
-
-    /**
-     * The field <tt>chars</tt> contains the ...
-     */
-    private UnicodeChar[] chars;
 
     /**
      * The field <tt>glyph</tt> contains the glyph from the font associated to
@@ -71,8 +67,8 @@ public class CharNode extends AbstractNode implements Node {
         super();
         typesettingContext = context;
         character = uc;
-        chars = new UnicodeChar[] {uc};
-        glyph = context.getFont().getGlyph(uc);
+        Font font = context.getFont();
+        glyph = font.getGlyph(uc);
 
         if (glyph != null) {
             setWidth(glyph.getWidth());
@@ -107,9 +103,9 @@ public class CharNode extends AbstractNode implements Node {
     /**
      * @see de.dante.extex.typesetter.type.Node#getChars()
      */
-    public UnicodeChar[] getChars() {
+    public CharNode[] getChars() {
 
-        return chars;
+        return new CharNode[]{this};
     }
 
     /**

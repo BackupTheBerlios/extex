@@ -20,8 +20,8 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.language.ligature.LigatureBuilder;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -37,13 +37,13 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public interface Typesetter extends ListMaker {
 
     /**
      * Clear the internal state about shipouts.
-     * The shipout mark is reset to <code>false</code>. 
+     * The shipout mark is reset to <code>false</code>.
      *
      * @see #isShipoutMark()
      */
@@ -111,13 +111,6 @@ public interface Typesetter extends ListMaker {
      * @param doc the new document writer
      */
     void setDocumentWriter(DocumentWriter doc);
-
-    /**
-     * Setter for the ligature builder.
-     *
-     * @param ligatureBuilder the ligature builder to set.
-     */
-    void setLigatureBuilder(LigatureBuilder ligatureBuilder);
 
     /**
      * Setter for the typesetter specific options.

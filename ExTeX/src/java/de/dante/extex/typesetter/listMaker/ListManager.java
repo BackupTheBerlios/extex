@@ -23,7 +23,6 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
-import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
 
@@ -32,7 +31,7 @@ import de.dante.extex.typesetter.type.node.CharNodeFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ListManager {
 
@@ -56,13 +55,6 @@ public interface ListManager {
      * @return the document writer
      */
     DocumentWriter getDocumentWriter();
-
-    /**
-     * Getter for the ligature builder.
-     *
-     * @return the current ligature builder
-     */
-    LigatureBuilder getLigatureBuilder();
 
     /**
      * Getter for the options object.

@@ -25,8 +25,8 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
  * A node is the basic data structure for the typesetter. It has a reference
@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Node extends Knot {
 
@@ -84,7 +84,7 @@ public interface Node extends Knot {
      *
      * @return the array of characters
      */
-    UnicodeChar[] getChars();
+    CharNode[] getChars();
 
     /**
      * Getter for the depth of the node.
