@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface ErrorHandler {
 
@@ -51,9 +51,9 @@ public interface ErrorHandler {
             Context context) throws GeneralException;
 
     /**
-     * ...
+     * Setter for the edit handler.
      *
-     * @param editHandler ...
+     * @param editHandler the new edit handler
      */
     void setEditHandler(EditHandler editHandler);
 }

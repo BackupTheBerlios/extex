@@ -27,10 +27,11 @@ import java.io.Serializable;
 
 /**
  * This class provides a type-save enumeration of the interactions styles of
- * ExTeX.
+ * ExTeX. It provides constants for the supported interaction modes.
+ * In addition it supports the visitor pattern to react on them.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -131,7 +132,6 @@ public abstract class Interaction implements Serializable {
 
     /**
      * This method provides an entry point for the visitor pattern.
-     * ...
      *
      * @param visitor this argument contains the visitor which has initiated
      * the request.
@@ -142,6 +142,8 @@ public abstract class Interaction implements Serializable {
      * @return a boolean indicator
      *
      * @throws GeneralException in case of an error
+     *
+     * @see InteractionVisitor
      */
     public abstract boolean visit(final InteractionVisitor visitor,
             final Object arg1, final Object arg2, final Object arg3)
@@ -151,7 +153,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private static class BatchMode extends Interaction {
 
@@ -186,7 +188,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -221,7 +223,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -256,7 +258,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.11 $
+     * @version $Revision: 1.12 $
      */
     private static class ErrorstopMode extends Interaction {
 

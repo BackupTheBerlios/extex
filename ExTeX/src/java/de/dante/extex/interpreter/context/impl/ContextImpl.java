@@ -116,7 +116,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public class ContextImpl
         implements
@@ -130,13 +130,6 @@ public class ContextImpl
             Serializable {
 
     /**
-     * ...
-     * @param tokens ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException ....
-     *
      * @see de.dante.extex.interpreter.context.Context#expand(
      *      de.dante.extex.interpreter.type.tokens.Tokens, Typesetter)
      */

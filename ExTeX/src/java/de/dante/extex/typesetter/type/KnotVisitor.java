@@ -22,15 +22,32 @@ import de.dante.extex.typesetter.Node;
 
 
 /**
- * ...
+ * This interface describes a visitor for knot nodes.
+ * With the help of this interface the visitor pattern can be implemented.
+ * <p>
+ * The user of the visitor pattern has to provide an implementation of
+ * this interface. Then the <tt>visit</tt> method is invoked and the caller
+ * is forwarded to the appropriate <tt>visit</tt> method in the visitor.
+ * </p>
+ * <p>
+ * Consider we have a Node <tt>node</tt> at hand and a method invokes
+ * <pre>
+ *   node.visit(visitor, a);
+ * </pre>
+ * then the following method in the object <tt>visitor</tt> is invoked:
+ * <pre>
+ *   visitNode(visitor, a)
+ * </pre>
+ * </p>
+ *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface KnotVisitor {
 
     /**
-     * ...
+     * Invoke the method in case of a node type.
      *
      * @param node the visited Node
      * @param arg the argument

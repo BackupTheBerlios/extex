@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
@@ -80,10 +80,10 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
     }
 
     /**
-     * ...
+     * Adjust the width of the flexible node.
      *
-     * @param width ...
-     * @param sum ...
+     * @param width the desired with
+     * @param sum the total sum of the glues
      *
      * @see de.dante.extex.typesetter.Node#spread(FixedDimen, FixedGlueComponent)
      */

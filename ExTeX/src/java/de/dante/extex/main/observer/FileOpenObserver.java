@@ -24,10 +24,12 @@ import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 
 /**
- * ...
+ * This observer reports that a certain file has been opened.
+ * According to the behaviour of TeX it loggs an open brace and the name of
+ * the file.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FileOpenObserver implements Observer {
 
@@ -50,9 +52,9 @@ public class FileOpenObserver implements Observer {
      * @see de.dante.util.observer.Observer#update(
      *      de.dante.util.observer.Observable, java.lang.Object)
      */
-    public void update(final Observable observable, final Object item) {
+    public void update(final Observable observable, final Object file) {
 
-        logger.info("(" + item.toString());
+        logger.info("(" + file.toString());
     }
 
 }

@@ -23,9 +23,26 @@ import de.dante.util.GeneralException;
 
 /**
  * This interface describes a visitor for interaction modes.
+ * With the help of this interface the visitor pattern can be implemented.
+ * <p>
+ * The user of the visitor pattern has to provide an implementation of
+ * this interface. Then the <tt>visit</tt> method is invoked and the caller
+ * is forwarded to the appropriate <tt>visit</tt> method in the visitor.
+ * </p>
+ * <p>
+ * Consider we have a mode constant at hand which is in fact a batchmode and
+ * we invokes
+ * <pre>
+ *   boolean boo = mode.visit(visitor, a, b, c);
+ * </pre>
+ * then the following method in the object <tt>visitor</tt> is invoked:
+ * <pre>
+ *   visitBatchmode(visitor, a, b, c)
+ * </pre>
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface InteractionVisitor {
 

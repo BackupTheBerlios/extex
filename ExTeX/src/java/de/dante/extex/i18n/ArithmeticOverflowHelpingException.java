@@ -22,10 +22,14 @@ package de.dante.extex.i18n;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This exception is raised when an arithmetic overflow has been encoutered.
+ * <p>
+ * The localization format is taken from the resource bundle of the parent
+ * class under the key <tt>TTP.ArithmeticOverflow</tt>.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ArithmeticOverflowHelpingException extends HelpingException {
 

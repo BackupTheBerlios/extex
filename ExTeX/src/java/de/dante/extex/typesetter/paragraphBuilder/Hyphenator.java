@@ -22,15 +22,16 @@ import de.dante.extex.typesetter.NodeList;
 
 
 /**
- * ...
+ * This interface describes the possibility to add hyphenation information to
+ * a list of nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Hyphenator {
 
     /**
-     * ...
+     * Add hyphenation information to a list of nodes.
      *
      * @param nodes the nodes to hyphenate
      *

@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -55,7 +55,8 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
     private static final int DEFAULT_SPACEFACTOR = 1000;
 
     /**
-     * The field <tt>SPACEFACTOR_THRESHOLD</tt> contains the ...
+     * The constant <tt>SPACEFACTOR_THRESHOLD</tt> contains the threshhold for
+     * the spacefactor above which the space is handled different.
      */
     private static final int SPACEFACTOR_THRESHOLD = 2000;
 
