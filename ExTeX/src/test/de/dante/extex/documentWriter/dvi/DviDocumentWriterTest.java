@@ -20,17 +20,21 @@
 // created: 2004-09-31
 package de.dante.extex.documentWriter.dvi;
 
-
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.count.FixedCount;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.InsertionNode;
+import de.dante.extex.interpreter.type.node.KernNode;
 import de.dante.extex.interpreter.type.node.MarkNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
+import de.dante.extex.interpreter.type.node.WhatsItNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
@@ -44,7 +48,7 @@ import junit.framework.TestCase;
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
@@ -174,6 +178,22 @@ public class DviDocumentWriterTest extends TestCase {
         checkException(new InsertionNode(), PanicException.class);
     }
 
+
+    /**
+     * Test valid nodes.
+     *
+     * @exception Exception if an error occurs
+     */
+    public void testValidNodes() throws Exception {
+        // TODO: nodeList.add(new CharNode()); (TE)
+        nodeList.add(new KernNode(new Dimen(12346)));
+        nodeList.add(new GlueNode(new Glue(1234)));
+        // TODO: nodeList.add(new LigatureNode()); (TE)
+        // TODO: nodeList.add(new SpecialNode("Test")); (TE)
+        //nodeList.add(new WhatsItNode("Test"));
+
+        documentWriter.shipout(nodeList);
+    }
 
 
     /**
