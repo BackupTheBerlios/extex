@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Mag extends AbstractCount
         implements
@@ -158,7 +158,7 @@ public class Mag extends AbstractCount
         long value = Count.scanCount(context, source, null);
 
         if (value == 0) {
-            throw new HelpingException("TTP.ArithOverflow");
+            throw new HelpingException(getLocalizer(), "TTP.ArithOverflow");
         }
 
         value = context.getMagnification() / value;

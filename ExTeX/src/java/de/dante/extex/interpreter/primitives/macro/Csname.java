@@ -19,7 +19,6 @@
 
 package de.dante.extex.interpreter.primitives.macro;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -28,9 +27,9 @@ import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
 import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -59,10 +58,12 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class Csname extends AbstractCode implements ExpandableCode,
-        CsConvertible {
+public class Csname extends AbstractCode
+        implements
+            ExpandableCode,
+            CsConvertible {
 
     /**
      * Creates a new object.
@@ -114,23 +115,13 @@ public class Csname extends AbstractCode implements ExpandableCode,
     public Token convertCs(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Token t = source.getToken();
+        Token t = source.getControlSequence();
 
-        if (t == null) {
-
-            throw new HelpingException("TTP.MissingCtrlSeq");
-        } else if (t instanceof CodeToken) {
-
-            if (t.getValue().equals("csname")) {
-                Tokens toks = scanToEndCsname(context, source);
-                t = context.getTokenFactory()
-                        .createToken(Catcode.ESCAPE, toks.toString(),
-                                     context.getNamespace());
-            }
-
-        } else if (!(t instanceof ActiveCharacterToken)) {
-
-            throw new HelpingException("TTP.MissingCtrlSeq");
+        if ((t instanceof ControlSequenceToken)
+                && t.getValue().equals("csname")) {
+            Tokens toks = scanToEndCsname(context, source);
+            t = context.getTokenFactory().createToken(Catcode.ESCAPE,
+                    toks.toString(), context.getNamespace());
         }
 
         return t;

@@ -622,7 +622,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.71 $
+ * @version $Revision: 1.72 $
  */
 public class ExTeX {
 
@@ -975,7 +975,7 @@ public class ExTeX {
         propertyDefault(PROP_LANG, "");
         propertyDefault(PROP_OUTPUT_TYPE, "");
         propertyDefault(PROP_OUTPUTDIR, ".");
-        propertyDefault(PROP_POOL, "config.de.dante.extex.message");
+        propertyDefault(PROP_POOL, Messages.class.getName());
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
         propertyDefault(PROP_TOKEN_STREAM, "base");
@@ -1226,11 +1226,11 @@ public class ExTeX {
             InputStream stream = finder.findResource(fmt, "fmt");
 
             if (stream == null && !fmt.equals("tex")) {
-                logger.info(localizer.format("xxxxxx", fmt)); //TODO
+                logger.info(localizer.format("xxxxxx", fmt)); //TODO i18n
                 stream = finder.findResource("tex", "fmt");
             }
             if (stream == null) {
-                throw new PanicException("file not found"); //TODO
+                throw new PanicException("file not found"); //TODO i18n
             }
             try {
                 interpreter.loadFormat(stream);

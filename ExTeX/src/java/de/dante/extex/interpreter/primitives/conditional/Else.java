@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * This primitive is <emph>not</emph> expandable!
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Else extends AbstractCode {
 
@@ -89,7 +89,7 @@ public class Else extends AbstractCode {
         Conditional cond = context.popConditional();
 
         if (cond == null || AbstractIf.skipToElseOrFi(context, source)) {
-            throw new HelpingException("TTP.ExtraOrElseFi",
+            throw new HelpingException(getLocalizer(), "TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
 

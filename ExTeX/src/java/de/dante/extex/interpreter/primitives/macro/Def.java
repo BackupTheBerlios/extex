@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class Def extends AbstractAssignment {
 
@@ -128,8 +128,8 @@ public class Def extends AbstractAssignment {
      *
      * @throws GeneralException in case of an error
      */
-    protected MacroPattern getPattern(final Context context, final TokenSource source)
-            throws GeneralException {
+    protected MacroPattern getPattern(final Context context,
+            final TokenSource source) throws GeneralException {
 
         MacroPattern pattern = new MacroPattern();
         int no = 1;
@@ -145,12 +145,14 @@ public class Def extends AbstractAssignment {
             if (afterHash) {
                 if (t instanceof OtherToken) {
                     if (t.getValue().charAt(0) != '0' + no) {
-                        throw new HelpingException("TTP.NonConseqParams",
+                        throw new HelpingException(getLocalizer(),
+                                "TTP.NonConseqParams",
                                 printableControlSequence(context));
                     }
                     no++;
                 } else if (!(t instanceof MacroParamToken)) {
-                    throw new HelpingException("TTP.NonConseqParams",
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.NonConseqParams",
                             printableControlSequence(context));
                 }
                 afterHash = false;
@@ -160,7 +162,7 @@ public class Def extends AbstractAssignment {
             pattern.add(t);
         }
 
-        throw new HelpingException("TTP.EOFinDef",
+        throw new HelpingException(getLocalizer(), "TTP.EOFinDef",
                 printableControlSequence(context));
     }
 

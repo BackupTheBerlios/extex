@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.arithmetic;
 
 import de.dante.extex.i18n.HelpingException;
@@ -77,7 +78,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Advance extends AbstractAssignment {
 
@@ -87,6 +88,7 @@ public class Advance extends AbstractAssignment {
      * @param name the name for debugging
      */
     public Advance(final String name) {
+
         super(name);
     }
 
@@ -104,19 +106,19 @@ public class Advance extends AbstractAssignment {
         Token cs = source.getToken();
 
         if (!(cs instanceof CodeToken)) {
-            throw new HelpingException("TTP.CantUseAfter",
+            throw new HelpingException(getLocalizer(), "TTP.CantUseAfter", //
                     cs.toString(), printableControlSequence(context));
         }
 
         Code code = context.getCode((CodeToken) cs);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", cs
-                    .toString());
+            throw new HelpingException(getLocalizer(), "TTP.UndefinedToken", //
+                    cs.toString());
         } else if (code instanceof Advanceable) {
             ((Advanceable) code).advance(prefix, context, source);
         } else {
-            throw new HelpingException("TTP.CantUseAfter",
+            throw new HelpingException(getLocalizer(), "TTP.CantUseAfter", //
                     cs.toString(), printableControlSequence(context));
         }
     }

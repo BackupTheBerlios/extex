@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -43,7 +44,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -104,7 +105,7 @@ public class Ifcase extends AbstractIf {
                 return true;
 
             } else {
-                throw new RuntimeException("this can't happen");
+                throw new PanicException("this can't happen");
 
             }
         }
@@ -186,7 +187,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     protected static final class Tag {
 

@@ -42,6 +42,13 @@ import de.dante.util.GeneralException;
  * <doc name="dump">
  * <h3>The Primitive <tt>\dump</tt></h3>
  * <p>
+ * The primitive writes out the current state of the interpreter to an
+ * format file. This format file can be read back in to restore the saved state.
+ * </p>
+ * <p>
+ * The primitive can be used outside of any group only.
+ * </p>
+ * <p>
  *  ...
  * </p>
  * <p>
@@ -63,7 +70,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Dump extends AbstractCode {
 

@@ -70,7 +70,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public abstract class Moritz
         implements
@@ -85,12 +85,12 @@ public abstract class Moritz
      */
     private static final long MAX_CHAR_CODE = Long.MAX_VALUE;
 
+    //TODO: find a good value
+
     /**
      * The field <tt>localizer</tt> contains the localizer to use.
      */
     private transient Localizer localizer = null;
-
-    //TODO: find a good value
 
     /**
      * The field <tt>observersCloseStream</tt> contains the observer list is
@@ -288,25 +288,18 @@ public abstract class Moritz
         Token t = getToken();
         Context context = getContext();
 
-        if (t == null) {
-            push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    "inaccessible ", context.getNamespace()));
-
-            throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
-        } else if (t instanceof CodeToken) {
+        if (t instanceof CodeToken) {
             Code code = context.getCode((CodeToken) t);
             if (code != null && code instanceof CsConvertible) {
                 t = ((CsConvertible) code).convertCs(context, this);
             }
+            return (CodeToken) t;
 
-        } else {
-            push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    "inaccessible ", context.getNamespace()));
-            push(t);
-            throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
         }
-
-        return (CodeToken) t;
+        push(context.getTokenFactory().createToken(Catcode.ESCAPE,
+                "inaccessible ", context.getNamespace()));
+        push(t);
+        throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
     }
 
     /**

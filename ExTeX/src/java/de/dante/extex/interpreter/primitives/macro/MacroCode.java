@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -116,8 +116,8 @@ public class MacroCode extends AbstractCode
             throws GeneralException {
 
         Tokens[] args = matchPattern(context, source);
-        int len = body.length();
         Tokens toks = new Tokens();
+        int len = body.length();
         int no = 1;
 
         for (int i = 0; i < len; i++) {
@@ -126,8 +126,8 @@ public class MacroCode extends AbstractCode
             if (t instanceof MacroParamToken) {
                 t = body.get(++i);
                 if (t == null) {
-                    throw new HelpingException("TTP.EOFinMatch",
-                            printableControlSequence(context));
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.EOFinMatch", printableControlSequence(context));
                 } else if (t instanceof MacroParamToken) {
                     toks.add(t);
                 } else if (t instanceof OtherToken && t.getChar().isDigit()) {
@@ -178,13 +178,13 @@ public class MacroCode extends AbstractCode
         Token t = source.getToken();
 
         if (t == null) {
-            throw new HelpingException("TTP.EOFinMatch",
+            throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                     printableControlSequence(context));
         } else if (t instanceof LeftBraceToken) {
             source.push(t);
             Tokens toks = source.getTokens();
             if (toks == null) {
-                throw new HelpingException("TTP.EOFinMatch",
+                throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                         printableControlSequence(context));
             }
             return toks;
@@ -229,7 +229,7 @@ public class MacroCode extends AbstractCode
             throws GeneralException {
 
         if (i + 1 >= len) {
-            throw new HelpingException("TTP.UseDoesntMatch",
+            throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
                     printableControlSequence(context));
         }
         int pi = i + 1;
@@ -237,8 +237,8 @@ public class MacroCode extends AbstractCode
         if (ti instanceof MacroParamToken) {
             Token t = source.getToken();
             if (!ti.equals(t)) {
-                throw new HelpingException("TTP.UseDoesntMatch",
-                        printableControlSequence(context));
+                throw new HelpingException(getLocalizer(),
+                        "TTP.UseDoesntMatch", printableControlSequence(context));
             }
             return pi;
         } else if (ti instanceof OtherToken && ti.getChar().isDigit()) {
@@ -256,7 +256,7 @@ public class MacroCode extends AbstractCode
             return pi - 1;
         }
 
-        throw new HelpingException("TTP.UseDoesntMatch",
+        throw new HelpingException(getLocalizer(), "TTP.UseDoesntMatch",
                 printableControlSequence(context));
     }
 
@@ -288,12 +288,13 @@ public class MacroCode extends AbstractCode
             if (ti instanceof MacroParamToken) {
                 pi = matchParameter(context, source, args, len, pi);
             } else if (notLong && ti.equals(Catcode.ESCAPE, "par")) {
-                throw new HelpingException("TTP.RunawayArg",
+                throw new HelpingException(getLocalizer(), "TTP.RunawayArg",
                         printableControlSequence(context));
             } else {
                 t = source.getToken();
                 if (!t.equals(ti)) {
-                    throw new HelpingException("TTP.UseDoesntMatch",
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.UseDoesntMatch",
                             printableControlSequence(context));
                 }
             }
@@ -325,7 +326,7 @@ public class MacroCode extends AbstractCode
             toks.add(t);
         }
 
-        throw new HelpingException("TTP.EOFinMatch",
+        throw new HelpingException(getLocalizer(), "TTP.EOFinMatch",
                 printableControlSequence(context));
     }
 

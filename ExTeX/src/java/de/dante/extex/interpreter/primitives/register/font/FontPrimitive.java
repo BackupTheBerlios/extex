@@ -57,7 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -116,7 +116,8 @@ public class FontPrimitive extends AbstractAssignment
 
         // fontsize < 0
         if (fontsize.lt(Dimen.ZERO_PT)) {
-            throw new HelpingException("FONT.nofontsize");
+            throw new HelpingException(getLocalizer(), "TTP.ImproperAt",
+                    fontsize.toString());
         }
 
         Glue letterspaced = new Glue(0);
@@ -143,7 +144,8 @@ public class FontPrimitive extends AbstractAssignment
         FontFactory ff = context.getFontFactory();
         Font font;
         try {
-            font = ff.getInstance(fontname, fontsize, letterspaced, ligatures, kerning);
+            font = ff.getInstance(fontname, fontsize, letterspaced, ligatures,
+                    kerning);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
@@ -204,7 +206,7 @@ public class FontPrimitive extends AbstractAssignment
         Token t = source.scanNonSpace();
 
         if (t == null) {
-            throw new HelpingException("TTP.EOFinDef", "font");
+            throw new HelpingException(getLocalizer(), "TTP.EOFinDef", "font");
         }
 
         StringBuffer sb = new StringBuffer(t.getValue());

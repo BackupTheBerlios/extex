@@ -121,7 +121,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -150,7 +150,7 @@ public class JavaDef extends AbstractCode {
         Tokens name = source.getTokens();
         String classname = name.toText();
         if ("".equals(classname)) {
-            throw new HelpingException("JavaDef.ClassNotFound",
+            throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
                     classname);
         }
         Code code;
@@ -172,7 +172,7 @@ public class JavaDef extends AbstractCode {
         } catch (NoSuchMethodException e) {
             throw new GeneralException(e);
         } catch (ClassNotFoundException e) {
-            throw new HelpingException("JavaDef.ClassNotFound",
+            throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
                     classname);
         }
         context.setCode(cs, code, prefix.isGlobal());

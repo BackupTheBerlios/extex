@@ -54,7 +54,7 @@ import de.dante.util.GeneralException;
  * @see "TTP [1134]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Endcsname extends AbstractCode {
 
@@ -79,7 +79,7 @@ public class Endcsname extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        throw new HelpingException("TTP.ExtraEndcsname",
+        throw new HelpingException(getLocalizer(), "TTP.ExtraEndcsname",
                 printableControlSequence(context));
     }
 

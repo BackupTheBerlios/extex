@@ -42,7 +42,7 @@ import java.util.ResourceBundle;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public final class Messages {
     //TODO: This class is a mess. Integrate the localized messages into the components.
@@ -51,7 +51,7 @@ public final class Messages {
      * The constant <tt>BUNDLE_NAME</tt> contains the name of the resource
      * bundle to use.
      */
-    private static final String BUNDLE_NAME = "config.de.dante.extex.message";
+    private static final String BUNDLE_NAME = Messages.class.getName();
 
     /**
      * The constant <tt>bundle</tt> contains the resource bundle for further
@@ -72,7 +72,9 @@ public final class Messages {
      *
      * @param key the key in the resource bundle to search for
      *
-     * @return the resource string or <code>null</code>
+     * @return the resource string or <code>null</code>this.
+     *
+     * @deprecated use the localizer instead
      */
     public static String getFormat(final String key) {
 
@@ -89,6 +91,8 @@ public final class Messages {
      * @param key the key in the resource bundle to search for
      * @return the resource string or the String
      * <tt>???</tt><i>key</i><tt>???</tt> if none is found
+     *
+     * @deprecated use the localizer instead
      */
     public static String format(final String key) {
 
@@ -108,6 +112,8 @@ public final class Messages {
      * @param a the Object used for the substring <tt>{0}</tt>
      *
      * @return the expanded format string
+     *
+     * @deprecated use the localizer instead
      */
     public static String format(final String fmt, final Object a) {
 
@@ -125,6 +131,8 @@ public final class Messages {
      * @param b the Object used for the substring <tt>{1}</tt>
      *
      * @return the expanded format string
+     *
+     * @deprecated use the localizer instead
      */
     public static String format(final String fmt, final Object a,
             final Object b) {
@@ -144,6 +152,8 @@ public final class Messages {
      * @param c the Object used for the substring <tt>{2}</tt>
      *
      * @return the expanded format string
+     *
+     * @deprecated use the localizer instead
      */
     public static String format(final String fmt, final Object a,
             final Object b, final Object c) {
@@ -164,6 +174,8 @@ public final class Messages {
      * @param d the Object used for the substring <tt>{3}</tt>
      *
      * @return the expanded format string
+     *
+     * @deprecated use the localizer instead
      */
     public static String format(final String fmt, final Object a,
             final Object b, final Object c, final Object d) {
@@ -178,6 +190,8 @@ public final class Messages {
      * again. Otherwise the change in the language might confuse the user.
      *
      * @param bundleName the name of the resource bundle to use
+     *
+     * @deprecated use the localizer instead
      */
     public static void configure(final String bundleName) {
 
@@ -190,6 +204,8 @@ public final class Messages {
      *
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for
+     *
+     * @deprecated use the localizer instead
      */
     public static void message(final PrintStream writer, final String fmt) {
 
@@ -205,6 +221,8 @@ public final class Messages {
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
+     *
+     * @deprecated use the localizer instead
      */
     public static void message(final PrintStream writer, final String fmt,
             final Object a) {
@@ -222,6 +240,8 @@ public final class Messages {
      * @param fmt the key in the resource bundle to search for
      * @param a the Object used for the substring <tt>{0}</tt>
      * @param b the Object used for the substring <tt>{1}</tt>
+     *
+     * @deprecated use the localizer instead
      */
     public static void message(final PrintStream writer, final String fmt,
             final Object a, final Object b) {
@@ -240,6 +260,8 @@ public final class Messages {
      * @param a the Object used for the substring <tt>{0}</tt>
      * @param b the Object used for the substring <tt>{1}</tt>
      * @param c the Object used for the substring <tt>{2}</tt>
+     *
+     * @deprecated use the localizer instead
      */
     public static void message(final PrintStream writer, final String fmt,
         final Object a, final Object b, final Object c) {

@@ -26,7 +26,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class PanicException extends GeneralException {
 
@@ -68,7 +68,7 @@ public class PanicException extends GeneralException {
     public PanicException(final String messageTag) {
 
         super(PANIC_ERROR_CODE);
-        tag = messageTag;
+        this.tag = messageTag;
     }
 
     /**
@@ -77,11 +77,13 @@ public class PanicException extends GeneralException {
      * @param messageTag the name of the message in the file <i>
      *            messages.properties</i>
      * @param a1 the first parameter
+     *
+     * @deprecated missing localizer
      */
     public PanicException(final String messageTag, final String a1) {
 
         super(PANIC_ERROR_CODE);
-        tag = messageTag;
+        this.tag = messageTag;
         this.arg1 = a1;
     }
 
@@ -92,12 +94,14 @@ public class PanicException extends GeneralException {
      *            messages.properties</i>
      * @param a1 the first parameter
      * @param a2 the second parameter
+     *
+     * @deprecated missing localizer
      */
     public PanicException(final String messageTag, final String a1,
             final String a2) {
 
         super(PANIC_ERROR_CODE);
-        tag = messageTag;
+        this.tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
     }
@@ -110,12 +114,85 @@ public class PanicException extends GeneralException {
      * @param a1 the first parameter
      * @param a2 the second parameter
      * @param a3 the third parameter
+     *
+     * @deprecated missing localizer
      */
     public PanicException(final String messageTag, final String a1,
             final String a2, final String a3) {
 
         super(PANIC_ERROR_CODE);
-        tag = messageTag;
+        this.tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.arg3 = a3;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param localizer the localizer to use
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     */
+    public PanicException(final Localizer localizer, final String messageTag) {
+
+        super(PANIC_ERROR_CODE);
+        this.localizer = localizer;
+        this.tag = messageTag;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param localizer the localizer to use
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     */
+    public PanicException(final Localizer localizer, final String messageTag,
+            final String a1) {
+
+        super(PANIC_ERROR_CODE);
+        this.localizer = localizer;
+        this.tag = messageTag;
+        this.arg1 = a1;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param localizer the localizer to use
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     * @param a2 the second parameter
+     */
+    public PanicException(final Localizer localizer, final String messageTag,
+            final String a1, final String a2) {
+
+        super(PANIC_ERROR_CODE);
+        this.localizer = localizer;
+        this.tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param localizer the localizer to use
+     * @param messageTag the name of the message in the file <i>
+     *            messages.properties</i>
+     * @param a1 the first parameter
+     * @param a2 the second parameter
+     * @param a3 the third parameter
+     */
+    public PanicException(final Localizer localizer, final String messageTag,
+            final String a1, final String a2, final String a3) {
+
+        super(PANIC_ERROR_CODE);
+        this.localizer = localizer;
+        this.tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
@@ -137,5 +214,15 @@ public class PanicException extends GeneralException {
     public String getLocalizedMessage() {
 
         return getLocalizer().format(tag, arg1, arg2, arg3);
+    }
+
+    /**
+     * Getter for localizer.
+     *
+     * @return the localizer.
+     */
+    protected Localizer getLocalizer() {
+
+        return (this.localizer != null ? this.localizer : super.getLocalizer());
     }
 }
