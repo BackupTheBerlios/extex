@@ -26,9 +26,9 @@ import de.dante.util.Observer;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MessageObserver implements Observer {
+public class TraceObserver implements Observer {
     /** The logger for output */
     private Logger logger;
 
@@ -37,7 +37,7 @@ public class MessageObserver implements Observer {
      *
      * @param logger the logger for potential output
      */
-    public MessageObserver(final Logger logger) {
+    public TraceObserver(final Logger logger) {
         super();
         this.logger = logger;
     }
@@ -46,7 +46,7 @@ public class MessageObserver implements Observer {
      * @see de.dante.util.Observer#update(de.dante.util.Observable, java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
-        logger.info("> "+item.toString()+".\n");
+        logger.fine("> "+item.toString()+".\n");
     }
 
 }
