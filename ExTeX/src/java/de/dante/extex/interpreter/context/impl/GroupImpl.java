@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import de.dante.extex.interpreter.Interaction;
+import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
@@ -50,20 +51,35 @@ import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
 
 /**
- * This is a simple implementation for a group. The whole stack of group is
- * implemented as a linked list. The list itself is mixed with the pure
+ * This is a simple implementation for a group. The whole stack of groups is
+ * implemented as a linked list. The list itself is mixed within the pure
  * elements of the linked list.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
-     * The field <tt>DELCODE_DEFAULT</tt> contains the default delcode.
+     * The constant <tt>DELCODE_DEFAULT</tt> contains the default delcode.
      */
     private static final Count DELCODE_DEFAULT = new ImmutableCount(-1);
+
+    /**
+     * The constant <tt>INVALID_CHAR_CODE</tt> contains the ...
+     */
+    private static final int INVALID_CHAR_CODE = 127;
+
+    /**
+     * The constant <tt>MATHCODE_DIGIT_OFFSET</tt> contains the ...
+     */
+    private static final int MATHCODE_DIGIT_OFFSET = 0x7000;
+
+    /**
+     * The constant <tt>MATHCODE_LETTER_OFFSET</tt> contains the ...
+     */
+    private static final int MATHCODE_LETTER_OFFSET = 0x7100;
 
     /**
      * The field <tt>SFCODE_DEFAULT</tt> contains the default sfcode for
@@ -163,6 +179,11 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      * The field <tt>muskipMap</tt> contains the map for the muskip registers.
      */
     private Map muskipMap = new HashMap();
+
+    /**
+     * The field <tt>namespace</tt> contains the current namespace.
+     */
+    private String namespace = null;
 
     /**
      * The field <tt>next</tt> contains the next group in the linked list.
@@ -294,7 +315,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
                 return Catcode.COMMENT;
             case 0:
                 return Catcode.IGNORE;
-            case 127:
+            case INVALID_CHAR_CODE:
                 return Catcode.INVALID;
             default:
                 return Catcode.OTHER;
@@ -303,24 +324,34 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#getCode(
-     *      de.dante.extex.scanner.Token)
+     *      CodeToken)
      */
-    public Code getCode(final Token token) {
+    public Code getCode(final CodeToken token) {
 
-        Code code = (Code) (codeMap.get(token));
-        if (code != null) {
-            return code;
-        }
-        if (next != null) {
-            return next.getCode(token);
-        }
-        if (SUPPORT_NAMESPACES && token instanceof CodeToken) {
-            Token t = ((CodeToken) token).cloneInDefaultNamespace();
+        Code code = getCodeForToken(token);
+
+        if (SUPPORT_NAMESPACES && code == null && token instanceof CodeToken) {
+            CodeToken t = (CodeToken) token.cloneInDefaultNamespace();
             if (t != token) {
-                return getCode(t);
+                code = getCodeForToken(t);
             }
         }
-        return null;
+        return code;
+    }
+
+    /**
+     * Recurse down the group stack and search for the definition of a token.
+     *
+     * @param token the token to look-up the definmition for
+     *
+     * @return the code assigned to the token or <code>null</code> if none is
+     *  found.
+     */
+    protected Code getCodeForToken(final CodeToken token) {
+
+        Code code = (Code) (codeMap.get(token));
+        return (code == null && next != null ? ((GroupImpl) next)
+                .getCodeForToken(token) : code);
     }
 
     /**
@@ -469,9 +500,9 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
             if (next != null) {
                 return next.getMathcode(c);
             } else if (c.isDigit()) {
-                return new Count(c.getCodePoint() + 0x7000);
+                return new Count(c.getCodePoint() + MATHCODE_DIGIT_OFFSET);
             } else if (c.isLetter()) {
-                return new Count(c.getCodePoint() + 0x7100);
+                return new Count(c.getCodePoint() + MATHCODE_LETTER_OFFSET);
             } else {
                 return new Count(c.getCodePoint());
             }
@@ -490,6 +521,25 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         return muskip != null ? muskip : next != null
                 ? next.getMuskip(name)
                 : new Muskip();
+    }
+
+    /**
+     * Getter for the namespace.
+     *
+     * @return the namespace
+     *
+     * @see de.dante.extex.interpreter.context.impl.Group#getNamespace()
+     */
+    public String getNamespace() {
+
+        if (namespace == null) {
+            if (next == null) {
+                namespace = Namespace.DEFAULT_NAMESPACE;
+            } else {
+                namespace = next.getNamespace();
+            }
+        }
+        return this.namespace;
     }
 
     /**
@@ -787,6 +837,22 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
         if (global && next != null) {
             next.setMuskip(name, value, global);
+        }
+    }
+
+    /**
+     * Setter for the namespace.
+     *
+     * @param theNamespace the new value for the namespace
+     * @param global the scoping of the assignment
+     *
+     * @see de.dante.extex.interpreter.context.impl.Group#setNamespace(java.lang.String, boolean)
+     */
+    public void setNamespace(final String theNamespace, final boolean global) {
+
+        this.namespace = theNamespace;
+        if (global && next != null) {
+            next.setNamespace(theNamespace, global);
         }
     }
 

@@ -34,6 +34,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.typesetter.Typesetter;
@@ -52,7 +53,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -91,6 +92,15 @@ public interface Group extends Tokenizer, Serializable {
     Box getBox(String name);
 
     /**
+     * Getter for the catcode of a character.
+     *
+     * @param c the Unicode character to analyze
+     *
+     * @return the catcode of a character
+     */
+    Catcode getCatcode(UnicodeChar c);
+
+    /**
      * Getter for the definition of an active character or macro.
      *
      * @param token the name of the active character or macro
@@ -98,7 +108,8 @@ public interface Group extends Tokenizer, Serializable {
      * @return the code associated to the name or <code>null</code> if none
      *         is defined yet
      */
-    Code getCode(Token token);
+    //TODO change the signature to use CodeToken instead of Token
+    Code getCode(CodeToken token);
 
     /**
      * Getter for the named count register in the current group. The name can
@@ -210,6 +221,13 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the count register or its default
      */
     Muskip getMuskip(String name);
+
+    /**
+     * Getter for the current namespace.
+     *
+     * @return the current namespace
+     */
+    String getNamespace();
 
     /**
      * Getter for the next group in the linked list. Maybe this method should
@@ -431,6 +449,13 @@ public interface Group extends Tokenizer, Serializable {
      *            groups; otherwise the current group is affected only
      */
     void setMuskip(String name, Muskip value, boolean global);
+
+    /**
+     * Setter for the namespace.
+     * @param namespace the new namespace
+     * @param global TODO
+     */
+    void setNamespace(String namespace, boolean global);
 
     /**
      * Setter for the output file for a given name.
