@@ -34,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -42,7 +42,7 @@ public class TokenStreamBaseImpl implements TokenStream {
      * The field <tt>fileStream</tt> contains the indicator whether or not this
      * TokenStream is attached to a file.
      */
-    private boolean fileStream = false;
+    private boolean fileStream;
 
     /**
      * The field <tt>skipSpaces</tt> contains the indicator that spaces should
