@@ -23,12 +23,12 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 
 
 /**
- * This interface describes the possibilities of the DocuemntWriter to access
- * its options. These options are dynaically linked to the Context of the
+ * This interface describes the possibilities of the DocumentWriter to access
+ * its options. These options are dynamically linked to the Context of the
  * processor. Only read access is provided.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface DocumentWriterOptions {
 
