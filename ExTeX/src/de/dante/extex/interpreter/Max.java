@@ -53,11 +53,12 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
 
+    private static final String CLASS_ATTRIBUTE = "class";
     /**
      * The constant <tt>MAX_ERRORS_DEFAULT</tt> ...
      */
@@ -100,6 +101,12 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      */
     private ObserverList observersExpand = new ObserverList();
 
+    /**
+     * This observer list is used for the observers which are registered to
+     * receive a notification when ...
+     */
+    private ObserverList observersMacro = new ObserverList();
+    
     /**
      * This is the typesetter for handling "left-over" material.
      */
@@ -212,7 +219,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
     /**
      * This method can be used to register observers for certain events.
-     *
+     * 
      * The following events are currently supported: <table>
      * <tr>
      * <th>Name</th>
@@ -239,13 +246,15 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * <td>inherited from the super class</td>
      * </tr>
      * </table>
-     *
+     * 
      * @see de.dante.util.Observable#registerObserver(java.lang.String,
      *      de.dante.util.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
-            throws NotObservableException {
+        throws NotObservableException {
         if ("expand".equals(name)) {
+            observersExpand.add(observer);
+        } else if ("macro".equals(name)) {
             observersExpand.add(observer);
         } else if ("error".equals(name)) {
             observersError.add(observer);
@@ -363,6 +372,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     public Object visitEscape(final Object oToken, final Object ignore)
             throws GeneralException {
         Token token = (Token) oToken;
+        observersMacro.update(this, token);
         return execute(token, context.getMacro(token.getValue()));
     }
 
@@ -549,10 +559,10 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
                 throw new ConfigurationMissingAttributeException("name",cfg);
             }
 
-            String classname = cfg.getAttribute("class");
+            String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
 
             if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException("class",cfg);
+                throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,cfg);
             }
 
             try {
@@ -622,15 +632,18 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
 
         for (Token t = token; t == null; t = getToken()) {
             if (token instanceof ControlSequenceToken) {
+                observersMacro.update(this, token);
                 code = context.getMacro(token.getValue());
             } else if (token instanceof ActiveCharacterToken) {
-                code = context.getMacro(token.getValue());
+                code = context.getActive(token.getValue());
             } else {
                 return token;
             }
-            if (!code.expand(prefix, context, this, typesetter)) {
-                return token;
+            if (code instanceof ExpandableCode) {
+                ((ExpandableCode) code).expand(prefix, context, this,
+                                               typesetter);
             }
+            return token;
         }
         return token;
     }
