@@ -36,10 +36,9 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DumpTypesetter implements Typesetter {
-
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
      * nodes.
@@ -145,6 +144,15 @@ public class DumpTypesetter implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#removeLastNode()
+     */
+    public void removeLastNode() {
+
+        // TODO Auto-generated method stub
+
     }
 
     /**

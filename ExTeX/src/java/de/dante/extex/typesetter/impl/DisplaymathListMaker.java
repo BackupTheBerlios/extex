@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class DisplaymathListMaker extends AbstractListMaker
         implements
@@ -127,6 +127,14 @@ public class DisplaymathListMaker extends AbstractListMaker
 
         getManager().closeTopList();
         throw new HelpingException("TTP.MissingDollar");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#removeLastNode()
+     */
+    public void removeLastNode() {
+
+        nodes.remove(nodes.size() - 1);
     }
 
     /**

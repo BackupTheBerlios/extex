@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface ListMaker {
 
@@ -111,6 +111,12 @@ public interface ListMaker {
      * @throws GeneralException in case of an error
      */
     void par() throws GeneralException;
+
+    /**
+     * Removes the last node from the list.
+     * If the list is empty then nothing is done.
+     */
+    void removeLastNode();
 
     /**
      * Setter for the previous depth parameter.
