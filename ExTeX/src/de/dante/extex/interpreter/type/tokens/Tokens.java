@@ -36,9 +36,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Tokens implements Serializable {
+public class Tokens implements Serializable, FixedTokens {
 
     /**
      * This constant is the empty toks register.
@@ -195,9 +195,7 @@ public class Tokens implements Serializable {
     }
 
     /**
-     * Return a String, which show all tokens (in text format) in the list.
-     *
-     * @return a String, which show all tokens (in text format) in the list
+     * @see de.dante.extex.interpreter.type.tokens.FixedTokens#toText()
      */
     public String toText() {
 
@@ -211,12 +209,9 @@ public class Tokens implements Serializable {
     }
 
     /**
-     * ...
-     *
-     * @param context  the processor context
- *
- * @throws GeneralException ...
-     * @param toks ...
+     * @see de.dante.extex.interpreter.type.tokens.FixedTokens#show(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
      */
     public void show(final Context context, final Tokens toks)
             throws GeneralException {
@@ -227,15 +222,14 @@ public class Tokens implements Serializable {
         for (int i = 0; i < tokens.size(); i++) {
             t = (Token) (tokens.get(i));
             if (t instanceof ControlSequenceToken) {
-                toks.add(factory.newInstance(Catcode.OTHER, Character
-                        .toString((char) (context.getCount("escapechar")
-                                .getValue()))));
+                toks.add(factory.newInstance(Catcode.OTHER, (char) (context
+                        .getCount("escapechar").getValue())));
                 toks.add(factory, t.toString());
             } else if (t instanceof MacroParamToken) {
                 toks.add(factory.newInstance(Catcode.OTHER, '#'));
-                toks.add(factory.newInstance(Catcode.OTHER, t.getChar()));
+                toks.add(factory.newInstance(Catcode.OTHER, t.getChar(), ""));
             } else {
-                toks.add(factory.newInstance(Catcode.OTHER, t.getChar()));
+                toks.add(factory.newInstance(Catcode.OTHER, t.getChar(), ""));
             }
         }
     }
