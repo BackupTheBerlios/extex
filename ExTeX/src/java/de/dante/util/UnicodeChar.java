@@ -18,6 +18,7 @@
  */
 package de.dante.util;
 
+import java.io.Serializable;
 import java.nio.CharBuffer;
 
 import com.ibm.icu.impl.UCharacterProperty;
@@ -25,13 +26,17 @@ import com.ibm.icu.lang.UCharacter;
 import com.ibm.icu.text.UTF16;
 
 /**
- * UnicodeChar
+ * This class represents a 32-bit Unicode character.
+ *
+ * Java 1.4 defines 16-bit characters only. Thus we are forced to roll our own
+ * version. As soon as Java supports 32-bit characters this class is obsolete
+ * and should be eliminated.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
-public class UnicodeChar {
+public class UnicodeChar implements Serializable {
 
     /**
      * The constant <tt>NULL</tt> contains the Unicode character with the
@@ -40,14 +45,15 @@ public class UnicodeChar {
     public static final UnicodeChar NULL = new UnicodeChar(0);
 
     /**
-     * The code point of the Unicode char (32 bit)
+     * The field <tt>code</tt> contains the code point of the Unicode character
+     * (32 bit).
      */
     private int code;
 
     /**
-     * Creates a new object.
+     * Creates a new object from an integer code point.
      *
-     * @param codePoint the 32 bit code point
+     * @param codePoint the 32-bit code point
      */
     public UnicodeChar(final int codePoint) {
 
@@ -56,7 +62,7 @@ public class UnicodeChar {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object from a 16-bit character.
      *
      * @param char16 16 bit character
      */
@@ -67,10 +73,10 @@ public class UnicodeChar {
     }
 
     /**
-     * init with two 16 bit char values
+     * Creates a new object from two 16-bit characters.
      *
-     * @param char1 first 16 bit character
-     * @param char2 second 16 bit character
+     * @param char1 first 16-bit character
+     * @param char2 second 16-bit character
      */
     public UnicodeChar(final char char1, final char char2) {
 
@@ -106,10 +112,10 @@ public class UnicodeChar {
      * Init with a char32 from a <code>CharBuffer</code> at position idx.
      * <p>
      * This use the code from <code>UTF16.charAt(String,int)</code> and
-     * change String to Charbuffer.
+     * change String to CharBuffer.
      *
-     * @param cb     the <code>CharBuffer</code>
-     * @param idx     the position in the charbuffer
+     * @param cb the <code>CharBuffer</code>
+     * @param idx the position in the charbuffer
      */
     public UnicodeChar(final CharBuffer cb, final int idx) {
 
@@ -122,10 +128,10 @@ public class UnicodeChar {
         char single = cb.charAt(idx);
         if (single < UTF16.LEAD_SURROGATE_MIN_VALUE
             || single > UTF16.TRAIL_SURROGATE_MAX_VALUE) {
-            code = single;
+            this.code = single;
         } else {
 
-            code = single;
+            this.code = single;
 
             // Convert the UTF-16 surrogate pair if necessary.
             // For simplicity in usage, and because the frequency of pairs is
@@ -135,25 +141,25 @@ public class UnicodeChar {
                     char trail = cb.charAt(idx + 1);
                     if (trail >= UTF16.TRAIL_SURROGATE_MIN_VALUE
                         && trail <= UTF16.TRAIL_SURROGATE_MAX_VALUE) {
-                        code = UCharacterProperty.getRawSupplementary(single,
+                        this.code = UCharacterProperty.getRawSupplementary(single,
                                                                       trail);
                     } else {
-                        throw new RuntimeException("This can't happen???");
+                        throw new RuntimeException("This can't happen?");
                     }
                 } else {
-                    throw new RuntimeException("This can't happen???");
+                    throw new RuntimeException("This can't happen?");
                 }
             } else if (idx > 0) {
                 char lead = cb.charAt(idx - 1);
                 if (lead >= UTF16.LEAD_SURROGATE_MIN_VALUE
                         && lead <= UTF16.LEAD_SURROGATE_MAX_VALUE) {
-                    code = UCharacterProperty.getRawSupplementary(lead,
+                    this.code = UCharacterProperty.getRawSupplementary(lead,
                             single);
                 } else {
-                    throw new RuntimeException("This can't happen???");
+                    throw new RuntimeException("This can't happen?");
                 }
             } else {
-                throw new RuntimeException("This can't happen???");
+                throw new RuntimeException("This can't happen?");
             }
         }
     }
@@ -176,7 +182,7 @@ public class UnicodeChar {
      */
     public int getCodePoint() {
 
-        return code;
+        return this.code;
     }
 
     /**
@@ -186,7 +192,7 @@ public class UnicodeChar {
      */
     public String getUnicodeName() {
 
-        return UCharacter.getName(code);
+        return UCharacter.getName(this.code);
     }
 
     /**
@@ -199,7 +205,7 @@ public class UnicodeChar {
      */
     public int toLowerCase() {
 
-        return UCharacter.toLowerCase(code);
+        return UCharacter.toLowerCase(this.code);
     }
 
     /**
@@ -212,7 +218,7 @@ public class UnicodeChar {
      */
     public int toUpperCase() {
 
-        return UCharacter.toUpperCase(code);
+        return UCharacter.toUpperCase(this.code);
     }
 
     /**
@@ -231,7 +237,7 @@ public class UnicodeChar {
     public boolean equals(final Object unicodeChar) {
 
         return ((unicodeChar instanceof UnicodeChar) && //
-        code == ((UnicodeChar) unicodeChar).getCodePoint());
+                this.code == ((UnicodeChar) unicodeChar).getCodePoint());
     }
 
     /**
@@ -243,7 +249,7 @@ public class UnicodeChar {
      */
     public int hashCode() {
 
-        return code;
+        return this.code;
     }
 
     /**
@@ -253,7 +259,7 @@ public class UnicodeChar {
      */
     public int getDirection() {
 
-        return UCharacter.getDirection(code);
+        return UCharacter.getDirection(this.code);
     }
 
     /**
@@ -263,29 +269,29 @@ public class UnicodeChar {
      */
     public String toString() {
 
-        return UCharacter.toString(code);
+        return UCharacter.toString(this.code);
     }
 
     /**
-     * Test, of the code is a letter
+     * Test, if the character is a letter.
      *
      * @return <code>true</code>, if the code is a letter,
      * otherwise <code>false</code>
      */
     public boolean isLetter() {
 
-        return UCharacter.isLetter(code);
+        return UCharacter.isLetter(this.code);
     }
 
     /**
-     * Test, of the code is a digit.
+     * Test, if the code is a digit.
      *
      * @return <code>true</code>, if the code is a digit,
      * otherwise <code>false</code>
      */
     public boolean isDigit() {
 
-        return UCharacter.isDigit(code);
+        return UCharacter.isDigit(this.code);
     }
 
     /**
@@ -296,16 +302,17 @@ public class UnicodeChar {
      */
     public boolean isPrintable() {
 
-        return UCharacter.isPrintable(code);
+        return UCharacter.isPrintable(this.code);
     }
 
     /**
-     * Return the count of char16 of the code
+     * Return the count of char16 of the code.
+     *
      * @return the count of char16 for this code
      */
     public int getChar16Count() {
 
-        return UTF16.getCharCount(code);
+        return UTF16.getCharCount(this.code);
     }
 
 }
