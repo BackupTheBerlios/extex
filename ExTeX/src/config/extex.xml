@@ -32,7 +32,7 @@
     <Define name="abovewithdelims" class=""/>
     <Define name="accent" class=""/>
     <define name="adjdemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="advance" class="de.dante.extex.interpreter.primitives.register.Advance"/>
+    <define name="advance" class="de.dante.extex.interpreter.primitives.register.Advance"/>
     <Define name="afterassignment" class=""/>
     <define name="aftergroup" class="de.dante.extex.interpreter.primitives.group.Aftergroup"/>
     <Define name="atop" class=""/>
@@ -354,8 +354,8 @@
     <Define name="xspaceskip" class=""/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
 
-    <Context class="de.dante.extex.interpreter.context.impl.ContextImpl">
-      <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
+    <Context class="de.dante.extex.interpreter.context.impl.ContextExTeXImpl">
+      <Group class="de.dante.extex.interpreter.context.impl.GroupExTeXImpl"/>
     </Context>
 
     <Font></Font>

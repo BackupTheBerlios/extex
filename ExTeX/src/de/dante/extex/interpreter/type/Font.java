@@ -22,18 +22,18 @@ package de.dante.extex.interpreter.type;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Font {
     
-    public abstract Dimen getWidth(String c);
-    public abstract Dimen getHeight(String c);
-    public abstract Dimen getDepth(String c);
+    public abstract Dimen getWidth(String c);// TODO change to UnicodeChar
+    public abstract Dimen getHeight(String c);// TODO change to UnicodeChar
+    public abstract Dimen getDepth(String c);// TODO change to UnicodeChar
 
-    public abstract boolean isDefined(String c);
+    public abstract boolean isDefined(String c);// TODO change to UnicodeChar
 
-    public abstract Dimen kern(String c1, String c2);
-    public abstract String ligature(String c1, String c2);
+    public abstract Dimen kern(String c1, String c2);// TODO change to UnicodeChar
+    public abstract String ligature(String c1, String c2);// TODO change to UnicodeChar
 
     public abstract Glue getSpace();
     public abstract Dimen getEm();

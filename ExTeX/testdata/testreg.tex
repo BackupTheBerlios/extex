@@ -1,5 +1,5 @@
 %
-% @version $Revision: 1.3 $ $Date: 2004/01/04 11:32:58 $
+% @version $Revision: 1.4 $ $Date: 2004/01/06 15:12:48 $
 %
 % Test für Register
 %
@@ -8,14 +8,24 @@
 %
 %
 \count7=11
-
 \the\count7
+
+%\advance\count7 by -30 Fehler, das SpaceToken nicht entfernt wird!
 
 %\message{Ausgabe \the\count7}
 
 \real8=34.567
-
 \the\real8
+
+\advance\real8 by -30
+\the\real8
+
+\multiply\real8 by 2
+\the\real8
+
+\divide\real8 by 2
+\the\real8
+
 
 %%%
 %%%

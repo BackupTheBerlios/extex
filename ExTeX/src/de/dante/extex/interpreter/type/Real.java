@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Real implements Serializable {
 
@@ -139,6 +139,15 @@ public class Real implements Serializable {
 	/**
 	 * ...
 	 *
+	 * @param real ...
+	 */
+	public void add(Real real) {
+		value += real.getValue();
+	}
+
+	/**
+	 * ...
+	 *
 	 * @param val ...
 	 *
 	 * @throws GeneralHelpingException in case of a division by zero
@@ -155,9 +164,29 @@ public class Real implements Serializable {
 	 * ...
 	 *
 	 * @param val ...
+	 *
+	 * @throws GeneralHelpingException in case of a division by zero
+	 */
+	public void divide(Real val) throws GeneralException {
+		divide(val.getValue());
+	}
+
+	/**
+	 * ...
+	 *
+	 * @param val ...
 	 */
 	public void multiply(double val) {
 		value *= val;
+	}
+
+	/**
+	 * ...
+	 *
+	 * @param val ...
+	 */
+	public void multiply(Real val) {
+		value *= val.getValue();
 	}
 
 	/**
