@@ -25,8 +25,10 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -44,12 +46,20 @@ import de.dante.util.GeneralException;
  * <p>
  * Example:
  * <pre>
+ * \font\myFont=cmr12
  * \fontname\myfont
+ * &rArr; cmr12
+ * </pre>
+ *
+ * <pre>
+ * \font\myFont=cmr12 at 24pt
+ * \fontname\myfont
+ * &rArr; cmr12 at 24pt
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Fontname extends AbstractCode implements ExpandableCode {
 
@@ -85,7 +95,14 @@ public class Fontname extends AbstractCode implements ExpandableCode {
         } catch (EofException e) {
             throw new EofException(printableControlSequence(context));
         }
-        source.push(new Tokens(context, font.getFontName()));
+        Tokens fontname = new Tokens(context, font.getFontName());
+        Dimen size = font.getActualSize();
+        if (font.getDesignSize().ne(size)) {
+            TokenFactory tokenFactory = context.getTokenFactory();
+            fontname.add(tokenFactory, " at ");
+            fontname.add(size.toToks(tokenFactory));
+        }
+        source.push(fontname);
     }
 
     /**
