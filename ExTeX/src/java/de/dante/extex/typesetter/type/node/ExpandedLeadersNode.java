@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ExpandedLeadersNode extends GlueNode implements Node {
 
@@ -50,6 +50,16 @@ public class ExpandedLeadersNode extends GlueNode implements Node {
 
         super(glue);
         this.node = node;
+    }
+
+    /**
+     * Getter for the repeated construction.
+     *
+     * @return the repeated node
+     */
+    public Node getRepeat() {
+
+        return node;
     }
 
     /**
