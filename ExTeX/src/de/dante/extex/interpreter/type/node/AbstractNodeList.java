@@ -33,15 +33,15 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
     /**
-     * The field <tt>shift</tt> contains the offset of the reference point in
-     * vertical direction.
+     * The field <tt>list</tt> is the container for the elements of this node
+     * list.
      */
-    private Dimen shift = new Dimen(0);
+    private List list = new ArrayList();
 
     /**
      * The field <tt>move</tt> contains the offset of the reference point in
@@ -50,10 +50,10 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     private Dimen move = new Dimen(0);
 
     /**
-     * The field <tt>targetWidth</tt> contains the requested width of the node
-     * list.
+     * The field <tt>shift</tt> contains the offset of the reference point in
+     * vertical direction.
      */
-    private Dimen targetWidth = null;
+    private Dimen shift = new Dimen(0);
 
     /**
      * The field <tt>targetDepth</tt> contains the requested depth of the node
@@ -68,10 +68,10 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     private Dimen targetHeight = null;
 
     /**
-     * The field <tt>list</tt> is the container for the elements of this node
+     * The field <tt>targetWidth</tt> contains the requested width of the node
      * list.
      */
-    private List list = new ArrayList();
+    private Dimen targetWidth = null;
 
     /**
      * Creates a new object.
@@ -82,37 +82,14 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeList#getMove()
+     * ...
+     *
+     * @param arg0 ...
+     * @param arg1 ...
      */
-    public Dimen getMove() {
+    public void add(final int arg0, final Node arg1) {
 
-        return move;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.NodeList#setMove(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setMove(final Dimen d) {
-
-        move.set(d);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.NodeList#getShift()
-     */
-    public Dimen getShift() {
-
-        return shift;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.NodeList#setShift(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-    public void setShift(final Dimen d) {
-
-        shift.set(d);
+        this.list.add(arg0, arg1);
     }
 
     /**
@@ -126,11 +103,58 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * Recompute the dimensions of the given node.
-     *
-     * @param node the node to update
+     * @see de.dante.extex.typesetter.NodeList#addGlyph(
+     *      de.dante.extex.interpreter.type.node.CharNode)
      */
-    protected abstract void updateDimensions(final Node node);
+    public void addGlyph(final CharNode node) {
+
+        add(node);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.NodeList#addSkip(
+     *      de.dante.extex.interpreter.type.glue.Glue)
+     */
+    public abstract void addSkip(final Glue glue);
+
+    /**
+     * Test whether the node list is empty.
+     *
+     * @return <code>true</code>, if the <code>NodeList</code> ist emtpy,
+     * otherwise <code>false</code>.
+     */
+    public boolean empty() {
+
+        return (list.size() == 0);
+    }
+
+    /**
+     * ...
+     *
+     * @param index ...
+     *
+     * @return ...
+     */
+    public Node get(int index) {
+
+        return (Node) list.get(index);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.NodeList#getMove()
+     */
+    public Dimen getMove() {
+
+        return move;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.NodeList#getShift()
+     */
+    public Dimen getShift() {
+
+        return shift;
+    }
 
     /**
      * Getter for targetDepth.
@@ -140,16 +164,6 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public Dimen getTargetDepth() {
 
         return targetDepth;
-    }
-
-    /**
-     * Setter for targetDepth.
-     *
-     * @param theTargetDepth the target depth to set.
-     */
-    public void setTargetDepth(final Dimen theTargetDepth) {
-
-        this.targetDepth = theTargetDepth;
     }
 
     /**
@@ -164,16 +178,6 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * Setter for targetHeight.
-     *
-     * @param theTargetHeight the targetHeight to set.
-     */
-    public void setTargetHeight(final Dimen theTargetHeight) {
-
-        this.targetHeight = theTargetHeight;
-    }
-
-    /**
      * Getter for targetWidth.
      *
      * @return the targetWidth.
@@ -181,6 +185,64 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     public Dimen getTargetWidth() {
 
         return targetWidth;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.NodeList#iterator()
+     */
+    public NodeIterator iterator() {
+
+        return new NodeIterator(list);
+    }
+
+    /**
+     * ...
+     *
+     * @param arg0 ...
+     *
+     * @return ...
+     */
+    public Object remove(final int arg0) {
+
+        return this.list.remove(arg0);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.NodeList#setMove(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     */
+    public void setMove(final Dimen d) {
+
+        move.set(d);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.NodeList#setShift(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
+     */
+    public void setShift(final Dimen d) {
+
+        shift.set(d);
+    }
+
+    /**
+     * Setter for targetDepth.
+     *
+     * @param theTargetDepth the target depth to set.
+     */
+    public void setTargetDepth(final Dimen theTargetDepth) {
+
+        this.targetDepth = theTargetDepth;
+    }
+
+    /**
+     * Setter for targetHeight.
+     *
+     * @param theTargetHeight the targetHeight to set.
+     */
+    public void setTargetHeight(final Dimen theTargetHeight) {
+
+        this.targetHeight = theTargetHeight;
     }
 
     /**
@@ -204,37 +266,29 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * Test whether the node list is empty.
-     *
-     * @return <code>true</code>, if the <code>NodeList</code> ist emtpy,
-     * otherwise <code>false</code>.
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
      */
-    public boolean empty() {
+    public void toString(final StringBuffer sb, final String prefix) {
 
-        return (list.size() == 0);
-    }
+        sb.append("(");
+        sb.append(getHeight().toString());
+        sb.append("+");
+        sb.append(getDepth().toString());
+        sb.append(")x");
+        sb.append(getWidth().toString());
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#addGlyph(
-     *      de.dante.extex.interpreter.type.node.CharNode)
-     */
-    public void addGlyph(final CharNode node) {
+        if (shift.getValue() != 0) {
+            sb.append(", shifted ");
+            sb.append(shift.toString());
+        }
 
-        add(node);
-    }
+        String prefix2 = prefix + ".";
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#addSkip(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public abstract void addSkip(final Glue glue);
-
-    /**
-     * @see de.dante.extex.typesetter.NodeList#iterator()
-     */
-    public NodeIterator iterator() {
-
-        return new NodeIterator(list);
+        for (int i = 0; i < list.size(); i++) {
+            sb.append(prefix2);
+            ((Node) list.get(i)).toString(sb, prefix2);
+        }
     }
 
     /**
@@ -267,29 +321,9 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     }
 
     /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
+     * Recompute the dimensions of the given node.
+     *
+     * @param node the node to update
      */
-    public void toString(final StringBuffer sb, final String prefix) {
-
-        sb.append("(");
-        sb.append(getHeight().toString());
-        sb.append("+");
-        sb.append(getDepth().toString());
-        sb.append(")x");
-        sb.append(getWidth().toString());
-
-        if (shift.getValue() != 0) {
-            sb.append(", shifted ");
-            sb.append(shift.toString());
-        }
-
-        String prefix2 = prefix + ".";
-
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(prefix2);
-            ((Node) list.get(i)).toString(sb, prefix2);
-        }
-    }
-
+    protected abstract void updateDimensions(final Node node);
 }
