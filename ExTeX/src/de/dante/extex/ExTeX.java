@@ -50,26 +50,26 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.main.ErrorHandlerImpl;
-import de.dante.extex.main.FileCloseObserver;
 import de.dante.extex.main.FileFinderImpl;
-import de.dante.extex.main.FileOpenObserver;
-import de.dante.extex.main.InteractionObserver;
-import de.dante.extex.main.LogMessageObserver;
-import de.dante.extex.main.MainCodingException;
-import de.dante.extex.main.MainConfigurationException;
-import de.dante.extex.main.MainException;
-import de.dante.extex.main.MainIOException;
-import de.dante.extex.main.MainMissingArgumentException;
-import de.dante.extex.main.MainUnknownInteractionException;
-import de.dante.extex.main.MainUnknownOptionException;
-import de.dante.extex.main.MessageObserver;
-import de.dante.extex.main.TokenObserver;
-import de.dante.extex.main.TokenPushObserver;
-import de.dante.extex.main.TraceObserver;
+import de.dante.extex.main.exception.MainCodingException;
+import de.dante.extex.main.exception.MainConfigurationException;
+import de.dante.extex.main.exception.MainException;
+import de.dante.extex.main.exception.MainIOException;
+import de.dante.extex.main.exception.MainMissingArgumentException;
+import de.dante.extex.main.exception.MainUnknownInteractionException;
+import de.dante.extex.main.exception.MainUnknownOptionException;
+import de.dante.extex.main.observer.FileCloseObserver;
+import de.dante.extex.main.observer.FileOpenObserver;
+import de.dante.extex.main.observer.InteractionObserver;
+import de.dante.extex.main.observer.LogMessageObserver;
+import de.dante.extex.main.observer.MessageObserver;
+import de.dante.extex.main.observer.TokenObserver;
+import de.dante.extex.main.observer.TokenPushObserver;
+import de.dante.extex.main.observer.TraceObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -111,7 +111,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public class ExTeX {
 
@@ -715,7 +715,7 @@ public class ExTeX {
                     .newInstance(properties.getProperty(PROP_CONFIG));
 
             OutputFactory outFactory = new OutputFactory(config
-                    .getConfiguration("Output"), new String[]{
+                    .getConfiguration("Output"), new String[]{//
                     properties.getProperty(PROP_OUTPUTDIR),
                     properties.getProperty(PROP_FALLBACKOUTPUTDIR)});
 
@@ -1131,7 +1131,7 @@ public class ExTeX {
         String bundle = (String) properties.get(PROP_POOL);
 
         if (lang != null) {
-            if (lang.matches("^..$")) {
+            if (lang.length() == 2) {
                 Messages.configure(bundle, new Locale(lang));
                 return;
             } else if (lang.matches("^..[_-]..$")) {
@@ -1143,7 +1143,6 @@ public class ExTeX {
                         lang.substring(3, 5), lang.substring(6, 8)));
                 return;
             }
-        } else {
             Messages.configure(bundle);
         }
     }
@@ -1235,8 +1234,8 @@ public class ExTeX {
                 notInitialized = false;
             } catch (FileNotFoundException e) {
                 logger.severe(Messages.format("CLI.FileNotFound", filename));
-            } catch (IOException e) {
-                throw new MainIOException(e);
+            //} catch (IOException e) {
+            //    throw new MainIOException(e);
             }
         }
 
