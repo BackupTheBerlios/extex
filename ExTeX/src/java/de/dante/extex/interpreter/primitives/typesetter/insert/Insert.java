@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -23,14 +23,16 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\\</code>.
+ * This class provides an implementation for the primitive
+ * <code>\insert</code>.
  *
- * <doc name="\\">
- * <h3>The Primitive <tt>\\</tt></h3>
+ * <doc name="insert">
+ * <h3>The Primitive <tt>\insert</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -38,17 +40,17 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;insert&rang;
- *       &rarr; <tt>\\</tt>  </pre>
+ *       &rarr; <tt>\insert</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \\  </pre>
+ *    \insert42{abc}  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Insert extends AbstractBox {
 
@@ -72,6 +74,9 @@ public class Insert extends AbstractBox {
     public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
+
+        long index = source.scanNumber(context);
+        Box b = new Box(context, source, typesetter, false);
 
         //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
