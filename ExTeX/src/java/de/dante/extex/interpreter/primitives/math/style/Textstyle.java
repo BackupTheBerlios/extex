@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.util.GeneralException;
 
 /**
@@ -48,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Textstyle extends AbstractCode {
 
@@ -73,9 +74,8 @@ public class Textstyle extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        typesetter.add(StyleNoad.TEXTSTYLE);
+        return true;
     }
 
 }
