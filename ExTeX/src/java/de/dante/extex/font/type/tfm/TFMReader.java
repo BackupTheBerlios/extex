@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TFMReader implements FontMetric {
 
@@ -1249,7 +1249,7 @@ public class TFMReader implements FontMetric {
     }
 
     /**
-     * @see de.dante.util.font.FontMetric#getFontMetric()
+     * @see de.dante.util.font.type.FontMetric#getFontMetric()
      */
     public Element getFontMetric() throws IOException, ConfigurationException,
             HelpingException {

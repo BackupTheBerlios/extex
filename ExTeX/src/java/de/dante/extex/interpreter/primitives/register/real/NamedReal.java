@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -159,7 +159,7 @@ public class NamedReal extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.Advanceable#advance(
+     * @see de.dante.extex.interpreter.type.arithmetic.Advanceable#advance(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
@@ -184,7 +184,7 @@ public class NamedReal extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.Multiplyable#multiply(
+     * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable#multiply(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
@@ -209,10 +209,10 @@ public class NamedReal extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.Divideable#divide(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.type.arithmetic.Divideable#divide(
+     *       de.dante.extex.interpreter.Flags,
+     *       de.dante.extex.interpreter.context.Context,
+     *       de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
             final TokenSource source) throws GeneralException {
@@ -233,7 +233,7 @@ public class NamedReal extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.RealConvertable#convertReal(
+     * @see de.dante.extex.interpreter.type.real.RealConvertible#convertReal(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -251,9 +251,10 @@ public class NamedReal extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.CountConvertable#convertCount(
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource, Typesetter)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public long convertCount(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {

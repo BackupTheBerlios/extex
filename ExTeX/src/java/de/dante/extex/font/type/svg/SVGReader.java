@@ -33,7 +33,7 @@ import de.dante.extex.font.type.FontMetric;
  * This class read a SVG-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 // TODO incomplete
 public class SVGReader implements FontMetric {
@@ -93,7 +93,7 @@ public class SVGReader implements FontMetric {
     private Element efmelement;
 
     /**
-     * @see de.dante.util.font.FontMetric#getFontMetric()
+     * @see de.dante.util.font.type.FontMetric#getFontMetric()
      */
     public Element getFontMetric() {
 

@@ -32,12 +32,12 @@ import de.dante.extex.interpreter.type.transform.Transform;
  * context for the ExTeX-functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface ContextExtension extends Serializable {
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Real real}
+     * Setter for the {@link de.dante.extex.interpreter.type.real.Real real}
      * register in the current group. Real registers are named, either with a
      * number or an arbitrary string.
      *
@@ -47,7 +47,7 @@ public interface ContextExtension extends Serializable {
     void setReal(String name, Real value);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Real real}
+     * Setter for the {@link de.dante.extex.interpreter.type.real.Real real}
      * register in all requested groups. Real registers are named, either with
      * a number or an arbitrary string.
      *
@@ -59,7 +59,7 @@ public interface ContextExtension extends Serializable {
     void setReal(String name, Real real, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Real real}
+     * Getter for the {@link de.dante.extex.interpreter.type.real.Real real}
      * register. Real registers are named, either with a number or an
      * arbitrary string.
      *
@@ -70,7 +70,7 @@ public interface ContextExtension extends Serializable {
     Real getReal(String name);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Bool bool}
+     * Setter for the {@link de.dante.extex.interpreter.type.bool.Bool bool}
      * register in the current group. Bool registers are named, either with a
      * number or an arbitrary string.
      *
@@ -80,7 +80,7 @@ public interface ContextExtension extends Serializable {
     void setBool(String name, Bool value);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Bool bool}
+     * Setter for the {@link de.dante.extex.interpreter.type.bool.Bool bool}
      * register in all requested groups. Bool registers are named, either with
      * a number or an arbitrary string.
      *
@@ -92,7 +92,7 @@ public interface ContextExtension extends Serializable {
     void setBool(String name, Bool value, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Bool bool}
+     * Getter for the {@link de.dante.extex.interpreter.type.bool.Bool bool}
      * register. Bool registers are named, either with a number or an
      * arbitrary string.
      *
@@ -102,7 +102,7 @@ public interface ContextExtension extends Serializable {
     Bool getBool(String name);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Pair pair}
+     * Setter for the {@link de.dante.extex.interpreter.type.pair.Pair pair}
      * register in the current group. pair registers are named, either with a
      * number or an arbitrary string.
      *
@@ -112,7 +112,7 @@ public interface ContextExtension extends Serializable {
     void setPair(String name, Pair value);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Pair pair}
+     * Setter for the {@link de.dante.extex.interpreter.type.pair.Pair pair}
      * register in all requested groups. Pair registers are named, either with
      * a number or an arbitrary string.
      *
@@ -124,7 +124,7 @@ public interface ContextExtension extends Serializable {
     void setPair(String name, Pair value, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Pair pair}
+     * Getter for the {@link de.dante.extex.interpreter.type.pair.Pair pair}
      * register. Pair registers are named, either with a number or an
      * arbitrary string.
      *
@@ -134,7 +134,7 @@ public interface ContextExtension extends Serializable {
     Pair getPair(String name);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Transform transform}
+     * Setter for the {@link de.dante.extex.interpreter.type.transform.Transform transform}
      * register in the current group. transform registers are named, either with a
      * number or an arbitrary string.
      *
@@ -144,7 +144,7 @@ public interface ContextExtension extends Serializable {
     void setTransform(String name, Transform value);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Transform transform}
+     * Setter for the {@link de.dante.extex.interpreter.type.transform.Transform transform}
      * register in all requested groups. Transform registers are named, either with
      * a number or an arbitrary string.
      *
@@ -156,7 +156,7 @@ public interface ContextExtension extends Serializable {
     void setTransform(String name, Transform value, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Transform transform}
+     * Getter for the {@link de.dante.extex.interpreter.type.transform.Transform transform}
      * register. Transform registers are named, either with a number or an
      * arbitrary string.
      *
@@ -166,7 +166,7 @@ public interface ContextExtension extends Serializable {
     Transform getTransform(String name);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.HashToks hashtoks}
+     * Setter for the {@link de.dante.extex.interpreter.type.hash.toks.HashToks hashtoks}
      * register in the current group. Hashtoks registers are named, either with a
      * number or an arbitrary string.
      *
@@ -176,7 +176,7 @@ public interface ContextExtension extends Serializable {
     void setHashToks(String name, HashToks value);
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.HashToks hashtoks}
+     * Setter for the {@link de.dante.extex.interpreter.type.hash.toks.HashToks hashtoks}
      * register in all requested groups. Transform registers are named, either with
      * a number or an arbitrary string.
      *
@@ -188,7 +188,7 @@ public interface ContextExtension extends Serializable {
     void setHashToks(String name, HashToks value, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.HashToks hashtoks}
+     * Getter for the {@link de.dante.extex.interpreter.type.hash.toks.HashToks hashtoks}
      * register. Transform registers are named, either with a number or an
      * arbitrary string.
      *

@@ -37,7 +37,7 @@ import de.dante.util.configuration.Configuration;
  *
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -53,7 +53,8 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
 
     /**
      * Creates a new object.
-     * @param cfg the configuration
+     * @param cfg       the configuration
+     * @param options   the options
      */
     public TextDocumentWriter(final Configuration cfg, final DocumentWriterOptions options) {
 
@@ -104,7 +105,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
 
@@ -139,7 +140,7 @@ public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
     private void showNode(final Node node) throws IOException {
 
         try {
-            Object o = node.visit(this, node, null);
+            Object o = node.visit(this, node);
             if (o != null) {
                 if (o instanceof String) {
                     out.write(((String) o).getBytes());

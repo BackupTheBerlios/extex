@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements
@@ -94,7 +94,8 @@ public class GroupExtensionImpl extends GroupImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getReal(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#getReal(
+     *      java.lang.String)
      */
     public Real getReal(final String name) {
 
@@ -113,8 +114,10 @@ public class GroupExtensionImpl extends GroupImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String,
-     *      de.dante.extex.interpreter.type.Real, boolean)
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setReal(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.real.Real,
+     *      boolean)
      */
     public void setReal(final String name, final Real value,
             final boolean global) {
@@ -127,8 +130,9 @@ public class GroupExtensionImpl extends GroupImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setReal(java.lang.String,
-     *      de.dante.extex.interpreter.type.Real)
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setReal(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.real.Real)
      */
     public void setReal(final String name, final Real value) {
 
@@ -158,7 +162,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setBool(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Bool, boolean)
+     *      de.dante.extex.interpreter.type.bool.Bool, boolean)
      */
     public void setBool(final String name, final Bool value,
             final boolean global) {
@@ -173,7 +177,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setBool(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Bool)
+     *      de.dante.extex.interpreter.type.bool.Bool)
      */
     public void setBool(final String name, final Bool value) {
 
@@ -203,7 +207,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setPair(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Pair,
+     *      de.dante.extex.interpreter.type.pair.Pair,
      *      boolean)
      */
     public void setPair(final String name, final Pair value,
@@ -219,7 +223,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setPair(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Pair)
+     *      de.dante.extex.interpreter.type.pair.Pair)
      */
     public void setPair(final String name, final Pair value) {
 
@@ -249,7 +253,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setTransform(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Transform,
+     *      de.dante.extex.interpreter.type.transform.Transform,
      *      boolean)
      */
     public void setTransform(final String name, final Transform value,
@@ -266,7 +270,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setTransform(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Transform)
+     *      de.dante.extex.interpreter.type.transform.Transform)
      */
     public void setTransform(final String name, final Transform value) {
 
@@ -296,7 +300,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setHashToks(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.HashToks,
+     *      de.dante.extex.interpreter.type.hash.toks.HashToks,
      *      boolean)
      */
     public void setHashToks(final String name, final HashToks value,
@@ -313,7 +317,7 @@ public class GroupExtensionImpl extends GroupImpl
     /**
      * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setHashToks(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.HashToks)
+     *      de.dante.extex.interpreter.type.hash.toks.HashToks)
      */
     public void setHashToks(final String name, final HashToks value) {
 

@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * <p>
  * All features are inherited from
- * {@link de.dante.extex.interpreter.type.NamedPair pair}. Just the key
+ * {@link de.dante.extex.interpreter.type.pair.NamedPair pair}. Just the key
  * has to be provided under which this Pair has to be stored. This key is
  * constructed from the name, a hash mark and the running number.
  * </p>
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NumberedPair extends NamedPair {
 

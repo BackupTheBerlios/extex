@@ -111,7 +111,7 @@ import de.dante.extex.font.type.FontMetric;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class AFMReader implements FontMetric {
 
@@ -365,6 +365,7 @@ public class AFMReader implements FontMetric {
         }
         // metric not found
         if (!isMetrics) {
+            // TODO change
             System.err.println("Missing StartCharMetrics");
             System.exit(1);
         }
@@ -389,6 +390,7 @@ public class AFMReader implements FontMetric {
             }
         }
         if (!isMetrics) {
+            // TODO change
             System.err.println("Missing EndFontMetrics");
             System.exit(1);
         }
@@ -413,6 +415,7 @@ public class AFMReader implements FontMetric {
             }
         }
         if (isMetrics) {
+            // TODO change
             System.err.println("Missing EndKernPairs");
             System.exit(1);
         }
@@ -497,6 +500,7 @@ public class AFMReader implements FontMetric {
 
         // metric close?
         if (isMetrics) {
+            // TODO change
             System.err.println("Missing EndCharMetrics");
             System.exit(1);
         }
@@ -768,7 +772,7 @@ public class AFMReader implements FontMetric {
     /**
      * LineFeed
      */
-    private static final char LF = '\n';
+//    private static final char LF = '\n';
 
     /**
      * remove the fileextension and path, if exists
@@ -954,7 +958,7 @@ public class AFMReader implements FontMetric {
     }
 
     /**
-     * @see de.dante.util.font.FontMetric#getFontMetric()
+     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
      */
     public Element getFontMetric() {
 

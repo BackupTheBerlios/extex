@@ -30,7 +30,7 @@ import de.dante.extex.scanner.stream.TokenStream;
  * StringArray. It use 32 bit characters.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TokenStreamStringArrayImpl32 extends TokenStreamBaseImpl32
         implements
@@ -90,7 +90,7 @@ public class TokenStreamStringArrayImpl32 extends TokenStreamBaseImpl32
     }
 
     /**
-     * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
+     * @see de.dante.extex.scanner.stream.impl32.TokenStreamBaseImpl32#refill()
      */
     protected boolean refill() throws IOException {
 

@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NamedPair extends AbstractAssignment
         implements
@@ -150,7 +150,7 @@ public class NamedPair extends AbstractAssignment
     }
 
     /**
-     * @see de.dante.extex.interpreter.PairConvertable#convertPair(
+     * @see de.dante.extex.interpreter.type.pair.PairConvertible#convertPair(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */

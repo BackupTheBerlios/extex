@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements
@@ -63,7 +63,8 @@ public class ContextExtensionImpl extends ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextExTeX#getReal(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextExtension#getReal(
+     *      java.lang.String)
      */
     public Real getReal(final String name) {
 
@@ -71,9 +72,10 @@ public class ContextExtensionImpl extends ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(
+     * @see de.dante.extex.interpreter.context.ContextExtension#setReal(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Real, boolean)
+     *      de.dante.extex.interpreter.type.real.Real,
+     *      boolean)
      */
     public void setReal(final String name, final Real value,
             final boolean global) {
@@ -82,9 +84,9 @@ public class ContextExtensionImpl extends ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(
+     * @see de.dante.extex.interpreter.context.ContextExtension#setReal(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Real)
+     *      de.dante.extex.interpreter.type.real.Real)
      */
     public void setReal(final String name, final Real value) {
 
@@ -102,7 +104,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setBool(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Bool, boolean)
+     *      de.dante.extex.interpreter.type.bool.Bool, boolean)
      */
     public void setBool(final String name, final Bool value,
             final boolean global) {
@@ -113,7 +115,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setBool(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Bool)
+     *      de.dante.extex.interpreter.type.bool.Bool)
      */
     public void setBool(final String name, final Bool value) {
 
@@ -132,7 +134,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setPair(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Pair,
+     *      de.dante.extex.interpreter.type.pair.Pair,
      *      boolean)
      */
     public void setPair(final String name, final Pair value,
@@ -144,7 +146,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setPair(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Pair)
+     *      de.dante.extex.interpreter.type.pair.Pair)
      */
     public void setPair(final String name, final Pair value) {
 
@@ -163,7 +165,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setTransform(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Transform,
+     *      de.dante.extex.interpreter.type.transform.Transform,
      *      boolean)
      */
     public void setTransform(final String name, final Transform value,
@@ -175,7 +177,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setTransform(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Transform)
+     *      de.dante.extex.interpreter.type.transform.Transform)
      */
     public void setTransform(final String name, final Transform value) {
 
@@ -194,7 +196,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setHashToks(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.HashToks,
+     *      de.dante.extex.interpreter.type.hash.toks.HashToks,
      *      boolean)
      */
     public void setHashToks(final String name, final HashToks value,
@@ -206,7 +208,7 @@ public class ContextExtensionImpl extends ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.ContextExtension#setHashToks(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.HashToks)
+     *      de.dante.extex.interpreter.type.hash.toks.HashToks)
      */
     public void setHashToks(final String name, final HashToks value) {
 

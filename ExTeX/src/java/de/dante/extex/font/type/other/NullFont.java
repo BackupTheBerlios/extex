@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NullFont implements Font {
 
@@ -143,10 +143,11 @@ public class NullFont implements Font {
         return null;
     }
 
-   /**
+    /**
      * @see de.dante.extex.interpreter.type.font.Font#getLetterSpacing()
      */
     public Glue getLetterSpacing() {
+
         return null;
     }
 
@@ -157,12 +158,12 @@ public class NullFont implements Font {
 
         return null;
     }
-    /**
-     * @see de.dante.extex.interpreter.type.font.Font#setProperty(
-     *      java.lang.String,
-     *      java.lang.String)
-     */
-    public void setProperty(final String key, final String value) {
-
-    }
+    //    /**
+    //     * @see de.dante.extex.interpreter.type.font.Font#setProperty(
+    //     *      java.lang.String,
+    //     *      java.lang.String)
+    //     */
+    //    public void setProperty(final String key, final String value) {
+    //
+    //    }
 }
