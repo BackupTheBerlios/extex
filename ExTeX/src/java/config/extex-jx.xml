@@ -176,7 +176,7 @@
     <define name="aftergroup" class="de.dante.extex.interpreter.primitives.group.Aftergroup"/>
     <Define name="atop" class=""/>
     <Define name="atopwithdelims" class=""/>
-    <Define name="badness" class=""/>
+    <define name="badness" class="de.dante.extex.interpreter.primitives.register.count.Badness"/>
     <define name="baselineskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="batchmode" class="de.dante.extex.interpreter.primitives.interaction.Batchmode"/>
     <define name="begingroup" class="de.dante.extex.interpreter.primitives.group.Begingroup"/>
@@ -296,7 +296,7 @@
     <define name="immediate" class="de.dante.extex.interpreter.primitives.prefix.Immediate"/>
     <Define name="indent" class=""/>
     <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
-    <Define name="inputlineno" class=""/>
+    <define name="inputlineno" class="de.dante.extex.interpreter.primitives.file.Inputlineno"/>
     <Define name="insert" class=""/>
     <define name="insertpenalties" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="interlinepenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
@@ -415,7 +415,7 @@
     <define name="sfcode" class="de.dante.extex.interpreter.primitives.parameter.Sfcode"/>
     <define name="shipout" class="de.dante.extex.interpreter.primitives.output.Shipout"/>
     <define name="show" class="de.dante.extex.interpreter.primitives.info.Show"/>
-    <Define name="showbox" class=""/>
+    <define name="showbox" class="de.dante.extex.interpreter.primitives.info.Showbox"/>
     <define name="showboxbreadth" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="showboxdepth" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <Define name="showlists" class=""/>
@@ -458,9 +458,9 @@
     <Define name="underline" class=""/>
     <Define name="unhbox" class=""/>
     <Define name="unhcopy" class=""/>
-    <Define name="unkern" class=""/>
-    <Define name="unpenalty" class=""/>
-    <Define name="unskip" class=""/>
+    <define name="unkern" class="de.dante.extex.interpreter.primitives.box.Unkern"/>
+    <define name="unpenalty" class="de.dante.extex.interpreter.primitives.box.Unpenalty"/>
+    <define name="unskip" class="de.dante.extex.interpreter.primitives.box.Unskip"/>
     <Define name="unvbox" class=""/>
     <Define name="unvcopy" class=""/>
     <define name="uppercase" class="de.dante.extex.interpreter.primitives.string.Uppercase"/>
