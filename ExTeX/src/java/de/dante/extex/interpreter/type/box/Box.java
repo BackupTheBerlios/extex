@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Box implements Serializable {
 
@@ -134,7 +134,7 @@ public class Box implements Serializable {
 
     /**
      * Getter for the move parameter.
-     * The move parameter describes hpw far from its original position the box
+     * The move parameter describes how far from its original position the box
      * is moved leftwards or rightwards. Positive values indicate a move
      * rightwards.
      *
@@ -157,7 +157,7 @@ public class Box implements Serializable {
 
     /**
      * Getter for the shift parameter.
-     * The shift parameter describes hpw far from its original position the box
+     * The shift parameter describes how far from its original position the box
      * is shifted up or down. Positive values indicate a move upwards.
      *
      * @return the shift parameter
