@@ -136,6 +136,7 @@ Usage:
 
   <target name="javadoc"
   		  description="Create javadoc HTML pages">
+    <mkdir dir="${javadoc}" />
     <javadoc 
              destdir="${javadoc}"
              overview="src/overview.html"
