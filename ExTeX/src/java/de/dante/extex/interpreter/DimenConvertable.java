@@ -28,17 +28,22 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface DimenConvertable {
 
     /**
-     * ...
+     * This method converts a register into a dimen.
+     * It might be necessary to read further tokens to determine which value to
+     * use. For instance an additional register number might be required. In
+     * this case the additional arguments Context and TokenSource can be used.
+     *
+     * The return value is the length in scaled points.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
-     * @return the converted value
+     * @return the converted value in sp
      *
      * @throws GeneralException in case of an error
      */
