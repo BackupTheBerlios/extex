@@ -23,7 +23,7 @@ import java.io.Serializable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.Code;
-import de.dante.extex.interpreter.DimenConvertable;
+import de.dante.extex.interpreter.DimenConvertible;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Catcode;
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class GlueComponent implements Serializable {
 
@@ -57,6 +57,13 @@ public class GlueComponent implements Serializable {
      * @see "TeX -- The Program [101]"
      */
     public static final long ONE = 1 << 16;
+
+    /**
+     * The constant <tt>XXX</tt> contains the ...
+     * Attention: Do not change this value unless reading and understanding
+     * TeX the program!
+     */
+    private static final int FLOAT_DIGITS = 17;
 
     /**
      * The field <tt>order</tt> contains the order of infinity.
@@ -226,17 +233,18 @@ public class GlueComponent implements Serializable {
 
         Token t = source.scanNonSpace();
         if (t == null) {
-            throw new GeneralHelpingException("Glue: unit not found!"); //TODO
-            // incomplete
+            throw new GeneralHelpingException("TTP.IllegalUnit");
+            //TODO incomplete
         }
 
         value = scanFloat(source, t);
 
-        t = source.scanNonSpace();
+        t = source.getNonSpace();
         if (t == null) {
-            throw new GeneralHelpingException("Glue: unit not found!"); //TODO
-            // incomplete
+            throw new GeneralHelpingException("TTP.IllegalUnit");
+            //TODO incomplete
         }
+
         source.push(t);
         long mag = 1000;
         if (source.scanKeyword("true")) { // cf. TTP[453], TTP[457]
@@ -244,10 +252,10 @@ public class GlueComponent implements Serializable {
             source.push(source.scanNonSpace());
         }
         // cf. TTP[458]
-        if (source.scanKeyword("sp")) {
-            value = value / ONE;
-        } else if (source.scanKeyword("pt")) {
+        if (source.scanKeyword("pt")) {
             // nothing to do
+        } else if (source.scanKeyword("sp")) {
+            value = value / ONE;
         } else if (source.scanKeyword("mm")) {
             value = value * 7227 / 2540;
         } else if (source.scanKeyword("cm")) {
@@ -279,9 +287,9 @@ public class GlueComponent implements Serializable {
         } else if ((t = source.getToken()) != null) {
             if (t instanceof ControlSequenceToken) {
                 Code code = context.getMacro(t.getValue());
-                if (code instanceof DimenConvertable) {
+                if (code instanceof DimenConvertible) {
                     value = value
-                            * ((DimenConvertable) code).convertDimen(context,
+                            * ((DimenConvertible) code).convertDimen(context,
                                                                      source)
                             / ONE;
                 } else {
@@ -335,17 +343,17 @@ public class GlueComponent implements Serializable {
     public static long scanFloat(final TokenSource source, final Token start)
             throws GeneralException {
 
-        long val = 0;
         boolean neg = false;
+        long val = 0;
         int post = 0;
         Token t = start;
         if (t == null) {
             return 0;
         } else if (t.equals(Catcode.OTHER, "-")) {
             neg = true;
-            t = source.scanNonSpace();
+            t = source.getNonSpace();
         } else if (t.equals(Catcode.OTHER, "+")) {
-            t = source.scanNonSpace();
+            t = source.getNonSpace();
         }
         if (t != null && !t.equals(Catcode.OTHER, ".")
             && !t.equals(Catcode.OTHER, ",")) {
@@ -355,21 +363,21 @@ public class GlueComponent implements Serializable {
         if (t != null
             && (t.equals(Catcode.OTHER, ".") || t.equals(Catcode.OTHER, ","))) {
             // @see "TeX -- The Program [102]"
-            int[] dig = new int[17];
+            int[] dig = new int[FLOAT_DIGITS];
             int k = 0;
             for (t = source.getToken(); t != null && t.isa(Catcode.OTHER)
                                         && t.getValue().matches("[0-9]"); t = source
-                    .scanToken()) {
-                if (k < 17) {
+                    .getToken()) {
+                if (k < FLOAT_DIGITS) {
                     dig[k++] = t.getValue().charAt(0) - '0';
                 }
             }
-            if (k < 17) {
-                k = 17;
+            if (k < FLOAT_DIGITS) {
+                k = FLOAT_DIGITS;
             }
             post = 0;
             while (k-- > 0) {
-                post = (post + dig[k] * (1 << 17)) / 10;
+                post = (post + dig[k] * (1 << FLOAT_DIGITS)) / 10;
             }
             post = (post + 1) / 2;
         }

@@ -16,21 +16,24 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type;
 
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Muskip implements Serializable {
+
     /** ... */
     private GlueComponent length = new GlueComponent(0);
 
@@ -44,62 +47,92 @@ public class Muskip implements Serializable {
      * Creates a new object.
      */
     public Muskip() {
+
         super();
     }
 
     /**
      * Creates a new object.
-     * 
-     * @param length ...
-     * @param stretch ...
-     * @param shrink ...
+     *
+     * @param theLength ...
+     * @param theStretch ...
+     * @param theShrink ...
      */
-    public Muskip(final GlueComponent length, final GlueComponent stretch,
-            final GlueComponent shrink) {
+    public Muskip(final GlueComponent theLength,
+            final GlueComponent theStretch, final GlueComponent theShrink) {
+
         super();
-        this.length = length;
-        this.stretch = stretch;
-        this.shrink = shrink;
+        this.length = theLength;
+        this.stretch = theStretch;
+        this.shrink = theShrink;
     }
 
     /**
      * Creates a new object.
-     * 
-     * @param length ...
+     *
+     * @param theLength ...
      */
-    public Muskip(final Dimen length) {
+    public Muskip(final Dimen theLength) {
+
         super();
-        this.length = length;
+        this.length = theLength;
     }
-    
+
     /**
      * Creates a new object.
-     * 
+     *
      * @param source ...
      * @param context ...
      * @throws GeneralException in case of an error
      */
     public Muskip(final TokenSource source, final Context context)
             throws GeneralException {
+
         super();
-        this.length = new Dimen(context, source);
+        this.length = new Dimen(getMu(source, context));
         if (source.scanKeyword("plus")) {
-            this.stretch = new GlueComponent(context, source, true);
+            this.stretch = new GlueComponent(getMu(source, context));
         }
         if (source.scanKeyword("minus")) {
-            this.shrink = new GlueComponent(context, source, true);
+            this.shrink = new GlueComponent(getMu(source, context));
         }
     }
 
     /**
      * ...
-     * 
+     *
+     * @param source
+     * @param context
+     * @return
+     * @throws GeneralException
+     */
+    private long getMu(final TokenSource source, final Context context)
+            throws GeneralException {
+
+        Token t = source.getToken();
+        if (t == null) {
+            throw new RuntimeException("unimplemented");
+        }
+        long value = GlueComponent.scanFloat(source, t);
+        if (!source.scanKeyword("mu")) {
+            throw new RuntimeException("unimplemented");
+        }
+        // TODO: use the math family fonts instead
+        Dimen em = context.getTypesettingContext().getFont().getEm();
+        value = value * em.getValue() / GlueComponent.ONE;
+        return value;
+    }
+
+    /**
+     * ...
+     *
      * @return ...
      */
     public Dimen getLength() {
+
         return new Dimen(length.getValue());
     }
-    
+
     /**
      * ...
      *
@@ -107,7 +140,8 @@ public class Muskip implements Serializable {
      * @see "TeX -- The Program [???]"
      */
     public String toString() {
-        return length.toString()+" "; //TODO incomplete
+
+        return length.toString() + " "; //TODO incomplete
     }
 
 }

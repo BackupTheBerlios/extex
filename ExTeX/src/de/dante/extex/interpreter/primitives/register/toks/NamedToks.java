@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedToks extends AbstractAssignment implements Theable {
 
@@ -86,11 +86,13 @@ public class NamedToks extends AbstractAssignment implements Theable {
      * 
      * @param context the interpreter context
      * @param value the value for the tokens
+     *
+     * @throws GeneralException in case of an error
      */
     public void set(final Context context, final String value)
             throws GeneralException {
 
-        context.setToks(getKey(null), new Tokens(context, value)); //TODO
+        context.setToks(getKey(null), new Tokens(context, value), true); //TODO
     }
 
     /**
@@ -104,10 +106,11 @@ public class NamedToks extends AbstractAssignment implements Theable {
      * @param source the tokensource
      * @param key the key
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     protected void expand(final Flags prefix, final Context context,
         final TokenSource source, final String key) throws GeneralException {
+
         Tokens toks = source.getTokens();
         context.setToks(key, toks, prefix.isGlobal());
         prefix.clear();
@@ -121,7 +124,7 @@ public class NamedToks extends AbstractAssignment implements Theable {
      * @return the key for the current register
      *
      * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this on e is declared.
+     *             Exception this one is declared.
      */
     protected String getKey(final TokenSource source) throws GeneralException {
 
