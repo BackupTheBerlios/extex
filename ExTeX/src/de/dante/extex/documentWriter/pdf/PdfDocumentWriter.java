@@ -48,44 +48,44 @@ import de.dante.util.GeneralException;
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
 public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
-    /**
+   /**
     * The field <tt>out</tt> ...
     */
     private OutputStream out = null;
 
-    /**
+   /**
     * The field <tt>shippedPages</tt> ...
     */
     private int shippedPages = 0;
 
-    /**
+   /**
     * Creates a new object.
     */
     public PdfDocumentWriter(final Configuration cfg) {
         super();
     }
 
-    /**
+   /**
     * @see de.dante.extex.documentWriter.DocumentWriter#getPages()
     */
     public int getPages() {
         return shippedPages;
     }
 
-    /**
+   /**
     * @see de.dante.extex.documentWriter.DocumentWriter#getExtension()
     */
     public String getExtension() {
         return "pdf";
     }
 
-    /**
+   /**
     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
     */
     public void setOutputStream(final OutputStream outStream) {
@@ -99,11 +99,10 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         nodes.visit(this, nodes, null);
     }
 
-    /**
+   /**
     * @see de.dante.extex.documentWriter.DocumentWriter#close()
     */
     public void close() throws IOException {
-        //pdfDoc.getOutlineRoot().setTitle("Erste Schritte");
         FontSetup.addToResources(this.pdfDoc, fontInfo); // ??? //
         pdfDoc.outputTrailer(this.out);
     }
@@ -119,8 +118,10 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     private int pageWD = 595; // "bp"
     private int pageHT = 842; // "bp"  -- A4
-    // Wo abfragen? \paperwidth / \paperheight, \mediawidth / \mediaheight ???
-
+    // TeX primitives should set the papersize in any way:
+    //   o \paperwidth   / \paperheight, 
+    //   o \pdfpagewidth / \pdfpageheight <-- pdfTeX
+    //   o \mediawidth   / \mediaheight   <-- VTeX
     private FontInfo fontInfo = null;
     private FontState fontState = null;
 
@@ -171,12 +172,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         return null;
     }
 
-    /**
-    * Glue
-    */
     public Object visitGlue(Object value, Object value2) {
         Node node = (Node) value;
-        StringBuffer operators = new StringBuffer(2048);
+        StringBuffer operators = new StringBuffer(256);
         showNode(node, operators);
         debugNode(node);
         if (state == HORIOZONTAL) {
@@ -226,7 +224,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
     public Object visitSpace(Object value, Object value2) {
         Node node = (Node) value;
-        StringBuffer operators = new StringBuffer(2048);
+        StringBuffer operators = new StringBuffer(256);
         operators.append(op.fillColor(Color.YELLOW));
         showNode(node, operators);
         setPosition(node);
@@ -241,17 +239,16 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     public Object visitVerticalList(Object value, Object value2) {
         NodeList nodes = (NodeList) value;
-        StringBuffer operators = new StringBuffer(2048);
+        StringBuffer operators = new StringBuffer(256);
 
         State oldstate = state;
         state = VERTICAL;
         // float wd = (float) nodes.getWidth().toBP();
         float ht = (float) nodes.getHeight().toBP();
-        // float dp = (float) nodes.getDepth().toBP();
+        // float dp = (float) nodes.getDepth().toBP();        
+	// the upper left corner of the main vbox has an offset of 1in. 
         lastX = currentX = 72;
         lastY = currentY = 72 + ht;
-        // Basepoint setzen, so dass linke obere Ecke der
-        // Vbox bei 1in Offset erscheint.
         lastDP = 0.0f;
         System.out.println("\n");
 
@@ -293,7 +290,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     public Object visitHorizontalList(Object value, Object value2) {
 
         NodeList n = (HorizontalListNode) value;
-        //StringBuffer operators = new StringBuffer(2048);
+        //StringBuffer operators = new StringBuffer(256);
 
         State oldstate = state;
         state = HORIOZONTAL;
@@ -327,7 +324,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     public Object visitChar(Object value, Object value2) {
         Node node = (Node) value;
-        StringBuffer operators = new StringBuffer(2048);
+        StringBuffer operators = new StringBuffer(256);
         operators.append(op.fillColor(Color.GREEN));
         showNode(node, operators);
         debugNode(node);
@@ -337,7 +334,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     // -------------------------------------------------
 
-    /**
+   /**
     * NodeVisitor for debug.
     */
     private class DebugVisitor implements NodeVisitor {
@@ -387,6 +384,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
             Node node = (Node) value2;
             sb.append("Char");
             sb.append(metric(node));
+	    sb.append("\t" + node.toString());
             return null;
         }
 
@@ -409,9 +407,9 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         public Object visitGlue(Object value, Object value2) {
             StringBuffer sb = (StringBuffer) value;
             GlueNode node = (GlueNode) value2;
-            sb.append("Glue\t" + node.getWidth().toPT());
-            //gene: corrections during merging
+            sb.append("Glue");
             sb.append(metric(node));
+	    //sb.append("  " + node.getWidth().toPT());
             return null;
         }
 
@@ -501,7 +499,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     }
 
-    /**
+   /**
     * debug
     */
     private void debugNode(Node node) {
@@ -524,7 +522,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         onlyStroke = false;
         //        markOrigin = false;
-        // operators = new StringBuffer(2048);
+        // operators = new StringBuffer(256);
 
         //      try {
         //            node.visit(this, node, null);
@@ -541,8 +539,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         else
             cs.add(op.fillStroke());
 
-        if (dp > 0.0) {
-            // Basislinie
+        if (dp > 0.0) { // baseline
             cs.add(op.gSave());
             cs.add(op.setLineDash(.3f, .3f));
             cs.add(op.moveTo(currentX, currentY));
@@ -623,22 +620,22 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     //        //      }
     //    }
 
-    /**
+   /**
     * Opens/setups the document
     */
     private void initDocument() throws IOException {
 
         pdfDoc = new PDFDocument();
 
-        pdfDoc.setProducer("ExTeX-0.00"); // Wo abfragen?
+        pdfDoc.setProducer("ExTeX-0.00"); // Where is this defined?
 
-        /*
-        Wie setzt man das?
-        
-        /Author, /Title, /Creator, /Keywords, /CreationDate
-        
-        Wie kann man testweise Kompression ausschalten?
-        */
+      /*
+         How can we set the following?
+      
+         /Author, /Title, /Creator, /Keywords, /CreationDate 
+         
+         How can we switch off the compression?
+      */
 
         fontInfo = new FontInfo();
 
@@ -657,7 +654,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
     }
 
-    /**
+   /**
     * Creates/setups a new page
     */
     private void newPage() throws IOException {
@@ -676,7 +673,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     // ---------------------------------------------------------------------------
-    /**
+   /**
     * State
     */
     private static class State {
@@ -685,20 +682,20 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         }
     }
 
-    /**
-	* in vertical mode
-	*/
-	private final static State VERTICAL = new State();
+   /**
+    * in vertical mode
+    */
+    private final static State VERTICAL = new State();
 
-	/**
-	* in horizontal mode
-	*/
-	private final static State HORIOZONTAL = new State();
+   /**
+    * in horizontal mode
+    */
+    private final static State HORIOZONTAL = new State();
 
-	/**
-	* the current mode
-	*/
-	private State state = VERTICAL;
-	// ---------------------------------------------------------------------------
+   /**
+    * the current mode
+    */
+    private State state = VERTICAL;
+    // ---------------------------------------------------------------------------
 
 }
