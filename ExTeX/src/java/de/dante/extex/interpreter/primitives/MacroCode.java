@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -37,9 +38,10 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class MacroCode extends AbstractCode implements Code {
+public class MacroCode extends AbstractCode implements Code, ExpandableCode {
+
     /**
      * The field <tt>body</tt> contains the tokens of the macro expansion text.
      */
@@ -73,15 +75,15 @@ public class MacroCode extends AbstractCode implements Code {
      *
      * @param name the initial name of the macro
      * @param flags the flags controlling the behavior of the macro
-     * @param pattern the pattern for the acquiring of the arguments
-     * @param body the expansion text
+     * @param thePattern the pattern for the acquiring of the arguments
+     * @param theBody the expansion text
      */
     public MacroCode(final String name, final Flags flags,
-            final Tokens pattern, final Tokens body) {
+            final Tokens thePattern, final Tokens theBody) {
 
         super(name);
-        this.body = body;
-        this.pattern = pattern;
+        this.body = theBody;
+        this.pattern = thePattern;
         this.notLong = !flags.isLong();
         this.outerP = flags.isOuter(); //TODO: use the flag outer
     }
@@ -131,6 +133,15 @@ public class MacroCode extends AbstractCode implements Code {
         prefix.clear();
     }
 
+    /**
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     */
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        execute(prefix, context, source, typesetter);
+    }
     /**
      * Match the pattern of this macro with the next tokens of the token
      * source. As a result the matching arguments are stored in an array of
