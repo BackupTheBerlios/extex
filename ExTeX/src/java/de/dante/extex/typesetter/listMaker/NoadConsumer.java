@@ -20,6 +20,7 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
@@ -31,7 +32,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface NoadConsumer {
 
@@ -44,6 +45,14 @@ public interface NoadConsumer {
      * @throws GeneralException in case of an error
      */
     void add(Noad noad) throws GeneralException;
+
+    /**
+     * Add some math glue Noad to the internal lust.
+     *
+     * @param glue the glue to add
+     * @throws GeneralException TODO
+     */
+    void add(Muskip glue) throws GeneralException;
 
     /**
      * Process the input until a Noad is completed. A Noad is either a single

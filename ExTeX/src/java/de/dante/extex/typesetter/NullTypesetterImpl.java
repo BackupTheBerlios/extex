@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
@@ -44,7 +45,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -63,6 +64,13 @@ public class NullTypesetterImpl implements Typesetter {
      */
     public void add(final MathClass mclass, final MathGlyph mg)
             throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(de.dante.extex.interpreter.type.muskip.Muskip)
+     */
+    public void add(final Muskip glue) throws GeneralException {
 
     }
 

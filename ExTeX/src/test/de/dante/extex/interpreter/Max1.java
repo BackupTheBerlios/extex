@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -53,7 +54,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public class Max1 extends TestCase {
 
@@ -73,6 +74,13 @@ public class Max1 extends TestCase {
          */
         public void add(final MathClass mclass, final MathGlyph mg)
                 throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(de.dante.extex.interpreter.type.muskip.Muskip)
+         */
+        public void add(final Muskip glue) throws GeneralException {
 
         }
 
@@ -228,6 +236,7 @@ public class Max1 extends TestCase {
          */
         public Noad scanNoad(final Context context, final TokenSource source)
                 throws GeneralException {
+
             throw new MathHelpingException("???");
         }
 
@@ -311,8 +320,8 @@ public class Max1 extends TestCase {
          *      Context,
          *      TokenSource, de.dante.extex.scanner.Token)
          */
-        public void subscriptMark(Context context, TokenSource source, final Token t)
-                throws GeneralException {
+        public void subscriptMark(Context context, TokenSource source,
+                final Token t) throws GeneralException {
 
         }
 
@@ -321,8 +330,8 @@ public class Max1 extends TestCase {
          *      Context,
          *      TokenSource, de.dante.extex.scanner.Token)
          */
-        public void superscriptMark(Context context, TokenSource source, final Token t)
-                throws GeneralException {
+        public void superscriptMark(Context context, TokenSource source,
+                final Token t) throws GeneralException {
 
         }
 
@@ -365,8 +374,8 @@ public class Max1 extends TestCase {
          *      Context,
          *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
          */
-        public void treatLetter(Context context, TypesettingContext tc, UnicodeChar uc)
-                throws GeneralException {
+        public void treatLetter(Context context, TypesettingContext tc,
+                UnicodeChar uc) throws GeneralException {
 
         }
 
