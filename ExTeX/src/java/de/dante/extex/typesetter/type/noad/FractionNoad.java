@@ -22,7 +22,7 @@ package de.dante.extex.typesetter.type.noad;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.Delimiter;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
@@ -32,7 +32,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FractionNoad extends AbstractNoad implements Noad {
 
@@ -57,13 +57,13 @@ public class FractionNoad extends AbstractNoad implements Noad {
      * The field <tt>leftDelimiter</tt> contains the left delimiter or
      * <code>null</code> if none is set.
      */
-    private Delimiter leftDelimiter;
+    private MathDelimiter leftDelimiter;
 
     /**
      * The field <tt>rightDelimiter</tt> contains the right delimiter or
      * <code>null</code> if none is set
      */
-    private Delimiter rightDelimiter;
+    private MathDelimiter rightDelimiter;
 
     /**
      * Creates a new object.
@@ -77,7 +77,7 @@ public class FractionNoad extends AbstractNoad implements Noad {
      *  default thickness
      */
     public FractionNoad(final MathList denom, final MathList num,
-            final Delimiter leftDelimiter, final Delimiter rightDelimiter,
+            final MathDelimiter leftDelimiter, final MathDelimiter rightDelimiter,
             final Dimen thickness) {
 
         super();

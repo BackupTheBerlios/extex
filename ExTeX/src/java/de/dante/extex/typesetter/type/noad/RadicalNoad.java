@@ -21,14 +21,14 @@ package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.Delimiter;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
  * This noad represents mathematical material under a radical sign.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class RadicalNoad extends AbstractNucleusNoad {
 
@@ -38,7 +38,7 @@ public class RadicalNoad extends AbstractNucleusNoad {
      *
      * @see "TTP [683]"
      */
-    private Delimiter leftDelimiter;
+    private MathDelimiter leftDelimiter;
 
     /**
      * Creates a new object.
@@ -47,7 +47,7 @@ public class RadicalNoad extends AbstractNucleusNoad {
      *  square root symbol
      * @param nucleus the nucleus under the radical
      */
-    public RadicalNoad(final Delimiter leftDelimiter, final Noad nucleus) {
+    public RadicalNoad(final MathDelimiter leftDelimiter, final Noad nucleus) {
 
         super(nucleus);
         this.leftDelimiter = leftDelimiter;
