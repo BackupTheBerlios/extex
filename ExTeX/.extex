@@ -17,7 +17,7 @@ extex.typesetter= devel
 ##    to use. This configuration resource is sought on the classpath.
 ##-----------------------------------------------------------------------------
 ##
-extex.encoding = ISO-8859-1 
+#extex.encoding = ISO-8859-1 
 ##    This parameter contains the name of the property for the
 ##    standard encoding to use.
 ##-----------------------------------------------------------------------------
