@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -72,7 +72,7 @@ public class MacroCode extends AbstractCode
     /**
      * The field <tt>numberOfParams</tt> contains the number of parameters used.
      */
-    private int numberOfParams = 10;
+    private int numberOfParams = 10; //TODO: adjust to the correct value
 
     /**
      * The field <tt>outerP</tt> contains the indicator for outer definitions.
