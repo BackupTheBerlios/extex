@@ -37,15 +37,16 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class NamedMuskip extends AbstractAssignment {
+public class MuskipParameter extends AbstractAssignment {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NamedMuskip(final String name) {
+    public MuskipParameter(final String name) {
         super(name);
     }
 

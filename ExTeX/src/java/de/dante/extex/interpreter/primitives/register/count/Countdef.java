@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive
  * <code>\countdef</code>.
  *
- * <doc>
+ * <doc name="countdef">
  * <h3>The Primitive <tt>\countdef</tt></h3>
  * <p>
  *  ...
@@ -42,7 +42,9 @@ import de.dante.util.GeneralException;
  *    de.dante.extex.interpreter.TokenSource#getControlSequence()
  *    &lang;control sequence&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ *    &lang;equals&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;}</pre>
  * </p>
  * <p>
  *  Examples:
@@ -75,7 +77,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "count#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Countdef extends AbstractCount {
 
@@ -103,7 +105,7 @@ public class Countdef extends AbstractCount {
         Token cs = source.getControlSequence();
         source.getOptionalEquals();
         String key = getKey(source);
-        context.setCode(cs, new NamedCount(key), prefix.isGlobal());
+        context.setCode(cs, new IntegerParameter(key), prefix.isGlobal());
     }
 
 }

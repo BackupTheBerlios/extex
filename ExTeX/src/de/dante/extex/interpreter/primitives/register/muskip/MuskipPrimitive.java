@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  *
  * <p>
  * All features are inherited from
- * {@link de.dante.extex.interpreter.primitives.register.muskip.NamedMuskip NamedMuskip}.
+ * {@link de.dante.extex.interpreter.primitives.register.muskip.MuskipParameter MuskipParameter}.
  * Just the key has to be provided under which this Muskip has to be stored.
  * This key is constructed from the name, a hash mark and the running number.
  * </p>
@@ -41,14 +41,14 @@ import de.dante.util.GeneralException;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class NumberedMuskip extends NamedMuskip {
+public class MuskipPrimitive extends MuskipParameter {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NumberedMuskip(final String name) {
+    public MuskipPrimitive(final String name) {
         super(name);
     }
 

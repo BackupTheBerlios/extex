@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\skipdef</code>.
  *
- * <doc>
+ * <doc name="skipdef">
  * <h3>The Primitive <tt>\skipdef</tt></h3>
  * <p>
  *  ...
@@ -42,7 +42,9 @@ import de.dante.util.GeneralException;
  *    de.dante.extex.interpreter.TokenSource#getControlSequence()
  *    &lang;control sequence&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ *    &lang;equals&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -67,7 +69,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "skip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Skipdef extends AbstractAssignment {
 
@@ -95,7 +97,7 @@ public class Skipdef extends AbstractAssignment {
         source.getOptionalEquals();
         //todo: unfortunately we have to know the internal format of the key:-(
         String key = "skip#" + Long.toString(Count.scanCount(context, source));
-        context.setCode(cs, new NamedSkip(key), prefix.isGlobal());
+        context.setCode(cs, new SkipParameter(key), prefix.isGlobal());
 
     }
 }

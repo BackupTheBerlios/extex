@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\muskipdef</code>.
  *
- * <doc>
+ * <doc name="muskipdef">
  * <h3>The Primitive <tt>\muskipdef</tt></h3>
  * <p>
  *  ...
@@ -43,7 +43,9 @@ import de.dante.util.GeneralException;
  *    de.dante.extex.interpreter.TokenSource#getControlSequence()
  *    &lang;control sequence&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ *    &lang;equals&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -68,9 +70,9 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "muskip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Muskipdef extends AbstractAssignment {
+public class Muskipdef extends AbstractMuskip {
 
     /**
      * Creates a new object.
@@ -95,9 +97,7 @@ public class Muskipdef extends AbstractAssignment {
 
         Token cs = source.getControlSequence();
         source.getOptionalEquals();
-        //todo: unfortunately we have to know the internal format of the key:-(
-        String key = "muskip#"
-                     + Long.toString(Count.scanCount(context, source));
-        context.setCode(cs, new NamedMuskip(key), prefix.isGlobal());
+        String key = getKey(source, context.getNamespace());
+        context.setCode(cs, new MuskipParameter(key), prefix.isGlobal());
     }
 }

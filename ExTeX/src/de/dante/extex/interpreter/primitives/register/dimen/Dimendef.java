@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\dimendef</code>.
  *
- * <doc>
+ * <doc name="dimendef">
  * <h3>The Primitive <tt>\dimendef</tt></h3>
  * <p>
  *  ...
@@ -41,7 +41,9 @@ import de.dante.util.GeneralException;
  *    de.dante.extex.interpreter.TokenSource#getControlSequence()
  *    &lang;control sequence&rang;} {@linkplain
  *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} &lang;8-bit number&rang;</pre>
+ *    &lang;equals&rang;} {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -66,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Dimendef extends AbstractDimen {
 
@@ -94,7 +96,7 @@ public class Dimendef extends AbstractDimen {
         Token cs = source.getControlSequence();
         source.getOptionalEquals();
         String key = getKey(source, context.getNamespace());
-        context.setCode(cs, new NamedDimen(key), prefix.isGlobal());
+        context.setCode(cs, new DimenParameter(key), prefix.isGlobal());
     }
 
 }
