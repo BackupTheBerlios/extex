@@ -413,7 +413,7 @@
   <define name="nolimits"
           class="de.dante.extex.interpreter.primitives.math.Nolimits"/>
   <define name="nonscript"
-          class="de.dante.extex.interpreter.primitives.math.style.Nonscript"/>
+          class="de.dante.extex.interpreter.primitives.math.Nonscript"/>
   <define name="nonstopmode"
           class="de.dante.extex.interpreter.primitives.interaction.Nonstopmode"/>
   <define name="nulldelimiterspace"

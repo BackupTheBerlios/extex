@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.math.style;
+package de.dante.extex.interpreter.primitives.math;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 public class Nonscript extends AbstractCode {
 
