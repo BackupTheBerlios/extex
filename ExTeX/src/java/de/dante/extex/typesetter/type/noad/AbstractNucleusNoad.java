@@ -23,7 +23,7 @@ package de.dante.extex.typesetter.type.noad;
  * This abstract noad represents a Noad with a nucleus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractNucleusNoad extends AbstractNoad {
 
@@ -51,15 +51,6 @@ public abstract class AbstractNucleusNoad extends AbstractNoad {
     public Noad getNucleus() {
 
         return this.nucleus;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb) {
-
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
     }
 
 }
