@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\hyphenchar</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HyphencharTest extends ExTeXLauncher {
 
@@ -236,7 +236,7 @@ public class HyphencharTest extends ExTeXLauncher {
         runCode(//--- input code ---
                 "\\font\\x=cmtt12"
                 + "\\hyphenchar\\x =123 \\relax"
-                + "\\count1=\\hyphenchar\\nullfont"
+                + "\\count1=\\hyphenchar\\x"
                 + "\\the\\count 1"
                 + "\\end ",
                 //--- log message ---

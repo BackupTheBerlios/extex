@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * Implemetation for a font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontImpl implements Font, Serializable {
 
@@ -60,7 +60,7 @@ public class FontImpl implements Font, Serializable {
     /**
      * skew-char
      */
-    private UnicodeChar skewchar = new UnicodeChar('-');
+    private UnicodeChar skewchar = new UnicodeChar(-1);
 
     /**
      * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
