@@ -41,7 +41,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TokenStreamImpl extends TokenStreamBufferImpl {
 
@@ -174,7 +174,6 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 
         CharBuffer buffer = decoder.decode(ByteBuffer.wrap(line.getBytes()));
         setBuffer(buffer);
-        pointer = 0;
         return true;
     }
 }

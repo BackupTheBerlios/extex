@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 
 /**
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
@@ -86,7 +86,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * is an invariant: to read a character this pointer has to be advanced
      * first.
      */
-    protected int pointer = -1;
+    private int pointer = -1;
 
     /**
      * The buffer to read from. The line is empty initially.
