@@ -1,6 +1,6 @@
 ; author: Sebastian Waschik
 ; created: 2004-07-26
-; RCS-ID: $Id: .prj.el,v 1.1 2004/08/18 17:43:27 plaicy Exp $
+; RCS-ID: $Id: .prj.el,v 1.2 2004/08/19 17:10:04 plaicy Exp $
 (jde-project-file-version "1.0")
 (jde-set-variables
  '(jde-project-name "ExTeX")
@@ -24,7 +24,8 @@
  ;; checkstyle
  '(jde-checkstyle-classpath
    (quote
-    ("./lib.develop/checkstyle-all-3.4.jar")))
+    ("./lib.develop/checkstyle-all-3.4.jar"
+     "./lib.develop/checkstyle-optional-3.4.jar")))
  '(jde-checkstyle-style "./.checkstyle.cfg")
 
  ;; compile
