@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Mathchardef extends AbstractAssignment {
 
@@ -58,7 +58,7 @@ public class Mathchardef extends AbstractAssignment {
         Token cs = source.getControlSequence();
         source.scanOptionalEquals();
         Count mathchar = new Count(context, source);
-        context.setCode(cs, new MathcharFix(cs.toString(), mathchar),
+        context.setCode(cs, new MathcharCode(cs.toString(), mathchar),
                 prefix.isGlobal());
     }
 

@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class MathcharFix extends Mathchar {
+public class MathcharCode extends Mathchar {
 
     /**
      * The field <tt>mathchar</tt> contains the ...
@@ -44,7 +44,7 @@ public class MathcharFix extends Mathchar {
      * @param name the name for debugging
      * @param mc ...
      */
-    public MathcharFix(final String name, final Count mc) {
+    public MathcharCode(final String name, final Count mc) {
 
         super(name);
         mathchar = mc;
