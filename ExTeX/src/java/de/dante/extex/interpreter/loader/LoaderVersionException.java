@@ -23,14 +23,14 @@ package de.dante.extex.interpreter.loader;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LoaderVersionException extends LoaderException {
 
     /**
      * Creates a new object.
      *
-     * @param arg0 ...
+     * @param arg0 the message
      */
     public LoaderVersionException(final String arg0) {
 

@@ -25,14 +25,14 @@ import java.util.logging.Logger;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface LoggerTaker {
 
     /**
-     * ...
+     * Setter for the logger.
      *
-     * @param logger ...
+     * @param logger the logger to use
      */
     void setLogger(Logger logger);
 }

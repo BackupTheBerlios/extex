@@ -42,6 +42,7 @@ import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.InitializableCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
@@ -83,12 +84,12 @@ import de.dante.util.observer.SwitchObserver;
 import de.dante.util.resource.ResourceFinder;
 
 /**
- * This is a reference implementation for a <b>MA </b>cro e <b>X </b>pander. The
+ * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander. The
  * macro expander is the core engine driving ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Max extends Moritz
         implements
@@ -99,7 +100,7 @@ public class Max extends Moritz
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * to be used to extract the class name foprm the configuration.
+     * to be used to extract the class name for the configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
@@ -142,7 +143,7 @@ public class Max extends Moritz
 
     /**
      * The error handler is invoked whenever an error is detected. If none is
-     * registered then the default behaviour is shown.
+     * registered then the default behavior is shown.
      */
     private ErrorHandler errorHandler = null;
 
@@ -202,41 +203,41 @@ public class Max extends Moritz
     /**
      * Apply the configuration options found in the given configuration object.
      *
-     * @param config the configuration object to consider.
+     * @param configuration the configuration object to consider.
      *
      * @throws ConfigurationException in case of a configuration error
      */
-    public void configure(final Configuration config)
+    public void configure(final Configuration configuration)
             throws ConfigurationException {
 
-        super.configure(config);
+        super.configure(configuration);
 
-        if (config == null) {
+        if (configuration == null) {
             throw new ConfigurationMissingException("Interpreter");
         }
 
-        context = new ContextFactory(config.getConfiguration("Context"))
+        context = new ContextFactory(configuration.getConfiguration("Context"))
                 .newInstance(null);
-        context.setTokenFactory(new TokenFactoryImpl()); //TODO
-        setContext(context);
+        context.setTokenFactory(new TokenFactoryImpl()); //TODO I hate Impls in code
+
         try {
             context.setInteraction(Interaction.ERRORSTOPMODE, true);
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
 
-        maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
+        maxErrors = configuration.getValueAsInteger("maxErrors", maxErrors);
 
         TokenFactory tokenFactory = context.getTokenFactory();
 
-        Iterator iterator = config.iterator("primitives");
+        Iterator iterator = configuration.iterator("primitives");
 
         while (iterator.hasNext()) {
             Configuration cfg = (Configuration) iterator.next();
             definePrimitives(cfg, tokenFactory);
         }
 
-        definePrimitives(config, tokenFactory);
+        definePrimitives(configuration, tokenFactory);
 
         context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
         context.setCount("month", calendar.get(Calendar.MONTH), true);
@@ -244,27 +245,27 @@ public class Max extends Moritz
         context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
                 * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
 
-        everyRun = config.findConfiguration("everyjob");
+        everyRun = configuration.findConfiguration("everyjob");
     }
 
     /**
      * Scan a configuration and define primitives found.
      *
-     * @param config the configuration to scan
+     * @param configuration the configuration to scan
      * @param tokenFactory the token factory to use
      *
      * @throws ConfigurationException in case of an error
      * <ul>
-     *  <li>ConfigurationMissingAttributeException ...</li>
-     *  <li>ConfigurationInstantiationException ...</li>
-     *  <li>ConfigurationClassNotFoundException ...</li>
-     *  <li>ConfigurationWrapperException ...</li>
+     *  <li>ConfigurationMissingAttributeException in case of a missing argument</li>
+     *  <li>ConfigurationInstantiationException in case of an error during instantiation</li>
+     *  <li>ConfigurationClassNotFoundException in case of a missing class</li>
+     *  <li>ConfigurationWrapperException in case of another error which is wrapped</li>
      * </ul>
      */
-    private void definePrimitives(final Configuration config,
+    private void definePrimitives(final Configuration configuration,
             final TokenFactory tokenFactory) throws ConfigurationException {
 
-        Iterator iterator = config.iterator("define");
+        Iterator iterator = configuration.iterator("define");
 
         while (iterator.hasNext()) {
             Configuration cfg = (Configuration) iterator.next();
@@ -288,6 +289,9 @@ public class Max extends Moritz
                         .newInstance(new Object[]{name}));
                 context.setCode(tokenFactory.createToken(Catcode.ESCAPE, name,
                         Namespace.DEFAULT_NAMESPACE), code, true);
+                if (code instanceof InitializableCode) {
+                    ((InitializableCode) code).init(context, cfg.getValue());
+                }
             } catch (IllegalArgumentException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (SecurityException e) {
@@ -305,7 +309,7 @@ public class Max extends Moritz
             } catch (NoSuchMethodException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname, config);
+                throw new ConfigurationClassNotFoundException(classname, configuration);
             } catch (GeneralException e) {
                 throw new ConfigurationWrapperException(e);
             }
@@ -313,13 +317,11 @@ public class Max extends Moritz
     }
 
     /**
-     * This method contaons the main execution loop.
+     * This method contains the main execution loop.
      *
-     * @param onceMore
-     *            switch to controll the termination of the execution
+     * @param onceMore switch to control the termination of the execution
      *
-     * @throws GeneralException
-     *             in case of an error
+     * @throws GeneralException in case of an error
      */
     private void execute(final Switch onceMore) throws GeneralException {
 
@@ -330,7 +332,7 @@ public class Max extends Moritz
             try {
                 current.visit(this, null, null);
             } catch (PanicException e) {
-                throw e; //TODO report the problem and terminate
+                throw e;
             } catch (GeneralException e) {
                 if (++errorCount > maxErrors) { // cf. TTP[82]
                     throw new PanicException("TTP.ErrorLimitReached", Integer
@@ -424,12 +426,12 @@ public class Max extends Moritz
     }
 
     /**
-     * ...
+     * Load the format from an external source.
      *
      * @param stream the stream to read the format information from
      *
      * @throws LoaderException in case that a class could not be found
-     *  on the classpath or a wrong class is contained in the format
+     *  on the class path or a wrong class is contained in the format
      * @throws IOException in case that an IO error occurs during the reading
      *  of the format
      *
@@ -463,23 +465,23 @@ public class Max extends Moritz
      *  </tr>
      *  <tr>
      *   <td>error</td>
-     *   <td>...</td>
+     *   <td>in case of an error</td>
      *  </tr>
      *  <tr>
      *   <td>expand</td>
-     *   <td>...</td>
+     *   <td>in case of an expansion</td>
      *  </tr>
      *  <tr>
      *   <td>pop</td>
-     *   <td>inherited from the super class</td>
+     *   <td>inherited from the super class {@link Moritz Moritz}</td>
      *  </tr>
      *  <tr>
      *   <td>push</td>
-     *   <td>inherited from the super class</td>
+     *   <td>inherited from the super class {@link Moritz Moritz}</td>
      *  </tr>
      *  <tr>
      *   <td>EOF</td>
-     *   <td>inherited from the super class</td>
+     *   <td>inherited from the super class {@link Moritz Moritz}</td>
      *  </tr>
      * </table>
      *
@@ -532,13 +534,10 @@ public class Max extends Moritz
     /**
      * Add a token stream and start processing it.
      *
-     * @param stream
-     *            the input stream to consider
+     * @param stream the input stream to consider
      *
-     * @throws ConfigurationException
-     *             in case of a configuration error
-     * @throws GeneralException
-     *             in case of another error
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
      *
      * @see #run()
      */
@@ -564,8 +563,7 @@ public class Max extends Moritz
      * Setter for the error handler. The value of <code>null</code> can be
      * used to delete the error handler currently set.
      *
-     * @param handler
-     *            the new error handler
+     * @param handler the new error handler
      */
     public void setErrorHandler(final ErrorHandler handler) {
 
@@ -575,8 +573,7 @@ public class Max extends Moritz
     /**
      * Setter for the file finder.
      *
-     * @param fileFinder
-     *            the new file finder
+     * @param fileFinder the new file finder
      */
     public void setFileFinder(final ResourceFinder fileFinder) {
 
@@ -758,7 +755,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a macro parameter token.
-     * In TeX this normally is a #.
+     * In TeX this normally is a <tt>#</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -779,7 +776,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a math shift token.
-     * In TeX this normally is a $.
+     * In TeX this normally is a <tt>$</tt>.
      *
      *
      *
@@ -889,7 +886,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a sub mark token.
-     * In TeX this normally is a _.
+     * In TeX this normally is a <tt>_</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -915,7 +912,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a sup mark token.
-     * In TeX this normally is a ^.
+     * In TeX this normally is a <tt>^</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
@@ -941,7 +938,7 @@ public class Max extends Moritz
 
     /**
      * This visit method is invoked on a tab mark token.
-     * In TeX this normally is a &.
+     * In TeX this normally is a <tt>&amp;</tt>.
      *
      * @param token the first argument to pass is the token to expand.
      * @param ignore the second argument is ignored
