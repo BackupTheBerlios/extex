@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,10 @@
  */
 package de.dante.extex.main;
 
-import java.util.logging.Logger;
+import java.util.logging.Handler;
+import java.util.logging.Level;
 
+import de.dante.extex.interpreter.Interaction;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 
@@ -27,22 +29,24 @@ import de.dante.util.observer.Observer;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class FileOpenObserver implements Observer {
+public class InteractionObserver implements Observer {
 
     /**
-     * The field <tt>logger</tt> contains the ...
+     * The field <tt>handler</tt> contains the {@link java.util.logging.Handler
+     * Handler} at which the logging should be directed.
      */
-    private Logger logger;
+    private Handler handler;
 
     /**
      * Creates a new object.
      *
+     * @param theHandler the target handler
      */
-    public FileOpenObserver(final Logger logger) {
+    public InteractionObserver(final Handler theHandler) {
         super();
-        this.logger = logger;
+        this.handler = theHandler;
     }
 
     /**
@@ -51,7 +55,8 @@ public class FileOpenObserver implements Observer {
      */
     public void update(final Observable observable, final Object item) {
 
-        logger.info("(" + item.toString());
+        handler.setLevel((Interaction) item == Interaction.BATCHMODE //
+                ? Level.SEVERE : Level.INFO);
     }
 
 }

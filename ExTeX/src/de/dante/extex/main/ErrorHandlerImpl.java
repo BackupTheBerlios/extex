@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -39,12 +39,12 @@ import de.dante.util.configuration.ConfigurationException;
  * <p>
  * The GeneralHelpingException is capable of carrying a name and two arguments
  * for the error message. This class can be queried to provide additional help
- * concerning the error at hand. 
+ * concerning the error at hand.
  * See {@link GeneralHelpingException GeneralHelpingException} for details.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     /**
@@ -58,11 +58,11 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     /**
      * Creates a new object.
      *
-     * @param logger the logger for the interaction logging
+     * @param theLogger the logger for the interaction logging
      */
-    public ErrorHandlerImpl(final Logger logger) {
+    public ErrorHandlerImpl(final Logger theLogger) {
         super();
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
@@ -133,7 +133,7 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                                 source.getToken();
                             }
                             firstHelp = false;
-                            e = new GeneralHelpingException("unimplemented");//TODO
+                            e = new GeneralHelpingException("unimplemented"); //TODO
                             break;
                         case 'd' :
                         case 'D' :
@@ -146,7 +146,8 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                         case 'i' :
                         case 'I' :
                             source.addStream(source.getTokenStreamFactory()
-                                    .newInstance(line.substring(1)));// mgn: changed
+                                    .newInstance(line.substring(1),
+                                                 "ISO-8859-1"));
                             //TODO: better guess for the encoding?
                             break;
                         case 'h' :
@@ -230,14 +231,14 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     /**
      * ...
      *
-     * @param n ...
-     * @return ...
+     * @param n the pointing position
+     * @return the string representation of the pointer
      */
     private String point(final int n) {
 
         StringBuffer sb = new StringBuffer();
 
-        for (int i = n; i >= 0; i--) {
+        for (int i = n; i > 0; i--) {
             sb.append('_');
         }
         sb.append('^');
