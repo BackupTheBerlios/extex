@@ -60,7 +60,7 @@ import de.dante.util.framework.i18n.Localizable;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Unless extends AbstractIf implements Localizable {
     /**
@@ -98,9 +98,9 @@ public class Unless extends AbstractIf implements Localizable {
         code = context.getCode(token);
 
         // TODO: this does not work with \def-ifs (TE)
-        try {
+        if (code instanceof AbstractIf) {
             abstractIf = (AbstractIf) code;
-        } catch (ClassCastException e) {
+        } else {
              // TODO: message (TE)
             throw new HelpingException(localizer, "Except If Conditional",
                                        printableControlSequence(context));
