@@ -1,15 +1,16 @@
    <div class="info">
     Team Members
     <div class="infoitems">
-    <a href="mailto:bronger@physik.rwth-aachen.de">Torsten Bronger </a><br/>
-    <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a><br/>
-    <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a><br/>
-    <a href="mailto:markus.kohm@gmx.de">Markus Kohm</a><br/>
-    <a href="mailto:raichle@Informatik.Uni-Stuttgart.DE">Bernd Raichle</a><br/>
-    <a href="mailto:rolf.niepraschk@ptb.de">Rolf Niepraschk</a><br/>
-    <a href="mailto:torsten@kryger.de">Torsten Krüger</a><br/>
-    <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a><br/>
-    David Kastrup<br/>
+    <a href="mailto:bronger@physik.rwth-aachen.de">Torsten Bronger </a><br />
+    <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a><br />
+    <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a><br />
+    <a href="mailto:markus.kohm@gmx.de">Markus Kohm</a><br />
+    <a href="mailto:raichle@Informatik.Uni-Stuttgart.DE">Bernd Raichle</a><br />
+    <a href="mailto:rolf.niepraschk@ptb.de">Rolf Niepraschk</a><br />
+    <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a><br />
+    <a href="mailto:torsten@kryger.de">Torsten Krüger</a><br />
+    Andre Wobst<br />
+    David Kastrup<br />
     </div>
    </div>
    <div class="info">
@@ -30,6 +31,6 @@
                                       width="124px"
                                       height="32px"
                                       border="0"
-                                      alt="BerliOS Developer Logo"></a></div>
+                                      alt="BerliOS"></a></div>
    </div>
    
