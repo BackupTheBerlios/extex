@@ -76,8 +76,13 @@
         </fileset>
     </path>
 
-    <taskdef resource="checkstyletask.properties"
-             classpath="lib.develop/checkstyle-all-3.4.jar"/>
+    <taskdef resource="checkstyletask.properties">
+        <classpath>
+            <pathelement location="lib.develop/checkstyle-all-3.4.jar"/>
+            <pathelement location="lib.develop/checkstyle-optional-3.4.jar"/>
+        </classpath>
+    </taskdef>
+
     <taskdef name="izpack"
              classpath="util/Installer/IzPack/lib/compiler.jar"
              classname="com.izforge.izpack.ant.IzPackTask"/>
