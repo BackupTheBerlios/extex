@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+
+<installation version="1.0">
+    <info>
+        <appname>ExTeX</appname>
+        <appversion>0.1</appversion>
+        <authors>
+            <author name="Gerd Neugebauer" email="gene@gerd-neugebauer.de"/>
+            <author name="Michael Niedermair" email="m.g.n@gmx.de"/>
+            <author name="Rolf Niepraschk" email="rolf.niepraschk@ptb.de"/>
+        </authors>
+        <url>http://www.extex.org/</url>
+        <javaversion>1.4</javaversion>
+    </info>
+    
+    <guiprefs width="640" height="440" resizable="yes"/>
+
+    <locale>
+        <langpack iso3="eng"/>
+        <langpack iso3="eng"/>
+    </locale>
+
+    <resources>
+        <res id="LicencePanel.licence" src="LICENCE.txt"/>
+        <res id="HTMLInfoPanel.info" src="Readme.html"/>
+        <res id="installer.langsel.img" src="ExTeX.png" />
+        <res id="Installer.image" src="ExTeX.png" />
+    </resources>
+
+    <panels>
+        <panel classname="HelloPanel"/>
+        <panel classname="HTMLInfoPanel"/>
+        <panel classname="LicencePanel"/>
+        <panel classname="TargetPanel"/> 
+        <panel classname="PacksPanel"/>
+        <panel classname="InstallPanel"/>
+        <panel classname="FinishPanel"/>
+    </panels>
+
+    <packs>
+        <pack name="Core" required="yes">
+            <description>The core engine includes a TeX compatible
+            implementation of a typesetter.
+            </description>
+            <file src="Readme.txt" targetdir="$INSTALL_PATH"/>
+            <file src="../../LICENCE.txt" targetdir="$INSTALL_PATH"/>
+            <file src="script.bat" targetdir="$INSTALL_PATH"/>
+            <parsable targetfile="$INSTALL_PATH/script.bat"/> <!-- The file will be parsed -->
+        </pack>
+        <pack name="Docs" required="no">
+            <description>The documentation</description>
+            <file src="doc" targetdir="$INSTALL_PATH"/> <!-- Reccursive adding -->
+        </pack>
+        <pack name="Sources" required="no">
+            <description>The sources</description>
+            <file src="src" targetdir="$INSTALL_PATH"/>
+        </pack>
+    </packs>
+    
+</installation>
