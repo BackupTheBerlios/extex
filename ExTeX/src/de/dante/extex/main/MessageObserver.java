@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,13 +23,21 @@ import de.dante.util.Observable;
 import de.dante.util.Observer;
 
 /*
- * ...
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * This observer waits for an update event and writes the argument as info to
+ * the Logger specified upon construction.
+ * <p>
+ * This observer is meant for writing the message of the primitive \message to
+ * the appropriate output stream.
+ * </p>
+ * 
+ * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
+ * 
+ * @version $Revision: 1.3 $
  */
 public class MessageObserver implements Observer {
-    /** The logger for output */
+    /**
+     * The field <tt>logger</tt> contains the logger for output.
+     */
     private Logger logger;
 
     /**
@@ -46,7 +54,7 @@ public class MessageObserver implements Observer {
      * @see de.dante.util.Observer#update(de.dante.util.Observable, java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
-        logger.info("> "+item.toString()+".\n");
+        logger.info(item.toString()+" ");
     }
 
 }

@@ -28,29 +28,37 @@ import java.util.ResourceBundle;
  * This class provides means for using externalized strings and formats for
  * messages.
  * <p>
- * The Strings used are read from the resource <tt>extex.messages</tt> or one of
- * its localized variants.
+ * The Strings used are read from the resource <tt>extex.messages</tt> or one
+ * of its localized variants.
  * </p>
- *
+ * 
  * <p>
- * For ExTeX this the properties file has many similarities to TEX.POOL in TeX.
+ * For ExTeX this properties file has many similarities to <tt>TEX.POOL</tt>
+ * in TeX.
  * </p>
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class Messages {
-    /** the name of the resource bundle to use */
+    /**
+     * The constant <tt>BUNDLE_NAME</tt> contains the name of the resource
+     * bundle to use.
+     */
     private static final String BUNDLE_NAME = "config.extexMessage";
 
-    /** get the resource bundle for further use */
+    /**
+     * The constant <tt>bundle</tt> contains the resource bundle for further
+     * use.
+     */
     private static ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
     /**
      * Creates a new object. This constructor is private to avoid that an
-     * instance is created by accident.
+     * instance is created by accident. This class contains static methods
+     * only. Thus it is never meant to be instanciated.
      */
     private Messages() {
-        super();
     }
 
     /**
@@ -205,8 +213,8 @@ public final class Messages {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring
-     * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
+     * argument object's value of toString() replaces the substring <tt>'{0}'</tt>,
+     * <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
      *
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for
@@ -215,9 +223,8 @@ public final class Messages {
      * @param c the Object used for the substring <tt>{2}</tt>
      */
     public static void message(final PrintStream writer, final String fmt,
-            final Object a, final Object b, final Object c) {
+        final Object a, final Object b, final Object c) {
         writer
-                .println(MessageFormat.format(format(fmt),
-                                              new Object[]{a, b, c}));
+            .println(MessageFormat.format(format(fmt), new Object[]{a, b, c}));
     }
 }

@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
     /**
@@ -39,10 +39,15 @@ public class TypesettingContextImpl implements TypesettingContext {
      */
     private Color color;
 
-    /** ... */
+    /**
+     * The field <tt>direction</tt> contains the direction for advancing the
+     * cursor. This is one of the constants in {@link Direction Direction}.
+     */
     private Direction direction = Direction.LR;
 
-    /** ... */
+    /**
+     * The field <tt>font</tt> contains the font to use.
+     */
     private Font font;
 
     /** ... */
@@ -129,4 +134,5 @@ public class TypesettingContextImpl implements TypesettingContext {
     public HyphenationTable getLanguage() {
         return hyphenation;
     }
+
 }

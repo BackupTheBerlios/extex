@@ -28,11 +28,12 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TypesettingContextFactory {
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the
+     * attribute used to extract the class name fron the given configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
@@ -44,15 +45,23 @@ public class TypesettingContextFactory {
     /**
      * The field <tt>theClass</tt> contains the class to instantiate. It is
      * kept here to speed up the method
-     * {@link #newInstance(...) newInstance}.
+     * <tt>{@link #newInstance() newInstance()}</tt>.
      */
     private Class theClass;
 
     /**
      * Creates a new object.
-     *
-     * @param configuration ...
-     * @throws ConfigurationException ...
+     * 
+     * @param configuration the configuration for this factory
+     * 
+     * @throws ConfigurationMissingAttributeException in case that the
+     *             attribute {@link #CLASS_ATTRIBUTE CLASS_ATTRIBUTE}is not
+     *             set for the given configuration.
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the given class causes a
+     *             SecurityException.
+     * @throws ConfigurationClassNotFoundException in case that the named class
+     *             could not be loaded.
      */
     public TypesettingContextFactory(final Configuration configuration)
             throws ConfigurationException {
@@ -75,11 +84,12 @@ public class TypesettingContextFactory {
     }
 
     /**
-     * ...
-     *
-     * @return ...
-     *
-     * @throws ConfigurationInstantiationException ...
+     * Factory method to acquire an instance of the TypesettingContext.
+     * 
+     * @return an appropriate instance of the TypesettingContext.
+     * 
+     * @throws ConfigurationInstantiationException in case that the
+     *             instantiation of the class failed.
      */
     public TypesettingContext newInstance()
             throws ConfigurationInstantiationException {
@@ -95,4 +105,5 @@ public class TypesettingContextFactory {
 
         return context;
     }
+
 }
