@@ -18,13 +18,15 @@
  */
 package de.dante.util;
 
+import java.nio.CharBuffer;
+
 
 /**
  * The locator is the container for the information about the name of a file
  * and the current line number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Locator {
     /** the name of the file */
@@ -32,6 +34,10 @@ public class Locator {
 
     /** the line number */
     private int lineno;
+    
+    private CharBuffer line;
+    
+    private int linePointer;
 
     /**
      * Creates a new object.
@@ -39,10 +45,29 @@ public class Locator {
      * @param fileName the file name
      * @param lineNo the line number
      */
-    public Locator(final String fileName, final int lineNo) {
+    public Locator(final String fileName, final int lineNo, final CharBuffer line, final int linePointer) {
         super();
         this.filename = fileName;
         this.lineno   = lineNo;
+        this.line = line;
+        this.linePointer = linePointer;
+    }
+
+    /**
+     * Getter for line.
+     *
+     * @return the line.
+     */
+    public CharBuffer getLine() {
+        return line;
+    }
+    /**
+     * Getter for linePointer.
+     *
+     * @return the linePointer.
+     */
+    public int getLinePointer() {
+        return linePointer;
     }
 
     /**

@@ -23,30 +23,15 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Flags {
-    /** Symbolc constant for the empty prefix */
-    private static final int NONE = 0x00;
-
-    /** Symbolc constant for the prefix \global */
-    private static final int GLOBAL = 0x01;
-
-    /** Symbolc constant for the prefix \long */
-    private static final int LONG = 0x02;
-
-    /** Symbolc constant for the prefix \outer */
-    private static final int OUTER = 0x04;
-
-    /** Symbolc constant for the pseudo prefix for \xdef an d \edef */
-    private static final int EXPANDED = 0x08;
-
-    /** Symbolc constant for the prefix \immediate */
-    private static final int IMMEDIATE = 0x10;
-
-
-    /** the encapsulated value */
-    private int value = NONE;
+    
+    private boolean globalP = false;
+    private boolean longP = false;
+    private boolean outerP = false;
+    private boolean expandedP = false;
+    private boolean immediateP = false;
 
     /**
      * Creates a new object.
@@ -60,51 +45,56 @@ public class Flags {
      * This method clears all flags.
      */
     public void clear() {
-        value = NONE;
+        globalP = false;
+        longP = false;
+        outerP = false;
+        expandedP = false;
+        immediateP = false;
     }
 
     /**
      * Setter for the global flag.
      */
     public void setGlobal() {
-        value |= GLOBAL;
+        globalP = true;
     }
     
     /**
      * Setter for the long flag.
      */
     public void setLong() {
-        value |= LONG;
+        longP = true;
     }
     
     /**
      * Setter for the outer flag.
      */
     public void setOuter() {
-        value |= OUTER;
+        outerP = true;
     }
     
     /**
      * Setter for the immediate flag.
      */
     public void setImmediate() {
-        value |= IMMEDIATE;
+        immediateP = true;
     }
     
     /**
      * Setter for the expanded flag.
      */
     public void setExpanded() {
-        value |= EXPANDED;
+        expandedP = true;
     }
 
     /**
      * Getter for the global flag.
-     *
+     * 
      * @return the current value of the global flag
      */
     public boolean isGlobal() {
-        return (value & GLOBAL) != 0;}
+        return globalP;
+    }
     
     /**
      * Getter for the long flag.
@@ -112,7 +102,7 @@ public class Flags {
      * @return the current value of the long flag
      */
     public boolean isLong() {
-        return (value & LONG) != 0;
+        return longP;
     }
 
     /**
@@ -121,7 +111,7 @@ public class Flags {
      * @return the current value of the outer flag
      */
     public boolean isOuter() {
-        return (value & OUTER) != 0;
+        return outerP;
     }
 
     /**
@@ -130,7 +120,7 @@ public class Flags {
      * @return the current value of the immediate flag
      */
     public boolean isImmediate() {
-        return (value & IMMEDIATE) != 0;
+        return immediateP;
     }
 
     /**
@@ -139,7 +129,7 @@ public class Flags {
      * @return the current value of the expanded flag
      */
     public boolean isExpanded() {
-        return (value & EXPANDED) != 0;
+        return expandedP;
     }
 
 }
