@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Iterator;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.i18n.Messages;
@@ -63,7 +64,7 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Max extends Moritz implements Interpreter,
         TokenSource, Observable, CatcodeVisitor {
@@ -202,6 +203,14 @@ public class Max extends Moritz implements Interpreter,
      */
     public void setFileFinder(final FileFinder fileFinder) {
         //finder = fileFinder;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Interpreter#setFontFactory(de.dante.extex.font.FontFactory)
+     */
+    public void setFontFactory(final FontFactory fontFactory) {
+
+        context.setFontFactory(fontFactory);
     }
 
     /**

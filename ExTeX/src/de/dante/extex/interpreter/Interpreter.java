@@ -20,6 +20,7 @@ package de.dante.extex.interpreter;
 
 import java.io.IOException;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
@@ -35,7 +36,7 @@ import de.dante.util.observer.Observable;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Interpreter extends TokenSource, Observable {
 
@@ -58,11 +59,18 @@ public interface Interpreter extends TokenSource, Observable {
     ErrorHandler getErrorHandler();
 
     /**
-     * Setter for the file finder.
+     * Setter for the file finder for files handled by the interpreter.
      *
-     * @param fileFinder the new filefinder
+     * @param fileFinder the new file finder
      */
     void setFileFinder(FileFinder fileFinder);
+
+    /**
+     * Setter for the font factory
+     * 
+     * @param fontFactory the new font factory
+     */
+    void setFontFactory(FontFactory fontFactory);
 
     /**
      * Setter for the interaction mode.
