@@ -23,13 +23,13 @@ package de.dante.extex.font.type.tfm;
  * The data structure for lig/kern instruction from tfm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMAuxLigKern {
 
     /**
      * Create a new object.
-     * 
+     *
      * @param skip      skipbyte
      * @param next      nextchar
      * @param op        opbyte
@@ -90,7 +90,7 @@ public class TFMAuxLigKern {
      */
     public short skipbyte() {
 
-        return (short) (skipbyte & 0xff);
+        return (short) (skipbyte & TFMConstants.CONST_XFF);
     }
 
     /**
@@ -100,7 +100,7 @@ public class TFMAuxLigKern {
      */
     public short opbyte() {
 
-        return (short) (opbyte & 0xff);
+        return (short) (opbyte & TFMConstants.CONST_XFF);
     }
 
     /**
@@ -110,7 +110,7 @@ public class TFMAuxLigKern {
      */
     public short remainder() {
 
-        return (short) (remainder & 0xff);
+        return (short) (remainder & TFMConstants.CONST_XFF);
     }
 
     /**
@@ -141,7 +141,7 @@ public class TFMAuxLigKern {
      * Tells whether this <code>AuxLigKern</code> is the last instruction
      * of a lig/kern program.
      *
-     * @return Return <code>true</code> if this is the last 
+     * @return Return <code>true</code> if this is the last
      *         instruction of a lig/kern program.
      */
     public boolean meansStop() {
@@ -179,7 +179,7 @@ public class TFMAuxLigKern {
      */
     public short nextChar() {
 
-        return (short) (nextchar & 0xff);
+        return (short) (nextchar & TFMConstants.CONST_XFF);
     }
 
     /**
@@ -201,7 +201,7 @@ public class TFMAuxLigKern {
      */
     public int restartIndex() {
 
-        return (opbyte() << 8) + remainder();
+        return (opbyte() << TFMConstants.CONST_8) + remainder();
     }
 
     /**
@@ -223,7 +223,7 @@ public class TFMAuxLigKern {
      */
     public int kernIndex() {
 
-        return (opbyte() - KERNFLAG << 8) + remainder();
+        return (opbyte() - KERNFLAG << TFMConstants.CONST_8) + remainder();
     }
 
     /**

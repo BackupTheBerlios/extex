@@ -23,14 +23,13 @@ package de.dante.extex.font.type.tfm;
  * Data structure for raw character information from tfm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-
 public class TFMAuxCharInfo {
 
     /**
      * Create a new object.
-     * 
+     *
      * @param wi    withindex
      * @param hi    heightdepthindex
      * @param ii    italicindextag
@@ -94,7 +93,7 @@ public class TFMAuxCharInfo {
      */
     public int widthIndex() {
 
-        return widthindex & 0xff;
+        return widthindex & TFMConstants.CONST_XFF;
     }
 
     /**
@@ -104,7 +103,7 @@ public class TFMAuxCharInfo {
      */
     public int heightIndex() {
 
-        return heightdepthindex >> 4 & 0x0f;
+        return heightdepthindex >> TFMConstants.CONST_4 & TFMConstants.CONST_X0F;
     }
 
     /**
@@ -114,7 +113,7 @@ public class TFMAuxCharInfo {
      */
     public int depthIndex() {
 
-        return heightdepthindex & 0x0f;
+        return heightdepthindex & TFMConstants.CONST_X0F;
     }
 
     /**
@@ -124,7 +123,7 @@ public class TFMAuxCharInfo {
      */
     public int italicIndex() {
 
-        return italicindextag >> 2 & 0x3f;
+        return italicindextag >> 2 & TFMConstants.CONST_X3F;
     }
 
     /**
@@ -134,7 +133,7 @@ public class TFMAuxCharInfo {
      */
     public byte tag() {
 
-        return (byte) (italicindextag & 0x03);
+        return (byte) (italicindextag & TFMConstants.CONST_X03);
     }
 
     /**
@@ -142,7 +141,7 @@ public class TFMAuxCharInfo {
      */
     public void resetTag() {
 
-        italicindextag &= ~0x03;
+        italicindextag &= ~TFMConstants.CONST_X3F;
     }
 
     /**
@@ -153,7 +152,7 @@ public class TFMAuxCharInfo {
      */
     public short remainder() {
 
-        return (short) (remainder & 0xff);
+        return (short) (remainder & TFMConstants.CONST_XFF);
     }
 
     /**
@@ -188,7 +187,7 @@ public class TFMAuxCharInfo {
 
         return remainder();
     }
-    
+
     /**
      * @return Returns the ligkernstart.
      */
@@ -196,7 +195,7 @@ public class TFMAuxCharInfo {
 
         return ligkernstart;
     }
-    
+
     /**
      * Set the new value for ligkernstart
      *

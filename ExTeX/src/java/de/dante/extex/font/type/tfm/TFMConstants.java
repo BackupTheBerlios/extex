@@ -20,44 +20,77 @@
 package de.dante.extex.font.type.tfm;
 
 /**
- * TFM-ListCharInfo
- * <p>
- * Character information for character which has next larger
- * character associated.
- * </p>
+ * Constants for the TFM font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class TFMListCharInfo extends TFMCharInfo {
+
+public class TFMConstants {
 
     /**
-     * Create a new object
-     *
-     * @param w character width.
-     * @param h character height.
-     * @param d character depth.
-     * @param i character italic correction.
-     * @param n character code of the next larger character.
+     * 0xff
      */
-    public TFMListCharInfo(final TFMFixWord w, final TFMFixWord h,
-            final TFMFixWord d, final TFMFixWord i, final short n) {
-
-        super(w, h, d, i);
-        next = n;
-    }
+    public static final int CONST_XFF = 0xff;
 
     /**
-     * Next larger character code
+     * 0x0f
      */
-    private short next;
+    public static final int CONST_X0F = 0x0f;
 
     /**
-     * @return next larger character code.
+     * 0x3f
      */
-    public short nextChar() {
+    public static final int CONST_X3F = 0x3f;
 
-        return next;
-    }
+    /**
+     * 0x03
+     */
+    public static final int CONST_X03 = 0x03;
+
+    /**
+     * 0x80
+     */
+    public static final int CONST_X80 = 0x80;
+
+    /**
+     * 2
+     */
+    public static final int CONST_2 = 2;
+
+    /**
+     * 4
+     */
+    public static final int CONST_4 = 4;
+
+    /**
+     * 8
+     */
+    public static final int CONST_8 = 8;
+
+    /**
+     * 5
+     */
+    public static final int CONST_5 = 5;
+
+    /**
+     * 6
+     */
+    public static final int CONST_6 = 6;
+
+    /**
+     * 10
+     */
+    public static final int CONST_10 = 10;
+
+    /**
+     * 127
+     */
+    public static final int CONST_127 = 127;
+
+    /**
+     * 1000
+     */
+    public static final int CONST_1000 = 1000;
 
 }

@@ -27,7 +27,7 @@ package de.dante.extex.font.type.tfm;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMFixWord {
 
@@ -49,7 +49,7 @@ public class TFMFixWord {
     /**
      * TEN
      */
-    public static final TFMFixWord TEN = new TFMFixWord(10);
+    public static final TFMFixWord TEN = new TFMFixWord(TFMConstants.CONST_10);
 
     /**
      * POINT-SHIFT
@@ -125,9 +125,11 @@ public class TFMFixWord {
     public String toStringUnits() {
 
         if (value > 0) {
-            return String.valueOf((value * 1000) >>> POINTSHIFT);
+            return String
+                    .valueOf((value * TFMConstants.CONST_1000) >>> POINTSHIFT);
         }
-        return String.valueOf(-((-value * 1000) >>> POINTSHIFT));
+        return String
+                .valueOf(-((-value * TFMConstants.CONST_1000) >>> POINTSHIFT));
     }
 
     /**
@@ -147,15 +149,16 @@ public class TFMFixWord {
         }
         buf.append(v >>> POINTSHIFT);
         buf.append('.');
-        v = 10 * (v & mask) + 5;
-        int delta = 10;
+        v = TFMConstants.CONST_10 * (v & mask) + TFMConstants.CONST_5;
+        int delta = TFMConstants.CONST_10;
         do {
             if (delta > unity) {
                 v += unity / 2 - delta / 2;
             }
-            buf.append(Character.forDigit((int) (v >>> POINTSHIFT), 10));
-            v = 10 * (v & mask);
-        } while (v > (delta *= 10));
+            buf.append(Character.forDigit((int) (v >>> POINTSHIFT),
+                    TFMConstants.CONST_10));
+            v = TFMConstants.CONST_10 * (v & mask);
+        } while (v > (delta *= TFMConstants.CONST_10));
         return buf.toString();
     }
 

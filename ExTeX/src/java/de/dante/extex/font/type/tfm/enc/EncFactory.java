@@ -32,7 +32,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for enc-files
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class EncFactory {
@@ -44,6 +44,7 @@ public class EncFactory {
     public EncFactory(final ResourceFinder afinder) {
 
         finder = afinder;
+        data = new HashMap();
     }
 
     /**
@@ -54,12 +55,12 @@ public class EncFactory {
     /**
      * Map
      */
-    private Map data = new HashMap();
+    private Map data;
 
     /**
      * Returns the encodingtable
      * @param filename  the filename
-     * @return Returns the encodingtable  
+     * @return Returns the encodingtable
      * @throws IOException if an IO-erorr occured
      * @throws HelpingException if an error occured
      * @throws ConfigurationException if a config error occured
@@ -80,23 +81,4 @@ public class EncFactory {
         }
         return table;
     }
-
-    //    // -----------------------------------------------------------
-    //    // -----------------------------------------------------------
-    //    // -----------------------------------------------------------
-    //    // -----------------------------------------------------------
-    //    /**
-    //     * only for test
-    //     * @param args  commandline
-    //     * @throws Exception ...
-    //     */
-    //    public static void main(final String[] args) throws Exception {
-    //
-    //        ResourceFinder rf = new FileFinderLSRImpl("/usr/share/texmf",
-    //                new StringList("", ":"));
-    //        EncFactory ef = new EncFactory(rf);
-    //
-    //        String[] x = ef.getEncodingTable("f7b6d320.enc");
-    //        
-    //    }
 }

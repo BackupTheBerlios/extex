@@ -27,7 +27,7 @@ package de.dante.extex.font.type.tfm;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TFMLigCharInfo extends TFMCharInfo {
@@ -49,7 +49,7 @@ public class TFMLigCharInfo extends TFMCharInfo {
     }
 
     /**
-     * Index of the starting instruction of lig/kern program 
+     * Index of the starting instruction of lig/kern program
      * in the <code>ligKernTable</code>.
      */
     private int start;

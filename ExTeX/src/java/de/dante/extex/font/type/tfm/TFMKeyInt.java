@@ -23,7 +23,7 @@ package de.dante.extex.font.type.tfm;
  * TFM: key-value-container
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TFMKeyInt {
@@ -40,7 +40,7 @@ public class TFMKeyInt {
 
     /**
      * Create a new object
-     * 
+     *
      * @param k the key
      * @param v the value
      */

@@ -26,7 +26,7 @@ package de.dante.extex.font.type.tfm;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMLigature extends TFMLigKern {
 
@@ -36,7 +36,7 @@ public class TFMLigature extends TFMLigKern {
      * @param skip  the skip amount to the next instruction.
      * @param next  the code of the next character.
      * @param a     character code of ligature character to be inserted.
-     * @param l     indication that the current character should 
+     * @param l     indication that the current character should
      *              not be removed.
      * @param r     indication that the next character should not be removed.
      * @param s     number of characters from the current one to be stepped

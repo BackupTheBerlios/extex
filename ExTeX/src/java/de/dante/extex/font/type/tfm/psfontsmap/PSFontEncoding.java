@@ -23,7 +23,7 @@ package de.dante.extex.font.type.tfm.psfontsmap;
  * Container for a psfonts.map-line
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class PSFontEncoding {
@@ -70,11 +70,11 @@ public class PSFontEncoding {
     }
 
     /**
-     * @param encfile The encfile to set.
+     * @param encf The encfile to set.
      */
-    public void setEncfile(final String encfile) {
+    public void setEncfile(final String encf) {
 
-        this.encfile = encfile;
+        encfile = encf;
     }
 
     /**
@@ -95,11 +95,11 @@ public class PSFontEncoding {
     }
 
     /**
-     * @param encodingtxt The encodingtxt to set.
+     * @param enctxt The encodingtxt to set.
      */
-    public void setEncodingtxt(final String encodingtxt) {
+    public void setEncodingtxt(final String enctxt) {
 
-        this.encodingtxt = encodingtxt;
+        encodingtxt = enctxt;
     }
 
     /**
@@ -111,11 +111,11 @@ public class PSFontEncoding {
     }
 
     /**
-     * @param filename The filename to set.
+     * @param name The filename to set.
      */
-    public void setFilename(final String filename) {
+    public void setFilename(final String name) {
 
-        this.filename = filename;
+        filename = name;
     }
 
     /**
@@ -127,11 +127,11 @@ public class PSFontEncoding {
     }
 
     /**
-     * @param fontname The fontname to set.
+     * @param name The fontname to set.
      */
-    public void setFontname(final String fontname) {
+    public void setFontname(final String name) {
 
-        this.fontname = fontname;
+        fontname = name;
     }
 
     /**
@@ -143,10 +143,10 @@ public class PSFontEncoding {
     }
 
     /**
-     * @param pfbfile The pfbfile to set.
+     * @param file The pfbfile to set.
      */
-    public void setPfbfile(final String pfbfile) {
+    public void setPfbfile(final String file) {
 
-        this.pfbfile = pfbfile;
+        pfbfile = file;
     }
 }

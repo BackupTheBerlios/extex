@@ -35,11 +35,11 @@ import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class read a TFM-file.
- * 
+ *
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.7 $
  */
 public class TFMReader implements FontMetric {
 
@@ -66,7 +66,7 @@ public class TFMReader implements FontMetric {
     /**
      * Create e new object.
      *
-     * @see <a href="package-summary.html#TFMformat">TFM-Format</a> 
+     * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
      *
      * @param ins the InputStream for reading
      * @param afontname fontname
@@ -450,11 +450,11 @@ public class TFMReader implements FontMetric {
         if (i < 0) {
             throw new HelpingException("TFM.emptyinputfile");
         }
-        if (i > 127) {
+        if (i > TFMConstants.CONST_127) {
             throw new HelpingException("TFM.firstbyteerror");
         }
 
-        int len = i << 8;
+        int len = i << TFMConstants.CONST_8;
         i = readByte();
         if (i < 0) {
             throw new HelpingException("TFM.onlyonebyte");
@@ -463,7 +463,7 @@ public class TFMReader implements FontMetric {
         if (len == 0) {
             throw new HelpingException("TFM.lengthzero");
         }
-        if (len < 6) {
+        if (len < TFMConstants.CONST_6) {
             throw new HelpingException("TFM.wrongwordsize", String.valueOf(len));
         }
         return len;
@@ -495,10 +495,10 @@ public class TFMReader implements FontMetric {
     private short readLength() throws IOException, HelpingException {
 
         short i = readByte();
-        if ((i & 0x80) != 0) {
+        if ((i & TFMConstants.CONST_X80) != 0) {
             throw new IOException("One of the subfile sizes is negative!");
         }
-        return (short) ((i << 8) + readByte());
+        return (short) ((i << TFMConstants.CONST_8) + readByte());
     }
 
     /**
@@ -555,12 +555,12 @@ public class TFMReader implements FontMetric {
         TFMFixWord dSize = readFixWord();
 
         if ((rest -= 2) >= CODINGSIZE) {
-            codingScheme = readBCPL(4 * CODINGSIZE);
+            codingScheme = readBCPL(TFMConstants.CONST_4 * CODINGSIZE);
             fontType = getFontType(codingScheme);
             if ((rest -= CODINGSIZE) >= FAMILYSIZE) {
-                family = readBCPL(4 * FAMILYSIZE);
+                family = readBCPL(TFMConstants.CONST_4 * FAMILYSIZE);
                 if ((rest -= FAMILYSIZE) >= 1) {
-                    sevenBitSafe = (readByte() > 127);
+                    sevenBitSafe = (readByte() > TFMConstants.CONST_127);
                     in.skip(2);
                     face = readByte();
                     if (--rest > 0) {
@@ -593,9 +593,9 @@ public class TFMReader implements FontMetric {
     private int readWord() throws IOException, HelpingException {
 
         int i = readByte();
-        i = (i << 8) + readByte();
-        i = (i << 8) + readByte();
-        return (i << 8) + readByte();
+        i = (i << TFMConstants.CONST_8) + readByte();
+        i = (i << TFMConstants.CONST_8) + readByte();
+        return (i << TFMConstants.CONST_8) + readByte();
     }
 
     /**
@@ -608,7 +608,7 @@ public class TFMReader implements FontMetric {
      * fraction.
      *
      * @return the resulting fraction.
-     * @throws IOException if an I/O error occurs or 
+     * @throws IOException if an I/O error occurs or
      *         if the end of file is reached.
      * @throws HelpingException if an error occured.
      */
@@ -688,7 +688,7 @@ public class TFMReader implements FontMetric {
     private TFMFixWord[] depthTable;
 
     /**
-     * The italic corrections of characters in <code>charAuxTab<code>
+     * The italic corrections of characters in <code>charAuxTab</code>
      */
     private TFMFixWord[] italicTable;
 
@@ -716,7 +716,7 @@ public class TFMReader implements FontMetric {
      * Reads all the tables from tfm file.
      *
      * @throws IOException if an I/O error ocurrs
-     * @throws HelpingException if an I/O error ocurrs 
+     * @throws HelpingException if an I/O error ocurrs
      */
     private void readTables() throws IOException, HelpingException {
 
@@ -1259,7 +1259,7 @@ public class TFMReader implements FontMetric {
 
         // encoding
         String[] enctable = null;
-        if (!psfenc.getEncfile().equals("")) {
+        if (psfenc != null && !"".equals(psfenc.getEncfile())) {
             enctable = encfactory.getEncodingTable(psfenc.getEncfile());
         }
 
@@ -1279,6 +1279,7 @@ public class TFMReader implements FontMetric {
         font.setAttribute("font-name", family);
         font.setAttribute("font-family", family);
         root.setAttribute("units-per-em", "1000");
+        font.setAttribute("checksum", String.valueOf(checkSum));
 
         if (fontType == MATHSY) {
             font.setAttribute("type", "tfm-mathsyml");
@@ -1328,8 +1329,10 @@ public class TFMReader implements FontMetric {
         }
 
         // filename
-        font.setAttribute("filename", filenameWithoutPath(psfenc.getPfbfile()));
-
+        if (psfenc != null &&  psfenc.getPfbfile() != null) {
+            font.setAttribute("filename", filenameWithoutPath(psfenc
+                    .getPfbfile()));
+        }
         for (int i = 0; i < charTable.length; i++) {
 
             // get char
@@ -1429,7 +1432,7 @@ public class TFMReader implements FontMetric {
      * Return the <code>CharInfo</code> for index <code>idx</code>.
      *
      * @param i the index
-     * @return Returns the <code>CharInfo</code> or <code>null</code>, 
+     * @return Returns the <code>CharInfo</code> or <code>null</code>,
      *         if not exists
      */
     private TFMCharInfo getCharInfo(final short i) {

@@ -22,13 +22,13 @@ package de.dante.extex.font.type.tfm;
 /**
  * TFM-LigKern
  * <p>
- * Base class for <code>Ligature</code> and <code>Kerning</code> instructions. 
+ * Base class for <code>Ligature</code> and <code>Kerning</code> instructions.
  * It handles the skip amount to the next instruction in the
  * kern/lig program and the character code for the next character.
- * @see <a href="package-summary.html#lig_kern">lig_kern</a> 
+ * @see <a href="package-summary.html#lig_kern">lig_kern</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class TFMLigKern {
 
@@ -46,14 +46,14 @@ public abstract class TFMLigKern {
     /**
      * Create a new object
      *
-     * @param skip the skip amount to the next instruction. <code>0</code>
+     * @param askip the skip amount to the next instruction. <code>0</code>
      *        means the folowing instruction is the next, a number <code>< 0</code>
      *        means that there is no next instruction (this is the last).
      * @param next the code of the next character.
      */
-    public TFMLigKern(final int skip, final short next) {
+    public TFMLigKern(final int askip, final short next) {
 
-        this.skip = skip;
+        skip = askip;
         nextChar = next;
     }
 

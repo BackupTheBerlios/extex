@@ -24,10 +24,10 @@ import java.util.ArrayList;
 /**
  * TFMIndexMultimap can store and retrieve <code>int</code>
  * values associated to particular <code>int</code> key. There can be
- * more values associated to the same key. 
+ * more values associated to the same key.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMIndexMultimap {
 
@@ -60,7 +60,7 @@ public class TFMIndexMultimap {
      * @param i the position of pair to be examined.
      * @return Return the pair at given position.
      */
-    public TFMKeyInt at(int i) {
+    public TFMKeyInt at(final int i) {
 
         return (TFMKeyInt) data.get(i);
     }
@@ -133,7 +133,7 @@ public class TFMIndexMultimap {
      * Class <code>Enum</code> provides the sequence of all values
      * associated to particular key.
      */
-    public class Enum {
+    public final class Enum {
 
         /**
          * Create a new object.
@@ -178,7 +178,7 @@ public class TFMIndexMultimap {
          *
          * @return Return the next value.
          */
-        public final int next() {
+        public int next() {
 
             return at(pos++).getVal();
         }

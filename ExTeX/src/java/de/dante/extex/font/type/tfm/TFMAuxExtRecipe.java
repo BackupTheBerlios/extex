@@ -23,13 +23,13 @@ package de.dante.extex.font.type.tfm;
  * The data structure for extensible recipe from tfm file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMAuxExtRecipe {
 
     /**
      * Create a new object.
-     * 
+     *
      * @param t top
      * @param m mid
      * @param b bot

@@ -35,7 +35,7 @@ import de.dante.extex.i18n.HelpingException;
  * @see <a href="package-summary.html#psfontsmap">psfonts.map</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class PSFontsMapReader {
@@ -54,7 +54,7 @@ public class PSFontsMapReader {
     }
 
     /**
-     * Map for the font-data 
+     * Map for the font-data
      */
     private Map data;
 

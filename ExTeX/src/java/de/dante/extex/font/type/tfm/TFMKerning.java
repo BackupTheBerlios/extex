@@ -26,7 +26,7 @@ package de.dante.extex.font.type.tfm;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TFMKerning extends TFMLigKern {
 
@@ -35,7 +35,7 @@ public class TFMKerning extends TFMLigKern {
      *
      * @param skip  the skip amount to the next instruction.
      * @param next  the code of the next character.
-     * @param k     the amount of kerning between the current and 
+     * @param k     the amount of kerning between the current and
      *              the next characters.
      */
     public TFMKerning(final int skip, final short next, final TFMFixWord k) {
