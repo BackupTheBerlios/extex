@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface Noad extends Knot {
 
@@ -78,11 +78,13 @@ public interface Noad extends Knot {
 
     /**
      * Translate a Noad into a NodeList.
+     *
      * @param list the list to add the nodes to
      * @param mathContext the context to consider
-     * @param context TODO
+     * @param context the interpreter context
      */
-    void typeset(NodeList list, MathContext mathContext, TypesetterOptions context);
+    void typeset(NodeList list, MathContext mathContext,
+            TypesetterOptions context);
 
     /**
      * Visit a noad acording to its type.

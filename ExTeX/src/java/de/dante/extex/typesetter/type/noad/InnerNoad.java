@@ -24,12 +24,13 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
- * ...
+ * This noad is used to represent mathematical material which has additional
+ * whitespace around it under certain circumstances.
  *
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class InnerNoad extends AbstractNucleusNoad {
 
