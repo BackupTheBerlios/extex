@@ -33,16 +33,16 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class NamedToks extends NumberedToks {
+public class ToksParameter extends ToksPrimitive {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NamedToks(final String name) {
+    public ToksParameter(final String name) {
 
         super(name);
     }
