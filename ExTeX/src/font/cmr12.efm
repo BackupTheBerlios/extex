@@ -2,366 +2,366 @@
 <fontgroup name="CMR" id="CMR" default-size="12.0" empr="100" units-per-em="1000">
    <fontdimen SLANT="0.0" SPACE="326.3855" STRETCH="163.193" SHRINK="108.795" XHEIGHT="430.556" QUAD="979.1565" EXTRASPACE="108.795" />
    <font font-name="CMR" font-family="CMR" checksum="1487622411" type="tfm-normal">
-      <glyph ID="0" glyph-number="0" width="611" height="683" depth="0" italic="0" />
-      <glyph ID="1" glyph-number="1" width="815" height="683" depth="0" italic="0" />
-      <glyph ID="2" glyph-number="2" width="761" height="683" depth="0" italic="0" />
-      <glyph ID="3" glyph-number="3" width="679" height="683" depth="0" italic="0" />
-      <glyph ID="4" glyph-number="4" width="652" height="683" depth="0" italic="0" />
-      <glyph ID="5" glyph-number="5" width="734" height="683" depth="0" italic="0" />
-      <glyph ID="6" glyph-number="6" width="707" height="683" depth="0" italic="0" />
-      <glyph ID="7" glyph-number="7" width="761" height="683" depth="0" italic="0" />
-      <glyph ID="8" glyph-number="8" width="707" height="683" depth="0" italic="0" />
-      <glyph ID="9" glyph-number="9" width="761" height="683" depth="0" italic="0" />
-      <glyph ID="10" glyph-number="10" width="707" height="683" depth="0" italic="0" />
-      <glyph ID="11" glyph-number="11" width="571" height="694" depth="0" italic="69">
+      <glyph ID="0" glyph-number="0" width="611.8" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="1" glyph-number="1" width="815.964" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="2" glyph-number="2" width="761.566" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="3" glyph-number="3" width="679.624" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="4" glyph-number="4" width="652.771" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="5" glyph-number="5" width="734.021" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="6" glyph-number="6" width="707.169" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="7" glyph-number="7" width="761.566" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="8" glyph-number="8" width="707.169" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="9" glyph-number="9" width="761.566" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="10" glyph-number="10" width="707.169" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="11" glyph-number="11" width="571.175" height="694.444" depth="0.0" italic="69.734">
          <ligature letter-id="105" letter="i" lig-id="14" />
          <ligature letter-id="108" letter="l" lig-id="15" />
-         <kerning glyph-id="39" char="'" size="69" />
-         <kerning glyph-id="63" char="?" size="69" />
-         <kerning glyph-id="33" char="!" size="69" />
-         <kerning glyph-id="41" char=")" size="69" />
-         <kerning glyph-id="93" char="]" size="69" />
+         <kerning glyph-id="39" char="'" size="69.734" />
+         <kerning glyph-id="63" char="?" size="69.734" />
+         <kerning glyph-id="33" char="!" size="69.734" />
+         <kerning glyph-id="41" char=")" size="69.734" />
+         <kerning glyph-id="93" char="]" size="69.734" />
       </glyph>
-      <glyph ID="12" glyph-number="12" width="543" height="694" depth="0" italic="0" />
-      <glyph ID="13" glyph-number="13" width="543" height="694" depth="0" italic="0" />
-      <glyph ID="14" glyph-number="14" width="815" height="694" depth="0" italic="0" />
-      <glyph ID="15" glyph-number="15" width="815" height="694" depth="0" italic="0" />
-      <glyph ID="16" glyph-number="16" width="271" height="430" depth="0" italic="0" />
-      <glyph ID="17" glyph-number="17" width="299" height="430" depth="194" italic="0" />
-      <glyph ID="18" glyph-number="18" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="19" glyph-number="19" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="20" glyph-number="20" width="489" height="628" depth="0" italic="0" />
-      <glyph ID="21" glyph-number="21" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="22" glyph-number="22" width="489" height="564" depth="0" italic="0" />
-      <glyph ID="23" glyph-number="23" width="734" height="694" depth="0" italic="0" />
-      <glyph ID="24" glyph-number="24" width="435" height="0" depth="170" italic="0" />
-      <glyph ID="25" glyph-number="25" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="26" glyph-number="26" width="707" height="430" depth="0" italic="0" />
-      <glyph ID="27" glyph-number="27" width="761" height="430" depth="0" italic="0" />
-      <glyph ID="28" glyph-number="28" width="489" height="527" depth="97" italic="0" />
-      <glyph ID="29" glyph-number="29" width="883" height="683" depth="0" italic="0" />
-      <glyph ID="30" glyph-number="30" width="992" height="683" depth="0" italic="0" />
-      <glyph ID="31" glyph-number="31" width="761" height="731" depth="48" italic="0" />
-      <glyph ID="32" glyph-number="32" width="271" height="430" depth="0" italic="0">
-         <kerning glyph-id="108" char="l" size="-271" />
-         <kerning glyph-id="76" char="L" size="-312" />
+      <glyph ID="12" glyph-number="12" width="543.976" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="13" glyph-number="13" width="543.976" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="14" glyph-number="14" width="815.964" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="15" glyph-number="15" width="815.964" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="16" glyph-number="16" width="271.988" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="17" glyph-number="17" width="299.187" height="430.556" depth="194.444" italic="0.0" />
+      <glyph ID="18" glyph-number="18" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="19" glyph-number="19" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="20" glyph-number="20" width="489.578" height="628.472" depth="0.0" italic="0.0" />
+      <glyph ID="21" glyph-number="21" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="22" glyph-number="22" width="489.578" height="564.813" depth="0.0" italic="0.0" />
+      <glyph ID="23" glyph-number="23" width="734.021" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="24" glyph-number="24" width="435.181" height="0.0" depth="170.138" italic="0.0" />
+      <glyph ID="25" glyph-number="25" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="26" glyph-number="26" width="707.169" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="27" glyph-number="27" width="761.566" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="28" glyph-number="28" width="489.578" height="527.779" depth="97.222" italic="0.0" />
+      <glyph ID="29" glyph-number="29" width="883.788" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="30" glyph-number="30" width="992.583" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="31" glyph-number="31" width="761.566" height="731.944" depth="48.611" italic="0.0" />
+      <glyph ID="32" glyph-number="32" width="271.988" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="108" char="l" size="-271.988" />
+         <kerning glyph-id="76" char="L" size="-312.6135" />
       </glyph>
-      <glyph ID="33" glyph-number="33" char="!" width="271" height="694" depth="0" italic="0">
+      <glyph ID="33" glyph-number="33" char="!" width="271.988" height="694.444" depth="0.0" italic="0.0">
          <ligature letter-id="96" letter="`" lig-id="60" lig="&lt;" />
       </glyph>
-      <glyph ID="34" glyph-number="34" char="&quot;" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="35" glyph-number="35" char="#" width="815" height="694" depth="194" italic="0" />
-      <glyph ID="36" glyph-number="36" char="$" width="489" height="750" depth="55" italic="0" />
-      <glyph ID="37" glyph-number="37" char="%" width="815" height="750" depth="55" italic="0" />
-      <glyph ID="38" glyph-number="38" char="&amp;" width="761" height="694" depth="0" italic="0" />
-      <glyph ID="39" glyph-number="39" char="'" width="271" height="694" depth="0" italic="0">
+      <glyph ID="34" glyph-number="34" char="&quot;" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="35" glyph-number="35" char="#" width="815.964" height="694.444" depth="194.443" italic="0.0" />
+      <glyph ID="36" glyph-number="36" char="$" width="489.578" height="750.0" depth="55.556" italic="0.0" />
+      <glyph ID="37" glyph-number="37" char="%" width="815.964" height="750.0" depth="55.556" italic="0.0" />
+      <glyph ID="38" glyph-number="38" char="&amp;" width="761.566" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="39" glyph-number="39" char="'" width="271.988" height="694.444" depth="0.0" italic="0.0">
          <ligature letter-id="39" letter="'" lig-id="34" lig="&quot;" />
-         <kerning glyph-id="63" char="?" size="108" />
-         <kerning glyph-id="33" char="!" size="108" />
+         <kerning glyph-id="63" char="?" size="108.795" />
+         <kerning glyph-id="33" char="!" size="108.795" />
       </glyph>
-      <glyph ID="40" glyph-number="40" char="(" width="380" height="750" depth="250" italic="0" />
-      <glyph ID="41" glyph-number="41" char=")" width="380" height="750" depth="250" italic="0" />
-      <glyph ID="42" glyph-number="42" char="*" width="489" height="750" depth="0" italic="0" />
-      <glyph ID="43" glyph-number="43" char="+" width="761" height="576" depth="76" italic="0" />
-      <glyph ID="44" glyph-number="44" char="," width="271" height="97" depth="194" italic="0" />
-      <glyph ID="45" glyph-number="45" char="-" width="326" height="430" depth="0" italic="0">
+      <glyph ID="40" glyph-number="40" char="(" width="380.783" height="750.0" depth="250.0" italic="0.0" />
+      <glyph ID="41" glyph-number="41" char=")" width="380.783" height="750.0" depth="250.0" italic="0.0" />
+      <glyph ID="42" glyph-number="42" char="*" width="489.578" height="750.0" depth="0.0" italic="0.0" />
+      <glyph ID="43" glyph-number="43" char="+" width="761.566" height="576.3855" depth="76.3855" italic="0.0" />
+      <glyph ID="44" glyph-number="44" char="," width="271.988" height="97.222" depth="194.444" italic="0.0" />
+      <glyph ID="45" glyph-number="45" char="-" width="326.3855" height="430.556" depth="0.0" italic="0.0">
          <ligature letter-id="45" letter="-" lig-id="123" lig="{" />
       </glyph>
-      <glyph ID="46" glyph-number="46" char="." width="271" height="97" depth="0" italic="0" />
-      <glyph ID="47" glyph-number="47" char="/" width="489" height="750" depth="250" italic="0" />
-      <glyph ID="48" glyph-number="48" char="0" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="49" glyph-number="49" char="1" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="50" glyph-number="50" char="2" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="51" glyph-number="51" char="3" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="52" glyph-number="52" char="4" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="53" glyph-number="53" char="5" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="54" glyph-number="54" char="6" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="55" glyph-number="55" char="7" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="56" glyph-number="56" char="8" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="57" glyph-number="57" char="9" width="489" height="644" depth="0" italic="0" />
-      <glyph ID="58" glyph-number="58" char=":" width="271" height="430" depth="0" italic="0" />
-      <glyph ID="59" glyph-number="59" char=";" width="271" height="430" depth="194" italic="0" />
-      <glyph ID="60" glyph-number="60" char="&lt;" width="271" height="500" depth="194" italic="0" />
-      <glyph ID="61" glyph-number="61" char="=" width="761" height="360" depth="-139" italic="0" />
-      <glyph ID="62" glyph-number="62" char="&gt;" width="462" height="500" depth="194" italic="0" />
-      <glyph ID="63" glyph-number="63" char="?" width="462" height="694" depth="0" italic="0">
+      <glyph ID="46" glyph-number="46" char="." width="271.988" height="97.222" depth="0.0" italic="0.0" />
+      <glyph ID="47" glyph-number="47" char="/" width="489.578" height="750.0" depth="250.0" italic="0.0" />
+      <glyph ID="48" glyph-number="48" char="0" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="49" glyph-number="49" char="1" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="50" glyph-number="50" char="2" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="51" glyph-number="51" char="3" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="52" glyph-number="52" char="4" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="53" glyph-number="53" char="5" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="54" glyph-number="54" char="6" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="55" glyph-number="55" char="7" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="56" glyph-number="56" char="8" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="57" glyph-number="57" char="9" width="489.578" height="644.444" depth="0.0" italic="0.0" />
+      <glyph ID="58" glyph-number="58" char=":" width="271.988" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="59" glyph-number="59" char=";" width="271.988" height="430.556" depth="194.444" italic="0.0" />
+      <glyph ID="60" glyph-number="60" char="&lt;" width="271.988" height="500.0" depth="194.444" italic="0.0" />
+      <glyph ID="61" glyph-number="61" char="=" width="761.566" height="360.902" depth="-139.098" italic="0.0" />
+      <glyph ID="62" glyph-number="62" char="&gt;" width="462.379" height="500.0" depth="194.444" italic="0.0" />
+      <glyph ID="63" glyph-number="63" char="?" width="462.379" height="694.444" depth="0.0" italic="0.0">
          <ligature letter-id="96" letter="`" lig-id="62" lig="&gt;" />
       </glyph>
-      <glyph ID="64" glyph-number="64" char="@" width="761" height="694" depth="0" italic="0" />
-      <glyph ID="65" glyph-number="65" char="A" width="734" height="683" depth="0" italic="0">
-         <kerning glyph-id="116" char="t" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="85" char="U" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
-         <kerning glyph-id="84" char="T" size="-81" />
-         <kerning glyph-id="89" char="Y" size="-81" />
-         <kerning glyph-id="86" char="V" size="-108" />
-         <kerning glyph-id="87" char="W" size="-108" />
+      <glyph ID="64" glyph-number="64" char="@" width="761.566" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="65" glyph-number="65" char="A" width="734.021" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="116" char="t" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="85" char="U" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
+         <kerning glyph-id="84" char="T" size="-81.596" />
+         <kerning glyph-id="89" char="Y" size="-81.596" />
+         <kerning glyph-id="86" char="V" size="-108.795" />
+         <kerning glyph-id="87" char="W" size="-108.795" />
       </glyph>
-      <glyph ID="66" glyph-number="66" char="B" width="693" height="683" depth="0" italic="0" />
-      <glyph ID="67" glyph-number="67" char="C" width="707" height="683" depth="0" italic="0" />
-      <glyph ID="68" glyph-number="68" char="D" width="747" height="683" depth="0" italic="0">
-         <kerning glyph-id="88" char="X" size="-27" />
-         <kerning glyph-id="87" char="W" size="-27" />
-         <kerning glyph-id="65" char="A" size="-27" />
-         <kerning glyph-id="86" char="V" size="-27" />
-         <kerning glyph-id="89" char="Y" size="-27" />
+      <glyph ID="66" glyph-number="66" char="B" width="693.397" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="67" glyph-number="67" char="C" width="707.169" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="68" glyph-number="68" char="D" width="747.794" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="88" char="X" size="-27.199" />
+         <kerning glyph-id="87" char="W" size="-27.199" />
+         <kerning glyph-id="65" char="A" size="-27.199" />
+         <kerning glyph-id="86" char="V" size="-27.199" />
+         <kerning glyph-id="89" char="Y" size="-27.199" />
       </glyph>
-      <glyph ID="69" glyph-number="69" char="E" width="666" height="683" depth="0" italic="0" />
-      <glyph ID="70" glyph-number="70" char="F" width="638" height="683" depth="0" italic="0">
-         <kerning glyph-id="111" char="o" size="-81" />
-         <kerning glyph-id="101" char="e" size="-81" />
-         <kerning glyph-id="117" char="u" size="-81" />
-         <kerning glyph-id="114" char="r" size="-81" />
-         <kerning glyph-id="97" char="a" size="-81" />
-         <kerning glyph-id="65" char="A" size="-108" />
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
+      <glyph ID="69" glyph-number="69" char="E" width="666.198" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="70" glyph-number="70" char="F" width="638.999" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="111" char="o" size="-81.596" />
+         <kerning glyph-id="101" char="e" size="-81.596" />
+         <kerning glyph-id="117" char="u" size="-81.596" />
+         <kerning glyph-id="114" char="r" size="-81.596" />
+         <kerning glyph-id="97" char="a" size="-81.596" />
+         <kerning glyph-id="65" char="A" size="-108.795" />
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
       </glyph>
-      <glyph ID="71" glyph-number="71" char="G" width="768" height="683" depth="0" italic="0" />
-      <glyph ID="72" glyph-number="72" char="H" width="734" height="683" depth="0" italic="0" />
-      <glyph ID="73" glyph-number="73" char="I" width="353" height="683" depth="0" italic="0">
-         <kerning glyph-id="73" char="I" size="27" />
+      <glyph ID="71" glyph-number="71" char="G" width="768.28" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="72" glyph-number="72" char="H" width="734.021" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="73" glyph-number="73" char="I" width="353.238" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="73" char="I" size="27.199" />
       </glyph>
-      <glyph ID="74" glyph-number="74" char="J" width="503" height="683" depth="0" italic="0" />
-      <glyph ID="75" glyph-number="75" char="K" width="761" height="683" depth="0" italic="0">
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
+      <glyph ID="74" glyph-number="74" char="J" width="503.005" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="75" glyph-number="75" char="K" width="761.22" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
       </glyph>
-      <glyph ID="76" glyph-number="76" char="L" width="611" height="683" depth="0" italic="0">
-         <kerning glyph-id="84" char="T" size="-81" />
-         <kerning glyph-id="89" char="Y" size="-81" />
-         <kerning glyph-id="86" char="V" size="-108" />
-         <kerning glyph-id="87" char="W" size="-108" />
+      <glyph ID="76" glyph-number="76" char="L" width="611.8" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="84" char="T" size="-81.596" />
+         <kerning glyph-id="89" char="Y" size="-81.596" />
+         <kerning glyph-id="86" char="V" size="-108.795" />
+         <kerning glyph-id="87" char="W" size="-108.795" />
       </glyph>
-      <glyph ID="77" glyph-number="77" char="M" width="897" height="683" depth="0" italic="0" />
-      <glyph ID="78" glyph-number="78" char="N" width="734" height="683" depth="0" italic="0" />
-      <glyph ID="79" glyph-number="79" char="O" width="761" height="683" depth="0" italic="0">
-         <kerning glyph-id="88" char="X" size="-27" />
-         <kerning glyph-id="87" char="W" size="-27" />
-         <kerning glyph-id="65" char="A" size="-27" />
-         <kerning glyph-id="86" char="V" size="-27" />
-         <kerning glyph-id="89" char="Y" size="-27" />
+      <glyph ID="77" glyph-number="77" char="M" width="897.214" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="78" glyph-number="78" char="N" width="734.021" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="79" glyph-number="79" char="O" width="761.566" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="88" char="X" size="-27.199" />
+         <kerning glyph-id="87" char="W" size="-27.199" />
+         <kerning glyph-id="65" char="A" size="-27.199" />
+         <kerning glyph-id="86" char="V" size="-27.199" />
+         <kerning glyph-id="89" char="Y" size="-27.199" />
       </glyph>
-      <glyph ID="80" glyph-number="80" char="P" width="666" height="683" depth="0" italic="0">
-         <kerning glyph-id="65" char="A" size="-81" />
-         <kerning glyph-id="111" char="o" size="-27" />
-         <kerning glyph-id="101" char="e" size="-27" />
-         <kerning glyph-id="97" char="a" size="-27" />
-         <kerning glyph-id="46" char="." size="-81" />
-         <kerning glyph-id="44" char="," size="-81" />
+      <glyph ID="80" glyph-number="80" char="P" width="666.198" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="65" char="A" size="-81.596" />
+         <kerning glyph-id="111" char="o" size="-27.199" />
+         <kerning glyph-id="101" char="e" size="-27.199" />
+         <kerning glyph-id="97" char="a" size="-27.199" />
+         <kerning glyph-id="46" char="." size="-81.596" />
+         <kerning glyph-id="44" char="," size="-81.596" />
       </glyph>
-      <glyph ID="81" glyph-number="81" char="Q" width="761" height="683" depth="194" italic="0" />
-      <glyph ID="82" glyph-number="82" char="R" width="720" height="683" depth="0" italic="0">
-         <kerning glyph-id="116" char="t" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="85" char="U" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
-         <kerning glyph-id="84" char="T" size="-81" />
-         <kerning glyph-id="89" char="Y" size="-81" />
-         <kerning glyph-id="86" char="V" size="-108" />
-         <kerning glyph-id="87" char="W" size="-108" />
+      <glyph ID="81" glyph-number="81" char="Q" width="761.566" height="683.333" depth="194.444" italic="0.0" />
+      <glyph ID="82" glyph-number="82" char="R" width="720.595" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="116" char="t" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="85" char="U" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
+         <kerning glyph-id="84" char="T" size="-81.596" />
+         <kerning glyph-id="89" char="Y" size="-81.596" />
+         <kerning glyph-id="86" char="V" size="-108.795" />
+         <kerning glyph-id="87" char="W" size="-108.795" />
       </glyph>
-      <glyph ID="83" glyph-number="83" char="S" width="543" height="683" depth="0" italic="0" />
-      <glyph ID="84" glyph-number="84" char="T" width="707" height="683" depth="0" italic="0">
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="101" char="e" size="-81" />
-         <kerning glyph-id="111" char="o" size="-81" />
-         <kerning glyph-id="114" char="r" size="-81" />
-         <kerning glyph-id="97" char="a" size="-81" />
-         <kerning glyph-id="65" char="A" size="-81" />
-         <kerning glyph-id="117" char="u" size="-81" />
+      <glyph ID="83" glyph-number="83" char="S" width="543.976" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="84" glyph-number="84" char="T" width="707.169" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="101" char="e" size="-81.596" />
+         <kerning glyph-id="111" char="o" size="-81.596" />
+         <kerning glyph-id="114" char="r" size="-81.596" />
+         <kerning glyph-id="97" char="a" size="-81.596" />
+         <kerning glyph-id="65" char="A" size="-81.596" />
+         <kerning glyph-id="117" char="u" size="-81.596" />
       </glyph>
-      <glyph ID="85" glyph-number="85" char="U" width="734" height="683" depth="0" italic="0" />
-      <glyph ID="86" glyph-number="86" char="V" width="734" height="683" depth="0" italic="13">
-         <kerning glyph-id="111" char="o" size="-81" />
-         <kerning glyph-id="101" char="e" size="-81" />
-         <kerning glyph-id="117" char="u" size="-81" />
-         <kerning glyph-id="114" char="r" size="-81" />
-         <kerning glyph-id="97" char="a" size="-81" />
-         <kerning glyph-id="65" char="A" size="-108" />
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
+      <glyph ID="85" glyph-number="85" char="U" width="734.021" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="86" glyph-number="86" char="V" width="734.021" height="683.333" depth="0.0" italic="13.599">
+         <kerning glyph-id="111" char="o" size="-81.596" />
+         <kerning glyph-id="101" char="e" size="-81.596" />
+         <kerning glyph-id="117" char="u" size="-81.596" />
+         <kerning glyph-id="114" char="r" size="-81.596" />
+         <kerning glyph-id="97" char="a" size="-81.596" />
+         <kerning glyph-id="65" char="A" size="-108.795" />
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
       </glyph>
-      <glyph ID="87" glyph-number="87" char="W" width="1006" height="683" depth="0" italic="13">
-         <kerning glyph-id="111" char="o" size="-81" />
-         <kerning glyph-id="101" char="e" size="-81" />
-         <kerning glyph-id="117" char="u" size="-81" />
-         <kerning glyph-id="114" char="r" size="-81" />
-         <kerning glyph-id="97" char="a" size="-81" />
-         <kerning glyph-id="65" char="A" size="-108" />
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
+      <glyph ID="87" glyph-number="87" char="W" width="1006.009" height="683.333" depth="0.0" italic="13.599">
+         <kerning glyph-id="111" char="o" size="-81.596" />
+         <kerning glyph-id="101" char="e" size="-81.596" />
+         <kerning glyph-id="117" char="u" size="-81.596" />
+         <kerning glyph-id="114" char="r" size="-81.596" />
+         <kerning glyph-id="97" char="a" size="-81.596" />
+         <kerning glyph-id="65" char="A" size="-108.795" />
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
       </glyph>
-      <glyph ID="88" glyph-number="88" char="X" width="734" height="683" depth="0" italic="0">
-         <kerning glyph-id="79" char="O" size="-27" />
-         <kerning glyph-id="67" char="C" size="-27" />
-         <kerning glyph-id="71" char="G" size="-27" />
-         <kerning glyph-id="81" char="Q" size="-27" />
+      <glyph ID="88" glyph-number="88" char="X" width="734.021" height="683.333" depth="0.0" italic="0.0">
+         <kerning glyph-id="79" char="O" size="-27.199" />
+         <kerning glyph-id="67" char="C" size="-27.199" />
+         <kerning glyph-id="71" char="G" size="-27.199" />
+         <kerning glyph-id="81" char="Q" size="-27.199" />
       </glyph>
-      <glyph ID="89" glyph-number="89" char="Y" width="734" height="683" depth="0" italic="24">
-         <kerning glyph-id="101" char="e" size="-81" />
-         <kerning glyph-id="111" char="o" size="-81" />
-         <kerning glyph-id="114" char="r" size="-81" />
-         <kerning glyph-id="97" char="a" size="-81" />
-         <kerning glyph-id="65" char="A" size="-81" />
-         <kerning glyph-id="117" char="u" size="-81" />
+      <glyph ID="89" glyph-number="89" char="Y" width="734.021" height="683.333" depth="0.0" italic="24.479">
+         <kerning glyph-id="101" char="e" size="-81.596" />
+         <kerning glyph-id="111" char="o" size="-81.596" />
+         <kerning glyph-id="114" char="r" size="-81.596" />
+         <kerning glyph-id="97" char="a" size="-81.596" />
+         <kerning glyph-id="65" char="A" size="-81.596" />
+         <kerning glyph-id="117" char="u" size="-81.596" />
       </glyph>
-      <glyph ID="90" glyph-number="90" char="Z" width="598" height="683" depth="0" italic="0" />
-      <glyph ID="91" glyph-number="91" char="[" width="271" height="750" depth="250" italic="0" />
-      <glyph ID="92" glyph-number="92" char="\" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="93" glyph-number="93" char="]" width="271" height="750" depth="250" italic="0" />
-      <glyph ID="94" glyph-number="94" char="^" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="95" glyph-number="95" char="_" width="271" height="663" depth="0" italic="0" />
-      <glyph ID="96" glyph-number="96" char="`" width="271" height="694" depth="0" italic="0">
+      <glyph ID="90" glyph-number="90" char="Z" width="598.373" height="683.333" depth="0.0" italic="0.0" />
+      <glyph ID="91" glyph-number="91" char="[" width="271.988" height="750.0" depth="250.0" italic="0.0" />
+      <glyph ID="92" glyph-number="92" char="\" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="93" glyph-number="93" char="]" width="271.988" height="750.0" depth="250.0" italic="0.0" />
+      <glyph ID="94" glyph-number="94" char="^" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="95" glyph-number="95" char="_" width="271.988" height="663.692" depth="0.0" italic="0.0" />
+      <glyph ID="96" glyph-number="96" char="`" width="271.988" height="694.444" depth="0.0" italic="0.0">
          <ligature letter-id="96" letter="`" lig-id="92" lig="\" />
       </glyph>
-      <glyph ID="97" glyph-number="97" char="a" width="489" height="430" depth="0" italic="0">
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="106" char="j" size="54" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="97" glyph-number="97" char="a" width="489.578" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="106" char="j" size="54.398" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="98" glyph-number="98" char="b" width="543" height="694" depth="0" italic="0">
-         <kerning glyph-id="101" char="e" size="27" />
-         <kerning glyph-id="111" char="o" size="27" />
-         <kerning glyph-id="120" char="x" size="-27" />
-         <kerning glyph-id="100" char="d" size="27" />
-         <kerning glyph-id="99" char="c" size="27" />
-         <kerning glyph-id="113" char="q" size="27" />
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="106" char="j" size="54" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="98" glyph-number="98" char="b" width="543.976" height="694.444" depth="0.0" italic="0.0">
+         <kerning glyph-id="101" char="e" size="27.199" />
+         <kerning glyph-id="111" char="o" size="27.199" />
+         <kerning glyph-id="120" char="x" size="-27.199" />
+         <kerning glyph-id="100" char="d" size="27.199" />
+         <kerning glyph-id="99" char="c" size="27.199" />
+         <kerning glyph-id="113" char="q" size="27.199" />
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="106" char="j" size="54.398" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="99" glyph-number="99" char="c" width="435" height="430" depth="0" italic="0">
-         <kerning glyph-id="104" char="h" size="-27" />
-         <kerning glyph-id="107" char="k" size="-27" />
+      <glyph ID="99" glyph-number="99" char="c" width="435.181" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="104" char="h" size="-27.199" />
+         <kerning glyph-id="107" char="k" size="-27.199" />
       </glyph>
-      <glyph ID="100" glyph-number="100" char="d" width="543" height="694" depth="0" italic="0" />
-      <glyph ID="101" glyph-number="101" char="e" width="435" height="430" depth="0" italic="0" />
-      <glyph ID="102" glyph-number="102" char="f" width="299" height="694" depth="0" italic="69">
+      <glyph ID="100" glyph-number="100" char="d" width="543.976" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="101" glyph-number="101" char="e" width="435.181" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="102" glyph-number="102" char="f" width="299.187" height="694.444" depth="0.0" italic="69.734">
          <ligature letter-id="105" letter="i" lig-id="12" />
          <ligature letter-id="102" letter="f" lig-id="11" />
          <ligature letter-id="108" letter="l" lig-id="13" />
-         <kerning glyph-id="39" char="'" size="69" />
-         <kerning glyph-id="63" char="?" size="69" />
-         <kerning glyph-id="33" char="!" size="69" />
-         <kerning glyph-id="41" char=")" size="69" />
-         <kerning glyph-id="93" char="]" size="69" />
+         <kerning glyph-id="39" char="'" size="69.734" />
+         <kerning glyph-id="63" char="?" size="69.734" />
+         <kerning glyph-id="33" char="!" size="69.734" />
+         <kerning glyph-id="41" char=")" size="69.734" />
+         <kerning glyph-id="93" char="]" size="69.734" />
       </glyph>
-      <glyph ID="103" glyph-number="103" char="g" width="489" height="430" depth="194" italic="13">
-         <kerning glyph-id="106" char="j" size="27" />
+      <glyph ID="103" glyph-number="103" char="g" width="489.578" height="430.556" depth="194.444" italic="13.599">
+         <kerning glyph-id="106" char="j" size="27.199" />
       </glyph>
-      <glyph ID="104" glyph-number="104" char="h" width="543" height="694" depth="0" italic="0">
-         <kerning glyph-id="116" char="t" size="-27" />
-         <kerning glyph-id="117" char="u" size="-27" />
-         <kerning glyph-id="98" char="b" size="-27" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="104" glyph-number="104" char="h" width="543.976" height="694.444" depth="0.0" italic="0.0">
+         <kerning glyph-id="116" char="t" size="-27.199" />
+         <kerning glyph-id="117" char="u" size="-27.199" />
+         <kerning glyph-id="98" char="b" size="-27.199" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="105" glyph-number="105" char="i" width="271" height="663" depth="0" italic="0" />
-      <glyph ID="106" glyph-number="106" char="j" width="299" height="663" depth="194" italic="0" />
-      <glyph ID="107" glyph-number="107" char="k" width="516" height="694" depth="0" italic="0">
-         <kerning glyph-id="97" char="a" size="-54" />
-         <kerning glyph-id="101" char="e" size="-27" />
-         <kerning glyph-id="97" char="a" size="-27" />
-         <kerning glyph-id="111" char="o" size="-27" />
-         <kerning glyph-id="99" char="c" size="-27" />
+      <glyph ID="105" glyph-number="105" char="i" width="271.988" height="663.692" depth="0.0" italic="0.0" />
+      <glyph ID="106" glyph-number="106" char="j" width="299.187" height="663.692" depth="194.444" italic="0.0" />
+      <glyph ID="107" glyph-number="107" char="k" width="516.777" height="694.444" depth="0.0" italic="0.0">
+         <kerning glyph-id="97" char="a" size="-54.398" />
+         <kerning glyph-id="101" char="e" size="-27.199" />
+         <kerning glyph-id="97" char="a" size="-27.199" />
+         <kerning glyph-id="111" char="o" size="-27.199" />
+         <kerning glyph-id="99" char="c" size="-27.199" />
       </glyph>
-      <glyph ID="108" glyph-number="108" char="l" width="271" height="694" depth="0" italic="0" />
-      <glyph ID="109" glyph-number="109" char="m" width="815" height="430" depth="0" italic="0">
-         <kerning glyph-id="116" char="t" size="-27" />
-         <kerning glyph-id="117" char="u" size="-27" />
-         <kerning glyph-id="98" char="b" size="-27" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="108" glyph-number="108" char="l" width="271.988" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="109" glyph-number="109" char="m" width="815.964" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="116" char="t" size="-27.199" />
+         <kerning glyph-id="117" char="u" size="-27.199" />
+         <kerning glyph-id="98" char="b" size="-27.199" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="110" glyph-number="110" char="n" width="543" height="430" depth="0" italic="0">
-         <kerning glyph-id="116" char="t" size="-27" />
-         <kerning glyph-id="117" char="u" size="-27" />
-         <kerning glyph-id="98" char="b" size="-27" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="110" glyph-number="110" char="n" width="543.976" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="116" char="t" size="-27.199" />
+         <kerning glyph-id="117" char="u" size="-27.199" />
+         <kerning glyph-id="98" char="b" size="-27.199" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="111" glyph-number="111" char="o" width="489" height="430" depth="0" italic="0">
-         <kerning glyph-id="101" char="e" size="27" />
-         <kerning glyph-id="111" char="o" size="27" />
-         <kerning glyph-id="120" char="x" size="-27" />
-         <kerning glyph-id="100" char="d" size="27" />
-         <kerning glyph-id="99" char="c" size="27" />
-         <kerning glyph-id="113" char="q" size="27" />
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="106" char="j" size="54" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="111" glyph-number="111" char="o" width="489.578" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="101" char="e" size="27.199" />
+         <kerning glyph-id="111" char="o" size="27.199" />
+         <kerning glyph-id="120" char="x" size="-27.199" />
+         <kerning glyph-id="100" char="d" size="27.199" />
+         <kerning glyph-id="99" char="c" size="27.199" />
+         <kerning glyph-id="113" char="q" size="27.199" />
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="106" char="j" size="54.398" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="112" glyph-number="112" char="p" width="543" height="430" depth="194" italic="0">
-         <kerning glyph-id="101" char="e" size="27" />
-         <kerning glyph-id="111" char="o" size="27" />
-         <kerning glyph-id="120" char="x" size="-27" />
-         <kerning glyph-id="100" char="d" size="27" />
-         <kerning glyph-id="99" char="c" size="27" />
-         <kerning glyph-id="113" char="q" size="27" />
-         <kerning glyph-id="118" char="v" size="-27" />
-         <kerning glyph-id="106" char="j" size="54" />
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="112" glyph-number="112" char="p" width="543.976" height="430.556" depth="194.444" italic="0.0">
+         <kerning glyph-id="101" char="e" size="27.199" />
+         <kerning glyph-id="111" char="o" size="27.199" />
+         <kerning glyph-id="120" char="x" size="-27.199" />
+         <kerning glyph-id="100" char="d" size="27.199" />
+         <kerning glyph-id="99" char="c" size="27.199" />
+         <kerning glyph-id="113" char="q" size="27.199" />
+         <kerning glyph-id="118" char="v" size="-27.199" />
+         <kerning glyph-id="106" char="j" size="54.398" />
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="113" glyph-number="113" char="q" width="516" height="430" depth="194" italic="0" />
-      <glyph ID="114" glyph-number="114" char="r" width="380" height="430" depth="0" italic="0" />
-      <glyph ID="115" glyph-number="115" char="s" width="386" height="430" depth="0" italic="0" />
-      <glyph ID="116" glyph-number="116" char="t" width="380" height="615" depth="0" italic="0">
-         <kerning glyph-id="121" char="y" size="-27" />
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="113" glyph-number="113" char="q" width="516.777" height="430.556" depth="194.444" italic="0.0" />
+      <glyph ID="114" glyph-number="114" char="r" width="380.783" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="115" glyph-number="115" char="s" width="386.223" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="116" glyph-number="116" char="t" width="380.783" height="615.081" depth="0.0" italic="0.0">
+         <kerning glyph-id="121" char="y" size="-27.199" />
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="117" glyph-number="117" char="u" width="543" height="430" depth="0" italic="0">
-         <kerning glyph-id="119" char="w" size="-27" />
+      <glyph ID="117" glyph-number="117" char="u" width="543.976" height="430.556" depth="0.0" italic="0.0">
+         <kerning glyph-id="119" char="w" size="-27.199" />
       </glyph>
-      <glyph ID="118" glyph-number="118" char="v" width="516" height="430" depth="0" italic="13">
-         <kerning glyph-id="97" char="a" size="-54" />
-         <kerning glyph-id="101" char="e" size="-27" />
-         <kerning glyph-id="97" char="a" size="-27" />
-         <kerning glyph-id="111" char="o" size="-27" />
-         <kerning glyph-id="99" char="c" size="-27" />
+      <glyph ID="118" glyph-number="118" char="v" width="516.777" height="430.556" depth="0.0" italic="13.599">
+         <kerning glyph-id="97" char="a" size="-54.398" />
+         <kerning glyph-id="101" char="e" size="-27.199" />
+         <kerning glyph-id="97" char="a" size="-27.199" />
+         <kerning glyph-id="111" char="o" size="-27.199" />
+         <kerning glyph-id="99" char="c" size="-27.199" />
       </glyph>
-      <glyph ID="119" glyph-number="119" char="w" width="707" height="430" depth="0" italic="13">
-         <kerning glyph-id="101" char="e" size="-27" />
-         <kerning glyph-id="97" char="a" size="-27" />
-         <kerning glyph-id="111" char="o" size="-27" />
-         <kerning glyph-id="99" char="c" size="-27" />
+      <glyph ID="119" glyph-number="119" char="w" width="707.169" height="430.556" depth="0.0" italic="13.599">
+         <kerning glyph-id="101" char="e" size="-27.199" />
+         <kerning glyph-id="97" char="a" size="-27.199" />
+         <kerning glyph-id="111" char="o" size="-27.199" />
+         <kerning glyph-id="99" char="c" size="-27.199" />
       </glyph>
-      <glyph ID="120" glyph-number="120" char="x" width="516" height="430" depth="0" italic="0" />
-      <glyph ID="121" glyph-number="121" char="y" width="516" height="430" depth="194" italic="13">
-         <kerning glyph-id="111" char="o" size="-27" />
-         <kerning glyph-id="101" char="e" size="-27" />
-         <kerning glyph-id="97" char="a" size="-27" />
-         <kerning glyph-id="46" char="." size="-81" />
-         <kerning glyph-id="44" char="," size="-81" />
+      <glyph ID="120" glyph-number="120" char="x" width="516.777" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="121" glyph-number="121" char="y" width="516.777" height="430.556" depth="194.444" italic="13.599">
+         <kerning glyph-id="111" char="o" size="-27.199" />
+         <kerning glyph-id="101" char="e" size="-27.199" />
+         <kerning glyph-id="97" char="a" size="-27.199" />
+         <kerning glyph-id="46" char="." size="-81.596" />
+         <kerning glyph-id="44" char="," size="-81.596" />
       </glyph>
-      <glyph ID="122" glyph-number="122" char="z" width="435" height="430" depth="0" italic="0" />
-      <glyph ID="123" glyph-number="123" char="{" width="489" height="430" depth="0" italic="27">
+      <glyph ID="122" glyph-number="122" char="z" width="435.181" height="430.556" depth="0.0" italic="0.0" />
+      <glyph ID="123" glyph-number="123" char="{" width="489.578" height="430.556" depth="0.0" italic="27.199">
          <ligature letter-id="45" letter="-" lig-id="124" lig="|" />
       </glyph>
-      <glyph ID="124" glyph-number="124" char="|" width="979" height="430" depth="0" italic="27" />
-      <glyph ID="125" glyph-number="125" char="}" width="489" height="694" depth="0" italic="0" />
-      <glyph ID="126" glyph-number="126" char="~" width="489" height="663" depth="0" italic="0" />
-      <glyph ID="127" glyph-number="127" char="" width="489" height="663" depth="0" italic="0" />
+      <glyph ID="124" glyph-number="124" char="|" width="979.1565" height="430.556" depth="0.0" italic="27.199" />
+      <glyph ID="125" glyph-number="125" char="}" width="489.578" height="694.444" depth="0.0" italic="0.0" />
+      <glyph ID="126" glyph-number="126" char="~" width="489.578" height="663.692" depth="0.0" italic="0.0" />
+      <glyph ID="127" glyph-number="127" char="" width="489.578" height="663.692" depth="0.0" italic="0.0" />
    </font>
 </fontgroup>
 
