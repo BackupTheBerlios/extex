@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.type.font;
 
 import de.dante.extex.font.Glyph;
+import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -29,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * Implemetation for a font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontImpl implements Font {
 
@@ -163,4 +164,21 @@ public class FontImpl implements Font {
 
         return skewchar;
     }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getCheckSum()
+     */
+    public int getCheckSum() {
+
+        return fount.getCheckSum();
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getBoundingBox()
+     */
+    public BoundingBox getBoundingBox() {
+
+        return fount.getBoundingBox();
+    }
+
 }
