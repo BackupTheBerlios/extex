@@ -19,6 +19,7 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.interpreter.exception.ImpossibleException;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -29,7 +30,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -153,8 +154,7 @@ public class ChoiceNoad implements Noad {
         } else if (style == StyleNoad.SCRIPTSCRIPTSTYLE) {
             scriptScript.typeset(list, mathContext, context);
         } else {
-            //TODO gene: impossible
-            throw new RuntimeException("this should not happen");
+            throw new ImpossibleException("illegal style");
         }
     }
 
