@@ -1,4 +1,6 @@
 #
-#extex.config = tex.xml
-extex.output = tmp
+#extex.config    = tex.xml
+extex.output    = tmp
+extex.texinputs = src/test/data
+extex.fonts     = src/font
 #
