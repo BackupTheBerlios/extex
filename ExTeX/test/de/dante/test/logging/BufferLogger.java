@@ -16,10 +16,12 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *  
  */
-package de.dante.extex.logging;
+package de.dante.test.logging;
 
 import java.io.File;
 import java.util.logging.Level;
+
+import de.dante.extex.logging.Logger;
 
 /*
  * ...

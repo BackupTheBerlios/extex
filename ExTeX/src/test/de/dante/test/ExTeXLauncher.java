@@ -16,12 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex;
+package de.dante.test;
 
 import java.util.Properties;
 
 import de.dante.extex.ExTeX;
-import de.dante.extex.logging.BufferLogger;
+import de.dante.test.logging.BufferLogger;
 
 
 public class ExTeXLauncher {
