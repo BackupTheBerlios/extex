@@ -18,12 +18,14 @@
  */
 package de.dante.extex.interpreter.context;
 
+
 import java.io.Serializable;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
@@ -52,7 +54,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public interface Context extends Serializable {
 
@@ -74,20 +76,14 @@ public interface Context extends Serializable {
      * Convenience method to set the code assigned to a Token.
      * ...
      *
-     * @param t ...
+     * @param t the Token to set the code for
      * @param code the code for the token
-     * @param global TODO
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     *context.popConditional()
      * @throws GeneralException in case of an error
      */
     void setCode(Token t, Code code, boolean global) throws GeneralException;
-
-    /**
-     * Setter for active characters in the current group.
-     *
-     * @param name the name of the active character
-     * @param code the assigned code
-     */
-    void setActive(String name, Code code);
 
     /**
      * Setter for active characters in the requested group.
@@ -124,16 +120,6 @@ public interface Context extends Serializable {
     void setAfterassignment(Token token);
 
     /**
-     * Setter for the catcode of a character in the current group.
-     *
-     * @param c the character to assign a catcode for
-     * @param cc the catcode of the character
-     *
-     * @throws GeneralHelpingException in case of an error
-     */
-    void setCatcode(UnicodeChar c, Catcode cc) throws GeneralHelpingException;
-
-    /**
      * Setter for the catcode of a character in the specified groups.
      *
      * @param c the character to assign a catcode for
@@ -154,17 +140,6 @@ public interface Context extends Serializable {
      *
      * @param name the name or the number of the register
      * @param value the new value of the register
-     */
-    void setBox(String name, Box value);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Box box}
-     * register in all requested groups. Count registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
@@ -181,17 +156,6 @@ public interface Context extends Serializable {
      * @return the count register or <code>null</code> if it is void
      */
     Box getBox(String name);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Count count}
-     * register in the current group. Count registers are named, either with a
-     * number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
-     */
-    void setCount(String name, long value);
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.Count count}
@@ -238,32 +202,6 @@ public interface Context extends Serializable {
     Count getDelcode(UnicodeChar c);
 
     /**
-     * Setter for the named dimen register.
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     */
-    void setDimen(String name, Dimen value);
-
-    /**
-     * ...
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     */
-    void setDimen(String name, long value);
-
-    /**
-     * ...
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setDimen(String name, Dimen value, boolean global);
-
-    /**
      * ...
      *
      * @param name ...
@@ -277,10 +215,38 @@ public interface Context extends Serializable {
      * ...
      *
      * @param name ...
+     * @param value ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setDimen(String name, Dimen value, boolean global);
+
+    /**
+     * ...
+     *
+     * @param name ...
      *
      * @return ...
      */
     Dimen getDimen(String name);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param font ...
+     * @param global ...
+     */
+    void setFont(String name, Font font, boolean global);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     *
+     * @return ...
+     */
+    Font getFont(String name);
 
     /**
      * Getter for the font factory.
@@ -295,15 +261,6 @@ public interface Context extends Serializable {
      * @param fontFactory the fontFactory to set.
      */
     void setFontFactory(FontFactory fontFactory);
-
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @param value ...
-     */
-    void setGlue(String name, Glue value);
 
     /**
      * ...
@@ -407,15 +364,6 @@ public interface Context extends Serializable {
      */
     UnicodeChar getUccode(UnicodeChar lc);
 
-
-    /**
-     * ...
-     *
-     * @param name the name of the macro
-     * @param code ...
-     */
-    void setMacro(String name, Code code);
-
     /**
      * ...
      *
@@ -480,14 +428,6 @@ public interface Context extends Serializable {
      *
      * @param name ...
      * @param value ...
-     */
-    void setMuskip(String name, Muskip value);
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @param value ...
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
@@ -535,17 +475,6 @@ public interface Context extends Serializable {
      * @return the tokenizer
      */
     Tokenizer getTokenizer();
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
-     * register in the current group. Tokens registers are named, either with a
-     * number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param toks the new value of the register
-     */
-    void setToks(String name, Tokens toks);
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
@@ -658,21 +587,22 @@ public interface Context extends Serializable {
     void closeGroup(Typesetter typesetter, TokenSource source) throws GeneralException;
 
     /**
-     * ...
+     * Pop the management information for a conditional from the stack and
+     * return it. If the stack is empty then <code>null</code> is returned.
      *
-     * @return ...
+     * @return the formerly topmost element from the conditional stack
      *
      * @throws GeneralException in case of an error
      */
-    long popConditional() throws GeneralException;
+    Conditional popConditional() throws GeneralException;
 
     /**
-     * ...
+     * Put a value onto the conditional stack.
      *
-     * @param locator the locator of the start
-     * @param value the boolean value
+     * @param locator the locator for the start of the if statement
+     * @param value the value to push
      */
-    void pushConditional(Locator locator, long value);
+    void pushConditional(Locator locator, boolean value);
 
     /**
      * This method can be used to open another group. The current group is
@@ -683,14 +613,6 @@ public interface Context extends Serializable {
      *             e.g. the class for the group can not be determined.
      */
     void openGroup() throws ConfigurationException;
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @param file ...
-     */
-    void setInFile(String name, InFile file);
 
     /**
      * ...
@@ -708,14 +630,6 @@ public interface Context extends Serializable {
      * @return ...
      */
     InFile getInFile(String name);
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @param file ...
-     */
-    void setOutFile(String name, OutFile file);
 
     /**
      * ...

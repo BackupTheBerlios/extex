@@ -64,7 +64,7 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Max extends Moritz implements Interpreter,
         TokenSource, Observable, CatcodeVisitor {
@@ -437,7 +437,7 @@ public class Max extends Moritz implements Interpreter,
                         .getConstructor(new Class[]{String.class})
                         .newInstance(new Object[]{name}));
                 code.set(context, cfg.getValue());
-                context.setMacro(name, code);
+                context.setMacro(name, code, true);
             } catch (IllegalArgumentException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (SecurityException e) {
@@ -459,11 +459,11 @@ public class Max extends Moritz implements Interpreter,
             }
         }
 
-        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH));
-        context.setCount("month", calendar.get(Calendar.MONTH));
-        context.setCount("year", calendar.get(Calendar.YEAR));
+        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        context.setCount("month", calendar.get(Calendar.MONTH), true);
+        context.setCount("year", calendar.get(Calendar.YEAR), true);
         context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
-                                 + calendar.get(Calendar.MINUTE));
+                                 + calendar.get(Calendar.MINUTE), true);
 
         everyRun = config.findConfiguration("everyjob");
     }

@@ -100,7 +100,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -209,7 +209,8 @@ public class ContextImpl implements Context, Observable, Serializable {
      * @throws GeneralException in case of an execution error
      */
     public ContextImpl(final Configuration configuration)
-            throws ConfigurationException, GeneralException {
+            throws ConfigurationException,
+                GeneralException {
 
         super();
         groupFactory = new GroupFactory(configuration
@@ -235,15 +236,6 @@ public class ContextImpl implements Context, Observable, Serializable {
                 .getValueAsInteger("maximalMagnification",
                                    (int) MAGNIFICATION_MAX);
 
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
-     *         de.dante.extex.interpreter.Code)
-     */
-    public void setActive(final String name, final Code code) {
-
-        group.setActive(name, code);
     }
 
     /**
@@ -282,30 +274,12 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
-     *      de.dante.extex.scanner.Catcode)
-     */
-    public void setCatcode(final UnicodeChar c, final Catcode cc) {
-
-        group.setCatcode(c, cc);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode, boolean)
      */
     public void setCatcode(final UnicodeChar c, final Catcode cc,
             final boolean global) {
 
         group.setCatcode(c, cc, global);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-     *         de.dante.extex.interpreter.type.Box)
-     */
-    public void setBox(final String name, final Box value) {
-
-        group.setBox(name, value);
     }
 
     /**
@@ -359,18 +333,6 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
-     *         long)
-     */
-    public void setCount(final String name, final long value) {
-
-        Count count = new Count(value);
-        group.setCount(name, count);
-
-        //TODO: use existing Register instead of making a new one
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
      *         long, boolean)
      */
     public void setCount(final String name, final long value,
@@ -410,27 +372,6 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-     *         long)
-     */
-    public void setDimen(final String name, final long value) {
-
-        Dimen dimen = new Dimen(value);
-        group.setDimen(name, dimen);
-
-        //TODO: use existing Register instead of making a new one
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-     *         de.dante.extex.interpreter.type.Dimen)
-     */
-    public void setDimen(final String name, final Dimen value) {
-
-        group.setDimen(name, value);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
      *         de.dante.extex.interpreter.type.Dimen, boolean)
      */
     public void setDimen(final String name, final Dimen value,
@@ -458,6 +399,22 @@ public class ContextImpl implements Context, Observable, Serializable {
     public Dimen getDimen(final String name) {
 
         return group.getDimen(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getFont(java.lang.String)
+     */
+    public Font getFont(final String name) {
+
+        return this.group.getFont(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setFont(java.lang.String, de.dante.extex.interpreter.type.Font, boolean)
+     */
+    public void setFont(final String name, final Font font, final boolean global) {
+
+        this.group.setFont(name, font, global);
     }
 
     /**
@@ -503,15 +460,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setGlue(java.lang.String,
-     *      de.dante.extex.interpreter.type.Glue)
-     */
-    public void setGlue(final String name, final Glue value) {
-
-        group.setSkip(name, value);
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
      */
     public HyphenationTable getHyphenationTable(final int language) {
@@ -537,15 +485,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     public Interaction getInteraction() {
 
         return group.getInteraction();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String,
-     *         de.dante.extex.interpreter.Code)
-     */
-    public void setMacro(final String name, final Code code) {
-
-        group.setMacro(name, code);
     }
 
     /**
@@ -627,15 +566,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     public Muskip getMuskip(final String name) {
 
         return group.getMuskip(name);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setMuskip(java.lang.String,
-     *      de.dante.extex.interpreter.type.Muskip)
-     */
-    public void setMuskip(final String name, final Muskip value) {
-
-        group.setMuskip(name, value);
     }
 
     /**
@@ -799,24 +729,21 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * Pop the management information for a conditional from the stack and
-     * return it.
-     *
-     * @return the formerly topmost element from the conditional stack
+     * @see de.dante.extex.interpreter.context.Context#popConditional()
      */
-    public long popConditional() {
+    public Conditional popConditional() throws GeneralException {
 
         int size = conditionalStack.size();
-        return ((Conditional) conditionalStack.remove(size - 1)).getValue();
+        if (size <= 0) {
+            return null;
+        }
+        return ((Conditional) conditionalStack.remove(size - 1));
     }
 
     /**
-     * Put a value onto the conditional stack.
-     *
-     * @param locator the locator for the start of the if statement
-     * @param value the value to push
+     * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean)
      */
-    public void pushConditional(final Locator locator, final long value) {
+    public void pushConditional(final Locator locator, final boolean value) {
 
         conditionalStack.add(new Conditional(locator, value));
     }
@@ -848,15 +775,6 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
-     *      de.dante.extex.interpreter.type.Tokens)
-     */
-    public void setToks(final String name, final Tokens toks) {
-
-        group.setToks(name, toks);
-    }
-
-    /**
      * Getter for group.
      *
      * @return the group.
@@ -884,30 +802,12 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setInFile(java.lang.String,
-     *      de.dante.extex.interpreter.type.InFile)
-     */
-    public void setInFile(final String name, final InFile file) {
-
-        group.setInFile(name, file);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setInFile(java.lang.String,
      *      de.dante.extex.interpreter.type.InFile, boolean)
      */
     public void setInFile(final String name, final InFile file,
             final boolean global) {
 
         group.setInFile(name, file, global);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.Context#setOutFile(java.lang.String,
-     *      de.dante.extex.interpreter.type.OutFile)
-     */
-    public void setOutFile(final String name, final OutFile file) {
-
-        group.setOutFile(name, file);
     }
 
     /**

@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.InFile;
 import de.dante.extex.interpreter.type.Muskip;
@@ -50,18 +51,9 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Group extends Tokenizer, Serializable {
-
-    /**
-     * Setter for active characters in the current group.
-     *
-     * @param name the name of the active character, i.e. a single letter
-     *            string
-     * @param code the new code
-     */
-    void setActive(String name, Code code);
 
     /**
      * Setter for active characters in the requested group.
@@ -96,17 +88,6 @@ public interface Group extends Tokenizer, Serializable {
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.Box box}register
-     * in the current group. Count registers are named, either with a number or
-     * an arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
-     */
-    void setBox(String name, Box value);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Box box}register
      * in all requested groups. Count registers are named, either with a number
      * or an arbitrary string. The numbered registers where limited to 256 in
      * TeX. This restriction does no longer hold for ExTeX.
@@ -131,14 +112,6 @@ public interface Group extends Tokenizer, Serializable {
     Box getBox(String name);
 
     /**
-     * Setter for the catcode of a character in the current group.
-     *
-     * @param c the character
-     * @param code the catcode
-     */
-    void setCatcode(UnicodeChar c, Catcode code);
-
-    /**
      * Setter for the catcode of a character in the specified groups.
      *
      * @param c the character
@@ -147,14 +120,6 @@ public interface Group extends Tokenizer, Serializable {
      *            groups; otherwise the current group is affected only
      */
     void setCatcode(UnicodeChar c, Catcode code, boolean global);
-
-    /**
-     * Setter for the count register in the current group.
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     */
-    void setCount(String name, Count value);
 
     /**
      * Setter for a count register in the requested groups.
@@ -202,14 +167,6 @@ public interface Group extends Tokenizer, Serializable {
     Count getDelcode(UnicodeChar c);
 
     /**
-     * Setter for a dimen register in the current group.
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     */
-    void setDimen(String name, Dimen value);
-
-    /**
      * Setter for a dimen register in the requested groups.
      *
      * @param name the name of the count register
@@ -234,14 +191,24 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the dimen register or its default
      */
     Dimen getDimen(String name);
+    
+    /**
+     * ...
+     * 
+     * @param name ...
+     * @param font ...
+     * @param global ...
+     */
+    void setFont(String name, Font font, boolean global);
 
     /**
-     * Setter for the value of the booleans in the current group.
+     * ...
+     * 
+     * @param name ...
      *
-     * @param name the name of the boolean
-     * @param value the truth value
+     * @return ...
      */
-    void setIf(String name, boolean value);
+    Font getFont(String name);
 
     /**
      * Setter for the value of the booleans in all groups.
@@ -267,14 +234,6 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @param name ...
      * @param file ...
-     */
-    void setInFile(String name, InFile file);
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @param file ...
      * @param global ...
      */
     void setInFile(String name, InFile file, boolean global);
@@ -286,13 +245,6 @@ public interface Group extends Tokenizer, Serializable {
      * @return ...
      */
     InFile getInFile(String name);
-
-    /**
-     * Setter for the interaction mode in the current group.
-     *
-     * @param interaction the new interaction mode
-     */
-    void setInteraction(Interaction interaction);
 
     /**
      * Setter for the interaction mode in the requested groups.
@@ -349,14 +301,6 @@ public interface Group extends Tokenizer, Serializable {
     UnicodeChar getUccode(UnicodeChar lc);
 
     /**
-     * Setter for the definition of a macro in the current group.
-     *
-     * @param name the name of the macro
-     * @param code the new definition
-     */
-    void setMacro(String name, Code code);
-
-    /**
      * Setter for the definition of a macro in all groups.
      *
      * @param name the name of the macro
@@ -393,14 +337,6 @@ public interface Group extends Tokenizer, Serializable {
      * @return ...
      */
     Count getMathcode(UnicodeChar c);
-
-    /**
-     * Setter for a muskip register in all groups.
-     *
-     * @param name the name of the count register
-     * @param value the value of the count register
-     */
-    void setMuskip(String name, Muskip value);
 
     /**
      * Setter for the muskip register in the requested groups.
@@ -441,14 +377,6 @@ public interface Group extends Tokenizer, Serializable {
      *
      * @param name ...
      * @param file ...
-     */
-    void setOutFile(String name, OutFile file);
-
-    /**
-     * ...
-     *
-     * @param name ...
-     * @param file ...
      * @param global ...
      */
     void setOutFile(String name, OutFile file, boolean global);
@@ -481,14 +409,6 @@ public interface Group extends Tokenizer, Serializable {
     Count getSfcode(UnicodeChar c);
 
     /**
-     * Setter for the skip register in the current group.
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     */
-    void setSkip(String name, Glue value);
-
-    /**
      * Setter for a skip register in all groups.
      *
      * @param name the name of the count register
@@ -513,14 +433,6 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the count register or its default
      */
     Glue getSkip(String name);
-
-    /**
-     * Setter for the toks register in the current group.
-     *
-     * @param name the name of the register
-     * @param value the value of the register
-     */
-    void setToks(String name, Tokens value);
 
     /**
      * Setter for a toks register in all groups.
