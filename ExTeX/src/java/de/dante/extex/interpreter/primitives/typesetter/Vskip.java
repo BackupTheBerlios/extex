@@ -31,34 +31,46 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\vskip</code>.
- *
+ * 
  * <doc name="vskip">
  * <h3>The Primitive <tt>\vskip</tt></h3>
  * <p>
- *  ...
+ * ...
  * </p>
  * <p>
- *  The formal description of this primitive is the following:
- *  <pre class="syntax">
- *    &lang;vskip&rang;
- *        &rarr; <tt>\vskip</tt> &lang;Glue&rang;  </pre>
+ * The formal description of this primitive is the following:
+ * 
+ * <pre class="syntax">
+ * 
+ *     &amp;langvskip&amp;rang
+ *         &amp;rarr 
+ * <tt>
+ * \vskip
+ * </tt>
+ *  &amp;langGlue&amp;rang  
+ * </pre>
+ * 
  * </p>
  * <p>
- *  Examples:
- *  <pre class="TeXSample">
- *    \vskip 1em plus 1pt minus 1pt  </pre>
+ * Examples:
+ * 
+ * <pre class="TeXSample">
+ * 
+ *     \vskip 1em plus 1pt minus 1pt  
+ * </pre>
+ * 
  * </p>
  * </doc>
- *
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * 
+ * 
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
+ * @version $Revision: 1.4 $
  */
 public class Vskip extends AbstractCode {
 
     /**
      * Creates a new object.
-     *
+     * 
      * @param name the name for debugging
      */
     public Vskip(final String name) {
@@ -78,6 +90,12 @@ public class Vskip extends AbstractCode {
             throws GeneralException {
 
         Mode mode = typesetter.getMode();
+
+        if (mode == Mode.HORIZONTAL) { // see TTP[1094]
+            // see TTP[1095]
+            typesetter.par();
+            mode = typesetter.getMode();
+        }
         if (mode != Mode.VERTICAL && mode != Mode.INNER_VERTICAL) {
             throw new HelpingException("TTP.MissingInserted", "}");
         }
