@@ -2,10 +2,10 @@
 #------------------------------------------------------------------------------
 #
 #extex.config    = tex.xml
-extex.output    = tmp
-extex.texinputs = src/test/data
+#extex.output    = tmp
+#extex.texinputs = src/test/data
 extex.fonts     = src/font
 extex.typesetter= devel
-texmf.path      = c:\\usr\\local\\share\\TeXlive7\\texmf
+#texmf.path      = c:\\usr\\local\\share\\TeXlive7\\texmf
 #extex.token.stream=base32
 #
