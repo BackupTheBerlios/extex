@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.info;
 
 import de.dante.extex.interpreter.Flags;
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Jobname extends AbstractCode implements ExpandableCode {
 
@@ -60,6 +61,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
      * @param name the name for tracing and debugging
      */
     public Jobname(final String name) {
+
         super(name);
     }
 
@@ -74,10 +76,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens jobname = context.getToks("jobname");
-        if (jobname != null) {
-            source.push(jobname);
-        }
+        source.push(context.getToks("jobname"));
         return true;
     }
 
@@ -92,10 +91,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Tokens jobname = context.getToks("jobname");
-        if (jobname != null) {
-            source.push(jobname);
-        }
+        source.push(context.getToks("jobname"));
     }
 
 }
