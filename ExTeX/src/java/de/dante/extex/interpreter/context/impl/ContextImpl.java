@@ -35,7 +35,6 @@ import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
 import de.dante.extex.interpreter.Interaction;
-import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.CodeChangeObserver;
@@ -114,11 +113,12 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class ContextImpl
         implements
             Context,
+            Tokenizer,
             DocumentWriterOptions,
             TypesetterOptions,
             TokenStreamOptions,
@@ -212,11 +212,6 @@ public class ContextImpl
     private transient long magnificationMax = MAGNIFICATION_MAX;
 
     /**
-     * The field <tt>namespace</tt> contains the current namespace.
-     */
-    private String namespace = Namespace.DEFAULT_NAMESPACE;
-
-    /**
      * The field <tt>observersInteraction</tt> contains the observer list which
      * is used for the observers registered to receive notifications
      * when the interaction is changed. The argument is the new interaction
@@ -243,7 +238,8 @@ public class ContextImpl
     private transient TypesettingContextFactory tcFactory;
 
     /**
-     * The token factory implementation to use.
+     * The field <tt>tokenFactory</tt> contains the token factory implementation
+     * to use.
      */
     private transient TokenFactory tokenFactory = new TokenFactoryImpl();
 
@@ -348,12 +344,25 @@ public class ContextImpl
     }
 
     /**
+     * ...
+     *
+     * @param uc
+     * @return
+     *
+     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
+     */
+    public Catcode getCatcode(final UnicodeChar uc) {
+
+        return group.getCatcode(uc);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getCode(
      *      de.dante.extex.scanner.Token)
      */
     public Code getCode(final Token t) throws GeneralException {
 
-        return group.getCode(t);
+        return group.getCode((CodeToken) t);
     }
 
     /**
@@ -507,7 +516,7 @@ public class ContextImpl
      */
     public String getNamespace() {
 
-        return this.namespace;
+        return group.getNamespace();
     }
 
     /**
@@ -893,11 +902,12 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setNamespace(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#setNamespace(
+     *      java.lang.String, boolean)
      */
-    public void setNamespace(final String namespace) {
+    public void setNamespace(final String namespace, final boolean global) {
 
-        this.namespace = namespace;
+        group.setNamespace(namespace, global);
     }
 
     /**
