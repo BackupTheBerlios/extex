@@ -37,13 +37,14 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\dimendef</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getControlSequence()
- *    &lang;control sequence&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
- *      &lang;8-bit&nbsp;number&rang;} </pre>
+ *    &lang;dimendef&rang;
+ *      &rarr; <tt>\dimendef</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *        &lang;control sequence&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -68,7 +69,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Dimendef extends AbstractDimen {
 

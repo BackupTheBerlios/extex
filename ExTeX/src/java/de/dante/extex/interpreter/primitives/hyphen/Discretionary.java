@@ -37,10 +37,21 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;discretionary&rang;
+ *      &rarr; <tt>\discretionary ...</tt>  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \discretionary ...  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Discretionary extends AbstractCode {
 

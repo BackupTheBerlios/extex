@@ -36,8 +36,8 @@ import de.dante.extex.typesetter.Typesetter;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;iffalse&rang;
- *    &rarr; <tt>\iffalse</tt> &lang;true text&rang; <tt>\fi</tt>
- *    |  <tt>\iffalse</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ *      &rarr; <tt>\iffalse</tt> &lang;true text&rang; <tt>\fi</tt>
+ *      | <tt>\iffalse</tt> &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
  *  Examples:
@@ -47,7 +47,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Iffalse extends AbstractIf {
 

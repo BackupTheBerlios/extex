@@ -37,7 +37,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\long ...</tt>  </pre>
+ *    &lang;long&rang;
+ *      &rarr; <tt>\long ...</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -47,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Long extends AbstractCode {
     /**

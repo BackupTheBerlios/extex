@@ -44,13 +44,19 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *   &lang;advance&rang;
- *     &rarr; <tt>\advance</tt> &lang;advancable&rang;
+ *     &rarr; &rarr; &lang;optional prefix&rang; <tt>\advance</tt> &lang;advancable&rang;
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang;
  *
  *   &lang;advancable&rang;
  *     &rarr; &lang;integer variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
  *      de.dante.extex.interpreter.TokenSource#scanNumber()
- *      &lang;8-bit&nbsp;number&rang;}
- *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; &lang;dimen&rang;
+ *      &lang;number&rang;}
+ *      |  &lang;dimen variable&rang; &lang;optional <tt>by</tt>&rang; {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;}
  *      |  &lang;glue variable&rang; &lang;optional <tt>by</tt>&rang; &lang;glue&rang;
  *      |  &lang;muglue variable&rang; &lang;optional <tt>by</tt>&rang; &lang;muglue&rang;
  *
@@ -71,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Advanceable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Advance extends AbstractAssignment {
 

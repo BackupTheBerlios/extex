@@ -22,12 +22,20 @@ import java.util.logging.Logger;
 
 
 /**
- * ...
+ * This interface describes the need of a component for a logger.
+ * The logger is provided by the framework at startup. Alternatively some other
+ * means might be present to provide the logger before the component comes to
+ * action.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface LogEnabled {
 
+    /**
+     * Setter for the logger.
+     *
+     * @param logger the logger to use
+     */
     void enableLogging(Logger logger);
 }

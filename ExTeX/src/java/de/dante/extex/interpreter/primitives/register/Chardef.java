@@ -40,13 +40,14 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\chardef</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getControlSequence()
- *    &lang;control sequence&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
- *      &lang;8-bit&nbsp;number&rang;}  </pre>
+ *    &lang;chardef&rang;
+ *      &rarr; <tt>\chardef</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getControlSequence()
+ *        &lang;control sequence&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;}  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -59,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Chardef extends AbstractAssignment {
 

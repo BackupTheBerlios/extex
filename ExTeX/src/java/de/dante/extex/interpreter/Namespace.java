@@ -23,7 +23,7 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Namespace {
 
@@ -31,6 +31,6 @@ public interface Namespace {
      * The constant <tt>DEFAULT_NAMESPACE</tt> contains the name of the default
      * namespace.
      */
-    public static String DEFAULT_NAMESPACE = "";
+    String DEFAULT_NAMESPACE = "";
 
 }

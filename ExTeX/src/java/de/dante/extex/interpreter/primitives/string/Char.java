@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.string;
 
 import de.dante.extex.interpreter.Flags;
@@ -35,23 +36,38 @@ import de.dante.util.UnicodeChar;
  * <doc name="char">
  * <h3>The Primitive <tt>\char</tt></h3>
  * <p>
- *  ...
+ *  The primitive <tt>\char</tt> provides access to any character in the current
+ *  font. The argument is the numeric value of the character. This value can be
+ *  any expanded expression resulting in a number of the proper range.
+ * </p>
+ * <p>
+ *  If no proper argument is found then an error is raised.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;char&rang;
- *        &rarr; <tt>\char</tt> &lang;...&rang; </pre>
+ *        &rarr; <tt>\char</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \char42  </pre>
+ *    \char42
+ *    \char\count1  </pre>
  * </p>
  * </doc>
  *
+ * <p>
+ * Possible extension
+ * <ul>
+ * <li>Take a group and interpret it as unicode name.</li>
+ * </ul>
+ * </p>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
@@ -61,6 +77,7 @@ public class Char extends AbstractCode implements ExpandableCode {
      * @param name the name for tracing and debugging
      */
     public Char(final String name) {
+
         super(name);
     }
 
@@ -93,7 +110,7 @@ public class Char extends AbstractCode implements ExpandableCode {
         UnicodeChar uc = source.scanCharacterCode();
         Catcode cc = context.getTokenizer().getCatcode(uc);
         Token t = context.getTokenFactory().createToken(cc, uc,
-                                                        context.getNamespace());
+                context.getNamespace());
         source.push(t);
     }
 

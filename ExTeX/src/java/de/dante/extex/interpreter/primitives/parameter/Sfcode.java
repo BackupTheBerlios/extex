@@ -40,7 +40,8 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\sfcode ...</tt>  </pre>
+ *    &lang;sfcode&rang;
+ *      &rarr; <tt>\sfcode ...</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +51,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Sfcode extends AbstractAssignment {
 

@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;ignorespaces&rang;
- *        &rarr; <tt>\ignorespaces</tt> </pre>
+ *      &rarr; <tt>\ignorespaces</tt> </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Ignorespaces extends AbstractCode {
 

@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.HelpingException;
@@ -35,18 +36,40 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;ifdim&rang;
+ *      &rarr; <tt>\ifdim</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} &lang;op&rang; {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *      | <tt>\ifdim</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} &lang;op&rang; {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt>
+ *
+ *    &lang;op&rang;
+ *      &rarr; [&lt;]
+ *      | [=]
+ *      | [&gt;]  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ifdim extends AbstractIf {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Ifdim(final String name) {
+
         super(name);
     }
 
@@ -57,8 +80,8 @@ public class Ifdim extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         long x = new Dimen(context, source).getValue();
         Token rel = source.getToken();
@@ -68,17 +91,18 @@ public class Ifdim extends AbstractIf {
         }
         if (rel.getCatcode() == Catcode.OTHER) {
             switch (rel.getChar().getCodePoint()) {
-            case '<':
-                return (x < new Dimen(context, source).getValue());
-            case '=':
-                return (x == new Dimen(context, source).getValue());
-            case '>':
-                return (x > new Dimen(context, source).getValue());
-            default:
-            // fall-through
+                case '<':
+                    return (x < new Dimen(context, source).getValue());
+                case '=':
+                    return (x == new Dimen(context, source).getValue());
+                case '>':
+                    return (x > new Dimen(context, source).getValue());
+                default:
+            // Fal through to error handling
             }
         }
         //TODO pushback the tokens read
-        throw new HelpingException("TTP.IllegalIfnumOp");
+        throw new HelpingException("TTP.IllegalIfnumOp",
+                printableControlSequence(context));
     }
 }

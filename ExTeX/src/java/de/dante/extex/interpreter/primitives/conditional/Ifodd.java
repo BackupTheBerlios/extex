@@ -35,9 +35,13 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\ifodd</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
- *
- *    <tt>\ifodd</tt> {@linkplain de.dante.extex.interpreter.TokenSource#scanInteger() &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ *    &lang;ifodd&rang;
+ *      &rarr; <tt>\ifodd</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *      | <tt>\ifodd</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
  *  Examples:
@@ -47,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Ifodd extends AbstractIf {
     /**

@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -150,7 +150,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     /**
      * Creates a new object with a fixed width.
      *
-     * @param theValue the fixed value
+     * @param component the fixed value
      */
     public GlueComponent(final FixedGlueComponent component) {
 

@@ -33,31 +33,31 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
     /**
      * The constant <tt>ONE_INCH</tt> contains the immutable dimen register
-     * representing the length of 1in.
+     * representing the length of 1&nbsp;in.
      */
     public static final Dimen ONE_INCH = new ImmutableDimen(ONE * 7227 / 100);
 
     /**
      * The constant <tt>ONE_PT</tt> contains the immutable dimen register
-     * representing the length of 1pt.
+     * representing the length of 1&nbsp;pt.
      */
     public static final Dimen ONE_PT = new ImmutableDimen(ONE);
 
     /**
      * The constant <tt>ZERO_PT</tt> contains the immutable dimen register
-     * representing the length of 0pt.
+     * representing the length of 0&nbsp;pt.
      */
     public static final Dimen ZERO_PT = new ImmutableDimen(0);
 
     /**
      * Creates a new object.
-     * The length stored in it is initialized to 0pt.
+     * The length stored in it is initialized to 0&nbsp;pt.
      */
     public Dimen() {
 
@@ -65,7 +65,15 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object from a token stream.
+     *
+     * <doc type="syntax" name="dimen">
+     * This method parses the following syntactic entity:
+     * <pre class="syntax">
+     *   &lang;dimen&rang; </pre>
+     * ...
+     * </doc>
+     *
      *
      * @param context the interpreter context
      * @param source the source for next tokens
@@ -157,7 +165,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * @param d the other dimen
      *
      * @throws NullPointerException in case that the argument is
-     * <code>null</code>.
+     *  <code>null</code>.
      */
     public void max(final FixedDimen d) {
 

@@ -51,9 +51,15 @@ import de.dante.util.GeneralException;
  *         |  &lang;rule dimension&rang; &lang;rule specification&rang;
  *
  *    &lang;rule dimension&rang;
- *        &rarr; <tt>width</tt> &lang;dimen&rang;
- *         |  <tt>height</tt> &lang;dimen&rang;
- *         |  <tt>depth</tt> &lang;dimen&rang;  </pre>
+ *        &rarr; <tt>width</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} 
+ *         |  <tt>height</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} 
+ *         |  <tt>depth</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;}   </pre>
  * </p>
  * <p>
  *  The color from the typographic context is taken as foreground color for the
@@ -72,7 +78,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Hrule extends AbstractCode {
 

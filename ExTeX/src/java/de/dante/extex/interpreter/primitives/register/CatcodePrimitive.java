@@ -39,9 +39,23 @@ import de.dante.util.UnicodeChar;
  *  ...
  * </p>
  * <p>
+ *  The assignment is controlled by the modifier <tt>\global</tt> and the
+ *  parameter <tt>\globaldefs</tt>. Usually the assignment is acting on the
+ *  current group only. if the integer parameter <tt>\globaldefs</tt> is not
+ *  0 or the modifier <tt>\global</tt> is given then the assignment is applied
+ *  to all groups.
+ * </p>
+ * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\catcode</tt> ... </pre>
+ *    &lang;catcode&rang;
+ *      &rarr; <tt>\catcode</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanNumber()
+ *          &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *          &lang;equals&rang;} {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanNumber()
+ *          &lang;4-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -52,7 +66,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 

@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.Typesetter;
  * It does simply nothing, but as a side effect the prefix <i>PROTECTED</i> is
  * added to the prefixes.
  *
- * <doc name="protected">
+ * <doc name="protected" extension="yes">
  * <h3>The Prefix Primitive <tt>\protected</tt></h3>
  * <p>
  *  ...
@@ -38,7 +38,8 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\protected</tt>  </pre>
+ *    &lang;protected&rang;
+ *      &rarr; <tt>\protected</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -48,7 +49,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Protected extends AbstractCode {
 

@@ -34,7 +34,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\fam</tt> ...  </pre>
+ *    &lang;fam&rang;
+ *      &rarr; <tt>\fam</tt> ...  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -46,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Fam extends CountPrimitive {
 

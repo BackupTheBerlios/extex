@@ -41,8 +41,11 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;moveright&rang;
- *        &rarr; <tt>\moveright</tt> &lang;dimen&rang; {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getBox() &lang;box&rang;}  </pre>
+ *      &rarr; <tt>\moveright</tt> {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getBox(de.dante.extex.typesetter.Typesetter)
+ *        &lang;box&rang;}  </pre>
  * </p>
  * <p>
  *  The color from the typographic context is taken as foregroud color for the
@@ -61,7 +64,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Moveright extends AbstractCode implements Boxable {
 

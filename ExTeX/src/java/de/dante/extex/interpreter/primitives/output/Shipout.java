@@ -39,8 +39,10 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\shipout</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getBox() &lang;box&rang;}  </pre>
+ *    &lang;shipout&rang;
+ *      &rarr; <tt>\shipout</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getBox(Typesetter)
+ *        &lang;box&rang;}  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Shipout extends AbstractCode {
 

@@ -34,10 +34,35 @@ import de.dante.util.GeneralException;
  * <p>
  *  ...
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;ifnum&rang;
+ *      &rarr; <tt>\ifnum</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        &lang;number&rang;} &lang;op&rang; {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        &lang;number&rang;} &lang;true text&rang; <tt>\fi</tt>
+ *      | <tt>\ifodd</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        &lang;number&rang;} &lang;op&rang; {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanInteger()
+ *        &lang;number&rang;} &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt>
+ *
+ *    &lang;op&rang;
+ *      &rarr; [&lt;]
+ *      | [=]
+ *      | [&gt;]  </pre>
+ * </p>
+ * <p>
+ *  Examples:
+ *  <pre class="TeXSample">
+ *    \ifodd\count0 abc \fi  </pre>
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ifnum extends AbstractIf {
     /**

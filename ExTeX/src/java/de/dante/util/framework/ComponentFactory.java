@@ -25,9 +25,13 @@ import java.lang.reflect.InvocationTargetException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationIOException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationInvalidResourceException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
+import de.dante.util.configuration.ConfigurationNotFoundException;
+import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.framework.component.Component;
 
 /**
@@ -41,7 +45,7 @@ import de.dante.util.framework.component.Component;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ComponentFactory {
 
@@ -77,14 +81,37 @@ public class ComponentFactory {
      * Get an instance of a typesetter.
      *
      * @param type ...
-     * @param context the interpreter context
      *
      * @return a new typesetter
      *
-     * @throws ConfigurationException in case of an configuration error
+     * @throws ConfigurationMissingAttributeException in case that a needed
+     *  attribute was not proveided
+     * @throws ConfigurationInvalidResourceException in case that the given
+     *  resource name is nullor empty
+     * @throws ConfigurationNotFoundException in case that the named path does
+     *  not lead to a resource
+     * @throws ConfigurationSyntaxException in case that the resource contains
+     *  syntax errors
+     * @throws ConfigurationIOException in case of an IO exception while
+     *  reading the resource
+     * @throws ConfigurationClassNotFoundException in case that the given
+     *  class could not be found
+     * @throws ConfigurationInstantiationException in cas of an exception
+     *  during instantiation
+     * @throws ConfigurationNoSuchMethodException in case that the expected
+     *  constructor could not be found
+     * @throws ConfigurationException in case of an error in the constructor
      */
     public Component createComponent(final String type)
-            throws ConfigurationException {
+            throws ConfigurationMissingAttributeException,
+                ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException,
+                ConfigurationClassNotFoundException,
+                ConfigurationInstantiationException,
+                ConfigurationNoSuchMethodException,
+                ConfigurationException {
 
         Configuration cfg = config.findConfiguration(type != null ? type : "");
         if (cfg == null) {
@@ -110,18 +137,14 @@ public class ComponentFactory {
         Component component;
 
         try {
-            Constructor constructor = Class.forName(className)
-                    .getConstructor(new Class[]{Configuration.class});
-            component = (Component) constructor
-                    .newInstance(new Object[]{cfg});
+            Constructor constructor = Class.forName(className).getConstructor(
+                    new Class[]{Configuration.class});
+            component = (Component) constructor.newInstance(new Object[]{cfg});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(className
-                                                         + "("
-                                                         + Configuration.class
-                                                                 .getName()
-                                                         + ")");
+            throw new ConfigurationNoSuchMethodException(className + "("
+                    + Configuration.class.getName() + ")");
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(className, config);
         } catch (IllegalArgumentException e) {

@@ -52,11 +52,18 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\dp</tt> {@linkplain
- *    de.dante.extex.interpreter.TokenSource#scanNumber()
- *    &lang;8-bit&nbsp;number&rang;} {@linkplain
- *    de.dante.extex.interpreter.TokenSource#getOptionalEquals()
- *    &lang;equals&rang;} &lang;dimen&rang;</pre>
+ *    &lang;dp&rang;
+ *      &rarr; &lang;optional prefix&rang; <tt>\dp</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;}
+ *
+ *    &lang;optional prefix&rang;
+ *      &rarr;
+ *       |  <tt>\global</tt> &lang;optional prefix&rang;  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -70,7 +77,7 @@ import de.dante.util.GeneralException;
  * <p>
  *  In an expansion context the primitive results in the the currentr depth of
  *  the given box register. In case that the box register is empty the result
- *  is 0pt.
+ *  is 0&nbsp;pt.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -98,7 +105,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Dp extends Setbox implements Serializable, ExpandableCode,
     Theable, CountConvertible, DimenConvertible {

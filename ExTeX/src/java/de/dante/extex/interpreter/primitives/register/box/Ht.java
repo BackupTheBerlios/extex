@@ -44,9 +44,14 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\ht</tt> {@linkplain
- *      de.dante.extex.interpreter.TokenSource#scanNumber()
- *      &lang;8-bit&nbsp;number&rang;} </pre>
+ *    &lang;ht&rang;
+ *      &rarr; <tt>\ht</tt> {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#scanNumber()
+ *        &lang;8-bit&nbsp;number&rang;} {@linkplain
+ *        de.dante.extex.interpreter.TokenSource#getOptionalEquals()
+ *        &lang;equals&rang;} {@linkplain
+ *        de.dante.extex.interpreter.type.dimen#Dimen(Context,TokenSource)
+ *        &lang;dimen&rang;}   </pre>
  * </p>
  * <p>
  *  Examples:
@@ -61,7 +66,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     CountConvertible, DimenConvertible {

@@ -112,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class ContextImpl
         implements
@@ -162,7 +162,7 @@ public class ContextImpl
      * The field <tt>countChangeObservers</tt> contains the list of observers
      * registered for change event on the count registers.
      */
-    Map countChangeObservers = new HashMap();
+    private Map countChangeObservers = new HashMap();
 
     /**
      * The field <tt>fontFactory</tt> contains the font factory to use.
@@ -548,9 +548,10 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.scanner.stream.TokenStreamOptions#getToksOption(java.lang.String)
+     * @see de.dante.extex.scanner.stream.TokenStreamOptions#getToksOption(
+     *      java.lang.String)
      */
-    public FixedTokens getToksOption(String name) {
+    public FixedTokens getToksOption(final String name) {
 
         return group.getToks(name);
     }

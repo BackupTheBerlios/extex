@@ -38,7 +38,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\prevdepth ...</tt>  </pre>
+ *    &lang;prevdepth&rang;
+ *      &rarr; <tt>\prevdepth ...</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -48,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Prevdepth extends AbstractCode {
     /**

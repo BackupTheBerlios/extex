@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;else&rang;
- *     &rarr; <tt>\else</tt> &lang;...&rang; </pre>
+ *      &rarr; <tt>\else</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Else extends AbstractIf {
 
