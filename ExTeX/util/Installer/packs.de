@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<!-- The German langpack -->
+<langpack>
+  <str id="core" txt="Basis"/>
+  <str id="core.description" txt="Das Basispaket enthält eine TeX-kompatible Implementierung."/>
+  <str id="libs" txt="Bibliotheken"/>
+  <str id="libs.description" txt="Die benutzten Bibliotheken aus anderen Quellen."/>
+  <str id="fonts" txt="Schriften"/>
+  <str id="fonts.description" txt="Eine Beispielmenge an Schriften, die es dem Basispaket erlaubt etwas zu setzen."/>
+  <str id="settings" txt="Nutzer-Einstellungen"/>
+  <str id="settings.description" txt="Einige Einstellungsdateien für den Anfang.
+Die Dateien werden in dem Benutzer-Verzeichnis installiert
+Falls die Dateien bereits vorhanden sind, ist eine Bestätigung erforderlich."/>
+
+</langpack>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
+<!-- The English langpack -->
+<langpack>
+  <str id="core" txt="Core"/>
+  <str id="core.description" txt="The core engine includes a TeX compatible implementation of a typesetter."/>
+  <str id="libs" txt="Libraries"/>
+  <str id="libs.description" txt="The third party libraries required for the core to work."/>
+  <str id="fonts" txt="Fonts"/>
+  <str id="fonts.description" txt="A sample set of fonts for the core to start working."/>
+  <str id="settings" txt="User Settings"/>
+  <str id="settings.description" txt="Some init files to start with.
+The files are installed in the user&apos;s home directory.
+If files are present already you are asked for confirmation."/>
+
+</langpack>
