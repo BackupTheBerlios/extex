@@ -23,6 +23,7 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.jdom.Comment;
 import org.jdom.DocType;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -32,6 +33,7 @@ import org.jdom.output.XMLOutputter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.interpreter.type.node.SpaceNode;
@@ -41,6 +43,7 @@ import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 import de.dante.util.Unit;
 import de.dante.util.configuration.Configuration;
 
@@ -49,8 +52,10 @@ import de.dante.util.configuration.Configuration;
  *
  * At the moment, only one page!!!!
  *
+ * TODO incomplete !!!
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -144,6 +149,9 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
             xmlout.setTrimAllWhite(true);
             BufferedOutputStream bout = new BufferedOutputStream(out);
             Document doc = new Document();
+            if (debug) {
+                doc.addContent(new Comment("incomplete !!!!"));
+            }
             doc.setDocType(new DocType("svg", "//W3C//DTD SVG 1.1//EN",
                     "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"));
             doc.setRootElement(root);
@@ -330,11 +338,24 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     public Object visitChar(final Object value, final Object value2) {
 
-        Element rect = new Element("rect", SVGNAMESPACE);
         CharNode node = (CharNode) value;
+        UnicodeChar uc = node.getCharacter();
+        Font font = node.getTypesettingContext().getFont();
 
-        setDimenLength(rect, "x", currentX);
+        // ------- text --------------
+        Element text = new Element("text", SVGNAMESPACE);
+        setDimenLength(text, "x", currentX);
         Dimen y = new Dimen(currentY);
+        setDimenLength(text, "y", y);
+        text.setAttribute("font-family", font.getFontName() + ",serif");
+        text.setAttribute("font-size", String.valueOf(Unit.getDimenAsPT(font
+                .getEm())));
+        text.setText(uc.toString());
+        parent.addContent(text);
+
+        // ---------------------------------
+        Element rect = new Element("rect", SVGNAMESPACE);
+        setDimenLength(rect, "x", currentX);
         y.subtract(node.getHeight());
         setDimenLength(rect, "y", y);
         setDimenLength(rect, "width", node.getWidth());
@@ -347,10 +368,8 @@ public class SVGDocumentWriter implements DocumentWriter, NodeVisitor {
 
         parent.addContent(rect);
 
-        // ---------------------------------------------
-        //        Element element = new Element("char");
-        //        CharNode node = (CharNode) value;
-        //        UnicodeChar uc = node.getCharacter();
+        // -----------------------------------------------
+
         currentX.add(node.getWidth());
         return null;
     }
