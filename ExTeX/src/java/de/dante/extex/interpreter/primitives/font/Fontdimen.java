@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -28,6 +29,8 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -63,7 +66,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -91,12 +94,12 @@ public class Fontdimen extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        long idx = source.scanInteger();
+        String key = getKey(context, source);
         source.skipSpace();
         Font font = source.getFont();
         source.getOptionalEquals();
         Dimen size = new Dimen(context, source);
-        font.setFontDimen("#" + Long.toString(idx), size);
+        font.setFontDimen(key, size);
     }
 
     /**
@@ -114,6 +117,35 @@ public class Fontdimen extends AbstractAssignment
     }
 
     /**
+     * Get the key for the fontdimen.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     *
+     * @return the key
+     *
+     * @throws GeneralException in case of an error
+     */
+    private String getKey(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        Token t = source.getNonSpace();
+        if (t == null) {
+            throw new EofHelpingException(printableControlSequence(context));
+        } else if (t.isa(Catcode.LEFTBRACE)) {
+            source.push(t);
+            String key = source.scanTokensAsString();
+            if (key == null) {
+                throw new EofHelpingException(printableControlSequence(context));
+            }
+            return key;
+        }
+        source.push(t);
+        long idx = source.scanInteger();
+        return "#" + Long.toString(idx);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
@@ -121,10 +153,10 @@ public class Fontdimen extends AbstractAssignment
     public Tokens the(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        long idx = source.scanInteger();
+        String key = getKey(context, source);
         source.skipSpace();
         Font font = source.getFont();
-        Dimen size = font.getFontDimen("#" + Long.toString(idx));
+        Dimen size = font.getFontDimen(key);
         if (null == size) {
             size = Dimen.ZERO_PT;
         }
