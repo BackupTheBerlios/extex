@@ -171,7 +171,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="-configuration"/><tt>-configuration &lang;resource&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
- *    This configuration resource is sought on the classpath.
+ *    This configuration resource is sought on the class path.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.config">extex.config</a></tt></dd>
  *
@@ -258,7 +258,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  *   <dt><a name="-interaction"/><tt>-interaction &lang;mode&rang;</tt></dt>
  *   <dd>
- *    This parameter contains the interaction mode. possible values are
+ *    This parameter contains the interaction mode. Possible values are
  *    the numbers 0..3 and the symbolic names batchmode (0), nonstopmode (1),
  *    scrollmode (2), and errorstopmode (3).
  *   </dd>
@@ -268,7 +268,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="-job"/><tt>-job-name &lang;name&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
- *    if a file is given to read from. In this case the basename of
+ *    if a file is given to read from. In this case the base name of
  *    the input file is used instead.
  *   </dd>
  *   <dd>Property:
@@ -380,7 +380,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   <dt><a name="extex.config"/><tt>extex.config</tt></dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
- *    This configuration resource is sought on the classpath.
+ *    This configuration resource is sought on the class path.
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-configuration"><tt>-configuration &lang;resource&rang;</tt></a></dd>
@@ -434,7 +434,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  *   <dt><a name="extex.ini"/><tt>extex.ini</tt></dt>
  *   <dd>
- *    If set to <code>true</code> then act as initex. This coµmand line
+ *    If set to <code>true</code> then act as initex. This command line
  *    option is defined for compatibility to TeX only. In ExTeX it has no
  *    effect at all.
  *   </dd>
@@ -602,7 +602,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *   assumed to be on the path of executables.
  *  </li>
  *  <li>Java must be configured to find the jar files from the ExTeX
- *   distribution. This can be acomplished by setting the environment variable
+ *   distribution. This can be accomplished by setting the environment variable
  *   <tt>CLASSPATH</tt> or <tt>JAVA_HOME</tt>. See the documentation of your
  *   Java system for details.
  *  </li>
@@ -626,7 +626,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class ExTeX {
 
@@ -850,11 +850,11 @@ public class ExTeX {
     }
 
     /**
-     * Log a throwable including its stack trace to the logger.
+     * Log a Throwable including its stack trace to the logger.
      *
      * @param logger the target logger
      * @param text the prefix text to log
-     * @param e the throwable to log
+     * @param e the Throwable to log
      */
     private static void logException(final Logger logger, final String text,
             final Throwable e) {
@@ -1154,7 +1154,7 @@ public class ExTeX {
      * @throws MainIOException in case of an IO error
      */
 
-    private void initializeStreams(final Interpreter interpreter)
+    protected void initializeStreams(final Interpreter interpreter)
             throws ConfigurationException,
                 MainIOException {
 
@@ -1205,7 +1205,7 @@ public class ExTeX {
      *
      * @throws IOException just in case
      */
-    private boolean loadArgumentFile(final String arg) throws IOException {
+    protected boolean loadArgumentFile(final String arg) throws IOException {
 
         InputStream is = getClass().getClassLoader().getResourceAsStream(
                 "config.extex." + arg);
@@ -1225,6 +1225,7 @@ public class ExTeX {
      * Load a format if a name of a format is given.
      *
      * @param interpreter the interpreter to delegate the loading to
+     * @param finder  the resource finder to use for locating the format file
      * @param fmt the name of the format to use or <code>null</code>
      * @param jobname the name of the job
      *
@@ -1232,7 +1233,7 @@ public class ExTeX {
      * @throws IOException in case, well, you guess it
      * @throws ConfigurationException ...
      */
-    private void loadFormat(final Interpreter interpreter,
+    protected void loadFormat(final Interpreter interpreter,
             final ResourceFinder finder, final String fmt, final String jobname)
             throws IOException,
                 GeneralException,
@@ -1271,7 +1272,7 @@ public class ExTeX {
      * @throws IOException in case of an IO Error during the reading of the
      *             properties file
      */
-    private void loadUserProperties(final File file) throws IOException {
+    protected void loadUserProperties(final File file) throws IOException {
 
         if (file != null && file.canRead()) {
             properties.load(new FileInputStream(file));
@@ -1290,7 +1291,7 @@ public class ExTeX {
      *  been detected in the configuration
      * @throws GeneralException in case of an error of some other kind
      */
-    private Font makeDefaultFont(final Configuration config,
+    protected Font makeDefaultFont(final Configuration config,
             final FontFactory fontFactory)
             throws ConfigurationException,
                 GeneralException {
@@ -1336,7 +1337,7 @@ public class ExTeX {
      * @throws FileNotFoundException in case that the output file could not
      * be opened
      */
-    private DocumentWriter makeDocumentWriter(final Configuration config,
+    protected DocumentWriter makeDocumentWriter(final Configuration config,
             final String jobname, final OutputFactory outFactory,
             final DocumentWriterOptions options)
             throws ConfigurationException,
@@ -1367,7 +1368,7 @@ public class ExTeX {
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      */
-    private FontFactory makeFontFactory(final Configuration config)
+    protected FontFactory makeFontFactory(final Configuration config)
             throws ConfigurationException {
 
         FontFactory fontFactory;
@@ -1424,7 +1425,7 @@ public class ExTeX {
      * been detected in the configuration
      * @throws GeneralException in case of an error of some other kind
      */
-    private Interpreter makeInterpreter(final Configuration config,
+    protected Interpreter makeInterpreter(final Configuration config,
             final ResourceFinder finder, final TokenStreamFactory factory,
             final FontFactory fontFactory)
             throws GeneralException,
@@ -1481,7 +1482,7 @@ public class ExTeX {
      *
      * @return the new handler
      */
-    private Handler makeLogFileHandler(final String logFile) {
+    protected Handler makeLogFileHandler(final String logFile) {
 
         Handler fileHandler = null;
         try {
@@ -1513,7 +1514,7 @@ public class ExTeX {
      * @throws NotObservableException in case that the observer for file
      * events could not be registered
      */
-    private TokenStreamFactory makeTokenStreamFactory(
+    protected TokenStreamFactory makeTokenStreamFactory(
             final Configuration config, final ResourceFinder finder)
             throws ConfigurationException,
                 NotObservableException {
@@ -1540,7 +1541,7 @@ public class ExTeX {
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      */
-    private Typesetter makeTypesetter(final Configuration config,
+    protected Typesetter makeTypesetter(final Configuration config,
             final DocumentWriter docWriter, final Context context)
             throws ConfigurationException {
 
@@ -1559,7 +1560,7 @@ public class ExTeX {
      * @param name the name of the property
      * @param value the default value
      */
-    private void propertyDefault(final String name, final String value) {
+    protected void propertyDefault(final String name, final String value) {
 
         if (!properties.containsKey(name)) {
             properties.setProperty(name, value);
@@ -1789,20 +1790,20 @@ public class ExTeX {
      * a backslash. This argument and any following argument are taken as input
      * to the tokenizer.
      *
-     * @param arg the list of arguments to process
-     * @param index starting index
+     * @param arguments the list of arguments to process
+     * @param position starting index
      *
      * @throws MainException in case of an error in {@link #run() run()}
      */
-    private void runWithArgs(final String[] arg, final int index)
+    private void runWithArgs(final String[] arguments, final int position)
             throws MainException {
 
-        if (index < arg.length) {
+        if (position < arguments.length) {
             StringBuffer in = new StringBuffer();
 
-            for (int i = index; i < arg.length; i++) {
+            for (int i = position; i < arguments.length; i++) {
                 in.append(" ");
-                in.append(arg[i]);
+                in.append(arguments[i]);
             }
 
             properties.setProperty(PROP_CODE, in.toString());
@@ -1812,30 +1813,30 @@ public class ExTeX {
     }
 
     /**
-     * Process the command line arguments when the i <sup>th</sup> argument
+     * Process the command line arguments when the i<sup>th</sup> argument
      * is a file name. The file is prepared to be read from. The remaining
      * arguments are used as input to the processor.
      *
-     * @param arg the list of arguments to process
-     * @param idx starting index
+     * @param arguments the list of arguments to process
+     * @param position starting index
      *
      * @throws MainException in case of an error
      */
-    private void runWithFile(final String[] arg, final int idx)
+    private void runWithFile(final String[] arguments, final int position)
             throws MainException {
 
-        if (idx >= arg.length) {
+        if (position >= arguments.length) {
             run();
             return;
         }
 
-        String name = arg[idx];
+        String name = arguments[position];
         properties.setProperty(PROP_JOBNAME, //
                 (name.matches(".*\\.[a-zA-Z0-9_]*") //
                         ? name.substring(0, name.lastIndexOf(".")) : name));
-        properties.setProperty(PROP_FILE, arg[idx]);
+        properties.setProperty(PROP_FILE, arguments[position]);
 
-        runWithArgs(arg, idx + 1);
+        runWithArgs(arguments, position + 1);
     }
 
     /**
@@ -1862,17 +1863,19 @@ public class ExTeX {
      * Print the program banner to the logger stream and remember that this has
      * been done already to avoid repeating.
      *
-     * @param config the configuration to use
+     * @param configuration the configuration to use
      *
      * @throws MainException in case of an error
      */
-    private void showBanner(final Configuration config) throws MainException {
+    protected void showBanner(final Configuration configuration)
+            throws MainException {
 
         if (showBanner) {
             String banner = "";
-            if (config != null) {
+            if (configuration != null) {
                 try {
-                    banner = config.getConfiguration("banner").getValue();
+                    banner = configuration.getConfiguration("banner")
+                            .getValue();
                 } catch (ConfigurationException e) {
                     banner = properties.getProperty("java.version");
                 }
@@ -1891,19 +1894,19 @@ public class ExTeX {
      * accordingly. If none is found then an exception is thrown.
      *
      * @param name the name of the argument
-     * @param arg the list of arguments
-     * @param idx the starting index
+     * @param arguments the list of arguments
+     * @param position the starting index
      *
      * @throws MainMissingArgumentException in case of an error
      */
-    private void useArg(final String name, final String[] arg, final int idx)
-            throws MainMissingArgumentException {
+    protected void useArg(final String name, final String[] arguments,
+            final int position) throws MainMissingArgumentException {
 
-        if (idx >= arg.length) {
+        if (position >= arguments.length) {
             throw new MainMissingArgumentException(name);
         }
 
-        properties.setProperty(name, arg[idx]);
+        properties.setProperty(name, arguments[position]);
     }
 
     /**
@@ -1911,22 +1914,22 @@ public class ExTeX {
      * specification to control the tracing features. The appropriate properties
      * are set accordingly.
      *
-     * @param arg the list of arguments
-     * @param idx the starting index
+     * @param arguments the list of arguments
+     * @param position the starting index
      *
      * @throws MainMissingArgumentException in case that no key letters follow
      * @throws MainUnknownOptionException in case that the specified option
-     *  letter has no assigned propertyn to set
+     *  letter has no assigned property to set
      */
-    private void useTrace(final String[] arg, final int idx)
+    protected void useTrace(final String[] arguments, final int position)
             throws MainUnknownOptionException,
                 MainMissingArgumentException {
 
         logger.setLevel(Level.FINE);
-        if (idx >= arg.length) {
+        if (position >= arguments.length) {
             throw new MainMissingArgumentException("debug");
         }
-        String s = arg[idx];
+        String s = arguments[position];
         for (int i = 0; i < s.length(); i++) {
             String prop = (String) TRACE_MAP.get(s.substring(i, i + 1));
             if (prop != null) {

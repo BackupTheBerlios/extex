@@ -112,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class ContextImpl
         implements
@@ -999,11 +999,12 @@ public class ContextImpl
     }
 
     /**
-     * ...
+     * Setter for the token factory
      *
-     * @param factory ...
+     * @param factory the new value of the factory
      *
-     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(de.dante.extex.scanner.TokenFactory)
+     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(
+     *      de.dante.extex.scanner.TokenFactory)
      */
     public void setTokenFactory(final TokenFactory factory) {
 

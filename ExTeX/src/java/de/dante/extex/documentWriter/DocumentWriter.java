@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * after the production of the output.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface DocumentWriter {
     /**
@@ -66,7 +66,7 @@ public interface DocumentWriter {
      * @param nodes the nodes to send
      *
      * @throws GeneralException in case of an error
-     * @throws IOException in cayse that a writing operation fails
+     * @throws IOException in case that a writing operation fails
      */
     void shipout(NodeList nodes) throws GeneralException, IOException;
 
@@ -74,14 +74,14 @@ public interface DocumentWriter {
      * This method is invoked upon the end of the processing.
      *
      * @throws GeneralException in case of an error
-     * @throws IOException in cayse that a writing operation fails
+     * @throws IOException in case that a writing operation fails
      */
     void close() throws GeneralException, IOException;
 
     /**
      * Setter of an named parameter.
-     * Parameters are a general mechanism to influence the behaviour of the
-     * document writer. ANy parameter not knwon by the document writer has to
+     * Parameters are a general mechanism to influence the behavior of the
+     * document writer. Any parameter not known by the document writer has to
      * be ignored.
      *
      * @param name the name of the parameter

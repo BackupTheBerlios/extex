@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class HelpingException extends GeneralException {
 
@@ -65,7 +65,7 @@ public class HelpingException extends GeneralException {
     private static ResourceBundle defaultBundle = null;
 
     /**
-     * ...
+     * Setter for the resource bundle to use.
      *
      * @param resource the ResourceBundle to use
      */
@@ -90,7 +90,7 @@ public class HelpingException extends GeneralException {
     private String arg3 = "?";
 
     /**
-     * The field <tt>bundle</tt> contains the ...
+     * The field <tt>bundle</tt> contains the resource bundle to use.
      */
     private ResourceBundle bundle = null;
 
@@ -262,9 +262,9 @@ public class HelpingException extends GeneralException {
     }
 
     /**
-     * ...
+     * Unfailing getter for a format string.
      *
-     * @param name ...
+     * @param name the key string for the format
      *
      * @return ...
      */
@@ -272,7 +272,7 @@ public class HelpingException extends GeneralException {
 
         String format;
         try {
-            format = bundle.getString(name);
+            return bundle.getString(name);
         } catch (MissingResourceException e) {
             format = "???" + name + "???";
         } catch (NullPointerException e) {

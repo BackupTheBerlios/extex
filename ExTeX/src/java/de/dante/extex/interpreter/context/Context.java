@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -201,7 +201,7 @@ public interface Context extends Tokenizer, Serializable {
 
     /**
      * Getter for the id string. The id string is the classification of the
-     * original source like given in the fmt file. The id string can be
+     * original source like given in the format file. The id string can be
      * <code>null</code> if not known yet.
      *
      * @return the id string
@@ -237,7 +237,7 @@ public interface Context extends Tokenizer, Serializable {
     UnicodeChar getLccode(UnicodeChar uc);
 
     /**
-     * Getter for the magnification factor in permille. The default value is
+     * Getter for the magnification factor in per mille. The default value is
      * 1000. It can only take positive numbers as values.
      *
      * @return the magnification factor
@@ -263,7 +263,7 @@ public interface Context extends Tokenizer, Serializable {
     Muskip getMuskip(String name);
 
     /**
-     * Getter for the current namespace.
+     * Getter for the current name space.
      *
      * @return the current namespace
      */
@@ -287,11 +287,11 @@ public interface Context extends Tokenizer, Serializable {
     ParagraphShape getParshape();
 
     /**
-     * Getter for the spacefactor code of a character.
+     * Getter for the space factor code of a character.
      *
      * @param uc the Unicode character
      *
-     * @return the spacefactor code.
+     * @return the space factor code.
      */
     Count getSfcode(UnicodeChar uc);
 
@@ -559,14 +559,14 @@ public interface Context extends Tokenizer, Serializable {
     /**
      * Setter for the magnification. The magnification is a global value which
      * can be assigned at most once. It contains the magnification factor in
-     * permille. The default value is 1000. It can only take positive numbers
+     * per mille. The default value is 1000. It can only take positive numbers
      * as values. A maximal value can be enforced by an implementation.
      *
      * @param mag the new magnification factor
      *
      * @throws HelpingException in case that the magnification factor is
-     *             not in the allowed range or that the magnification has been
-     *             set to a different value earlier.
+     *  not in the allowed range or that the magnification has been
+     *  set to a different value earlier.
      */
     void setMagnification(long mag) throws HelpingException;
 
@@ -576,7 +576,7 @@ public interface Context extends Tokenizer, Serializable {
      * @param uc the character index
      * @param code the new mathcode
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setMathcode(UnicodeChar uc, Count code, boolean global);
 
@@ -586,7 +586,7 @@ public interface Context extends Tokenizer, Serializable {
      * @param name the name or the number of the register
      * @param value the new value
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setMuskip(String name, Muskip value, boolean global);
 
@@ -594,7 +594,7 @@ public interface Context extends Tokenizer, Serializable {
      * Setter for the namespace.
      * @param namespace the new namespace
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setNamespace(String namespace, boolean global);
 
@@ -604,7 +604,7 @@ public interface Context extends Tokenizer, Serializable {
      * @param name the name or the number of the file register
      * @param file the descriptor of the output file
      * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
+     *  groups; otherwise the current group is affected only
      */
     void setOutFile(String name, OutFile file, boolean global);
 
