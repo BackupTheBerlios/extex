@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Divide extends AbstractAssignment {
     /**
@@ -70,7 +70,7 @@ public class Divide extends AbstractAssignment {
                     cs.toString(), printableControlSequence(context));
         }
 
-        Code code = context.getMacro(cs.getValue());
+        Code code = context.getCode(cs);
 
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", cs
