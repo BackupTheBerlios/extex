@@ -1,42 +1,41 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
 package de.dante.extex.interpreter.type.node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Abstract class for all <code>NodeList</code>s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
-
     /**
      * The field <tt>list</tt> is the container for the elements of this node
      * list.
@@ -108,12 +107,6 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
         add(node);
     }
-
-    /**
-     * @see de.dante.extex.typesetter.NodeList#addSkip(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public abstract void addSkip(final Glue glue);
 
     /**
      * Test whether the node list is empty.
