@@ -22,6 +22,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -31,7 +32,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface ListMaker {
 
@@ -45,6 +46,17 @@ public interface ListMaker {
      * @throws GeneralException in case of an error
      */
     void add(Node node) throws GeneralException;
+
+    /**
+     * Add an arbitrary Noad to the internal list if it is prepared to hold one.
+     * This is usually the case in math modes. In other modes an exception
+     * should be thrown.
+     *
+     * @param noad the noad to add
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(Noad noad) throws GeneralException;
 
     /**
      * Add a character node to the list.

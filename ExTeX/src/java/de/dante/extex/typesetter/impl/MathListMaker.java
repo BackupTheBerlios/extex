@@ -28,6 +28,9 @@ import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.MathCharNoad;
+import de.dante.extex.typesetter.type.noad.MathList;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -35,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -43,7 +46,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
      * instance.
      */
-    private HorizontalListNode nodes = new HorizontalListNode();
+    private MathList noades = new MathList();
 
     /**
      * Creates a new object.
@@ -57,22 +60,38 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.Node)
+     *      de.dante.extex.typesetter.type.noad.Noad)
      */
-    public void add(final Node c) {
+    public void add(final Noad noad) throws GeneralException {
 
-        nodes.add(c);
+        noades.add(noad);
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.Node)
+     */
+    public void add(final Node node) {
+
+        noades.add(node);
+    }
+
+    /**
+     * Add a math character node to the list.
+     *
+     * @param tc the typesetting context for the symbol. This  parameter is
+     *  ignored in math mode.
+     * @param symbol the symbol to add
+     *
+     * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
-    public void add(final TypesettingContext font, final UnicodeChar symbol)
-            throws GeneralException {
+    public void add(final TypesettingContext tc, final UnicodeChar symbol) {
 
-        nodes.add(getManager().getCharNodeFactory().newInstance(font, symbol));
+        int fam = 0; //TODO determine correct family
+        //TODO: use a factory for math chars
+        noades.add(new MathCharNoad(fam, symbol));
     }
 
     /**
@@ -81,27 +100,44 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      */
     public void addGlue(final Glue g) throws GeneralException {
 
-        // TODO Auto-generated method stub
-
+        // TODO unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
+     * Spaces are ignored in math mode.
+     *
+     * @param typesettingContext the typesetting context for the space
+     * @param spacefactor the spacefactor to use for this space or
+     * <code>null</code> to indicate that the default speacefactor should
+     * be used.
+     *
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws GeneralException {
+            final Count spacefactor) {
 
-        // TODO Auto-generated method stub
     }
 
     /**
+     * Close the node list.
+     * In the course of the closing the Noad listis transfered into a Node list.
+     *
+     * @return the node list enclosed in this instance.
+     *
      * @see de.dante.extex.typesetter.ListMaker#close()
+     * @see "TeX -- The Program [719]"
      */
     public NodeList close() {
 
-        return nodes;
+        HorizontalListNode hlist = new HorizontalListNode();
+        int i = mlistToHlist(hlist, 0);
+        while (i < noades.size()) {
+            i = mlistToHlist(hlist, i);
+        }
+        return hlist;
     }
 
     /**
@@ -109,7 +145,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      */
     public Node getLastNode() {
 
-        return (nodes.empty() ? null : nodes.get(nodes.size() - 1));
+        return null;
     }
 
     /**
@@ -118,6 +154,20 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     public Mode getMode() {
 
         return Mode.MATH;
+    }
+
+    /**
+     * ...
+     * @param hlist ...
+     * @param index TODO
+     *
+     * @return TODO
+     *
+     * @see "TeX -- The Program [720]"
+     */
+    private int mlistToHlist(final HorizontalListNode hlist, final int index) {
+
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -140,7 +190,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      */
     public void removeLastNode() {
 
-        nodes.remove(nodes.size() - 1);
+        noades.remove(noades.size() - 1);
     }
 
     /**
@@ -159,5 +209,4 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
 
         getManager().closeTopList();
     }
-
 }

@@ -30,6 +30,7 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -37,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class DumpTypesetter implements Typesetter {
 
@@ -52,6 +53,14 @@ public class DumpTypesetter implements Typesetter {
      */
     public DumpTypesetter() {
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
     }
 
     /**

@@ -42,6 +42,7 @@ import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.logger.LogEnabled;
@@ -52,7 +53,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
@@ -115,11 +116,20 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
+        listMaker.add(noad);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.Node)
      */
-    public void add(final Node c) throws GeneralException {
+    public void add(final Node node) throws GeneralException {
 
-        listMaker.add(c);
+        listMaker.add(node);
     }
 
     /**
@@ -137,9 +147,9 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *     de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue g) throws GeneralException {
+    public void addGlue(final Glue glue) throws GeneralException {
 
-        listMaker.addGlue(g);
+        listMaker.addGlue(glue);
     }
 
     /**

@@ -25,6 +25,8 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 
@@ -33,7 +35,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -43,6 +45,15 @@ public class NullTypesetterImpl implements Typesetter {
     public NullTypesetterImpl() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
+        // nothing to do
     }
 
     /**
