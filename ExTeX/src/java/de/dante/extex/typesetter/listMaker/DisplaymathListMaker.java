@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DisplaymathListMaker extends MathListMaker {
 
@@ -51,7 +51,7 @@ public class DisplaymathListMaker extends MathListMaker {
         HorizontalListNode list = new HorizontalListNode();
 
         getNoades().typeset(list, new MathContext(StyleNoad.DISPLAYSTYLE),
-                context); //TODO genen: ???
+                context); //TODO gene: ???
         return list;
     }
 }
