@@ -20,14 +20,14 @@
 package de.dante.extex.typesetter.pageBuilder;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
 
 /**
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface PageBuilder {
 

@@ -19,16 +19,16 @@
 
 package de.dante.extex.typesetter.paragraphBuilder;
 
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 
 /**
  * This interface describes the function to split a large line into several
  * junks.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ParagraphBuilder {
 
@@ -39,7 +39,7 @@ public interface ParagraphBuilder {
      *   paragraph
      *
      * @return the
-     *   {@link de.dante.extex.interpreter.type.node.VerticalListNode
+     *   {@link de.dante.extex.typesetter.type.node.VerticalListNode
      *   VerticalListNode} containing the hboxes of the lines
      */
     NodeList build(HorizontalListNode nodes);

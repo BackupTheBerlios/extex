@@ -31,10 +31,10 @@ import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.node.AlignedLeadersNode;
 import de.dante.extex.scanner.CodeToken;
-import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
 import de.dante.util.GeneralException;
 
 /**
@@ -60,7 +60,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Leaders extends AbstractCode  {
 

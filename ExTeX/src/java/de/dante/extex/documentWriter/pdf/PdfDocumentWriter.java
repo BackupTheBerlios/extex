@@ -44,13 +44,13 @@ import de.dante.extex.font.FontFile;
 import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.node.CharNode;
-import de.dante.extex.interpreter.type.node.GlueNode;
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeIterator;
-import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.NodeVisitor;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeIterator;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
 import de.dante.util.Unit;
 import de.dante.util.configuration.Configuration;
@@ -60,7 +60,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */

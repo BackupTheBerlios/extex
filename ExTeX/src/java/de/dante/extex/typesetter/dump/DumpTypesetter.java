@@ -22,10 +22,10 @@ package de.dante.extex.typesetter.dump;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.impl.TypesetterImpl;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
 
 /**
@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 

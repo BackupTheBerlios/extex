@@ -29,25 +29,25 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.node.AfterMathNode;
-import de.dante.extex.interpreter.type.node.BeforeMathNode;
-import de.dante.extex.interpreter.type.node.CharNode;
-import de.dante.extex.interpreter.type.node.DiscretionaryNode;
-import de.dante.extex.interpreter.type.node.GlueNode;
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.interpreter.type.node.KernNode;
-import de.dante.extex.interpreter.type.node.PenaltyNode;
-import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.typesetter.Discartable;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeIterator;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.FixedParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.HangingParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeIterator;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 

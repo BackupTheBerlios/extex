@@ -21,9 +21,9 @@ package de.dante.extex.interpreter.primitives.register.count;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeVisitor;
 import de.dante.util.GeneralException;
 
 
@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class Lastnodetype extends AbstractReadonlyCount {
@@ -199,7 +199,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitAdjust(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitAdjust(final Object arg1, final Object arg2)
@@ -217,7 +217,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitAfterMath(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitAfterMath(final Object arg1, final Object arg2)
@@ -235,7 +235,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitAlignedLeaders(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitAlignedLeaders(final Object arg1, final Object arg2)
@@ -255,7 +255,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitBeforeMath(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitBeforeMath(final Object arg1, final Object arg2)
@@ -273,7 +273,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitCenteredLeaders(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitCenteredLeaders(final Object arg1, final Object arg2)
@@ -293,7 +293,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitChar(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitChar(final Object arg1, final Object arg2)
@@ -311,7 +311,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitDiscretionary(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitDiscretionary(final Object arg1, final Object arg2)
@@ -329,7 +329,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitExpandedLeaders(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitExpandedLeaders(final Object arg1, final Object arg2)
@@ -349,7 +349,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitGlue(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitGlue(final Object arg1, final Object arg2)
@@ -367,7 +367,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitHorizontalList(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitHorizontalList(final Object arg1, final Object arg2)
@@ -385,7 +385,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitInsertion(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitInsertion(final Object arg1, final Object arg2)
@@ -403,7 +403,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitKern(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitKern(final Object arg1, final Object arg2)
@@ -421,7 +421,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitLigature(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitLigature(final Object arg1, final Object arg2)
@@ -439,7 +439,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitMark(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitMark(final Object arg1, final Object arg2)
@@ -457,7 +457,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitPenalty(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitPenalty(final Object arg1, final Object arg2)
@@ -475,7 +475,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitRule(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitRule(final Object arg1, final Object arg2)
@@ -493,7 +493,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitSpace(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitSpace(final Object arg1, final Object arg2)
@@ -513,7 +513,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitVerticalList(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitVerticalList(final Object arg1, final Object arg2)
@@ -531,7 +531,7 @@ public class Lastnodetype extends AbstractReadonlyCount {
          * @param arg2 null
          * @return typenumber of node as <code>Integer</code>
          * @exception GeneralException if an error occurs
-         * @see de.dante.extex.typesetter.NodeVisitor#visitWhatsIt(java.lang.Object,
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(java.lang.Object,
          *     java.lang.Object)
          */
         public Object visitWhatsIt(final Object arg1, final Object arg2)

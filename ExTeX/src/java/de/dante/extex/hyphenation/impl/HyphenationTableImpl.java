@@ -25,12 +25,12 @@ import java.util.Map;
 
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.node.CharNode;
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeIterator;
-import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.NodeVisitor;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeIterator;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
 
 /**
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
@@ -290,7 +290,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     // ---------------------------------------------------------
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitAdjust(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitAdjust(final Object value, final Object value2) {
@@ -299,7 +299,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitAfterMath(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitAfterMath(final Object value, final Object value2) {
@@ -313,7 +313,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitAlignedLeaders(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitAlignedLeaders(final Object value, final Object value2) {
@@ -322,7 +322,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitBeforeMath(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitBeforeMath(final Object value, final Object value2) {
@@ -336,7 +336,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitCenteredLeaders(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitCenteredLeaders(final Object value, final Object value2) {
@@ -345,7 +345,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitChar(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitChar(final Object value, final Object value2) {
@@ -364,7 +364,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitDiscretionary(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitDiscretionary(final Object value, final Object value2) {
@@ -373,7 +373,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitExpandedLeaders(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitExpandedLeaders(final Object value, final Object value2) {
@@ -382,7 +382,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitGlue(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitGlue(final Object value, final Object value2) {
@@ -391,7 +391,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitHorizontalList(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitHorizontalList(final Object value, final Object value2) {
@@ -413,7 +413,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitInsertion(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitInsertion(final Object value, final Object value2) {
@@ -422,7 +422,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitKern(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitKern(final Object value, final Object value2) {
@@ -431,7 +431,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitLigature(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitLigature(final Object value, final Object value2) {
@@ -440,7 +440,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitMark(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitMark(final Object value, final Object value2) {
@@ -449,7 +449,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitPenalty(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitPenalty(final Object value, final Object value2) {
@@ -458,7 +458,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitRule(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitRule(final Object value, final Object value2) {
@@ -467,7 +467,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitSpace(java.lang.Object, java.lang.Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(java.lang.Object, java.lang.Object)
      */
     public Object visitSpace(final Object value, final Object value2) {
 
@@ -475,7 +475,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitVerticalList(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitVerticalList(final Object value, final Object value2) {
@@ -484,7 +484,7 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
     }
 
     /**
-     * @see de.dante.extex.typesetter.NodeVisitor#visitWhatsIt(
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(
      *      java.lang.Object, java.lang.Object)
      */
     public Object visitWhatsIt(final Object value, final Object value2) {

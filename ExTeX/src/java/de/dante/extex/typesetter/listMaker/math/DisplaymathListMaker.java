@@ -20,20 +20,20 @@
 package de.dante.extex.typesetter.listMaker.math;
 
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 
 /**
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 

@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.primitives.math.delimiter.Delimiter;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -40,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathDelimiter {
 

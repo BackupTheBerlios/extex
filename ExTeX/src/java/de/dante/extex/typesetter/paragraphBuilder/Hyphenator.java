@@ -18,7 +18,7 @@
  */
 package de.dante.extex.typesetter.paragraphBuilder;
 
-import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.NodeList;
 
 
 /**
@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.NodeList;
  * a list of nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Hyphenator {
 

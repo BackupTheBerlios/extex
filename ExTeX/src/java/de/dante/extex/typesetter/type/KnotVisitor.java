@@ -18,7 +18,6 @@
  */
 package de.dante.extex.typesetter.type;
 
-import de.dante.extex.typesetter.Node;
 
 
 /**
@@ -42,7 +41,7 @@ import de.dante.extex.typesetter.Node;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface KnotVisitor {
 

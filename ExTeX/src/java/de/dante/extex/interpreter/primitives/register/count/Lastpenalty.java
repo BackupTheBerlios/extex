@@ -26,10 +26,10 @@ import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
-import de.dante.extex.interpreter.type.node.PenaltyNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.util.GeneralException;
 
 /**
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Lastpenalty extends AbstractCode
         implements

@@ -20,12 +20,13 @@ package de.dante.extex.typesetter;
 
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.util.GeneralException;
 
 /**
@@ -37,7 +38,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface Typesetter extends ListMaker {
 

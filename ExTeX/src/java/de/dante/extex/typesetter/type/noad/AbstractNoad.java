@@ -23,11 +23,11 @@ package de.dante.extex.typesetter.type.noad;
  * This is the abstract base class for Noads.
  * A {@link de.dante.extex.typesetter.type.noad.Noad Noad} is the intermediate
  * data structure which is used for processing mathamatical material. Finally
- * Noads are translated into {@link de.dante.extex.typesetter.Node Node}s. Thus
+ * Noads are translated into {@link de.dante.extex.typesetter.type.Node Node}s. Thus
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractNoad implements Noad {
 

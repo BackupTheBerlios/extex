@@ -20,8 +20,8 @@ package de.dante.extex.interpreter.type.box;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.node.RuleNode;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.node.RuleNode;
 import de.dante.util.GeneralException;
 
 
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * operation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface RuleConvertible extends BoxOrRule {
 

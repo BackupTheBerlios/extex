@@ -27,9 +27,9 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.OutFile;
-import de.dante.extex.interpreter.type.node.WhatsItWriteNode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.node.WhatsItWriteNode;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.logger.LogEnabled;
 
@@ -49,7 +49,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Write extends AbstractCode implements LogEnabled {
 

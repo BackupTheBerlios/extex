@@ -18,14 +18,14 @@
  */
 package de.dante.extex.typesetter.ligatureBuilder;
 
-import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.NodeList;
 
 
 /**
  * This interface describes the capability of a ligature builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface LigatureBuilder {
 

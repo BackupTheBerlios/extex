@@ -22,15 +22,15 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 import java.io.IOException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
+import de.dante.extex.typesetter.type.NodeList;
 import de.dante.util.GeneralException;
 
 /**
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class PageBuilderImpl implements PageBuilder {
 

@@ -25,19 +25,19 @@ import de.dante.extex.documentWriter.NoOutputStreamException;
 import de.dante.extex.documentWriter.SingleDocumentStream;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.node.CharNode;
-import de.dante.extex.interpreter.type.node.GlueNode;
-import de.dante.extex.interpreter.type.node.KernNode;
-import de.dante.extex.interpreter.type.node.LigatureNode;
-import de.dante.extex.interpreter.type.node.RuleNode;
-import de.dante.extex.interpreter.type.node.SpaceNode;
-import de.dante.extex.interpreter.type.node.WhatsItNode;
-import de.dante.extex.typesetter.InspectableNodeVisitor;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeIterator;
-import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.NodeVisitor;
+import de.dante.extex.typesetter.type.InspectableNodeVisitor;
+import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.NodeIterator;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.framework.i18n.Localizable;
@@ -49,7 +49,7 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class DviDocumentWriter
         implements

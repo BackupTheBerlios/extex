@@ -29,15 +29,15 @@ import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
-import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.InnerVerticalListMaker;
 import de.dante.extex.typesetter.listMaker.RestrictedHorizontalListMaker;
+import de.dante.extex.typesetter.type.NodeList;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.i18n.Localizer;
@@ -49,16 +49,16 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Box implements BoxOrRule, Serializable {
 
     /**
      * The field <tt>nodes</tt> contains the node list stored in this box.
      * Thus is either a
-     * {@link de.dante.extex.interpreter.type.node.HorizontalListNode HorizontalListNode}
+     * {@link de.dante.extex.typesetter.type.node.HorizontalListNode HorizontalListNode}
      * or a
-     * {@link de.dante.extex.interpreter.type.node.VerticalListNode VerticalListNode}
+     * {@link de.dante.extex.typesetter.type.node.VerticalListNode VerticalListNode}
      * or it is <code>null</code>.
      * In case of a <code>null</code> value the box is void.
      */
