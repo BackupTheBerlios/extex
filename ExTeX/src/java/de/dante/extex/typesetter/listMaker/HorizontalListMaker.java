@@ -19,16 +19,12 @@
 
 package de.dante.extex.typesetter.listMaker;
 
-import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.language.Language;
-import de.dante.extex.scanner.type.Catcode;
-import de.dante.extex.scanner.type.CatcodeException;
-import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.exception.TypesetterException;
@@ -51,7 +47,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -157,41 +153,78 @@ public class HorizontalListMaker extends AbstractListMaker {
     public NodeList complete(final TypesetterOptions context)
             throws TypesetterException {
 
-        if(false)
-        for (int ptr = skipToChar(0); ptr < nodes.size(); ptr = skipToChar(ptr)) {
+        HorizontalListNode list = new HorizontalListNode();
+        int size = nodes.size();
+        for (int ptr = parseNonChars(0, list, size); ptr < size; ptr = parseNonChars(
+                ptr, list, size)) {
             CharNode node = (CharNode) nodes.get(ptr);
+            HorizontalListNode word = new HorizontalListNode();
+            ptr = parseWord(ptr, word, size);
             Language lang = node.getTypesettingContext().getLanguage();
-            UnicodeChar hy = node.getTypesettingContext().getFont()
+            UnicodeChar hyphen = node.getTypesettingContext().getFont()
                     .getHyphenChar();
-            if (hy != null) {
-                try {
-                    Token hyphen = context.getTokenFactory().createToken(
-                            Catcode.OTHER, hy, Namespace.DEFAULT_NAMESPACE);
-                    //TODO gene:  USE THE LIGATURE BUILDER!!!
-
-                    lang.hyphenate(nodes, context, hyphen);
-                } catch (CatcodeException e) {
-                    throw new TypesetterException(e);
-                }
+            if (hyphen != null) {
+                lang.hyphenate(word, context, hyphen);
+            }
+            for (int i = 0; i < word.size(); i++) {
+                list.add(word.get(i));
             }
         }
 
-        return getManager().getParagraphBuilder().build(nodes);
+        return getManager().getParagraphBuilder().build(list);
     }
 
-    private int skipToChar(final int start) {
+    /**
+     * Extract a word from nodes into a NodeList.
+     *
+     * @param start the start index
+     * @param list the target list
+     * @param size the length of the node list
+     *
+     * @return the index of the first node not considered
+     */
+    private int parseWord(final int start, final NodeList list, final int size) {
 
-        int size = nodes.size();
+        for (int i = start; i < size; i++) {
+            Node n = nodes.get(i);
+            if (n instanceof CharNode) {
+                list.add(n);
+            } else {
+                return i;
+            }
+        }
+
+        return size;
+    }
+
+    /**
+     * Extract non-word Nodes from nodes into a NodeList.
+     *
+     * @param start the start index
+     * @param list the target list
+     * @param size the length of the node list
+     *
+     * @return the index of the first node not considered
+     */
+    private int parseNonChars(final int start, final NodeList list,
+            final int size) {
+
         for (int i = start; i < size; i++) {
             Node n = nodes.get(i);
             if (n instanceof BeforeMathNode) {
                 do {
+                    list.add(n);
                     i++;
-                } while (i < size && !(nodes.get(i) instanceof AfterMathNode));
+                    if (i >= size) {
+                        return i;
+                    }
+                    n = nodes.get(i);
+                } while (!(n instanceof AfterMathNode));
                 i--;
             } else if (n instanceof CharNode) {
                 return i;
             }
+            list.add(n);
         }
         return size;
     }
