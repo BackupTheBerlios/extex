@@ -2,11 +2,11 @@
 
 
 <!ELEMENT code (#PCDATA)>
-<!ELEMENT it (#PCDATA)>
-<!ELEMENT bold (#PCDATA)>
+<!ELEMENT emph (#PCDATA)>
+<!ELEMENT strong (#PCDATA)>
 
-<!ELEMENT german (#PCDATA | code | it | bold)*>
-<!ELEMENT english (#PCDATA | code | it | bold)*>
+<!ELEMENT german (#PCDATA | code | emph | strong)*>
+<!ELEMENT english (#PCDATA | code | emph | strong)*>
 
 <!ELEMENT description (shortDesc,example,version)>
 <!ATTLIST description
