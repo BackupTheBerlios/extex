@@ -18,14 +18,14 @@
  */
 package de.dante.extex.interpreter.context;
 
-import de.dante.extex.hyphenation.HyphenationFactory;
+import de.dante.extex.hyphenation.HyphenationManager;
 
 
 /**
  * This interface describes the ability to carry a hyphenation factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface HyphenationFactoryCarrier {
 
@@ -34,5 +34,5 @@ public interface HyphenationFactoryCarrier {
      *
      * @param hyphenationFactory the hyphenation factory to carry
      */
-    void setHyphenationfactory(HyphenationFactory hyphenationFactory);
+    void setHyphenationManager(HyphenationManager hyphenationFactory);
 }
