@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
 
@@ -76,9 +76,7 @@ public class CharNoad extends AbstractNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
-
+        mg.toString(sb);
     }
 
     /**
