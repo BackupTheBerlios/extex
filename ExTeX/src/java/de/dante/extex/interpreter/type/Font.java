@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface Font {
 
@@ -99,10 +99,15 @@ public interface Font {
 	/**
 	 * Return font dimen size with a key.
 	 *
-	 * @return ...
+	 * @return the font-dimen.
 	 */
 	Dimen getFontDimen(String key);
 
+	/**
+	 * Set the font dimen size with a key.
+	 */
+	void setFontDimen(String key, Dimen value);
+	
 	/**
 	 * Return the font name.
 	 *
@@ -124,4 +129,10 @@ public interface Font {
 	 * @return the external ID, or <code>null</code>, if none exists.
 	 */
 	String getExternalID(UnicodeChar c);
+	
+	/**
+	 * Return the font-type as <code>String</code>.
+	 * @return	the font-type
+	 */
+	String getFontType();
 }

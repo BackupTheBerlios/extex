@@ -18,38 +18,42 @@
  */
 package de.dante.extex.interpreter.primitives.font;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for a font-primitve.
+ * This class provides an implementation for the primitive <code>\fontvalue</code>.
+ * <p>
+ * Example:
+ * <pre>
+ * 	\fontvalue\ff{key}=5pt
+ *  \the\fontvalue\ff{key}
+ * </pre>
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class FontCode extends AbstractCode implements Theable {
-
-	/**
-	 * The <code>Font</code>
-	 */
-	Font font;
+public class FontValue extends AbstractCode implements Theable {
 
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param name	the name for debugging
-	 * @param font	the font for this primitve	
+	 * @param name the name for debugging
 	 */
-	public FontCode(String name, Font font) {
+	public FontValue(String name) {
 		super(name);
-		this.font = font;
 	}
 
 	/**
@@ -60,7 +64,24 @@ public class FontCode extends AbstractCode implements Theable {
 	 */
 	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
 
-		context.getTypesettingContext().setFont(font);
+		// \fontvalue\ff{key}=5pt
+		Token tok = source.scanNonSpace();
+		if (tok == null || !(tok instanceof ControlSequenceToken)) {
+			throw new GeneralHelpingException("FONT.nofontprimitive");
+		}
+		Code code = context.getMacro(tok.getValue());
+		if (code == null || !(code instanceof FontCode)) {
+			throw new GeneralHelpingException("FONT.nofontprimitive");
+		}
+		String key = source.scanTokensAsString();
+		if (key == null || key.trim().length() == 0) {
+			throw new GeneralHelpingException("FONT.fontkeynotfound");
+		}
+
+		source.scanOptionalEquals();
+		Dimen size = new Dimen(context, source);
+		Font font = ((FontCode) code).getFont();
+		font.setFontDimen(key, size);
 		prefix.clear();
 	}
 
@@ -68,23 +89,20 @@ public class FontCode extends AbstractCode implements Theable {
 	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
 	 */
 	public Tokens the(Context context, TokenSource source) throws GeneralException {
-		return new Tokens(context, font.toString());
+		// \the\fontvalue\ff{key}
+		Token tok = source.scanNonSpace();
+		if (tok == null || !(tok instanceof ControlSequenceToken)) {
+			throw new GeneralHelpingException("FONT.nofontprimitive");
+		}
+		Code code = context.getMacro(tok.getValue());
+		if (code == null || !(code instanceof FontCode)) {
+			throw new GeneralHelpingException("FONT.nofontprimitive");
+		}
+		String key = source.scanTokensAsString();
+		if (key == null || key.trim().length() == 0) {
+			throw new GeneralHelpingException("FONT.fontkeynotfound");
+		}
+		Font font = ((FontCode) code).getFont();
+		return new Tokens(context, font.getFontDimen(key).toString());
 	}
-	
-	/**
-	 * Return the fontname.
-	 * @return	the fontname
-	 */
-	public String getFontname() {
-		return font.getFontName();
-	}
-	
-	/**
-	 * Return the font.
-	 * @return	the font.
-	 */
-	public Font getFont() {
-		return font;
-	}
-	
 }

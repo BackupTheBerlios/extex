@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NullFont implements Font {
 
@@ -118,4 +118,19 @@ public class NullFont implements Font {
 	public Glyph getGlyph(UnicodeChar c) {
 		return null;
 	}
+	
+	
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getFontType()
+	 */
+	public String getFontType() {
+		return null;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#setFontDimen(java.lang.String, de.dante.extex.interpreter.type.Dimen)
+	 */
+	public void setFontDimen(String key, Dimen value) {
+	}
+
 }

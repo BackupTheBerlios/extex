@@ -113,7 +113,8 @@
     <Define name="firstmark" class=""/>
     <define name="floatingpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="font" class="de.dante.extex.interpreter.primitives.font.DefFont"/>
-    <Define name="fontdimen" class=""/>
+    <define name="fontdimen" class="de.dante.extex.interpreter.primitives.font.FontDimen"/>
+    <define name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
     <define name="fontname" class="de.dante.extex.interpreter.primitives.font.FontName"/>
     <Define name="futurelet" class=""/>
     <define name="gdef" class="de.dante.extex.interpreter.primitives.macro.Gdef"/>

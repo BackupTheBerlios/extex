@@ -29,11 +29,11 @@ import org.jdom.Element;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Glyph;
-import de.dante.extex.main.MainFontException;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
@@ -46,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -64,6 +64,11 @@ public class EFMFont extends XMLFont implements Font {
 	 * the em-size for the font
 	 */
 	private Dimen emsize;
+
+	/**
+	 * the font-type
+	 */
+	private String type;
 
 	/**
 	 * Creates a new object.
@@ -105,7 +110,7 @@ public class EFMFont extends XMLFont implements Font {
 					Element fontgroup = doc.getRootElement();
 
 					if (fontgroup == null) {
-						throw new MainFontException("not fontgroup found"); // TODO change
+						throw new GeneralHelpingException("EFM.nofontgroup");
 					}
 
 					// empr
@@ -194,23 +199,27 @@ public class EFMFont extends XMLFont implements Font {
 					String efile = font.getAttributeValue("filename");
 
 					if (efile != null) {
-						// externalfile = finder.findFile(efile, "pfb"); TODO change if FileFinder is okay
-						externalfile = new File("./font/" + efile);
+						externalfile = finder.findFile(efile, "pfb");
+					}
+
+					// type
+					type = font.getAttributeValue("type");
+					if (type == null || type.trim().length() == 0) {
+						type = "???";
 					}
 
 				} catch (JDOMException e) {
-					e.printStackTrace();
-					throw new MainFontException(e.getMessage()); // TODO change
+					throw new GeneralHelpingException("EFM.jdomerror",e.getMessage());
 				} catch (IOException e) {
 					e.printStackTrace();
-					throw new MainFontException(e.getMessage()); // TODO change
+					throw new GeneralHelpingException("EFM.ioerror",e.getMessage());
 				}
 
 			} else {
-				throw new MainFontException("font not found"); // TODO change
+				throw new GeneralHelpingException("EFM.fontnotfound", name);
 			}
 		} else {
-			throw new MainFontException("fontname not valid"); // TODO change
+			throw new GeneralHelpingException("EFM.fontnotvalid");
 		}
 	}
 
@@ -335,6 +344,16 @@ public class EFMFont extends XMLFont implements Font {
 			// do nothing, use default
 		}
 		return rt;
+	}
+
+	/**
+	 * Set the <code>Dimen</code>-value for a key-entry.
+	 * 
+	 * @see de.dante.extex.interpreter.type.Font#setFontDimen(String, Dimen)
+	 */
+	public void setFontDimen(String key, Dimen value) {
+		double d = value.getValue() / (double) em.getValue() * units_per_em;
+		fontdimen.put(key, String.valueOf(d));
 	}
 
 	/**
@@ -467,6 +486,13 @@ public class EFMFont extends XMLFont implements Font {
 			}
 		}
 		return rt;
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.type.Font#getFontType()
+	 */
+	public String getFontType() {
+		return type;
 	}
 
 }

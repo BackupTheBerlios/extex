@@ -1,5 +1,5 @@
 %
-% @version $Revision: 1.1 $ $Date: 2004/02/12 05:46:13 $
+% @version $Revision: 1.2 $ $Date: 2004/02/16 06:43:02 $
 %
 % Test für font
 %
@@ -14,4 +14,9 @@
 \font\hans=cmex10 at 15truept
 \font\magnifiedfiverm=cmex10 scaled 2000
 \fontname\peter
+%
+\the\fontdimen1\peter
+\fontdimen1\peter=30pt
+\the\fontvalue\peter{SLANT}
+\fontvalue\peter{SLANT}=100pt
 %

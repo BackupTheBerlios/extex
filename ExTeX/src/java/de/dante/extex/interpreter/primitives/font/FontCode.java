@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for a font-primitve.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontCode extends AbstractCode implements Theable {
 
@@ -77,6 +77,14 @@ public class FontCode extends AbstractCode implements Theable {
 	 */
 	public String getFontname() {
 		return font.getFontName();
+	}
+	
+	/**
+	 * Return the font.
+	 * @return	the font.
+	 */
+	public Font getFont() {
+		return font;
 	}
 	
 }
