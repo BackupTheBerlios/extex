@@ -28,44 +28,42 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.13 $
  */
-public class SpaceNode extends AbstractNode implements Node {
+public class SpaceNode extends GlueNode implements Node {
 
     /**
-     * The field <tt>width</tt> contains the width of the space to insert.
+     * The field <tt>DEVELOP</tt> contains the ...
      */
-    private Glue width;
+    private boolean DEVELOP = true;
+
+    /**
+     * The field <tt>size</tt> contains the width of the space to insert.
+     */
+    private Glue size;
 
     /**
      * Creates a new object.
      *
-     * @param theWidth the width of the space
+     * @param theWidth the size of the space
      */
     public SpaceNode(final Glue theWidth) {
 
-        super(theWidth.getLength());
-        this.width = theWidth;
+        super(theWidth);
+        this.size = theWidth;
     }
 
     /**
-     * Getter for width.
+     * Getter for size.
      *
-     * @return the width.
+     * @return the size.
+     *
+     * @deprecated the glue should not be exposed
      */
     public Glue getGlueWidth() {
 
-        return this.width;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-
-        sb.append("\\space"); //TODO I18N???
+        return this.size;
     }
 
     /**
@@ -83,22 +81,27 @@ public class SpaceNode extends AbstractNode implements Node {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+
+        sb.append("\\space "); //TODO I18N???
+        sb.append(this.size.toString());
+        if (DEVELOP && !getWidth().eq(size.getLength())) {
+            sb.append(" [");
+            sb.append(getWidth().toString());
+            sb.append(']');
+        }
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toText(final StringBuffer sb, final String prefix) {
 
         sb.append(" ");
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-
-        return visitor.visitSpace(value, value2);
     }
 
     /**
@@ -110,6 +113,16 @@ public class SpaceNode extends AbstractNode implements Node {
             throws GeneralException {
 
         return visitor.visitSpace(this, value);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitSpace(value, value2);
     }
 
 }
