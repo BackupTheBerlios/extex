@@ -26,7 +26,7 @@ import de.dante.util.UnicodeChar;
  * the catcodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface Tokenizer {
 
@@ -38,5 +38,12 @@ public interface Tokenizer {
      * @return the catcode of a character
      */
     Catcode getCatcode(UnicodeChar c);
+
+    /**
+     * Getter for the namespace.
+     *
+     * @return the namespace
+     */
+    String getNamespace();
 
 }
