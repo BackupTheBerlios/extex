@@ -22,11 +22,15 @@ package de.dante.extex.documentWriter.dvi;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
+import de.dante.extex.i18n.Messages;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.KernNode;
+import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.interpreter.type.node.RuleNode;
+import de.dante.extex.interpreter.type.node.SpaceNode;
 import de.dante.extex.interpreter.type.node.WhatsItNode;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -45,7 +49,7 @@ import java.io.OutputStream;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DviDocumentWriter implements DocumentWriter {
     // TODO: docu (TE)
@@ -180,16 +184,16 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitAdjust(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
         public Object visitAfterMath(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
@@ -197,16 +201,16 @@ public class DviDocumentWriter implements DocumentWriter {
                                           final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
         public Object visitBeforeMath(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
@@ -214,8 +218,8 @@ public class DviDocumentWriter implements DocumentWriter {
                                            final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
@@ -240,8 +244,8 @@ public class DviDocumentWriter implements DocumentWriter {
                                          final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
@@ -249,8 +253,8 @@ public class DviDocumentWriter implements DocumentWriter {
                                            final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            // TODO unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
 
@@ -285,8 +289,8 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitInsertion(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            throw new PanicException("TTP.Confusion",
+                Messages.format("ExTeX.DocumentWriterWrongNode", "insertion"));
         }
 
 
@@ -304,7 +308,10 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitLigature(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
+            LigatureNode node = (LigatureNode) value;
+
+            visitChar(node, value2);
+
             return null;
         }
 
@@ -312,16 +319,16 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitMark(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            throw new PanicException("TTP.Confusion",
+                Messages.format("ExTeX.DocumentWriterWrongNode", "mark"));
         }
 
 
         public Object visitPenalty(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
-            return null;
+            throw new PanicException("TTP.Confusion",
+                Messages.format("ExTeX.DocumentWriterWrongNode", "penalty"));
         }
 
 
@@ -337,7 +344,10 @@ public class DviDocumentWriter implements DocumentWriter {
         public Object visitSpace(final Object value, final Object value2)
             throws GeneralException {
 
-            // TODO
+            SpaceNode node = (SpaceNode) value;
+
+            dviWriter.writeSpace(node.getWidth(), mode);
+
             return null;
         }
 
