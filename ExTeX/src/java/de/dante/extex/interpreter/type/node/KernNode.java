@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class KernNode extends AbstractNode implements Node, Discartable {
 
@@ -76,12 +76,23 @@ public class KernNode extends AbstractNode implements Node, Discartable {
     }
 
     /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
+    }
+
+    /**
      * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
      *      java.lang.String)
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("\\kern ");
+        sb.append('\\');
+        sb.append("kern "); //TODO I18N
         getWidth().toString(sb);
     }
 

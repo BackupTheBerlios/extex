@@ -19,23 +19,33 @@
 
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * A mark node carries some tokens which can be extracted after the page has
+ * been completed. It can be used extract the first and last mark for headlines.
+ * <p>
+ * The document writer should ignore mark nodes.
+ * </p>
  *
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
     /**
-     * The field <tt>mark</tt> contains the ...
+     * The field <tt>index</tt> contains the index of the mark node for eTeX.
+     */
+    private long index = -1;
+
+    /**
+     * The field <tt>mark</tt> contains the tokens of the mark.
      */
     private Tokens mark;
 
@@ -48,6 +58,29 @@ public class MarkNode extends AbstractNode implements Node {
 
         super();
         mark = theMark;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param theMark the mark tokens to store
+     * @param theIndex the index of the mark
+     */
+    public MarkNode(final Tokens theMark, final long theIndex) {
+
+        super();
+        mark = theMark;
+        index = theIndex;
+    }
+
+    /**
+     * Getter for index.
+     *
+     * @return the index.
+     */
+    public long getIndex() {
+
+        return this.index;
     }
 
     /**
@@ -71,7 +104,9 @@ public class MarkNode extends AbstractNode implements Node {
      */
     public String toString() {
 
-        return "mark "; //TODO
+        StringBuffer sb = new StringBuffer();
+        toString(sb, "");
+        return sb.toString();
     }
 
     /**
@@ -80,7 +115,11 @@ public class MarkNode extends AbstractNode implements Node {
      */
     public void toString(final StringBuffer sb, final String prefix) {
 
-        sb.append("mark "); //TODO
+        sb.append('\\');
+        sb.append(Messages.format("TTP.MarkNode.Text"));
+        sb.append('{');
+        mark.toString(sb);
+        sb.append('}');
     }
 
     /**

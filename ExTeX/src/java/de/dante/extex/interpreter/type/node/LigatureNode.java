@@ -35,17 +35,19 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [143]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class LigatureNode extends CharNode implements Node {
 
     /**
-     * The field <tt>list</tt> contains the ...
+     * The field <tt>first</tt> contains the first node combined in the
+     * ligature.
      */
     private Node first;
 
     /**
-     * The field <tt>second</tt> contains the ...
+     * The field <tt>second</tt> contains the node combined in the
+     * ligature.
      */
     private Node second;
 
@@ -53,9 +55,9 @@ public class LigatureNode extends CharNode implements Node {
      * Creates a new object.
      *
      * @param context the typesetting context
-     * @param uc the unicode character
-     * @param n1 ...
-     * @param n2 ...
+     * @param uc the Unicode character
+     * @param n1 the first node for the ligature
+     * @param n2 the second node for the ligature
      *
      * @see "TeX -- The Program [144]"
      */
@@ -68,9 +70,9 @@ public class LigatureNode extends CharNode implements Node {
     }
 
     /**
-     * Getter for first.
+     * Getter for first node.
      *
-     * @return the first.
+     * @return the first node
      */
     public Node getFirst() {
 
@@ -78,9 +80,9 @@ public class LigatureNode extends CharNode implements Node {
     }
 
     /**
-     * Getter for second.
+     * Getter for second node.
      *
-     * @return the second.
+     * @return the second node
      */
     public Node getSecond() {
 
@@ -98,7 +100,8 @@ public class LigatureNode extends CharNode implements Node {
      */
     public String toString() {
 
-        return " (ligature " + first.toString() + " " + second.toString() + ")"; //TODO
+        return " (ligature " + first.toString() + " " + second.toString() + ")";
+        //TODO incomplete
     }
 
     /**
