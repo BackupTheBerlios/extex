@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class DumpTypesetter implements Typesetter {
 
@@ -100,7 +100,7 @@ public class DumpTypesetter implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.interpreter.type.Count)
+     *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
@@ -110,7 +110,7 @@ public class DumpTypesetter implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.Glue)
+     *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addGlue(final Glue g) throws GeneralException {
 
@@ -137,14 +137,14 @@ public class DumpTypesetter implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.Count)
+     *      de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count f) throws GeneralException {
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *      de.dante.extex.interpreter.type.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
     }

@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Max1 extends TestCase {
 
@@ -168,7 +168,7 @@ public class Max1 extends TestCase {
         /**
          * @see de.dante.extex.typesetter.ListMaker#addSpace(
          *      de.dante.extex.interpreter.context.TypesettingContext,
-         *      de.dante.extex.interpreter.type.Count)
+         *      de.dante.extex.interpreter.type.count.Count)
          */
         public void addSpace(final TypesettingContext typesettingContext,
                 final Count spacefactor) {
@@ -236,7 +236,7 @@ public class Max1 extends TestCase {
 
         /**
          * @see de.dante.extex.typesetter.Typesetter#add(
-         *      de.dante.extex.interpreter.type.Font,
+         *      de.dante.extex.interpreter.type.font.Font,
          *      java.lang.String)
          */
         public void add(final TypesettingContext font,
@@ -274,7 +274,7 @@ public class Max1 extends TestCase {
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-         *      de.dante.extex.interpreter.type.Dimen)
+         *      de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setPrevDepth(final Dimen pd) {
             // nothing to do

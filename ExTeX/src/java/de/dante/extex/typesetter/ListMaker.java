@@ -29,25 +29,28 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @see "TeX -- The Program [211]"
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface ListMaker {
 
     /**
-     * ...
+     * Add an arbitrary node to the internal list of nodes gathered so far.
+     * The node should not be one of the special nodes treated by methods of
+     * their own.
      *
-     * @param node ...
+     * @param node the node to add
      *
      * @throws GeneralException in case of an error
      */
     void add(Node node) throws GeneralException;
 
     /**
-     * ...
+     * Add a character node to the list.
      *
-     * @param typesettingContext ...
-     * @param symbol ...
+     * @param typesettingContext the typesetting context for the symbol
+     * @param symbol the symbol to add
      *
      * @throws GeneralException in case of an error
      */
@@ -55,10 +58,12 @@ public interface ListMaker {
         throws GeneralException;
 
     /**
-     * ...
+     * Add a space node to the list.
      *
-     * @param typesettingContext ...
-     * @param spacefactor ...
+     * @param typesettingContext the typesetting context for the space
+     * @param spacefactor the spacefactor to use for this space or
+     * <code>null</code> to indicate that the default speacefactor should
+     * be used.
      *
      * @throws GeneralException in case of an error
      */
@@ -66,7 +71,7 @@ public interface ListMaker {
         throws GeneralException;
 
     /**
-     * ...
+     * Add a glue node to the list.
      *
      * @param g the glue to add
      *
@@ -116,14 +121,15 @@ public interface ListMaker {
     /**
      * Getter for the current mode.
      *
-     * @return the mode
+     * @return the mode which is one of the values defined in
+     * {@link de.dante.extex.typesetter.Mode Mode}.
      */
     Mode getMode();
 
     /**
      * ...
      *
-     * @return ...
+     * @return the node list enclosed in this instance.
      *
      * @throws GeneralException in case of an error
      */

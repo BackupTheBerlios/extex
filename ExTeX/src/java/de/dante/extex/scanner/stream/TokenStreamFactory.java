@@ -119,7 +119,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class TokenStreamFactory implements Observable {
 
@@ -360,7 +360,7 @@ public class TokenStreamFactory implements Observable {
 
     /**
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
-     *      de.dante.util.Observer)
+     *      de.dante.util.observer.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
             throws NotObservableException {

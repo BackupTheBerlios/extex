@@ -62,10 +62,11 @@ import de.dante.util.observer.SwitchObserver;
 
 /**
  * This is a reference implementation for a <b>MA</b>cro e<b>X</b>pander.
+ * The macro expander is the core engine driving TeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Max extends Moritz implements Interpreter, TokenSource,
         Observable, CatcodeVisitor {
@@ -319,7 +320,7 @@ public class Max extends Moritz implements Interpreter, TokenSource,
      * </table>
      *
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
-     *      de.dante.util.Observer)
+     *      de.dante.util.observer.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
             throws NotObservableException {
@@ -365,9 +366,9 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     }
 
     /**
-     * ...
+     * This method contaons the main execution loop.
      *
-     * @param onceMore ...
+     * @param onceMore switch to controll the termination of the execution
      *
      * @throws GeneralException in case of an error
      */
@@ -420,8 +421,8 @@ public class Max extends Moritz implements Interpreter, TokenSource,
      *
      * @param config the configuration object to consider.
      *
-     * @throws ConfigurationException ...
-     * @throws GeneralException ...
+     * @throws ConfigurationException in case of a configuration error
+     * @throws GeneralException in case of another error
      */
     private void configure(final Configuration config)
             throws ConfigurationException,
@@ -568,7 +569,6 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     public Object visitCr(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        //Token token = (Token) oToken;
         //TODO unimplemented
         throw new GeneralException("unimplemented");
     }
@@ -614,8 +614,7 @@ public class Max extends Moritz implements Interpreter, TokenSource,
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
-     *      java.lang.Object,
-     *      java.lang.Object, java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      * @see "TeX -- The Program [1063]"
      */
     public Object visitLeftBrace(final Object oToken, final Object ignore,
@@ -671,7 +670,7 @@ public class Max extends Moritz implements Interpreter, TokenSource,
         Token next = getToken();
 
         if (next == null) {
-            throw new GeneralException("Missing $ inserted"); //TODO i18n
+            throw new GeneralHelpingException("TTP.MissingDollar");
         } else if (next.isa(Catcode.MATHSHIFT)) {
             typesetter.toggleDisplaymath();
         } else {
@@ -725,10 +724,13 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     public Object visitSubMark(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        //Token token = (Token) oToken;
+        Mode mode = typesetter.getMode();
+        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
+            //TODO unimplemented
+            throw new GeneralException("unimplemented");
+        }
 
-        //TODO unimplemented
-        throw new GeneralException("unimplemented");
+        throw new GeneralHelpingException("TTP.MissingDollar");
     }
 
     /**
@@ -738,10 +740,13 @@ public class Max extends Moritz implements Interpreter, TokenSource,
     public Object visitSupMark(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
 
-        //Token token = (Token) oToken;
+        Mode mode = typesetter.getMode();
+        if (mode == Mode.MATH || mode == Mode.DISPLAYMATH) {
+            //TODO unimplemented
+            throw new GeneralException("unimplemented");
+        }
 
-        //TODO unimplemented
-        throw new GeneralException("unimplemented");
+        throw new GeneralHelpingException("TTP.MissingDollar");
     }
 
     /**
@@ -750,8 +755,6 @@ public class Max extends Moritz implements Interpreter, TokenSource,
      */
     public Object visitTabMark(final Object oToken, final Object ignore,
             final Object ignore2) throws GeneralException {
-
-        //Token token = (Token) oToken;
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");

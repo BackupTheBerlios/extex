@@ -47,7 +47,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -64,15 +64,15 @@ public class TypesetterImpl implements Typesetter, Manager {
     private CharNodeFactory charNodeFactory = new CharNodeFactory();
 
     /**
+     * The field <tt>context</tt> contains the context for accessing parameters.
+     */
+    private Context context;
+
+    /**
      * The field <tt>documentWriter</tt> contains the document writer for
      * producing the output.
      */
     private DocumentWriter documentWriter;
-
-    /**
-     * The field <tt>context</tt> contains the context for accessing parameters.
-     */
-    private Context context;
 
     /**
      * The field <tt>listMaker</tt> contains the current list maker for
@@ -100,47 +100,6 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
-     */
-    public CharNodeFactory getCharNodeFactory() {
-
-        return charNodeFactory;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.impl.Manager#getContext()
-     */
-    public Context getContext() {
-
-        return context;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *     de.dante.extex.documentWriter.DocumentWriter)
-     */
-    public void setDocumentWriter(final DocumentWriter doc) {
-
-        documentWriter = doc;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
-     */
-    public DocumentWriter getDocumentWriter() {
-
-        return documentWriter;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#getMode()
-     */
-    public Mode getMode() {
-
-        return listMaker.getMode();
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.Node)
      */
@@ -162,7 +121,7 @@ public class TypesetterImpl implements Typesetter, Manager {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *     de.dante.extex.interpreter.type.Glue)
+     *     de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addGlue(final Glue g) throws GeneralException {
 
@@ -172,7 +131,7 @@ public class TypesetterImpl implements Typesetter, Manager {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *     de.dante.extex.interpreter.context.TypesettingContext,
-     *     de.dante.extex.interpreter.type.Count)
+     *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
@@ -223,6 +182,54 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
+     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
+     */
+    public CharNodeFactory getCharNodeFactory() {
+
+        return charNodeFactory;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getContext()
+     */
+    public Context getContext() {
+
+        return context;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
+     */
+    public DocumentWriter getDocumentWriter() {
+
+        return documentWriter;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#getMode()
+     */
+    public Mode getMode() {
+
+        return listMaker.getMode();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openHbox()
+     */
+    public void openHbox() {
+
+        push(new RestrictedHorizontalListMaker(this));
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openVbox()
+     */
+    public void openVbox() {
+
+        push(new InnerVerticalListMaker(this));
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
@@ -253,28 +260,12 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
+     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
+     *     de.dante.extex.documentWriter.DocumentWriter)
      */
-    public void toggleDisplaymath() throws GeneralException {
+    public void setDocumentWriter(final DocumentWriter doc) {
 
-        listMaker.toggleDisplaymath();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
-     */
-    public void toggleMath() throws GeneralException {
-
-        listMaker.toggleMath();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *     de.dante.extex.interpreter.type.Count)
-     */
-    public void setSpacefactor(final Count sf) throws GeneralException {
-
-        listMaker.setSpacefactor(sf);
+        documentWriter = doc;
     }
 
     /**
@@ -287,6 +278,15 @@ public class TypesetterImpl implements Typesetter, Manager {
     public void setPrevDepth(final Dimen pd) throws GeneralException {
 
         listMaker.setPrevDepth(pd);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *     de.dante.extex.interpreter.type.count.Count)
+     */
+    public void setSpacefactor(final Count sf) throws GeneralException {
+
+        listMaker.setSpacefactor(sf);
     }
 
     /**
@@ -307,19 +307,19 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#openHbox()
+     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
      */
-    public void openHbox() {
+    public void toggleDisplaymath() throws GeneralException {
 
-        push(new RestrictedHorizontalListMaker(this));
+        listMaker.toggleDisplaymath();
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#openVbox()
+     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
      */
-    public void openVbox() {
+    public void toggleMath() throws GeneralException {
 
-        push(new InnerVerticalListMaker(this));
+        listMaker.toggleMath();
     }
 
 }

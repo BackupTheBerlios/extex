@@ -28,13 +28,13 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
-import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.ImmutableCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -54,7 +54,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -357,7 +357,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setCount(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Count)
+     *      de.dante.extex.interpreter.type.count.Count)
      */
     public void setCount(final String name, final Count value) {
 
@@ -367,7 +367,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setCount(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Count, boolean)
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setCount(final String name, final Count value,
             final boolean global) {
@@ -421,7 +421,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.Count, boolean)
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setDelcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -436,7 +436,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
      *      java.lang.String,
-     *         de.dante.extex.interpreter.type.Dimen)
+     *         de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setDimen(final String name, final Dimen value) {
 
@@ -446,7 +446,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Dimen, boolean)
+     *      de.dante.extex.interpreter.type.dimen.Dimen, boolean)
      */
     public void setDimen(final String name, final Dimen value,
             final boolean global) {
@@ -495,7 +495,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setFont(
-     *      java.lang.String, de.dante.extex.interpreter.type.Font, boolean)
+     *      java.lang.String, de.dante.extex.interpreter.type.font.Font, boolean)
      */
     public void setFont(final String name, final Font font, final boolean global) {
 
@@ -602,7 +602,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.Count, boolean)
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setMathcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -754,7 +754,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(
      *      java.lang.String,
-     *         de.dante.extex.interpreter.type.Muskip)
+     *         de.dante.extex.interpreter.type.muskip.Muskip)
      */
     public void setMuskip(final String name, final Muskip value) {
 
@@ -764,7 +764,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Muskip, boolean)
+     *      de.dante.extex.interpreter.type.muskip.Muskip, boolean)
      */
     public void setMuskip(final String name, final Muskip value,
             final boolean global) {
@@ -820,7 +820,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setSfcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.Count, boolean)
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setSfcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -835,7 +835,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setSkip(
      *      java.lang.String,
-     *         de.dante.extex.interpreter.type.Glue)
+     *         de.dante.extex.interpreter.type.glue.Glue)
      */
     public void setSkip(final String name, final Glue value) {
 
@@ -845,7 +845,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setSkip(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Glue, boolean)
+     *      de.dante.extex.interpreter.type.glue.Glue, boolean)
      */
     public void setSkip(final String name, final Glue value,
             final boolean global) {
@@ -871,7 +871,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setToks(
      *      java.lang.String,
-     *         de.dante.extex.interpreter.type.Tokens)
+     *         de.dante.extex.interpreter.type.tokens.Tokens)
      */
     public void setToks(final String name, final Tokens value) {
 
@@ -881,7 +881,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#setToks(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Tokens, boolean)
+     *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
      */
     public void setToks(final String name, final Tokens value,
             final boolean global) {
@@ -955,7 +955,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
-     *      de.dante.util.Observer)
+     *      de.dante.util.observer.Observer)
      */
     public void afterGroup(final Observer observer) {
 

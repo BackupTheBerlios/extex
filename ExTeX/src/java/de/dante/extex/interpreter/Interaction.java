@@ -25,10 +25,11 @@ import de.dante.util.GeneralException;
 import java.io.Serializable;
 
 /**
- * ...
+ * This class provides a ztype-save enumeration of the interactions styles of
+ * ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -128,30 +129,35 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
+     * This method provides an entry for the visitor pattern.
      * ...
      *
-     * @param visitor ...
-     * @param arg1 TODO
-     * @param arg2 TODO
-     * @param arg3 TODO
-     * @return TODO
-     * @throws GeneralException TODO
+     * @param visitor this argument contains the visitor which has initiated
+     * the request.
+     * @param arg1 the first argument
+     * @param arg2 the second argument
+     * @param arg3 the third argument
+     *
+     * @return a boolean indicator
+     *
+     * @throws GeneralException in case of an error
      */
     public abstract boolean visit(final InteractionVisitor visitor,
             final Object arg1, final Object arg2, final Object arg3)
             throws GeneralException;
 
     /**
-     * ...
+     * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class BatchMode extends Interaction {
 
         /**
          * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
          */
         public boolean visit(final InteractionVisitor visitor,
                 final Object arg1, final Object arg2, final Object arg3)
@@ -163,16 +169,17 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * ...
+     * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class NonstopMode extends Interaction {
 
         /**
          * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
          */
         public boolean visit(final InteractionVisitor visitor,
                 final Object arg1, final Object arg2, final Object arg3)
@@ -184,16 +191,17 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * ...
+     * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class ScrollMode extends Interaction {
 
         /**
          * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
          */
         public boolean visit(final InteractionVisitor visitor,
                 final Object arg1, final Object arg2, final Object arg3)
@@ -205,16 +213,17 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * ...
+     * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private static class ErrorstopMode extends Interaction {
 
         /**
          * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor, Object, Object, Object)
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
          */
         public boolean visit(final InteractionVisitor visitor,
                 final Object arg1, final Object arg2, final Object arg3)

@@ -33,7 +33,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LogMessageObserver implements Observer {
 
@@ -53,8 +53,8 @@ public class LogMessageObserver implements Observer {
     }
 
     /**
-     * @see de.dante.util.observer.Observer#update(de.dante.util.Observable,
-     *      java.lang.Object)
+     * @see de.dante.util.observer.Observer#update(
+     *      de.dante.util.observer.Observable, java.lang.Object)
      */
     public void update(final Observable observable, final Object item) {
         logger.fine(item.toString() + " ");

@@ -25,53 +25,62 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface InteractionVisitor {
 
     /**
      * ...
-     * @param arg1 TODO
-     * @param arg2 TODO
-     * @param arg3 TODO
-     * @return TODO
-     * @throws GeneralException TODO
      *
+     * @param arg1 the first argument
+     * @param arg2 the second argument
+     * @param arg3 the third argument
+     *
+     * @return a boolean indicator
+     *
+     * @throws GeneralException in case of an error
      */
-    boolean visitBatchmode(Object arg1, Object arg2, Object arg3) throws GeneralException;
+    boolean visitBatchmode(Object arg1, Object arg2, Object arg3)
+            throws GeneralException;
 
     /**
      * ...
-     * @param arg1 TODO
-     * @param arg2 TODO
-     * @param arg3 TODO
-     * @return TODO
-     * @throws GeneralException TODO
      *
+     * @param arg1 the first argument
+     * @param arg2 the second argument
+     * @param arg3 the third argument
+     *
+     * @return a boolean indicator
+     *
+     * @throws GeneralException in case of an error
      */
     boolean visitNonstopmode(Object arg1, Object arg2, Object arg3)
             throws GeneralException;
 
     /**
      * ...
-     * @param arg1 TODO
-     * @param arg2 TODO
-     * @param arg3 TODO
-     * @return TODO
-     * @throws GeneralException TODO
      *
+     * @param arg1 the first argument
+     * @param arg2 the second argument
+     * @param arg3 the third argument
+     *
+     * @return a boolean indicator
+     *
+     * @throws GeneralException in case of an error
      */
     boolean visitScrollmode(Object arg1, Object arg2, Object arg3)
             throws GeneralException;
 
     /**
      * ...
-     * @param arg1 TODO
-     * @param arg2 TODO
-     * @param arg3 TODO
-     * @return TODO
-     * @throws GeneralException TODO
      *
+     * @param arg1 the first argument
+     * @param arg2 the second argument
+     * @param arg3 the third argument
+     *
+     * @return a boolean indicator
+     *
+     * @throws GeneralException in case of an error
      */
     boolean visitErrorstopmode(Object arg1, Object arg2, Object arg3)
             throws GeneralException;

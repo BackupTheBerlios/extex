@@ -20,7 +20,6 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -44,7 +43,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class InputFileEncoding extends InputFile {
 
@@ -80,8 +79,6 @@ public class InputFileEncoding extends InputFile {
         } catch (FileNotFoundException e) {
             throw new GeneralException(e); // TODO: use Helping and i18n
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
-        } catch (IOException e) {
             throw new GeneralException(e);
         }
         prefix.clear();

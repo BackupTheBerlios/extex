@@ -22,15 +22,19 @@ import de.dante.extex.scanner.Token;
 
 
 /**
- * ...
+ * This class presents a
+ * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens} register where
+ * all setters are disabled. This means that its value can not be altered once
+ * it has been created.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ImmutableTokens extends Tokens {
 
     /**
      * Creates a new object.
+     * The new object has no items in it.
      */
     public ImmutableTokens() {
 
@@ -48,7 +52,7 @@ public class ImmutableTokens extends Tokens {
 
     /**
      * @see de.dante.extex.interpreter.type.tokens.Tokens#add(
-     *      de.dante.extex.interpreter.type.Tokens)
+     *      de.dante.extex.interpreter.type.tokens.Tokens)
      */
     public void add(final Tokens toks) {
 

@@ -29,12 +29,12 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -54,7 +54,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface Context extends Serializable {
 
@@ -148,9 +148,9 @@ public interface Context extends Serializable {
     /**
      * Convenience method to set the code assigned to a Token.
      * The Token has to be either a
-     * {@link de.dante.scanner.stream.ActiveCharacterToken ActiveCharacterToken}
+     * {@link de.dante.extex.scanner.stream.ActiveCharacterToken ActiveCharacterToken}
      * or a
-     * {@link de.dante.scanner.stream.ConrolSequenceToken ControlSequenceToken}.
+     * {@link de.dante.extex.scanner.stream.ConrolSequenceToken ControlSequenceToken}.
      *
      * @param t the Token to set the code for
      * @param code the code for the token
@@ -190,7 +190,7 @@ public interface Context extends Serializable {
      * Setter for the delcode mapping.
      *
      * @param c the character to which the delcode is assigned
-     * @param code ...
+     * @param code the del code
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
@@ -245,11 +245,11 @@ public interface Context extends Serializable {
     void setFont(String name, Font font, boolean global);
 
     /**
-     * ...
+     * Getter for a current font register.
      *
      * @param name the name or the number of the register
      *
-     * @return ...
+     * @return the named font register or <code>null</code> if none is set
      */
     Font getFont(String name);
 
@@ -268,21 +268,22 @@ public interface Context extends Serializable {
     void setFontFactory(FontFactory fontFactory);
 
     /**
-     * ...
+     * Setter for a glue register.
      *
-     * @param name ...
-     * @param value ...
+     * @param name the name of the glue register
+     * @param value the glue value to set
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
     void setGlue(String name, Glue value, boolean global);
 
     /**
-     * ...
+     * Getter for a glue register.
      *
-     * @param name ...
+     * @param name the name of the glue register to acquire.
      *
-     * @return ...
+     * @return the value of the named glue register or <code>null</code>
+     *  if none is set
      */
     Glue getGlue(String name);
 

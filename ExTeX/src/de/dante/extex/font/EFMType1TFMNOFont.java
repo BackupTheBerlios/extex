@@ -37,7 +37,7 @@ import de.dante.util.file.FileFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EFMType1TFMNOFont extends EFMFont implements Font {
 
@@ -70,7 +70,7 @@ public class EFMType1TFMNOFont extends EFMFont implements Font {
      * Return the <code>Dimen</code>-value for a key-entry.
      * If no key exists, ZERO-<code>Dimen</code> is returned.
      *
-     * @see de.dante.extex.interpreter.type.Font#getFontDimen(String)
+     * @see de.dante.extex.interpreter.type.font.Font#getFontDimen(String)
      */
     public Dimen getFontDimen(final String key) {
 
@@ -80,7 +80,7 @@ public class EFMType1TFMNOFont extends EFMFont implements Font {
     /**
      * Set the <code>Dimen</code>-value for a key-entry.
      *
-     * @see de.dante.extex.interpreter.type.Font#setFontDimen(String, Dimen)
+     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(String, Dimen)
      */
     public void setFontDimen(final String key, final Dimen value) {
 

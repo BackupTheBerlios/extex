@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
@@ -90,7 +90,7 @@ public class HorizontalListMaker extends AbstractListMaker
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.Count)
+     *      de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count f) throws GeneralException {
         long sf = f.getValue();
@@ -134,7 +134,7 @@ public class HorizontalListMaker extends AbstractListMaker
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.Glue)
+     *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addGlue(final Glue g) {
         nodes.addSkip(g);
@@ -144,7 +144,7 @@ public class HorizontalListMaker extends AbstractListMaker
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.interpreter.type.Count)
+     *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext context, final Count sfCount) {
 

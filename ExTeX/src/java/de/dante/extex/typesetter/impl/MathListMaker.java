@@ -35,12 +35,13 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
     /**
-     * The field <tt>nodes</tt> ...
+     * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
+     * instance.
      */
     private HorizontalListNode nodes = new HorizontalListNode();
 
@@ -77,7 +78,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.interpreter.type.Count)
+     *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
@@ -87,7 +88,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.Glue)
+     *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addGlue(final Glue g) throws GeneralException {
 

@@ -29,9 +29,35 @@
       <extension></extension>
       <extension>.tex</extension>
       <path>.</path>
-      <path>testdata</path>
+      <path>test/data</path>
     </tex>
   </File>
+
+  <!-- 
+    -  The following is experimental.
+    -->
+  <FileFinder>
+    <use class="de.dante.util.file.FileFinderDirectImpl">
+      <extension></extension>
+      <extension>.tex</extension>
+    </use>
+    <use class="de.dante.util.file.FileFinderPathImpl" property="texinputs">
+      <extension></extension>
+      <extension>.tex</extension>
+    </use>
+    <use class="de.dante.util.file.FileFinderConfigImpl">
+      <tex>
+        <extension></extension>
+        <extension>.tex</extension>
+        <path>.</path>
+        <path>test/data</path>
+      </tex>
+    </use>
+    <use class="de.dante.util.file.FileFinderImpl" provideLogger="true">
+      <extension></extension>
+      <extension>.tex</extension>
+    </use>
+  </FileFinder>
 
   <!-- 
     -  The section "Fonts" contains the search specification for font files.
@@ -101,6 +127,13 @@
       <Language></Language>
 
     </Context>
+
+    <!-- The implementation of the error handler to use.
+      -->
+	<ErrorHandler default="ExTeX">
+	 <ExTeX class="de.dante.extex.main.ErrorHandlerImpl"/>
+	 <TeX class="de.dante.extex.main.ErrorHandlerTeXImpl"/>
+	</ErrorHandler>
 
     <!-- The following definitions describe the primitives available
       -  and their association to implementing Java classes.
@@ -437,19 +470,18 @@
   </Interpreter>
 
   <!-- 
-    -  The section "Typesetter" contains the specification for the
-    -  typesetter to use.
+    -  The section "Typesetter" contains the specification for the typesetter.
+    -  Here another level of indirection is introduced which allows us to select
+    -  one of several typesetters programatically.
     -->
-  <Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
-    <LineBreaker name="default" class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
-  	<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
+  <Typesetter default="TeX">
+	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"/> 
   </Typesetter>
 
   <!-- 
     -  The section "DocumentWriter" contains the specification for the backend.
-    -  It is different to the other sections since here another level of
-    -  indirection is introduced which allows us to select one of several
-    -  backends programatically.
+    -  Here another level of indirection is introduced which allows us to select
+    -  one of several backends programatically.
     -->
   <DocumentWriter default="out">
     <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>

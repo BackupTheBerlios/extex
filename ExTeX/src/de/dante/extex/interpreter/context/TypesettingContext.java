@@ -19,13 +19,13 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.font.Font;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface TypesettingContext {
 

@@ -19,10 +19,10 @@
 
 package de.dante.extex.font;
 
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.FontFileList;
-import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontFileList;
+import de.dante.extex.interpreter.type.font.Glyph;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class NullFont implements Font {
 
@@ -54,7 +54,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getHyphenChar()
+     * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
      */
     public UnicodeChar getHyphenChar() {
 
@@ -62,7 +62,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getSkewChar()
+     * @see de.dante.extex.interpreter.type.font.Font#getSkewChar()
      */
     public UnicodeChar getSkewChar() {
 
@@ -70,7 +70,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setHyphenChar(
+     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(
      *      de.dante.util.UnicodeChar)
      */
     public void setHyphenChar(final UnicodeChar ahyphen) {
@@ -79,7 +79,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setSkewChar(
+     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(
      *      de.dante.util.UnicodeChar)
      */
     public void setSkewChar(final UnicodeChar askew) {
@@ -88,7 +88,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getSpace()
+     * @see de.dante.extex.interpreter.type.font.Font#getSpace()
      */
     public Glue getSpace() {
 
@@ -96,7 +96,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getEm()
+     * @see de.dante.extex.interpreter.type.font.Font#getEm()
      */
     public Dimen getEm() {
 
@@ -104,15 +104,15 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setFontDimen(
-     *      java.lang.String, de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(
+     *      java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setFontDimen(final String key, final Dimen value) {
 
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getEx()
+     * @see de.dante.extex.interpreter.type.font.Font#getEx()
      */
     public Dimen getEx() {
 
@@ -120,7 +120,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getFontDimen(java.lang.String)
+     * @see de.dante.extex.interpreter.type.font.Font#getFontDimen(java.lang.String)
      */
     public Dimen getFontDimen(final String key) {
 
@@ -128,7 +128,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getFontName()
+     * @see de.dante.extex.interpreter.type.font.Font#getFontName()
      */
     public String getFontName() {
 
@@ -136,7 +136,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#isDefined(
+     * @see de.dante.extex.interpreter.type.font.Font#isDefined(
      *      de.dante.util.UnicodeChar)
      */
     public boolean isDefined(final UnicodeChar c) {
@@ -145,7 +145,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getGlyph(
+     * @see de.dante.extex.interpreter.type.font.Font#getGlyph(
      *      de.dante.util.UnicodeChar)
      */
     public Glyph getGlyph(final UnicodeChar c) {
@@ -154,7 +154,7 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getFontFiles()
+     * @see de.dante.extex.interpreter.type.font.Font#getFontFiles()
      */
     public FontFileList getFontFiles() {
 
@@ -162,14 +162,14 @@ public class NullFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getLetterSpaced()
+     * @see de.dante.extex.interpreter.type.font.Font#getLetterSpaced()
      */
     public Glue getLetterSpaced() {
         return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getLigatures()
+     * @see de.dante.extex.interpreter.type.font.Font#getLigatures()
      */
     public boolean getLigatures() {
         return false;

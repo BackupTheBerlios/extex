@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.Node;
  * This abstract class provides some methods common to all Nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractNode implements Node {
 
@@ -90,7 +90,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.Node#setDepth(
-     *      de.dante.extex.interpreter.type.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setDepth(final Dimen aDepth) {
 
@@ -107,7 +107,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.Node#setHeight(
-     *      de.dante.extex.interpreter.type.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setHeight(final Dimen aHeight) {
 
@@ -124,7 +124,7 @@ public abstract class AbstractNode implements Node {
 
     /**
      * @see de.dante.extex.typesetter.Node#setWidth(
-     *      de.dante.extex.interpreter.type.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setWidth(final Dimen aWidth) {
 

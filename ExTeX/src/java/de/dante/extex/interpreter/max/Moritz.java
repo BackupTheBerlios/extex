@@ -30,10 +30,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
@@ -67,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -482,7 +482,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * </table>
      *
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
-     *      de.dante.util.Observer)
+     *      de.dante.util.observer.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
             throws NotObservableException {
@@ -818,6 +818,9 @@ public abstract class Moritz implements TokenSource, Observable {
                 } else {
                     throw new GeneralHelpingException("TTP.MissingNumber");
                 }
+            } else {
+
+                throw new GeneralHelpingException("TTP.MissingNumber");
             }
         }
 

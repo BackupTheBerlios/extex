@@ -46,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class EFMFont implements Font {
 
@@ -274,7 +274,7 @@ public abstract class EFMFont implements Font {
     /**
      * Return the with of a space.
      *
-     * @see de.dante.extex.interpreter.type.Font#getSpace()
+     * @see de.dante.extex.interpreter.type.font.Font#getSpace()
      */
     public Glue getSpace() {
 
@@ -297,7 +297,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getEm()
+     * @see de.dante.extex.interpreter.type.font.Font#getEm()
      */
     public Dimen getEm() {
 
@@ -340,7 +340,7 @@ public abstract class EFMFont implements Font {
     private int unitsperem = DEFAULTUNITSPEREM;
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getEx()
+     * @see de.dante.extex.interpreter.type.font.Font#getEx()
      */
     public Dimen getEx() {
 
@@ -356,7 +356,7 @@ public abstract class EFMFont implements Font {
      * Return the <code>Dimen</code>-value for a key-entry.
      * If no key exists, ZERO-<code>Dimen</code> is returned.
      *
-     * @see de.dante.extex.interpreter.type.Font#getFontDimen(String)
+     * @see de.dante.extex.interpreter.type.font.Font#getFontDimen(String)
      */
     public Dimen getFontDimen(final String key) {
 
@@ -375,7 +375,7 @@ public abstract class EFMFont implements Font {
     /**
      * Set the <code>Dimen</code>-value for a key-entry.
      *
-     * @see de.dante.extex.interpreter.type.Font#setFontDimen(String, Dimen)
+     * @see de.dante.extex.interpreter.type.font.Font#setFontDimen(String, Dimen)
      */
     public void setFontDimen(final String key, final Dimen value) {
 
@@ -384,7 +384,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getFontName()
+     * @see de.dante.extex.interpreter.type.font.Font#getFontName()
      */
     public String getFontName() {
 
@@ -398,7 +398,7 @@ public abstract class EFMFont implements Font {
     public abstract String toString();
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getGlyph(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#getGlyph(de.dante.util.UnicodeChar)
      */
     public Glyph getGlyph(final UnicodeChar c) {
 
@@ -414,7 +414,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#isDefined(de.dante.util.UnicodeChar)
      */
     public boolean isDefined(final UnicodeChar c) {
 
@@ -427,7 +427,7 @@ public abstract class EFMFont implements Font {
     private UnicodeChar hyphenchar = new UnicodeChar('-');
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setHyphenChar(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#setHyphenChar(de.dante.util.UnicodeChar)
      */
     public void setHyphenChar(final UnicodeChar hyphen) {
 
@@ -435,7 +435,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getHyphenChar()
+     * @see de.dante.extex.interpreter.type.font.Font#getHyphenChar()
      */
     public UnicodeChar getHyphenChar() {
 
@@ -448,7 +448,7 @@ public abstract class EFMFont implements Font {
     private UnicodeChar skewchar = new UnicodeChar('-');
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#setSkewChar(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.type.font.Font#setSkewChar(de.dante.util.UnicodeChar)
      */
     public void setSkewChar(final UnicodeChar skew) {
 
@@ -456,7 +456,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getSkewChar()
+     * @see de.dante.extex.interpreter.type.font.Font#getSkewChar()
      */
     public UnicodeChar getSkewChar() {
 
@@ -524,7 +524,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getFontFiles()
+     * @see de.dante.extex.interpreter.type.font.Font#getFontFiles()
      */
     public FontFileList getFontFiles() {
 
@@ -532,7 +532,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getLetterSpaced()
+     * @see de.dante.extex.interpreter.type.font.Font#getLetterSpaced()
      */
     public Glue getLetterSpaced() {
 
@@ -540,7 +540,7 @@ public abstract class EFMFont implements Font {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Font#getLigatures()
+     * @see de.dante.extex.interpreter.type.font.Font#getLigatures()
      */
     public boolean getLigatures() {
 

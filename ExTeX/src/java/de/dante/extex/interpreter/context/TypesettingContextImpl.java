@@ -20,13 +20,13 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.hyphenation.HyphenationTable;
-import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.font.Font;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -140,7 +140,7 @@ public class TypesettingContextImpl implements TypesettingContext {
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#setFont(
-     *      de.dante.extex.interpreter.type.Font)
+     *      de.dante.extex.interpreter.type.font.Font)
      */
     public void setFont(final Font theFont) {
 

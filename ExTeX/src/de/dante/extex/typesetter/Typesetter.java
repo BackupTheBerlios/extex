@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Typesetter extends ListMaker {
 
@@ -42,7 +42,7 @@ public interface Typesetter extends ListMaker {
     void setDocumentWriter(DocumentWriter doc);
 
     /**
-     * ...
+     * Getter for the CharNodeFactory.
      *
      * @return the character node factory
      */
@@ -56,9 +56,9 @@ public interface Typesetter extends ListMaker {
     void finish() throws GeneralException;
 
     /**
-     * ...
+     * Send a list of nodes to the document writer.
      *
-     * @param nodes ...
+     * @param nodes the nodes to send to the typesetter
      *
      * @throws GeneralException in case of an error
      */
@@ -66,13 +66,11 @@ public interface Typesetter extends ListMaker {
 
     /**
      * ...
-     *
      */
     void openHbox();
 
     /**
      * ...
-     *
      */
     void openVbox();
 

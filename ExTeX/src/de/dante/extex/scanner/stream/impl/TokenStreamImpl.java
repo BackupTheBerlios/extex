@@ -52,13 +52,18 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
 
     /**
-     * The field <tt>CR</tt> contains the ...
+     * The constant <tt>CARET_LIMIT</tt> contains the ...
+     */
+    private static final int CARET_LIMIT = 0100;    // 0100 = 64
+
+    /**
+     * The constant <tt>CR</tt> contains the ...
      */
     private static final UnicodeChar CR = new UnicodeChar('\r');
 
@@ -229,7 +234,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitActive(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -255,8 +260,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(
-     *      java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitCr(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -275,8 +280,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(
-     *      java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitEscape(final Object oFactory, final Object oTokenizer,
             final Object uchar) throws GeneralException {
@@ -320,7 +325,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
-     *      java.lang.Object)
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitIgnore(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -330,7 +335,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
-     *      java.lang.Object)
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitInvalid(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -342,8 +347,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(
-     *      java.lang.Object,
-     *      java.lang.Object)
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitLeftBrace(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -356,7 +360,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
-     *      java.lang.Object)
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitLetter(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -368,8 +372,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
-     *      java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitMacroParam(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -382,7 +386,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitMathShift(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -394,8 +398,8 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(
-     *      java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
+     *      java.lang.Object, java.lang.Object)
      */
     public Object visitOther(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -421,7 +425,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      * @see "The TeXbook [Chapter 8, page 47]"
      */
     public Object visitSpace(final Object oFactory, final Object oTokenizer,
@@ -439,7 +443,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitSubMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -452,7 +456,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitSupMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -465,7 +469,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(
-     *      java.lang.Object,java.lang.Object)
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitTabMark(final Object oFactory, final Object oTokenizer,
             final Object uc) throws GeneralException {
@@ -542,8 +546,9 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
                     }
                 } else if (c != null) {
                     hexHigh = c.getCodePoint();
-                    uc = new UnicodeChar(((hexHigh < 0100) ? hexHigh + 0100
-                            : hexHigh - 0100)); // 0100 = 64
+                    uc = new UnicodeChar(
+                            ((hexHigh < CARET_LIMIT) ? hexHigh + CARET_LIMIT
+                                    : hexHigh - CARET_LIMIT));
                 }
             } else {
                 pointer = savePointer;
@@ -568,7 +573,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * ...
+     * Checks whether the pointer is at the end of line.
      *
      * @return <code>true</code> iff the next reading operation would try to
      * refill the line buffer
@@ -631,7 +636,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      * This is a type-save class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.16 $
+     * @version $Revision: 1.17 $
      */
     private static final class State {
 

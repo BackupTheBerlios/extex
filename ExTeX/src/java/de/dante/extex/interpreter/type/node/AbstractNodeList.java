@@ -33,7 +33,7 @@ import java.util.List;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
@@ -91,7 +91,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * @see de.dante.extex.typesetter.NodeList#setMove(
-     *      de.dante.extex.interpreter.type.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setMove(final Dimen d) {
 
@@ -108,7 +108,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * @see de.dante.extex.typesetter.NodeList#setShift(
-     *      de.dante.extex.interpreter.type.Dimen)
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setShift(final Dimen d) {
 
@@ -145,7 +145,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
     /**
      * Setter for targetDepth.
      *
-     * @param theTargetDepth the targetDepth to set.
+     * @param theTargetDepth the target depth to set.
      */
     public void setTargetDepth(final Dimen theTargetDepth) {
 
@@ -225,7 +225,7 @@ public abstract class AbstractNodeList extends AbstractNode implements NodeList 
 
     /**
      * @see de.dante.extex.typesetter.NodeList#addSkip(
-     *      de.dante.extex.interpreter.type.Glue)
+     *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public abstract void addSkip(final Glue glue);
 

@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -35,7 +34,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -81,7 +80,9 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#get()
+     * @see de.dante.extex.scanner.stream.TokenStream#get(
+     *      de.dante.extex.scanner.TokenFactory,
+     *      de.dante.extex.interpreter.Tokenizer)
      */
     public Token get(final TokenFactory factory, final Tokenizer tokenizer)
             throws GeneralException {
@@ -92,20 +93,12 @@ public class TokenStreamBaseImpl implements TokenStream {
     }
 
     /**
-     * @see de.dante.extex.token.TokenStream#put(Token)
+     * @see de.dante.extex.scanner.stream.TokenStream#put(
+     *      de.dante.extex.scanner.Token)
      */
     public void put(final Token token) {
         if (token != null) {
             stack.add(token);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.token.TokenStream#put(Tokens)
-     */
-    public void put(final Tokens toks) {
-        if (toks != null) {
-            stack.add(toks);
         }
     }
 

@@ -32,7 +32,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -56,7 +56,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.ListMaker#addSpace(
      *     de.dante.extex.interpreter.context.TypesettingContext,
-     *     de.dante.extex.interpreter.type.Count)
+     *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) {
@@ -108,8 +108,8 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#addGlue(
-     *     de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addGlue(final Glue g) {
         // nothing to do
@@ -147,7 +147,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *     de.dante.extex.interpreter.type.Count)
+     *     de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count f) {
         // nothing to do
@@ -155,7 +155,7 @@ public class NullTypesetterImpl implements Typesetter {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *     de.dante.extex.interpreter.type.Dimen)
+     *     de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setPrevDepth(final Dimen pd) {
         // nothing to do

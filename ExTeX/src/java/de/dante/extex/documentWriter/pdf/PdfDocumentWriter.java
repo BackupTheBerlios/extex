@@ -24,38 +24,34 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.List;
 import java.util.Map;
-import java.util.Date;
 import java.util.Vector;
 
-import org.apache.fop.pdf.PDFPage;
-import org.apache.fop.pdf.PDFFilterList;
-import org.apache.fop.pdf.PDFColor;
+import org.apache.fop.apps.FOPException;
+import org.apache.fop.fonts.FontDescriptor;
+import org.apache.fop.fonts.FontReader;
+import org.apache.fop.fonts.Typeface;
 import org.apache.fop.pdf.PDFDocument;
+import org.apache.fop.pdf.PDFFilterList;
+import org.apache.fop.pdf.PDFFont;
 import org.apache.fop.pdf.PDFPage;
 import org.apache.fop.pdf.PDFResources;
 import org.apache.fop.pdf.PDFStream;
-import org.apache.fop.pdf.PDFFont;
-import org.apache.fop.fonts.FontDescriptor;
-import org.apache.fop.fonts.FontMetrics;
-import org.apache.fop.fonts.FontReader;
-import org.apache.fop.fonts.Typeface;
-import org.apache.fop.apps.FOPException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.font.FontFile;
+import de.dante.extex.interpreter.type.font.Glyph;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.FontFile;
-import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
-import de.dante.util.configuration.Configuration;
 import de.dante.util.GeneralException;
 import de.dante.util.Unit;
+import de.dante.util.configuration.Configuration;
 
 
 /**
@@ -63,7 +59,7 @@ import de.dante.util.Unit;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */

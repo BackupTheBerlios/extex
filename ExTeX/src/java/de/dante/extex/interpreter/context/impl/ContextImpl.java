@@ -39,12 +39,12 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.Direction;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
-import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -100,7 +100,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -286,9 +286,10 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setBox(java.lang.String,
-     *      de.dante.extex.interpreter.type.Box, boolean)
+     *      de.dante.extex.interpreter.type.box.Box, boolean)
      */
-    public void setBox(final String name, final Box value, final boolean global) {
+    public void setBox(final String name, final Box value,
+            final boolean global) {
 
         group.setBox(name, value, global);
     }
@@ -370,7 +371,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setDelcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.Count, boolean)
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setDelcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -381,7 +382,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setDimen(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Dimen, boolean)
+     *      de.dante.extex.interpreter.type.dimen.Dimen, boolean)
      */
     public void setDimen(final String name, final Dimen value,
             final boolean global) {
@@ -423,7 +424,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setFont(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Font,
+     *      de.dante.extex.interpreter.type.font.Font,
      *      boolean)
      */
     public void setFont(final String name, final Font font, final boolean global) {
@@ -466,7 +467,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setGlue(java.lang.String,
-     *      de.dante.extex.interpreter.type.Glue, boolean)
+     *      de.dante.extex.interpreter.type.glue.Glue, boolean)
      */
     public void setGlue(final String name, final Glue value,
             final boolean global) {
@@ -592,7 +593,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setMuskip(
      *      java.lang.String,
-     *      de.dante.extex.interpreter.type.Muskip, boolean)
+     *      de.dante.extex.interpreter.type.muskip.Muskip, boolean)
      */
     public void setMuskip(final String name, final Muskip value,
             final boolean global) {
@@ -612,7 +613,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.extex.interpreter.context.Context#setSfcode(
      *      de.dante.util.UnicodeChar,
-     *      de.dante.extex.interpreter.type.Count, boolean)
+     *      de.dante.extex.interpreter.type.count.Count, boolean)
      */
     public void setSfcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -662,7 +663,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(
-     *      de.dante.extex.interpreter.type.Font)
+     *      de.dante.extex.interpreter.type.font.Font)
      */
     public void setTypesettingContext(final Font font)
             throws ConfigurationException {
@@ -723,7 +724,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#afterGroup(
-     *      de.dante.util.Observer)
+     *      de.dante.util.observer.Observer)
      */
     public void afterGroup(final Observer observer) {
 
@@ -797,7 +798,7 @@ public class ContextImpl implements Context, Observable, Serializable {
 
     /**
      * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
-     *      de.dante.extex.interpreter.type.Tokens, boolean)
+     *      de.dante.extex.interpreter.type.tokens.Tokens, boolean)
      */
     public void setToks(final String name, final Tokens toks,
             final boolean global) {
@@ -858,7 +859,7 @@ public class ContextImpl implements Context, Observable, Serializable {
     /**
      * @see de.dante.util.observer.Observable#registerObserver(
      *      java.lang.String,
-     *      de.dante.util.Observer)
+     *      de.dante.util.observer.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
             throws NotObservableException {

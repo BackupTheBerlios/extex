@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at
+ * your option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
+import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
@@ -45,7 +46,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
 
@@ -66,9 +67,11 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     /**
      * Creates a new object.
      *
+     * @param configuration ...
      * @param theLogger the logger for the interaction logging
      */
-    public ErrorHandlerImpl(final Logger theLogger) {
+    public ErrorHandlerImpl(final Configuration configuration,
+            final Logger theLogger) {
 
         super();
         this.logger = theLogger;
@@ -89,52 +92,6 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     }
 
     /**
-     * Read a line of characters from the standard input stream.
-     * Leading spaces are ignored. At end of file <code>null</code> is returned.
-     *
-     * @return the line read or <code>null</code> to signal EOF
-     *
-     * @throws IOException in case of an error during IO. This is rather
-     * unlikely
-     */
-    private String readLine() throws IOException {
-
-        StringBuffer sb = new StringBuffer();
-
-        for (int c = System.in.read(); c > 0; c = System.in.read()) {
-            if (c == '\n') {
-                sb.append((char) c);
-                return sb.toString();
-            } else if (c != ' ' || sb.length() > 0) {
-                sb.append((char) c);
-            }
-        }
-
-        return (sb.length() > 0 ? sb.toString() : null);
-    }
-
-    /**
-     * ...
-     *
-     * @param locator ...
-     */
-    protected void showErrorLine(final Locator locator) {
-
-        StringBuffer sb = new StringBuffer();
-
-        for (int i = locator.getLinePointer(); i > 0; i--) {
-            sb.append('_');
-        }
-        sb.append('^');
-        logger.severe("\n\n" + locator.getLine() + NL
-                      + sb.toString());
-
-        String file = locator.getFilename();
-        logger.severe("<" + (file == null ? "" : file) + "> \n");
-        logger.severe("l." + Integer.toString(locator.getLineno()) + " \n");
-    }
-
-    /**
      * @see de.dante.extex.interpreter.InteractionVisitor#visitBatchmode(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
@@ -145,41 +102,19 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
     }
 
     /**
+     * Interact with the user in case of an error
+     *
      * @see de.dante.extex.interpreter.InteractionVisitor#visitErrorstopmode(
      *      java.lang.Object, java.lang.Object, java.lang.Object)
      */
-    public boolean visitErrorstopmode(final Object arg1, final Object arg2,
-            final Object arg3) throws GeneralException {
-
-        return false;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitNonstopmode(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public boolean visitNonstopmode(final Object arg1, final Object arg2,
-            final Object arg3) throws GeneralException {
-
-        return true;
-    }
-
-    /**
-     * Interact with the user in case of an error
-     *
-     * @see de.dante.extex.interpreter.InteractionVisitor#visitScrollmode(
-     *      java.lang.Object, java.lang.Object, java.lang.Object)
-     */
-    public boolean visitScrollmode(final Object oSource, final Object oContext,
-            final Object oException) throws GeneralException {
+    public boolean visitErrorstopmode(final Object oSource,
+            final Object oContext, final Object oException)
+            throws GeneralException {
 
         final TokenSource source = (TokenSource) oSource;
         final Context context = (Context) oContext;
-        GeneralException e = (GeneralException) oException;
-        final Locator locator = source.getLocator();
-
-        logger.severe(NL + "! " + e.getMessage() + NL);
-        showErrorLine(locator);
+        GeneralException ex = (GeneralException) oException;
+        showErrorLine(logger, ex.getMessage(), source.getLocator());
 
         try {
             boolean firstHelp = true;
@@ -238,7 +173,7 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                             if (!firstHelp) {
                                 help = Messages
                                         .format("ErrorHandler.noMoreHelp");
-                            } else if ((help = e.getHelp()) == null) {
+                            } else if ((help = ex.getHelp()) == null) {
                                 help = Messages.format("ErrorHandler.noHelp");
                             }
 
@@ -278,13 +213,80 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                     }
                 }
             }
-        } catch (IOException e1) {
-            throw new GeneralException(e1);
-        } catch (ConfigurationException e1) {
-            throw new GeneralException(e1);
-        } catch (GeneralException e1) {
-            throw e1;
+        } catch (IOException e) {
+            throw new GeneralException(e);
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
+        } catch (GeneralException e) {
+            throw e;
         }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.InteractionVisitor#visitNonstopmode(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public boolean visitNonstopmode(final Object arg1, final Object arg2,
+            final Object arg3) throws GeneralException {
+
+        return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.InteractionVisitor#visitScrollmode(
+     *      java.lang.Object, java.lang.Object, java.lang.Object)
+     */
+    public boolean visitScrollmode(final Object oSource, final Object oContext,
+            final Object oException) throws GeneralException {
+
+        return false;
+    }
+
+    /**
+     * Read a line of characters from the standard input stream.
+     * Leading spaces are ignored. At end of file <code>null</code> is returned.
+     *
+     * @return the line read or <code>null</code> to signal EOF
+     *
+     * @throws IOException in case of an error during IO. This is rather
+     * unlikely
+     */
+    private String readLine() throws IOException {
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int c = System.in.read(); c > 0; c = System.in.read()) {
+            if (c == '\n') {
+                sb.append((char) c);
+                return sb.toString();
+            } else if (c != ' ' || sb.length() > 0) {
+                sb.append((char) c);
+            }
+        }
+
+        return (sb.length() > 0 ? sb.toString() : null);
+    }
+
+    /**
+     * This method is invoked to present the current line causing the error.
+     *
+     * @param aLogger the logger to use for output
+     * @param message the error message
+     * @param locator the locator for the error position
+     */
+    protected void showErrorLine(final Logger aLogger, final String message,
+            final Locator locator) {
+
+        String file = locator.getFilename();
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = locator.getLinePointer(); i > 0; i--) {
+            sb.append('_');
+        }
+        aLogger.severe(NL + NL + (file == null ? "" : file) + ":"
+                      + Integer.toString(locator.getLineno()) + ": " + message
+                      + NL + NL + locator.getLine() + NL + sb.toString() + "^"
+                      + NL);
     }
 
 }
