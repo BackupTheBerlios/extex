@@ -16,9 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.util.file;
+package de.dante.util.resource;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 
 import de.dante.util.StringListIterator;
 import de.dante.util.configuration.Configuration;
@@ -28,9 +31,9 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class FileFinderConfigImpl implements FileFinder {
+public class FileFinderConfigImpl implements ResourceFinder {
 
     /**
      * The constant <tt>EXTENSION_TAG</tt> contains the name of the tag to get
@@ -61,10 +64,10 @@ public class FileFinderConfigImpl implements FileFinder {
     }
 
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     * @see de.dante.util.resource.ResourceFinder#findResource(java.lang.String,
      *      java.lang.String)
      */
-    public File findFile(final String name, final String type)
+    public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
         File file;
@@ -79,7 +82,12 @@ public class FileFinderConfigImpl implements FileFinder {
                 String ext = extIt.next();
                 file = new File(path, name + ext);
                 if (file.canRead()) {
-                    return file;
+                    try {
+                        InputStream stream = new FileInputStream(file);
+                        return stream;
+                    } catch (FileNotFoundException e) {
+                        // ignore unreadable files
+                    }
                 }
             }
         }

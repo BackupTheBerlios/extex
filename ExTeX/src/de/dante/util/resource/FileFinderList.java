@@ -16,9 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.util.file;
 
-import java.io.File;
+package de.dante.util.resource;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -30,9 +31,9 @@ import de.dante.util.configuration.ConfigurationException;
  * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class FileFinderList implements FileFinder {
+public class FileFinderList implements ResourceFinder {
 
     /**
      * The field <tt>list</tt> the internal list of file finders which are
@@ -45,6 +46,7 @@ public class FileFinderList implements FileFinder {
      * Initially the list is empty.
      */
     public FileFinderList() {
+
         super();
     }
 
@@ -54,7 +56,8 @@ public class FileFinderList implements FileFinder {
      *
      * @param finder the file finder to store in initially
      */
-    public FileFinderList(final FileFinder finder) {
+    public FileFinderList(final ResourceFinder finder) {
+
         super();
         add(finder);
     }
@@ -66,7 +69,9 @@ public class FileFinderList implements FileFinder {
      * @param finder1 the first file finder to store in initially
      * @param finder2 the second file finder to store in initially
      */
-    public FileFinderList(final FileFinder finder1, final FileFinder finder2) {
+    public FileFinderList(final ResourceFinder finder1,
+            final ResourceFinder finder2) {
+
         super();
         add(finder1);
         add(finder2);
@@ -80,8 +85,9 @@ public class FileFinderList implements FileFinder {
      * @param finder2 the second file finder to store in initially
      * @param finder3 the third file finder to store in initially
      */
-    public FileFinderList(final FileFinder finder1, final FileFinder finder2,
-            final FileFinder finder3) {
+    public FileFinderList(final ResourceFinder finder1,
+            final ResourceFinder finder2, final ResourceFinder finder3) {
+
         super();
         add(finder1);
         add(finder2);
@@ -89,26 +95,28 @@ public class FileFinderList implements FileFinder {
     }
 
     /**
-     * Append an additional file finder to list of file finders contained. 
+     * Append an additional file finder to list of file finders contained.
      *
      * @param finder the file finder to add
      */
-    public void add(final FileFinder finder) {
+    public void add(final ResourceFinder finder) {
+
         list.add(finder);
     }
 
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     * @see de.dante.util.resource.ResourceFinder#findResource(java.lang.String,
      *      java.lang.String)
      */
-    public File findFile(final String name, final String type)
+    public InputStream findResource(final String name, final String type)
             throws ConfigurationException {
 
-        Iterator iter = list.iterator();
-        while (iter.hasNext()) {
-            File f = ((FileFinder) iter.next()).findFile(name, type);
-            if (f != null) {
-                return f;
+        Iterator iterator = list.iterator();
+        while (iterator.hasNext()) {
+            InputStream stream = ((ResourceFinder) iterator.next())
+                    .findResource(name, type);
+            if (stream != null) {
+                return stream;
             }
         }
 
