@@ -19,15 +19,10 @@
 
 package de.dante.extex.scanner.stream;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
-import java.io.StringReader;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
@@ -54,8 +49,8 @@ import de.dante.util.observer.ObserverList;
  *
  * <p>
  * Mainly the configuration needs to specify which class to use for the
- * TokenStream. The name of the class is given as the argument "class" as
- * shown below.
+ * TokenStream. The name of the class is given as the argument <tt>class</tt>
+ * as shown below.
  * <pre>
  *   &lt;Scanner class="the.package.TheClass"/&gt;
  * </pre>
@@ -71,18 +66,33 @@ import de.dante.util.observer.ObserverList;
  * </p>
  *
  * <p>
+ * If the Token stream is fed from a file then the additional parameter
+ * <tt>buffersize</tt> is taken into account. This parameter is optional.
+ * Its usage can look as follows:
+ * <pre>
+ *   &lt;Scanner class="the.package.TheClass"
+ *         buffersize="0"/&gt;
+ * </pre>
+ * The value given is a number. If this number is positive then it is
+ * interpreted as the size of the buffer for the file reading operation.
+ * If it is 0 or empty then no buffer will be used.
+ * If it is negative, then the default buffer size will be used.
+ * </p>
+ *
+ * <p>
  * In addition to the class for the Token stream the reader class can be
  * specified for the case that reading from a file is requested. In this case
  * the mapping from bytes to characters according to an encoding.
- * The name is given as the argument "reader" as shown below:
+ * The name is given as the parameter <tt>reader</tt> as shown below:
  * <pre>
  *   &lt;Scanner class="the.package.TheClass"
  *         reader="another.pack.age.TheReaderClass"/&gt;
  * </pre>
  * </p>
  * <p>
- * Note that the attribute "reader" is optional. If none is given or the value
- * is the empty string then <tt>java.io.InputStreamReader</tt> is used instead.
+ * Note that the attribute <tt>reader</tt> is optional. If none is given or the
+ * value is the empty string then <tt>java.io.InputStreamReader</tt> is used
+ * instead.
  * </p>
  *
  * <h3>Observable Events</h3>
@@ -98,26 +108,19 @@ import de.dante.util.observer.ObserverList;
  *  </dd>
  *
  *  <dt><tt>reader</tt></dt>
- *  <dd>This event is triggered by the request for a TokenStream fed from a
- *   file where a custom reader is used. This means that the configuration
- *   contains a reader class name. The reader is passed as argument to the
- *   observer.
+ *  <dd>This event is triggered by the request for a TokenStream fed from an
+ *   arbitrary Reader. The reader is passed as argument to the observer.
  *  </dd>
  *
  *  <dt><tt>string</tt></dt>
  *  <dd>This event is triggered by the request for a TokenStream fed from a
  *   String. The string is passed as argument to the observer.
  *  </dd>
- *
- *  <dt><tt>stream</tt></dt>
- *  <dd>This event is triggered by the request for a TokenStream fed from an
- *   arbitrary Reader. The reader is passed as argument to the observer.
- *  </dd>
  * </dl>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TokenStreamFactory implements Observable {
 
@@ -126,12 +129,6 @@ public class TokenStreamFactory implements Observable {
      * attribute used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The constant <tt>READER_ATTRIBUTE</tt> contains the name of the
-     * attribute used to get the class name for the reader.
-     */
-    private static final String READER_ATTRIBUTE = "reader";
 
     /**
      * The field <tt>configuration</tt> contains the configuration for this
@@ -146,12 +143,6 @@ public class TokenStreamFactory implements Observable {
     private ObserverList openFileObservers = new ObserverList();
 
     /**
-     * The field <tt>openStreamObservers</tt> contains the observers registered
-     * for the "stream" event.
-     */
-    private ObserverList openStreamObservers = new ObserverList();
-
-    /**
      * The field <tt>openReaderObservers</tt> contains the observers registered
      * for the "reader" event.
      */
@@ -164,16 +155,29 @@ public class TokenStreamFactory implements Observable {
     private ObserverList openStringObservers = new ObserverList();
 
     /**
-     * The field <tt>constructor</tt> contains the constructor of the method
-     * to use.
+     * The field <tt>fileConstructor</tt> contains the constructor for the
+     * file variant.
      */
-    private Constructor constructor;
+    private Constructor fileConstructor;
 
     /**
      * The field <tt>readerConstructor</tt> contains the constructor for the
-     * input stream reader.
+     * reader variant.
      */
     private Constructor readerConstructor;
+
+    /**
+     * The field <tt>stringConstructor</tt> contains the constructor for the
+     * string variant.
+     */
+    private Constructor stringConstructor;
+
+    /**
+     * The field <tt>bufferSize</tt> contains the desired size for the input
+     * buffer. Negative values mean that the default size should be used. If the
+     * vakue is zero then nol buffer at all should be used.
+     */
+    private int bufferSize = -1;
 
     /**
      * The field <tt>fileFinder</tt> contains the file finder used when trying
@@ -199,7 +203,7 @@ public class TokenStreamFactory implements Observable {
                     config);
         }
         try {
-            constructor = Class.forName(classname)
+            readerConstructor = Class.forName(classname)
                     .getConstructor(
                                     new Class[]{Configuration.class,
                                             Reader.class, Boolean.class,
@@ -212,20 +216,29 @@ public class TokenStreamFactory implements Observable {
             throw new ConfigurationClassNotFoundException(classname, config);
         }
 
-        classname = config.getAttribute(READER_ATTRIBUTE);
-        if (classname == null || classname.equals("")) {
-            readerConstructor = null;
-        } else {
-            try {
-                readerConstructor = Class.forName(classname)
-                .getConstructor(new Class[]{InputStream.class, String.class});
-            } catch (SecurityException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (NoSuchMethodException e) {
-                throw new ConfigurationNoSuchMethodException(e);
-            } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname, config);
-            }
+        try {
+            stringConstructor = Class.forName(classname)
+                    .getConstructor(
+                                    new Class[]{Configuration.class,
+                                            String.class, String.class});
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationNoSuchMethodException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
+        }
+
+        try {
+            fileConstructor = Class.forName(classname)
+                    .getConstructor(new Class[]{Configuration.class,
+                                            File.class, String.class});
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationNoSuchMethodException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
         }
     }
 
@@ -241,10 +254,22 @@ public class TokenStreamFactory implements Observable {
     public TokenStream newInstance(final String line)
             throws ConfigurationException {
 
-        TokenStream stream = makeTokenStream(new StringReader(line), false, "#");
-
+        TokenStream stream;
         try {
+
+            stream = (TokenStream) stringConstructor.newInstance(new Object[]{
+                    configuration, line, "#"});
+
             openStringObservers.update(this, line);
+
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigurationInstantiationException(e);
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
@@ -266,7 +291,9 @@ public class TokenStreamFactory implements Observable {
      */
     public TokenStream newInstance(final String fileName,
             final String fileType, final String encoding)
-            throws ConfigurationException, FileNotFoundException, IOException {
+            throws ConfigurationException,
+                FileNotFoundException,
+                IOException {
 
         if (fileFinder == null) {
             throw new MissingFileFinderException("");
@@ -277,32 +304,20 @@ public class TokenStreamFactory implements Observable {
             throw new FileNotFoundException(fileName);
         }
 
-        BufferedInputStream inputStream = new BufferedInputStream(
-                new FileInputStream(file));
+        TokenStream stream;
+        try {
+            stream = (TokenStream) fileConstructor.newInstance(new Object[]{
+                    configuration, file, encoding});
 
-        Reader reader;
-
-        if (readerConstructor == null) {
-            reader = new InputStreamReader(inputStream, encoding);
-        } else {
-            try {
-                reader = (Reader) readerConstructor.newInstance(new Object[]{
-                        inputStream, encoding});
-                openReaderObservers.update(this, reader);
-            } catch (IllegalArgumentException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InstantiationException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (IllegalAccessException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (InvocationTargetException e) {
-                throw new ConfigurationInstantiationException(e);
-            } catch (GeneralException e) {
-                throw new ConfigurationWrapperException(e);
-            }
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            throw new ConfigurationInstantiationException(e);
         }
-
-        TokenStream stream = makeTokenStream(reader, true, fileName);
 
         try {
             openFileObservers.update(this, fileName);
@@ -324,36 +339,14 @@ public class TokenStreamFactory implements Observable {
     public TokenStream newInstance(final Reader reader)
             throws ConfigurationException {
 
-        TokenStream stream = makeTokenStream(reader, false, "*");
-
+        TokenStream stream;
         try {
-            openStreamObservers.update(this, reader);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
-        }
-        return stream;
-    }
 
-    /**
-     * Try to create a new token stream from the arguments given and the class
-     * specified in the configuration.
-     *
-     * @param reader the reader to get new characters from
-     * @param isFile indicator for file streams
-     * @param source the description of the input source
-     *
-     * @return a new token stream
-     *
-     * @throws ConfigurationInstantiationException in case of an error
-     */
-    private TokenStream makeTokenStream(final Reader reader,
-            final boolean isFile, final String source)
-            throws ConfigurationInstantiationException {
+            stream = (TokenStream) readerConstructor.newInstance(new Object[]{
+                    configuration, reader, Boolean.FALSE, "*"});
 
-        try {
-            return (TokenStream) constructor.newInstance(new Object[]{
-                    configuration, reader,
-                    (isFile ? Boolean.TRUE : Boolean.FALSE), source});
+            openReaderObservers.update(this, reader);
+
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (InstantiationException e) {
@@ -362,7 +355,10 @@ public class TokenStreamFactory implements Observable {
             throw new ConfigurationInstantiationException(e);
         } catch (InvocationTargetException e) {
             throw new ConfigurationInstantiationException(e);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
         }
+        return stream;
     }
 
     /**
@@ -374,8 +370,6 @@ public class TokenStreamFactory implements Observable {
 
         if ("file".equals(name)) {
             openFileObservers.add(observer);
-        } else if ("stream".equals(name)) {
-            openStreamObservers.add(observer);
         } else if ("string".equals(name)) {
             openStringObservers.add(observer);
         } else if ("reader".equals(name)) {
@@ -392,22 +386,7 @@ public class TokenStreamFactory implements Observable {
      */
     public void setFileFinder(final FileFinder finder) {
 
-        fileFinder = finder;
-    }
-
-    /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
-     *      java.lang.String)
-     */
-    public File findFile(final String name, final String type)
-            throws ConfigurationException {
-
-        try {
-            openFileObservers.update(this, name);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
-        }
-        return fileFinder.findFile(name, type);
+        this.fileFinder = finder;
     }
 
 }

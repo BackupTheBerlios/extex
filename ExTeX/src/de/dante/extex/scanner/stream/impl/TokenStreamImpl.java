@@ -19,9 +19,15 @@
 
 package de.dante.extex.scanner.stream.impl;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.LineNumberReader;
 import java.io.Reader;
+import java.io.StringReader;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Tokenizer;
@@ -35,6 +41,8 @@ import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationSyntaxException;
 
 /**
  * This class contains an implementation of a token stream which is fed from a
@@ -44,10 +52,16 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
+
+    /**
+     * The constant <tt>BUFFERSIZE_ATTRIBUTE</tt> contains the name of the
+     * attribute used to get the buffer size.
+     */
+    private static final String BUFFERSIZE_ATTRIBUTE = "buffersize";
 
     /**
      * The constant <tt>NEW_LINE</tt> contains the state for the processing at
@@ -106,12 +120,70 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      *
      * @throws IOException in case of an IO error
      */
-    public TokenStreamImpl(final Configuration config, final Reader reader, final Boolean isFile,
-            final String theSource) throws IOException {
+    public TokenStreamImpl(final Configuration config, final Reader reader,
+            final Boolean isFile, final String theSource) throws IOException {
 
         super(isFile.booleanValue());
         this.in = new LineNumberReader(reader);
         this.source = theSource;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param config the configuration object for this instance; This
+     * configuration is ignored in this implementation.
+     * @param theLine the string to use as source for characters
+     * @param theSource the description of the input source
+     *
+     * @throws IOException in case of an IO error
+     */
+    public TokenStreamImpl(final Configuration config, final String theLine,
+            final String theSource) throws IOException {
+
+        super(false);
+        this.in = new LineNumberReader(new StringReader(theLine));
+        this.source = theSource;
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param config the configuration object for this instance; This
+     * configuration is ignored in this implementation.
+     * @param file the file to read
+     * @param encoding the encoding to use
+     *
+     * @throws ConfigurationException in case of an error in the configuration
+     * @throws IOException in case of an IO error
+     */
+    public TokenStreamImpl(final Configuration config, final File file,
+            final String encoding) throws IOException, ConfigurationException {
+
+        super(false);
+
+        int bufferSize = -1;
+        String size = config.getAttribute(BUFFERSIZE_ATTRIBUTE).trim();
+        if (size != null && !size.equals("")) {
+            try {
+                bufferSize = Integer.parseInt(size);
+            } catch (NumberFormatException e) {
+                throw new ConfigurationSyntaxException(e.getMessage(),
+                        config.toString() + "#" + BUFFERSIZE_ATTRIBUTE);
+            }
+        }
+
+        InputStream inputStream = new FileInputStream(file);
+        if (bufferSize > 0) {
+            inputStream = new BufferedInputStream(inputStream, bufferSize);
+        } else if (bufferSize < 0) {
+            inputStream = new BufferedInputStream(inputStream);
+        }
+
+        this.source = file.getName();
+        this.in = new LineNumberReader(new InputStreamReader(inputStream,
+                encoding));
+
     }
 
     /**
@@ -206,7 +278,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
             //empty control sequence; see "The TeXbook, Chapter 8, p. 47"
             return factory.newInstance(Catcode.ESCAPE, "");
         }
-        
+
         UnicodeChar uc = getChar(tokenizer);
 
         if (uc == null) {
@@ -216,18 +288,17 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
             StringBuffer sb = new StringBuffer();
             sb.append((char) (uc.getCodePoint()));
             int savedPointer = pointer;
+            state = SKIP_BLANKS;
 
-            while ((uc = getChar(tokenizer)) != null
-                   && tokenizer.getCatcode(uc) == Catcode.LETTER) {
+            while (!atEndOfLine() && (uc = getChar(tokenizer)) != null) {
+                if (tokenizer.getCatcode(uc) != Catcode.LETTER) {
+                    pointer = savedPointer;
+                    return factory.newInstance(Catcode.ESCAPE, sb.toString());
+                }
                 sb.append((char) (uc.getCodePoint()));
                 savedPointer = pointer;
             }
 
-            if (uc != null) {
-                pointer = savedPointer;
-            }
-
-            state = SKIP_BLANKS;
             return factory.newInstance(Catcode.ESCAPE, sb.toString());
 
         } else {
@@ -323,7 +394,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     }
 
     /**
-     * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object,java.lang.Object)
+     * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(java.lang.Object, java.lang.Object, java.lang.Object)
      */
     public Object visitRightBrace(final Object oFactory,
             final Object oTokenizer, final Object uc) throws GeneralException {
@@ -452,9 +523,9 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
                         }
                     }
                 } else if (c != null) {
-                    hexHigh =  c.getCodePoint();
+                    hexHigh = c.getCodePoint();
                     uc = new UnicodeChar(((hexHigh < 0100) ? hexHigh + 0100
-                            : hexHigh - 0100));                    // 0100 = 64
+                            : hexHigh - 0100)); // 0100 = 64
                 }
             } else {
                 pointer = savePointer;
@@ -539,7 +610,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      * This is a type-save class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @version $Revision: 1.14 $
      */
     private static final class State {
 
