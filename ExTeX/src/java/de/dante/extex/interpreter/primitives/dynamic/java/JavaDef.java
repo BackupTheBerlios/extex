@@ -121,7 +121,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -158,7 +158,7 @@ public class JavaDef extends AbstractCode {
         try {
             code = (Code) (Class.forName(classname)
                     .getConstructor(new Class[]{String.class})
-                    .newInstance(new Object[]{cs.getValue()}));
+                    .newInstance(new Object[]{cs.getName()}));
         } catch (IllegalArgumentException e) {
             throw new GeneralException(e);
         } catch (SecurityException e) {
