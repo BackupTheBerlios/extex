@@ -113,7 +113,7 @@ import de.dante.util.resource.FileFinderPathImpl;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public class ExTeX {
 
@@ -147,7 +147,7 @@ public class ExTeX {
      * The constant <tt>VERSION</tt> contains the manually incremented version
      * string.
      */
-    private static final String EXTEX_VERSION = "0.8";
+    private static final String EXTEX_VERSION = "0.0";
 
     /**
      * The field <tt>PROP_CODE</tt> contains the name of the
