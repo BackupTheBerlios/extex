@@ -21,44 +21,42 @@
   <banner>TeX compatibility mode</banner>
 
   <!-- 
-    -  The section "File" contains the search specification for TeX files.
-    -  Note that TeX files are also sought in TEXINPUTS or requested from the
-    -  user.
+    -  The section "Resource" contains the search specification for input files.
     -->
-  <File>
-    <tex>
-      <extension></extension>
-      <extension>.tex</extension>
-      <path>.</path>
-      <path>src/test/data</path>
-    </tex>
-  </File>
-
-  <!-- 
-    -  The following is experimental.
-    -->
-  <FileFinder>
-    <use class="de.dante.util.resource.FileFinderDirectImpl">
-      <extension></extension>
-      <extension>.tex</extension>
-    </use>
-    <use class="de.dante.util.resource.FileFinderPathImpl" property="texinputs">
-      <extension></extension>
-      <extension>.tex</extension>
-    </use>
-    <use class="de.dante.util.resource.FileFinderConfigImpl">
+  <Resource>
+    <Finder class="de.dante.util.resource.FileFinder"
+            default="default"
+            trace="false">
       <tex>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
         <extension></extension>
         <extension>.tex</extension>
-        <path>.</path>
-        <path>src/test/data</path>
       </tex>
-    </use>
-    <use class="de.dante.util.resource.FileFinderImpl" provideLogger="true">
-      <extension></extension>
-      <extension>.tex</extension>
-    </use>
-  </FileFinder>
+      <default>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+      </default>
+    </Finder>
+    <Finder class="de.dante.extex.main.ResourceFinderImpl" default="default">
+      <tex>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+        <extension>.tex</extension>
+      </tex>
+      <default>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension/>
+      </default>
+    </Finder>
+  </Resource>
 
   <!-- 
     -  The section "Fonts" contains the search specification for font files.
@@ -73,23 +71,32 @@
 		<tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFount"/>
 		<tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
     </Type>
-    <Finder>
-      <efm>
-        <extension>.efm</extension>
-        <path>.</path>
-        <path>src/font</path>
-      </efm>
-      <pfb>
-        <extension>.pfb</extension>
-        <path>.</path>
-        <path>src/font</path>
-      </pfb>
-      <ttf>
-        <extension>.ttf</extension>
-        <path>.</path>
-        <path>src/font</path>
-      </ttf>
-    </Finder>
+    <Resource>
+      <Finder class="de.dante.util.resource.FileFinder"
+            default="default"
+            trace="false">
+        <efm>
+          <extension>.efm</extension>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </efm>
+        <pfb>
+          <extension>.pfb</extension>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </pfb>
+        <ttf>
+          <extension>.ttf</extension>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </ttf>
+        <default>
+          <extension/>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </default>
+      </Finder>
+    </Resource>
   </Fonts>
 
   <!-- 

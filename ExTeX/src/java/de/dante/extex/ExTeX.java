@@ -34,13 +34,17 @@ import java.nio.charset.CharacterCodingException;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Properties;
 import java.util.logging.ConsoleHandler;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
@@ -55,7 +59,6 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.main.ErrorHandlerFactory;
-import de.dante.extex.main.ResourceFinderImpl;
 import de.dante.extex.main.Version;
 import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
@@ -78,7 +81,6 @@ import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.util.GeneralException;
-import de.dante.util.StringList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
@@ -93,11 +95,8 @@ import de.dante.util.file.OutputFactory;
 import de.dante.util.framework.logger.LogEnabled;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observer;
-import de.dante.util.resource.FileFinderConfigImpl;
-import de.dante.util.resource.FileFinderDirect;
-import de.dante.util.resource.FileFinderList;
-import de.dante.util.resource.FileFinderPathImpl;
 import de.dante.util.resource.ResourceFinder;
+import de.dante.util.resource.ResourceFinderFactory;
 
 /**
  * This is the command line interface to ExTeX. It does all the horrible things
@@ -112,7 +111,7 @@ import de.dante.util.resource.ResourceFinder;
  * <li>Interacting with the user in case on an error</li>
  * </ul>
  *
- * <h3>Command Line Usage</h3>
+ * <h3>ExTeX: Command Line Usage</h3>
  *
  * <p>
  *  This program is normally used through a wrapper which performs all
@@ -144,7 +143,7 @@ import de.dante.util.resource.ResourceFinder;
  *  settings in other parameter files. The command line options are
  *  contained in the table below.
  * </p>
- * 
+ *
  * <dl>
  *   <dt><tt>&lang;code&rang;</tt></dt>
  *   <dd>
@@ -154,7 +153,7 @@ import de.dante.util.resource.ResourceFinder;
  *    restriction does not hold for the property settings.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.code">extex.code</a></tt></dd>
- * 
+ *
  *   <dt><tt>&lang;file&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the file to read from. A file name may
@@ -162,20 +161,20 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.file">extex.file</a></tt></dd>
- * 
+ *
  *   <dt><a name="-configuration"/><tt>-configuration &lang;resource&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
  *    This configuration resource is sought on the classpath.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.config">extex.config</a></tt></dd>
- * 
+ *
  *   <dt><a name="-copyright"/><tt>-copyright</tt></dt>
  *   <dd>
  *    This command line option produces a copyright notice on the
  *    standard output stream and terminates the program afterwards.
  *   </dd>
- * 
+ *
  *   <dt><tt>&amp;&lang;format&rang;</tt></dt>
  *   <dt><a name="-fmt"/><tt>-fmt &lang;format&rang;</tt></dt>
  *   <dd>
@@ -183,7 +182,7 @@ import de.dante.util.resource.ResourceFinder;
  *    string denotes that no format should be read. This is the default.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.fmt">extex.fmt</a></tt></dd>
- * 
+ *
  *   <dt><a name="-debug"/><tt>-debug &lang;spec&rang;</tt></dt>
  *   <dd>
  *    This command line parameter can be used to instruct the program to produce
@@ -195,10 +194,26 @@ import de.dante.util.resource.ResourceFinder;
  *      <td>Spec</td>Description<td></td><td>See</td>
  *     </th>
  *     <tr>
+ *      <td><tt>F</tt></td>
+ *      <td>
+ *       This specifier contains the indicator whether or not to trace the
+ *       searching for input files.
+ *      </td>
+ *      <td><tt><a href="#extex.trace.input.files">extex.trace.input.files</a></tt></td>
+ *     </tr>
+ *     <tr>
+ *      <td><tt>f</tt></td>
+ *      <td>
+ *       This specifier contains the indicator whether or not to trace the
+ *       searching for font files.
+ *      </td>
+ *      <td><tt><a href="#extex.trace.font.files">extex.trace.font.files</a></tt></td>
+ *     </tr>
+ *     <tr>
  *      <td><tt>M</tt></td>
  *      <td>
  *       This specifier contains the indicator whether or not to trace the
- *       work of the tokenizer.
+ *       execution of macros.
  *      </td>
  *      <td><tt><a href="#extex.trace.macros">extex.trace.macros</a></tt></td>
  *     </tr>
@@ -206,13 +221,13 @@ import de.dante.util.resource.ResourceFinder;
  *      <td><tt>T</tt></td>
  *      <td>
  *       This specifier contains the indicator whether or not to trace the
- *       execution of macros.
+ *       work of the tokenizer.
  *      </td>
  *      <td><tt><a href="#extex.trace.tokenizer">extex.trace.tokenizer</a></tt></td>
  *     </tr>
- *    <table>
+ *    </table>
  *   </dd>
- * 
+ *
  *   <dt><a name="-halt"/><tt>-halt-on-error</tt></dt>
  *   <dd>
  *    This parameter contains the indicator whether the processing should
@@ -220,13 +235,13 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *     <tt><a href="#extex.halt.on.error">extex.halt.on.error</a></tt></dd>
- * 
+ *
  *   <dt><a name="-help"/><tt>-help</tt></dt>
  *   <dd>
  *    This command line option produces a short usage description on the
  *    standard output stream and terminates the program afterwards.
  *   </dd>
- * 
+ *
  *   <dt><a name="-ini"/><tt>-ini</tt></dt>
  *   <dd>
  *    If set to <code>true</code> then act as initex. This coµmand line
@@ -234,7 +249,7 @@ import de.dante.util.resource.ResourceFinder;
  *    effect at all.
  *   </dd>
  *   <dd>Property: <tt><a href="#extex.ini">extex.ini</a></tt> </dd>
- * 
+ *
  *   <dt><a name="-interaction"/><tt>-interaction &lang;mode&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the interaction mode. possible values are
@@ -243,7 +258,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.interaction">extex.interaction</a></tt></dd>
- * 
+ *
  *   <dt><a name="-job"/><tt>-job-name &lang;name&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
@@ -252,7 +267,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.jobname">extex.jobname</a></tt></dd>
- * 
+ *
  *   <dt><a name="-language"/><tt>-language &lang;language&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the name of the locale to be used for the
@@ -260,7 +275,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.lang">extex.lang</a></tt> </dd>
- * 
+ *
  *   <dt><a name="-output"/><tt>-output &lang;format&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the output format. This logical name is resolved
@@ -268,7 +283,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.output">extex.output</a></tt></dd>
- * 
+ *
  *   <dt><a name="-texmfoutputs"/><tt>-texmfoutputs &lang;dir&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the name of the
@@ -277,7 +292,7 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Property:
  *    <tt><a href="#extex.outputdir.fallback">extex.outputdir.fallback</a></tt>
  *   </dd>
- * 
+ *
  *   <dt><a name="-texoutputs"/><tt>-texoutputs &lang;dir&rang;</tt></dt>
  *   <dd>
  *    This parameter contain the directory where output files should be
@@ -285,7 +300,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.outputdir">extex.outputdir</a></tt></dd>
- * 
+ *
  *   <dt><a name="-progname"/><tt>-progname</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
@@ -293,7 +308,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.progname">extex.progname</a></tt></dd>
- * 
+ *
  *   <dt><a name="-texinputs"/><tt>-texinputs &lang;path&rang;</tt></dt>
  *   <dd>
  *    This parameter contains the additional directories for searching TeX
@@ -301,14 +316,14 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Property:
  *    <tt><a href="#extex.texinputs">extex.texinputs</a></tt> </dd>
- * 
+ *
  *   <dt><a name="-version"/><tt>-version</tt></dt>
  *   <dd>
  *    This command line parameter forces that the version information
  *    is written to standard output and the program is terminated.
  *   </dd>
  * </dl>
- * 
+ *
  * <p>
  *  Command line parameters can be abbreviated up to a unique prefix
  *  &ndash; and sometimes even more. Thus the following invocations
@@ -355,7 +370,7 @@ import de.dante.util.resource.ResourceFinder;
  *    restriction does not hold for the property settings.
  *   </dd>
  *   <dd>Command line: <tt>&lang</a>;code&rang;</tt></dd>
- * 
+ *
  *   <dt><a name="extex.config"/><tt>extex.config</tt></dt>
  *   <dd>
  *    This parameter contains the name of the configuration resource to use.
@@ -364,32 +379,30 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-configuration"><tt>-configuration &lang;resource&rang;</tt></a></dd>
  *   <dd>Default: <tt>extex.xml</tt></dd>
- * 
+ *
  *   <dt><a name="extex.encoding"/><tt>extex.encoding</tt></dt>
  *   <dd>
  *    This parameter contains the name of the property for
  *    the standard encoding to use.
  *   </dd>
  *   <dd>Default: <tt>ISO-8859-1</tt></dd>
- * 
+ *
  *   <dt><a name="extex.error.handler"/><tt>extex.error.handler</tt></dt>
  *   <dd>
  *    This parameter contains the logical name of the error handler.
  *   </dd>
- * 
- *   <dt><a name="extex.outputdir.fallback"/><tt>extex.outputdir.fallback</tt></dt>
- *   <dd>
- *    This parameter contains the name of the
- *    property for the fallback if the output directory fails to be writable.
- *   </dd>
- *   <dd>Command line:
- *    <a href="#-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a> </dd>
- * 
+ *
  *   <dt><a name="extex.error.handler"/><tt>extex.error.handler</tt></dt>
  *   <dd>
  *    This parameter contains the logical name of the error handler.
  *   </dd>
- * 
+ *
+ *   <dt><a name="extex.fonts"/><tt>extex.fonts</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the property indicating where to
+ *    find font files. The value is a path similar to extex.texinputs.
+ *   </dd>
+ *
  *   <dt><a name="extex.halt.on.error"/><tt>extex.halt.on.error</tt></dt>
  *   <dd>
  *    This parameter contains the name of the property indicating whether the
@@ -397,14 +410,14 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-halt"><tt>-halt-on-error</tt></a> </dd>
- * 
+ *
  *   <dt><a name="extex.file"/><tt>extex.file</tt></dt>
  *   <dd>
  *    This parameter contains the file to read from. It has no default
  *   </dd>
  *   <dd>Command line:
  *    <a href="&lang"><tt>&lang;file&rang;</tt></a> </dd>
- * 
+ *
  *   <dt><a name="extex.fmt"/><tt>extex.fmt</tt></dt>
  *   <dd>
  *    This parameter contains the name of the format to read. An empty
@@ -412,7 +425,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-fmt"><tt>-fmt &lang;format&rang;</tt></a></dd>
- * 
+ *
  *   <dt><a name="extex.ini"/><tt>extex.ini</tt></dt>
  *   <dd>
  *    If set to <code>true</code> then act as initex. This coµmand line
@@ -421,7 +434,7 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-ini"><tt>-ini</tt></a> </dd>
- * 
+ *
  *   <dt><a name="extex.interaction"/><tt>extex.interaction</tt></dt>
  *   <dd>
  *    This parameter contains the interaction mode. possible values are
@@ -431,7 +444,7 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-interaction"><tt>-interaction &lang;mode&rang;</tt></a></dd>
  *   <dd>Default: <tt>3</tt></dd>
- * 
+ *
  *   <dt><a name="extex.jobname"/><tt>extex.jobname</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job. It is overwritten
@@ -441,14 +454,14 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-job"><tt>-job-name &lang;name&rang;</tt></a></dd>
  *   <dd>Default: <tt>texput</tt></dd>
- * 
+ *
  *   <dt><a name="extex.jobnameMaster"/><tt>extex.jobnameMaster</tt></dt>
  *   <dd>
  *    This parameter contains the name of the job to be used with high
  *    priority.
  *   </dd>
  *   <dd>Default: <tt>texput</tt></dd>
- * 
+ *
  *   <dt><a name="extex.lang"/><tt>extex.lang</tt></dt>
  *   <dd>
  *    This parameter contains the name of the locale to be used for the
@@ -456,13 +469,13 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-language"><tt>-language &lang;language&rang;</tt></a> </dd>
- * 
+ *
  *   <dt><a name="extex.nobanner"/><tt>extex.nobanner</tt></dt>
  *   <dd>
  *    This parameter contains a boolean indicating that the banner should be
  *    suppressed.
  *   </dd>
- * 
+ *
  *   <dt><a name="extex.output"/><tt>extex.output</tt></dt>
  *   <dd>
  *    This parameter contains the output format. This logical name is resolved
@@ -471,7 +484,7 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-output"><tt>-output &lang;format&rang;</tt></a></dd>
  *   <dd>Default: <tt>pdf</tt></dd>
- * 
+ *
  *   <dt><a name="extex.outputdir"/><tt>extex.outputdir</tt></dt>
  *   <dd>
  *    This parameter contain the directory where output files should be
@@ -480,14 +493,22 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-texoutputs"><tt>-texoutputs &lang;dir&rang;</tt></a></dd>
  *   <dd>Default: <tt>.</tt></dd>
- * 
+ *
+ *   <dt><a name="extex.outputdir.fallback"/><tt>extex.outputdir.fallback</tt></dt>
+ *   <dd>
+ *    This parameter contains the name of the
+ *    property for the fallback if the output directory fails to be writable.
+ *   </dd>
+ *   <dd>Command line:
+ *    <a href="#-texmfoutputs"><tt>-texmfoutputs &lang;dir&rang;</tt></a> </dd>
+ *
  *   <dt><a name="extex.pool"/><tt>extex.pool</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the base name of the resource
  *    containing the messages.
  *   </dd>
  *   <dd>Default: <tt>config.extexMessages</tt></dd>
- * 
+ *
  *   <dt><a name="extex.progname"/><tt>extex.progname</tt></dt>
  *   <dd>
  *    This parameter can be used to overrule the name of the program shown in
@@ -496,7 +517,7 @@ import de.dante.util.resource.ResourceFinder;
  *   <dd>Command line:
  *    <a href="#-progname"><tt>-progname</tt></a></dd>
  *   <dd>Default: <tt>ExTeX</tt></dd>
- * 
+ *
  *   <dt><a name="extex.texinputs"/><tt>extex.texinputs</tt></dt>
  *   <dd>
  *    This parameter contains the additional directories for searching TeX
@@ -504,22 +525,34 @@ import de.dante.util.resource.ResourceFinder;
  *   </dd>
  *   <dd>Command line:
  *    <a href="#-texinputs"><tt>-texinputs &lang;path&rang;</tt></a> </dd>
- * 
+ *
+ *   <dt><a name="extex.trace.input.files"/><tt>extex.trace.input.files</tt></dt>
+ *   <dd>
+ *    This boolean parameter contains the indicator whether or not to trace the
+ *    search for input files.
+ *   </dd>
+ *
+ *   <dt><a name="extex.trace.font.files"/><tt>extex.trace.font.filess</tt></dt>
+ *   <dd>
+ *    This boolean parameter contains the indicator whether or not to trace the
+ *    search for font files.
+ *   </dd>
+ *
  *   <dt><a name="extex.trace.macros"/><tt>extex.trace.macros</tt></dt>
  *   <dd>
  *    This boolean parameter contains the indicator whether or not to trace the
  *    execution of macros.
  *   </dd>
- * 
+ *
  *   <dt><a name="extex.trace.tokenizer"/><tt>extex.trace.tokenizer</tt></dt>
  *   <dd>
  *    This boolean parameter contains the indicator whether or not to trace the
  *    work of the tokenizer.
  *   </dd>
- * 
+ *
  *   <dt><a name="extex.typesetter"/><tt>extex.typesetter</tt></dt>
  *   <dd>
- *    This parameter contain the name of the typesetter to use. If it is
+ *    This parameter contains the name of the typesetter to use. If it is
  *    not set then the default from the configuration file is used.
  *   </dd>
  * </dl>
@@ -580,7 +613,7 @@ import de.dante.util.resource.ResourceFinder;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public class ExTeX {
 
@@ -653,7 +686,6 @@ public class ExTeX {
      */
     private static final String PROP_FMT = "extex.fmt";
 
-    
     /**
      * The field <tt>PROP_HALT_ON_ERROR</tt> contains the name of the property
      * indicating whether the processing should stop at the first error.
@@ -737,6 +769,20 @@ public class ExTeX {
     private static final String PROP_TEXINPUTS = "extex.texinputs";
 
     /**
+     * The field <tt>PROP_TRACE_FONT_FILES</tt> contains the name of the
+     * property for the boolean determining whether or not the searching for
+     * font files should produce tracing output.
+     */
+    private static final String PROP_TRACE_FONT_FILES = "extex.trace.font.files";
+
+    /**
+     * The field <tt>PROP_TRACE_INPUT_FILES</tt> contains the name of the
+     * property for the boolean determining whether or not the searching for
+     * input files should produce tracing output.
+     */
+    private static final String PROP_TRACE_INPUT_FILES = "extex.trace.input.files";
+
+    /**
      * The field <tt>PROP_TRACE_MACROS</tt> contains the name of the
      * property for the boolean determining whether or not the execution of
      * macros should produce tracing output.
@@ -770,6 +816,19 @@ public class ExTeX {
      * configuration file which contains the specification for the font.
      */
     private static final String TAG_FONT = "Font";
+
+    /**
+     * The constant <tt>TRACE_MAP</tt> contains the mapping from single
+     * characters to tracing property names.
+     */
+    private static final Map TRACE_MAP = new HashMap();
+
+    static {
+        TRACE_MAP.put("F", PROP_TRACE_INPUT_FILES);
+        TRACE_MAP.put("f", PROP_TRACE_FONT_FILES);
+        TRACE_MAP.put("M", PROP_TRACE_MACROS);
+        TRACE_MAP.put("T", PROP_TRACE_TOKENIZER);
+    }
 
     /**
      * This is the main method which is invoked to run the whole engine from
@@ -877,6 +936,8 @@ public class ExTeX {
         propertyDefault(PROP_POOL, "config.extexMessage");
         propertyDefault(PROP_PROGNAME, "ExTeX");
         propertyDefault(PROP_TEXINPUTS, "");
+        propertyDefault(PROP_TRACE_INPUT_FILES, "");
+        propertyDefault(PROP_TRACE_FONT_FILES, "");
         propertyDefault(PROP_TRACE_MACROS, "");
         propertyDefault(PROP_TRACE_TOKENIZER, "");
         propertyDefault(PROP_TYPESETTER_TYPE, "");
@@ -885,10 +946,12 @@ public class ExTeX {
 
         logger = Logger.getLogger(getClass().getName());
         logger.setUseParentHandlers(false);
+        logger.setLevel(Level.ALL);
 
         Handler consoleHandler = new ConsoleHandler();
-        logger.addHandler(consoleHandler);
         consoleHandler.setFormatter(new LogFormatter());
+        consoleHandler.setLevel(Level.WARNING);
+        logger.addHandler(consoleHandler);
         interactionObserver = new InteractionObserver(consoleHandler);
         applyInteraction();
     }
@@ -951,6 +1014,8 @@ public class ExTeX {
      */
     private void applyLanguage() {
 
+        Pattern p1 = Pattern.compile("^(..)[_-](..)$");
+        Pattern p2 = Pattern.compile("^(..)[_-](..)[_-](..)$");
         String lang = (String) properties.get(PROP_LANG);
         String bundle = (String) properties.get(PROP_POOL);
 
@@ -962,13 +1027,17 @@ public class ExTeX {
             if (lang.length() == 2) {
                 Messages.configure(bundle, new Locale(lang));
                 return;
-            } else if (lang.matches("^..[_-]..$")) {
-                Messages.configure(bundle, new Locale(lang.substring(0, 2), //
-                        lang.substring(3, 5)));
+            }
+            Matcher m1 = p1.matcher(lang);
+            if (m1.matches()) {
+                Messages
+                        .configure(bundle, new Locale(m1.group(1), m1.group(2)));
                 return;
-            } else if (lang.matches("^..[_-]..[_-]..$")) {
-                Messages.configure(bundle, new Locale(lang.substring(0, 2), //
-                        lang.substring(3, 5), lang.substring(6, 8)));
+            }
+            Matcher m2 = p2.matcher(lang);
+            if (m2.matches()) {
+                Messages.configure(bundle, new Locale(m2.group(1), m2.group(2),
+                        m2.group(3)));
                 return;
             }
         }
@@ -1248,37 +1317,6 @@ public class ExTeX {
     }
 
     /**
-     * Create a {@link ResourceFinder FileFinder} to be used for token input
-     * streams.
-     *
-     * @param config the configuration object for the file finder
-     *
-     * @return the new file finder
-     *
-     * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
-     */
-    private ResourceFinder makeFileFinder(final Configuration config)
-            throws ConfigurationException {
-
-        FileFinderList finder = new FileFinderList(new FileFinderDirect(
-                new StringList(":tex", ":")));
-
-        String path = properties.getProperty(PROP_TEXINPUTS, "");
-
-        if (!path.equals("")) {
-            finder.add(new FileFinderPathImpl(new StringList(path, System
-                    .getProperty("path.separator")),
-                    new StringList(":tex", ":")));
-        }
-
-        finder.add(new FileFinderConfigImpl(config));
-        finder.add(new ResourceFinderImpl(logger));
-
-        return finder;
-    }
-
-    /**
      * Create a new font factory.
      *
      * @param config the configuration object for the font factory
@@ -1298,7 +1336,13 @@ public class ExTeX {
             throw new ConfigurationMissingAttributeException("class", config);
         }
 
-        ResourceFinder fontFinder = makeFontFileFinder(config);
+        ResourceFinder fontFinder = (new ResourceFinderFactory())
+                .createResourceFinder(config.getConfiguration("Resource"),
+                        logger, properties);
+        if (Boolean.valueOf(properties.getProperty(PROP_TRACE_FONT_FILES))
+                .booleanValue()) {
+            fontFinder.enableTrace(true);
+        }
 
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
@@ -1323,34 +1367,6 @@ public class ExTeX {
         }
 
         return fontFactory;
-    }
-
-    /**
-     * Create a {@link ResourceFinder FileFinder} to be used for fonts.
-     *
-     * @param config the configuration object for the font file finder
-     *
-     * @return the file finder for fonts
-     *
-     * @throws ConfigurationException in case that some kind of problems have
-     * been detected in the configuration
-     */
-    private ResourceFinder makeFontFileFinder(final Configuration config)
-            throws ConfigurationException {
-
-        FileFinderList finder = new FileFinderList(new FileFinderDirect(
-                new StringList("", ":")));
-
-        String path = properties.getProperty(PROP_TEXINPUTS, "");
-
-        if (!path.equals("")) {
-            finder.add(new FileFinderPathImpl(new StringList(path, System
-                    .getProperty("path.separator")), new StringList("", ":")));
-        }
-
-        finder.add(new FileFinderConfigImpl(config.getConfiguration("Finder")));
-
-        return finder;
     }
 
     /**
@@ -1431,7 +1447,7 @@ public class ExTeX {
      */
     private Handler makeLogFileHandler(final String logFile) {
 
-        Handler fileHandler;
+        Handler fileHandler = null;
         try {
             fileHandler = new FileHandler(logFile);
             fileHandler.setFormatter(new LogFormatter());
@@ -1532,14 +1548,19 @@ public class ExTeX {
             Configuration config = new ConfigurationFactory()
                     .newInstance(properties.getProperty(PROP_CONFIG));
 
-            OutputFactory outFactory = new OutputFactory(config
-                    .getConfiguration("Output"), new String[]{
-                    properties.getProperty(PROP_OUTPUTDIR),
-                    properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
+            OutputFactory outFactory = new OutputFactory(//
+                    config.getConfiguration("Output"), //
+                    new String[]{properties.getProperty(PROP_OUTPUTDIR),
+                            properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
 
             showBanner(config);
-            ResourceFinder finder = makeFileFinder(config
-                    .getConfiguration("File"));
+            ResourceFinder finder = (new ResourceFinderFactory())
+                    .createResourceFinder(config.getConfiguration("Resource"),
+                            logger, properties);
+            if (Boolean.valueOf(properties.getProperty(PROP_TRACE_INPUT_FILES))
+                    .booleanValue()) {
+                finder.enableTrace(true);
+            }
             TokenStreamFactory tokenStreamFactory //
             = makeTokenStreamFactory(config.getConfiguration("Scanner"),
                     finder, null);
@@ -1569,7 +1590,6 @@ public class ExTeX {
                     Integer.toString(pages)));
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
-            e.printStackTrace();
             throw new MainConfigurationException(e);
         } catch (CharacterCodingException e) {
             logger.throwing(this.getClass().getName(), "run", e);
@@ -1665,16 +1685,14 @@ public class ExTeX {
                         onceMore = false;
                     } else if ("-output".startsWith(arg)) {
                         useArg(PROP_OUTPUT_TYPE, args, ++i);
-                    } else if ("-texinputs".startsWith(arg) && arg.length() > 4) {
+                    } else if ("-texinputs".startsWith(arg)) {
                         useArg(PROP_TEXINPUTS, args, ++i);
-                    } else if ("-texoutputs".startsWith(arg)
-                            && arg.length() > 4) {
+                    } else if ("-texoutputs".startsWith(arg)) {
                         useArg(PROP_OUTPUTDIR, args, ++i);
-                    } else if ("-texmfoutputs".startsWith(arg)
-                            && arg.length() > 4) {
+                    } else if ("-texmfoutputs".startsWith(arg)) {
                         useArg("extex.fallbackOutputdir", args, ++i);
                     } else if ("-debug".startsWith(arg)) {
-                        useDebug(args, ++i);
+                        useTrace(args, ++i);
                     } else if ("--".equals(arg)) {
                         useArg(PROP_CONFIG, args, ++i);
                     } else if (!loadArgumentFile(arg.substring(1))) {
@@ -1767,7 +1785,7 @@ public class ExTeX {
 
         String name = arg[idx];
         properties.setProperty(PROP_JOBNAME, //
-                (name.matches(".*\\.[a-zA-Z0-9]*") //
+                (name.matches(".*\\.[a-zA-Z0-9_]*") //
                         ? name.substring(0, name.lastIndexOf(".")) : name));
         properties.setProperty(PROP_FILE, arg[idx]);
 
@@ -1850,10 +1868,13 @@ public class ExTeX {
      * @param arg the list of arguments
      * @param idx the starting index
      *
-     * @throws MainException in case of an index overflow
+     * @throws MainMissingArgumentException in case that no key letters follow
+     * @throws MainUnknownOptionException in case that the specified option
+     *  letter has no assigned propertyn to set
      */
-    private void useDebug(final String[] arg, final int idx)
-            throws MainException {
+    private void useTrace(final String[] arg, final int idx)
+            throws MainUnknownOptionException,
+                MainMissingArgumentException {
 
         logger.setLevel(Level.FINE);
         if (idx >= arg.length) {
@@ -1861,16 +1882,11 @@ public class ExTeX {
         }
         String s = arg[idx];
         for (int i = 0; i < s.length(); i++) {
-            switch (s.charAt(i)) {
-                case 'M':
-                    properties.setProperty(PROP_TRACE_MACROS, "true");
-                    break;
-                case 'T':
-                    properties.setProperty(PROP_TRACE_TOKENIZER, "true");
-                    break;
-                default:
-                    throw new MainUnknownOptionException(Integer.toString(s
-                            .charAt(i)));
+            String prop = (String) TRACE_MAP.get(s.substring(i, i + 1));
+            if (prop != null) {
+                properties.setProperty(prop, "true");
+            } else {
+                throw new MainUnknownOptionException(s.substring(i, i + 1));
             }
         }
     }
