@@ -19,6 +19,10 @@
 
 package de.dante.extex.hyphenation;
 
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.util.GeneralException;
+
 /**
  * Interface for the <code>HyphenationTable</code>.
  * <p>
@@ -27,7 +31,7 @@ package de.dante.extex.hyphenation;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface HyphenationTable {
 
@@ -84,5 +88,16 @@ public interface HyphenationTable {
      * @return  hyphenactive
      */
     boolean isHyphenActive();
+
+    /**
+     * Make the hyphenation from a horizontal list.
+     *
+     * @param context   the context
+     * @param nodelist    the horizonzal-nodelist
+     * @return  a nodelist with hyphennations-marks
+     * @throws GeneralException ...
+     */
+    HorizontalListNode hyphenate(Context context, HorizontalListNode nodelist)
+            throws GeneralException;
 
 }

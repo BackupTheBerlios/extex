@@ -30,18 +30,18 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class provides an implementation for the primitive <code>\patterns</code>.
- * <p>
- * Example:
  *
+ * <p>Example:</p>
  * <pre>
  * \patterns{.ach4 .ad4der .af1t}
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Patterns extends AbstractCode {
 
@@ -122,11 +122,10 @@ public class Patterns extends AbstractCode {
                         number = true;
                     }
                 } else {
-                    if (uc.isDigit()) {
-                        System.err.println("Fehler");
-                    } else {
+                    if (!uc.isDigit()) {
                         sb.append(uc.toString());
                         number = true;
+                        // TODO isDigit -> Error
                     }
                 }
             }
@@ -164,19 +163,19 @@ public class Patterns extends AbstractCode {
     }
 
     /**
-     * Transform the <code>String</code> in lowercase (use lccode).
-     *
+     * Transform the <code>String</code> in lowercase (use lccode)
      * @param s         the <code>String</code>
      * @param context   the context
      * @return the lowercase string
      */
     private String makeLowercase(final String s, final Context context) {
 
-        // for (int i=0; i< s.length(); i++) {
-        // UnicodeChar uc = new UnicodeChar(s,i);
-        // int lc = context.get
-        // }
-        return s.toLowerCase();
-        //TODO change toLowerCase to lccode
+        UnicodeCharList ucl = new UnicodeCharList(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            UnicodeChar uc = new UnicodeChar(s, i);
+            UnicodeChar lc = context.getLccode(uc);
+            ucl.add(lc.getCodePoint() > 0 ? lc : uc);
+        }
+        return ucl.toString();
     }
 }

@@ -179,13 +179,24 @@
 
     <target name="dbdoclet" description="Create dbjavadoc">
         <mkdir dir="${dbdoclet}" />
-        <property name="doc.params" value="-properties .dbdoclet-extex.properties"/>
+        <copy todir="${dbdoclet}">
+            <fileset dir="src">
+                <include name="**/*.gif"/>
+                <include name="**/*.png"/>
+            </fileset>
+        </copy>
+        <copy todir="${dbdoclet}">
+            <fileset dir="doc">
+                <include name="docbook/**/*"/>
+                <include name="fo.xsl"/>
+            </fileset>
+        </copy>
+        <property name="doc.params" value="-properties doc/dbdoclet-extex.properties"/>
         <javadoc 
         	maxmemory="256m"
         	destdir="${dbdoclet}"
 	        author="true"
             version="true"
-            use="true"
             splitindex="true"
             notree="false"
             nonavbar="false"
@@ -198,14 +209,7 @@
             <classpath refid="test.class.path"/>
             <packageset dir="${src}" defaultexcludes="yes"/>
         </javadoc>
-        <copy todir="${dbdoclet}">
-            <fileset dir="src">
-                <include name="**/*.gif"/>
-                <include name="**/*.png"/>
-            </fileset>
-        </copy>
     </target>
-
 
     <target name="gcview"
             description="Show the logfile from the GC in the gcviewer"
@@ -214,6 +218,28 @@
             <arg value="gc.log"/>
         </java>
     </target>
+
+    <target name="maketar" description="create a tar-file with all source-file, ...">
+		<tar destfile="${tmp}/extex.tar.bz2" compression="bzip2" basedir="./" >
+			<include name="doc/**/*"/>
+	        <exclude name="doc/javadocdb/**/*"/>
+    	    <exclude name="doc/javadocxml/**/*"/>
+        	<exclude name="doc/javadoc/**/*"/>
+	        <include name="lib/**/*"/>
+    	    <include name="lib.develop/**/*"/>
+        	<include name="src/**/*"/>
+	        <include name="test/**/*"/>
+    	    <include name="testdata/**/*"/>
+        	<include name="util/**/*"/>
+	        <include name="www/**/*"/>
+    	    <include name=".*"/>
+        	<include name="extex"/>
+	        <include name="build.xml"/>
+    	    <include name="build"/>
+        	<include name="install-extex"/>
+		</tar>
+    </target>
+
 
     <!-- <target name="extex" description="Run ExTeX">
 		<java fork="true" classname="de.dante.extex.ExTeX">

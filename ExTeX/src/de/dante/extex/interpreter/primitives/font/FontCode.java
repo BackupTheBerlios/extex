@@ -28,12 +28,13 @@ import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for a font-primitve.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class FontCode extends AbstractCode implements Theable {
 
@@ -60,12 +61,13 @@ public class FontCode extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+    public void execute(final Flags prefix, final Context context, final TokenSource source, final Typesetter typesetter) throws GeneralException {
 
-        context.getTypesettingContext().setFont(font);
-        prefix.clear();
+        try {
+            context.setTypesettingContext(font);
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e.getMessage());
+        }
     }
 
     /**
@@ -73,8 +75,7 @@ public class FontCode extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(final Context context, final TokenSource source)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source) throws GeneralException {
 
         return new Tokens(context, font.getFontName());
     }

@@ -31,6 +31,7 @@ import org.jdom.input.SAXBuilder;
 
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
@@ -41,7 +42,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -63,7 +64,7 @@ public class FontFactoryImpl implements FontFactory {
     /**
      * Creates a new object.
      *
-     * @param fileFinder ...
+     * @param fileFinder the filefinder
      */
     public FontFactoryImpl(final FileFinder fileFinder) {
 
@@ -79,6 +80,17 @@ public class FontFactoryImpl implements FontFactory {
     public Font getInstance(final String name, final Dimen size)
             throws GeneralException, ConfigurationException {
 
+        return getInstance(name, size, new Glue(0), true);
+    }
+
+    /**
+     * @see de.dante.extex.font.FontFactory#getInstance(
+     *      java.lang.String, Dimen, Glue, boolean)
+     */
+    public Font getInstance(final String name, final Dimen size,
+            final Glue letterspaced, final boolean ligatures)
+            throws GeneralException, ConfigurationException {
+
         String filename;
         if (name != null) {
             filename = name.trim();
@@ -86,7 +98,7 @@ public class FontFactoryImpl implements FontFactory {
             filename = "null";
         }
 
-        FontKey key = new FontKey(filename, size);
+        FontKey key = new FontKey(filename, size, letterspaced, ligatures);
         Font font = (Font) (fontmap.get(key));
         if (font == null) {
 
@@ -94,15 +106,20 @@ public class FontFactoryImpl implements FontFactory {
             Type type = getFontType(doc);
 
             if (type == TYPE1) {
-                font = new EFMType1AFMFont(doc, filename, size, finder);
+                font = new EFMType1AFMFont(doc, filename, size, letterspaced,
+                        ligatures, finder);
             } else if (type == TTF) {
-                font = new EFMTTFFont(doc, filename, size, finder);
+                font = new EFMTTFFont(doc, filename, size, letterspaced,
+                        ligatures, finder);
             } else if (type == TFMNORMAL) {
-                font = new EFMType1TFMNOFont(doc, filename, size, finder);
+                font = new EFMType1TFMNOFont(doc, filename, size, letterspaced,
+                        ligatures, finder);
             } else if (type == TFMMATHEXT) {
-                font = new EFMType1TFMMathextFont(doc, filename, size, finder);
+                font = new EFMType1TFMMathextFont(doc, filename, size,
+                        letterspaced, ligatures, finder);
             } else if (type == TFMMATHSYML) {
-                font = new EFMType1TFMMathsymlFont(doc, filename, size, finder);
+                font = new EFMType1TFMMathsymlFont(doc, filename, size,
+                        letterspaced, ligatures, finder);
             } else {
                 // UNKNOWN
                 throw new ConfigurationIOException("unknown font-type");
@@ -234,14 +251,29 @@ public class FontFactoryImpl implements FontFactory {
         private final Dimen size;
 
         /**
-         * Create a new object.
-         * @param n the name
-         * @param s the size
+         * The glue for letterspace
          */
-        public FontKey(final String n, final Dimen s) {
+        private Glue letterspaced;
+
+        /**
+         * ligature on/off
+         */
+        private boolean ligatures;
+
+        /**
+         * Create a new object.
+         * @param n     the name
+         * @param s     the size
+         * @param ls    the letterspace
+         * @param lig   the ligature
+         */
+        public FontKey(final String n, final Dimen s, final Glue ls,
+                final boolean lig) {
 
             name = n;
             size = s;
+            letterspaced = ls;
+            ligatures = lig;
         }
     }
 }

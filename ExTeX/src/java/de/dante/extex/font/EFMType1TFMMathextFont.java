@@ -23,6 +23,7 @@ import org.jdom.Document;
 
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
@@ -32,7 +33,7 @@ import de.dante.util.file.FileFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EFMType1TFMMathextFont extends EFMType1TFMNOFont implements Font {
 
@@ -49,15 +50,18 @@ public class EFMType1TFMMathextFont extends EFMType1TFMNOFont implements Font {
      * @param   doc         the efm-document
      * @param   fontname    the fontname
      * @param   size        the emsize of the font
+     * @param   ls          the letterspaced
+     * @param   lig         ligature on/off
      * @param   filefinder  the fileFinder-object
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
     public EFMType1TFMMathextFont(final Document doc, final String fontname,
-            final Dimen size, final FileFinder filefinder)
-            throws GeneralException, ConfigurationException {
+            final Dimen size, final Glue ls, final boolean lig,
+            final FileFinder filefinder) throws GeneralException,
+            ConfigurationException {
 
-        super(doc, fontname, size, filefinder);
+        super(doc, fontname, size, ls, lig, filefinder);
     }
 
     /**

@@ -36,16 +36,15 @@ import de.dante.util.GeneralException;
  * The value are stored in the <code>HyphernationTable</code>.
  * Each <code>HyphernationTable</code> are based on <code>\language</code>
  * and have its own <code>\hyphenactive</code>-value.
- * <p>
- * Example:
  *
+ * <p>Example:</p>
  * <pre>
  * \hyphenactive=0  % yes
  * \hyphenactive=1  % no
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HyphenActive extends AbstractCode implements Theable {
 

@@ -32,6 +32,7 @@ import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.FontFile;
+import de.dante.extex.interpreter.type.FontFileList;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.interpreter.type.Kerning;
@@ -45,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public abstract class EFMFont implements Font {
 
@@ -60,6 +61,21 @@ public abstract class EFMFont implements Font {
     private FontFile externalfile;
 
     /**
+     * FontFilelist for all fontfiles
+     */
+    private FontFileList fontfilelist = new FontFileList();
+
+    /**
+     * The glue for letterspace
+     */
+    private Glue letterspaced;
+
+    /**
+     * ligature on/off
+     */
+    private boolean ligatures;
+
+    /**
      * the em-size for the font
      */
     private Dimen emsize;
@@ -69,13 +85,15 @@ public abstract class EFMFont implements Font {
      * @param   doc         the efm-document
      * @param   fontname    the fontname
      * @param   size        the emsize of the font
+     * @param   ls          the letterspaced
+     * @param   lig         ligature on/off
      * @param   filefinder  the fileFinder-object
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
     public EFMFont(final Document doc, final String fontname, final Dimen size,
-            final FileFinder filefinder) throws GeneralException,
-            ConfigurationException {
+            final Glue ls, final boolean lig, final FileFinder filefinder)
+            throws GeneralException, ConfigurationException {
 
         super();
         if (fontname != null) {
@@ -83,6 +101,8 @@ public abstract class EFMFont implements Font {
         }
         emsize = new Dimen(size);
         em = new Dimen(size);
+        letterspaced = ls;
+        ligatures = lig;
 
         loadFont(doc, filefinder);
     }
@@ -155,9 +175,19 @@ public abstract class EFMFont implements Font {
                 String efile = font.getAttributeValue("filename");
 
                 if (efile != null) {
-                    efile = efile.replaceAll(".pfb", "");
-                    externalfile = getFontFile(fileFinder
-                            .findFile(efile, "pfb"));
+                    if (efile.endsWith(".ttf")) {
+                        efile = efile.replaceAll(".ttf", "");
+                        externalfile = getFontFile(fileFinder.findFile(efile,
+                                "ttf"));
+                    } else if (efile.endsWith(".pfb")) {
+                        efile = efile.replaceAll(".pfb", "");
+                        externalfile = getFontFile(fileFinder.findFile(efile,
+                                "pfb"));
+                    } else {
+                        throw new GeneralHelpingException(
+                                "EFM.wrongfileextension", efile);
+                    }
+                    fontfilelist.add(externalfile);
                 }
 
                 List glyphlist = font.getChildren("glyph");
@@ -192,16 +222,21 @@ public abstract class EFMFont implements Font {
                         }
 
                         // ligature
-                        List ligaturelist = e.getChildren("ligature");
-                        for (int k = 0; k < ligaturelist.size(); k++) {
-                            Element ligature = (Element) ligaturelist.get(k);
-                            Ligature lv = new Ligature();
-                            lv.setLetter(ligature.getAttributeValue("letter"));
-                            lv.setLetterid(ligature
-                                    .getAttributeValue("letter-id"));
-                            lv.setLig(ligature.getAttributeValue("lig"));
-                            lv.setLigid(ligature.getAttributeValue("lig-id"));
-                            gv.addLigature(lv);
+                        if (ligatures) {
+                            List ligaturelist = e.getChildren("ligature");
+                            for (int k = 0; k < ligaturelist.size(); k++) {
+                                Element ligature = (Element) ligaturelist
+                                        .get(k);
+                                Ligature lv = new Ligature();
+                                lv.setLetter(ligature
+                                        .getAttributeValue("letter"));
+                                lv.setLetterid(ligature
+                                        .getAttributeValue("letter-id"));
+                                lv.setLig(ligature.getAttributeValue("lig"));
+                                lv.setLigid(ligature
+                                        .getAttributeValue("lig-id"));
+                                gv.addLigature(lv);
+                            }
                         }
                         glyphmap.put(key, gv);
                         glyphname.put(gv.getName(), key);
@@ -488,4 +523,27 @@ public abstract class EFMFont implements Font {
         return glyphmap.size();
     }
 
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getFontFiles()
+     */
+    public FontFileList getFontFiles() {
+
+        return fontfilelist;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getLetterSpaced()
+     */
+    public Glue getLetterSpaced() {
+
+        return letterspaced;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getLigatures()
+     */
+    public boolean getLigatures() {
+
+        return ligatures;
+    }
 }

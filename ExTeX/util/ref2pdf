@@ -1,0 +1,5 @@
+#!/bin/bash
+cd doc/javadocdb; java org.apache.fop.apps.Fop \
+	        -xml Reference.xml \
+        	-xsl fo.xsl \
+	        -pdf Reference.pdf

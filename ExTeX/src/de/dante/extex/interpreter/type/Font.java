@@ -24,9 +24,9 @@ import de.dante.util.UnicodeChar;
 /**
  * Font Interface
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.15 $
  */
 public interface Font {
 
@@ -118,5 +118,23 @@ public interface Font {
      * @return ...
      */
     String getFontName();
+
+    /**
+     * Return the list of all fontfiles.
+     * @return  the list of all fontfiles
+     */
+    FontFileList getFontFiles();
+
+    /**
+     * Return the letterspaced
+     * @return  the letterspaced
+     */
+    Glue getLetterSpaced();
+
+    /**
+     * Return the ligatures (on/off)
+     * @return the ligatures
+     */
+    boolean getLigatures();
 
 }

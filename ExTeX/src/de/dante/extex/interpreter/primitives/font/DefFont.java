@@ -28,6 +28,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -37,16 +38,23 @@ import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\font</code>.
- * <p>
- * Example:
+ * <p>Example:</p>
  * <pre>
  * \font\myfont=cmr12 at 15pt
  * \font\magnifiedfiverm=cmr5 scaled 2000
  * \font\second=cmr10 at 12truept
  * </pre>
  *
+ * <h3>Possible Extension</h3>
+ * <p>Example</p>
+ * <pre>
+ * \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
+ * \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp noligatures
+ * \font\myfont=cmr12 at 15pt noligatures
+ * </pre>
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DefFont extends AbstractAssignment {
 
@@ -76,7 +84,10 @@ public class DefFont extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token tok = source.getNonSpace();
+        Token tok = source.getControlSequence();
+        if (tok == null) {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        }
         source.scanOptionalEquals();
         String filename = scanFileName(source);
         int size = getFontSize(filename);
@@ -104,10 +115,25 @@ public class DefFont extends AbstractAssignment {
             throw new GeneralHelpingException("FONT.nofontsize");
         }
 
+        // optional parameter 'letterspaced'
+        Glue letterspaced = new Glue(0);
+        if (source.scanKeyword("letterspaced", true)) {
+            // \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
+            source.skipSpace();
+            letterspaced = new Glue(source, context);
+        }
+
+        // optional parameter 'letterspaced'
+        boolean ligatures = true;
+        if (source.scanKeyword("noligatures", true)) {
+            // \font\myfont=cmr12 at 15pt noligatures
+            ligatures = false;
+        }
+
         FontFactory ff = context.getFontFactory();
         Font font;
         try {
-            font = ff.getInstance(filename, fontsize);
+            font = ff.getInstance(filename, fontsize, letterspaced, ligatures);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }

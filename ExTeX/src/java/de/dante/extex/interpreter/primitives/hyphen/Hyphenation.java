@@ -30,18 +30,18 @@ import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.UnicodeCharList;
 
 /**
  * This class provides an implementation for the primitive <code>\hyphenation</code>.
- * <p>
- * Example:
  *
+ * <p>Example:</p>
  * <pre>
  * \hyphenation{as-so-ciate as-so-ciates }
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Hyphenation extends AbstractCode {
 
@@ -61,7 +61,8 @@ public class Hyphenation extends AbstractCode {
      * The <code>HyphernationTable</code> are based on the
      * value from <code>\language</code>.
      *
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -84,8 +85,6 @@ public class Hyphenation extends AbstractCode {
 
     /**
      * Cretate the name for the <code>HyphenationTable</code>.
-     * <p>
-     * All digits ([0-9]) from the <code>String</code> are removed.
      *
      * @param pattern   the pattern
      * @param context   the context
@@ -110,10 +109,12 @@ public class Hyphenation extends AbstractCode {
      */
     private String makeLowercase(final String s, final Context context) {
 
-        //  for (int i=0; i< s.length(); i++) {
-        //  UnicodeChar uc = new UnicodeChar(s,i);
-        //  int lc = context.get
-        //  }
-        return s.toLowerCase(); //TODO change toLowerCase to lccode
+        UnicodeCharList ucl = new UnicodeCharList(s.length());
+        for (int i = 0; i < s.length(); i++) {
+            UnicodeChar uc = new UnicodeChar(s, i);
+            UnicodeChar lc = context.getLccode(uc);
+            ucl.add(lc.getCodePoint() > 0 ? lc : uc);
+        }
+        return ucl.toString();
     }
 }
