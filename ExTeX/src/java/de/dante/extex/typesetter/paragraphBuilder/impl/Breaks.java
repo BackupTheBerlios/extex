@@ -19,6 +19,12 @@
 package de.dante.extex.typesetter.paragraphBuilder.impl;
 
 
+/**
+ * ...
+ *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.2 $
+ */
 class Breaks {
 
     /**
@@ -34,14 +40,14 @@ class Breaks {
     /**
      * Creates a new object.
      *
-     * @param penalty ...
-     * @param points ...
+     * @param thePenalty ...
+     * @param thePoints ...
      */
-    public Breaks(final int penalty, final int[] points) {
+    public Breaks(final int thePenalty, final int[] thePoints) {
 
         super();
-        this.penalty = penalty;
-        this.points = points;
+        this.penalty = thePenalty;
+        this.points = thePoints;
     }
 
     /**
