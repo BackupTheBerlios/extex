@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,34 +21,49 @@ package de.dante.extex.interpreter.type;
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.type.node.AbstractNodeList;
+import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * Node for a box.
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Box extends AbstractNodeList implements Serializable, NodeList {
 
-    public static final Box VOID = new Box();
+	public static final Box VOID = new Box();
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb, String prefix) {
-        // TODO Auto-generated method stub
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 */
+	public void toString(final StringBuffer sb, String prefix) {
+		// TODO Auto-generated method stub
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-        final Object value2) throws GeneralException {
-        throw new GeneralException("unimplemented"); //TODO incomplete
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
+		throw new GeneralException("unimplemented"); //TODO incomplete
+	}
 
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "box";
+	}
+
+	/**
+	 * Propagate the size
+	 */
+	protected void propagateSizes(Node node) {
+		// TODO incomplete
+
+	}
 }

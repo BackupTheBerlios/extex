@@ -52,7 +52,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public abstract class Moritz implements TokenSource, Observable {
     /**
@@ -743,6 +743,13 @@ public abstract class Moritz implements TokenSource, Observable {
         context = theContext;
     }
 
+    /**
+     * @see Interpreter.getContext()
+     */
+    public Context getContext() {
+    	return context;
+    }
+    
     /**
      * Scans the input token stream for a given sequence of tokens. Those
      * tokens may have the catcodes <tt>LETTER</tt> or <tt>OTHER</tt>.

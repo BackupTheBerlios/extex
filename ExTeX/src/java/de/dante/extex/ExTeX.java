@@ -83,7 +83,7 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class ExTeX {
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
@@ -482,7 +482,7 @@ public class ExTeX {
             initializeStreams(interpreter);
 
             Typesetter typesetter = new TypesetterFactory(config
-                .getConfiguration("Typesetter")).newInstance();
+                .getConfiguration("Typesetter")).newInstance(interpreter.getContext());
 
             DocumentWriter docWriter = new DocumentWriterFactory(config
                 .getConfiguration("DocumentWriter")).newInstance();

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,43 +27,48 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [147]"
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class BeforeMathNode extends AbstractNode
-            implements Node, Discartable {
+public class BeforeMathNode extends AbstractNode implements Node, Discartable {
 
-    /**
-     * Creates a new object.
-     */
-    public BeforeMathNode() {
-        super();
-    }
+	/**
+	 * Creates a new object.
+	 */
+	public BeforeMathNode() {
+		super();
+	}
 
-    /**
-     * ...
-     *
-     * @return ...
-     * @see "TeX -- The Program [192]"
-     */
-    public String toString() {
-        return "mathon"; //TODO incomplete
-    }
+	/**
+	 * ...
+	 *
+	 * @return ...
+	 * @see "TeX -- The Program [192]"
+	 */
+	public String toString() {
+		return "mathon"; //TODO incomplete
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb, String prefix) {
-        sb.append("mathon");
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 */
+	public void toString(final StringBuffer sb, String prefix) {
+		sb.append("mathon");
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-        return visitor.visitBeforeMath(value, value2);
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
+		return visitor.visitBeforeMath(value, value2);
+	}
 
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "beforemath";
+	}
 }

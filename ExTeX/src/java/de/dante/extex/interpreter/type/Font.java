@@ -27,46 +27,19 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Font {
 
 	/**
-	 * Return the width of a <code>UnicodeChar</code>, or 
-	 * 0pt, if the character is not defined.
+	 * Return the Glyph of a <code>UnicodeChar</code>, or 
+	 * <code>null</code>, if the character is not defined.
 	 * 
 	 * @param c ...
 	 * @return ...
 	 */
-	Dimen getWidth(UnicodeChar c);
+	Glyph getGlyph(UnicodeChar c);
 
-	/**
-	 * Return the height of a <code>UnicodeChar</code>, or 
-	 * 0pt, if the character is not defined.
-	 * 
-	 * @param c ...
-	 * @return ...
-	 */
-	Dimen getHeight(UnicodeChar c);
-	
-	/**
-	 * Return the depth of a <code>UnicodeChar</code>, or 
-	 * 0pt, if the character is not defined.
-	 * 
-	 * @param c ...
-	 * @return ...
-	 */
-	Dimen getDepth(UnicodeChar c);
-
-	/**
-	 * Return the italic correction of a <code>UnicodeChar</code>, or
-	 * 0, if the character is not defined.
-	 * 
-	 * @param c ...
-	 * @return ...
-	 */
-	float getItalic(UnicodeChar c);
-	
 	/**
 	 * Check, if the <code>UnicodeChar</code> is defined in the font.
 	 * 
@@ -84,7 +57,7 @@ public interface Font {
 	 * @return	the kerning
 	 */
 	Dimen kern(UnicodeChar c1, UnicodeChar c2);
-	
+
 	/**
 	 * Return the ligature as <code>UnicodeChar</code>, 
 	 * or <code>null</code>, if no ligature exists.
@@ -136,7 +109,7 @@ public interface Font {
 	 * @return ...
 	 */
 	String getFontName();
-	
+
 	/**
 	 * Return the <code>File</code> object of a external font file or 
 	 * <code>null</code>, if no such file exists.

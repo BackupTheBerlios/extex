@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,25 +18,25 @@
  */
 package de.dante.extex.typesetter;
 
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.impl.Manager;
 
 /**
- * ...
+ * Interface for a linebreakerclass.
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface LineBreaker {
 
-    /**
-     * ...
-     *
-     * @param nodes ...
-     * @param context ...
-     *
-     * @return ...
-     */
-    NodeList breakLines(HorizontalListNode nodes, Context context);
-
+	/**
+	 * Break a paragraph in lines.
+	 *
+	 * @param nodes 	the horizontalnodelist (paragraph)
+	 * @param manager	the manager for the nodelists
+	 *
+	 * @return the <code>Nodelist</code> with broken lines
+	 */
+	NodeList breakLines(HorizontalListNode nodes, Manager manager);
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,82 +26,88 @@ import de.dante.util.GeneralException;
  * point and three dimensions, namely width, height and depth (see figure).
  * <img src="Node.gif" alt="" align="right"/>
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Node {
-    /**
-     * Getter for the width of the node.
-     *
-     * @return the width
-     */
-    Dimen getWidth();
 
-    /**
-     * Getter for the height of the node.
-     *
-     * @return the height
-     */
-    Dimen getHeight();
+	/**
+	 * Getter for the width of the node.
+	 *
+	 * @return the width
+	 */
+	Dimen getWidth();
 
-    /**
-     * Getter for the depth of the node.
-     *
-     * @return the depth
-     */
-    Dimen getDepth();
+	/**
+	 * Getter for the height of the node.
+	 *
+	 * @return the height
+	 */
+	Dimen getHeight();
 
-    /**
-     * Setter for the width of the node.
-     *
-     * @param width the new width
-     */
-    void setWidth(Dimen width);
+	/**
+	 * Getter for the depth of the node.
+	 *
+	 * @return the depth
+	 */
+	Dimen getDepth();
 
-    /**
-     * Setter for the heigth of the node.
-     *
-     * @param height the new height
-     */
-    void setHeight(Dimen height);
+	/**
+	 * Setter for the width of the node.
+	 *
+	 * @param width the new width
+	 */
+	void setWidth(Dimen width);
 
-    /**
-     * Setter for the depth of the node.
-     *
-     * @param depth the nde depth
-     */
-    void setDepth(Dimen depth);
+	/**
+	 * Setter for the heigth of the node.
+	 *
+	 * @param height the new height
+	 */
+	void setHeight(Dimen height);
 
-    /**
-     * This method puts the printable representation into the string buffer.
-     * This is meant to produce a short form only as it is used in error
-     * messages to the user.
-     *
-     * @param sb the output string buffer
-     * @param prefix the prefix string inserted at the beginning of each line
-     */
-    void toText(StringBuffer sb, String prefix);
+	/**
+	 * Setter for the depth of the node.
+	 *
+	 * @param depth the nde depth
+	 */
+	void setDepth(Dimen depth);
 
-    /**
-     * This method puts the printable representation into the string buffer.
-     * This is meant to produce a exaustive form as it is used in tracing
-     * output to the log file.
-     *
-     * @param sb the output string buffer
-     * @param prefix the prefix string inserted at the beginning of each line
-     */
-    void toString(StringBuffer sb, String prefix);
+	/**
+	 * This method puts the printable representation into the string buffer.
+	 * This is meant to produce a short form only as it is used in error
+	 * messages to the user.
+	 *
+	 * @param sb the output string buffer
+	 * @param prefix the prefix string inserted at the beginning of each line
+	 */
+	void toText(StringBuffer sb, String prefix);
 
-    /**
-     * ...
-     *
-     * @param visitor ...
-     * @param value ...
-     * @param value2 ...
-     * @return the result of the method invocation of the visitor
-     * @throws GeneralException in case of an error
-     */
-    Object visit(NodeVisitor visitor, Object value, Object value2)
-            throws GeneralException;
+	/**
+	 * This method puts the printable representation into the string buffer.
+	 * This is meant to produce a exaustive form as it is used in tracing
+	 * output to the log file.
+	 *
+	 * @param sb the output string buffer
+	 * @param prefix the prefix string inserted at the beginning of each line
+	 */
+	void toString(StringBuffer sb, String prefix);
+
+	/**
+	 * ...
+	 *
+	 * @param visitor ...
+	 * @param value ...
+	 * @param value2 ...
+	 * @return the result of the method invocation of the visitor
+	 * @throws GeneralException in case of an error
+	 */
+	Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException;
+
+	/**
+	 * Return the type of the node as <code>String</code>
+	 */
+	String getType();
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,10 +19,9 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
-
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -30,77 +29,92 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @see "TeX -- The Program [134]"
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class CharNode extends AbstractNode implements Node {
-    /**
-     * The field <tt>character</tt> contains the single character represented 
-     * by this node.
-     */
-    private UnicodeChar character;
 
-    /**
-     * The field <tt>typesettingContext</tt> contains the typesetting context
-     */
-    private TypesettingContext typesettingContext;
+	/**
+	 * The field <tt>character</tt> contains the single character represented 
+	 * by this node.
+	 */
+	private UnicodeChar character;
 
-    /**
-     * Creates a new object.
-     *
-     * @param context the typesetting context
-     * @param uc the unicode character
-     */
-    public CharNode(final TypesettingContext context, final UnicodeChar uc) {
-        super();
-        typesettingContext = context;
-        character          = uc;
-        Font font          = context.getFont();
-        setWidth(font.getWidth(uc));
-        setHeight(font.getHeight(uc));
-        setDepth(font.getDepth(uc));
-    }
+	/**
+	 * The field <tt>typesettingContext</tt> contains the typesetting context
+	 */
+	private TypesettingContext typesettingContext;
 
-    /**
-     * ...
-     *
-     * @return ...
-     */
-    public int getSpaceFactor() {
-        return 0; // TODO incomplete
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 * @param context the typesetting context
+	 * @param uc the unicode character
+	 */
+	public CharNode(final TypesettingContext context, final UnicodeChar uc) {
+		super();
+		typesettingContext = context;
+		character = uc;
+		Glyph glyph = context.getFont().getGlyph(uc);
+		setWidth(glyph.getWidth());
+		setHeight(glyph.getHeight());
+		setDepth(glyph.getDepth());
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-        sb.append(character.toString());
-    }
+	/**
+	 * ...
+	 *
+	 * @return ...
+	 */
+	public int getSpaceFactor() {
+		return 0; // TODO incomplete
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-        sb.append('\\');
-        sb.append(typesettingContext.getFont().getFontName());
-        sb.append(' ');
-        sb.append(character.toString());
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+	 *      java.lang.String)
+	 */
+	public void toText(final StringBuffer sb, final String prefix) {
+		sb.append(character.toString());
+	}
 
-    /**
-     * @see java.lang.Object#toString()
-     */
-    public String toString() {
-        return character.toString();
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 */
+	public void toString(final StringBuffer sb, final String prefix) {
+		sb.append('\\');
+		sb.append(typesettingContext.getFont().getFontName());
+		sb.append(' ');
+		sb.append(character.toString());
+		sb.append(" (");
+		sb.append(getHeight().toString());
+		sb.append("+");
+		sb.append(getDepth().toString());
+		sb.append(")x");
+		sb.append(getWidth().toString());
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-        return visitor.visitChar(value, value2);
-    }
+	/**
+	 * @see java.lang.Object#toString()
+	 */
+	public String toString() {
+		return character.toString();
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
+		return visitor.visitChar(value, value2);
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "char";
+	}
+
 }

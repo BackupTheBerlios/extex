@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,44 +22,45 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * ...
+ * Iterator for a <code>NodeList</code>.
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NodeIterator {
 
-    /**
-     * The field <tt>iterator</tt> contains the ...
-     */
-    private Iterator iterator;
+	/**
+	 * The field <tt>iterator</tt> contains the ...
+	 */
+	private Iterator iterator;
 
-    /**
-     * Creates a new object.
-     * 
-     * @param list ...
-     */
-    public NodeIterator(List list) {
-        super();
-        iterator = list.iterator();
-    }
-    
-    /**
-     * ...
-     * 
-     * @return
-     */
-    public boolean hasNext() {
-        return iterator.hasNext();
-        
-    }
-    /**
-     * ...
-     * 
-     * @return
-     */
-    public Node next() {
-        return ((Node)iterator.next());
-    }
+	/**
+	 * Creates a new object.
+	 * 
+	 * @param list ...
+	 */
+	public NodeIterator(List list) {
+		super();
+		iterator = list.iterator();
+	}
 
+	/**
+	 * Check, if the iterator have a next element.
+	 * 
+	 * @return <code>true</code>, if there are more elements, otherwise <code>false</code>
+	 */
+	public boolean hasNext() {
+		return iterator.hasNext();
+
+	}
+
+	/**
+	 * Return the next element.
+	 * 
+	 * @return	the next element
+	 */
+	public Node next() {
+		return ((Node) iterator.next());
+	}
 }

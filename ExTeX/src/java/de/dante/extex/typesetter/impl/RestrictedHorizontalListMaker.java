@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,26 +25,24 @@ import de.dante.extex.typesetter.Mode;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class RestrictedHorizontalListMaker
-    extends HorizontalListMaker
-    implements ListMaker {
+public class RestrictedHorizontalListMaker extends HorizontalListMaker implements ListMaker {
 
-    /**
-     * Creates a new object.
-     *
-     * @param manager the manager to ask for global changes
-     */
-    public RestrictedHorizontalListMaker(final Manager manager) {
-        super(manager);
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 * @param manager the manager to ask for global changes
+	 */
+	public RestrictedHorizontalListMaker(final Manager manager) {
+		super(manager);
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
-     */
-    public Mode getMode() {
-        return Mode.RESTRICTED_HORIZONTAL;
-    }
+	/**
+	 * @see de.dante.extex.typesetter.ListMaker#getMode()
+	 */
+	public Mode getMode() {
+		return Mode.RESTRICTED_HORIZONTAL;
+	}
 
 }

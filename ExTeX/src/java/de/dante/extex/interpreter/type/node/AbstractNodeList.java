@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,143 +28,169 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ...
+ * Abstract class for all <code>NodeList</code>s.
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public abstract class AbstractNodeList extends AbstractNode
-    implements NodeList {
-    /**
-     * The field <tt>shift</tt> contains the offset of the reference point in
-     * vertical direction.
-     */
-    private Dimen shift = new Dimen(0);
+public abstract class AbstractNodeList extends AbstractNode implements NodeList {
 
-    /**
-     * The field <tt>move</tt> contains the offset of the redference point in
-     * horizontal direction.
-     */
-    private Dimen move = new Dimen(0);
+	/**
+	 * The field <tt>shift</tt> contains the offset of the reference point in
+	 * vertical direction.
+	 */
+	private Dimen shift = new Dimen(0);
 
-    /**
-     * The field <tt>list</tt> is the container for the elements of this node
-     * list.
-     */
-    private List list = new ArrayList();
+	/**
+	 * The field <tt>move</tt> contains the offset of the redference point in
+	 * horizontal direction.
+	 */
+	private Dimen move = new Dimen(0);
 
-    /**
-     * Creates a new object.
-     */
-    public AbstractNodeList() {
-        super();
-    }
+	/**
+	 * The field <tt>list</tt> is the container for the elements of this node
+	 * list.
+	 */
+	private List list = new ArrayList();
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#getMove()
-     */
-    public Dimen getMove() {
-        return move;
-    }
-    
-    /**
-     * @see de.dante.extex.typesetter.NodeList#setMove(de.dante.extex.interpreter.type.Dimen)
-     */
-    public void setMove(final Dimen d) {
-        move.set(d);
-    }
-    
-    /**
-     * @see de.dante.extex.typesetter.NodeList#getShift()
-     */
-    public Dimen getShift() {
-        return shift;
-    }
+	/**
+	 * Return the size of the <code>NodeList</code>
+	 * @return	the size of the <code>NodeList</code>
+	 */
+	public int size() {
+		return list.size();
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#setShift(de.dante.extex.interpreter.type.Dimen)
-     */
-    public void setShift(final Dimen d) {
-        shift.set(d);
-    }
+	/**
+	 * Return <code>true</code>, if the <code>NodeList</code> ist emtpy,
+	 * otherwise <code>false</code>.
+	 */
+	public boolean empty() {
+		if (size() == 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#add(de.dante.extex.typesetter.Node)
-     */
-    public void add(final Node node) {
-        list.add(node);
-    }
+	/**
+	 * Creates a new object.
+	 */
+	public AbstractNodeList() {
+		super();
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#addGlyph(de.dante.extex.interpreter.type.node.CharNode)
-     */
-    public void addGlyph(final CharNode node) {
-        list.add(node);
-    }
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#getMove()
+	 */
+	public Dimen getMove() {
+		return move;
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
-     */
-    public void addSkip(final Glue glue) {
-        list.add(glue);
-    }
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#setMove(de.dante.extex.interpreter.type.Dimen)
+	 */
+	public void setMove(final Dimen d) {
+		move.set(d);
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.NodeList#iterator()
-     */
-    public NodeIterator iterator() {
-        return new NodeIterator(list);
-    }
-    /**
-     * ...
-     *
-     * @return the String representation of the object
-     * @see "TeX -- The Program [182]"
-     */
-    public String toText() {
-        StringBuffer sb = new StringBuffer();
-        toText(sb, "");
-        return sb.toString();
-    }
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#getShift()
+	 */
+	public Dimen getShift() {
+		return shift;
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toText(final StringBuffer sb, final String prefix) {
-        sb.append("(");
-        sb.append(prefix);
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#setShift(de.dante.extex.interpreter.type.Dimen)
+	 */
+	public void setShift(final Dimen d) {
+		shift.set(d);
+	}
 
-        for (int i = 0; i < list.size(); i++) {
-            ((Node) list.get(i)).toText(sb, prefix + ".");
-        }
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#add(de.dante.extex.typesetter.Node)
+	 */
+	public void add(final Node node) {
+		list.add(node);
+		propagateSizes(node);
+	}
 
-        sb.append(")");
-    }
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#addGlyph(de.dante.extex.interpreter.type.node.CharNode)
+	 */
+	public void addGlyph(final CharNode node) {
+		add(node);
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-     *      java.lang.String)
-     */
-    public void toString(final StringBuffer sb, final String prefix) {
-        sb.append("(");
-        sb.append(getHeight().toString());
-        sb.append("+");
-        sb.append(getDepth().toString());
-        sb.append(")x");
-        sb.append(getWidth().toString());
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
+	 */
+	public void addSkip(final Glue glue) {
+		add(new GlueNode(glue)); // TODO: use factory?
+	}
 
-        if (shift.getValue() != 0) {
-            sb.append(", shifted ");
-            sb.append(shift.toString());
-        }
+	/**
+	 * Propagate the size
+	 */
+	abstract protected void propagateSizes(Node node);
 
-        String prefix2 = prefix + ".";
+	/**
+	 * @see de.dante.extex.typesetter.NodeList#iterator()
+	 */
+	public NodeIterator iterator() {
+		return new NodeIterator(list);
+	}
+	/**
+	 * ...
+	 *
+	 * @return the String representation of the object
+	 * @see "TeX -- The Program [182]"
+	 */
+	public String toText() {
+		StringBuffer sb = new StringBuffer();
+		toText(sb, "");
+		return sb.toString();
+	}
 
-        for (int i = 0; i < list.size(); i++) {
-            sb.append(prefix2);
-            ((Node) list.get(i)).toString(sb, prefix2);
-        }
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+	 *      java.lang.String)
+	 */
+	public void toText(final StringBuffer sb, final String prefix) {
+		sb.append("(");
+		sb.append(prefix);
 
+		for (int i = 0; i < list.size(); i++) {
+			((Node) list.get(i)).toText(sb, prefix + ".");
+		}
+
+		sb.append(")");
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+	 *      java.lang.String)
+	 */
+	public void toString(final StringBuffer sb, final String prefix) {
+		sb.append("(");
+		sb.append(getHeight().toString());
+		sb.append("+");
+		sb.append(getDepth().toString());
+		sb.append(")x");
+		sb.append(getWidth().toString());
+
+		if (shift.getValue() != 0) {
+			sb.append(", shifted ");
+			sb.append(shift.toString());
+		}
+
+		String prefix2 = prefix + ".";
+
+		for (int i = 0; i < list.size(); i++) {
+			sb.append(prefix2);
+			((Node) list.get(i)).toString(sb, prefix2);
+		}
+	}
 }

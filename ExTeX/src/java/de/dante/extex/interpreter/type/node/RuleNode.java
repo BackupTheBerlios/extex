@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,81 +28,88 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [138]"
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RuleNode extends AbstractNode implements Node {
-    /**
-     * The field <tt>context</tt> ...
-     */
-    private TypesettingContext context;
 
-    /**
-     * Creates a new object.
-     * 
-     * @see "TeX -- The Program [139]"
-     */
-    public RuleNode(final Dimen width, final Dimen height, final Dimen depth,
-        final TypesettingContext context) {
-        super(width, height, depth);
-        this.context = context;
-    }
+	/**
+	 * The field <tt>context</tt> ...
+	 */
+	private TypesettingContext context;
 
-    /**
-     * ...
-     *
-     * @return ...
-     * @see "TeX -- The Program [187]"
-     */
-    public String toString() {
-        StringBuffer sb = new StringBuffer();
-        toString(sb, "");
-        return sb.toString();
-    }
+	/**
+	 * Creates a new object.
+	 * 
+	 * @see "TeX -- The Program [139]"
+	 */
+	public RuleNode(final Dimen width, final Dimen height, final Dimen depth, final TypesettingContext context) {
+		super(width, height, depth);
+		this.context = context;
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-     * @see "TeX -- The Program [187]"
-     */
-    public void toString(final StringBuffer sb, String prefix) {
-        sb.append("rule(");
+	/**
+	 * ...
+	 *
+	 * @return ...
+	 * @see "TeX -- The Program [187]"
+	 */
+	public String toString() {
+		StringBuffer sb = new StringBuffer();
+		toString(sb, "");
+		return sb.toString();
+	}
 
-        Dimen x = getHeight();
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 * @see "TeX -- The Program [187]"
+	 */
+	public void toString(final StringBuffer sb, String prefix) {
+		sb.append("rule(");
 
-        if (x == null) {
-            sb.append("*");
-        } else {
-            x.toString(sb);
-        }
+		Dimen x = getHeight();
 
-        sb.append("+");
-        x = getDepth();
+		if (x == null) {
+			sb.append("*");
+		} else {
+			x.toString(sb);
+		}
 
-        if (x == null) {
-            sb.append("*");
-        } else {
-            x.toString(sb);
-        }
+		sb.append("+");
+		x = getDepth();
 
-        sb.append(")x");
-        x = getWidth();
+		if (x == null) {
+			sb.append("*");
+		} else {
+			x.toString(sb);
+		}
 
-        if (x == null) {
-            sb.append("*");
-        } else {
-            x.toString(sb);
-        }
+		sb.append(")x");
+		x = getWidth();
 
-        sb.append(")");
-    }
+		if (x == null) {
+			sb.append("*");
+		} else {
+			x.toString(sb);
+		}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-        final Object value2) throws GeneralException {
-        return visitor.visitRule(value, value2);
-    }
+		sb.append(")");
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
+		return visitor.visitRule(value, value2);
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "rule";
+	}
 
 }

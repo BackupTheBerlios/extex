@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,26 +19,33 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.typesetter.LineBreaker;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * Interface for the Manager of a typesetter.
  * 
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Manager {
-    
-    public abstract void pop() throws GeneralException;
 
-    public abstract void push(ListMaker listMaker) throws GeneralException;
+	void pop() throws GeneralException;
 
-    public abstract void closeTopList() throws GeneralException;
-    
-    public abstract CharNodeFactory getCharNodeFactory();
+	void push(ListMaker listMaker) throws GeneralException;
 
-    public abstract DocumentWriter getDocumentWriter();
+	void closeTopList() throws GeneralException;
+
+	CharNodeFactory getCharNodeFactory();
+
+	DocumentWriter getDocumentWriter();
+
+	Context getContext();
+	
+	LineBreaker getLineBreaker();
 
 }

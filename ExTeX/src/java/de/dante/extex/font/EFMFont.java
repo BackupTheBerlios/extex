@@ -32,6 +32,7 @@ import org.jdom.input.SAXBuilder;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.main.MainFontException;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -45,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -267,7 +268,8 @@ public class EFMFont extends XMLFont implements Font {
 		String key = (String) glyphname.get("space");
 		if (key != null) {
 			try {
-				rt = new Glue(getWidth(new UnicodeChar(Integer.parseInt(key))));
+				Glyph rglyph = getGlyph(new UnicodeChar(Integer.parseInt(key)));
+				rt = new Glue(rglyph.getWidth());
 			} catch (Exception e) {
 				// do nothing, use default 
 			}
@@ -363,57 +365,32 @@ public class EFMFont extends XMLFont implements Font {
 	}
 
 	/**
-	 * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
+	 * @see de.dante.extex.interpreter.type.Font#getGlyph(de.dante.util.UnicodeChar)
 	 */
-	public Dimen getDepth(UnicodeChar c) {
-		Dimen rt = Dimen.ZERO_PT;
+	// TODO change
+	public Glyph getGlyph(UnicodeChar c) {
+		Glyph rglyph = new Glyph();
 
 		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
 		if (gv != null) {
 			try {
 				float f = Float.parseFloat(gv.depth);
-				rt = new Dimen((long) (f * em.getValue() / units_per_em));
+				rglyph.setDepth(new Dimen((long) (f * em.getValue() / units_per_em)));
+
+				f = Float.parseFloat(gv.height);
+				rglyph.setHeight(new Dimen((long) (f * em.getValue() / units_per_em)));
+
+				f = Float.parseFloat(gv.width);
+				rglyph.setWidth(new Dimen((long) (f * em.getValue() / units_per_em)));
+
+				f = Float.parseFloat(gv.italic);
+				rglyph.setItalic(f);
+
 			} catch (Exception e) {
 				// do nothing, return ZERO_PT
 			}
 		}
-		return rt;
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getHeight(de.dante.util.UnicodeChar)
-	 */
-	public Dimen getHeight(UnicodeChar c) {
-		Dimen rt = Dimen.ZERO_PT;
-
-		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
-		if (gv != null) {
-			try {
-				float f = Float.parseFloat(gv.height);
-				rt = new Dimen((long) (f * em.getValue() / units_per_em));
-			} catch (Exception e) {
-				// do nothing, return ZERO_PT
-			}
-		}
-		return rt;
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getWidth(de.dante.util.UnicodeChar)
-	 */
-	public Dimen getWidth(UnicodeChar c) {
-		Dimen rt = Dimen.ZERO_PT;
-
-		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
-		if (gv != null) {
-			try {
-				float f = Float.parseFloat(gv.width);
-				rt = new Dimen((long) (f * em.getValue() / units_per_em));
-			} catch (Exception e) {
-				// do nothing, return ZERO_PT
-			}
-		}
-		return rt;
+		return rglyph;
 	}
 
 	/**
@@ -490,20 +467,4 @@ public class EFMFont extends XMLFont implements Font {
 		return rt;
 	}
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getItalic(de.dante.util.UnicodeChar)
-	 */
-	public float getItalic(UnicodeChar c) {
-		float rt = 0.0f;
-
-		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
-		if (gv != null) {
-			try {
-				rt = Float.parseFloat(gv.italic); // TODO devide with em or units_em... ???
-			} catch (Exception e) {
-				// do nothing, return ZERO_PT
-			}
-		}
-		return rt;
-	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,27 +23,36 @@ import de.dante.extex.typesetter.Node;
 /**
  * ...
  *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
-    private String text;
+	private String text;
 
-    /**
-     * Creates a new object.
-     */
-    public SpecialNode(final String theText) {
-        super();
-        text = theText;
-    }
+	/**
+	 * Creates a new object.
+	 */
+	public SpecialNode(final String theText) {
+		super();
+		text = theText;
+	}
 
-    /**
-     * Getter for text.
-     *
-     * @return the text.
-     */
-    public String getText() {
-        return text;
-    }
+	/**
+	 * Getter for text.
+	 *
+	 * @return the text.
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "special";
+	}
+
 }

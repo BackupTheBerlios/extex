@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,48 +26,55 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [142]"
+ *
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
-    /**
-     * The field <tt>adjust</tt> ...
-     */
-    private VerticalListNode adjust = null;
-    
-    /**
-     * Creates a new object.
-     *
-     */
-    public AdjustNode() {
-        super();
-    }
+	/**
+	 * The field <tt>adjust</tt> ...
+	 */
+	private VerticalListNode adjust = null;
 
-    /**
-     * ...
-     *
-     * @return ...
-     * @see "TeX -- The Program [197]"
-     */
-    public String toString() {
-        return "vadjust "; //TODO incomplete
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 */
+	public AdjustNode() {
+		super();
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb, String prefix) {
-        sb.append("vadjust "); //TODO unimplemented
-    }
+	/**
+	 * ...
+	 *
+	 * @return ...
+	 * @see "TeX -- The Program [197]"
+	 */
+	public String toString() {
+		return "vadjust "; //TODO incomplete
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-     *      java.lang.Object, java.lang.Object)
-     */
-    public Object visit(final NodeVisitor visitor, final Object value,
-            final Object value2) throws GeneralException {
-        return visitor.visitAdjust(value, value2);
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 */
+	public void toString(final StringBuffer sb, String prefix) {
+		sb.append("vadjust "); //TODO unimplemented
+	}
 
+	/**
+	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+	 *      java.lang.Object, java.lang.Object)
+	 */
+	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
+		return visitor.visitAdjust(value, value2);
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "adjust";
+	}
 }

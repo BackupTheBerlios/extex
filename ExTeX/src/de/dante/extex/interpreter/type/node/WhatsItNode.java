@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,32 +26,39 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [146]"
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WhatsItNode extends AbstractNode implements Node {
 
-    /**
-     * Creates a new object.
-     *
-     */
-    public WhatsItNode() {
-        super();
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 */
+	public WhatsItNode() {
+		super();
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-     */
-    public void toString(StringBuffer sb, String prefix) {
-        sb.append("whatsit");
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 */
+	public void toString(StringBuffer sb, String prefix) {
+		sb.append("whatsit");
+	}
 
-    /**
-     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
-     */
-    public Object visit(NodeVisitor visitor, Object value, Object value2)
-        throws GeneralException {
-        return visitor.visitWhatsIt(value,value2);
-    }
+	/**
+	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+	 */
+	public Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException {
+		return visitor.visitWhatsIt(value, value2);
+	}
+
+	/**
+	 * @see de.dante.extex.typesetter.Node#getType()
+	 */
+	public String getType() {
+		return "whatsit";
+	}
 
 }

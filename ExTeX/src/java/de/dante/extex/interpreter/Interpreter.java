@@ -20,6 +20,7 @@ package de.dante.extex.interpreter;
 
 import java.io.IOException;
 
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -34,7 +35,7 @@ import de.dante.util.file.FileFinder;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
@@ -77,6 +78,13 @@ public interface Interpreter extends TokenSource,
      */
     Interaction getInteraction();
 
+    /**
+     * Getter for the context
+     * 
+     * @return	the context
+     */
+    Context getContext();
+    
     /**
      * ...
      *

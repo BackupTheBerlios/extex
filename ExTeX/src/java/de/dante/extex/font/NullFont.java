@@ -23,6 +23,7 @@ import java.io.File;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.Glyph;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -30,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NullFont implements Font {
 
@@ -77,27 +78,6 @@ public class NullFont implements Font {
 	}
 
 	/**
-	 * @see de.dante.extex.interpreter.type.Font#getDepth(de.dante.util.UnicodeChar)
-	 */
-	public Dimen getDepth(UnicodeChar c) {
-		return null;
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getHeight(de.dante.util.UnicodeChar)
-	 */
-	public Dimen getHeight(UnicodeChar c) {
-		return null;
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getWidth(de.dante.util.UnicodeChar)
-	 */
-	public Dimen getWidth(UnicodeChar c) {
-		return null;
-	}
-
-	/**
 	 * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
 	 */
 	public boolean isDefined(UnicodeChar c) {
@@ -133,10 +113,9 @@ public class NullFont implements Font {
 	}
 
 	/**
-	 * @see de.dante.extex.interpreter.type.Font#getItalic(de.dante.util.UnicodeChar)
+	 * @see de.dante.extex.interpreter.type.Font#getGlyph(de.dante.util.UnicodeChar)
 	 */
-	public float getItalic(UnicodeChar c) {
-		return 0.0f;
+	public Glyph getGlyph(UnicodeChar c) {
+		return null;
 	}
-
 }
