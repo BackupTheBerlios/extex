@@ -54,7 +54,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.logging.LogFormatter;
-import de.dante.extex.main.FileFinderImpl;
+import de.dante.extex.main.ResourceFinderImpl;
 import de.dante.extex.main.ErrorHandlerFactory;
 import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
@@ -73,6 +73,7 @@ import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.observer.TraceObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterFactory;
 import de.dante.util.GeneralException;
@@ -87,14 +88,14 @@ import de.dante.util.configuration.ConfigurationMissingException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.configuration.ConfigurationUnsupportedEncodingException;
-import de.dante.util.file.FileFinder;
-import de.dante.util.file.FileFinderConfigImpl;
-import de.dante.util.file.FileFinderDirect;
-import de.dante.util.file.FileFinderList;
-import de.dante.util.file.FileFinderPathImpl;
 import de.dante.util.file.OutputFactory;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observer;
+import de.dante.util.resource.ResourceFinder;
+import de.dante.util.resource.FileFinderConfigImpl;
+import de.dante.util.resource.FileFinderDirect;
+import de.dante.util.resource.FileFinderList;
+import de.dante.util.resource.FileFinderPathImpl;
 
 /**
  * This is the command line interface to ExTeX. It does all the horrible things
@@ -112,9 +113,10 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class ExTeX {
+
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the starting year of
      * development for the copyright message. This number is fixed to be the
@@ -525,7 +527,7 @@ public class ExTeX {
             status = extex.run(args);
         } catch (Throwable e) {
             System.err.println(Messages.format("ExTeX.SevereError", //
-                                               e.toString()));
+                    e.toString()));
             e.printStackTrace();
             status = EXIT_INTERNAL_ERROR;
         }
@@ -579,9 +581,11 @@ public class ExTeX {
                     properties.getProperty(PROP_FALLBACKOUTPUTDIR)});
 
             showBanner(config);
-            FileFinder finder = makeFileFinder(config.getConfiguration("File"));
+            ResourceFinder finder = makeFileFinder(config
+                    .getConfiguration("File"));
             TokenStreamFactory tokenStreamFactory //
-            = makeTokenStreamFactory(config.getConfiguration("Scanner"), finder);
+            = makeTokenStreamFactory(config.getConfiguration("Scanner"),
+                    finder, null);
 
             FontFactory fontFactory = makeFontFactory(config
                     .getConfiguration("Fonts"));
@@ -592,8 +596,7 @@ public class ExTeX {
             Interpreter interpreter = makeInterpreter(config
                     .getConfiguration("Interpreter"), config
                     .getConfiguration("Typesetter"), finder,
-                                                      tokenStreamFactory,
-                                                      docWriter, fontFactory);
+                    tokenStreamFactory, docWriter, fontFactory);
 
             loadFormat(interpreter, properties.getProperty(PROP_FMT), jobname);
 
@@ -603,9 +606,10 @@ public class ExTeX {
 
             int pages = docWriter.getPages();
             String outname = jobname + "." + docWriter.getExtension();
-            logger.info(Messages.format((pages == 0 ? "ExTeX.NoPages"
+            logger.info(Messages.format((pages == 0
+                    ? "ExTeX.NoPages"
                     : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname,
-                                        Integer.toString(pages)));
+                    Integer.toString(pages)));
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
             e.printStackTrace();
@@ -659,17 +663,11 @@ public class ExTeX {
                         useArg(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
                         int year = calendar.get(Calendar.YEAR);
-                        logger
-                                .info(Messages
-                                        .format(
-                                                "ExTeX.Copyright",
-                                                (year <= COPYRIGHT_YEAR ? Integer
-                                                        .toString(COPYRIGHT_YEAR)
-                                                        : Integer
-                                                                .toString(COPYRIGHT_YEAR)
-                                                          + "-"
-                                                          + Integer
-                                                                  .toString(year))));
+                        logger.info(Messages.format("ExTeX.Copyright",
+                                (year <= COPYRIGHT_YEAR ? Integer
+                                        .toString(COPYRIGHT_YEAR) : Integer
+                                        .toString(COPYRIGHT_YEAR)
+                                        + "-" + Integer.toString(year))));
                         onceMore = false;
                     } else if ("-help".startsWith(arg)) {
                         logger.info(Messages.format("ExTeX.Usage", "extex"));
@@ -704,25 +702,19 @@ public class ExTeX {
                         properties.setProperty(PROP_PROGNAME, arg
                                 .substring("-progname=".length()));
                     } else if ("-version".startsWith(arg)) {
-                        logger
-                                .info(Messages
-                                        .format(
-                                                "ExTeX.Version",
-                                                properties
-                                                        .getProperty(PROP_PROGNAME),
-                                                EXTEX_VERSION,
-                                                properties
-                                                        .getProperty("java.version")));
+                        logger.info(Messages.format("ExTeX.Version", properties
+                                .getProperty(PROP_PROGNAME), EXTEX_VERSION,
+                                properties.getProperty("java.version")));
                         onceMore = false;
                     } else if ("-output".startsWith(arg)) {
                         useArg(PROP_OUTPUT_TYPE, args, ++i);
                     } else if ("-texinputs".startsWith(arg) && arg.length() > 4) {
                         useArg(PROP_TEXINPUTS, args, ++i);
                     } else if ("-texoutputs".startsWith(arg)
-                               && arg.length() > 4) {
+                            && arg.length() > 4) {
                         useArg(PROP_OUTPUTDIR, args, ++i);
                     } else if ("-texmfoutputs".startsWith(arg)
-                               && arg.length() > 4) {
+                            && arg.length() > 4) {
                         useArg("extex.fallbackOutputdir", args, ++i);
                     } else if ("-debug".startsWith(arg)) {
                         useDebug(args, ++i);
@@ -866,7 +858,8 @@ public class ExTeX {
      */
 
     private void initializeStreams(final Interpreter interpreter)
-            throws ConfigurationException, MainIOException {
+            throws ConfigurationException,
+                MainIOException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
@@ -875,9 +868,8 @@ public class ExTeX {
         if (filename != null && !filename.equals("")) {
 
             try {
-                TokenStream stream = factory
-                        .newInstance(filename, "tex", properties
-                                .getProperty(PROP_ENCODING));
+                TokenStream stream = factory.newInstance(filename, "tex",
+                        properties.getProperty(PROP_ENCODING));
                 interpreter.addStream(stream);
                 notInitialized = false;
             } catch (FileNotFoundException e) {
@@ -918,8 +910,8 @@ public class ExTeX {
      */
     private boolean loadArgumentFile(final String arg) throws IOException {
 
-        InputStream is = getClass().getClassLoader()
-                .getResourceAsStream("config.extex." + arg);
+        InputStream is = getClass().getClassLoader().getResourceAsStream(
+                "config.extex." + arg);
         if (is == null) {
             try {
                 is = new FileInputStream(new File(".extexcfg", arg));
@@ -946,9 +938,7 @@ public class ExTeX {
             final String jobname) throws IOException, GeneralException {
 
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
-                                                     DateFormat.SHORT,
-                                                     Locale.ENGLISH)
-                .format(new Date());
+                DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
         if (fmt != null && !fmt.equals("")) {
             interpreter.loadFormat(fmt);
@@ -1030,19 +1020,18 @@ public class ExTeX {
      */
     private Font makeDefaultFont(final Configuration config,
             final FontFactory fontFactory)
-            throws ConfigurationException, GeneralException {
+            throws ConfigurationException,
+                GeneralException {
 
         String defaultFont = config.getAttribute("default");
 
         if (defaultFont == null || defaultFont.equals("")) {
-            throw new ConfigurationMissingAttributeException("default",
-                    config);
+            throw new ConfigurationMissingAttributeException("default", config);
         }
 
         String size = config.getAttribute("size");
         if (size == null) {
-            throw new ConfigurationMissingAttributeException("size",
-                    config);
+            throw new ConfigurationMissingAttributeException("size", config);
         }
 
         Font font;
@@ -1051,8 +1040,7 @@ public class ExTeX {
             font = fontFactory.getInstance(defaultFont, new Dimen(
                     ((long) (Dimen.ONE * f))));
         } catch (NumberFormatException e) {
-            throw new ConfigurationSyntaxException("size",
-                    config.toString());
+            throw new ConfigurationSyntaxException("size", config.toString());
         }
 
         return font;
@@ -1074,7 +1062,8 @@ public class ExTeX {
      */
     private DocumentWriter makeDocumentWriter(final Configuration config,
             final String jobname, final OutputFactory outFactory)
-            throws ConfigurationException, FileNotFoundException {
+            throws ConfigurationException,
+                FileNotFoundException {
 
         DocumentWriter docWriter = new DocumentWriterFactory(config)
                 .newInstance(properties.getProperty(PROP_OUTPUT_TYPE));
@@ -1089,7 +1078,7 @@ public class ExTeX {
     }
 
     /**
-     * Create a {@link FileFinder FileFinder} to be used for token input
+     * Create a {@link ResourceFinder FileFinder} to be used for token input
      * streams.
      *
      * @param config the configuration object for the file finder
@@ -1099,7 +1088,7 @@ public class ExTeX {
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      */
-    private FileFinder makeFileFinder(final Configuration config)
+    private ResourceFinder makeFileFinder(final Configuration config)
             throws ConfigurationException {
 
         FileFinderList finder = new FileFinderList(new FileFinderDirect(
@@ -1114,7 +1103,7 @@ public class ExTeX {
         }
 
         finder.add(new FileFinderConfigImpl(config));
-        finder.add(new FileFinderImpl(logger));
+        finder.add(new ResourceFinderImpl(logger));
 
         return finder;
     }
@@ -1139,11 +1128,11 @@ public class ExTeX {
             throw new ConfigurationMissingAttributeException("class", config);
         }
 
-        FileFinder fontFinder = makeFontFileFinder(config);
+        ResourceFinder fontFinder = makeFontFileFinder(config);
 
         try {
             fontFactory = (FontFactory) (Class.forName(fontClass)
-                    .getConstructor(new Class[]{FileFinder.class})
+                    .getConstructor(new Class[]{ResourceFinder.class})
                     .newInstance(new Object[]{fontFinder}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
@@ -1165,7 +1154,7 @@ public class ExTeX {
     }
 
     /**
-     * Create a {@link FileFinder FileFinder} to be used for fonts.
+     * Create a {@link ResourceFinder FileFinder} to be used for fonts.
      *
      * @param config the configuration object for the font file finder
      *
@@ -1174,7 +1163,7 @@ public class ExTeX {
      * @throws ConfigurationException in case that some kind of problems have
      * been detected in the configuration
      */
-    private FileFinder makeFontFileFinder(final Configuration config)
+    private ResourceFinder makeFontFileFinder(final Configuration config)
             throws ConfigurationException {
 
         FileFinderList finder = new FileFinderList(new FileFinderDirect(
@@ -1184,8 +1173,7 @@ public class ExTeX {
 
         if (!path.equals("")) {
             finder.add(new FileFinderPathImpl(new StringList(path, System
-                    .getProperty("path.separator")),
-                    new StringList("", ":")));
+                    .getProperty("path.separator")), new StringList("", ":")));
         }
 
         finder.add(new FileFinderConfigImpl(config));
@@ -1210,7 +1198,7 @@ public class ExTeX {
      * @throws GeneralException in case of an error of some other kind
      */
     private Interpreter makeInterpreter(final Configuration config,
-            final Configuration typesetterConfig, final FileFinder finder,
+            final Configuration typesetterConfig, final ResourceFinder finder,
             final TokenStreamFactory factory, final DocumentWriter docWriter,
             final FontFactory fontFactory)
             throws GeneralException,
@@ -1232,17 +1220,18 @@ public class ExTeX {
         if (fontConfiguration == null) {
             throw new ConfigurationMissingException(TAG_FONT, config.toString());
         }
-        interpreter.getContext()
-                .setTypesettingContext(makeDefaultFont(fontConfiguration,
-                                                       fontFactory));
+        interpreter.getContext().setTypesettingContext(
+                makeDefaultFont(fontConfiguration, fontFactory));
 
         initializeStreams(interpreter);
 
         Typesetter typesetter = makeTypesetter(typesetterConfig, docWriter,
-                                               interpreter.getContext());
+                interpreter.getContext());
 
         interpreter.setTypesetter(typesetter);
 
+        factory.setOptions((TokenStreamOptions)interpreter.getContext());
+        
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
         interpreter.registerObserver("log", new LogMessageObserver(logger));
@@ -1288,9 +1277,9 @@ public class ExTeX {
 
     /**
      * Create a TokenStreamFactory.
-     *
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
+     * @param options TODO
      *
      * @return the token stream factory
      *
@@ -1300,12 +1289,14 @@ public class ExTeX {
      * events could not be registered
      */
     private TokenStreamFactory makeTokenStreamFactory(
-            final Configuration config, final FileFinder finder)
-            throws ConfigurationException, NotObservableException {
+            final Configuration config, final ResourceFinder finder,
+            final TokenStreamOptions options)
+            throws ConfigurationException,
+                NotObservableException {
 
-        TokenStreamFactory factory = new TokenStreamFactory(config);
+        TokenStreamFactory factory = new TokenStreamFactory(config, options);
 
-        factory.setFileFinder(finder);
+        factory.setResourceFinder(finder);
         factory.registerObserver("file", new FileOpenObserver(logger));
         return factory;
     }
@@ -1326,9 +1317,8 @@ public class ExTeX {
             final DocumentWriter docWriter, final Context context)
             throws ConfigurationException {
 
-        Typesetter typesetter = new TypesetterFactory(config)
-                .newInstance(properties.getProperty(PROP_TYPESETTER_TYPE),
-                             context);
+        Typesetter typesetter = new TypesetterFactory(config).newInstance(
+                properties.getProperty(PROP_TYPESETTER_TYPE), context);
         typesetter.setDocumentWriter(docWriter);
 
         return typesetter;
@@ -1394,9 +1384,8 @@ public class ExTeX {
 
         String name = arg[idx];
         properties.setProperty(PROP_JOBNAME, //
-                               (name.matches(".*\\.[a-zA-Z0-9]*") //
-                                       ? name.substring(0, name
-                                               .lastIndexOf(".")) : name));
+                (name.matches(".*\\.[a-zA-Z0-9]*") //
+                        ? name.substring(0, name.lastIndexOf(".")) : name));
         properties.setProperty(PROP_FILE, arg[idx]);
 
         runWithArgs(arg, idx + 1);
@@ -1424,9 +1413,8 @@ public class ExTeX {
                 banner = properties.getProperty("java.version");
             }
             logger.info(Messages.format("ExTeX.Version", //
-                                        properties.getProperty(PROP_PROGNAME),
-                                        EXTEX_VERSION, //
-                                        banner));
+                    properties.getProperty(PROP_PROGNAME), EXTEX_VERSION, //
+                    banner));
             showBanner = false;
         }
     }
@@ -1471,13 +1459,13 @@ public class ExTeX {
         String s = arg[idx];
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)) {
-                case 'M' :
+                case 'M':
                     properties.setProperty(PROP_TRACE_MACROS, "true");
                     break;
-                case 'T' :
+                case 'T':
                     properties.setProperty(PROP_TRACE_TOKENIZER, "true");
                     break;
-                default :
+                default:
                     throw new MainUnknownOptionException(Integer.toString(s
                             .charAt(i)));
             }
