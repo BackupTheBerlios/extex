@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -174,9 +174,7 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 
         Manager manager = getManager();
         manager.getLigatureBuilder().insertLigatures(nodes);
-        manager.getParagraphBuilder().build(nodes);
-
-        return nodes;
+        return manager.getParagraphBuilder().build(nodes);
     }
 
     /**
