@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -198,6 +198,22 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
         long val = d.getValue();
         if (val > getValue()) {
+            setValue(val);
+        }
+    }
+
+    /**
+     * Sets the value of the dimen to the minimum of the value already stored
+     * and a given argument.
+     *
+     * <i>|this| = min(|this|, |d|)</i>
+     *
+     * @param d the other dimen
+     */
+    public void min(final FixedDimen d) {
+
+        long val = d.getValue();
+        if (val < getValue()) {
             setValue(val);
         }
     }
