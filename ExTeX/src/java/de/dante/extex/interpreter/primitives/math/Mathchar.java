@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Mathchar extends AbstractCode {
 
@@ -85,6 +85,7 @@ public class Mathchar extends AbstractCode {
      */
     protected void insert(final Typesetter typesetter, final Count mathchar) {
 
+        // TODO unimplemented
         throw new RuntimeException("unimplemented");
     }
 

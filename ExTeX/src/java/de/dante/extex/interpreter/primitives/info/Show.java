@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;show&rang;
- *       := <tt>\show</tt> {@linkplain
+ *       &rarr; <tt>\show</tt> {@linkplain
  *           de.dante.extex.interpreter.TokenSource#getToken()
  *           &lang;token&rang;} </pre>
  * </p>
@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Show extends AbstractCode {
 
@@ -84,6 +84,7 @@ public class Show extends AbstractCode {
 
         Token t = source.getToken();
         if (t == null) {
+            // TODO unimplemented
             throw new RuntimeException("unimplemented");
         }
         source.update("message", "\n> " + meaning(t, context).toText() + ".\n");

@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -89,6 +89,7 @@ public class ItalicCorrection extends AbstractCode {
                 typesetter.add(new KernNode(ic));
             }
             */
+            // TODO unimplemented
             throw new RuntimeException("unimplemented");
         }
         return true;

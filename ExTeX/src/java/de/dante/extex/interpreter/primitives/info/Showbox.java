@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\showbox</code>.
  *
- * <doc name="show">
+ * <doc name="showbox">
  * <h3>The Primitive <tt>\showbox</tt></h3>
  * <p>
  *  ...
@@ -39,8 +39,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;show&rang;
- *       := <tt>\showbox</tt> {@linkplain
+ *    &lang;showbox&rang;
+ *       &rarr; <tt>\showbox</tt> {@linkplain
  *          de.dante.extex.interpreter.TokenSource#scanNumber()
  *          &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Showbox extends AbstractBox {
 
@@ -77,12 +77,13 @@ public class Showbox extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String key = getKey(source, context.getNamespace());
+        String key = getKey(source, context);
         Box b = context.getBox(key);
 
         if (b == null) {
             source.update("message", "\\" + key + "=void");
         } else {
+            // TODO unimplemented
             throw new RuntimeException("unimplemented");
         }
         source.update("message", Messages.format("TTP.Show.OK"));

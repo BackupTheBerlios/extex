@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Meaning extends Show {
 
@@ -76,6 +76,7 @@ public class Meaning extends Show {
 
         Token t = source.getToken();
         if (t == null) {
+            // TODO unimplemented
             throw new RuntimeException("unimplemented");
         }
         source.push(meaning(t, context));

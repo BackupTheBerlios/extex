@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Leaders extends AbstractCode  {
 
@@ -74,6 +74,7 @@ public class Leaders extends AbstractCode  {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
+        // TODO unimplemented
         throw new RuntimeException("unimplemented");
         //return false;
     }

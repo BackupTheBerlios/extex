@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Write extends AbstractCode {
 
@@ -117,6 +117,7 @@ public class Write extends AbstractCode {
      */
     private void write(final long no, final Tokens toks) {
 
+        // TODO unimplemented
         throw new RuntimeException("unimplemented");
     }
 
