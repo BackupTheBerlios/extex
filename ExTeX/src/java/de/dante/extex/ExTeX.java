@@ -613,7 +613,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.92 $
+ * @version $Revision: 1.93 $
  */
 public class ExTeX {
 
@@ -1502,6 +1502,7 @@ public class ExTeX {
         }
         context.setTypesettingContext(makeDefaultFont(fontConfiguration,
                 fontFactory));
+        context.getTypesettingContext().setLanguage(context.getLanguage("0"));
 
         initializeStreams(interpreter);
 
@@ -1889,16 +1890,16 @@ public class ExTeX {
      */
     private void runWithoutFile() throws MainException {
 
-//        if (showBanner) {
-//            showBanner = !Boolean.valueOf(
-//                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
-            try {
-                showBanner(new ConfigurationFactory().newInstance(properties
-                        .getProperty(PROP_CONFIG)), Level.INFO);
-            } catch (ConfigurationException e) {
-                // ignored on purpose. It will be checked again later
-            }
-//        }
+        //        if (showBanner) {
+        //            showBanner = !Boolean.valueOf(
+        //                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
+        try {
+            showBanner(new ConfigurationFactory().newInstance(properties
+                    .getProperty(PROP_CONFIG)), Level.INFO);
+        } catch (ConfigurationException e) {
+            // ignored on purpose. It will be checked again later
+        }
+        //        }
 
         setInputFileName((queryFileHandler != null ? queryFileHandler
                 .query(getLogger()) : null));
