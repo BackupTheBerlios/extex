@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ import de.dante.extex.i18n.Messages;
  * This is the factory for configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationFactory {
     /**
@@ -35,18 +35,22 @@ public class ConfigurationFactory {
     }
 
     /**
-     * Determine a new Configuration object which is initialized from a file.
-     * 
+     * Delivers a new
+     * {@link de.dante.extex.util.configuration.Configuration Configuration}
+     * object which is initialized from a named source. This source is usually
+     * a file name but can be anything else, like a URL or a reference to a
+     * database -- depending on the underlying implemnetation.
+     *
      * @param source the source of the confugration
-     * 
+     *
      * @return a new Configuration object
-     * 
+     *
      * @throws ConfigurationNoTypesetterException in case that the source is
      *             <code>null</code>
      * @throws ConfigurationException in case that the creation of the
      *             Configuration fails
      */
-    public Configuration newInstance(String source)
+    public Configuration newInstance(final String source)
         throws ConfigurationException {
         if (source == null) {
             throw new ConfigurationInvalidNameException(Messages
