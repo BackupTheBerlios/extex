@@ -33,7 +33,7 @@ import de.dante.extex.logging.LogFormatter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -50,6 +50,8 @@ public class ExTeXLauncher extends TestCase {
      * ...
      *
      * @param code ...
+     * @param log ...
+     * @param out ...
      *
      * @throws Exception in case of an error
      */

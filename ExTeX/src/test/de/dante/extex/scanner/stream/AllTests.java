@@ -21,18 +21,26 @@ package de.dante.extex.scanner.stream;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AllTests {
 
-    public static void main(String[] args) {
+    /**
+     * ...
+     * @param args ...
+     */
+    public static void main(final String[] args) {
         junit.textui.TestRunner.run(AllTests.class);
     }
 
+    /**
+     * ...
+     * @return the suite
+     */
     public static Test suite() {
         TestSuite suite = new TestSuite(
                 "Test for de.dante.extex.scanner.stream");

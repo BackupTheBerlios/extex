@@ -35,25 +35,39 @@ import de.dante.util.configuration.Configuration;
 /**
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TokenStreamStringImplTest extends TestCase {
     /**
+     * Creates a new object.
+     * @param name ...
      */
     public TokenStreamStringImplTest(final String name) {
         super(name);
     }
 
     /**
+     * ...
+     * @param args ...
      */
     public static void main(final String[] args) {
+
         junit.textui.TestRunner.run(TokenStreamStringImplTest.class);
     }
-    
+
+    /**
+     * The field <tt>fac</tt> contains the ...
+     */
     private static TokenFactory fac;
+    /**
+     * The field <tt>context</tt> contains the ...
+     */
     private static Context context;
+    /**
+     * The field <tt>tokenizer</tt> contains the ...
+     */
     private static Tokenizer tokenizer;
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
@@ -69,9 +83,10 @@ public class TokenStreamStringImplTest extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
     }
-    
+
     /**
      * The empty string does not contain any characters
+     * @throws Exception ...
      */
     public void testEmpty() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("");
@@ -79,6 +94,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void test1() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("1");
@@ -87,6 +104,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void test12() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("12");
@@ -97,6 +116,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * A single space at the beginning of the processing is skipped
+     * @throws Exception ...
      */
     public void testSpace() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl(" ");
@@ -104,6 +124,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testSpaces() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("  ");
@@ -111,6 +133,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testSpace2() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl(". ");
@@ -120,6 +144,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testSpace3() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl(". ");
@@ -127,8 +153,10 @@ public class TokenStreamStringImplTest extends TestCase {
         assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
-    
+
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testIgnore() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("\0");
@@ -136,6 +164,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testLetter() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("A");
@@ -144,18 +174,22 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCaretEnd() throws Exception {
-        context.setCatcode(new UnicodeChar('^'),Catcode.SUPMARK);
+        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK);
         TokenStream stream  = new TokenStreamStringImpl("^");
         assertEquals("superscript character ^", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCaret1() throws Exception {
-        context.setCatcode(new UnicodeChar('^'),Catcode.SUPMARK);
+        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK);
         TokenStream stream  = new TokenStreamStringImpl("^1");
         assertEquals("superscript character ^", stream.get(fac, tokenizer).toString());
         assertEquals("the character 1", stream.get(fac, tokenizer).toString());
@@ -163,27 +197,33 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCaretA() throws Exception {
-        context.setCatcode(new UnicodeChar('^'),Catcode.SUPMARK);
+        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK);
         TokenStream stream  = new TokenStreamStringImpl("^^41");
         assertEquals("the letter A", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCaretA2() throws Exception {
-        context.setCatcode(new UnicodeChar('^'),Catcode.SUPMARK);
+        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK);
         TokenStream stream  = new TokenStreamStringImpl("^^A");
         assertEquals("the character \1", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCaretA3() throws Exception {
-        context.setCatcode(new UnicodeChar('^'),Catcode.SUPMARK);
+        context.setCatcode(new UnicodeChar('^'), Catcode.SUPMARK);
         TokenStream stream  = new TokenStreamStringImpl("^^A;");
         assertEquals("the character \1", stream.get(fac, tokenizer).toString());
         assertEquals("the character ;", stream.get(fac, tokenizer).toString());
@@ -191,6 +231,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testMixed() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("12 34");
@@ -203,6 +245,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCr1() throws Exception {
         TokenStream stream  = new TokenStreamStringImpl("x\nx");
@@ -212,33 +256,47 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCr2() throws Exception {
-        TokenStream stream  = new TokenStreamStringImpl("\n\n");// mgn: changed
+        TokenStream stream  = new TokenStreamStringImpl("\n\n"); // mgn: changed
         assertEquals("the control sequence \\par", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCr3() throws Exception {
-        TokenStream stream  = new TokenStreamBuffersImpl(new String[]{"\naaa","  x"});
+        TokenStream stream  = new TokenStreamBuffersImpl(new String[]{"\naaa", "  x"});
         assertEquals("the control sequence \\par", stream.get(fac, tokenizer).toString());
         assertEquals("the letter x", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
+     * ...
+     * @throws Exception ...
      */
     public void testCr4() throws Exception {
-        TokenStream stream  = new TokenStreamBuffersImpl(new String[]{"\n","\nx"});
+        TokenStream stream  = new TokenStreamBuffersImpl(new String[]{"\n", "\nx"});
         assertEquals("the control sequence \\par", stream.get(fac, tokenizer).toString());
         assertEquals("the control sequence \\par", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
-    
-    
+
+    /**
+     * ...
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.6 $
+     */
     private static class MockConfiguration implements Configuration {
+        /**
+         * The field <tt>classname</tt> contains the ...
+         */
         private String classname = "de.dante.extex.interpreter.context.impl.ContextImpl";
         /**
          * Creates a new object.
@@ -246,6 +304,10 @@ public class TokenStreamStringImplTest extends TestCase {
         public MockConfiguration() {
             super();
         }
+        /**
+         * Creates a new object.
+         * @param cn ...
+         */
         public MockConfiguration(final String cn) {
             super();
             classname = cn;
@@ -257,7 +319,8 @@ public class TokenStreamStringImplTest extends TestCase {
             return classname;
         }
         /**
-         * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String, java.lang.String)
+         * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String,
+         *      java.lang.String)
          */
         public Configuration getConfiguration(final String key, final String attribute) {
             return null;
@@ -306,5 +369,5 @@ public class TokenStreamStringImplTest extends TestCase {
             return null;
         }
 }
-    
+
 }
