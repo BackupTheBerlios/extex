@@ -19,7 +19,7 @@
    Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
    " />
   <meta name="author" content="Gerd Neugebauer" />
-  <meta name="version" content="$Revision: 1.8 $" />
+  <meta name="version" content="$Revision: 1.9 $" />
  </head>
  <body>
   This package contains classes for the primitives which are mapped to
@@ -51,9 +51,9 @@
   </p>
   <p>
    Executable code has to implement the interface {@link
-   de.dante.extex.interpreter.Code Code}. Doing this directly is nor
+   de.dante.extex.interpreter.type.Code Code}. Doing this directly is nor
    hard. Nevertheless the abstract base class {@link
-   de.dante.extex.interpreter.AbstractCode AbstractCode} is provided
+   de.dante.extex.interpreter.type.AbstractCode AbstractCode} is provided
    which contains default implementations for all methods already.
    Thus only the interesting methods have to be overwritten.
   </p>
@@ -202,7 +202,7 @@
    the parameter <tt>\globaldef</tt> is evaluated and the macro
    <tt>\afterassignment</tt> has some effect. To ease the development
    of assignments the abstract base class {@link
-   de.dante.extex.interpreter.AbstractAssignment AbstractAssignment} is
+   de.dante.extex.interpreter.type.AbstractAssignment AbstractAssignment} is
    provided. This class defines the method <tt>execute()</tt>
    appropriately. The only task left is to overwrite the method
    <tt>assign()</tt> to perform the assignment.
@@ -243,7 +243,7 @@
   <p>
    Some macros are expandable. This means that they can be used on the
    right-hand-side of an invocation as well. This feature is expressed
-   by the interface {@link de.dante.extex.interpreter.ExpandableCode
+   by the interface {@link de.dante.extex.interpreter.type.ExpandableCode
    ExpandableCode}. Since Java does not allow multiple inheritance
    no abstract base class is provided.
   </p>
@@ -353,7 +353,7 @@
   </p>
   <p>
    The ability to be usable after <tt>\the</tt> is expressed with the
-   help of the interface {@link de.dante.extex.interpreter.Theable
+   help of the interface {@link de.dante.extex.interpreter.type.Theable
    Theable}. Thus it is enough for a primitive to implemnt this
    interface if it needs to be usable after <tt>\the</tt>.
   </p>
@@ -402,11 +402,11 @@
    </tr>
    <tr>
     <td><tt>\showthe</tt></td>
-    <td>{@link de.dante.extex.interpreter.Theable Theable}</td>
+    <td>{@link de.dante.extex.interpreter.type.Theable Theable}</td>
    </tr>
    <tr>
     <td><tt>\the</tt></td>
-    <td>{@link de.dante.extex.interpreter.Theable Theable}</td>
+    <td>{@link de.dante.extex.interpreter.type.Theable Theable}</td>
    </tr>
   </table>
 
