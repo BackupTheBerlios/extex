@@ -65,9 +65,9 @@ import de.dante.util.observer.ObserverList;
  * Wilhelm Busch)
  * </p>
  *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
