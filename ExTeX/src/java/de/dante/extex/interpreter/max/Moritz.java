@@ -68,7 +68,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public abstract class Moritz implements TokenSource, Configurable, Observable {
 
@@ -228,10 +228,10 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
     public Box getBox(final Typesetter typesetter) throws GeneralException {
 
         Token t = getToken();
-        Context context = getContext();
         if (t == null || !(t instanceof CodeToken)) {
             throw new HelpingException("TTP.BoxExpected");
         }
+        Context context = getContext();
         Code code = context.getCode((CodeToken) t);
         if (code == null || !(code instanceof Boxable)) {
             throw new HelpingException("TTP.BoxExpected");

@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.file;
 
 import java.io.FileNotFoundException;
@@ -30,7 +31,7 @@ import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive
- * <code>\input</code>. It use the standardencoding (see
+ * <code>\input</code>. It uses the standard encoding (see
  * <code>\inputencoding</code> and <code>extex.encoding</code>.
  *
  * <doc name="input">
@@ -48,13 +49,15 @@ import de.dante.util.configuration.ConfigurationException;
  *  Examples:
  *  <pre class="TeXSample">
  *    \input file.name  </pre>
+ *  <pre class="TeXSample">
+ *    \input{file.name}  </pre>
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Input extends AbstractFileCode {
 
@@ -64,12 +67,12 @@ public class Input extends AbstractFileCode {
      * @param name the name for debugging
      */
     public Input(final String name) {
+
         super(name);
     }
 
     /**
-     * Scan the filename (until a <code>SpaceToken</code>) and put the file
-     * onto the tokenizer stream.
+     * Scan the file name and put the file onto the stack of tokenizer streams.
      *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -82,17 +85,16 @@ public class Input extends AbstractFileCode {
             throws GeneralException {
 
         String name = scanFileName(source, context);
-        TokenStreamFactory factory = source.getTokenStreamFactory();
         String encoding = getEncoding(context);
+        TokenStreamFactory factory = source.getTokenStreamFactory();
 
         try {
             source.addStream(factory.newInstance(name, "tex", encoding));
+            //TODO is "tex" as constant good?
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
-        //} catch (IOException e) {
-        //    throw new GeneralException(e);
         }
         return true;
     }
