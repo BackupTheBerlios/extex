@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.Namespace;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -62,12 +62,29 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     /**
      * @see de.dante.extex.scanner.CodeToken#cloneInDefaultNamespace()
      */
-    public Token cloneInDefaultNamespace() {
+    public CodeToken cloneInDefaultNamespace() {
 
         if (Namespace.DEFAULT_NAMESPACE.equals(namespace)) {
             return this;
         }
         return new ControlSequenceToken(getValue(), Namespace.DEFAULT_NAMESPACE);
+    }
+
+    /**
+     * ...
+     *
+     * @param theNamespace ...
+     *
+     * @return ...
+     *
+     * @see de.dante.extex.scanner.CodeToken#cloneInNamespace(java.lang.String)
+     */
+    public CodeToken cloneInNamespace(final String theNamespace) {
+
+        if (theNamespace == null || namespace.equals(theNamespace)) {
+            return this;
+        }
+        return new ControlSequenceToken(getValue(), theNamespace);
     }
 
     /**
@@ -125,7 +142,6 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     public Object visit(final TokenVisitor visitor, final Object arg1,
             final Object arg2) throws Exception {
 
-        return visitor.visitEscape(this, arg1, arg2);
+        return visitor.visitEscape(this, arg1);
     }
-
 }

@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class SubMarkToken extends AbstractToken implements Token {
 
@@ -74,7 +74,7 @@ public class SubMarkToken extends AbstractToken implements Token {
     public Object visit(final TokenVisitor visitor, final Object arg1,
             final Object arg2) throws Exception {
 
-        return visitor.visitSubMark(this, arg1, arg2);
+        return visitor.visitSubMark(this, arg1);
     }
 
 }

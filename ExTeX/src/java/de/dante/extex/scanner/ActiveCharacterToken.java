@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
@@ -65,12 +65,29 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
     /**
      * @see de.dante.extex.scanner.CodeToken#cloneInDefaultNamespace()
      */
-    public Token cloneInDefaultNamespace() {
+    public CodeToken cloneInDefaultNamespace() {
 
         if (Namespace.DEFAULT_NAMESPACE.equals(namespace)) {
             return this;
         }
         return new ActiveCharacterToken(getChar(), Namespace.DEFAULT_NAMESPACE);
+    }
+
+    /**
+     * ...
+     *
+     * @param theNamespace ...
+     *
+     * @return ...
+     *
+     * @see de.dante.extex.scanner.CodeToken#cloneInNamespace(java.lang.String)
+     */
+    public CodeToken cloneInNamespace(final String theNamespace) {
+
+        if (theNamespace == null || namespace.equals(theNamespace)) {
+            return this;
+        }
+        return new ActiveCharacterToken(getChar(), theNamespace);
     }
 
     /**
@@ -128,7 +145,6 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
     public Object visit(final TokenVisitor visitor, final Object arg1,
             final Object arg2) throws Exception {
 
-        return visitor.visitActive(this, arg1, arg2);
+        return visitor.visitActive(this, arg1);
     }
-
 }

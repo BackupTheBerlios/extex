@@ -25,196 +25,170 @@ package de.dante.extex.scanner;
  * This interface is used to implement the visitor pattern.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface TokenVisitor {
 
     /**
      * This visit method is invoked on an active token.
      * In TeX this is e.g. ~.
-     *
      * @param token the active token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitActive(ActiveCharacterToken token, Object arg1, Object arg2)
+    Object visitActive(ActiveCharacterToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a cr token.
-     *
      * @param token the cr token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitCr(CrToken token, Object arg1, Object arg2) throws Exception;
+    Object visitCr(CrToken token, Object arg1) throws Exception;
 
     /**
      * This visit method is invoked on an escape token.
      * In TeX this normally means a control sequence.
-     *
      * @param token the control sequence token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitEscape(ControlSequenceToken token, Object arg1, Object arg2)
+    Object visitEscape(ControlSequenceToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a left brace token.
-     *
      * @param token the left brace token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitLeftBrace(LeftBraceToken token, Object arg1, Object arg2)
+    Object visitLeftBrace(LeftBraceToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a letter token.
-     *
      * @param token the letter token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitLetter(LetterToken token, Object arg1, Object arg2)
+    Object visitLetter(LetterToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a macro parameter token.
      * In TeX this normally is a #.
-     *
      * @param token the macro param token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitMacroParam(MacroParamToken token, Object arg1, Object arg2)
+    Object visitMacroParam(MacroParamToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a math shift token.
      * In TeX this normally is a $.
-     *
      * @param token the math shift token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitMathShift(MathShiftToken token, Object arg1, Object arg2)
+    Object visitMathShift(MathShiftToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on an other token.
-     *
      * @param token the other token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitOther(OtherToken token, Object arg1, Object arg2)
+    Object visitOther(OtherToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a right brace token.
-     *
      * @param token the right brace token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitRightBrace(RightBraceToken token, Object arg1, Object arg2)
+    Object visitRightBrace(RightBraceToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a space token.
-     *
      * @param token the space token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitSpace(SpaceToken token, Object arg1, Object arg2)
+    Object visitSpace(SpaceToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a sub mark token.
      * In TeX this normally is a _.
-     *
      * @param token the sub mark token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitSubMark(SubMarkToken token, Object arg1, Object arg2)
+    Object visitSubMark(SubMarkToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a sup mark token.
      * In TeX this normally is a ^.
-     *
      * @param token the sup mark token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitSupMark(SupMarkToken token, Object arg1, Object arg2)
+    Object visitSupMark(SupMarkToken token, Object arg1)
             throws Exception;
 
     /**
      * This visit method is invoked on a tab mark token.
      * In TeX this normally is a &.
-     *
      * @param token the tab mark token to visit
      * @param arg1 the first argument to pass
-     * @param arg2 the second argument to pass
      *
      * @return some value
      *
      * @throws Exception in case of an error
      */
-    Object visitTabMark(TabMarkToken token, Object arg1, Object arg2)
+    Object visitTabMark(TabMarkToken token, Object arg1)
             throws Exception;
 
 }

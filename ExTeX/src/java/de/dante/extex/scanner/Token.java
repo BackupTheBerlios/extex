@@ -32,7 +32,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public interface Token {
 
@@ -130,7 +130,7 @@ public interface Token {
      *
      * @return ...
      *
-     * @throws Exception in case of ...
+     * @throws Exception in case of an error
      */
     Object visit(TokenVisitor visitor, Object arg1, Object arg2)
             throws Exception;
