@@ -6,6 +6,7 @@ body 	{ background-color:white;
 	  line-height:120%;
 	}
 .head	{ border:0pt;
+	  margin:0pt;
 	  padding-left:16pt;
 	  padding-right:16pt;
 	  padding-top:6pt;
@@ -190,3 +191,15 @@ a.nav:hover{ color:black;
 	  padding:2pt;
 	  font-weight:normal;
 	}
+table	{ border-style:solid;
+	  border-color:black;
+	  border-top-width:1pt;
+	  border-bottom-width:1pt;
+	  border-left-width:0pt;
+	  border-right-width:0pt;
+	  margin:12pt;
+}
+table.internal	{ border-style:solid;
+	  border-width:0pt;
+	  margin:0pt;
+}

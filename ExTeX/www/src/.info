@@ -1,12 +1,12 @@
    <div class="info">
-    Mailing List
-    <div class="infoitems">
-    <a href="mailto:extex-users@dante.de">extex-users@dante.de</a>
-    </div>
-   </div>
-   <div class="info">
     Contact Address
     <div class="infoitems">
     <a href="mailto:extex@dante.de">extex@dante.de</a>
+    </div>
+   </div>
+   <div class="info">
+    Sponsored by
+    <div class="infoitems">
+    <a href="http://www.dante.de">DANTE e.V.</a>
     </div>
    </div>

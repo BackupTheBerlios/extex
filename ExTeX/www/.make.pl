@@ -1,6 +1,6 @@
 #!C:\usr\local\share\cygwin\bin\perl.exe -w
 ##*****************************************************************************
-## $Id: .make.pl,v 1.2 2004/01/09 14:03:59 gene Exp $
+## $Id: .make.pl,v 1.3 2004/01/11 00:08:31 gene Exp $
 ##*****************************************************************************
 ## Author: Gerd Neugebauer
 ##=============================================================================
@@ -80,10 +80,13 @@ my ($sec,$min,$hour,$day,$month,$year,$wday,$yday,$isdst) = localtime(time);
 $year  += 1900;
 $month +=1;
 
+my $force = undef;
+
 use Getopt::Long;
 GetOptions("h|help"	=> \&usage,
 	   "v|verbose"  => \$verbose,
 	   "trace"      => \$trace,
+	   "force"      => \$force,
 	   "src=s"	=> \$srcdir,
 	   "destdir=s"  => \$destdir,
 	  );
@@ -132,12 +135,14 @@ sub process
   
   my $name = substr($_,$srclen);
 
-  if ( $name =~ m/^\./ ) {
+  if ( $name =~ m/^\./ or $name =~ m|/\.| ) {
   } elsif ( $name =~ m:CVS$:  ) {
     $File::Find::prune = 1;
   } elsif ( -d $_ ) {
-    print STDERR "Creating $name\n" if $verbose;
-    mkdir("$destdir/$name");
+    if ( ! -e "$destdir/$name" ) {
+      print STDERR "Creating $name\n" if $verbose;
+      mkdir("$destdir/$name");
+    }
   } elsif ( $name =~ m/\.html/ ) {
     print STDERR "Processing $name\n" if $verbose;
     my $top = $name;
@@ -147,10 +152,25 @@ sub process
     includeFile(dirname($_), basename($_), $out, $top );
     $out->close();
     writeDependency($destdir,$name);
-  } else {
+  } elsif ( $force or not uptodate("$destdir/$name",$_) ) {
     print STDERR "Copying $name\n" if $verbose;
     copy($_,"$destdir/$name");
   }
+}
+
+sub uptodate
+{ my $file1 = shift;
+  local $_;
+  return undef if not -e $file1;
+
+  my @s1 = stat($file1);
+
+  foreach $_ (@_) {
+    my @s = stat($_);
+    return undef if ($s1[9] < $s[9]);
+  }
+  
+  return 1;
 }
 
 #------------------------------------------------------------------------------

@@ -10,7 +10,7 @@
  </tr>
 </table>
 <div class="tabSep"><br/></div>
-<table cellspacing="0" width="100%">
+<table cellspacing="0" width="100%" class="internal">
  <tr>
   <td width="20%" valign="top">
    <navigation/>
