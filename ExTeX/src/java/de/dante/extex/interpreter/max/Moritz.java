@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.max;
 import java.util.ArrayList;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
@@ -30,6 +29,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
+import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.primitives.register.toks.ToksParameter;
 import de.dante.extex.interpreter.type.Code;
@@ -77,7 +77,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.51 $
+ * @version $Revision: 1.52 $
  */
 public abstract class Moritz
         implements
@@ -486,12 +486,16 @@ public abstract class Moritz
      * @param token the first token to consider
      *
      * @return the value of the integer scanned
-     *
      * @throws GeneralException
      *  in case that no number is found or the end of file has been
      *  reached before an integer could be acquired
+     * @throws MissingNumberException 
+     *  in case that no number is found or the end of file has been
+     *  reached before an integer could be acquired
      */
-    public long getNumber(final Token token) throws GeneralException {
+    public long getNumber(final Token token)
+            throws GeneralException,
+                MissingNumberException {
 
         Context context = getContext();
         long n = 0;
@@ -602,7 +606,7 @@ public abstract class Moritz
             }
         }
 
-        throw new HelpingException(localizer, "TTP.MissingNumber");
+        throw new MissingNumberException();
     }
 
     /**
@@ -655,6 +659,8 @@ public abstract class Moritz
      * <p>
      * Whenever a file stream is closed then the tokens from the
      * </p>
+     *
+     * @param context the interpreter context
      *
      * @return the next token or <code>null</code>
      *
@@ -898,7 +904,6 @@ public abstract class Moritz
      * @param context the interpreter context
      *
      * @return the value of the integer scanned
-     *
      * @throws GeneralException
      *  in case that no number is found or the end of file has been
      *             reached before an integer could be acquired
@@ -906,16 +911,24 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#scanInteger(
      *      de.dante.extex.interpreter.context.Context)
      */
-    public long scanInteger(final Context context) throws GeneralException {
+    public long scanInteger(final Context context)
+            throws GeneralException,
+                MissingNumberException {
 
         Token t = scanNonSpace(context);
 
         if (t == null) {
-            throw new HelpingException(localizer, "TTP.MissingNumber");
+
+            throw new MissingNumberException();
+
         } else if (t.equals(Catcode.OTHER, '-')) {
+
             return -scanNumber(context);
+
         } else if (t.equals(Catcode.OTHER, '+')) {
+
             return scanNumber(context);
+
         }
 
         return scanNumber(context, t);
@@ -943,6 +956,7 @@ public abstract class Moritz
     public Token scanNonSpace(final Context context) throws GeneralException {
 
         for (Token t = scanToken(context); t != null; t = scanToken(context)) {
+
             if (!(t.isa(Catcode.SPACE))) {
                 return t;
             }
@@ -1004,7 +1018,8 @@ public abstract class Moritz
      * @see de.dante.extex.interpreter.TokenSource#scanNumber(de.dante.extex.scanner.Token)
      */
     public long scanNumber(final Context context, final Token token)
-            throws GeneralException {
+            throws GeneralException,
+                MissingNumberException {
 
         long n = 0;
         Token t = token;
@@ -1111,14 +1126,14 @@ public abstract class Moritz
                         return n;
 
                     default:
-                        throw new HelpingException(getLocalizer(),
-                                "TTP.MissingNumber");
+                        throw new MissingNumberException();
                 }
             } else if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
                 if (code == null) {
-                    throw new HelpingException(getLocalizer(),
-                            "TTP.MissingNumber");
+
+                    throw new MissingNumberException();
+
                 } else if (code instanceof CountConvertible) {
                     return ((CountConvertible) code).convertCount(context,
                             this, getTypesetter());
@@ -1127,16 +1142,16 @@ public abstract class Moritz
                             getTypesetter());
                     t = getToken(context);
                 } else {
-                    throw new HelpingException(getLocalizer(),
-                            "TTP.MissingNumber");
+
+                    throw new MissingNumberException();
                 }
             } else {
 
-                throw new HelpingException(getLocalizer(), "TTP.MissingNumber");
+                throw new MissingNumberException();
             }
         }
 
-        throw new HelpingException(getLocalizer(), "TTP.MissingNumber");
+        throw new MissingNumberException();
     }
 
     /**
@@ -1149,7 +1164,8 @@ public abstract class Moritz
         Token token = getToken(context);
 
         if (token == null) {
-            throw new HelpingException(getLocalizer(), "TTP.MissingNumber");
+
+            throw new MissingNumberException();
         }
 
         if (extendedRegisterNames && token.isa(Catcode.LEFTBRACE)) {

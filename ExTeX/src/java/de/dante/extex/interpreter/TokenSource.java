@@ -21,6 +21,7 @@ package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -47,7 +48,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.39 $
+ * @version $Revision: 1.40 $
  */
 public interface TokenSource {
 
@@ -384,9 +385,12 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws GeneralException in case of an error
+     * @throws GeneralException in case of an error in an observer
+     * @throws MissingNumberException in case that no number could be read
      */
-    long scanInteger(Context context) throws GeneralException;
+    long scanInteger(Context context)
+            throws GeneralException,
+                MissingNumberException;
 
     /**
      * @deprecated use scanNonSpace(Context) instead
@@ -447,9 +451,12 @@ public interface TokenSource {
      *
      * @return the value of the integer scanned
      *
-     * @throws GeneralException in case of an error
+     * @throws GeneralException in case of an error in an obeserver
+     * @throws MissingNumberException in case that no number could be read
      */
-    long scanNumber(Context context, Token token) throws GeneralException;
+    long scanNumber(Context context, Token token)
+            throws GeneralException,
+                MissingNumberException;
 
     /**
      * @deprecated use scanNumber(Context, Token) instead
