@@ -46,7 +46,7 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DviWriter {
 
@@ -394,7 +394,7 @@ public class DviWriter {
 
 
     /**
-     * Default magnication.  Used if the class could not get the
+     * Default magnification.  Used if the class could not get the
      * magnification of the document.
      *
      */

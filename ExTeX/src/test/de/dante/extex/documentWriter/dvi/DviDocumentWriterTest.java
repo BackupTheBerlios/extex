@@ -20,6 +20,7 @@
 // created: 2004-09-31
 package de.dante.extex.documentWriter.dvi;
 
+
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
@@ -36,21 +37,22 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import java.io.ByteArrayOutputStream;
-
+import java.io.OutputStream;
 import junit.framework.TestCase;
 
 /**
  * JUnit tests for class <code>DviDocumentWriter</code>.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviDocumentWriterTest extends TestCase {
     private DocumentWriter documentWriter = null;
     private NodeList nodeList = null;
-    private DocumentWriterOptions documentWriterOptions = null;
+    private MockDocumentWriterOptions documentWriterOptions = null;
     private Configuration configuration = null;
+    private OutputStream outputStream = null;
 
     /**
      * The if DviDocumentWriter throws the exception, if the node is
@@ -108,7 +110,8 @@ public class DviDocumentWriterTest extends TestCase {
         documentWriter = new DviDocumentWriter(configuration,
                                                documentWriterOptions);
         nodeList = new VerticalListNode();
-        documentWriter.setOutputStream(new ByteArrayOutputStream());
+        outputStream = new ByteArrayOutputStream();
+        documentWriter.setOutputStream(outputStream);
     }
 
 
@@ -172,6 +175,44 @@ public class DviDocumentWriterTest extends TestCase {
     }
 
 
+
+    /**
+     * Check the specified magnification.
+     *
+     * @param magnification for check
+     * @exception Exception if an error occurs
+     */
+    private void checkMagnification(long magnification) throws Exception {
+        documentWriterOptions.setMagnification(magnification);
+        documentWriter = new DviDocumentWriter(configuration,
+                                               documentWriterOptions);
+        documentWriter.setOutputStream(outputStream);
+        documentWriter.shipout(nodeList);
+    }
+
+    /**
+     * Test magnifications in the documentwriter options.
+     *
+     * @exception Exception if an error occurs
+     */
+    public void testMagnifikation() throws Exception {
+        boolean gotRangeException = false;
+
+        checkMagnification(-1); // TODO
+        checkMagnification(10);
+        checkMagnification(100);
+        checkMagnification(1000);
+        checkMagnification((2l<<30)-1); // test 2^30-1
+
+        try {
+            checkMagnification(2l<<30); // test 2^30
+        } catch (GeneralException e) {
+            gotRangeException = true;
+        }
+        assertTrue(gotRangeException);
+    }
+
+
     private class MockFixedCount implements FixedCount {
         private long value;
 
@@ -193,6 +234,8 @@ public class DviDocumentWriterTest extends TestCase {
     }
 
     private class MockDocumentWriterOptions implements DocumentWriterOptions {
+        long magnification = 1000;
+
         public MockDocumentWriterOptions() {
         }
 
@@ -204,8 +247,12 @@ public class DviDocumentWriterTest extends TestCase {
             return null;
         }
 
+        public void setMagnification(long theMagnification) {
+            magnification = theMagnification;
+        }
+
         public long getMagnification() {
-            return 1000;
+            return magnification;
         }
     }
 }
