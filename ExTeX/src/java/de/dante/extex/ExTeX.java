@@ -57,6 +57,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.observer.InteractionObserver;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -73,7 +74,7 @@ import de.dante.extex.main.exception.MainUnknownOptionException;
 import de.dante.extex.main.logging.LogFormatter;
 import de.dante.extex.main.observer.FileCloseObserver;
 import de.dante.extex.main.observer.FileOpenObserver;
-import de.dante.extex.main.observer.InteractionObserver;
+import de.dante.extex.main.observer.InteractionModeObserver;
 import de.dante.extex.main.observer.TokenObserver;
 import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.observer.TraceObserver;
@@ -99,7 +100,6 @@ import de.dante.util.file.OutputFactory;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 import de.dante.util.observer.NotObservableException;
-import de.dante.util.observer.Observer;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
@@ -613,7 +613,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.91 $
+ * @version $Revision: 1.92 $
  */
 public class ExTeX {
 
@@ -911,7 +911,7 @@ public class ExTeX {
      * The field <tt>interactionObserver</tt> contains the observer called
      * whenever the interaction mode is changed.
      */
-    private Observer interactionObserver = null;
+    private InteractionObserver interactionObserver = null;
 
     /**
      * The field <tt>localizer</tt> contains the localizer. It is initiated
@@ -938,7 +938,8 @@ public class ExTeX {
     private Properties properties;
 
     /**
-     * The field <tt>queryFileHandler</tt> contains the ...
+     * The field <tt>queryFileHandler</tt> contains the instance of the handler
+     * to ask for a file name if none is given.
      */
     private QueryFileHandler queryFileHandler = new QueryFileHandlerTeXImpl();
 
@@ -987,6 +988,9 @@ public class ExTeX {
         propertyDefault(PROP_TRACE_TOKENIZER, "");
         propertyDefault(PROP_TYPESETTER_TYPE, "");
 
+        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
+                .booleanValue();
+
         applyLanguage();
 
         logger = Logger.getLogger(getClass().getName());
@@ -997,7 +1001,7 @@ public class ExTeX {
         consoleHandler.setFormatter(new LogFormatter());
         consoleHandler.setLevel(Level.WARNING);
         logger.addHandler(consoleHandler);
-        interactionObserver = new InteractionObserver(consoleHandler);
+        interactionObserver = new InteractionModeObserver(consoleHandler);
         applyInteraction();
     }
 
@@ -1043,12 +1047,12 @@ public class ExTeX {
      * @throws MainUnknownInteractionException in case that the interaction is
      *             not set properly
      */
-    private void applyInteraction() throws MainUnknownInteractionException {
+    protected void applyInteraction() throws MainUnknownInteractionException {
 
         try {
-            interactionObserver.update(null, Interaction.get(properties
-                    .getProperty(PROP_INTERACTION)));
-        } catch (GeneralException e) {
+            interactionObserver.receiveInteractionChange(null, Interaction
+                    .get(properties.getProperty(PROP_INTERACTION)));
+        } catch (Exception e) {
             throw new MainUnknownInteractionException("");
         }
     }
@@ -1057,7 +1061,7 @@ public class ExTeX {
      * Try to determine which language to use and configure the localizer
      * accordingly.
      */
-    private void applyLanguage() {
+    protected void applyLanguage() {
 
         String lang = (String) properties.get(PROP_LANG);
         Matcher m;
@@ -1096,6 +1100,16 @@ public class ExTeX {
     }
 
     /**
+     * Getter for localizer.
+     *
+     * @return the localizer
+     */
+    protected Localizer getLocalizer() {
+
+        return this.localizer;
+    }
+
+    /**
      * Getter for logger.
      *
      * @return the logger.
@@ -1113,6 +1127,18 @@ public class ExTeX {
     public OutputStream getOutStream() {
 
         return this.outStream;
+    }
+
+    /**
+     * Getter for a named property.
+     *
+     * @param key the property name
+     *
+     * @return the value of the named property or <code>null</code>
+     */
+    public String getProperty(final String key) {
+
+        return this.properties.getProperty(key);
     }
 
     /**
@@ -1274,7 +1300,7 @@ public class ExTeX {
      * Log a throwable including its stack trace to the logger.
      * @param e the throwable to log
      */
-    private void logInternalError(final Throwable e) {
+    protected void logInternalError(final Throwable e) {
 
         e.printStackTrace();
 
@@ -1461,19 +1487,21 @@ public class ExTeX {
         }
         interpreter.setErrorHandler(errHandler);
         interpreter.setResourceFinder(finder);
-        factory.setOptions((TokenStreamOptions) interpreter.getContext());
+        Context context = interpreter.getContext();
+        factory.setOptions((TokenStreamOptions) context);
         interpreter.setTokenStreamFactory(factory);
         interpreter.setFontFactory(fontFactory);
         interpreter.setInteraction(Interaction.get(properties
                 .getProperty(PROP_INTERACTION)));
+        context.registerInteractionObserver(interactionObserver);
 
         Configuration fontConfiguration = config.getConfiguration(TAG_FONT);
 
         if (fontConfiguration == null) {
             throw new ConfigurationMissingException(TAG_FONT, config.toString());
         }
-        interpreter.getContext().setTypesettingContext(
-                makeDefaultFont(fontConfiguration, fontFactory));
+        context.setTypesettingContext(makeDefaultFont(fontConfiguration,
+                fontFactory));
 
         initializeStreams(interpreter);
 
@@ -1597,17 +1625,17 @@ public class ExTeX {
         final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
                 jobname + ".log").getPath();
 
-        if (showBanner) {
-            showBanner = !Boolean.valueOf(
-                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
-        }
+        //if (showBanner) {
+        //    showBanner = !Boolean.valueOf(
+        //            properties.getProperty(PROP_NO_BANNER)).booleanValue();
+        //}
 
         Handler fileHandler = makeLogFileHandler(logFile);
 
         try {
             Configuration config = new ConfigurationFactory()
                     .newInstance(properties.getProperty(PROP_CONFIG));
-            showBanner(config, (showBanner?Level.INFO:Level.FINE));
+            showBanner(config, (showBanner ? Level.INFO : Level.FINE));
 
             OutputFactory outFactory = new OutputFactory(//
                     config.getConfiguration("Output"), //
@@ -1861,16 +1889,16 @@ public class ExTeX {
      */
     private void runWithoutFile() throws MainException {
 
-        if (showBanner) {
-            showBanner = !Boolean.valueOf(
-                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
+//        if (showBanner) {
+//            showBanner = !Boolean.valueOf(
+//                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
             try {
                 showBanner(new ConfigurationFactory().newInstance(properties
                         .getProperty(PROP_CONFIG)), Level.INFO);
             } catch (ConfigurationException e) {
                 // ignored on purpose. It will be checked again later
             }
-        }
+//        }
 
         setInputFileName((queryFileHandler != null ? queryFileHandler
                 .query(getLogger()) : null));
@@ -1927,11 +1955,22 @@ public class ExTeX {
     }
 
     /**
+     * Setter for a named property.
+     *
+     * @param key the property name
+     * @param value the new value of the named property
+     */
+    protected void setProperty(final String key, final String value) {
+
+        this.properties.setProperty(key, value);
+    }
+
+    /**
      * Setter for queryFileHandler.
      *
      * @param queryFileHandler the queryFileHandler to set
      */
-    public void setQueryFileHandler(QueryFileHandler queryFileHandler) {
+    public void setQueryFileHandler(final QueryFileHandler queryFileHandler) {
 
         this.queryFileHandler = queryFileHandler;
     }
@@ -1941,7 +1980,7 @@ public class ExTeX {
      * been done already to avoid repeating.
      *
      * @param configuration the configuration to use
-     * @param priority TODO
+     * @param priority the log level
      *
      * @throws MainException in case of an error
      */
