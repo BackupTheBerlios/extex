@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -67,12 +67,7 @@ public class Dimen extends GlueComponent implements Serializable {
 	public Dimen(final long value) {
 		super(value);
 	}
-    
-	public Dimen(TokenSource source, Context context) throws GeneralException {
-		super(source,context,false);
-	}
 
-    
     /**
      * Creates a new object.
      *
@@ -100,7 +95,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * 
      * @param d the Dimen to add to
      */
-    public void add(Dimen d) {
+    public void add(final Dimen d) {
         setValue(getValue() + d.getValue());
     }
 
@@ -109,7 +104,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * 
      * @param d the Dimen to add to
      */
-    public void subtract(Dimen d) {
+    public void subtract(final Dimen d) {
         setValue(getValue() - d.getValue());
     }
 
@@ -118,7 +113,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * 
      * @param d ...
      */
-    public boolean lt(Dimen d) {
+    public boolean lt(final Dimen d) {
         return (getValue() < d.getValue());
     }
 
@@ -127,7 +122,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * 
      * @param d ...
      */
-    public boolean le(Dimen d) {
+    public boolean le(final Dimen d) {
         return (getValue() <= d.getValue());
     }
     

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,109 +23,143 @@ import java.io.File;
 import de.dante.util.UnicodeChar;
 
 /**
- * Font-Interface
+ * Font Interface
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Font {
 
 	/**
 	 * Return the width of a <code>UnicodeChar</code>, or 
-	 * 0pt, if no character is defined.
+	 * 0pt, if the character is not defined.
+	 * 
+	 * @param c ...
+	 * @return ...
 	 */
-	public abstract Dimen getWidth(UnicodeChar c);
+	Dimen getWidth(UnicodeChar c);
 
 	/**
 	 * Return the height of a <code>UnicodeChar</code>, or 
-	 * 0pt, if no character is defined.
+	 * 0pt, if the character is not defined.
+	 * 
+	 * @param c ...
+	 * @return ...
 	 */
-	public abstract Dimen getHeight(UnicodeChar c);
+	Dimen getHeight(UnicodeChar c);
 	
 	/**
 	 * Return the depth of a <code>UnicodeChar</code>, or 
-	 * 0pt, if no character is defined.
+	 * 0pt, if the character is not defined.
+	 * 
+	 * @param c ...
+	 * @return ...
 	 */
-	public abstract Dimen getDepth(UnicodeChar c);
+	Dimen getDepth(UnicodeChar c);
 
 	/**
-	 * Return the italic of a <code>UnicodeChar</code>, or
-	 * 0pt, if no character is defined.
+	 * Return the italic correction of a <code>UnicodeChar</code>, or
+	 * 0pt, if the character is not defined.
+	 * 
+	 * @param c ...
+	 * @return ...
 	 */
-	public abstract Dimen getItalic(UnicodeChar c);
+	Dimen getItalic(UnicodeChar c);
 	
 	/**
 	 * Check, if the <code>UnicodeChar</code> is defined in the font.
+	 * 
+	 * @param c ...
+	 * @return ...
 	 */
-	public abstract boolean isDefined(UnicodeChar c);
+	boolean isDefined(UnicodeChar c);
 
 	/**
 	 * Return the kerning between c1 und c2.
+	 *
 	 * @param c1	the first character
 	 * @param c2	the second character
+	 *
 	 * @return	the kerning
 	 */
-	public abstract Dimen kern(UnicodeChar c1, UnicodeChar c2);
+	Dimen kern(UnicodeChar c1, UnicodeChar c2);
 	
 	/**
 	 * Return the ligature as <code>UnicodeChar</code>, 
 	 * or <code>null</code>, if no ligature exists.
 	 * 
-	 * If you get a ligature-character, then you MUST call the 
+	 * If you get a ligature character, then you MUST call the 
 	 * method <code>ligature()</code> twice, if a ligature with 
 	 * more then two characters exist.
 	 * (e.g. f - ff - ffl)
 	 * 
 	 * @param c1	the first character
 	 * @param c2	the second character
-	 * @return	the ligature-character as <code>UnicodeChar</code>, or
-	 * 	        <code>null</code>, if no exists
+	 *
+	 * @return	the ligature character as <code>UnicodeChar</code>, or
+	 * 	        <code>null</code>, if none exists
 	 */
-	public abstract UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2);
+	UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2);
 
 	/**
-	 * Return the width of space-character.
-	 * @return	the width of the space-character
+	 * Return the width of space character.
+	 *
+	 * @return	the width of the space character
 	 */
-	public abstract Glue getSpace();
+	Glue getSpace();
 
 	/**
-	 * Return the em-size of the font.
+	 * Return the em size of the font.
+	 *
+	 * @return ...
 	 */
-	public abstract Dimen getEm();
+	Dimen getEm();
 
 	/**
-	 * Return the ex-size of the font.
-	 * @return
+	 * Return the ex size of the font.
+	 *
+	 * @return ...
 	 */
-	public abstract Dimen getEx();
+	Dimen getEx();
 
 	/**
-	 * Return font-dimen-size with a key.
+	 * Return font dimen size with a key.
+	 *
+	 * @return ...
 	 */
-	public abstract Dimen getFontDimen(String key);
+	Dimen getFontDimen(String key);
 
 	/**
-	 * Return the fontname.
+	 * Return the font name.
+	 *
+	 * @return ...
 	 */
-	public abstract String getFontName();
+	String getFontName();
 
 	/**
-	 * Check, if the font has a external file 
+	 * Check, if the font has an external file 
 	 * (e.g. a type 1 pfb-file).
+	 *
+	 * @return ...
+	 *
+	 * @deprecated since the same can be checked with getExternalFile()
 	 */
-	public abstract boolean isExternalFont();
+	boolean isExternalFont();
 	
 	/**
-	 * Return the <code>File</code>-object of a external fontfile or 
-	 * <code>null</code>, if no file exists.
+	 * Return the <code>File</code> object of a external font file or 
+	 * <code>null</code>, if no such file exists.
+	 *
+	 * @return ...
 	 */
-	public abstract File getExternalFile();
+	File getExternalFile();
 
 	/**
 	 * Return the external ID to find the glyph in the external file.
-	 * @return the external ID, or <code>null</code>, if no exists.
+	 *
+	 * @return the external ID, or <code>null</code>, if none exists.
 	 */
-	public abstract String getExternalID(UnicodeChar c);
+	String getExternalID(UnicodeChar c);
+
 }
