@@ -25,19 +25,34 @@ import org.apache.fop.pdf.PDFColor;
 
 /**
  * Some operators for PDF.
- * 
+ *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk </a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PDFOperators {
 
-    protected float lastX = 0;
+    /**
+     * For computing a bezier interpolation point for quarter circles.
+     */
+    private static final float QCIRCLE_MAGIC_NUM = 0.55228474f;
 
-    protected float lastY = 0;
+    /**
+     * Number of color components of the CMYK definition.
+     */
+    private static final int CMYK_COMPONENTS = 4;
+
+    /**
+     * The last x position
+     */
+    private float lastX = 0;
+
+    /**
+     * The last y position
+     */
+    private float lastY = 0;
 
     /**
      * Create a new object
-     *  
      */
     public PDFOperators() {
         super();
@@ -45,6 +60,7 @@ public class PDFOperators {
 
     /**
      * "GSave", save the graphic state
+     * @return The pdf commands
      */
     public String gSave() {
         return " q\n";
@@ -52,6 +68,7 @@ public class PDFOperators {
 
     /**
      * "GRestore", restore the graphic state
+     * @return The pdf commands
      */
     public String gRestore() {
         return " Q\n";
@@ -59,9 +76,10 @@ public class PDFOperators {
 
     /**
      * "MoveTo"
-     * 
+     *
      * @param x the end x location
      * @param y the end y location
+     * @return The pdf commands
      */
     public String moveTo(final float x, final float y) {
         this.lastX = x;
@@ -71,11 +89,12 @@ public class PDFOperators {
 
     /**
      * "RMoveTo"
-     * 
+     *
      * @param dx the x difference to the move position
      * @param dy the y difference to the move position
+     * @return The pdf commands
      */
-    public String rMoveTo(float dx, float dy) {
+    public String rMoveTo(final float dx, final float dy) {
         this.lastX = this.lastX + dx;
         this.lastY = this.lastY + dy;
         return " " + this.lastX + " " + this.lastY + " m\n";
@@ -83,11 +102,12 @@ public class PDFOperators {
 
     /**
      * "LineTo"
-     * 
+     *
      * @param x the end x location
      * @param y the end y location
+     * @return The pdf commands
      */
-    public String lineTo(float x, float y) {
+    public String lineTo(final float x, final float y) {
         this.lastX = x;
         this.lastY = y;
         return " " + x + " " + y + " l\n";
@@ -95,29 +115,34 @@ public class PDFOperators {
 
     /**
      * Appends a Bêzier curve to the path, starting from the current point.
-     * 
+     *
      * @param x1 x-coordinate of the first control point
      * @param y1 y-coordinate of the first control point
      * @param x2 x-coordinate of the second control point
      * @param y2 y-coordinate of the second control point
      * @param x3 x-coordinaat of the ending point (= new current point)
      * @param y3 y-coordinaat of the ending point (= new current point)
+     * @return The pdf commands
      */
-    public String curveTo(float x1, float y1, float x2, float y2, float x3, float y3) {
+    public String curveTo(final float x1, final float y1, final float x2,
+      final float y2, final float x3, final float y3) {
         this.lastX = x3;
         this.lastY = y3;
-        return " " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x3 + " " + y3 + " c\n";
+        return " " + x1 + " " + y1 + " " + x2 + " " + y2 + " " + x3 + " " + y3
+          + " c\n";
     }
 
     /**
      * Appends a Bêzier curve to the path, starting from the current point.
-     * 
+     *
      * @param x2 x-coordinate of the second control point
      * @param y2 y-coordinate of the second control point
      * @param x3 x-coordinaat of the ending point (= new current point)
      * @param y3 y-coordinaat of the ending point (= new current point)
+     * @return The pdf commands
      */
-    public String curveTo(float x2, float y2, float x3, float y3) {
+    public String curveTo(final float x2, final float y2, final float x3,
+      final float y3) {
         this.lastX = x3;
         this.lastY = y3;
         return " " + x2 + " " + y2 + " " + x3 + " " + y3 + " v\n";
@@ -125,13 +150,15 @@ public class PDFOperators {
 
     /**
      * Appends a Bêzier curve to the path, starting from the current point.
-     * 
+     *
      * @param x1 x-coordinate of the first control point
      * @param y1 y-coordinate of the first control point
      * @param x3 x-coordinaat of the ending point (= new current point)
      * @param y3 y-coordinaat of the ending point (= new current point)
+     * @return The pdf commands
      */
-    public String curveFromTo(float x1, float y1, float x3, float y3) {
+    public String curveFromTo(final float x1, final float y1, final float x3,
+      final float y3) {
         this.lastX = x3;
         this.lastY = y3;
         return " " + x1 + " " + y1 + " " + x3 + " " + y3 + " y\n";
@@ -139,24 +166,29 @@ public class PDFOperators {
 
     /**
      * Draws a circle. The endpoint will (x+r, y).
-     * 
+     *
      * @param x x center of circle
      * @param y y center of circle
      * @param r radius of circle
+     * @return The pdf commands
      */
-    public String circle(float x, float y, float r) {
-        float b = 0.5523f;
-        return moveTo(x + r, y) + curveTo(x + r, y + r * b, x + r * b, y + r, x, y + r) + curveTo(x - r * b, y + r, x - r, y + r * b, x - r, y)
-                + curveTo(x - r, y - r * b, x - r * b, y - r, x, y - r) + curveTo(x + r * b, y - r, x + r, y - r * b, x + r, y);
+    public String circle(final float x, final float y, final float r) {
+        float b = QCIRCLE_MAGIC_NUM;
+        return moveTo(x + r, y)
+          + curveTo(x + r, y + r * b, x + r * b, y + r, x, y + r)
+          + curveTo(x - r * b, y + r, x - r, y + r * b, x - r, y)
+          + curveTo(x - r, y - r * b, x - r * b, y - r, x, y - r)
+          + curveTo(x + r * b, y - r, x + r, y - r * b, x + r, y);
     }
 
     /**
      * "RLineTo"
-     * 
+     *
      * @param dx the x difference to the end of the line
      * @param dy the y difference to the end of the line
+     * @return The pdf commands
      */
-    public String rLineTo(float dx, float dy) {
+    public String rLineTo(final float dx, final float dy) {
         this.lastX = this.lastX + dx;
         this.lastY = this.lastY + dy;
         return " " + this.lastX + " " + this.lastY + " l\n";
@@ -164,10 +196,11 @@ public class PDFOperators {
 
     /**
      * "LineWidth"
-     * 
+     *
      * @param wd width of the line
+     * @return The pdf commands
      */
-    public String lineWidth(float wd) {
+    public String lineWidth(final float wd) {
         return " " + wd + " w\n";
     }
 
@@ -177,10 +210,11 @@ public class PDFOperators {
      * paths. It is specified by an <I>array </I> and a <I>phase </I>. The
      * array specifies the length of the alternating dashes and gaps. The phase
      * specifies the distance into the dash pattern to start the dash. <BR>
-     * 
+     *
      * @param phase the value of the phase
+     * @return The pdf commands
      */
-    public String setLineDash(float phase) {
+    public String setLineDash(final float phase) {
         return " [] " + phase + " d\n";
     }
 
@@ -190,12 +224,13 @@ public class PDFOperators {
      * paths. It is specified by an <I>array </I> and a <I>phase </I>. The
      * array specifies the length of the alternating dashes and gaps. The phase
      * specifies the distance into the dash pattern to start the dash. <BR>
-     * 
+     *
      * @param phase the value of the phase
      * @param unitsOn the number of units that must be 'on' (equals the number
      * of units that must be 'off').
+     * @return The pdf commands
      */
-    public String setLineDash(float unitsOn, float phase) {
+    public String setLineDash(final float unitsOn, final float phase) {
         return "[" + unitsOn + "] " + phase + " d\n";
     }
 
@@ -205,17 +240,20 @@ public class PDFOperators {
      * paths. It is specified by an <I>array </I> and a <I>phase </I>. The
      * array specifies the length of the alternating dashes and gaps. The phase
      * specifies the distance into the dash pattern to start the dash. <BR>
-     * 
+     *
      * @param phase the value of the phase
      * @param unitsOn the number of units that must be 'on'
-     * @param unitsOff the number of units that must be 'off'
+     * @param unitsOff the number of units that must be 'off'#
+     * @return The pdf commands
      */
-    public String setLineDash(float unitsOn, float unitsOff, float phase) {
+    public String setLineDash(final float unitsOn, final float unitsOff,
+      final float phase) {
         return "[" + unitsOn + " " + unitsOff + "] " + phase + " d\n";
     }
 
     /**
      * "Stroke"
+     * @return The pdf commands
      */
     public String stroke() {
         return " S\n";
@@ -223,6 +261,7 @@ public class PDFOperators {
 
     /**
      * "Fill"
+     * @return The pdf commands
      */
     public String fill() {
         return " f\n";
@@ -230,6 +269,7 @@ public class PDFOperators {
 
     /**
      * "ClosePath"
+     * @return The pdf commands
      */
     public String closepath() {
         return " h\n";
@@ -237,6 +277,7 @@ public class PDFOperators {
 
     /**
      * "CloseStroke"
+     * @return The pdf commands
      */
     public String closeStroke() {
         return " s\n";
@@ -244,6 +285,7 @@ public class PDFOperators {
 
     /**
      * "CloseFillStroke"
+     * @return The pdf commands
      */
     public String closeFillStroke() {
         return " b\n";
@@ -251,6 +293,7 @@ public class PDFOperators {
 
     /**
      * "FillStroke"
+     * @return The pdf commands
      */
     public String fillStroke() {
         return " B\n";
@@ -258,6 +301,7 @@ public class PDFOperators {
 
     /**
      * "CloseFill"
+     * @return The pdf commands
      */
     public String closeFill() {
         return " h f\n";
@@ -265,21 +309,31 @@ public class PDFOperators {
 
     /**
      * "Concat"
+     * @param sx 1. parameter of the matrix
+     * @param u  2. parameter of the matrix
+     * @param v  3. parameter of the matrix
+     * @param sy 4. parameter of the matrix
+     * @param tx 5. parameter of the matrix
+     * @param ty 6. parameter of the matrix
+     * @return The pdf commands
      */
-    public String concat(float sx, float u, float v, float sy, float tx,
-            float ty) {
-        return " " + sx + " " + u + " " + v + " " + sy + " " + tx + " " + ty + " cm\n";
+    public String concat(final float sx, final float u, final float v,
+      final float sy, final float tx, final float ty) {
+        return " " + sx + " " + u + " " + v + " " + sy + " " + tx + " "
+          + ty + " cm\n";
     }
 
     /**
      * "AddRectangle"
-     * 
+     *
      * @param x the x position of left edge
      * @param y the y position of top edge
      * @param wd the width
      * @param ht the height
+     * @return The pdf commands
      */
-    public String addRectangle(float x, float y, float wd, float ht) {
+    public String addRectangle(final float x, final float y, final float wd,
+      final float ht) {
         this.lastX = x;
         this.lastY = y;
         return " " + x + " " + y + " " + wd + " " + ht + " re\n";
@@ -287,8 +341,9 @@ public class PDFOperators {
 
     /**
      * Adds a comment
-     * 
+     *
      * @param s the comment
+     * @return The pdf commands
      */
     public String addComment(final String s) {
         return "\n% " + s + "\n";
@@ -296,31 +351,34 @@ public class PDFOperators {
 
     /**
      * Adds color for stroking
-     * 
+     *
      * @param col the color
+     * @return The pdf commands
      */
-    public String strokeColor(Color col) {
+    public String strokeColor(final Color col) {
         return applyColor(col, false);
     }
 
     /**
      * Adds color for filling
-     * 
+     *
      * @param col the color
+     * @return The pdf commands
      */
-    public String fillColor(Color col) {
+    public String fillColor(final Color col) {
         return applyColor(col, true);
     }
 
     /**
      * Adds color for filling or stroking
-     * 
+     *
      * @param col the color
      * @param fill fill color if true, else stroke color
      * @see org.apache.fop.svg.PDFGraphics2D#applyColor(java.awt.Color,
      * boolean)
+     * @return The pdf commands
      */
-    private String applyColor(Color col, boolean fill) {
+    private String applyColor(final Color col, final boolean fill) {
         Color c = col;
         PDFColor currentColor = new PDFColor(0, 0, 0);
 
@@ -328,9 +386,9 @@ public class PDFOperators {
             currentColor = new PDFColor(c.getRed(), c.getGreen(), c.getBlue());
             return currentColor.getColorSpaceOut(fill);
         } else if (c.getColorSpace().getType() == java.awt.color.ColorSpace.TYPE_CMYK) {
-            float[] cComps = c.getColorComponents(new float[3]);
-            double[] cmyk = new double[3];
-            for (int i = 0; i < 3; i++) {
+            float[] cComps = c.getColorComponents(new float[CMYK_COMPONENTS - 1]);
+            double[] cmyk = new double[CMYK_COMPONENTS - 1];
+            for (int i = 0; i < CMYK_COMPONENTS - 1; i++) {
                 // convert the float elements to doubles for pdf
                 cmyk[i] = cComps[i];
             }
