@@ -31,14 +31,192 @@ import java.io.Serializable;
  * In addition it supports the visitor pattern to react on them.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class Interaction implements Serializable {
+
+    /**
+     * This inner class is use to represent the batch mode.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.14 $
+     */
+    private static class BatchMode extends Interaction {
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.BATCHMODE;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "0";
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitBatchmode(arg1, arg2, arg3);
+        }
+
+    }
+
+    /**
+     * This inner class is use to represent the error stop mode.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.14 $
+     */
+    private static class ErrorstopMode extends Interaction {
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.ERRORSTOPMODE;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "3";
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitErrorstopmode(arg1, arg2, arg3);
+        }
+
+    }
+
+    /**
+     * This inner class is use to represent the nonstop mode.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.14 $
+     */
+    private static class NonstopMode extends Interaction {
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.NONSTOPMODE;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "1";
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitNonstopmode(arg1, arg2, arg3);
+        }
+
+    }
+
+    /**
+     * This inner class is use to represent the scroll mode.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.14 $
+     */
+    private static class ScrollMode extends Interaction {
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.SCROLLMODE;
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#getIndex()
+         */
+        public String getIndex() {
+
+            return "2";
+        }
+
+        /**
+         * @see de.dante.extex.interpreter.Interaction#visit(
+         *      de.dante.extex.interpreter.InteractionVisitor,
+         *      java.lang.Object, java.lang.Object, java.lang.Object)
+         */
+        public boolean visit(final InteractionVisitor visitor,
+                final Object arg1, final Object arg2, final Object arg3)
+                throws GeneralException {
+
+            return visitor.visitScrollmode(arg1, arg2, arg3);
+        }
+
+    }
 
     /**
      * The field <tt>BATCHMODE</tt> contains the constant for batch mode.
      */
     public static final Interaction BATCHMODE = new BatchMode();
+
+    /**
+     * The field <tt>ERRORSTOPMODE</tt> contains the constant for error stop
+     * mode.
+     */
+    public static final Interaction ERRORSTOPMODE = new ErrorstopMode();
 
     /**
      * The field <tt>NONSTOPMODE</tt> contains the constant for non-stop
@@ -52,26 +230,11 @@ public abstract class Interaction implements Serializable {
     public static final Interaction SCROLLMODE = new ScrollMode();
 
     /**
-     * The field <tt>ERRORSTOPMODE</tt> contains the constant for error stop
-     * mode.
-     */
-    public static final Interaction ERRORSTOPMODE = new ErrorstopMode();
-
-    /**
      * The field <tt>MODE_MAP</tt> contains the list for mapping integers to
      * modes.
      */
     private static final Interaction[] MODE_MAP = //
     {BATCHMODE, NONSTOPMODE, SCROLLMODE, ERRORSTOPMODE};
-
-    /**
-     * Creates a new object. This constructor is private to avoid that other
-     * interaction modes than the predefined ones are used.
-     */
-    protected Interaction() {
-
-        super();
-    }
 
     /**
      * This is a factory method for interaction modes. It mapps numerical
@@ -93,6 +256,27 @@ public abstract class Interaction implements Serializable {
         }
 
         return MODE_MAP[mode];
+    }
+
+    /**
+     * Find the integer number corresponding to an interaction
+     *
+     * @param mode the mode to identify
+     *
+     * @return the number of the mode
+     *
+     * @throws MainUnknownInteractionException in case of an error
+     */
+    public static int get(final Interaction mode)
+            throws MainUnknownInteractionException {
+
+        for (int i = 0; i < MODE_MAP.length; i++) {
+            if (mode == MODE_MAP[i]) {
+                return i;
+            }
+        }
+
+        throw new MainUnknownInteractionException(mode.toString());
     }
 
     /**
@@ -131,24 +315,12 @@ public abstract class Interaction implements Serializable {
     }
 
     /**
-     * TODO gene: missing JavaDoc
-     *
-     * @param mode the mode to identify
-     *
-     * @return the number of the mode
-     *
-     * @throws MainUnknownInteractionException in case of an error
+     * Creates a new object. This constructor is private to avoid that other
+     * interaction modes than the predefined ones are used.
      */
-    public static int get(final Interaction mode)
-            throws MainUnknownInteractionException {
+    protected Interaction() {
 
-        for (int i = 0; i < MODE_MAP.length; i++) {
-            if (mode == MODE_MAP[i]) {
-                return i;
-            }
-        }
-
-        throw new MainUnknownInteractionException(mode.toString());
+        super();
     }
 
     /**
@@ -171,142 +343,25 @@ public abstract class Interaction implements Serializable {
             throws GeneralException;
 
     /**
-     * This inner class is use to represent the batch mode.
+     * Get the numeric index of the interaction mode.
+     * According to the definition os TeX the following mapping holds:
+     * <table>
+     *  <tr>
+     *   <td>BatchMode</td><td>0</td>
+     *  </tr>
+     *  <tr>
+     *   <td>NonstopMode</td><td>1</td>
+     *  </tr>
+     *  <tr>
+     *   <td>ScrollMode</td><td>2</td>
+     *  </tr>
+     *  <tr>
+     *   <td>ErrorstopMode</td><td>3</td>
+     *  </tr>
+     * </table>
      *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
+     * @return the numeric index
      */
-    private static class BatchMode extends Interaction {
+    public abstract String getIndex();
 
-        /**
-         * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor,
-         *      java.lang.Object, java.lang.Object, java.lang.Object)
-         */
-        public boolean visit(final InteractionVisitor visitor,
-                final Object arg1, final Object arg2, final Object arg3)
-                throws GeneralException {
-
-            return visitor.visitBatchmode(arg1, arg2, arg3);
-        }
-
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Interaction.BATCHMODE;
-        }
-
-    }
-
-    /**
-     * This inner class is use to represent the nonstop mode.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
-     */
-    private static class NonstopMode extends Interaction {
-
-        /**
-         * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor,
-         *      java.lang.Object, java.lang.Object, java.lang.Object)
-         */
-        public boolean visit(final InteractionVisitor visitor,
-                final Object arg1, final Object arg2, final Object arg3)
-                throws GeneralException {
-
-            return visitor.visitNonstopmode(arg1, arg2, arg3);
-        }
-
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Interaction.NONSTOPMODE;
-        }
-
-    }
-
-    /**
-     * This inner class is use to represent the scroll mode.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
-     */
-    private static class ScrollMode extends Interaction {
-
-        /**
-         * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor,
-         *      java.lang.Object, java.lang.Object, java.lang.Object)
-         */
-        public boolean visit(final InteractionVisitor visitor,
-                final Object arg1, final Object arg2, final Object arg3)
-                throws GeneralException {
-
-            return visitor.visitScrollmode(arg1, arg2, arg3);
-        }
-
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Interaction.SCROLLMODE;
-        }
-
-    }
-
-    /**
-     * This inner class is use to represent the error stop mode.
-     *
-     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.13 $
-     */
-    private static class ErrorstopMode extends Interaction {
-
-        /**
-         * @see de.dante.extex.interpreter.Interaction#visit(
-         *      de.dante.extex.interpreter.InteractionVisitor,
-         *      java.lang.Object, java.lang.Object, java.lang.Object)
-         */
-        public boolean visit(final InteractionVisitor visitor,
-                final Object arg1, final Object arg2, final Object arg3)
-                throws GeneralException {
-
-            return visitor.visitErrorstopmode(arg1, arg2, arg3);
-        }
-
-        /**
-         * Return the singleton constant object after the serialized instance
-         * has been read back in.
-         *
-         * @return the one and only instance of this object
-         *
-         * @throws ObjectStreamException never
-         */
-        protected Object readResolve() throws ObjectStreamException {
-
-            return Interaction.ERRORSTOPMODE;
-        }
-
-    }
 }
