@@ -18,7 +18,6 @@
  */
 package de.dante.util.observer;
 
-import de.dante.util.NotObservableException;
 
 /**
  * An observable is an object which has the feature to register an observer
@@ -29,7 +28,7 @@ import de.dante.util.NotObservableException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Observable {
     /**
