@@ -27,10 +27,10 @@ import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.util.GeneralException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -39,11 +39,6 @@ public class PageBuilderImpl implements PageBuilder {
      * the pages.
      */
     private DocumentWriter documentWriter = null;
-
-    /**
-     * The field <tt>vlist</tt> contains the accumulated material.
-     */
-    private NodeList vlist;
 
     /**
      * Creates a new object.
@@ -85,20 +80,6 @@ public class PageBuilderImpl implements PageBuilder {
     }
 
     /**
-     * Setter for the document writer.
-     * This has to be provided before the page builder can be active.
-     *
-     * @param docWriter the new document writer to use
-     *
-     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
-     *      de.dante.extex.documentWriter.DocumentWriter)
-     */
-    public void setDocumentWriter(final DocumentWriter docWriter) {
-
-        this.documentWriter = docWriter;
-    }
-
-    /**
      * This is the entry point for the page builder. Here it receives a
      * complete node list to be sent to the output writer. It can be assumed
      * that all values for width, height, and depth of the node lists are
@@ -118,5 +99,19 @@ public class PageBuilderImpl implements PageBuilder {
         } catch (IOException e) {
             throw new GeneralException(e);
         }
+    }
+
+    /**
+     * Setter for the document writer.
+     * This has to be provided before the page builder can be active.
+     *
+     * @param docWriter the new document writer to use
+     *
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setDocumentWriter(
+     *      de.dante.extex.documentWriter.DocumentWriter)
+     */
+    public void setDocumentWriter(final DocumentWriter docWriter) {
+
+        this.documentWriter = docWriter;
     }
 }
