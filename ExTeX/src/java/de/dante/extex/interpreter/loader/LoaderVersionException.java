@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.loader;
 
 
 /**
- * ...
+ * This esception is used when the loader detects a version mismatch.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LoaderVersionException extends LoaderException {
 

@@ -23,25 +23,26 @@ import junit.framework.TestCase;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 
 /**
- * ...
+ * Test cases for the class HangingParagraphShape.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HangingParagraphShapeTest extends TestCase {
 
     /**
-     * The constant <tt>INDENT</tt> contains the ...
+     * The constant <tt>INDENT</tt> contains the amount of indentation to use.
      */
     private static final int INDENT = 1024;
 
     /**
-     * The constant <tt>RIGHT</tt> contains the ...
+     * The constant <tt>RIGHT</tt> contains the right margin.
      */
     private static final int RIGHT = 4096;
 
     /**
      * Command line interface.
+     *
      * @param args the arguments
      */
     public static void main(final String[] args) {
@@ -50,7 +51,8 @@ public class HangingParagraphShapeTest extends TestCase {
     }
 
     /**
-     * ...
+     * Test case checking that 0 length parshape repeats 0 as left and the right
+     * margin.
      */
     public void test0() {
 
@@ -68,7 +70,8 @@ public class HangingParagraphShapeTest extends TestCase {
     }
 
     /**
-     * ...
+     * Test case checking that 0 length parshape repeats the left and the right
+     * margin.
      */
     public void test1() {
 

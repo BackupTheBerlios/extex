@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.loader;
 
 
 /**
- * ...
+ * This esception is used when the loader detects some exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LoaderException extends Exception {
 
