@@ -16,32 +16,38 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+package de.dante.extex.main.exception;
 
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the user attempty to set the interaction mode
- * but specifies an invalid value for the mode.
+ * This exception is thrown when the main program detects that an advertised
+ * argument is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class MainUnknownInteractionException extends MainException {
+public class MainMissingArgumentException extends MainException {
+
+    /**
+     * The constant <tt>ERROR_CODE</tt> contains the return code.
+     */
+    private static final int ERROR_CODE = -10;
+
     /**
      * Creates a new object.
      *
      * @param message the name of the missing argument
      */
-    public MainUnknownInteractionException(final String message) {
-        super(-14, message);
+    public MainMissingArgumentException(final String message) {
+        super(ERROR_CODE, message);
     }
 
     /**
      * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
-        return Messages.format("MainUnknownInteractionException.Message",
+        return Messages.format("MainMissingArgumentException.Message",
                                super.getMessage());
     }
 }

@@ -16,7 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+package de.dante.extex.main.exception;
 
 import de.dante.extex.i18n.Messages;
 
@@ -25,24 +25,31 @@ import de.dante.extex.i18n.Messages;
  * error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class MainConfigurationException extends MainException {
+public class MainCodingException extends MainException {
+
+    /**
+     * The constant <tt>ERROR_CODE</tt> contains the return code.
+     */
+    private static final int ERROR_CODE = -32;
+
     /**
      * Creates a new object.
      *
      * @param cause the root of all evil
      */
-    public MainConfigurationException(final Throwable cause) {
-        super(-1, cause);
+    public MainCodingException(final Throwable cause) {
+
+        super(ERROR_CODE, cause);
     }
 
     /**
      * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
-        String message = super.getMessage();
-        return Messages.format("MainConfigurationException.Message",
-                               (message != null ? message : ""));
+
+        return Messages.format("MainCodingException.Message", super
+                .getMessage());
     }
 }

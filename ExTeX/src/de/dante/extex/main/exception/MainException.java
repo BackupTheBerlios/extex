@@ -16,10 +16,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+
+package de.dante.extex.main.exception;
 
 import de.dante.util.GeneralException;
-
 
 /**
  * This is the base class for all exceptions of the main class. In addition to
@@ -27,9 +27,10 @@ import de.dante.util.GeneralException;
  * which is meant to be used as exit status for the main program.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public class MainException extends GeneralException {
+
     /**
      * The field <tt>message</tt> contains the message for this exception.
      */
@@ -38,39 +39,42 @@ public class MainException extends GeneralException {
     /**
      * The field <tt>code</tt> contains the exit code.
      */
-    private int code = -1;
+    private int code;
 
     /**
      * Creates a new object.
      *
-     * @param code the exit code
-     * @param message the message
+     * @param theCode the exit code
+     * @param theMessage the message
      */
-    public MainException(final int code, final String message) {
-        super(message);
-        this.message = message;
-        this.code    = code;
+    public MainException(final int theCode, final String theMessage) {
+
+        super(theMessage);
+        this.message = theMessage;
+        this.code = theCode;
     }
 
     /**
      * Creates a new object.
      *
-     * @param code the exit code
-     * @param e the cause for this Exception
+     * @param theCode the exit code
+     * @param cause the cause for this Exception
      */
-    public MainException(final int code, final Throwable e) {
-        super(e);
-        this.code = code;
+    public MainException(final int theCode, final Throwable cause) {
+
+        super(cause);
+        this.code = theCode;
     }
 
     /**
      * Creates a new object.
      *
-     * @param e the cause for this Exception
+     * @param cause the cause for this Exception
      */
-    public MainException(final GeneralException e) {
-        super(e);
-        this.code = e.getExitCode();
+    public MainException(final GeneralException cause) {
+
+        super(cause);
+        this.code = cause.getExitCode();
     }
 
     /**
@@ -79,6 +83,7 @@ public class MainException extends GeneralException {
      * @return the exit code
      */
     public int getCode() {
+
         return code;
     }
 
@@ -88,7 +93,8 @@ public class MainException extends GeneralException {
      * @return the message
      */
     public String getMessage() {
-        return (message != null ? message : getCause()
-                                                .getMessage());
+
+        return (message != null ? message : getCause().getMessage());
     }
+
 }

@@ -16,33 +16,40 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+package de.dante.extex.main.exception;
 
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the main program detects an configuration
- * error.
+ * This exception is a wrapper for the IOException. It converts this exception
+ * into a MainException with an appropriate exit status.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class MainCodingException extends MainException {
+public class MainIOException extends MainException {
+
+    /**
+     * The constant <tt>ERROR_CODE</tt> contains the return code.
+     */
+    private static final int ERROR_CODE = -2;
+
     /**
      * Creates a new object.
      *
      * @param cause the root of all evil
      */
-    public MainCodingException(final Throwable cause) {
+    public MainIOException(final Throwable cause) {
 
-        super(-32, cause);
+        super(ERROR_CODE, cause);
     }
 
     /**
      * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
-        return Messages.format("MainCodingException.Message",
-                               super.getMessage());
+
+        return Messages.format("MainIOException.Message", super.getMessage());
     }
+
 }

@@ -16,32 +16,41 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
-package de.dante.extex.main;
+package de.dante.extex.main.exception;
 
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the main program encounters an unknown
- * commandline option.
+ * This exception is thrown when the main program tries to open an output file
+ * and is not able to perform this operation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public class MainUnknownOptionException extends MainException {
+public class MainOutputFileNotFoundException extends MainException {
+
+    /**
+     * The constant <tt>ERROR_CODE</tt> contains the return code.
+     */
+    private static final int ERROR_CODE = -15;
+
     /**
      * Creates a new object.
      *
-     * @param message the name of the unknown option
+     * @param filename the name of the file to open
      */
-    public MainUnknownOptionException(final String message) {
-        super(-12, message);
+    public MainOutputFileNotFoundException(final String filename) {
+
+        super(ERROR_CODE, filename);
     }
 
     /**
      * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
-        return Messages.format("MainUnknownOptionException.Message",
-                               super.getMessage());
+
+        return Messages.format("MainOutputFileNotFoundException.Message", super
+                .getMessage());
     }
+
 }
