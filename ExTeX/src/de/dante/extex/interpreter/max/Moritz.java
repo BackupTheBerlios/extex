@@ -34,6 +34,7 @@ import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.RightBraceToken;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
@@ -63,7 +64,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -283,11 +284,11 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @return ...
      */
-    abstract public Typesetter getTypesetter();
+    public abstract Typesetter getTypesetter();
 
     /**
      * ...
-     * 
+     *
      * @return ...
      *
      * @throws GeneralException in case of an error
@@ -346,12 +347,12 @@ public abstract class Moritz implements TokenSource, Observable {
      * Put a given stream on top of the stream stack. The reading occurs on
      * this new stream before resorting to the previous streams.
      *
-     * @param stream the new stream to read from
+     * @param theStream the new stream to read from
      */
-    public void addStream(final TokenStream stream) {
+    public void addStream(final TokenStream theStream) {
 
         streamStack.add(this.stream);
-        this.stream = stream;
+        this.stream = theStream;
     }
 
     /**
@@ -388,6 +389,8 @@ public abstract class Moritz implements TokenSource, Observable {
      * Push back a token onto the input stream for subsequent reading.
      *
      * @param token the token to push
+     *
+     * @throws GeneralException in case of an error
      */
     public void push(final Token token) throws GeneralException {
 
@@ -399,6 +402,8 @@ public abstract class Moritz implements TokenSource, Observable {
      * Push back a list of tokens onto the input stream for subsequent reading.
      *
      * @param tokens the tokens to push
+     *
+     * @throws GeneralException in case of an error
      */
     public void push(final Token[] tokens) throws GeneralException {
 
@@ -691,9 +696,8 @@ public abstract class Moritz implements TokenSource, Observable {
 
         while (t != null) {
 
-            if (token.isa(Catcode.OTHER)) {
-                int c = token.getChar().getCodePoint();
-                //System.err.println(token.toString());
+            if (t instanceof OtherToken) {
+                int c = t.getChar().getCodePoint();
                 switch (c) {
                     case '0' :
                     case '1' :
@@ -790,20 +794,23 @@ public abstract class Moritz implements TokenSource, Observable {
                         skipSpace();
                         return n;
 
-                    default:
+                    default :
                         throw new GeneralHelpingException("TTP.MissingNumber");
                 }
-            } else if (t.isa(Catcode.ESCAPE) || t.isa(Catcode.ACTIVE)) {
+            } else if (t instanceof ControlSequenceToken
+                       || t instanceof ActiveCharacterToken) {
                 Code code = context.getCode(t);
                 if (code == null) {
                     throw new GeneralHelpingException("TTP.MissingNumber");
-                }
-                if (code instanceof CountConvertable) {
-                    return ((CountConvertable) code).convertCount(context, this);
-                }
-                if (code instanceof ExpandableCode) {
-                    ((ExpandableCode) code).expand(Flags.NONE, context, this, null);
+                } else if (code instanceof CountConvertable) {
+                    return ((CountConvertable) code)
+                            .convertCount(context, this);
+                } else if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, context, this,
+                                                   getTypesetter());
                     t = getToken();
+                } else {
+                    throw new GeneralHelpingException("TTP.MissingNumber");
                 }
             }
         }

@@ -64,7 +64,7 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Max extends Moritz implements Interpreter,
         TokenSource, Observable, CatcodeVisitor {
@@ -251,6 +251,9 @@ public class Max extends Moritz implements Interpreter,
         this.typesetter = theTypesetter;
     }
 
+    /**
+     * @see de.dante.extex.interpreter.max.Moritz#getTypesetter()
+     */
     public Typesetter getTypesetter() {
         return this.typesetter;
     }
@@ -396,8 +399,6 @@ public class Max extends Moritz implements Interpreter,
      * @param config the configuration object to consider.
      *
      * @throws ConfigurationException ...
-     * @throws ConfigurationMissingAttributeException ...
-     * @throws ConfigurationException ...
      * @throws GeneralException ...
      */
     private void configure(final Configuration config)
@@ -474,7 +475,7 @@ public class Max extends Moritz implements Interpreter,
 
         Code code;
         Token t = token;
-
+//System.err.println("expand " + t.toString());
         while (t != null) { //TODO ???
             if (t instanceof ControlSequenceToken) {
                 observersMacro.update(this, t);

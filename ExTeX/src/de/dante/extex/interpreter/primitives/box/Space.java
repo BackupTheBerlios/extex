@@ -23,21 +23,22 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Count;
+import de.dante.extex.interpreter.type.ImmutableCount;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\hrule</code>.
+ * This class provides an implementation for the primitive <code>\ </code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Space extends AbstractCode {
 
     /**
      * The constant <tt>THOUSAND</tt> contains the ...
      */
-    private static final Count THOUSAND = new Count(1000);
+    private static final Count THOUSAND = new ImmutableCount(1000);
 
     /**
      * Creates a new object.

@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface TokenFactory {
 
@@ -38,6 +38,8 @@ public interface TokenFactory {
      * @param value the value
      *
      * @return the appropriate token
+     *
+     * @throws CatcodeException in case of an error
      */
     Token newInstance(Catcode code, String value) throws CatcodeException;
 
@@ -48,6 +50,8 @@ public interface TokenFactory {
      * @param c the character value
      *
      * @return the appropriate token
+     *
+     * @throws CatcodeException in case of an error
      */
     Token newInstance(Catcode code, char c) throws CatcodeException;
 
@@ -59,6 +63,8 @@ public interface TokenFactory {
      * @param c the Unicode character value
      *
      * @return the appropriate token
+     *
+     * @throws CatcodeException in case of an error
      */
     Token newInstance(Catcode code, UnicodeChar c) throws CatcodeException;
 

@@ -41,7 +41,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -71,7 +71,8 @@ public class Hbox extends AbstractCode implements Boxable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Boxable#getBox(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     * @see de.dante.extex.interpreter.Boxable#getBox(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public Box getBox(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {

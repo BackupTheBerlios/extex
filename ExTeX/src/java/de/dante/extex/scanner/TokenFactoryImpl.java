@@ -49,7 +49,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -90,13 +90,13 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * The field <tt>crToken</tt> contains the one and only cr token in the
      * system.
      */
-    private Token crToken = new CrToken(" ");
+    private static final Token CR_TOKEN = new CrToken(" ");
 
     /**
      * The field <tt>spaceToken</tt> contains the one and only space token in
      * the system.
      */
-    private Token spaceToken = new SpaceToken(" ");
+    private static final Token SPACE_TOKEN = new SpaceToken(" ");
 
     /**
      * Creates a new object.
@@ -226,7 +226,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Object visitCr(final Object oValue, final Object oChar,
             final Object ignore) {
 
-        return crToken;
+        return CR_TOKEN;
     }
 
     /**
@@ -473,7 +473,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Object visitSpace(final Object oValue, final Object oChar,
             final Object ignore) {
 
-        return spaceToken;
+        return SPACE_TOKEN;
     }
 
     /**

@@ -35,7 +35,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -53,6 +53,9 @@ public class TokenStreamBaseImpl implements TokenStream {
 
     /**
      * Creates a new object.
+     *
+     * @param isFile indicator whether or not the token stream is assigned to
+     * a file
      */
     public TokenStreamBaseImpl(final boolean isFile) {
 
