@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,9 +38,10 @@ import java.util.ResourceBundle;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public final class Messages {
+
     /**
      * The constant <tt>BUNDLE_NAME</tt> contains the name of the resource
      * bundle to use.
@@ -69,6 +70,7 @@ public final class Messages {
      * @return the resource string or <code>null</code>
      */
     public static String getFormat(final String key) {
+
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
@@ -84,6 +86,7 @@ public final class Messages {
      * <tt>???</tt><i>key</i><tt>???</tt> if none is found
      */
     public static String format(final String key) {
+
         try {
             return bundle.getString(key);
         } catch (MissingResourceException e) {
@@ -102,6 +105,7 @@ public final class Messages {
      * @return the expanded format string
      */
     public static String format(final String fmt, final Object a) {
+
         return MessageFormat.format(format(fmt), new Object[]{a});
     }
 
@@ -119,6 +123,7 @@ public final class Messages {
      */
     public static String format(final String fmt, final Object a,
             final Object b) {
+
         return MessageFormat.format(format(fmt), new Object[]{a, b});
     }
 
@@ -137,6 +142,7 @@ public final class Messages {
      */
     public static String format(final String fmt, final Object a,
             final Object b, final Object c) {
+
         return MessageFormat.format(format(fmt), new Object[]{a, b, c});
     }
 
@@ -156,6 +162,7 @@ public final class Messages {
      */
     public static String format(final String fmt, final Object a,
             final Object b, final Object c, final Object d) {
+
         return MessageFormat.format(format(fmt), new Object[]{a, b, c, d});
     }
 
@@ -167,6 +174,7 @@ public final class Messages {
      * @param locale the preferred locale to use
      */
     public static void configure(final Locale locale) {
+
         bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 
@@ -178,6 +186,7 @@ public final class Messages {
      * @param fmt the key in the resource bundle to search for
      */
     public static void message(final PrintStream writer, final String fmt) {
+
         writer.println(Messages.format(fmt));
     }
 
@@ -193,6 +202,7 @@ public final class Messages {
      */
     public static void message(final PrintStream writer, final String fmt,
             final Object a) {
+
         writer.println(MessageFormat.format(format(fmt), new Object[]{a}));
     }
 
@@ -209,13 +219,14 @@ public final class Messages {
      */
     public static void message(final PrintStream writer, final String fmt,
             final Object a, final Object b) {
+
         writer.println(MessageFormat.format(format(fmt), new Object[]{a, b}));
     }
 
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring 
+     * argument object's value of toString() replaces the substring
      * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
      *
      * @param writer the target output writer
@@ -226,7 +237,9 @@ public final class Messages {
      */
     public static void message(final PrintStream writer, final String fmt,
         final Object a, final Object b, final Object c) {
-        writer
-            .println(MessageFormat.format(format(fmt), new Object[]{a, b, c}));
+
+        writer.println(MessageFormat.format(format(fmt),
+            new Object[]{a, b, c}));
     }
+
 }

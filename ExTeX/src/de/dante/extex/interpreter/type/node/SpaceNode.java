@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,54 +28,56 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class SpaceNode extends AbstractNode implements Node {
 
-	/**
-	 * The field <tt>width</tt> contains the width of the space to insert.
-	 */
-	private Glue theWidth;
+    /**
+     * The field <tt>width</tt> contains the width of the space to insert.
+     */
+    private Glue theWidth;
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param width the width of the space
-	 */
-	public SpaceNode(final Glue width) {
-		super(width.getLength());
-		theWidth = width;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param width the width of the space
+     */
+    public SpaceNode(final Glue width) {
+        super(width.getLength());
+        theWidth = width;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toString(final StringBuffer sb, final String prefix) {
-		sb.append("\\space");
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("\\space");
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return " ";
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return " ";
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toText(final StringBuffer sb, String prefix) {
-		sb.append(" ");
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toText(final StringBuffer sb, String prefix) {
+        sb.append(" ");
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitSpace(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitSpace(value, value2);
+    }
 
 }

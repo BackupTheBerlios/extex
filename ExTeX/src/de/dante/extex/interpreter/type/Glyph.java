@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.type;
  * Glyph
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Glyph {
 

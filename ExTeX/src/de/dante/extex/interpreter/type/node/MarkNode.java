@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,32 +28,32 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
-	/**
-	 * Creates a new object.
-	 *
-	 */
-	public MarkNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     *
+     */
+    public MarkNode() {
+        super();
+    }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [196]"
-	 */
-	public String toString() {
-		return "mark "; //TODO
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [196]"
+     */
+    public String toString() {
+        return "mark "; //TODO
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("mark "); //TODO

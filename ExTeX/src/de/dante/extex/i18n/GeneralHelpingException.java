@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,10 +21,19 @@ package de.dante.extex.i18n;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class provides an Exception with the possibility to provide additional
+ * help on the error encoutered. Thus it has two levels of information: the
+ * first level is the message and the second level is the additional help.
+ * <p>
+ * Both information strings are mapped via the
+ * {@link de.dante.extex.i18n.Messages Messages} apparatus. The key provided
+ * to this Exception is used as a key to find the format in the Messages.
+ * For the message it is used plain and for the help the string ".help" is
+ * appended.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GeneralHelpingException extends GeneralException {
     /**
@@ -129,4 +138,5 @@ public class GeneralHelpingException extends GeneralException {
     public String getMessage() {
         return Messages.format(tag, arg1, arg2, arg3);
     }
+
 }

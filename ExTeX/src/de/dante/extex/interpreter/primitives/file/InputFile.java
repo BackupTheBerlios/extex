@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InputFile extends Input {
 

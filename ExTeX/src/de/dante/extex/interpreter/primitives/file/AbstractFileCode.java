@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -29,10 +29,11 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This abstract class provides some common methods for primitives dealing with
+ * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class AbstractFileCode extends AbstractCode {
 
@@ -46,7 +47,10 @@ public abstract class AbstractFileCode extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public abstract void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)

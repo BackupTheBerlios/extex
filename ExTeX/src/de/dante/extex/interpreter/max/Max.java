@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -63,13 +63,18 @@ import de.dante.util.observer.SwitchObserver;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Max extends Moritz implements Interpreter,
         TokenSource, Observable, CatcodeVisitor {
 
     /**
-     * The field <tt>CLASS_ATTRIBUTE</tt> contains the name of the atrtribute
+     * The constant <tt>DEFAULT_ENCODING</tt> contains the ...
+     */
+    private static final String DEFAULT_ENCODING = "ISO-8859-1";
+
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the atrtribute
      * to be used to extract the class name foprm the configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
@@ -144,6 +149,13 @@ public class Max extends Moritz implements Interpreter,
     private int maxErrors = MAX_ERRORS_DEFAULT;
 
     /**
+     * The field <tt>everyRun</tt> contains the String to be inserted at the
+     * beginning of each run. It can be <code>null</code> to denote that
+     * nothing should be inserted.
+     */
+    private Configuration everyRun = null;
+
+    /**
      * Creates a new object.
      *
      * @param config the configuration object to take into account
@@ -199,11 +211,16 @@ public class Max extends Moritz implements Interpreter,
 
     /**
      * Setter for the interaction mode.
+     * The interaction mode is set globally.
      *
      * @param interaction the interaction mode
+     *
+     * @throws GeneralException in case of an error
      */
-    public void setInteraction(final Interaction interaction) {
-        context.setInteraction(interaction);
+    public void setInteraction(final Interaction interaction)
+            throws GeneralException {
+
+        context.setInteraction(interaction, true);
     }
 
     /**
@@ -212,6 +229,7 @@ public class Max extends Moritz implements Interpreter,
      * @return the interaction mode
      */
     public Interaction getInteraction() {
+
         return context.getInteraction();
     }
 
@@ -233,12 +251,14 @@ public class Max extends Moritz implements Interpreter,
      * @see de.dante.extex.interpreter.Interpreter#loadFormat(java.lang.String)
      */
     public void loadFormat(final String format) {
+
         // TODO unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
      * This method can be used to register observers for certain events.
-     * 
+     *
      * The following events are currently supported: <table>
      * <tr>
      * <th>Name</th>
@@ -271,6 +291,7 @@ public class Max extends Moritz implements Interpreter,
      */
     public void registerObserver(final String name, final Observer observer)
         throws NotObservableException {
+
         if ("expand".equals(name)) {
             observersExpand.add(observer);
         } else if ("macro".equals(name)) {
@@ -286,21 +307,26 @@ public class Max extends Moritz implements Interpreter,
      * @see de.dante.extex.interpreter.Interpreter#run()
      */
     public void run() throws ConfigurationException, GeneralException {
+
         if (typesetter == null) {
-            throw new NoTypesetterException(getClass().getName()
-                                                         + "#run()");
+            throw new NoTypesetterException(getClass().getName() + "#run()");
         }
 
         if (getTokenStreamFactory() == null) {
-            throw new NoTokenStreamFactoryException(getClass()
-                .getName()
-                                                                 + "#run()");
+            throw new NoTokenStreamFactoryException(getClass().getName()
+                                                    + "#run()");
         }
 
-        Tokens toks = context.getToks("everyjob");
-        if (toks != null) {
-            push(toks);
+        if (everyRun != null) {
+            String enc = everyRun.getAttribute("encoding");
+            if (enc == null || "".equals(enc)) {
+                enc = DEFAULT_ENCODING;
+            }
+            addStream(getTokenStreamFactory().newInstance(everyRun.getValue(),
+                                                          enc));
         }
+
+        push(context.getToks("everyjob"));
 
         execute(new Switch(true));
         typesetter.finish(context);
@@ -336,6 +362,7 @@ public class Max extends Moritz implements Interpreter,
                     throw e;
                 }
             } catch (Exception e) {
+                e.printStackTrace();
                 throw new GeneralPanicException(e);
             }
         }
@@ -358,16 +385,18 @@ public class Max extends Moritz implements Interpreter,
     }
 
     /**
-     * ...
+     * Apply the configuration options found in the given configuration object.
      *
-     * @param config ...
+     * @param config the configuration object to consider.
      *
      * @throws ConfigurationException ...
      * @throws ConfigurationMissingAttributeException ...
-     * @throws ConfigurationInstantiationException ...
+     * @throws ConfigurationException ...
+     * @throws GeneralException ...
      */
     private void configure(final Configuration config)
             throws ConfigurationException, GeneralException {
+
         if (config == null) {
             throw new ConfigurationMissingException("Interpreter");
         }
@@ -392,12 +421,13 @@ public class Max extends Moritz implements Interpreter,
             String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
 
             if (classname == null || classname.equals("")) {
-                throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE, cfg);
+                throw new ConfigurationMissingAttributeException(
+                        CLASS_ATTRIBUTE, cfg);
             }
 
             try {
-                Code code = (Code) (Class.forName(classname).getConstructor(
-                        new Class[]{String.class})
+                Code code = (Code) (Class.forName(classname)
+                        .getConstructor(new Class[]{String.class})
                         .newInstance(new Object[]{name}));
                 code.set(context, cfg.getValue());
                 context.setMacro(name, code);
@@ -418,8 +448,7 @@ public class Max extends Moritz implements Interpreter,
             } catch (NoSuchMethodException e) {
                 throw new ConfigurationInstantiationException(e);
             } catch (ClassNotFoundException e) {
-                throw new ConfigurationClassNotFoundException(classname,
-                        config);
+                throw new ConfigurationClassNotFoundException(classname, config);
             }
         }
 
@@ -428,6 +457,8 @@ public class Max extends Moritz implements Interpreter,
         context.setCount("year", calendar.get(Calendar.YEAR));
         context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY) * 60
                                  + calendar.get(Calendar.MINUTE));
+
+        everyRun = config.findConfiguration("everyjob");
     }
 
     /**

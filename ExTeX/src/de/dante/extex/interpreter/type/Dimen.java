@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -286,6 +286,15 @@ public class Dimen extends GlueComponent implements Serializable {
     }
 
     /**
+     * Return the <code>Dimen</code>-value in bp
+     *
+     * @return the value in bp
+     */
+    public double toBP() {
+        return ((double) getValue() * 7200) / (7227 * ONE);
+    }
+
+    /**
      * Rounds a floating-point number to nearest whole number.
      * It uses exactly the same algorithm as web2c implementation of TeX.
      *
@@ -293,18 +302,9 @@ public class Dimen extends GlueComponent implements Serializable {
      *
      * @return rounded value
      */
-    private long round(double d) {
+    private long round(final double d) {
 
         return (long) ((d >= 0.0) ? d + 0.5 : d - 0.5);
-    }
-
-    /**
-     * Return the <code>Dimen</code>-value in bp
-     *
-     * @return	the value in bp
-     */
-    public double toBP() {
-        return ((double) getValue() * 7200) / (7227 << 16);
     }
 
 }

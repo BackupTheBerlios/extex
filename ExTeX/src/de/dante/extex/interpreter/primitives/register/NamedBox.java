@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,7 +38,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedBox extends AbstractCode implements Code, Boxable,
         ExpandableCode, Serializable {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,7 +18,7 @@
  */
 package de.dante.extex.interpreter.max;
 
-import java.util.Stack;
+import java.util.ArrayList;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.i18n.GeneralPanicException;
@@ -37,6 +37,7 @@ import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -53,8 +54,8 @@ import de.dante.util.observer.ObserverList;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public abstract class Moritz implements TokenSource, Observable {
     /**
@@ -114,7 +115,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * from except of the current one which is stored in the variable
      * <code>stream</code>.
      */
-    private Stack streamStack = new Stack();
+    private ArrayList streamStack = new ArrayList();
 
     /**
      * The field <tt>stream</tt> contains the current stream to read tokens
@@ -173,6 +174,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @throws GeneralException in case of another error
      */
     public Token getToken() throws GeneralException {
+
         TokenFactory factory = context.getTokenFactory();
         Tokenizer tokenizer = context.getTokenizer();
         Token t;
@@ -185,7 +187,8 @@ public abstract class Moritz implements TokenSource, Observable {
             }
             observersCloseStream.update(this, stream);
 
-            stream = (TokenStream) streamStack.pop();
+            int last = streamStack.size() - 1;
+            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
         }
 
         observersEOF.update(this, null);
@@ -276,7 +279,7 @@ public abstract class Moritz implements TokenSource, Observable {
      */
     public void addStream(final TokenStream stream) {
 
-        streamStack.push(this.stream);
+        streamStack.add(this.stream);
         this.stream = stream;
     }
 
@@ -287,7 +290,8 @@ public abstract class Moritz implements TokenSource, Observable {
 
         while (stream != null) {
             observersCloseStream.update(this, stream);
-            stream = (TokenStream) streamStack.pop();
+            int last = streamStack.size() - 1;
+            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
         }
     }
 
@@ -299,10 +303,12 @@ public abstract class Moritz implements TokenSource, Observable {
         while (stream != null) {
             observersCloseStream.update(this, stream);
             if (stream.isFileStream()) {
-                stream = (TokenStream) streamStack.pop();
+                int last = streamStack.size() - 1;
+                stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
                 return;
             }
-            stream = (TokenStream) streamStack.pop();
+            int last = streamStack.size() - 1;
+            stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
         }
     }
 
@@ -330,10 +336,27 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
+     * In case that the argument is <code>null</code> then it is silently
+     * ignored.
      *
      * @param tokens the tokens to push
+     *
+     * @throws GeneralException in case that the stream is already closed
      */
     public void push(final Tokens tokens) throws GeneralException {
+
+        if (tokens == null) {
+            return;
+        }
+
+        if (stream == null) {
+            try {
+                stream = getTokenStreamFactory().newInstance("","ISO8859-1");
+            } catch (ConfigurationException e) {
+                throw new GeneralPanicException(e);
+            }
+        }
+
         for (int i = tokens.length() - 1; i >= 0; i--) {
             observersPush.update(this, tokens.get(i));
             stream.put(tokens.get(i));

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,58 +31,69 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [157]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PenaltyNode extends AbstractNode implements Node, Discartable {
 
-	/** ... */
-	private long penalty = 0;
+    /**
+     * The field <tt>penalty</tt> contains the ...
+     */
+    private long penalty = 0;
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param penalty the penalty value
-	 *
-	 * @see "TeX -- The Program [158]"
-	 */
-	public PenaltyNode(final Count penalty) {
-		this(penalty.getValue());
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param penalty the penalty value
+     *
+     * @see "TeX -- The Program [158]"
+     */
+    public PenaltyNode(final Count penalty) {
+        this(penalty.getValue());
+    }
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param penalty the penalty value
-	 */
-	public PenaltyNode(final long penalty) {
-		super();
-		this.penalty = penalty;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param penalty the penalty value
+     */
+    public PenaltyNode(final long penalty) {
+        super();
+        this.penalty = penalty;
+    }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [194]"
-	 */
-	public String toString() {
-		return "penalty " + Long.toString(penalty); //TODO: i18n
-	}
+    /**
+     * Getter for penalty.
+     *
+     * @return the penalty.
+     */
+    public long getPenalty() {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toString(final StringBuffer sb, final String prefix) {
+        return penalty;
+    }
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [194]"
+     */
+    public String toString() {
+        return "penalty " + Long.toString(penalty); //TODO: i18n
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("penalty ");
         sb.append(Long.toString(penalty));
     }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
     public Object visit(final NodeVisitor visitor, final Object value,
             final Object value2) throws GeneralException {
 
