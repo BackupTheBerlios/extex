@@ -37,7 +37,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class TTF2EFM {
 
@@ -87,7 +87,7 @@ public final class TTF2EFM {
 
         File efmfile = new File(args[1]);
 
-        TTFReader ttfr = new TTFReader(ttfin, fontname);
+        TTFReader ttfr = null; //new TTFReader(ttfin, fontname);
 
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);
