@@ -56,7 +56,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -141,10 +141,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
         Token t = start;
         if (t == null) {
             return 0;
-        } else if (t.equals(Catcode.OTHER, "-")) {
+        } else if (t.equals(Catcode.OTHER, '-')) {
             neg = true;
             t = source.getNonSpace(context);
-        } else if (t.equals(Catcode.OTHER, "+")) {
+        } else if (t.equals(Catcode.OTHER, '+')) {
             t = source.getNonSpace(context);
         }
         if (t != null && !t.equals(Catcode.OTHER, ".")
@@ -153,8 +153,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             t = source.getToken(context);
         }
         if (t != null
-                && (t.equals(Catcode.OTHER, ".") || t
-                        .equals(Catcode.OTHER, ","))) {
+                && (t.equals(Catcode.OTHER, '.') || t
+                        .equals(Catcode.OTHER, ','))) {
             // @see "TeX -- The Program [102]"
             int[] dig = new int[FLOAT_DIGITS];
             int k = 0;

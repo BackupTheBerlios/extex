@@ -76,7 +76,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.49 $
+ * @version $Revision: 1.50 $
  */
 public abstract class Moritz
         implements
@@ -628,7 +628,7 @@ public abstract class Moritz
 
         if (t == null) {
             return;
-        } else if (t.equals(Catcode.OTHER, "=")) {
+        } else if (t.equals(Catcode.OTHER, '=')) {
             skipSpaces = true;
         } else {
             stream.put(t);
@@ -908,9 +908,9 @@ public abstract class Moritz
 
         if (t == null) {
             throw new HelpingException(localizer, "TTP.MissingNumber");
-        } else if (t.equals(Catcode.OTHER, "-")) {
+        } else if (t.equals(Catcode.OTHER, '-')) {
             return -scanNumber(context);
-        } else if (t.equals(Catcode.OTHER, "+")) {
+        } else if (t.equals(Catcode.OTHER, '+')) {
             return scanNumber(context);
         }
 
