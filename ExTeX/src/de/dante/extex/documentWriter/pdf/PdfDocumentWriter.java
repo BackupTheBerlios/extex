@@ -22,40 +22,43 @@ package de.dante.extex.documentWriter.pdf;
 import java.awt.Color;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 import org.apache.fop.apps.FOPException;
-import org.apache.fop.layout.FontInfo;
-import org.apache.fop.layout.FontState;
-import org.apache.fop.layout.Page;
-import org.apache.fop.pdf.PDFAnnotList;
-import org.apache.fop.pdf.PDFColor;
+import org.apache.fop.fonts.FontDescriptor;
+import org.apache.fop.fonts.FontReader;
+import org.apache.fop.fonts.Typeface;
 import org.apache.fop.pdf.PDFDocument;
+import org.apache.fop.pdf.PDFFilterList;
+import org.apache.fop.pdf.PDFFont;
 import org.apache.fop.pdf.PDFPage;
 import org.apache.fop.pdf.PDFResources;
 import org.apache.fop.pdf.PDFStream;
-import org.apache.fop.render.pdf.FontSetup;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.interpreter.type.FontFile;
+import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glyph;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.NodeVisitor;
-import de.dante.util.configuration.Configuration;
 import de.dante.util.GeneralException;
 import de.dante.util.Unit;
+import de.dante.util.configuration.Configuration;
 
 /**
  * Implementation of a pdf document writer.
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -76,9 +79,13 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     private Configuration cfg = null;
 
+    private final boolean debug = true;
+
+    private final boolean embedBase14 = false;
+
     /**
      * Creates a new object.
-     * @param    cfg the configuration
+     * @param cfg the configuration
      */
     public PdfDocumentWriter(final Configuration cfg) {
 
@@ -119,19 +126,19 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     public void shipout(final NodeList nodes) throws IOException,
             GeneralException {
 
-        newPage();
-        shippedPages++;
+        newPage(WIDTH_A4, HEIGHT_A4);
+        shippedPages = pdfDoc.getPages().getCount();
         markOrigin();
         nodes.visit(this, nodes, null);
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#close()
+     * @see de.dante.extex.documentWriter.DocumentWriter#close()    
+     * @throws IOException ...
      */
     public void close() throws IOException {
 
-        FontSetup.addToResources(this.pdfDoc, fontInfo); // ??? //
-        pdfDoc.outputTrailer(this.out);
+        endPdfDocument();
     }
 
     /**
@@ -150,54 +157,31 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     private PDFResources pdfResources = null;
 
     /**
-     * pdfanolist
-     */
-    private PDFAnnotList currentAnnotList = null;
-
-    /**
      * currentpage
      */
     private PDFPage currentPage = null;
-
-    /**
-     * color
-     */
-    private PDFColor currentColor = null;
-
-    /**
-     * page
-     */
-    private Page page = null;
 
     /**
      * operators
      */
     private PDFOperators op = null;
 
-    /**
-     * pageWD
-     */
-    private int pageWD = 595; // "bp"
-
-    /**
-     * pageHT
-     */
-    private int pageHT = 842; // "bp"  -- A4
-
     // TeX primitives should set the papersize in any way:
     // o \paperwidth   / \paperheight, 
     // o \pdfpagewidth / \pdfpageheight <-- pdfTeX
     // o \mediawidth   / \mediaheight   <-- VTeX
+    private static final int WIDTH_A4 = 595; // "bp"
+
+    private static final int HEIGHT_A4 = 842; // "bp"
+
     /**
      * fontinfo
      */
-    private FontInfo fontInfo = null;
-
+    //private FontInfo fontInfo = null;
     /**
      * fontstate
      */
-    private FontState fontState = null;
-
+    //private FontState fontState = null;
     /**
      * x,y ...
      */
@@ -318,12 +302,15 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
         Node node = (Node) value;
         StringBuffer operators = new StringBuffer(256);
+        operators.append(op.fillColor(Color.BLUE));
         showNode(node, operators);
         debugNode(node);
-        if (state == HORIOZONTAL) {
-            System.out.println("HOR");
-        } else {
-            System.out.println("VER");
+        if (debug) {
+            if (state == HORIOZONTAL) {
+                System.out.println("==> hor. glue");
+            } else {
+                System.out.println("==> ver. glue");
+            }
         }
         setPosition(node);
         return null;
@@ -541,14 +528,6 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         showNode(node, operators);
         debugNode(node);
         setPosition(node);
-        // mgn -------------
-        Font charfont = node.getTypesettingContext().getFont();
-        Glyph charglyph = charfont.getGlyph(node.getCharacter());
-
-        System.out.println("Glyph : " + node.getCharacter() + " : "
-                + charglyph.getName() + " " + charglyph.getNumber() + "  aus "
-                + charglyph.getExternalFile());
-
         return null;
     }
 
@@ -607,10 +586,31 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         public Object visitChar(Object value, Object value2) {
 
             StringBuffer sb = (StringBuffer) value;
-            Node node = (Node) value2;
-            sb.append(" " + node.toString() + "  ");
+            CharNode node = (CharNode) value2;
+            Font font = node.getTypesettingContext().getFont();
+            Glyph glyph = font.getGlyph(node.getCharacter());
+
+            if (glyph == null) {
+                // beu NullFont kann Glyph null sein (mgn)
+                return null;
+            }
+
+            FontFile file = glyph.getExternalFile();
+
+            /*
+             System.out.println("-----------------------------------------");
+             System.out.println("Glyph : " + node.getCharacter() + " : "
+             + glyph.getName() + " " + glyph.getNumber() + "  aus "
+             + glyph.getExternalFile());
+             System.out.println("-----------------------------------------");
+             */
+
+            sb.append(" " + node.getCharacter() + " [" + glyph.getNumber()
+                    + "] ");
             sb.append("Char");
             sb.append(metric(node));
+            sb.append(" " + file.getFile());
+
             return null;
         }
 
@@ -735,7 +735,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
 
             return " (wd=" + node.getWidth().toString() + "\tht="
                     + node.getHeight().toString() + "\tdp="
-                    + node.getDepth().toString() + ")" + "\t";
+                    + node.getDepth().toString() + ")";
         }
 
     }
@@ -745,16 +745,16 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
      */
     private void debugNode(Node node) {
 
-        StringBuffer sb = new StringBuffer(256);
-        try {
-            node.visit(new DebugVisitor(), sb, node);
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (debug) {
+            StringBuffer sb = new StringBuffer(256);
+            try {
+                node.visit(new DebugVisitor(), sb, node);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            System.out.println(sb.toString());
         }
-        System.out.println(sb.toString());
     }
-
-    // ------------------------------------------------------
 
     private void showNode(Node node, StringBuffer operators) {
 
@@ -774,6 +774,10 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
         float rWD = (float) Unit.getDimenAsBP(wd);
         float rHT = (float) Unit.getDimenAsBP(ht)
                 + (float) Unit.getDimenAsBP(dp);
+
+        if (rHT <= 0.0) {
+            rHT = -1.5f;
+        }
 
         cs.add(op.addRectangle(rX, rY, rWD, rHT));
 
@@ -819,57 +823,255 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
     }
 
     /**
-     * Opens/setups the document
+     * beginPdfDocument Opens/setups the document
+     * @throws IOException ...
      */
-    private void initDocument() throws IOException {
+    private void beginPdfDocument() throws IOException {
 
-        pdfDoc = new PDFDocument();
+        Map filterMap = new java.util.HashMap();
+        List filterList = new java.util.ArrayList();
 
-        pdfDoc.setProducer("ExTeX-0.00"); // Where is this defined?
+        pdfDoc = new PDFDocument("");
 
-        /*
+        //filterList.add("flate");
+        filterList.add("null");
+        filterMap.put(PDFFilterList.DEFAULT_FILTER, filterList);
+        filterMap.put(PDFFilterList.CONTENT_FILTER, filterList);
+        filterMap.put(PDFFilterList.IMAGE_FILTER, filterList);
+        filterMap.put(PDFFilterList.JPEG_FILTER, filterList);
+        filterMap.put(PDFFilterList.FONT_FILTER, filterList);
+        pdfDoc.setFilterMap(filterMap);
 
-         How can we set the following?
-
-         /Author, /Title, /Creator, /Keywords, /CreationDate 
-
-         How can we switch off the compression?
-
-         */
-
-        fontInfo = new FontInfo();
-
-        try {
-            FontSetup.setup(fontInfo);
-            fontState = new FontState(fontInfo, "Helvetica", "normal",
-                    "normal", 12, 0);
-        } catch (FOPException e) {
-            e.printStackTrace();
-        }
-
-        pdfResources = pdfDoc.getResources();
-
-        pdfDoc.outputHeader(this.out);
+        pdfDoc.getInfo().setProducer("ExTeX-0.00");
+        pdfDoc.getInfo().setCreator("LaTeX with hyperref");
+        pdfDoc.getInfo().setTitle("Allerlei Probiererei");
+        pdfDoc.getInfo().setAuthor("Rolf");
+        pdfDoc.getInfo().setSubject("ExTeX-Entwicklung");
+        pdfDoc.getInfo().setKeywords("TeX, Java");
+        pdfDoc.getInfo().setCreationDate(null); // current system date
 
         op = new PDFOperators();
 
+        pdfDoc.outputHeader(this.out);
+
+    }
+
+    private Vector fontNameList = new Vector();
+
+    private int getFontNumber(String name) {
+
+        if (fontNameList.isEmpty()) { // Preserve space for base14 fonts.
+            for (int i = 0; i < 14; i++)
+                fontNameList.addElement(null);
+        }
+
+        int idx = fontNameList.indexOf(name);
+
+        if (idx == -1) {
+            if (name.equals("Times-Roman"))
+                idx = 0;
+            else if (name.equals("Times-Bold"))
+                idx = 1;
+            else if (name.equals("Times-Italic"))
+                idx = 2;
+            else if (name.equals("Times-BoldItalic"))
+                idx = 3;
+            else if (name.equals("Helvetica"))
+                idx = 4;
+            else if (name.equals("Helvetica-Bold"))
+                idx = 5;
+            else if (name.equals("Helvetica-Oblique"))
+                idx = 6;
+            else if (name.equals("Helvetica-BoldOblique"))
+                idx = 7;
+            else if (name.equals("Courier"))
+                idx = 8;
+            else if (name.equals("Courier-Bold"))
+                idx = 9;
+            else if (name.equals("Courier-Oblique"))
+                idx = 10;
+            else if (name.equals("Courier-BoldOblique"))
+                idx = 11;
+            else if (name.equals("Symbol"))
+                idx = 12;
+            else if (name.equals("ZapfDingbats"))
+                idx = 13;
+
+            if (idx > -1)
+                fontNameList.setElementAt(name, idx);
+            else {
+                fontNameList.addElement(name);
+                idx = fontNameList.size() - 1;
+            }
+        }
+
+        return ++idx;
+    }
+
+    private void debugFont(Typeface font, int nb) {
+
+        if (debug) {
+            boolean isEmbeddable;
+
+            if (font instanceof FontDescriptor)
+                isEmbeddable = ((FontDescriptor) font).isEmbeddable();
+            else
+                isEmbeddable = false;
+
+            System.out.println("Font /F" + nb + ": " + font.getFontName()
+                    + " (" + font.getFontType().getName() + ", kerning: "
+                    + font.hasKerningInfo() + ", embedded: " + isEmbeddable
+                    + ")");
+        }
+    }
+
+    private static int uniqueCounter = 1;
+
+    /**
+     * Create a quasiunique prefix for fontname 
+     * @return The prefix
+     * @see org.apache.fop.fonts.MultiByteFont#MultiByteFont()
+     */
+    private String uniquePrefix() {
+
+        int cnt = 0;
+        synchronized (this.getClass()) {
+            cnt = uniqueCounter++;
+        }
+        int ctm = (int) (System.currentTimeMillis() & 0xffff);
+        return new String(cnt + "E" + Integer.toHexString(ctm));
     }
 
     /**
-     * Creates and setups a new page
+     * Adds base14 font structures to the pdf document. 
      */
-    private void newPage() throws IOException {
+    private void addBase14Fonts() {
+
+        String name;
+        int nb;
+
+        for (int i = 0; i < 14; i++) {
+            name = (String) fontNameList.elementAt(i);
+            if (name != null) {
+                name = name.replaceAll("-", "");
+                nb = i + 1;
+                try {
+                    Class clazz = Class.forName("org.apache.fop.fonts.base14."
+                            + name);
+                    Typeface font = (Typeface) clazz.newInstance();
+                    debugFont(font, nb);
+                    PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb,
+                            font.getFontName(), font.getEncoding(), font, null);
+                    pdfDoc.getResources().addFont(pdfFont);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    /**
+     * Embeds fonts to the pdf document. It must exist a 
+     * metric file with file name 'fop-&quot;fontname&quot;.xml':<p>
+     *
+     * Example (from a Type1-based pfm file):<p>
+     * <code> java -cp lib/fop.jar \ </code><br>
+     * <code> org.apache.fop.fonts.apps.PFMReader cmr12.pfm fop-cmr12.xml</code><p>
+     * 
+     *   Note: The flag entry was wrong (&quot;0&quot;). Should be &quot;34&quot; in this case.
+     *   And the embed entry was empty: '&lt;embed file=&quot;file:cmr12.pfb&quot;/&gt;' added.<p>
+     *
+     * Example (from a TTF file):<p>
+     *
+     * <code> java -cp lib/fop.jar org.apache.fop.fonts.apps.TTFReader \</code><br>
+     * <code> -enc ansi cmtt12.ttf fop-cmtt12.xml </code><p>     
+     *       
+     *   Note: The parameter '-enc ansi' is required because only single byte
+     *   fonts are supported this time. '&lt;embed file=&quot;file:cmtt12.ttf&quot;/&gt;' added.<p>
+     *
+     * (How works embedding of font subsets? RN)<p>
+     *
+     * @param full If true, embeds also base14 fonts.
+     */
+    private void addEmbedFonts(boolean full) {
+
+        for (int i = (full) ? 0 : 14; i < fontNameList.size(); i++) {
+            String name = (String) fontNameList.elementAt(i);
+            if (name != null) {
+                FontReader reader = null;
+                int nb = i + 1;
+                try {
+                    reader = new FontReader("file:fop-" + name + ".xml");
+                } catch (FOPException e) {
+                    e.printStackTrace();
+                }
+                Typeface font = reader.getFont();
+                debugFont(font, nb);
+                // Prepend a prefix to the Adobe names.
+                if (i < 14)
+                    name = uniquePrefix() + "+" + name;
+                PDFFont pdfFont = pdfDoc.getFactory().makeFont("F" + nb, name,
+                        font.getEncoding(), font, (FontDescriptor) font);
+                pdfDoc.getResources().addFont(pdfFont);
+            }
+        }
+    }
+
+    private void addFonts() {
+
+        if (embedBase14)
+            addEmbedFonts(true);
+        else {
+            addBase14Fonts();
+            addEmbedFonts(false);
+        }
+    }
+
+    /**
+     * endPdfDocument Close the document
+     * @throws IOException ...
+     */
+    private void endPdfDocument() throws IOException {
+
+        cs.add("BT\n"); // Begin Text
+        cs.add("20 0 0 -20 0 0 Tm\n"); // Text transformation matrix
+        cs.add("3.6 -8.0 TD\n"); // Move 
+        cs.add("/F" + getFontNumber("Helvetica-BoldOblique") + "\n");
+        cs.add("1 Tf (Fridolin (Helvetica-BoldOblique; base14)) Tj \n");
+        cs.add("0.0 -1.0 TD\n"); // Move 
+        cs.add("/F" + getFontNumber("cmr12") + "\n");
+        cs.add("1 Tf (HUGO  (cmr12; Type1)) Tj \n");
+        cs.add("0.0 -1.0 TD\n"); // Move 
+        cs.add("/F" + getFontNumber("cmtt12") + "\n");
+        cs.add("1 Tf (GUSTAV (cmtt12; TTF)) Tj \n");
+        cs.add("ET\n"); // End Text
+
+        addFonts();
+
+        pdfDoc.outputTrailer(this.out); // Calls also output(...).
+    }
+
+    /**
+     * newPage Creates and setups a new page
+     * @param pageWD    the page width in bp
+     * @param pageHT    the page height in bp
+     * @throws IOException ...
+     */
+    private void newPage(int pageWD, int pageHT) throws IOException {
 
         if (pdfDoc == null)
-            initDocument();
+            beginPdfDocument();
+        else
+            pdfDoc.output(this.out);
 
-        pdfDoc.output(this.out);
+        currentPage = pdfDoc.getFactory().makePage(pdfDoc.getResources(),
+                pageWD, pageHT);
+        pdfDoc.addObject(currentPage);
 
-        cs = pdfDoc.makeStream();
+        cs = pdfDoc.getFactory().makeStream(PDFFilterList.CONTENT_FILTER, true);
+        currentPage.setContents(cs);
 
-        currentPage = pdfDoc.makePage(pdfResources, cs, pageWD, pageHT, page);
-
-        // TeX/SVG coordinate system.
+        // Transform origin at bottom left to origin at top left
         cs.add(op.concat(1, 0, 0, -1, 0, pageHT));
 
         lastX.set(Dimen.ONE_INCH);

@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
+import de.dante.extex.interpreter.type.Bool;
 import de.dante.extex.interpreter.type.Real;
 
 /**
@@ -28,7 +29,7 @@ import de.dante.extex.interpreter.type.Real;
  * context for the ExTeX-functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ContextExtension extends Serializable {
 
@@ -64,5 +65,37 @@ public interface ContextExtension extends Serializable {
      * @return the real register or <code>null</code> if it is not defined
      */
     Real getReal(String name);
+
+    /**
+     * Setter for the {@link de.dante.extex.interpreter.type.Bool bool}
+     * register in the current group. Bool registers are named, either with a
+     * number or an arbitrary string.
+     *
+     * @param name the name or the number of the register
+     * @param value the new value of the register
+     */
+    void setBool(String name, Bool value);
+
+    /**
+     * Setter for the {@link de.dante.extex.interpreter.type.Bool bool}
+     * register in all requested groups. Bool registers are named, either with
+     * a number or an arbitrary string.
+     *
+     * @param name the name or the number of the register
+     * @param value the new value of the register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setBool(String name, Bool value, boolean global);
+
+    /**
+     * Getter for the {@link de.dante.extex.interpreter.type.Bool bool}
+     * register. Bool registers are named, either with a number or an
+     * arbitrary string.
+     *
+     * @param name the name or number of the real register
+     * @return the bool register or <code>null</code> if it is not defined
+     */
+    Bool getBool(String name);
 
 }

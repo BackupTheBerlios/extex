@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation for a <code>LineBreaker</code>.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LineBreakerImpl implements LineBreaker {
 
@@ -51,7 +51,8 @@ public class LineBreakerImpl implements LineBreaker {
      *      de.dante.extex.interpreter.context.Context)
      */
     // TODO incomplete (very simple solution, only for test)
-    public NodeList breakLines(final HorizontalListNode nodes, final Manager manager) {
+    public NodeList breakLines(final HorizontalListNode nodes,
+            final Manager manager) {
 
         VerticalListNode vlnode = new VerticalListNode();
 
@@ -109,7 +110,7 @@ public class LineBreakerImpl implements LineBreaker {
     /**
      * Add a paragraph-indent if necessary
      * @param hln       the <code>HorizontalListNode</code>
-     * @param manager   the manager 
+     * @param manager   the manager
      */
     private void addIndent(final HorizontalListNode hln, final Manager manager) {
 
@@ -121,7 +122,8 @@ public class LineBreakerImpl implements LineBreaker {
      * @param vln        the vertical list
      * @param manager    the manager
      */
-    private void addParSkipBefore(final VerticalListNode vln, final Manager manager) {
+    private void addParSkipBefore(final VerticalListNode vln,
+            final Manager manager) {
 
         vln.addSkip(new Glue(GlueComponent.ONE * 20)); // TODO change
     }
@@ -131,7 +133,8 @@ public class LineBreakerImpl implements LineBreaker {
      * @param vln        the vertical list
      * @param manager    the manager
      */
-    private void addParSkipAfter(final VerticalListNode vln, final Manager manager) {
+    private void addParSkipAfter(final VerticalListNode vln,
+            final Manager manager) {
 
         vln.addSkip(new Glue(GlueComponent.ONE * 20)); // TODO change
     }

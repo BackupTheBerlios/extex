@@ -34,14 +34,26 @@ import de.dante.extex.font.AFMReader;
  * Convert a AFM-file to a EFM-file.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class AFM2EFM {
+public final class AFM2EFM {
 
     /**
      * filebuffer
      */
     private static final int FILEBUFFER = 0x8000;
+
+    /**
+     * private: no instance
+     */
+    private AFM2EFM() {
+
+    }
+
+    /**
+     * parameter
+     */
+    private static final int PARAMETER = 4;
 
     /**
      * main
@@ -50,7 +62,7 @@ public class AFM2EFM {
      */
     public static void main(final String[] args) throws IOException {
 
-        if (args.length != 4) {
+        if (args.length != PARAMETER) {
             System.err.println("java de.dante.util.font.AFM2EFM "
                     + "<afm-file> <pfb-file> <efm-file> <default-size>");
             System.exit(1);

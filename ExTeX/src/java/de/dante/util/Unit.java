@@ -25,9 +25,16 @@ import de.dante.extex.interpreter.type.GlueComponent;
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Unit {
+public final class Unit {
+
+    /**
+     * private: no instance
+     */
+    private Unit() {
+
+    }
 
     /**
      * basis 10

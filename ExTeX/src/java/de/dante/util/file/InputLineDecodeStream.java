@@ -34,7 +34,7 @@ import java.util.ArrayList;
  * <code>CharArray</code>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class InputLineDecodeStream {
@@ -64,6 +64,11 @@ public class InputLineDecodeStream {
     private static final int ARRAYLISTBUFFER = 0x1000;
 
     /**
+     * markbuffer
+     */
+    private static final int MARK = 10;
+
+    /**
      * Read a line from the inputstream.
      *
      * @param   encoding    the encoding for this line.
@@ -76,11 +81,11 @@ public class InputLineDecodeStream {
             return null;
         }
         if (encoding == null) {
-            throw new IllegalArgumentException("encoding is null!"); // TODO change
+            throw new IllegalArgumentException("encoding is null!");
         }
 
         if (!Charset.isSupported(encoding)) {
-            throw new IllegalArgumentException("encoding not supported!"); // TODO change
+            throw new IllegalArgumentException("encoding not supported!");
         }
 
         // ArrayList for the bytes (initsize 0x1000)
@@ -91,7 +96,7 @@ public class InputLineDecodeStream {
         while ((ib = bin.read()) != -1) {
             char c = (char) ib;
             if (c == '\r' || c == '\n') {
-                bin.mark(10);
+                bin.mark(MARK);
                 int c2 = bin.read();
                 if (c2 == -1) {
                     break;

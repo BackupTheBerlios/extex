@@ -25,44 +25,25 @@
 	extkill="true"   -> element is delete in the originnal-document
 	
 	@author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
-    @version $Revision: 1.2 $
+    @version $Revision: 1.3 $
 -->
 <ExTeX>
-  <Interpreter extappend="true">
-    <Define name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal"/>
-    <Define name="realdef" class=""/>
-    <define name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
-    <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks">ISO8859-1</define>
-    <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>
-    <define name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding"/>
-    <Define name="setlanguage" class="de.dante.extex.interpreter.primitives.hyphen.SetLanguage"/>
-    <Define name="tosp" class="de.dante.extex.interpreter.primitives.info.ToSP"/>
-    <Define name="printformat" class="de.dante.extex.interpreter.primitives.info.PrintFormat"/>
-    <Context extappend="true">
-	      <Font extkill="true" class="de.dante.extex.font.FontFactoryImpl" default="cmr12" size="12">
-			<File>
-	           <efm>
-	           		<extension>.efm</extension>
-	            	<path>.</path>
-            		<path>font</path>
-   	      	   </efm>
-               <pfb>
-                  	<extension>.pfb</extension>
-            		<path>.</path>
-            		<path>font</path>
-   	      		</pfb>
-          		<ttf>
-            		<extension>.ttf</extension>
-            		<path>.</path>
-            		<path>font</path>
-   	      		</ttf>
-        	</File>
-      </Font>
-    </Context>
-  </Interpreter>
-  <Scanner extkill="true">
-	<String class="de.dante.extex.scanner.stream.impl.TokenStreamStringImpl32"/>
-	<File class="de.dante.extex.scanner.stream.impl.TokenStreamFileImpl32"/>
-    <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamReaderImpl32"/>
- </Scanner>
+    <Interpreter extappend="true">
+        <define name="real" class="de.dante.extex.interpreter.primitives.register.real.NumberedReal"/>
+        <define name="realdef" class="de.dante.extex.interpreter.primitives.register.real.RealDef"/>
+        <define name="bool" class="de.dante.extex.interpreter.primitives.register.bool.NumberedBool"/>
+        <define name="booldef" class="de.dante.extex.interpreter.primitives.register.bool.BoolDef"/>
+        <define name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
+        <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.toks.NamedToks">ISO8859-1</define>
+        <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>
+        <define name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding"/>
+        <Define name="setlanguage" class="de.dante.extex.interpreter.primitives.hyphen.SetLanguage"/>
+        <Define name="tosp" class="de.dante.extex.interpreter.primitives.info.ToSP"/>
+        <define name="printformat" class="de.dante.extex.interpreter.primitives.info.PrintFormat"/>
+        <Context extkill="true" class="de.dante.extex.interpreter.context.impl.extension.ContextExtensionImpl">
+            <Group class="de.dante.extex.interpreter.context.impl.extension.GroupExtensionImpl"/>
+            <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+            <Language></Language>
+        </Context>
+    </Interpreter>
 </ExTeX>

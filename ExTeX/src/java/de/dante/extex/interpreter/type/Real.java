@@ -37,19 +37,19 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Real implements Serializable {
 
     /**
      * ZERO-Real
      */
-    public static final Real ZERO = new Real(0);
+    public static final Real ZERO = new ImmutableReal(0);
 
     /**
      * max-Real
      */
-    public static final Real MAX_VALUE = new Real(Double.MAX_VALUE);
+    public static final Real MAX_VALUE = new ImmutableReal(Double.MAX_VALUE);
 
     /**
      * The value
@@ -80,9 +80,7 @@ public class Real implements Serializable {
             throws GeneralException {
 
         super();
-        Real r = scanReal(context, source);
-        //gene: this should be integrated
-        value = r.getValue();
+        value = scanReal(context, source);
     }
 
     /**
@@ -90,12 +88,10 @@ public class Real implements Serializable {
      *
      * @param context ...
      * @param source ...
-     *
-     * @return    the <code>Real</code>-value
-     *
+     * @return the <code>Real</code>-value
      * @throws GeneralException in case of an error
      */
-    private Real scanReal(final Context context, final TokenSource source)
+    private double scanReal(final Context context, final TokenSource source)
             throws GeneralException {
 
         long val = 0;
@@ -113,13 +109,14 @@ public class Real implements Serializable {
         } else if (t instanceof ControlSequenceToken) {
             Code code = context.getMacro(t.getValue());
             if (code != null && code instanceof CountConvertable) {
-                return new Real(((CountConvertable) code).convertCount(context,
-                        source));
+                return (new Real(((CountConvertable) code).convertCount(
+                        context, source))).getValue();
             } else if (code != null && code instanceof DimenConvertable) {
-                return new Real(((DimenConvertable) code).convertDimen(context,
-                        source));
+                return (new Real(((DimenConvertable) code).convertDimen(
+                        context, source))).getValue();
             } else if (code != null && code instanceof RealConvertable) {
-                return ((RealConvertable) code).convertReal(context, source);
+                return (((RealConvertable) code).convertReal(context, source))
+                        .getValue();
             }
         }
 
@@ -141,11 +138,11 @@ public class Real implements Serializable {
         if (t != null
                 && (t.equals(Catcode.OTHER, ".") || t
                         .equals(Catcode.OTHER, ","))) {
-            value = source.scanNumber();
+            val = source.scanNumber();
         }
         sb.append(Long.toString(val));
 
-        return new Real(sb.toString());
+        return (new Real(sb.toString())).getValue();
     }
 
     /**
@@ -172,11 +169,7 @@ public class Real implements Serializable {
      */
     public Real(final long l) {
 
-        if (l > MAX_VALUE.getLong()) {
-            value = MAX_VALUE.getLong();
-        } else {
-            value = l;
-        }
+        value = l;
     }
 
     /**
@@ -190,17 +183,21 @@ public class Real implements Serializable {
 
     /**
      * Creates a new object.<p>
-     * If a error is throws, the value is set to zero
+     * If the string equlas <code>null</code> or empty, the value is set to zero
      * @param s     the value as String
+     * @throws GeneralException if a NumberFormatException is throws
      */
-    public Real(final String s) {
+    public Real(final String s) throws GeneralException {
 
-        try {
-            value = Double.valueOf(s).doubleValue();
-        } catch (NumberFormatException e) {
-            //gene: bad idea to ignore a number format exception:-(
-            // set to zero
+        if (s == null || s.trim().length() == 0) {
             value = 0.0d;
+        } else {
+
+            try {
+                value = Double.valueOf(s).doubleValue();
+            } catch (NumberFormatException e) {
+                throw new GeneralHelpingException("TTP.NumberFormatError", s);
+            }
         }
     }
 
@@ -225,9 +222,9 @@ public class Real implements Serializable {
     }
 
     /**
-     * ...
+     * add
      *
-     * @param val ...
+     * @param val the value to add
      */
     public void add(final double val) {
 
@@ -235,9 +232,9 @@ public class Real implements Serializable {
     }
 
     /**
-     * ...
+     * add
      *
-     * @param real ...
+     * @param real the value to add
      */
     public void add(final Real real) {
 
@@ -245,9 +242,9 @@ public class Real implements Serializable {
     }
 
     /**
-     * ...
+     * divide
      *
-     * @param val ...
+     * @param val the value to divide
      *
      * @throws GeneralException in case of a division by zero
      */
@@ -261,9 +258,9 @@ public class Real implements Serializable {
     }
 
     /**
-     * ...
+     * divide
      *
-     * @param val ...
+     * @param val the value to divide
      *
      * @throws GeneralException in case of a division by zero
      */
@@ -273,9 +270,9 @@ public class Real implements Serializable {
     }
 
     /**
-     * ...
+     * multiply
      *
-     * @param val ...
+     * @param val the value to multiply
      */
     public void multiply(final double val) {
 
@@ -283,9 +280,9 @@ public class Real implements Serializable {
     }
 
     /**
-     * ...
+     * multiply
      *
-     * @param val ...
+     * @param val the value to multiply
      */
     public void multiply(final Real val) {
 
@@ -294,8 +291,7 @@ public class Real implements Serializable {
 
     /**
      * Return the value as long.
-     *
-     * @return ...
+     * @return the value as long
      */
     public long getLong() {
 
@@ -304,7 +300,6 @@ public class Real implements Serializable {
 
     /**
      * Return the value as <code>String</code>
-     *
      * @return the value as <code>String</code>
      */
     public String toString() {

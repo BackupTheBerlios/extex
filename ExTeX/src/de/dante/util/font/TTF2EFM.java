@@ -33,14 +33,21 @@ import de.dante.extex.font.TTFReader;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class TTF2EFM {
+public final class TTF2EFM {
 
     /**
      * filebuffer
      */
     private static final int FILEBUFFER = 0x8000;
+
+    /**
+     * private: no instance
+     */
+    private TTF2EFM() {
+
+    }
 
     /**
      * main

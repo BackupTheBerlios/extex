@@ -29,22 +29,24 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation for a <code>LineBreaker</code>.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LineBreakerXXXImpl implements LineBreaker {
 
     /**
-     * Creates a new Obejct 
+     * Creates a new Obejct
      */
     public LineBreakerXXXImpl() {
         super();
     }
 
     /**
-     * @see de.dante.extex.typesetter.LineBreaker#breakLines(de.dante.extex.interpreter.type.node.HorizontalListNode, de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.typesetter.LineBreaker#breakLines(
+     *             de.dante.extex.interpreter.type.node.HorizontalListNode,
+     *             de.dante.extex.interpreter.context.Context)
      */
     // TODO incomplete (break no line, only for test)
-    public NodeList breakLines(HorizontalListNode nodes, Manager manager) {
+    public NodeList breakLines(final HorizontalListNode nodes, final Manager manager) {
 
         VerticalListNode vlnode = new VerticalListNode();
 

@@ -234,6 +234,7 @@
 	        <include name="lib/**/*"/>
     	    <include name="lib.develop/**/*"/>
         	<include name="src/**/*"/>
+        	<include name="font/**/*"/>
 	        <include name="test/**/*"/>
     	    <include name="testdata/**/*"/>
         	<include name="util/**/*"/>

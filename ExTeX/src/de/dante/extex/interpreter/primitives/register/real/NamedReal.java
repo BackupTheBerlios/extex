@@ -17,10 +17,11 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.register.real;
 
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
+import de.dante.extex.interpreter.CountConvertable;
 import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Multiplyable;
@@ -37,7 +38,7 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the real valued primitives.
- * It sets the named count register to the value given,
+ * It sets the named real register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
  * <p>Example</p>
@@ -46,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.1 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -54,7 +55,8 @@ public class NamedReal extends AbstractAssignment
             Advanceable,
             Multiplyable,
             Divideable,
-            RealConvertable {
+            RealConvertable,
+            CountConvertable {
 
     /**
      * Creates a new object.
@@ -192,6 +194,7 @@ public class NamedReal extends AbstractAssignment
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
+
             String key = getKey(source);
             Real real = contextextex.getReal(key);
             source.scanKeyword("by", true);
@@ -242,6 +245,24 @@ public class NamedReal extends AbstractAssignment
             String key = getKey(source);
             Real r = contextextex.getReal(key);
             return (r != null ? r : Real.ZERO);
+        } else {
+            throw new MainExTeXExtensionException();
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.CountConvertable#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public long convertCount(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        if (context instanceof ContextExtension) {
+            ContextExtension contextextex = (ContextExtension) context;
+            String key = getKey(source);
+            Real r = contextextex.getReal(key);
+            return (r != null ? r.getLong() : 0);
         } else {
             throw new MainExTeXExtensionException();
         }

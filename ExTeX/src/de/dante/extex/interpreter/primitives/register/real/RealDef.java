@@ -17,10 +17,10 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.register.real;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -33,18 +33,15 @@ import de.dante.util.GeneralException;
 /**
  * This class provides an implementation for the primitive <code>\realdef</code>.
  *
- * <p>
- * Example
- * </p>
- *
+ * <p>Example</p>
  * <pre>
- *  \realdef\hugo=7
+ * \realdef\hugo=7
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class RealDef extends AbstractCode {
+public class RealDef extends AbstractAssignment {
 
     /**
      * Creates a new object.
@@ -62,7 +59,7 @@ public class RealDef extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -74,8 +71,5 @@ public class RealDef extends AbstractCode {
         source.scanOptionalEquals();
         String key = "real#" + Long.toString(Count.scanCount(context, source));
         context.setMacro(tok.getValue(), new NamedReal(key), prefix.isGlobal());
-
-        prefix.clear();
-        // doAfterAssignment(context, source);
     }
 }

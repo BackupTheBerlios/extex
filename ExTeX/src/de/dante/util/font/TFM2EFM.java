@@ -35,14 +35,26 @@ import de.dante.extex.font.TFMReader;
  * Convert a TFM-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class TFM2EFM {
+public final class TFM2EFM {
 
     /**
      * filebuffer
      */
     private static final int FILEBUFFER = 0x8000;
+
+    /**
+     * private: no instance
+     */
+    private TFM2EFM() {
+
+    }
+
+    /**
+     * parameter
+     */
+    private static final int PARAMETER = 3;
 
     /**
      * main
@@ -51,7 +63,7 @@ public class TFM2EFM {
      */
     public static void main(final String[] args) throws IOException {
 
-        if (args.length != 3) {
+        if (args.length != PARAMETER) {
             System.err
                     .println("java de.dante.util.font.TFM2EFM <tfm-file> <pfb-file> <efm-file>");
             System.exit(1);

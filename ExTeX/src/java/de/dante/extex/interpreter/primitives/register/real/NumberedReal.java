@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.register;
+package de.dante.extex.interpreter.primitives.register.real;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 public class NumberedReal extends NamedReal {
 

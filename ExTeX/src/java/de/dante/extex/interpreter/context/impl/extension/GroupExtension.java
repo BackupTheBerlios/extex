@@ -23,13 +23,14 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.impl.Group;
+import de.dante.extex.interpreter.type.Bool;
 import de.dante.extex.interpreter.type.Real;
 
 /**
  * This is the implementation of a group object with ExTeX-functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface GroupExtension extends Group, Tokenizer, Serializable {
 
@@ -64,5 +65,37 @@ public interface GroupExtension extends Group, Tokenizer, Serializable {
      * @return the value of the real register or its default
      */
     Real getReal(String name);
+
+    /**
+     * Setter for the bool register in the current group.
+     *
+     * @param name the name of the register
+     * @param value the value of the register
+     */
+    void setBool(String name, Bool value);
+
+    /**
+     * Setter for a bool register in the requested groups.
+     *
+     * @param name the name of the register
+     * @param value the value of the register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setBool(String name, Bool value, boolean global);
+
+    /**
+     * Getter for the named bool register in the current group. The name can
+     * either be a string representing a number or an arbitrary string. In the
+     * first case the behavior of the numbered real registers is emulated. The
+     * other case can be used to store special real values.
+     *
+     * As a default value <code>null</code> is returned.
+     *
+     * @param name the name of the register
+     *
+     * @return the value of the register or its default
+     */
+    Bool getBool(String name);
 
 }

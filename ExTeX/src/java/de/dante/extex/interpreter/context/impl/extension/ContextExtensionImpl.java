@@ -24,18 +24,19 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextExtension;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
+import de.dante.extex.interpreter.type.Bool;
 import de.dante.extex.interpreter.type.Real;
+import de.dante.extex.main.MainExTeXExtensionException;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationMissingException;
 
 /**
  * This is a reference implementation for an interpreter context with
  * ExTeX functions.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ContextExtensionImpl extends ContextImpl
         implements
@@ -54,8 +55,7 @@ public class ContextExtensionImpl extends ContextImpl
 
         super(config);
         if (!(getGroup() instanceof GroupExtension)) {
-            throw new ConfigurationMissingException("illegal group found");
-            //TODO i18n
+            throw new MainExTeXExtensionException();
         }
     }
 
@@ -68,7 +68,8 @@ public class ContextExtensionImpl extends ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(java.lang.String,
+     * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Real, boolean)
      */
     public void setReal(final String name, final Real value,
@@ -78,11 +79,41 @@ public class ContextExtensionImpl extends ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(java.lang.String,
+     * @see de.dante.extex.interpreter.context.ContextExTeX#setReal(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Real)
      */
     public void setReal(final String name, final Real value) {
 
         ((GroupExtension) getGroup()).setReal(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#getBool(java.lang.String)
+     */
+    public Bool getBool(final String name) {
+
+        return ((GroupExtension) getGroup()).getBool(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setBool(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Bool, boolean)
+     */
+    public void setBool(final String name, final Bool value,
+            final boolean global) {
+
+        ((GroupExtension) getGroup()).setBool(name, value, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.ContextExtension#setBool(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Bool)
+     */
+    public void setBool(final String name, final Bool value) {
+
+        ((GroupExtension) getGroup()).setBool(name, value);
     }
 }

@@ -26,13 +26,16 @@ import java.util.Map;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.impl.Group;
 import de.dante.extex.interpreter.context.impl.GroupImpl;
+import de.dante.extex.interpreter.type.Bool;
 import de.dante.extex.interpreter.type.Real;
+import de.dante.extex.main.MainExTeXExtensionException;
+import de.dante.util.GeneralException;
 
 /**
  * This is a simple implementation for a group with ExTeX-functions.
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GroupExtensionImpl extends GroupImpl
         implements
@@ -47,6 +50,11 @@ public class GroupExtensionImpl extends GroupImpl
     private Map realMap = new HashMap();
 
     /**
+     * The map for the bool registers
+     */
+    private Map boolMap = new HashMap();
+
+    /**
      * The next group in the linked list
      */
     private GroupExtension nextext = null;
@@ -56,11 +64,15 @@ public class GroupExtensionImpl extends GroupImpl
      *
      * @param next the next group in the stack. If the value is <code>null</code>
      *            then this is the global base
+     * @throws GeneralException if the group is not a groupextension
      */
-    public GroupExtensionImpl(final Group next) {
+    public GroupExtensionImpl(final Group next) throws GeneralException {
 
         super(next);
-        nextext = (GroupExtension) next; // TODO test with instanceof -> throw Exception
+        if (next != null && !(next instanceof GroupExtension)) {
+            throw new MainExTeXExtensionException();
+        }
+        nextext = (GroupExtension) next;
     }
 
     /**
@@ -103,5 +115,51 @@ public class GroupExtensionImpl extends GroupImpl
     public void setReal(final String name, final Real value) {
 
         realMap.put(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#getBool(
+     *      java.lang.String)
+     */
+    public Bool getBool(final String name) {
+
+        Bool bool = (Bool) (boolMap.get(name));
+
+        if (bool == null) {
+            if (nextext != null) {
+                bool = nextext.getBool(name);
+            } else {
+                bool = new Bool();
+                setBool(name, bool);
+            }
+        }
+
+        return bool;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setBool(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Bool, boolean)
+     */
+    public void setBool(final String name, final Bool value,
+            final boolean global) {
+
+        setBool(name, value);
+
+        if (global && nextext != null) {
+            nextext.setBool(name, value, global);
+        }
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.impl.extension.GroupExtension#setBool(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Bool)
+     */
+    public void setBool(final String name, final Bool value) {
+
+        boolMap.put(name, value);
     }
 }
