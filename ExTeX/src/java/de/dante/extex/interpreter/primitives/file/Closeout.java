@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Closeout extends AbstractCode {
 
@@ -64,7 +64,7 @@ public class Closeout extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
 
@@ -78,7 +78,7 @@ public class Closeout extends AbstractCode {
         if (file != null) {
             file.close();
         }
-        prefix.clear();
+        return true;
     }
 
 }

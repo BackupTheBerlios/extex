@@ -61,7 +61,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
     CountConvertible, DimenConvertible {
@@ -82,7 +82,7 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
 
@@ -94,7 +94,7 @@ public class Ht extends Setbox implements Serializable, ExpandableCode, Theable,
             box.setHeight(d);
         }
 
-        prefix.clear();
+        return true;
     }
 
     /**

@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Kern extends AbstractCode {
 
@@ -84,7 +84,7 @@ public class Kern extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -96,7 +96,7 @@ public class Kern extends AbstractCode {
             throw e;
         }
         typesetter.add(new KernNode(kern));
-        prefix.clear();
+        return true;
     }
 
 }

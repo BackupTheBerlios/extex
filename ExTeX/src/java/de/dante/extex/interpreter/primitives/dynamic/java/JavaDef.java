@@ -118,7 +118,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -139,7 +139,7 @@ public class JavaDef extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -174,6 +174,6 @@ public class JavaDef extends AbstractCode {
         }
         context.setCode(cs, code, prefix.isGlobal());
 
-        prefix.clear();
+        return true;
     }
 }

@@ -41,7 +41,7 @@ import de.dante.util.UnicodeCharList;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Patterns extends AbstractCode {
 
@@ -67,7 +67,7 @@ public class Patterns extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -82,6 +82,7 @@ public class Patterns extends AbstractCode {
             ht.addPattern(createPatternName(pat, context), createPatternEntry(
                     pat, context));
         }
+        return true;
     }
 
     /**

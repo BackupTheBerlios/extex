@@ -56,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Aftergroup extends AbstractCode {
 
@@ -75,7 +75,7 @@ public class Aftergroup extends AbstractCode {
      *       de.dante.extex.interpreter.TokenSource,
      *       de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -86,7 +86,7 @@ public class Aftergroup extends AbstractCode {
         }
         context.afterGroup(t);
 
-        prefix.clear();
+        return true;
     }
 
 }

@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Number extends AbstractCode implements ExpandableCode {
 
@@ -72,13 +72,13 @@ public class Number extends AbstractCode implements ExpandableCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         long n = source.scanInteger();
         source.push(new Tokens(context, Long.toString(n)));
-        prefix.clear();
+        return true;
     }
 
     /**

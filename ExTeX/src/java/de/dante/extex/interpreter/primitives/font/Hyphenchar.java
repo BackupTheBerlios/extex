@@ -57,7 +57,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Hyphenchar extends AbstractCode implements ExpandableCode {
 
@@ -83,7 +83,7 @@ public class Hyphenchar extends AbstractCode implements ExpandableCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -91,7 +91,7 @@ public class Hyphenchar extends AbstractCode implements ExpandableCode {
         source.getOptionalEquals();
         UnicodeChar c = source.scanCharacterCode();
         font.setHyphenChar(c);
-        prefix.clear();
+        return true;
     }
 
     /**

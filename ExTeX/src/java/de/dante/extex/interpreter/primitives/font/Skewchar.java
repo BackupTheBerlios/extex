@@ -53,7 +53,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Skewchar extends AbstractCode {
 
@@ -72,7 +72,7 @@ public class Skewchar extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -80,7 +80,7 @@ public class Skewchar extends AbstractCode {
         source.getOptionalEquals();
         UnicodeChar c = source.scanCharacterCode();
         font.setSkewChar(c);
-        prefix.clear();
+        return true;
     }
 
 }

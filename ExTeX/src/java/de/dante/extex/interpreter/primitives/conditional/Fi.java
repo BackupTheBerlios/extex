@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Fi extends AbstractCode implements ExpandableCode {
 
@@ -79,7 +79,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -87,7 +87,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
             throw new GeneralHelpingException("TTP.ExtraOrElseFi",
                     printableControlSequence(context));
         }
-        prefix.clear();
+        return true;
     }
 
     /**

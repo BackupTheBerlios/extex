@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractFileCode extends AbstractCode {
 
@@ -54,7 +54,7 @@ public abstract class AbstractFileCode extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public abstract void execute(final Flags prefix, final Context context,
+    public abstract boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException;
 

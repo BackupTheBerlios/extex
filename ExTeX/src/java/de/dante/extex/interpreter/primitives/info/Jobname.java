@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Jobname extends AbstractCode implements ExpandableCode {
 
@@ -69,7 +69,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -77,7 +77,7 @@ public class Jobname extends AbstractCode implements ExpandableCode {
         if (jobname != null) {
             source.push(jobname);
         }
-        prefix.clear();
+        return true;
     }
 
     /**

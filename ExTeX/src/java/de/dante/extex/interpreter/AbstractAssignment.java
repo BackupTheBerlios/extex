@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 
@@ -54,7 +54,7 @@ public abstract class AbstractAssignment extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public final void execute(final Flags prefix, final Context context,
+    public final boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -71,7 +71,7 @@ public abstract class AbstractAssignment extends AbstractCode {
             source.push(afterassignment);
         }
 
-        prefix.clear();
+        return true;
     }
 
     /**

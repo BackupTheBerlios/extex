@@ -69,7 +69,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Max extends Moritz
         implements
@@ -173,8 +173,9 @@ public class Max extends Moritz
      * @throws ConfigurationException in case of an error
      * @throws GeneralException in case of another error
      */
-    public Max(final Configuration config) throws ConfigurationException,
-            GeneralException {
+    public Max(final Configuration config)
+            throws ConfigurationException,
+                GeneralException {
 
         super(config);
         //long t = System.currentTimeMillis();
@@ -339,8 +340,9 @@ public class Max extends Moritz
      *
      * @see #run()
      */
-    public void run(final TokenStream stream) throws ConfigurationException,
-            GeneralException {
+    public void run(final TokenStream stream)
+            throws ConfigurationException,
+                GeneralException {
 
         addStream(stream);
         run();
@@ -423,7 +425,9 @@ public class Max extends Moritz
             throw new GeneralHelpingException("TTP.UndefinedToken", //
                     token.toString());
         }
-        code.execute(prefix, context, this, typesetter);
+        if (code.execute(prefix, context, this, typesetter)) {
+            prefix.clear();
+        }
         return null;
     }
 
@@ -466,7 +470,9 @@ public class Max extends Moritz
             throw new GeneralHelpingException("TTP.UndefinedToken", //
                     token.toString());
         }
-        code.execute(prefix, context, this, typesetter);
+        if (code.execute(prefix, context, this, typesetter)) {
+            prefix.clear();
+        }
         return null;
     }
 
@@ -648,7 +654,8 @@ public class Max extends Moritz
      *             in case of another error
      */
     private void configure(final Configuration config)
-            throws ConfigurationException, GeneralException {
+            throws ConfigurationException,
+                GeneralException {
 
         if (config == null) {
             throw new ConfigurationMissingException("Interpreter");

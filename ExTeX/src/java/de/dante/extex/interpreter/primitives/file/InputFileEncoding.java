@@ -43,7 +43,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class InputFileEncoding extends InputFile {
 
@@ -66,7 +66,7 @@ public class InputFileEncoding extends InputFile {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -81,6 +81,6 @@ public class InputFileEncoding extends InputFile {
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
-        prefix.clear();
+        return true;
     }
 }

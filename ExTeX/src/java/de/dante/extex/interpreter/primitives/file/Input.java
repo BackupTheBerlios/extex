@@ -48,7 +48,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Input extends AbstractFileCode {
 
@@ -71,7 +71,7 @@ public class Input extends AbstractFileCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -88,7 +88,7 @@ public class Input extends AbstractFileCode {
         //} catch (IOException e) {
         //    throw new GeneralException(e);
         }
-        prefix.clear();
+        return true;
     }
 
 }

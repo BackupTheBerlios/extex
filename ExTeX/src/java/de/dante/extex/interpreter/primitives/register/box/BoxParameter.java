@@ -35,7 +35,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  *
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BoxParameter extends AbstractCode implements Code, Serializable {
 
@@ -56,7 +56,7 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -64,7 +64,7 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
         source.getOptionalEquals();
         Box box = source.getBox(typesetter);
         context.setBox(key, box, prefix.isGlobal());
-        prefix.clear();
+        return true;
         //TODO doAfterAssignment(context, source);
     }
 

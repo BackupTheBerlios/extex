@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -64,7 +64,7 @@ public class Openout extends AbstractFileCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -85,7 +85,7 @@ public class Openout extends AbstractFileCode {
         }
         context.setOutFile(key, file, prefix.isGlobal());
 
-        prefix.clear();
+        return true;
     }
 
 }

@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class LeftHyphenmin extends AbstractCode implements Theable {
 
@@ -67,7 +67,7 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -79,6 +79,7 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
         int lefthyphmin = (int) source.scanInteger();
 
         ht.setLeftHyphenmin(lefthyphmin);
+        return true;
     }
 
     /**

@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Write extends AbstractCode {
 
@@ -64,7 +64,7 @@ public class Write extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -78,7 +78,7 @@ public class Write extends AbstractCode {
             write(no, toks);
         }
 
-        prefix.clear();
+        return true;
     }
 
     /**

@@ -41,7 +41,7 @@ import de.dante.util.UnicodeCharList;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Hyphenation extends AbstractCode {
 
@@ -67,7 +67,7 @@ public class Hyphenation extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -81,6 +81,7 @@ public class Hyphenation extends AbstractCode {
             String pat = st.nextToken().trim();
             ht.addHyphenation(createHyphenation(pat, context), pat);
         }
+        return true;
     }
 
     /**

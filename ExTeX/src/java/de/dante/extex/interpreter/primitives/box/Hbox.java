@@ -73,7 +73,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -93,14 +93,14 @@ public class Hbox extends AbstractCode implements Boxable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         Box b = getBox(context, source, typesetter);
         typesetter.add(b.getNodes());
 
-        prefix.clear();
+        return true;
     }
 
     /**

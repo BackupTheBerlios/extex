@@ -72,7 +72,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Hrule extends AbstractCode {
 
@@ -99,7 +99,7 @@ public class Hrule extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      * @see "TeX -- The Program [463]"
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
@@ -121,7 +121,7 @@ public class Hrule extends AbstractCode {
 
         typesetter.add(new RuleNode(width, height, depth, context
                 .getTypesettingContext()));
-        prefix.clear();
+        return true;
     }
 
 }

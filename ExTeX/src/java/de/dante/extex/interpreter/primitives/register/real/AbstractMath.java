@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * e.g. sin, cos, ...
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractMath extends AbstractCode
         implements
@@ -65,12 +65,13 @@ public abstract class AbstractMath extends AbstractCode
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         Real real = calculate(context, source);
         source.push(new Tokens(context, real.toString()));
+        return true;
     }
 
     /**

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.AbstractCode;
@@ -52,7 +53,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Endinput extends AbstractCode {
 
@@ -62,6 +63,7 @@ public class Endinput extends AbstractCode {
      * @param name the name for debugging
      */
     public Endinput(final String name) {
+
         super(name);
     }
 
@@ -71,12 +73,12 @@ public class Endinput extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
         source.closeNextFileStream();
-        prefix.clear();
+        return true;
     }
 
 }
