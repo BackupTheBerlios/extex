@@ -65,7 +65,7 @@
     <Define name="csname" class=""/>
     <define name="day" class="de.dante.extex.interpreter.primitives.register.NamedCount">1</define>
     <define name="deadcycles" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="def" class=""/>
+    <define name="def" class="de.dante.extex.interpreter.primitives.macro.Def"/>
     <define name="defaulthyphenchar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="defaultskewchar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="delcode" class=""/>
@@ -84,7 +84,7 @@
     <define name="doublehyphendemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="dp" class=""/>
     <Define name="dump" class=""/>
-    <Define name="edef" class=""/>
+    <Define name="edef" class="de.dante.extex.interpreter.primitives.macro.Edef"/>
     <define name="else" class="de.dante.extex.interpreter.primitives.conditional.Else"/>
     <Define name="emergencystretch" class=""/>
     <define name="end" class="de.dante.extex.interpreter.primitives.file.End"/>
@@ -116,7 +116,7 @@
     <Define name="fontdimen" class=""/>
     <Define name="fontname" class=""/>
     <Define name="futurelet" class=""/>
-    <Define name="gdef" class=""/>
+    <define name="gdef" class="de.dante.extex.interpreter.primitives.macro.Gdef"/>
     <define name="global" class="de.dante.extex.interpreter.primitives.prefix.Global"/>
     <Define name="globaldefs" class=""/>
     <Define name="halign" class=""/>
@@ -349,7 +349,7 @@
     <define name="wd" class="de.dante.extex.interpreter.primitives.register.Wd"/>
     <define name="widowpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="write" class=""/>
-    <Define name="xdef" class=""/>
+    <Define name="xdef" class="de.dante.extex.interpreter.primitives.macro.Xdef"/>
     <Define name="xleaders" class=""/>
     <Define name="xspaceskip" class=""/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
