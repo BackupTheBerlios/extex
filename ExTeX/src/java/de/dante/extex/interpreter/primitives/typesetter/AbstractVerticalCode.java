@@ -27,10 +27,10 @@ import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
- * ...
+ * This an abstract base class for primitives in vertical mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AbstractVerticalCode extends AbstractCode {
 
@@ -45,7 +45,8 @@ public class AbstractVerticalCode extends AbstractCode {
     }
 
     /**
-     * ...
+     * Check that the current mode is a vertical mode and throw an exception
+     * if another mode is detected.
      *
      * @param typesetter the typesetter to ask for the mode
      *
