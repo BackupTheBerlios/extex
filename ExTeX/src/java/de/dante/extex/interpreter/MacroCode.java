@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class MacroCode extends AbstractCode implements Code {
     /**
@@ -124,7 +124,7 @@ public class MacroCode extends AbstractCode implements Code {
         Tokens[] ta = new Tokens[9];
         Token ti;
         Token t;
-        int i = 1;
+        //int i = 1;
         int len = pattern.length();
 
         for (int pi = 0; pi < len; pi++) {
