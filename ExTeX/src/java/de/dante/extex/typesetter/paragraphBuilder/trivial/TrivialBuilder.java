@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -201,10 +201,11 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         prepareParshape();
 
         // remove final node if it is glue; [TTB p99--100]
-        int lastNodeIndex = nodes.size() - 1;
-        Node node = (lastNodeIndex < 0 ? null : nodes.get(lastNodeIndex));
+        int len = nodes.size();
+        Node node = (len < 1 ? null : nodes.get(len - 1));
         if (node instanceof GlueNode) {
-            nodes.remove(lastNodeIndex);
+            len--;
+            nodes.remove(len);
         }
 
         // [TTB p100]
@@ -213,7 +214,8 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
         nodes.add(new PenaltyNode(EJECT_PENALTY));
 
         VerticalListNode vlist = new VerticalListNode();
-        int len = nodes.size();
+        vlist.add(new GlueNode(options.getGlueOption("parskip")));
+
         int i = 0;
         int line = 0;
         Dimen wd = new Dimen();
