@@ -20,16 +20,15 @@ package de.dante.extex.interpreter.loader;
 
 
 /**
- * ...
+ * This esception is used when the loader detects a class cast exception.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LoaderClassCastException extends LoaderException {
 
     /**
      * Creates a new object.
-     *
      */
     public LoaderClassCastException() {
 
@@ -39,7 +38,7 @@ public class LoaderClassCastException extends LoaderException {
     /**
      * Creates a new object.
      *
-     * @param arg0 ...
+     * @param arg0 the cause for this exception
      */
     public LoaderClassCastException(final Throwable arg0) {
 
