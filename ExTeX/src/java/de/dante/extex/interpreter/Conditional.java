@@ -25,7 +25,7 @@ import de.dante.util.Locator;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Conditional {
 
@@ -37,8 +37,10 @@ public class Conditional {
 
     /**
      * The field <tt>value</tt> contains the value of the conditional.
+     * If it has the value <code>true</code> then the conditional is one of the
+     * if-then-else constructs. Otherwise it is a <tt>\ifcase</tt> construction.
      */
-    private long value;
+    private boolean value;
 
     /**
      * Creates a new object.
@@ -46,7 +48,7 @@ public class Conditional {
      * @param aLocator the locator
      * @param aValue the new value
      */
-    public Conditional(final Locator aLocator, final long aValue) {
+    public Conditional(final Locator aLocator, final boolean aValue) {
         super();
         this.locator = aLocator;
         this.value   = aValue;
@@ -67,7 +69,8 @@ public class Conditional {
      *
      * @return the value
      */
-    public long getValue() {
+    public boolean getValue() {
+
         return value;
     }
 
