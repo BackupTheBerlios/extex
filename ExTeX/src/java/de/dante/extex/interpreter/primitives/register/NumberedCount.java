@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -40,28 +40,29 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NumberedCount extends NamedCount {
-    /**
-     * Creates a new object.
-     *
-     * @param name the name for debugging
-     */
-    public NumberedCount(String name) {
-        super(name);
-    }
 
-    /**
-     * ...
-     *
-     * @param source ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException ...
-     */
-    protected String getKey(TokenSource source) throws GeneralException {
-        return getName() + "#" + Long.toString(source.scanNumber());
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 * @param name the name for debugging
+	 */
+	public NumberedCount(String name) {
+		super(name);
+	}
+
+	/**
+	 * Return the key (the number) for the register.
+	 *
+	 * @param source ...
+	 *
+	 * @return ...
+	 *
+	 * @throws GeneralException ...
+	 */
+	protected String getKey(TokenSource source) throws GeneralException {
+		return getName() + "#" + Long.toString(source.scanNumber());
+	}
 }

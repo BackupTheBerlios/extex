@@ -30,7 +30,10 @@ import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * This class provides an implementation for the primitive <code>\inputfileencoding</code>.
+ * This class provides an implementation for the 
+ * primitive <code>\inputfileencoding</code>.
+ * It use the given encoding for opening and not the
+ * encoding in <code>\inputencoding</code>.
  * The filename can have space in his name.
  * 
  * Example:
@@ -40,21 +43,23 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class InputFileEncoding extends InputFile {
 
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param name
-	 *                 the name for debugging
+	 * @param name the name for debugging
 	 */
 	public InputFileEncoding(String name) {
 		super(name);
 	}
 
     /**
+     * Scan the encoding and filename and open the file 
+     * in the tokenizerstream.
+     *  
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -63,7 +68,7 @@ public class InputFileEncoding extends InputFile {
     public void execute(Flags prefix, Context context, TokenSource source,
             Typesetter typesetter) throws GeneralException {
 
-        String encoding = source.scanNextTokensAsString();
+        String encoding = source.scanTokensAsString();
         String name = scanFileName(source);
         TokenStreamFactory factory = source.getTokenStreamFactory();
 

@@ -45,44 +45,44 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Input extends AbstractCode {
 
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param name
-	 *                 the name for debugging
+	 * @param name the name for debugging
 	 */
 	public Input(String name) {
 		super(name);
 	}
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
-        String name = scanFileName(source);
-        TokenStreamFactory factory = source.getTokenStreamFactory();
-        String encoding = getEncoding(context);
+	/**
+	 * Scan the filename (until a <code>SpaceToken</code>) and 
+	 * put the file on the tokenizerstream.
+	 *  
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource,
+	 *      de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+		String name = scanFileName(source);
+		TokenStreamFactory factory = source.getTokenStreamFactory();
+		String encoding = getEncoding(context);
 
-        try {
-            source.addStream(factory.newInstance(factory.findFile(name, "tex"),
-                                                 encoding));
-        } catch (FileNotFoundException e) {
-            throw new GeneralException(e);
-        } catch (ConfigurationException e) {
-            throw new GeneralException(e);
-        } catch (IOException e) {
-            throw new GeneralException(e);
-        }
-        prefix.clear();
-    }
+		try {
+			source.addStream(factory.newInstance(factory.findFile(name, "tex"), encoding));
+		} catch (FileNotFoundException e) {
+			throw new GeneralException(e);
+		} catch (ConfigurationException e) {
+			throw new GeneralException(e);
+		} catch (IOException e) {
+			throw new GeneralException(e);
+		}
+		prefix.clear();
+	}
 
 	/**
 	 * Return the encoding for the inputfile
@@ -91,8 +91,7 @@ public class Input extends AbstractCode {
 	 * value, then the property <code>extex.encoding</code> is use or <code>ISO8859-1</code>,
 	 * if no entry exists.
 	 * 
-	 * @param context
-	 *                 the context
+	 * @param context the context
 	 * @return the encoding for the inputfile
 	 */
 	protected String getEncoding(Context context) {
@@ -111,13 +110,9 @@ public class Input extends AbstractCode {
 	/**
 	 * scan the filename until a <code>SpaceToken</code>.
 	 * 
-	 * @param source
-	 *                 the source for new tokens
-	 * 
+	 * @param source the source for new tokens
 	 * @return the file name as string
-	 * 
-	 * @throws GeneralException
-	 *                 in case of an error
+	 * @throws GeneralException in case of an error
 	 */
 	protected String scanFileName(TokenSource source) throws GeneralException {
 		Token t = source.scanNonSpace();

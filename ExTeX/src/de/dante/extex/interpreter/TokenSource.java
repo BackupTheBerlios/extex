@@ -40,7 +40,7 @@ import de.dante.util.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface TokenSource {
     /**
@@ -233,7 +233,7 @@ public interface TokenSource {
      *
      * @return the next tokens as <code>String</code> or <code>null</code>
      */
-    public abstract String scanNextTokensAsString()
+    public abstract String scanTokensAsString()
                                            throws GeneralException;
 
     /**

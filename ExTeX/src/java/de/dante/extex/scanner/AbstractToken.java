@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,17 +18,22 @@
  */
 package de.dante.extex.scanner;
 
-
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractToken implements Token {
-    /** The value of the token */
+
+	/** 
+	 * The value of the token 
+	 */
     protected String value;
 
+    // TODO use UnicodeCahr for Letter and Other
+    
     /**
      * Creates a new object.
      *

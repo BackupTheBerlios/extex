@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,9 +29,11 @@ package de.dante.extex.scanner;
  * </p>
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public interface Token {
+	
     /**
      * Getter for the catcode.
      * 
@@ -52,6 +54,8 @@ public interface Token {
      * @return the value
      */
     //public abstract UnicodeChar getCharValue();
+    // TODO use UnicodeChar for letter ans other
+    
     /**
      * Compare the current token to another token. They are the same if the
      * catcode and the value are the same.

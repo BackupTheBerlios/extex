@@ -23,7 +23,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 
 /**
@@ -31,49 +30,46 @@ import de.dante.util.GeneralException;
  * It sets the numbered toks register to the value given, and as a side effect
  * all prefixes are zeroed.
  *
- * Example
- *
+ * Example:
  * <pre>
  *  \toks12{123}
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NumberedToks extends NamedToks {
-    /**
-     * Creates a new object.
-     *
-     * @param name
-     *                 the name for debugging
-     */
-    public NumberedToks(String name) {
-        super(name);
-    }
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *         de.dante.extex.interpreter.context.Context,
-     *         de.dante.extex.interpreter.TokenSource,
-     *         de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(Flags prefix, Context context,
-                       TokenSource source, Typesetter typesetter)
-                throws GeneralException {
-        String key = getName() + "#" +
-                     Long.toString(source.scanNumber());
-        super.expand(prefix, context, source, typesetter);
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 * @param name the name for debugging
+	 */
+	public NumberedToks(String name) {
+		super(name);
+	}
 
-    /**
-     * Return the register value as <code>Tokens</code> for <code>\the</code>.
-     *
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
-     */
-    public Tokens the(Context context, TokenSource source)
-               throws GeneralException {
-        String key = getName() + "#" +
-                     Long.toString(source.scanNumber());
-        return context.getToks(key);
-    }
+	/**
+	 * Scan the key (the number) and call <code>expand()</code> 
+	 * from the superclass.
+	 * 
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+	 *         de.dante.extex.interpreter.context.Context,
+	 *         de.dante.extex.interpreter.TokenSource,
+	 *         de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+		String key = getName() + "#" + Long.toString(source.scanNumber());
+		super.expand(prefix, context, source, key);
+	}
+
+	/**
+	 * Return the register value as <code>Tokens</code> for <code>\the</code>.
+	 *
+	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
+	 */
+	public Tokens the(Context context, TokenSource source) throws GeneralException {
+		String key = getName() + "#" + Long.toString(source.scanNumber());
+		return context.getToks(key);
+	}
 }

@@ -18,20 +18,19 @@
  */
 package de.dante.extex.scanner.stream.impl;
 
-import de.dante.util.Locator;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.io.Reader;
-
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
+
+import de.dante.util.Locator;
 
 /**
  * This class represents a token stream which is optionally fed from a file.
@@ -42,10 +41,10 @@ import java.nio.charset.CharsetDecoder;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenStreamImpl extends TokenStreamBufferImpl {
-	
+
 	/** 
 	 * the decoder for the input stream 
 	 */
@@ -81,13 +80,10 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param line
-	 *                 a string to read from
-	 * @param encoding
-	 *                 the encoding to use
+	 * @param line a string to read from
+	 * @param encoding the encoding to use
 	 * 
-	 * @throws CharacterCodingException
-	 *                 in case of an error
+	 * @throws CharacterCodingException in case of an error
 	 */
 	public TokenStreamImpl(String line, String encoding) throws CharacterCodingException {
 		super(line, encoding);
@@ -96,8 +92,7 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param filename
-	 *                 the name of the file to read
+	 * @param filename the name of the file to read
 	 */
 	public TokenStreamImpl(File filename, String encoding) throws FileNotFoundException, IOException {
 		super("", encoding);
@@ -111,11 +106,8 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param reader
-	 *                 the source reader
-	 * 
-	 * @throws IOException
-	 *                 in case of an IO error
+	 * @param reader the source reader
+	 * @throws IOException in case of an IO error
 	 */
 	public TokenStreamImpl(Reader reader, String encoding) throws IOException {
 		super("", encoding);
@@ -166,18 +158,20 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 			reader = null;
 			return false;
 		}
-		
-		// TODO überprüfen, ob sich das Encoding geändert hat (durch \inputencoding)
-		
+
+		// TODO check, if the encoding (\inputencoding) is changend
+		// a change of inputencoding is active on the next line after
+		// the primitive
+
 		// System.err.println("line [" + reader.getLineNumber() + "] :" + line + ":");
 
 		// add '\r' for EOL 
 		line = line + '\r';
-		
+
 		CharBuffer buffer = decoder.decode(ByteBuffer.wrap(line.getBytes()));
 		setBuffer(buffer);
 		pointer = 0;
-		state=NEW_LINE;
+		state = NEW_LINE;
 		return true;
 	}
 }

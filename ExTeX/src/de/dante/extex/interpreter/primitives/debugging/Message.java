@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,7 +22,6 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -30,27 +29,28 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\message</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.4 $
  */
 public class Message extends AbstractCode {
-    /**
-     * Creates a new object.
-     *
-     * @param name the name for tracing and debugging
-     */
-    public Message(String name) {
-        super(name);
-    }
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(Flags prefix, Context context,
-                       TokenSource source, Typesetter typesetter)
-                throws GeneralException {
-        Tokens toks = source.scanTokens();
-        String msg = toks.toString();
-        source.update("message",msg); 
-        prefix.clear();
-    }
+	/**
+	 * Creates a new object.
+	 *
+	 * @param name the name for tracing and debugging
+	 */
+	public Message(String name) {
+		super(name);
+	}
+
+	/**
+	 * Scan the next tokens (between braces) and
+	 * put the vlaue (as text) on the log.
+	 * 
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+		source.update("message", source.scanTokens().toText());
+		prefix.clear();
+	}
 }

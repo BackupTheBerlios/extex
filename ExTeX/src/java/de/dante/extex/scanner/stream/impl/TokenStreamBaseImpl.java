@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -32,68 +32,68 @@ import java.util.Stack;
  * of tokens which can be enlarged with push() or reduced with pop().
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
-    /** The Token stack for the pushback operation */
-    private Stack stack = new Stack();
 
-    /**
-     * Creates a new object.
-     */
-    public TokenStreamBaseImpl() {
-        super();
-    }
+	/** 
+	 * The Token stack for the pushback operation 
+	 */
+	private Stack stack = new Stack();
 
-    /**
-     * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
-     */
-    public Locator getLocator() {
-        return new Locator(null,0);
-    }
+	/**
+	 * Creates a new object.
+	 */
+	public TokenStreamBaseImpl() {
+		super();
+	}
 
-    /**
-     * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
-     */
-    public boolean closeFileStream() {
-        stack.setSize(0);
-        return false;
-    }
+	/**
+	 * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
+	 */
+	public Locator getLocator() {
+		return new Locator(null, 0);
+	}
 
-    /**
-     * @see de.dante.extex.token.TokenStream#get()
-     */
-    public Token get(TokenFactory factory, Tokenizer tokenizer)
-              throws GeneralException {
-        return (stack.size() == 0 ? getNext(factory, tokenizer)
-                : (Token) stack.pop());
-    }
+	/**
+	 * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
+	 */
+	public boolean closeFileStream() {
+		stack.setSize(0);
+		return false;
+	}
 
-    /**
-     * @see de.dante.extex.token.TokenStream#put(Token)
-     */
-    public void put(Token token) {
-        if (token != null) {
-            stack.push(token);
-        }
-    }
+	/**
+	 * @see de.dante.extex.token.TokenStream#get()
+	 */
+	public Token get(TokenFactory factory, Tokenizer tokenizer) throws GeneralException {
+		return (stack.size() == 0 ? getNext(factory, tokenizer) : (Token) stack.pop());
+	}
 
-    /**
-     * Get the next token when the stack is empty.
-     * This method is meant to be overloaded by derived classes.
-     *
-     * @return the next Token or <code>null</code>
-     */
-    protected Token getNext(TokenFactory factory, Tokenizer tokenizer)
-                     throws GeneralException {
-        return null;
-    }
+	/**
+	 * @see de.dante.extex.token.TokenStream#put(Token)
+	 */
+	public void put(Token token) {
+		if (token != null) {
+			stack.push(token);
+		}
+	}
 
-    /**
-     * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
-     */
-    public boolean isFileStream() {
-        return false;
-    }
+	/**
+	 * Get the next token when the stack is empty.
+	 * This method is meant to be overloaded by derived classes.
+	 *
+	 * @return the next Token or <code>null</code>
+	 */
+	protected Token getNext(TokenFactory factory, Tokenizer tokenizer) throws GeneralException {
+		return null;
+	}
 
+	/**
+	 * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
+	 */
+	public boolean isFileStream() {
+		return false;
+	}
 }

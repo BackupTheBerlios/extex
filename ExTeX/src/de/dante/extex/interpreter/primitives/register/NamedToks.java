@@ -39,15 +39,14 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NamedToks extends AbstractCode implements Theable {
 
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param name
-	 *                 the name for debugging
+	 * @param name the name for debugging
 	 */
 	public NamedToks(String name) {
 		super(name);
@@ -62,24 +61,21 @@ public class NamedToks extends AbstractCode implements Theable {
 		return context.getToks(getName());
 	}
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
-        expand(prefix, context, source, getName());
-    }
+	/**
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource,
+	 *      de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+		expand(prefix, context, source, getName());
+	}
 
 	/**
 	 * Set the value for the register
 	 * 
-	 * @param context
-	 *                 the interpreter context
-	 * @param toks
-	 *                 the value for the tokens
+	 * @param context the interpreter context
+	 * @param toks the value for the tokens
 	 */
 	public void set(Context context, Tokens toks) {
 		context.setToks(getName(), toks);
@@ -88,10 +84,8 @@ public class NamedToks extends AbstractCode implements Theable {
 	/**
 	 * Set the value for the register...
 	 * 
-	 * @param context
-	 *                 the interpreter context
-	 * @param value
-	 *                 the value for the tokens
+	 * @param context the interpreter context
+	 * @param value   the value for the tokens
 	 */
 	public void set(Context context, String value) throws GeneralException {
 		context.setToks(getName(), new Tokens(context, value));
@@ -103,14 +97,10 @@ public class NamedToks extends AbstractCode implements Theable {
 	 * Scan the tokens between <code>{</code> and <code>}</code> and store
 	 * it.
 	 * 
-	 * @param prefix
-	 *                 the prefix flags
-	 * @param context
-	 *                 the interpreter context
-	 * @param source
-	 *                 the tokensource
-	 * @param key
-	 *                 the key
+	 * @param prefix the prefix flags
+	 * @param context the interpreter context
+	 * @param source the tokensource
+	 * @param key the key
 	 * 
 	 * @throws GeneralException
 	 *                 ...

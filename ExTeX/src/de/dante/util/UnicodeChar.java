@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,7 @@ import com.ibm.icu.text.UTF16;
  * 
  * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UnicodeChar {
 
@@ -38,8 +38,7 @@ public class UnicodeChar {
 	/**
 	 * init with a 32 bit int-value
 	 * 
-	 * @param code
-	 *                 the 32bit codepoint
+	 * @param code the 32bit codepoint
 	 */
 	public UnicodeChar(int code) {
 		super();
@@ -49,8 +48,7 @@ public class UnicodeChar {
 	/**
 	 * init with a 16 bit char-value
 	 * 
-	 * @param char16
-	 *                 16 bit character
+	 * @param char16 16 bit character
 	 */
 	public UnicodeChar(char char16) {
 		code = UCharacter.getCodePoint(char16);
@@ -59,10 +57,8 @@ public class UnicodeChar {
 	/**
 	 * init with two 16 bit-cahr-values
 	 * 
-	 * @param char16_1
-	 *                 first 16 bit character
-	 * @param char16_2
-	 *                 second 16 bit character
+	 * @param char16_1 first 16 bit character
+	 * @param char16_2 second 16 bit character
 	 */
 	public UnicodeChar(char char16_1, char char16_2) {
 		code = UCharacter.getCodePoint(char16_1, char16_2);
@@ -71,8 +67,7 @@ public class UnicodeChar {
 	/**
 	 * init with a unicodename
 	 * 
-	 * @param unicodename
-	 *                 unicodename as String
+	 * @param unicodename unicodename as String
 	 */
 	public UnicodeChar(String unicodename) {
 		code = UCharacter.getCharFromName(unicodename);
@@ -140,9 +135,7 @@ public class UnicodeChar {
 	 * Compares a <code>UnicodeChar</code> character with the value of this
 	 * object.
 	 * 
-	 * @param texchar
-	 *                 the character (\code{TeXChar}) to be compared with the stored
-	 *                 one
+	 * @param texchar the character (\code{TeXChar}) to be compared with the stored one
 	 * @return Are the characters equal (\code{true}) or not (\code{false})?
 	 */
 	public boolean equals(UnicodeChar unicodechar) {
@@ -153,8 +146,7 @@ public class UnicodeChar {
 	 * Compares a <code>char32</code> character with the value of this
 	 * object.
 	 * 
-	 * @param char32
-	 *                 the character to be compared with the stored one
+	 * @param char32 the character to be compared with the stored one
 	 * @return Are the characters equal (<code>true</code>) or not (<code>false</code>)?
 	 */
 	public boolean equals(int char32) {
@@ -164,8 +156,7 @@ public class UnicodeChar {
 	/**
 	 * Compares a <code>char</code> character with the value of this object.
 	 * 
-	 * @param char16
-	 *                 the character to be compared with the stored one
+	 * @param char16 the character to be compared with the stored one
 	 * @return Are the characters equal (<code>true</code>) or not (<code>false</code>)?
 	 */
 	public boolean equals(char char16) {
@@ -175,8 +166,7 @@ public class UnicodeChar {
 	/**
 	 * Compares the stored character value with an object.
 	 * 
-	 * @param o
-	 *                 object to be compared with the stored character
+	 * @param o object to be compared with the stored character
 	 * @return Is the object a <code>UnicodeChar</code> with the same value (
 	 *            <code>true</code>) or not (<code>false</code>)?
 	 */
@@ -303,5 +293,4 @@ public class UnicodeChar {
 	public char getASCIIChar() {
 		return toString().charAt(0);
 	}
-
 }
