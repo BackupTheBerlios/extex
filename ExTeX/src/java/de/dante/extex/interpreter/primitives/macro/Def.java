@@ -64,7 +64,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Def extends AbstractAssignment {
 
@@ -91,13 +91,13 @@ public class Def extends AbstractAssignment {
         Token cs = source.getControlSequence();
         Tokens pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
-                ? expandedBody(source)//
+                ? expandedBody(context, source, typesetter)//
                 : source.getTokens());
 
         if (cs instanceof CodeToken) {
             String name = cs.getValue();
             context.setCode(cs, new MacroCode(name, prefix, pattern, body),
-                            prefix.isGlobal());
+                    prefix.isGlobal());
         } else if (cs == null) {
             throw new HelpingException("TTP.MissingCtrlSeq");
         } else {
@@ -108,11 +108,14 @@ public class Def extends AbstractAssignment {
     /**
      * Parse the expanded body tokens according to the rules for \xdef.
      *
+     * @param context the interpreter context
      * @param source the source to acquire tokens from
+     * @param typesetter the typesetter to use as backend
      *
      * @return the tokens making up the body
      */
-    private Tokens expandedBody(final TokenSource source) {
+    private Tokens expandedBody(final Context context,
+            final TokenSource source, final Typesetter typesetter) {
 
         //TODO
         throw new RuntimeException("unimplemented");
@@ -144,8 +147,7 @@ public class Def extends AbstractAssignment {
             if (afterHash) {
                 if (t instanceof OtherToken) {
                     if (t.getValue().charAt(0) != '0' + no) {
-                        throw new HelpingException(
-                                "TTP.NonConseqParams",
+                        throw new HelpingException("TTP.NonConseqParams",
                                 printableControlSequence(context));
                     }
                     no++;
