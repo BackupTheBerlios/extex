@@ -51,7 +51,7 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Configuration {
 
@@ -62,10 +62,8 @@ public interface Configuration {
      *
      * @return the value of the attribute or <code>null</code> if such an
      * attribute is not present
-     *
-     * @throws ConfigurationException in case of any kind of problem
      */
-    String getAttribute(String name) throws ConfigurationException;
+    String getAttribute(String name);
 
     /**
      * Extract a sub-configuration with a given name.

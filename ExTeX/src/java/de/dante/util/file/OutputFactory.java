@@ -37,9 +37,9 @@ import de.dante.util.configuration.ConfigurationMissingException;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class OutputFactory {
 
@@ -67,11 +67,17 @@ public class OutputFactory {
     /**
      * Creates a new object.
      *
-     * @param configuration ...
+     * @param configuration the configuration object for this instance
      * @param outdirs the list of output directories
+     *
+     * @throws ConfigurationMissingException in case that the configuration
+     * argument is <code>null</code>
+     * @throws ConfigurationMissingAttributeException in case that the
+     * attribute for the default encoding is missing
      */
     public OutputFactory(final Configuration configuration,
-        final String[] outdirs) throws ConfigurationException {
+            final String[] outdirs) throws ConfigurationMissingException,
+            ConfigurationMissingAttributeException {
 
         super();
         outputDirectories = outdirs;
@@ -212,8 +218,6 @@ public class OutputFactory {
             } else {
                 os = new BufferedWriter(new FileWriter(file));
             }
-        } catch (FileNotFoundException e) {
-            // ignored on purpose
         } catch (IOException e) {
             // ignored on purpose
         }

@@ -28,7 +28,7 @@ import de.dante.util.StringList;
  * Container for several {@link de.dante.util.configuration.Configuration Configuration} objects.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MultiConfiguration implements Configuration {
 
@@ -184,7 +184,7 @@ public class MultiConfiguration implements Configuration {
     /**
      * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
      */
-    public String getAttribute(final String name) throws ConfigurationException {
+    public String getAttribute(final String name) {
 
         // todo unimplemented because not needed
         throw new RuntimeException("unimplemented");

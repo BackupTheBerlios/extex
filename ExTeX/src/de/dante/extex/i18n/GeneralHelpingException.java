@@ -31,9 +31,26 @@ import de.dante.util.GeneralException;
  * For the message it is used plain and for the help the string ".help" is
  * appended.
  * </p>
+ * <h3>Example</h3>
+ * <p>
+ * Consider the following lines in the messages file:
+ * </p>
+ * <pre>
+ * abc.def = This is the message
+ * abc.def.help = This is the help text. \
+ *               It can even span several lines.
+ * </pre>
+ * Then the following instruction can savely be used:
+ * <pre>
+ *     throw new GeneralHelpingException("abc.def");
+ * </pre>
+ * <p>
+ * With this exception up to three arguments can be used. The String value of
+ * those arguments are inserted into the message string for the placeholders
+ * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GeneralHelpingException extends GeneralException {
     /**

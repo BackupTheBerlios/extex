@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,82 +24,87 @@ package de.dante.util;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Locator {
 
-	/**
-	 * The field <tt>filename</tt> contains the name of the file.
-	 */
-	private String filename;
+    /**
+     * The field <tt>filename</tt> contains the name of the file.
+     */
+    private String filename;
 
-	/**
-	 * The field <tt>lineno</tt> contains the line number.
-	 */
-	private int lineno;
+    /**
+     * The field <tt>lineno</tt> contains the line number.
+     */
+    private int lineno;
 
-	/**
-	 * The field <tt>line</tt> contains the ...
-	 */
-	private String line;
-	// mgn: changed CharBuffer to String 
+    /**
+     * The field <tt>line</tt> contains the current line of input.
+     */
+    private String line;
 
-	/**
-	 * The field <tt>linePointer</tt> contains the ...
-	 */
-	private int linePointer;
+    /**
+     * The field <tt>linePointer</tt> contains the positin in the line the
+     * locator refers to.
+     */
+    private int linePointer;
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param fileName the file name
-	 * @param lineNo the line number
-	 * @param line ...
-	 * @param linePointer ...
-	 */
-	public Locator(final String fileName, final int lineNo, final String line, final int linePointer) {
-		// mgn: Construktor with String
-		super();
-		this.filename = fileName;
-		this.lineno = lineNo;
-		this.line = line;
-		this.linePointer = linePointer;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param fileName the file name
+     * @param lineNo the line number
+     * @param currentLine the current lin eof input
+     * @param currentLinePointer the current position in the line of input
+     */
+    public Locator(final String fileName, final int lineNo,
+            final String currentLine, final int currentLinePointer) {
 
-	/**
-	 * Getter for line.
-	 *
-	 * @return the line.
-	 */
-	public String getLine() {
-		return line;
-	}
+        super();
+        this.filename = fileName;
+        this.lineno = lineNo;
+        this.line = currentLine;
+        this.linePointer = currentLinePointer;
+    }
 
-	/**
-	 * Getter for linePointer.
-	 *
-	 * @return the linePointer.
-	 */
-	public int getLinePointer() {
-		return linePointer;
-	}
+    /**
+     * Getter for line.
+     *
+     * @return the line.
+     */
+    public String getLine() {
 
-	/**
-	 * Getter for the file name.
-	 *
-	 * @return the line file name or <code>null</code>
-	 */
-	public String getFilename() {
-		return filename;
-	}
+        return line;
+    }
 
-	/**
-	 * Getter for the line number.
-	 *
-	 * @return the line number
-	 */
-	public int getLineno() {
-		return lineno;
-	}
+    /**
+     * Getter for linePointer.
+     *
+     * @return the linePointer.
+     */
+    public int getLinePointer() {
+
+        return linePointer;
+    }
+
+    /**
+     * Getter for the file name.
+     *
+     * @return the line file name or <code>null</code>
+     */
+    public String getFilename() {
+
+        return filename;
+    }
+
+    /**
+     * Getter for the line number.
+     *
+     * @return the line number
+     */
+    public int getLineno() {
+
+        return lineno;
+    }
 
 }

@@ -37,8 +37,13 @@ import java.util.ResourceBundle;
  * in TeX.
  * </p>
  *
+ * <p>
+ * Currently this singleton is implemented as a set of static variables.
+ * This might change..
+ * </p>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public final class Messages {
 
