@@ -59,15 +59,14 @@
   <!-- 
     -  The section Output contains the specification for the output file.
     -->
-  <Output encoding="ISO-8859-1">
-  </Output>
+  <Output encoding="ISO-8859-1"/>
  
   <!-- 
     -  The section Scanner contains the specification for the scanner, i.e. the
     -  token stream.
     -->
-  <Scanner class="de.dante.extex.scanner.stream.impl.TokenStreamImpl">
-  </Scanner>
+  <Scanner class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"
+           reader=""/>
 
   <!-- 
     -  The section Interpreter contains the specification for the core
@@ -75,12 +74,20 @@
     -->
   <Interpreter class="de.dante.extex.interpreter.max.Max">
 
+    <!-- The maximum number of errors before an abort is forced.
+      -->
     <maxErrors>100</maxErrors>
 
+    <!-- Tokens to be inserted at every job.
+      -->
     <everyjob></everyjob>
 
+    <!-- The default font if nothing else is done.
+      -->
     <Font default="cmr12" size="12"/>
 
+    <!-- The configuration of the context implementation to use.
+      -->
     <Context class="de.dante.extex.interpreter.context.impl.ContextImpl">
 
       <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
@@ -91,8 +98,10 @@
 
     </Context>
 
-
-    <!-- NOTE: Only the tags "define" are used for initializing.
+    <!-- The following definitions describe the primitives available
+      -  and their association to implementing Java classes.
+      -
+      -  NOTE: Only the tags "define" are used for initializing.
       -        The tags "Define" are pure comments waiting to be activated!
       -->
     <define name=" " class="de.dante.extex.interpreter.primitives.box.Space"/>
@@ -423,11 +432,21 @@
 
   </Interpreter>
 
+  <!-- 
+    -  The section Typesetter contains the specification for the
+    -  typesetter to use.
+    -->
   <Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
     <LineBreaker name="default" class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
   	<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
   </Typesetter>
 
+  <!-- 
+    -  The section DocuemntWriter contains the specification for the backend.
+    -  It is different to the other sections since here another level of
+    -  indirection is introduced which allows us to select one of several
+    -  backends programatically.
+    -->
   <DocumentWriter default="out">
     <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
     <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
