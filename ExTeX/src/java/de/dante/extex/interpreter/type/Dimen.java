@@ -32,9 +32,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class Dimen extends GlueComponent implements Serializable, CountConvertable {
+public class Dimen extends GlueComponent implements Serializable {
 
      /**
       * The constant <tt>ZERO_PT</tt> contains the ...
@@ -243,12 +243,4 @@ public class Dimen extends GlueComponent implements Serializable, CountConvertab
         return ((double) getValue() * 7200) / (7227 << 16);
     }
 
-    /**
-     * @see de.dante.extex.interpreter.CountConvertable#convertCount(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
-     */
-    public long convertCount(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        return getValue();
-    }
 }
