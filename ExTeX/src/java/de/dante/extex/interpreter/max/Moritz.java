@@ -78,7 +78,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.58 $
+ * @version $Revision: 1.59 $
  */
 public abstract class Moritz
         implements
@@ -758,6 +758,15 @@ public abstract class Moritz
         } catch (GeneralException e) {
             throw new InterpreterException(e);
         }
+
+        if (stream == null) {
+            try {
+                stream = getTokenStreamFactory().newInstance("");
+            } catch (ConfigurationException e) {
+                throw new InterpreterException(e);
+            }
+        }
+
         stream.put(token);
     }
 
@@ -902,9 +911,10 @@ public abstract class Moritz
      * @param context the interpreter context
      *
      * @return the value of the integer scanned
-     * @throws InterpreterException
-     *  in case that no number is found or the end of file has been
-     *             reached before an integer could be acquired
+     *
+     * @throws InterpreterException in case that the end of file has been
+     *  reached before an integer could be acquired
+     * @throws MissingNumberException in case of a missing number
      *
      * @see de.dante.extex.interpreter.TokenSource#scanInteger(
      *      de.dante.extex.interpreter.context.Context)
@@ -913,7 +923,7 @@ public abstract class Moritz
             throws InterpreterException,
                 MissingNumberException {
 
-        Token t = scanNonSpace(context);
+        Token t = getNonSpace(context);
 
         if (t == null) {
 
