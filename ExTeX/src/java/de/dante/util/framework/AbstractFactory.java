@@ -19,6 +19,8 @@
 
 package de.dante.util.framework;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.logging.Logger;
 
 import de.dante.util.configuration.Configuration;
@@ -39,7 +41,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * methods which shouldmake it easy to create a cusom factory.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
@@ -59,7 +61,7 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      * Configure an instance if this instance supports configuration.
      * If configuration is not supported then nothing is done.
      *
-     * @param instance the instance toconfigure
+     * @param instance the instance to configure
      * @param configuration the configuration to use. If this parameter is
      *  <code>null</code> then it is not passed to the instance.
      *
@@ -93,7 +95,7 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      * The field <tt>configuration</tt> contains the configuration of the
      * factory which is also passed to the new instances.
      */
-    private Configuration configuration;
+    private Configuration configuration = null;
 
     /**
      * The field <tt>logger</tt> contains the logger to pass to the new
@@ -113,10 +115,10 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      * @see de.dante.util.framework.configuration.Configurable#configure(
      *      de.dante.util.configuration.Configuration)
      */
-    public void configure(final Configuration config)
+    public void configure(final Configuration theConfiguration)
             throws ConfigurationException {
 
-        configuration = config;
+        configuration = theConfiguration;
     }
 
     /**
@@ -171,8 +173,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
     protected Object createInstance(final Class target)
             throws ConfigurationException {
 
-        return createInstanceForName(configuration.getAttribute(CLASS_ATTRIBUTE),
-                target);
+        return createInstanceForName(configuration
+                .getAttribute(CLASS_ATTRIBUTE), target);
     }
 
     /**
@@ -185,8 +187,8 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    private Object createInstanceForName(final String className, final Class target)
-            throws ConfigurationException {
+    private Object createInstanceForName(final String className,
+            final Class target) throws ConfigurationException {
 
         if (className == null) {
             throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
@@ -196,7 +198,49 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
         Object instance;
 
         try {
-            instance = Class.forName(className).newInstance();
+            Class cl = Class.forName(className);
+
+            if (!target.isAssignableFrom(cl)) {
+                throw new ConfigurationInvalidClassException(target.getName(),
+                        configuration);
+            }
+
+            Constructor[] cs = cl.getConstructors();
+            for (int i = 0; i < cs.length; i++) {
+                Constructor c = cs[i];
+                Class[] args = c.getParameterTypes();
+                switch (args.length) {
+                    case 0:
+                        instance = cl.newInstance();
+                        configure(instance, configuration);
+                        enableLogging(instance, getLogger());
+                        return instance;
+
+                    case 1:
+                        if (args[0].isAssignableFrom(Configuration.class)) {
+                            return c.newInstance(new Object[]{configuration});
+                        } else if (args[0].isAssignableFrom(Logger.class)) {
+                            return c.newInstance(new Object[]{logger});
+                        }
+                        break;
+
+                    case 2:
+                        if (args[0].isAssignableFrom(Configuration.class)
+                                && args[1].isAssignableFrom(Logger.class)) {
+                            return c.newInstance(new Object[]{configuration,
+                                    logger});
+                        } else if (args[0].isAssignableFrom(Logger.class)
+                                && args[1]
+                                        .isAssignableFrom(Configuration.class)) {
+                            return c.newInstance(new Object[]{logger,
+                                    configuration});
+                        }
+                        break;
+
+                    default: // Fall through to exception
+                }
+            }
+
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (ClassNotFoundException e) {
@@ -208,17 +252,16 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             throw new ConfigurationInstantiationException(e);
         } catch (IllegalAccessException e) {
             throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable cause = e.getCause();
+            if (cause != null && cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationInstantiationException(e);
         }
 
-        if (!target.isInstance(instance)) {
-            throw new ConfigurationInvalidClassException(target.getName(),
-                    configuration);
-        }
-
-        configure(instance, configuration);
-        enableLogging(instance, getLogger());
-
-        return instance;
+        throw new ConfigurationInvalidClassException(target.getName(),
+                configuration);
     }
 
     /**
