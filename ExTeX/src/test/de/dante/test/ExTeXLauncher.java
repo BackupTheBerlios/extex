@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.test;
 
 import java.io.ByteArrayOutputStream;
@@ -27,13 +28,13 @@ import java.util.logging.StreamHandler;
 import junit.framework.TestCase;
 import de.dante.extex.ExTeX;
 import de.dante.extex.logging.LogFormatter;
-
+import de.dante.extex.main.exception.MainException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -43,6 +44,7 @@ public class ExTeXLauncher extends TestCase {
      * @param arg the name
      */
     public ExTeXLauncher(final String arg) {
+
         super(arg);
     }
 
@@ -58,7 +60,22 @@ public class ExTeXLauncher extends TestCase {
     public void runCode(final String code, final String log, final String expect)
             throws Exception {
 
-        Properties properties = System.getProperties();
+        runCode(System.getProperties(), code, log, expect);
+    }
+
+    /**
+     * Run  some code through ExTeX.
+     *
+     * @param properties ...
+     * @param code the code to expand
+     * @param log the expected output on the log stream
+     * @param expect the expected output on the output stream
+     *
+     * @throws MainException in case of an error
+     */
+    public void runCode(final Properties properties, final String code,
+            final String log, final String expect) throws MainException {
+
         properties.setProperty("extex.code", code);
         properties.setProperty("extex.output", "text");
         properties.setProperty("extex.file", "");
@@ -124,6 +141,6 @@ public class ExTeXLauncher extends TestCase {
         handler.close();
         logger.removeHandler(handler);
         return bytes.toString();
-   }
+    }
 
 }
