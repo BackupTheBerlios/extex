@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface FontFactory {
 
@@ -44,6 +44,7 @@ public interface FontFactory {
      * @return the Font, or <code>null</code>, if the font are not aviable
      * @throws GeneralException ...
      * @throws ConfigurationException ...
+     * @deprecated
      */
     Font getInstance(String name, Dimen size, final Glue letterspaced,
             boolean ligatures) throws GeneralException, ConfigurationException;

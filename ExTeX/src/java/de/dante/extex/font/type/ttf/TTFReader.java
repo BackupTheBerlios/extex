@@ -46,8 +46,8 @@ import org.apache.batik.svggen.font.table.TableDirectory;
 import org.apache.batik.svggen.font.table.TableFactory;
 import org.jdom.Element;
 
+import de.dante.extex.font.Kerning;
 import de.dante.extex.font.type.FontMetric;
-import de.dante.extex.interpreter.type.font.Kerning;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 
 /**
@@ -59,7 +59,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
  * Technical Specification, Revision 1.66, November 1995
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TTFReader implements FontMetric, ScriptTags, FeatureTags {
 

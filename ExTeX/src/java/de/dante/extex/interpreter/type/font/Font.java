@@ -19,34 +19,17 @@
 
 package de.dante.extex.interpreter.type.font;
 
+import de.dante.extex.font.type.Fount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.UnicodeChar;
 
 /**
  * Font Interface
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public interface Font {
-
-    /**
-     * Return the Glyph of a <code>UnicodeChar</code>, or
-     * null, if the character is not defined.
-     *
-     * @param c the unicodechar
-     * @return the <code>Glyph</code>
-     */
-    Glyph getGlyph(UnicodeChar c);
-
-    /**
-     * Set the char for hyphenation
-     *
-     * @param hyphen the char to set
-     */
-    void setHyphenChar(UnicodeChar hyphen);
+public interface Font extends Fount {
 
     /**
      * Return the hyphenationchar
@@ -56,13 +39,6 @@ public interface Font {
     UnicodeChar getHyphenChar();
 
     /**
-     * Set the skewchar
-     *
-     * @param skew the new skewchar
-     */
-    void setSkewChar(UnicodeChar skew);
-
-    /**
      * Return the skewchar
      *
      * @return the skewxchar
@@ -70,33 +46,18 @@ public interface Font {
     UnicodeChar getSkewChar();
 
     /**
-     * Return the width of space character.
+     * Set the char for hyphenation
      *
-     * @return the width of the space character
+     * @param hyphen the char to set
      */
-    Glue getSpace();
+    void setHyphenChar(UnicodeChar hyphen);
 
     /**
-     * Return the em size of the font.
+     * Set the skewchar
      *
-     * @return em-size
+     * @param skew the new skewchar
      */
-    Dimen getEm();
-
-    /**
-     * Return the ex size of the font.
-     *
-     * @return ex-size
-     */
-    Dimen getEx();
-
-    /**
-     * Return font dimen size with a key.
-     *
-     * @param key   the key
-     * @return the value for the key
-     */
-    Dimen getFontDimen(String key);
+    void setSkewChar(UnicodeChar skew);
 
     /**
      * Setter for the font dimen register.
@@ -105,34 +66,5 @@ public interface Font {
      * @param value     the value for the key
      */
     void setFontDimen(String key, Dimen value);
-
-    /**
-     * Return the font-property
-     *
-     * @param key   the key
-     * @return the value for the key
-     */
-    String getProperty(String key);
-
-    /**
-     * Setter for the font-property
-     *
-     * @param key       the key
-     * @param value     the value for the key
-     */
-    void setProperty(String key, String value);
-
-    /**
-     * Return the font name.
-     *
-     * @return the fontname
-     */
-    String getFontName();
-
-    /**
-     * Return the letterspacing
-     * @return  the letterspacing
-     */
-    Glue getLetterSpacing();
 
 }

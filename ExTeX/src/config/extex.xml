@@ -67,11 +67,11 @@
     -->
   <Fonts class="de.dante.extex.font.FontFactoryImpl">
     <Type default="type1">
-		<type1 class="de.dante.extex.font.type.efm.EFMType1AFMFont"/>        
-		<ttf class="de.dante.extex.font.type.efm.EFMTTFFont"/>        
-		<tfm-mathsyml class="de.dante.extex.font.type.efm.EFMType1TFMMathsymlFont"/>        
-		<tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFont"/>
-		<tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFont"/>
+		<type1 class="de.dante.extex.font.type.efm.EFMType1AFMFount"/>        
+		<ttf class="de.dante.extex.font.type.efm.EFMTTFFount"/>        
+		<tfm-mathsyml class="de.dante.extex.font.type.efm.EFMType1TFMMathsymlFount"/>        
+		<tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFount"/>
+		<tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
     </Type>
     <Finder>
     <efm>

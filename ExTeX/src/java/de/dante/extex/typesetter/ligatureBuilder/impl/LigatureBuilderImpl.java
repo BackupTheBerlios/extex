@@ -19,8 +19,8 @@
 
 package de.dante.extex.typesetter.ligatureBuilder.impl;
 
+import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.interpreter.type.font.Glyph;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.LigatureNode;
 import de.dante.extex.typesetter.Node;
@@ -33,7 +33,7 @@ import de.dante.util.configuration.Configuration;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 

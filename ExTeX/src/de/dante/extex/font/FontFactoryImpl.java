@@ -29,8 +29,10 @@ import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.input.SAXBuilder;
 
-import de.dante.extex.font.type.efm.EFMFont;
+import de.dante.extex.font.type.ModifiableFount;
+import de.dante.extex.font.type.efm.EFMFount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.FontImpl;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
@@ -48,7 +50,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -67,7 +69,7 @@ public class FontFactoryImpl implements FontFactory {
     /**
      * Fontmap
      */
-    private Map fontmap = new HashMap();
+    private Map fountmap = new HashMap();
 
     /**
      * the file finder
@@ -112,6 +114,7 @@ public class FontFactoryImpl implements FontFactory {
      *      de.dante.extex.interpreter.type.dimen.Dimen,
      *      de.dante.extex.interpreter.type.glue.Glue,
      *      boolean)
+     * @deprecated
      */
     public Font getInstance(final String name, final Dimen size,
             final Glue letterspaced, final boolean ligatures)
@@ -136,20 +139,21 @@ public class FontFactoryImpl implements FontFactory {
             filename = "null";
         }
 
-        FontKey key = new FontKey(filename, size, letterspaced, ligatures,
+        FountKey key = new FountKey(filename, size, letterspaced, ligatures,
                 kerning);
-        Font font = (Font) (fontmap.get(key));
-        if (font == null) {
+        ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
+        if (fount == null) {
 
             Document doc = loadEFMDocument(filename);
 
             String classname = getFontClass(doc);
 
             try {
-                font = (Font) (Class.forName(classname).getConstructor(
-                        new Class[]{Document.class, String.class, Dimen.class,
-                                Glue.class, Boolean.class, Boolean.class,
-                                ResourceFinder.class})
+                fount = (ModifiableFount) (Class.forName(classname)
+                        .getConstructor(
+                                new Class[]{Document.class, String.class,
+                                        Dimen.class, Glue.class, Boolean.class,
+                                        Boolean.class, ResourceFinder.class})
                         .newInstance(new Object[]{doc, filename, size,
                                 letterspaced, new Boolean(ligatures),
                                 new Boolean(kerning), finder}));
@@ -170,7 +174,8 @@ public class FontFactoryImpl implements FontFactory {
             }
 
         }
-        return font;
+
+        return new FontImpl(fount);
     }
 
     /**
@@ -183,7 +188,7 @@ public class FontFactoryImpl implements FontFactory {
             throws ConfigurationException {
 
         Element root = doc.getRootElement();
-        Element font = EFMFont.scanForElement(root, "font");
+        Element font = EFMFount.scanForElement(root, "font");
         Attribute typeattr = font.getAttribute("type");
 
         String classname = null;
@@ -217,7 +222,7 @@ public class FontFactoryImpl implements FontFactory {
         return classname;
     }
 
-     /**
+    /**
      * EFM-Extension
      */
     private static final String EFMEXTENSION = "efm";
@@ -254,7 +259,7 @@ public class FontFactoryImpl implements FontFactory {
     /**
      * Font-key-class for the <code>HashMap</code>.
      */
-    private static class FontKey {
+    private static class FountKey {
 
         /**
          * The name of the font
@@ -289,7 +294,7 @@ public class FontFactoryImpl implements FontFactory {
          * @param lig   the ligature
          * @param kern  the kerning
          */
-        public FontKey(final String n, final Dimen s, final Glue ls,
+        public FountKey(final String n, final Dimen s, final Glue ls,
                 final boolean lig, final boolean kern) {
 
             name = n;

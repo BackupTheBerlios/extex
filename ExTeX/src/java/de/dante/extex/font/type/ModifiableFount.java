@@ -17,47 +17,25 @@
  *
  */
 
-package de.dante.extex.interpreter.type.font;
+package de.dante.extex.font.type;
 
-import de.dante.extex.font.type.Fount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.util.UnicodeChar;
 
 /**
- * Font Interface
+ * ModifiableFont Interface
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface Font extends Fount {
+public interface ModifiableFount extends Fount {
 
     /**
-     * Return the hyphenationchar
+     * Setter for the font-property
      *
-     * @return the hypenationchar
+     * @param key       the key
+     * @param value     the value for the key
      */
-    UnicodeChar getHyphenChar();
-
-    /**
-     * Return the skewchar
-     *
-     * @return the skewxchar
-     */
-    UnicodeChar getSkewChar();
-
-    /**
-     * Set the char for hyphenation
-     *
-     * @param hyphen the char to set
-     */
-    void setHyphenChar(UnicodeChar hyphen);
-
-    /**
-     * Set the skewchar
-     *
-     * @param skew the new skewchar
-     */
-    void setSkewChar(UnicodeChar skew);
+    void setProperty(String key, String value);
 
     /**
      * Setter for the font dimen register.
