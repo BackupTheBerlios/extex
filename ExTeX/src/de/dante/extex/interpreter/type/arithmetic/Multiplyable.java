@@ -27,8 +27,19 @@ import de.dante.util.GeneralException;
  * This is a interface to mark those classes which are able to multiply
  * something.
  *
+ *
+ * <doc type="howto" name="multiply">
+ * <h3>Extending <tt>\multiply</tt></h3>
+ * <p>
+ *  The primitive <tt>\multiply</tt> is designed to be expanded. It is fairly
+ *  simple to write an multiplyable primitive.
+ *  ...
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Multiplyable {
 

@@ -37,12 +37,16 @@ import de.dante.util.GeneralException;
  * <doc name="string">
  * <h3>The Primitive <tt>\string</tt></h3>
  * <p>
- *  ...
+ *  This primitive takes the next unexpanded token. If this token is a control
+ *  sequence -- and no active character -- then the value of <tt>escapechar</tt>
+ *  followed by the characters from the name of the control sequence.
+ *  Otherwise it is a single character token containing the character code of
+ *  the token.
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\string</tt> &lang;...&rang; </pre>
+ *    <tt>\string</tt> &lang;token&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -55,7 +59,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 

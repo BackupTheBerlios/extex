@@ -40,7 +40,9 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\copy</tt> &lang;8-bit number&rang; </pre>
+ *    <tt>\copy</tt> {@linkplain
+ *      de.dante.extex.interpreter.TokenSource#scanNumber()
+ *      &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,9 +52,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class Copy extends NumberedBox implements Boxable, Serializable {
+public class Copy extends BoxPrimitive implements Boxable, Serializable {
 
     /**
      * Creates a new object.

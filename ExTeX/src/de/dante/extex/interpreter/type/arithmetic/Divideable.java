@@ -26,8 +26,18 @@ import de.dante.util.GeneralException;
 /**
  * This is a interface to mark those classes which are able to divide something.
  *
+ * <doc type="howto" name="divide">
+ * <h3>Extending <tt>\divide</tt></h3>
+ * <p>
+ *  The primitive <tt>\divide</tt> is designed to be expanded. It is fairly
+ *  simple to write an dividable primitive.
+ *  ...
+ * </p>
+ * </doc>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Divideable {
 
