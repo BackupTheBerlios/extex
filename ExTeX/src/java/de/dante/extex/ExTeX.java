@@ -347,7 +347,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  * <a name="fileSearch"/><h3>Searching Files</h3>
  *
- * ...
+ * TODO doc incomplete
  *
  *
  *
@@ -585,7 +585,8 @@ import de.dante.util.resource.ResourceFinderFactory;
  *  jar file. In this section we will describe how to overwrite the settings in
  *  the default configuration resource.
  * </p>
- * ...
+ *
+ * TODO doc incomplete
  *
  *
  *
@@ -620,7 +621,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.67 $
+ * @version $Revision: 1.68 $
  */
 public class ExTeX {
 
