@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -164,7 +164,18 @@ public class Dimen extends GlueComponent implements Serializable {
     /**
      * ...
      *
-     * @param d ...
+     * @param d the other dimen to compare to
+     *
+     * @return <code>true</code> iff <i>|this| == |d|</i>
+     */
+    public boolean eq(final Dimen d) {
+        return (getValue() == d.getValue());
+    }
+
+    /**
+     * ...
+     *
+     * @param d the other dimen to compare to
      *
      * @return <code>true</code> iff <i>|this| &lt; |d|</i>
      */
@@ -175,7 +186,7 @@ public class Dimen extends GlueComponent implements Serializable {
     /**
      * ...
      *
-     * @param d ...
+     * @param d the other dimen to compare to
      *
      * @return <code>true</code> iff <i>|this| &lt;= |d|</i>
      */
@@ -203,7 +214,9 @@ public class Dimen extends GlueComponent implements Serializable {
       * @return ...
       */
      public String toString() {
-          return Long.toString(getValue()) + "sp";
+         StringBuffer sb = new StringBuffer();
+         toString(sb);
+         return sb.toString();
      }
 
      /**
@@ -212,8 +225,45 @@ public class Dimen extends GlueComponent implements Serializable {
       * @param sb the output string buffer
       */
      public void toString(final StringBuffer sb) {
-          sb.append(Long.toString(getValue()));
-          sb.append("sp");
+         long val = getValue();
+
+         if (val < 0) {
+             sb.append('-');
+             val = -val;
+         }
+
+         long v = val / ONE;
+         if (v == 0) {
+             sb.append('0');
+         } else {
+             long m = 1;
+             while (m <= v) {
+                 m *= 10;
+             }
+             m /= 10;
+             while (m > 0) {
+                 sb.append((char) ('0' + (v / m)));
+                 v = v % m;
+                 m /= 10;
+             }
+         }
+
+         sb.append('.');
+
+         val = 10 * (val % ONE) + 5;
+         long delta = 10;
+         do {
+             if (delta > ONE) {
+                 val = val + 0100000 - 50000; // round the last digit
+             }
+             int i = (int) (val / ONE);
+             sb.append((char) ('0' + i));
+             val = 10 * (val % ONE);
+             delta *= 10;
+         } while (val > delta);
+
+         sb.append('p');
+         sb.append('t');
      }
 
      /**
@@ -279,6 +329,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * Return a String with the Dimen value in pt
      *
      * @return a String with the Dimen value in pt
+     * @deprecated this method produces incorrectly rounded values; use toString() instead
      */
     public String toPT() {
          return String.valueOf(round((double)getValue() / ONE)) + "pt";
@@ -288,6 +339,7 @@ public class Dimen extends GlueComponent implements Serializable {
      * Return the <code>Dimen</code>-value in bp
      *
      * @return the value in bp
+     * @deprecated dimen arithmetic instead of incorrect rounding to a double
      */
     public double toBP() {
         return ((double) getValue() * 7200) / (7227 * ONE);
