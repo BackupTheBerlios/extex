@@ -83,7 +83,7 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class ExTeX {
     private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
@@ -507,15 +507,19 @@ public class ExTeX {
                 : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname, Integer
                 .toString(pages)));
         } catch (ConfigurationException e) {
+        	e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainConfigurationException(e);
         } catch (CharacterCodingException e) {
+			e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainCodingException(e);
         } catch (IOException e) {
+			e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainIOException(e);
         } catch (GeneralException e) {
+			e.printStackTrace(); // TODO delete after test
             logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
         }

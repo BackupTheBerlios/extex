@@ -46,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -199,8 +199,10 @@ public class EFMFont extends XMLFont implements Font {
 					}
 
 				} catch (JDOMException e) {
+					e.printStackTrace();
 					throw new MainFontException(e.getMessage()); // TODO change
 				} catch (IOException e) {
+					e.printStackTrace();
 					throw new MainFontException(e.getMessage()); // TODO change
 				}
 
