@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -143,12 +143,11 @@ public class PageBuilderImpl implements PageBuilder {
     /**
      * TODO gene: missing JavaDoc
      *
-     * @throws ErrorLimitException
-     * @throws GeneralException
+     * @throws ErrorLimitException ...
+     * @throws GeneralException ...
      */
     private void invokeOutput() throws ErrorLimitException, GeneralException {
 
-        
     }
 
     /**
@@ -158,9 +157,12 @@ public class PageBuilderImpl implements PageBuilder {
     public void setContext(final Context context) {
 
         this.context = context;
+        long esc = context.getCount("escapechar").getValue();
+
         try {
             this.outputToken = (CodeToken) context.getTokenFactory()
-                    .createToken(Catcode.ESCAPE, '\\', "");
+                    .createToken(Catcode.ESCAPE, //
+                            (esc < 0 ? '\\' : (char) esc), "");
         } catch (CatcodeException e) {
             //TODO gene: error unimplemented
             throw new RuntimeException("unimplemented");
