@@ -19,15 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.ExpandableCode;
+import de.dante.extex.interpreter.type.Theable;
+import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.font.Font;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -55,12 +56,23 @@ import de.dante.util.UnicodeChar;
  *  <pre class="TeXSample">
  *    \hyphenchar\font=132  </pre>
  * </p>
+ *
+ * <h4>Incompatibility</h4>
+ * <p>
+ *  The TeXbook gives no indication ow the primitive should react for negative
+ *  values -- except -1. The implementation of TeX allows to store and retrieve
+ *  arbirary negative values. This behaviour of TeX is not preserved in ExTeX.
+ * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public class Hyphenchar extends AbstractCode implements ExpandableCode {
+public class Hyphenchar extends AbstractAssignment
+        implements
+            CountConvertible,
+            ExpandableCode,
+            Theable {
 
     /**
      * Creates a new object.
@@ -73,21 +85,50 @@ public class Hyphenchar extends AbstractCode implements ExpandableCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.type.AbstractAssignment#assign(
+     *       de.dante.extex.interpreter.Flags,
+     *       de.dante.extex.interpreter.context.Context,
+     *       de.dante.extex.interpreter.TokenSource,
+     *       de.dante.extex.typesetter.Typesetter)
      */
-    public boolean execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Font font = source.getFont();
-        source.getOptionalEquals();
-        UnicodeChar c = source.scanCharacterCode();
-        font.setHyphenChar(c);
-        return true;
+        try {
+            Font font = source.getFont();
+            source.getOptionalEquals();
+            long c = source.scanInteger();
+            if (c < 0) {
+                font.setHyphenChar(null);
+            } else {
+                font.setHyphenChar(new UnicodeChar((int) c));
+            }
+        } catch (EofHelpingException e) {
+            throw new EofHelpingException(printableControlSequence(context));
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.count.CountConvertible#convertCount(
+     *       de.dante.extex.interpreter.context.Context,
+     *       de.dante.extex.interpreter.TokenSource,
+     *       de.dante.extex.typesetter.Typesetter)
+     */
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        try {
+            Font font = source.getFont();
+            UnicodeChar uc = font.getHyphenChar();
+            if (uc == null) {
+                return -1;
+            } else {
+                return uc.getCodePoint();
+            }
+        } catch (EofHelpingException e) {
+            throw new EofHelpingException(printableControlSequence(context));
+        }
     }
 
     /**
@@ -101,9 +142,30 @@ public class Hyphenchar extends AbstractCode implements ExpandableCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Font font = source.getFont();
-        Token t = context.getTokenFactory().createToken(Catcode.OTHER,
-                font.getHyphenChar(), Namespace.DEFAULT_NAMESPACE);
-        source.push(t);
+        source.push(the(context, source, typesetter));
     }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        try {
+            Font font = source.getFont();
+            UnicodeChar uc = font.getHyphenChar();
+            if (uc == null) {
+                return new Tokens(context, "-1");
+            } else {
+                return new Tokens(context, //
+                        Integer.toString(uc.getCodePoint()));
+            }
+        } catch (EofHelpingException e) {
+            throw new EofHelpingException(printableControlSequence(context));
+        }
+    }
+
 }
