@@ -205,6 +205,7 @@
         <javadoc 
              destdir="${javadoc}"
              overview="src/overview.html"
+             stylesheetfile="src/javadoc/stylesheet.css"
              author="true"
              version="true"
              use="true"
