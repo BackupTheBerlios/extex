@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for any macro code bound to a
  * control sequence or active character.
  *
- * <doc name="macros" type="hotwo">
+ * <doc name="macros" type="howto">
  * <h3>The Macro Code</h3>
  * <p>
  *  ...
@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
@@ -59,17 +59,6 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     private Tokens body;
 
     /**
-     * The field <tt>pattern</tt> contains the specification for the argument
-     * matching.
-     */
-    private Tokens pattern;
-
-    /**
-     * The field <tt>numberOfParams</tt> contains the number of parameters used.
-     */
-    private int numberOfParams = 10;
-
-    /**
      * The field <tt>notLong</tt> contains the negated <tt>\long</tt> flag.
      * This field indicates that no macros <tt>\par</tt> are allowed in macro
      * parameter values.
@@ -77,12 +66,23 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     private boolean notLong;
 
     /**
+     * The field <tt>numberOfParams</tt> contains the number of parameters used.
+     */
+    private int numberOfParams = 10;
+
+    /**
      * The field <tt>outerP</tt> contains the indicator for outer definitions.
      */
     private boolean outerP;
 
     /**
-     * The field <tt>protectedP</tt> contains the ...
+     * The field <tt>pattern</tt> contains the specification for the argument
+     * matching.
+     */
+    private Tokens pattern;
+
+    /**
+     * The field <tt>protectedP</tt> contains the protected flag.
      */
     private boolean protectedP;
 
@@ -164,6 +164,94 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     }
 
     /**
+     * Get a single token or a block if the first token is a LeftBraceToken.
+     *
+     * @param context the processor context
+     * @param source the source for new tokens
+     *
+     * @return the tokens accumulated
+     *
+     * @throws GeneralException in case of an error
+     */
+    private Tokens getTokenOrBlock(final Context context,
+            final TokenSource source) throws GeneralException {
+
+        Token t = source.getToken();
+
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.EOFinMatch",
+                    printableControlSequence(context));
+        } else if (t instanceof LeftBraceToken) {
+            source.push(t);
+            Tokens toks = source.getTokens();
+            if (toks == null) {
+                throw new GeneralHelpingException("TTP.EOFinMatch",
+                        printableControlSequence(context));
+            }
+            return toks;
+        }
+
+        return new Tokens(t);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Code#isOuter()
+     */
+    public boolean isOuter() {
+
+        return outerP;
+    }
+
+    /**
+     * ...
+     *
+     * @param context the processor context
+     * @param source the source for new tokens
+     * @param args the array of Tokens to fill
+     * @param len the length of the patterns
+     * @param i the starting index
+     *
+     * @return the index of the character after the parameter
+     *
+     * @throws GeneralException in case of an error
+     */
+    private int matchParameter(final Context context, final TokenSource source,
+            final Tokens[] args, final int len, final int i)
+            throws GeneralException {
+
+        if (i + 1 >= len) {
+            throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                    printableControlSequence(context));
+        }
+        int pi = i + 1;
+        Token ti = pattern.get(pi);
+        if (ti instanceof MacroParamToken) {
+            Token t = source.getToken();
+            if (!ti.equals(t)) {
+                throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                        printableControlSequence(context));
+            }
+            return pi;
+        } else if (ti instanceof OtherToken && ti.getChar().isDigit()) {
+            int no = ti.getChar().getCodePoint() - '0';
+            ++pi;
+            if (pi >= len) {
+                args[no] = getTokenOrBlock(context, source);
+            } else if (pattern.get(pi) instanceof MacroParamToken
+            //TODO #1##
+            ) {
+                args[no] = getTokenOrBlock(context, source);
+            } else {
+                args[no] = scanTo(context, source, pattern.get(pi));
+            }
+            return pi - 1;
+        }
+
+        throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                printableControlSequence(context));
+    }
+
+    /**
      * Match the pattern of this macro with the next tokens of the token
      * source. As a result the matching arguments are stored in an array of
      * {@link de.dante.extex.interpreter.type.tokens.Tokens Tokens}. This array
@@ -206,89 +294,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     }
 
     /**
-     * ...
-     *
-     * @param context the processor context
-     * @param source the source for new tokens
-     * @param args the array of Tokens to fill
-     * @param len the length of the patterns
-     * @param i the starting index
-     *
-     * @return the index of the character after the parameter
-     *
-     * @throws GeneralException in case of an error
-     */
-    private int matchParameter(final Context context, final TokenSource source,
-            final Tokens[] args, final int len, final int i)
-            throws GeneralException {
-
-        if (i + 1 >= len) {
-            throw new GeneralHelpingException("TTP.UseDoesntMatch",
-                    printableControlSequence(context));
-            //TODO; maybe another error text?
-        }
-        int pi = i + 1;
-        Token ti = pattern.get(pi);
-        if (ti instanceof MacroParamToken) {
-            Token t = source.getToken();
-            if (!ti.equals(t)) {
-                throw new GeneralHelpingException("TTP.UseDoesntMatch",
-                        printableControlSequence(context));
-            }
-            return pi;
-        } else if (ti instanceof OtherToken && ti.getChar().isDigit()) {
-            int no = ti.getChar().getCodePoint() - '0';
-            ++pi;
-            if (pi >= len) {
-                args[no] = getTokenOrBlock(context, source);
-            } else if (pattern.get(pi) instanceof MacroParamToken
-            //TODO #1##
-            ) {
-                args[no] = getTokenOrBlock(context, source);
-            } else {
-                args[no] = scanTo(context, source, pattern.get(pi));
-            }
-            return pi - 1;
-        }
-
-        throw new GeneralHelpingException("TTP.UseDoesntMatch",
-                printableControlSequence(context));
-        //TODO maybe another error text?
-    }
-
-    /**
-     * ...
-     *
-     * @param context the processor context
-     * @param source the source for new tokens
-     *
-     * @return the tokens accumulated
-     *
-     * @throws GeneralException in case of an error
-     */
-    private Tokens getTokenOrBlock(final Context context,
-            final TokenSource source) throws GeneralException {
-
-        Token t = source.getToken();
-
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.EOFinMatch",
-                    printableControlSequence(context));
-        } else if (t instanceof LeftBraceToken) {
-            source.push(t);
-            Tokens toks = source.getTokens();
-            if (toks == null) {
-                throw new GeneralHelpingException("TTP.EOFinMatch",
-                        printableControlSequence(context));
-            }
-            return toks;
-        }
-
-        return new Tokens(t);
-    }
-
-    /**
-     * ...
+     * Collect all tokens until a given token is found.
      *
      * @param context the processor context
      * @param source the source for new tokens
