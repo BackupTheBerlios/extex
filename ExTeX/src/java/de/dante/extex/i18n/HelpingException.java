@@ -32,7 +32,7 @@ import de.dante.util.framework.i18n.Localizer;
  * first level is the message and the second level is the additional help.
  * <p>
  * Both information strings are mapped via the
- * {@link de.dante.extex.framework.i18n.Localizer Localizer} apparatus.
+ * {@link de.dante.util.framework.i18n.Localizer Localizer} apparatus.
  * The key provided to this Exception is used as a key to find the format in
  * the resource bundle. For the localized message of the exception it is used
  * plain and for the help the string ".help" is appended.
@@ -83,7 +83,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class HelpingException extends GeneralException {
 
