@@ -27,12 +27,15 @@ import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.CountConvertable;
 import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.FontConvertible;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.RightBraceToken;
@@ -64,7 +67,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -157,6 +160,23 @@ public abstract class Moritz implements TokenSource, Observable {
     public Moritz(final Configuration configuration) {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#getFont()
+     */
+    public Font getFont() throws GeneralException {
+
+        Token t = getToken();
+        if (t == null || !(t instanceof CodeToken)) {
+            throw new GeneralHelpingException("TTP.MissingFontIdent");
+        }
+        Code code = context.getCode(t);
+        if (code == null || !(code instanceof FontConvertible)) {
+            throw new GeneralHelpingException("TTP.MissingFontIdent");
+        }
+
+        return ((FontConvertible) code).convertFont(context, this);
     }
 
     /**
@@ -280,14 +300,14 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * ...
+     * Getter for the typesetter.
      *
-     * @return ...
+     * @return the typesetter
      */
     public abstract Typesetter getTypesetter();
 
     /**
-     * ...
+     * Expand tokens and collect the result until <tt>\endcsname</tt> is found.
      *
      * @return ...
      *
@@ -939,6 +959,25 @@ public abstract class Moritz implements TokenSource, Observable {
     public void scanOptionalEquals() throws GeneralException {
 
         Token t = scanNonSpace();
+
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.MissingNumber");
+        } else if (t.equals(Catcode.OTHER, "=")) {
+            stream.put(getNonSpace());
+        } else {
+            stream.put(t);
+        }
+    }
+
+    /**
+     * Skip spaces and if the next non-space character is an equal sign skip it
+     * as well and all spaces afterwards.
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void getOptionalEquals() throws GeneralException {
+
+        Token t = getNonSpace();
 
         if (t == null) {
             throw new GeneralHelpingException("TTP.MissingNumber");

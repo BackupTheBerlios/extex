@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter;
 
+import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
@@ -40,7 +41,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public interface TokenSource {
 
@@ -289,6 +290,20 @@ public interface TokenSource {
      */
     //gene: this method is subject to be eliminated in favor of getKeyword().
     void scanOptionalEquals() throws GeneralException;
+
+    /**
+     * ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void getOptionalEquals() throws GeneralException;
+
+    /**
+     * ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    Font getFont() throws GeneralException;
 
     /**
      * Skip spaces.
