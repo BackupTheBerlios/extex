@@ -65,7 +65,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractFactory implements Configurable, LogEnabled {
 
@@ -196,6 +196,27 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
     }
 
     /**
+     * Create a new instance for a given configuration with an additional
+     * argument for the constructor.
+     *
+     * @param type the type to use
+     * @param target the expected class or interface
+     * @param argClass the class of the argument
+     * @param arg the argument
+     *
+     * @return a new instance
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    protected Object createInstance(final String type, final Class target,
+            final Class argClass, final Object arg)
+            throws ConfigurationException {
+
+        return createInstanceForConfiguration(selectConfiguration(type),
+                target, argClass, arg);
+    }
+
+    /**
      * Create a new instance for a given configuration.
      *
      * @param config the configuration to use
@@ -266,6 +287,102 @@ public abstract class AbstractFactory implements Configurable, LogEnabled {
             Throwable cause = e.getCause();
             if (cause != null && cause instanceof ConfigurationException) {
                 throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationInstantiationException(e);
+        }
+
+        throw new ConfigurationInvalidClassException(target.getName(), config);
+    }
+
+    /**
+     * Create a new instance for a given configuration with an additional
+     * argument for the constructor.
+     *
+     * @param config the configuration to use
+     * @param target the expected class or interface
+     * @param argClass the class of the argument
+     * @param arg the argument
+     *
+     * @return a new instance
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    protected Object createInstanceForConfiguration(final Configuration config,
+            final Class target, final Class argClass, final Object arg)
+            throws ConfigurationException {
+
+        String className = config.getAttribute(CLASS_ATTRIBUTE);
+
+        if (className == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
+        }
+
+        Class theClass;
+        try {
+            theClass = Class.forName(className);
+        } catch (ClassNotFoundException e1) {
+            throw new ConfigurationClassNotFoundException(className, config);
+        }
+
+        if (!target.isAssignableFrom(theClass)) {
+            throw new ConfigurationInvalidClassException(target.getName(),
+                    config);
+        }
+
+        try {
+            Constructor[] constructors = theClass.getConstructors();
+            Object instance = null;
+
+            for (int i = 0; i < constructors.length; i++) {
+                Class[] args = constructors[i].getParameterTypes();
+                switch (args.length) {
+                    case 1:
+                        if (args[0].isAssignableFrom(argClass)) {
+                            instance = constructors[i]
+                                    .newInstance(new Object[]{arg});
+                            enableLogging(instance, getLogger());
+                            configure(instance, config);
+                            enableLocalization(instance, className);
+                            return instance;
+                        }
+                        break;
+
+                    case 2:
+                        if (args[1].isAssignableFrom(argClass)) {
+                            if (args[0].isAssignableFrom(Configuration.class)
+                                    && args[1].isAssignableFrom(argClass)) {
+                                instance = constructors[i]
+                                        .newInstance(new Object[]{config, arg});
+                                enableLogging(instance, getLogger());
+                                enableLocalization(instance, className);
+                                return instance;
+                            } else if (args[0].isAssignableFrom(Logger.class)
+                                    && args[1].isAssignableFrom(argClass)) {
+                                instance = constructors[i]
+                                        .newInstance(new Object[]{config, arg});
+                                configure(instance, config);
+                                enableLocalization(instance, className);
+                                return instance;
+                            }
+                        }
+                        break;
+                    default: // Fall through to exception
+                }
+            }
+
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getCause();
+            if (c != null && c instanceof ConfigurationException) {
+                throw (ConfigurationException) c;
             }
             throw new ConfigurationInstantiationException(e);
         }
