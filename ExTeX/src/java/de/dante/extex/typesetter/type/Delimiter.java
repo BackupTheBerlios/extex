@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Delimiter {
 
@@ -121,6 +121,16 @@ public class Delimiter {
     }
 
     /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb);
+        return sb.toString();
+    }
+
+    /**
      * Append the printable representation of the  current instance to the
      * string buffer.
      *
@@ -128,8 +138,9 @@ public class Delimiter {
      */
     public void toString(final StringBuffer sb) {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        sb.append("delimiter \"");
+        mathClass.toString(sb);
+        smallChar.toString(sb);
+        largeChar.toString(sb);
     }
-
 }
