@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  * &ldquo;normal&rdquo; cases do not apply.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 class NV implements NodeVisitor {
 
@@ -382,16 +382,19 @@ class NV implements NodeVisitor {
      * </p>
      *
      * @param list the node list to hyphenate
-     * @param i the index in the hyphen array
+     * @param index the index in the hyphen array
      * @param ligatureBuilder the ligature builder to use
      *
      * @return the hyphenated node list
      * @throws HyphenationException
      */
-    private NodeList hyphenate(final NodeList list, final int i,
+    private NodeList hyphenate(final NodeList list, final int index,
             final LigatureBuilder ligatureBuilder) throws HyphenationException {
 
-        ligatureBuilder.insertLigatures(list);
+        for (int i = 0; i < list.size(); i = ligatureBuilder.insertLigatures(
+                list, i)) {
+            // ok
+        }
         return list;
     }
 
