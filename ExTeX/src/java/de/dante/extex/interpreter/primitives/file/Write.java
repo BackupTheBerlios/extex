@@ -27,11 +27,16 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.InitializableCode;
+import de.dante.extex.interpreter.type.TokensWriter;
+import de.dante.extex.interpreter.type.file.ExecuteFile;
+import de.dante.extex.interpreter.type.file.LogFile;
 import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.file.UserAndLogFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.node.WhatsItWriteNode;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.framework.configuration.Configurable;
@@ -53,9 +58,31 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
-public class Write extends AbstractCode implements LogEnabled, Configurable {
+public class Write extends AbstractCode
+        implements
+            TokensWriter,
+            LogEnabled,
+            Configurable,
+            InitializableCode {
+
+    /**
+     * The constant <tt>LOG_FILE</tt> contains the key for the log file.
+     */
+    private static final String LOG_FILE = "-1";
+
+    /**
+     * The field <tt>SYSTEM</tt> contains the key for the system execute
+     * (\write18).
+     */
+    private static final String SYSTEM = "18";
+
+    /**
+     * The field <tt>USER_AND_LOG</tt> contains the key for the user trace and
+     * log file.
+     */
+    private static final String USER_AND_LOG = "17";
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
@@ -112,51 +139,64 @@ public class Write extends AbstractCode implements LogEnabled, Configurable {
         String key = AbstractFileCode.scanOutFileKey(context, source);
 
         if (prefix.isImmediate()) {
+
             Tokens toks = source.scanTokens(context);
-            try {
-                writeImmediate(key, toks, context, source);
-            } catch (GeneralException e) {
-                throw new InterpreterException(e);
-            }
+            write(key, toks, context);
+
         } else {
+
             Tokens toks = source.getTokens(context);
+
             try {
-                typesetter.add(new WhatsItWriteNode(key, toks));
-            } catch (GeneralException e) {
+                typesetter.add(new WhatsItWriteNode(key, toks, this));
+            } catch (TypesetterException e) {
                 throw new InterpreterException(e);
             }
         }
     }
 
     /**
-     * Immediately write some tokens to a write register.
+     * @see de.dante.extex.interpreter.type.InitializableCode#init(
+     *      de.dante.extex.interpreter.context.Context,
+     *      java.lang.String)
+     */
+    public void init(final Context context, final String value)
+            throws InterpreterException {
+
+        context.setOutFile(LOG_FILE, new LogFile(logger), true);
+        context.setOutFile(USER_AND_LOG, new UserAndLogFile(logger), true);
+        if (write18) {
+            context.setOutFile(SYSTEM, new ExecuteFile(logger), true);
+        }
+    }
+
+    /**
+     * Write some tokens to a write register.
      *
-     * @param key the number of the write register
+     * @param key the name (number) of the write register
      * @param toks the tokens to write
      * @param context the processing context
-     * @param source the source for new tokens
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    private void writeImmediate(final String key, final Tokens toks,
-            final Context context, final TokenSource source)
-            throws GeneralException {
-
-        if (key == null || key.equals("")) {
-            logger.info(toks.toText());
-            return;
-        }
+    public void write(final String key, final Tokens toks, final Context context)
+            throws InterpreterException {
 
         OutFile file = context.getOutFile(key);
 
         if (file == null || !file.isOpen()) {
-            logger.info(toks.toText());
-        } else {
-            try {
-                file.write(toks);
-            } catch (IOException e) {
-                throw new GeneralException(e);
+
+            if (key == null || "".equals(key) || key.charAt(0) == '-') {
+                file = context.getOutFile(LOG_FILE);
+            } else {
+                file = context.getOutFile(USER_AND_LOG);
             }
+        }
+
+        try {
+            file.write(toks);
+        } catch (IOException e) {
+            throw new InterpreterException(e);
         }
     }
 

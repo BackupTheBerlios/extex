@@ -19,10 +19,8 @@
 
 package de.dante.extex.typesetter.type.node;
 
-import java.io.IOException;
-
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.TokensWriter;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -31,7 +29,7 @@ import de.dante.util.GeneralException;
  * This WhatsIt node writes some expanded tokens to an out file on shipping.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WhatsItWriteNode extends WhatsItNode {
 
@@ -46,16 +44,23 @@ public class WhatsItWriteNode extends WhatsItNode {
     private Tokens tokens;
 
     /**
-     * Creates a new object.
-     *
-     * @param theKey the key for the OutFile
-     * @param theTokens the tokens to write (after expansion)
+     * The field <tt>writer</tt> contains the ...
      */
-    public WhatsItWriteNode(final String theKey, final Tokens theTokens) {
+    private TokensWriter writer;
+
+    /**
+     * Creates a new object.
+     * @param key the key for the OutFile
+     * @param tokens the tokens to write (after expansion)
+     * @param writer TODO
+     */
+    public WhatsItWriteNode(final String key, final Tokens tokens,
+            final TokensWriter writer) {
 
         super();
-        this.key = theKey;
-        this.tokens = theTokens;
+        this.key = key;
+        this.tokens = tokens;
+        this.writer = writer;
     }
 
     /**
@@ -65,7 +70,7 @@ public class WhatsItWriteNode extends WhatsItNode {
      * @param context the interpreter context
      * @param typesetter the typesetter
      *
-     * @throws GeneralException in case of an error
+     * @throws GeneralException in case of an IO error
      *
      * @see de.dante.extex.typesetter.type.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context, Typesetter)
@@ -73,18 +78,9 @@ public class WhatsItWriteNode extends WhatsItNode {
     public void atShipping(final Context context, final Typesetter typesetter)
             throws GeneralException {
 
-        OutFile file = context.getOutFile(key);
         Tokens toks = context.expand(tokens, typesetter);
 
-        if (file == null || !file.isOpen()) {
-            // TODO gene: stdout unimplemented
-            //source.update("message", toks.toText());
-        } else {
-            try {
-                file.write(toks);
-            } catch (IOException e) {
-                throw new GeneralException(e);
-            }
-        }
+        writer.write(key, toks, context);
     }
+
 }
