@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -157,11 +157,12 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * ...
-     * @param hlist ...
-     * @param index TODO
+     * Convert a single noad of this mlist into the corresponding hlist.
      *
-     * @return TODO
+     * @param hlist the target hlist
+     * @param index the index of the noad to convert
+     *
+     * @return the next index of an unconverted noad
      *
      * @see "TeX -- The Program [720]"
      */

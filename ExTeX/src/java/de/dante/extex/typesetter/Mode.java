@@ -25,7 +25,7 @@ import de.dante.extex.i18n.Messages;
  * This class provides type-safe constants for the modes of a typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class Mode {
 
@@ -33,7 +33,7 @@ public abstract class Mode {
      * This inner class represents math modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static class MathMode extends Mode {
 
@@ -62,7 +62,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static class VerticalMode extends Mode {
 
@@ -91,7 +91,7 @@ public abstract class Mode {
      * This inner class represents vertical modes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private static class HorizontalMode extends Mode {
 
@@ -174,9 +174,9 @@ public abstract class Mode {
     }
 
     /**
-     * ...
+     * Check for a math mode.
      *
-     * @return ...
+     * @return <code>true</code> iff the mode is one of the math modes
      */
     public boolean isMath() {
 
@@ -184,9 +184,9 @@ public abstract class Mode {
     }
 
     /**
-     * ...
+     * Check for a horizontal mode.
      *
-     * @return ...
+     * @return <code>true</code> iff the mode is one of the horizontal modes
      */
     public boolean isHmode() {
 
@@ -194,9 +194,9 @@ public abstract class Mode {
     }
 
     /**
-     * ...
+     * Check for a vertical mode.
      *
-     * @return ...
+     * @return <code>true</code> iff the mode is one of the vertical modes
      */
     public boolean isVmode() {
 

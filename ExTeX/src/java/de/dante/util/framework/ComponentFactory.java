@@ -25,13 +25,9 @@ import java.lang.reflect.InvocationTargetException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationIOException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationInvalidResourceException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
-import de.dante.util.configuration.ConfigurationNotFoundException;
-import de.dante.util.configuration.ConfigurationSyntaxException;
 import de.dante.util.framework.component.Component;
 
 /**
@@ -45,7 +41,7 @@ import de.dante.util.framework.component.Component;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ComponentFactory {
 
@@ -80,7 +76,7 @@ public class ComponentFactory {
     /**
      * Get an instance of a typesetter.
      *
-     * @param type ...
+     * @param type the tag to use for the selection of the sub-configuration
      *
      * @return a new typesetter
      *
