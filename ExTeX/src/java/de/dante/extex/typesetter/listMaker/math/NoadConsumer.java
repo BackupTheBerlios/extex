@@ -23,9 +23,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathDelimiter;
-import de.dante.extex.typesetter.type.MathGlyph;
+import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
@@ -34,9 +35,28 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public interface NoadConsumer {
+public interface NoadConsumer extends ListMaker {
+
+    /**
+     * Add a mathematical glyph.
+     *
+     * @param mclass the class
+     * @param mg the glyph.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(MathClass mclass, MathGlyph mg) throws GeneralException;
+
+    /**
+     * Add some math glue Noad to the internal list.
+     *
+     * @param glue the glue to add
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(Muskip glue) throws GeneralException;
 
     /**
      * Add an arbitrary Noad to the internal list if it is prepared to hold one.
@@ -49,13 +69,27 @@ public interface NoadConsumer {
     void add(Noad noad) throws GeneralException;
 
     /**
-     * Add some math glue Noad to the internal list.
+     * Get access to the previous noad.
      *
-     * @param glue the glue to add
+     * @return the previous noad or <code>null</code> if there is none
      *
      * @throws GeneralException in case of an error
      */
-    void add(Muskip glue) throws GeneralException;
+    Noad getLastNoad() throws GeneralException;
+
+    /**
+     * Open the group for a \left-\right construction.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void left() throws GeneralException;
+
+    /**
+     * Close the group for a \left-\right construction.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void right() throws GeneralException;
 
     /**
      * Process the input until a Noad is completed. A Noad is either a single
@@ -69,16 +103,6 @@ public interface NoadConsumer {
      * @throws GeneralException in case of an error
      */
     Noad scanNoad(Context context, TokenSource source) throws GeneralException;
-
-    /**
-     * Add a mathematical glyph.
-     *
-     * @param mclass the class
-     * @param mg the glyph.
-     *
-     * @throws GeneralException in case of an error
-     */
-    void add(MathClass mclass, MathGlyph mg) throws GeneralException;
 
     /**
      * This method instructs the implementing class to use a fraction
@@ -98,12 +122,4 @@ public interface NoadConsumer {
             MathDelimiter rightDelimiter, Dimen ruleWidth)
             throws GeneralException;
 
-    /**
-     * Get access to the previous noad.
-     *
-     * @return the previous noad or <code>null</code> if there is none
-     *
-     * @throws GeneralException in case of an error
-     */
-    Noad getLastNoad() throws GeneralException;
 }

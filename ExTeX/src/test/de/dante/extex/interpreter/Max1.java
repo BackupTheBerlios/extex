@@ -46,7 +46,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathDelimiter;
-import de.dante.extex.typesetter.type.MathGlyph;
+import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -55,7 +55,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public class Max1 extends TestCase {
 
@@ -198,6 +198,13 @@ public class Max1 extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left()
+         */
+        public void left() throws GeneralException {
+
+        }
+
+        /**
          * Notification method to deal the case that a left brace hs been
          * encountered.
          */
@@ -256,6 +263,12 @@ public class Max1 extends TestCase {
         public void removeLastNode() {
 
             // nothing to do
+        }
+        /**
+         * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right()
+         */
+        public void right() throws GeneralException {
+
         }
 
         /**

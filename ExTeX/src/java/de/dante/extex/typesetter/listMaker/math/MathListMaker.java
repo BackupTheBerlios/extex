@@ -43,9 +43,9 @@ import de.dante.extex.typesetter.listMaker.AbstractListMaker;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathDelimiter;
-import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.FractionNoad;
 import de.dante.extex.typesetter.type.noad.GlueNoad;
+import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.NoadFactory;
@@ -59,7 +59,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -68,7 +68,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MathMemento {
 
@@ -83,16 +83,27 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         private Noad noads;
 
         /**
+         * The field <tt>block</tt> contains the indicator that this memento
+         * corresponds to a block. Otherwise it corresponds to a \left-\right
+         * pair.
+         */
+        private boolean block;
+
+        /**
          * Creates a new object.
          *
-         * @param ip the insertion point
-         * @param noads the noads
+         * @param ip the insertion point to be saved in this memento
+         * @param noads the noads to be saved in this memento
+         * @param block indicator to distinguish blocks from \left-\right
+         *  constructs. a Value of <code>true</code> indicates a block.
          */
-        public MathMemento(final MathList ip, final Noad noads) {
+        public MathMemento(final MathList ip, final Noad noads,
+                final boolean block) {
 
             super();
             this.ip = ip;
             this.noads = noads;
+            this.block = block;
         }
 
         /**
@@ -273,12 +284,23 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#left()
+     */
+    public void left() throws GeneralException {
+
+        // TODO gene: left unimplemented
+
+    }
+
+    /**
      * Notification method to deal the case that a left brace has been
      * encountered.
+     *
+     * @see de.dante.extex.typesetter.ListMaker#leftBrace()
      */
     public void leftBrace() {
 
-        stack.push(new MathMemento(insertionPoint, noads));
+        stack.push(new MathMemento(insertionPoint, noads, true));
         insertionPoint = new MathList();
         noads = insertionPoint;
     }
@@ -334,12 +356,19 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public void removeLastNode() {
 
         throw new UnsupportedOperationException();
-        //noads.remove(noads.size() - 1); // TODO gene: allow this?
     }
 
     /**
-     * Notification method to deal the case that a right brace has been
-     * encountered.
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#right()
+     */
+    public void right() throws GeneralException {
+
+        // TODO gene: right unimplemented
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
     public void rightBrace() throws GeneralException {
 
