@@ -19,6 +19,8 @@
 
 package de.dante.extex.interpreter.primitives.box;
 
+import de.dante.extex.i18n.EofHelpingException;
+import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -74,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Hbox extends AbstractCode implements Boxable {
 
@@ -120,16 +122,23 @@ public class Hbox extends AbstractCode implements Boxable {
         }
 
         Box box;
-        if (source.getKeyword("to")) {
-            Dimen d = new Dimen(context, source);
-            box = new Box(context, source, typesetter, true);
-            box.setWidth(d);
-        } else if (source.getKeyword("spread")) {
-            Dimen d = new Dimen(context, source);
-            box = new Box(context, source, typesetter, true);
-            box.getWidth().add(d);
-        } else {
-            box = new Box(context, source, typesetter, true);
+        try {
+            if (source.getKeyword("to")) {
+                Dimen d = new Dimen(context, source);
+                box = new Box(context, source, typesetter, true);
+                box.setWidth(d);
+            } else if (source.getKeyword("spread")) {
+                Dimen d = new Dimen(context, source);
+                box = new Box(context, source, typesetter, true);
+                box.spreadWidth(d);
+            } else {
+                box = new Box(context, source, typesetter, true);
+            }
+        } catch (EofHelpingException e) {
+            throw new EofHelpingException(printableControlSequence(context));
+        } catch (MissingLeftBraceHelpingException e) {
+            throw new MissingLeftBraceHelpingException(
+                    printableControlSequence(context));
         }
         return box;
     }
