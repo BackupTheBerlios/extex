@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Read extends AbstractCode {
 
@@ -83,7 +83,8 @@ public class Read extends AbstractCode {
         Tokens toks;
 
         if (file == null) {
-            throw new PanicException("TTP.Confusion");
+            //TODO use better error handling
+            throw new PanicException("TTP.Confusion", "file not existent");
         }
 
         toks = file.read(context.getTokenFactory(), context.getTokenizer(), cs);

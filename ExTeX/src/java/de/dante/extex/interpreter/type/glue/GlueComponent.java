@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -711,7 +711,8 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
                 toks.add(factory.createToken(Catcode.LETTER, 'l', ""));
             }
         } else {
-            throw new PanicException("TTP.Confusion");
+            //TODO i18n
+            throw new PanicException("TTP.Confusion", "negative order found");
         }
     }
 
