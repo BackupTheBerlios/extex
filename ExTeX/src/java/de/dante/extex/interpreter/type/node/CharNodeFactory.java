@@ -19,6 +19,9 @@
 
 package de.dante.extex.interpreter.type.node;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.util.UnicodeChar;
 
@@ -27,15 +30,15 @@ import de.dante.util.UnicodeChar;
  * {@link de.dante.extex.interpreter.type.node.CharNode CharNode}s.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class CharNodeFactory {
 
     /**
      * The field <tt>cache</tt> contains the cache for previously created nodes.
      */
-    //private Map cache = new HashMap();
-    //TODO use a cache for
+    private Map cache = new HashMap();
+
     /**
      * Creates a new object.
      */
@@ -47,7 +50,7 @@ public class CharNodeFactory {
     /**
      * Create a new instance for the character node.
      *
-     * @param typesettingContext the typogrphic context for the node
+     * @param typesettingContext the typographic context for the node
      * @param uc the Unicode character
      *
      * @return the new character node
@@ -55,11 +58,17 @@ public class CharNodeFactory {
     public CharNode newInstance(final TypesettingContext typesettingContext,
             final UnicodeChar uc) {
 
-        CharNode node = null; //(CharNode) cache.get(uc);
+        Map map = (Map) cache.get(typesettingContext);
+        if (map == null) {
+            map = new HashMap();
+            cache.put(typesettingContext, map);
+        }
+
+        CharNode node = (CharNode) map.get(uc);
 
         if (node == null) {
             node = new CharNode(typesettingContext, uc);
-            //            cache.put(uc, node);
+            map.put(uc, node);
         }
 
         return node;
