@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
 import de.dante.extex.i18n.Messages;
@@ -24,44 +25,132 @@ import de.dante.extex.i18n.Messages;
  * This class provides type-safe constants for the modes of a typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public final class Mode {
+public abstract class Mode {
 
     /**
-     * The constant <tt>HORIZONTAL</tt> contains the horizontal mode of the
-     * typesetter.
+     * This inner class represents math modes.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.5 $
      */
-    public static final Mode HORIZONTAL = new Mode("Mode.HorizontalMode");
+    private static class MathMode extends Mode {
+
+        /**
+         * Creates a new object.
+         *
+         * @param theTag the tag of the mode
+         */
+        protected MathMode(final String theTag) {
+
+            super(theTag);
+        }
+
+        /**
+         * ...
+         *
+         * @return ...
+         */
+        public final boolean isMath() {
+
+            return true;
+        }
+    }
 
     /**
-     * The constant <tt>VERTICAL</tt> contains the vertical mode of the
-     * typesetter.
+     * This inner class represents vertical modes.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.5 $
      */
-    public static final Mode VERTICAL = new Mode("Mode.VerticalMode");
+    private static class VerticalMode extends Mode {
+
+        /**
+         * Creates a new object.
+         *
+         * @param theTag the tag of the mode
+         */
+        protected VerticalMode(final String theTag) {
+
+            super(theTag);
+        }
+
+        /**
+         * ...
+         *
+         * @return ...
+         */
+        public final boolean isVmode() {
+
+            return true;
+        }
+    }
 
     /**
-     * The constant <tt>RESTRICTED_HORIZONTAL</tt> contains the restricted
-     * horizontal mode of the typesetter.
+     * This inner class represents vertical modes.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.5 $
      */
-    public static final Mode RESTRICTED_HORIZONTAL = new Mode("Mode.HorizontalMode");
+    private static class HorizontalMode extends Mode {
 
-    /**
-     * The constant <tt>INNER_VERTICAL</tt> contains the inner vertical mode of
-     * the typesetter.
-     */
-    public static final Mode INNER_VERTICAL = new Mode("Mode.VerticalMode");
+        /**
+         * Creates a new object.
+         *
+         * @param theTag the tag of the mode
+         */
+        protected HorizontalMode(final String theTag) {
 
-    /**
-     * The constant <tt>MATH</tt> contains the math mode of the typesetter.
-     */
-    public static final Mode MATH = new Mode("Mode.MathMode");
+            super(theTag);
+        }
+
+        /**
+         * ...
+         *
+         * @return ...
+         */
+        public final boolean isHmode() {
+
+            return true;
+        }
+    }
 
     /**
      * The constant <tt>DISPLAYMATH</tt> contains the display math mode of
      * the typesetter.
      */
-    public static final Mode DISPLAYMATH = new Mode("Mode.DisplayMathMode");
+    public static final Mode DISPLAYMATH = new MathMode("Mode.DisplayMathMode");
+
+    /**
+     * The constant <tt>HORIZONTAL</tt> contains the horizontal mode of the
+     * typesetter.
+     */
+    public static final Mode HORIZONTAL = new HorizontalMode("Mode.HorizontalMode");
+
+    /**
+     * The constant <tt>INNER_VERTICAL</tt> contains the inner vertical mode of
+     * the typesetter.
+     */
+    public static final Mode INNER_VERTICAL = new VerticalMode("Mode.VerticalMode");
+
+    /**
+     * The constant <tt>MATH</tt> contains the math mode of the typesetter.
+     */
+    public static final Mode MATH = new MathMode("Mode.MathMode");
+
+    /**
+     * The constant <tt>RESTRICTED_HORIZONTAL</tt> contains the restricted
+     * horizontal mode of the typesetter.
+     */
+    public static final Mode RESTRICTED_HORIZONTAL = new HorizontalMode(
+            "Mode.HorizontalMode");
+
+    /**
+     * The constant <tt>VERTICAL</tt> contains the vertical mode of the
+     * typesetter.
+     */
+    public static final Mode VERTICAL = new HorizontalMode("Mode.VerticalMode");
 
     /**
      * The field <tt>tag</tt> contains the key for the message (cf. i18n)
@@ -76,11 +165,42 @@ public final class Mode {
      * be usable. Those are provided by the static constants in this class.
      * </p>
      *
-     * @param aTag the tag of the mode
+     * @param theTag the tag of the mode
      */
-    private Mode(final String aTag) {
+    protected Mode(final String theTag) {
+
         super();
-        this.tag = aTag;
+        this.tag = theTag;
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public boolean isMath() {
+
+        return false;
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public boolean isHmode() {
+
+        return false;
+    }
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public boolean isVmode() {
+
+        return false;
     }
 
     /**
@@ -89,6 +209,7 @@ public final class Mode {
      * @return the string representation
      */
     public String toString() {
+
         return Messages.format(tag);
     }
 }
