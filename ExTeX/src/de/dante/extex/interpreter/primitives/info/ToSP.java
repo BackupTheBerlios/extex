@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ToSP extends AbstractCode implements Theable {
 
@@ -94,7 +94,7 @@ public class ToSP extends AbstractCode implements Theable {
                     cs.toString(), Character.toString(esc) + getName());
         }
 
-        Code code = context.getMacro(cs.getValue());
+        Code code = context.getCode(cs);
 
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", cs

@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedPair extends AbstractAssignment
         implements
@@ -74,7 +74,7 @@ public class NamedPair extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
 
             String key = getKey(source);
-            source.scanOptionalEquals();
+            source.getOptionalEquals();
             Pair value = new Pair(context, source);
             contextextex.setPair(key, value, prefix.isGlobal());
 

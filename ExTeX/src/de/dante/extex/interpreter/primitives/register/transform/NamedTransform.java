@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamedTransform extends AbstractAssignment implements Theable {
 
@@ -70,7 +70,7 @@ public class NamedTransform extends AbstractAssignment implements Theable {
             ContextExtension contextextex = (ContextExtension) context;
 
             String key = getKey(source);
-            source.scanOptionalEquals();
+            source.getOptionalEquals();
             Transform value = new Transform(context, source);
             contextextex.setTransform(key, value, prefix.isGlobal());
 

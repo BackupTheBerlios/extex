@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -83,7 +83,7 @@ public class NamedReal extends AbstractAssignment
             ContextExtension contextextex = (ContextExtension) context;
 
             String key = getKey(source);
-            source.scanOptionalEquals();
+            source.getOptionalEquals();
             Real value = new Real(context, source);
             contextextex.setReal(key, value, prefix.isGlobal());
 

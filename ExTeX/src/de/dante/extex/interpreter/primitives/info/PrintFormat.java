@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -105,7 +105,7 @@ public class PrintFormat extends AbstractCode implements Theable {
                     cs.toString(), Character.toString(esc) + getName());
         }
 
-        Code code = context.getMacro(cs.getValue());
+        Code code = context.getCode(cs);
 
         if (code == null) {
             throw new GeneralHelpingException("TTP.UndefinedToken", cs

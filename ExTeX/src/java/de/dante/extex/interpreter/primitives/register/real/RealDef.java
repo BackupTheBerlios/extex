@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RealDef extends AbstractAssignment {
 
@@ -68,7 +68,7 @@ public class RealDef extends AbstractAssignment {
         if (!(tok instanceof ControlSequenceToken)) {
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String key = "real#" + Long.toString(Count.scanCount(context, source));
         context.setCode(tok, new NamedReal(key), prefix.isGlobal());
     }

@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Real implements Serializable {
 
@@ -106,7 +106,7 @@ public class Real implements Serializable {
         } else if (t.equals(Catcode.OTHER, "+")) {
             t = source.scanNonSpace();
         } else if (t instanceof ControlSequenceToken) {
-            Code code = context.getMacro(t.getValue());
+            Code code = context.getCode(t);
             if (code != null && code instanceof RealConvertible) {
                 return (((RealConvertible) code).convertReal(context, source))
                         .getValue();

@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TransformDef extends AbstractAssignment {
 
@@ -67,10 +67,9 @@ public class TransformDef extends AbstractAssignment {
         if (!(tok instanceof ControlSequenceToken)) {
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String key = "transform#"
                 + Long.toString(Count.scanCount(context, source));
-        context.setCode(tok, new NamedTransform(key), prefix
-                .isGlobal());
+        context.setCode(tok, new NamedTransform(key), prefix.isGlobal());
     }
 }

@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Bool implements Serializable {
 
@@ -94,7 +94,7 @@ public class Bool implements Serializable {
         if (tok == null) {
             throw new GeneralHelpingException("TTP.NoBoolValue");
         } else if (tok instanceof ControlSequenceToken) {
-            Code code = context.getMacro(tok.getValue());
+            Code code = context.getCode(tok);
             if (code != null && code instanceof CountConvertible) {
                 return (new Bool(((CountConvertible) code).convertCount(
                         context, source))).getValue();

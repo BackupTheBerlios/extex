@@ -33,7 +33,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * TODO incomplete; Gerd
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EfmFopFont extends Typeface implements FontDescriptor {
 
@@ -105,23 +105,26 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public String getEncoding() {
 
-        return null;//realFont.getEncoding();
+        return null;
+        //realFont.getEncoding();
     }
 
     /**
      * @see org.apache.fop.fonts.Typeface#mapChar(char)
      */
-    public char mapChar(char c) {
+    public char mapChar(final char c) {
 
-        return 0;//realFont.mapChar(c);
+        return 0;
+        //realFont.mapChar(c);
     }
 
     /**
      * @see org.apache.fop.fonts.Typeface#hasChar(char)
      */
-    public boolean hasChar(char c) {
+    public boolean hasChar(final char c) {
 
-        return false;//realFont.hasChar(c);
+        return false;
+        //realFont.hasChar(c);
     }
 
     /**
@@ -129,7 +132,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public boolean isMultiByte() {
 
-        return false;//realFont.isMultiByte();
+        return false;
+        //realFont.isMultiByte();
     }
 
     // ---- FontMetrics interface ----
@@ -144,41 +148,46 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
     /**
      * @see org.apache.fop.fonts.FontMetrics#getAscender(int)
      */
-    public int getAscender(int size) {
+    public int getAscender(final int size) {
 
-        return 0;//realFont.getAscender(size);
+        return 0;
+        //realFont.getAscender(size);
     }
 
     /**
      * @see org.apache.fop.fonts.FontMetrics#getCapHeight(int)
      */
-    public int getCapHeight(int size) {
+    public int getCapHeight(final int size) {
 
-        return 0;//realFont.getCapHeight(size);
+        return 0;
+        //realFont.getCapHeight(size);
     }
 
     /**
      * @see org.apache.fop.fonts.FontMetrics#getDescender(int)
      */
-    public int getDescender(int size) {
+    public int getDescender(final int size) {
 
-        return 0;//realFont.getDescender(size);
+        return 0;
+        //realFont.getDescender(size);
     }
 
     /**
      * @see org.apache.fop.fonts.FontMetrics#getXHeight(int)
      */
-    public int getXHeight(int size) {
+    public int getXHeight(final int size) {
 
-        return 0;//font.getEx();
+        return 0;
+        //font.getEx();
     }
 
     /**
      * @see org.apache.fop.fonts.FontMetrics#getWidth(int, int)
      */
-    public int getWidth(int i, int size) {
+    public int getWidth(final int i, final int size) {
 
-        return 0;//realFont.getWidth(i, size);
+        return 0;
+        //realFont.getWidth(i, size);
     }
 
     /**
@@ -186,7 +195,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int[] getWidths() {
 
-        return null;//realFont.getWidths();
+        return null;
+        //realFont.getWidths();
     }
 
     /**
@@ -194,7 +204,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public boolean hasKerningInfo() {
 
-        return false;//realFont.hasKerningInfo();
+        return false;
+        //realFont.hasKerningInfo();
     }
 
     /**
@@ -202,7 +213,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public Map getKerningInfo() {
 
-        return null;//realFont.getKerningInfo();
+        return null;
+        //realFont.getKerningInfo();
     }
 
     // ---- FontDescriptor interface ----
@@ -211,7 +223,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int getCapHeight() {
 
-        return 0;//realFontDescriptor.getCapHeight();
+        return 0;
+        //realFontDescriptor.getCapHeight();
     }
 
     /**
@@ -219,7 +232,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int getDescender() {
 
-        return 0;//realFontDescriptor.getDescender();
+        return 0;
+        //realFontDescriptor.getDescender();
     }
 
     /**
@@ -227,7 +241,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int getAscender() {
 
-        return 0;//realFontDescriptor.getAscender();
+        return 0;
+        //realFontDescriptor.getAscender();
     }
 
     /**
@@ -235,7 +250,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int getFlags() {
 
-        return 0;//realFontDescriptor.getFlags();
+        return 0;
+        //realFontDescriptor.getFlags();
     }
 
     /**
@@ -243,7 +259,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int[] getFontBBox() {
 
-        return null;//realFontDescriptor.getFontBBox();
+        return null;
+        //realFontDescriptor.getFontBBox();
     }
 
     /**
@@ -251,7 +268,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int getItalicAngle() {
 
-        return 0;//realFontDescriptor.getItalicAngle();
+        return 0;
+        //realFontDescriptor.getItalicAngle();
     }
 
     /**
@@ -259,7 +277,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public int getStemV() {
 
-        return 0;//realFontDescriptor.getStemV();
+        return 0;
+        //realFontDescriptor.getStemV();
     }
 
     /**
@@ -267,7 +286,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public FontType getFontType() {
 
-        return null;//realFontDescriptor.getFontType();
+        return null;
+        //realFontDescriptor.getFontType();
     }
 
     /**
@@ -275,7 +295,8 @@ public class EfmFopFont extends Typeface implements FontDescriptor {
      */
     public boolean isEmbeddable() {
 
-        return true;//realFontDescriptor.isEmbeddable();
+        return true;
+        //realFontDescriptor.isEmbeddable();
     }
 
 }

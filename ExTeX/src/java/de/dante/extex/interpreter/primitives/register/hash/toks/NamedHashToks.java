@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NamedHashToks extends AbstractAssignment implements Theable {
 
@@ -72,7 +72,7 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
             ContextExtension contextextex = (ContextExtension) context;
 
             String key = getKey(source);
-            source.scanOptionalEquals();
+            source.getOptionalEquals();
 
             HashToks value = new HashToks(context, source);
             contextextex.setHashToks(key, value, prefix.isGlobal());

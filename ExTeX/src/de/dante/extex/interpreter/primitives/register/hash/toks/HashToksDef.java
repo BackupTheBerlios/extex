@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HashToksDef extends AbstractAssignment {
 
@@ -68,10 +68,9 @@ public class HashToksDef extends AbstractAssignment {
         if (!(tok instanceof ControlSequenceToken)) {
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         String key = "hashtoks#"
                 + Long.toString(Count.scanCount(context, source));
-        context.setCode(tok, new NamedHashToks(key), prefix
-                .isGlobal());
+        context.setCode(tok, new NamedHashToks(key), prefix.isGlobal());
     }
 }

@@ -17,49 +17,54 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.hyphen;
+package de.dante.extex.interpreter.primitives.register.real;
 
-import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.CountConvertible;
+import de.dante.extex.interpreter.type.real.Real;
+import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\lefthyphenmin</code>.
+ * Math. cosinus.
  *
- * The value are stored in the <code>HyphernationTable</code>.
- * Each <code>HyphernationTable</code> are based on <code>\language</code>
- * and have its own <code>\lefthyphenmin</code>-value (different to original TeX).
- *
- * <p>Example:</p>
+ * <p>Example</p>
  * <pre>
- * \lefthyphenmin=2
+ * \the\mathcos 0.234
+ * \real7=\mathcos 0.56
+ * \real8=\mathcos\real7
+ * \count99=\mathcos 1.34
  * </pre>
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public class LeftHyphenmin extends AbstractCode implements Theable {
+public class MathCos extends AbstractCode
+        implements
+            Theable,
+            RealConvertible,
+            CountConvertible {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
+     * @throws GeneralException ...
      */
-    public LeftHyphenmin(final String name) {
+    public MathCos(final String name) throws GeneralException {
 
         super(name);
+
     }
 
     /**
-     * Scan for lefthyphenmin-value and stored it in the
-     * <code>HyphernationTable</code> with the language-number.
+     * execute
      *
      * @see de.dante.extex.interpreter.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -71,19 +76,25 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Count language = context.getCount("language");
-        HyphenationTable ht = context.getHyphenationTable((int) language
-                .getValue());
-
-        source.getOptionalEquals();
-        int lefthyphmin = (int) source.scanInteger();
-
-        ht.setLeftHyphenmin(lefthyphmin);
+        Real real = calculate(context, source);
+        source.push(new Tokens(context, real.toString()));
     }
 
     /**
-     * Return the <code>Tokens</code> to show the content with <code>\the</code>.
-     *
+     * Calculate
+     * @param context   the context
+     * @param source    the tokensource
+     * @return  the real-value
+     * @throws GeneralException if a error occoured
+     */
+    private Real calculate(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        Real real = new Real(context, source);
+        return new Real(Math.cos(real.getValue()));
+    }
+
+    /**
      * @see de.dante.extex.interpreter.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
@@ -91,9 +102,29 @@ public class LeftHyphenmin extends AbstractCode implements Theable {
     public Tokens the(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Count language = context.getCount("language");
-        HyphenationTable ht = context.getHyphenationTable((int) language
-                .getValue());
-        return new Tokens(context, String.valueOf(ht.getLeftHyphenmin()));
+        Real real = calculate(context, source);
+        return new Tokens(context, real.toString());
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.RealConvertible#convertReal(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Real convertReal(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return calculate(context, source);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.CountConvertible#convertCount(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public long convertCount(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return calculate(context, source).getLong();
     }
 }

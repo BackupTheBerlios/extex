@@ -48,7 +48,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -96,6 +96,8 @@ public class FontFactoryImpl implements FontFactory {
     public Font getInstance(final String name, final Dimen size,
             final Glue letterspaced, final boolean ligatures)
             throws GeneralException, ConfigurationException {
+
+        // TODO missing kerning
 
         String filename;
         if (name != null) {

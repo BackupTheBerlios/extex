@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class RightHyphenmin extends AbstractCode implements Theable {
 
@@ -76,7 +76,7 @@ public class RightHyphenmin extends AbstractCode implements Theable {
         HyphenationTable ht = context.getHyphenationTable((int) language
                 .getValue());
 
-        source.scanOptionalEquals();
+        source.getOptionalEquals();
         int righthyphmin = (int) source.scanInteger();
 
         ht.setRightHyphenmin(righthyphmin);
