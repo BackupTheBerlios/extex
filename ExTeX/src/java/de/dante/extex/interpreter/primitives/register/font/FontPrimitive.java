@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -117,12 +117,7 @@ public class FontPrimitive extends AbstractAssignment
         int size = getFontSize(fontname);
         Dimen fontSize = null;
 
-        // optional parameters 'at' and 'scaled'
-        // if 'at' not used, the fontname must have a size (e.g. cmr10)
         if (source.getKeyword(context, "at")) {
-            // \font\myfont=cmr12 at 15pt
-            // \font\second=cmr10 at 12truept
-            source.skipSpace();
             fontSize = new Dimen(context, source);
             if (fontSize.lt(Dimen.ZERO_PT)) {
                 throw new HelpingException(getLocalizer(), "TTP.ImproperAt",
@@ -130,8 +125,6 @@ public class FontPrimitive extends AbstractAssignment
             }
 
         } else if (source.getKeyword(context, "scaled")) {
-            // \font\magnifiedfiverm=cmr5 scaled 2000
-            source.skipSpace();
             long scale = source.scanInteger(context);
             if (scale <= 0) {
                 throw new HelpingException(getLocalizer(), "TTP.IllegalMag",
@@ -147,20 +140,16 @@ public class FontPrimitive extends AbstractAssignment
         boolean ligatures = true;
         boolean kerning = true;
 
-        for (boolean onceMore = true; onceMore;) {
+        for (;;) {
 
             if (source.getKeyword(context, "letterspaced")) {
-                // \font\myfont=cmr12 at 15pt letterspaced 10sp plus 3sp minus 2sp
-                source.skipSpace();
                 letterspaced = new Glue(source, context);
             } else if (source.getKeyword(context, "noligatures")) {
-                // \font\myfont=cmr12 at 15pt noligatures
                 ligatures = false;
             } else if (source.getKeyword(context, "nokerning")) {
-                // \font\myfont=cmr12 at 15pt nokerning
                 kerning = false;
             } else {
-                onceMore = false;
+                break;
             }
         }
 
