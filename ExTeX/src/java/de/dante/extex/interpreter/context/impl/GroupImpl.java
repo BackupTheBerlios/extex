@@ -56,7 +56,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -314,7 +314,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         if (next != null) {
             return next.getCode(token);
         }
-        if (SUPPORT_NAMESPACES) {
+        if (SUPPORT_NAMESPACES && token instanceof CodeToken) {
             Token t = ((CodeToken) token).cloneInDefaultNamespace();
             if (t != token) {
                 return getCode(t);
