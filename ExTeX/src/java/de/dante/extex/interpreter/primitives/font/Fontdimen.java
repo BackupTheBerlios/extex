@@ -63,10 +63,11 @@ import de.dante.util.GeneralException;
  * </p>
  * </doc>
  *
+ * TODO gene: document Extension
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
