@@ -1,0 +1,426 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/REC-html40/strict.dtd">
+
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+    <title>ExTeX</title>
+
+    <style type="text/css">
+      <!--
+      body {
+           margin: 2em 4em 8em 4em;
+           }
+
+      .code {
+           font-family:monospace;
+           }
+
+      .sysname {
+           font-style:normal;
+           }
+
+      .var {
+           font-family:monospace;
+           }
+      -->
+    </style>
+  </head>
+
+
+  <body>
+
+    <h1>ExTeX</h1>
+
+    <h2>Michael Niedermair, Rolf Niepraschk, Torsten Krueger, Markus
+    Kohm, David Kastrup</h2>
+
+    <p>
+      In December 2002 a small group of consultative experts and
+      developers came together to launch the creation of a new
+      derivate of <span class="sysname">TeX</span>, based on <span
+      class="sysname">NTS</span>. Initially there were a few ideas and
+      the necessity to familiarise with existing sources and <span
+      class="sysname">TeX</span> extensions. After a lot of
+      experiments and examinations, and yet before the group's first
+      closed meeting from October 3rd to 5th, it was clear that the
+      ambitious goals could be achieved only if large parts of <span
+      class="sysname">TeX</span> &ndash; and with it <span
+      class="sysname">NTS</span> &ndash; were substituted. This led to the
+      decision to develop a new Java-based system, using the
+      experiences with <span class="sysname">NTS</span>, <span
+      class="sysname">&epsilon;-TeX</span>, <span
+      class="sysname">pdfTeX</span>, and <span class="sysname">&Omega;
+      (Omega)</span>: <span class="sysname">ExTeX</span>. In this
+      article we will render the current state of progress and
+      planning.  Additionally we will request for further suggestions
+      and discussion of our conception.
+    </p>
+
+    <img src="./moduledesign.gif" alt="the modular design of ExTeX" style="float:right;padding:12px 12px 24px 24px" />
+
+    <h3>Modularity</h3>
+
+    <p>
+      <span class="sysname">ExTeX</span>'s object-oriented design (see
+      figure) includes some main modules that act without knowledge
+      about the functioning of the other modules (encapsulation). Thus
+      the frontend with tokenisation and the expansion of tokens, up to
+      the creation of nodes are exchangeable, independently from the
+      typesetter. The same applies to the backend that generates the
+      output. A special role plays the font module that provides font
+      information to the typesetter as well as to the output module.
+    </p>
+    <p>
+      Inside the main modules other subdivisons are established, making
+      subtitution or enhancement of single aspects of a function
+      possible. So the font module may be extended to new formats by
+      adding or replacing a font reader, without directly affecting
+      other parts of the program. Likewise new algorithms may be
+      integrated into the typesetter that is responsible for line
+      breaking and the structure of the page.
+    </p>
+
+    <h3>Compatibility</h3>
+
+    <p>
+      <span class="sysname">ExTeX</span> will provide all of <span
+      class="sysname">TeX</span>'s primitives. Since syntax and function
+      of some primitives (e.g. <span class="code">\input</span>) leads
+      to undesirable constraints on modern systems, supplemental
+      primitives will be designed and implemented in these cases. The
+      old variants will clearly be marked obsolete. In some cases this
+      has been done already. Hardly understandable peculiarities of
+      <span class="sysname">TeX</span> can be abandoned in favour of a
+      clean implementation. Moreover the behaviour in case of an error
+      will not be emulated completely equally. Eventually <span
+      class="sysname">ExTeX</span> shall be able to typeset existing
+      documents visually identically to <span
+      class="sysname">TeX</span>.
+    </p>
+
+
+    <p>
+      <span class="sysname">ExTeX</span> will not be compatible
+      regarding the strict separation of <span
+      class="sysname">iniTeX</span> and <span
+      class="sysname">virTeX</span>. So far, loading of hyphenation
+      patterns and creation of format files is possible only for <span
+      class="sysname">iniTeX</span>. <span class="sysname">ExTeX</span>
+      on the other hand shall be able to load hyphenation patterns
+      globally at any time, i.e. it shall not be limited to hyphenation
+      tables that are stored in the format files.  Therefore it will be
+      possible to load only those hyphenation tables at runtime that are
+      actually needed. <span class="sysname">ExTeX</span> also has the
+      ablility to create a format under particular conditions, namely
+      outside of any group.
+    </p>
+
+    <p>
+      From <span class="sysname">&epsilon;-TeX</span> mainly those facilities
+      will be adopted whose main effect is not limited to the logging
+      messages. The additional tracing primitives are not adopted to the
+      vocabulary of <span class="sysname">ExTeX</span> because <span
+      class="sysname">ExTeX</span> will provide its own progressive
+      facilities for debugging purposes. The facilities of <span
+      class="sysname">&epsilon;-TeX</span> to toggle the direction of writing
+      will be omitted, too. These can be realised with the help of <span
+      class="sysname">&Omega;</span>-compatible primitives on macro
+      level. Thus compatibility to real existing <span
+      class="sysname">&epsilon;-TeX</span> documents should be obtained.
+    </p>
+    <p>
+      From <span class="sysname">&Omega;</span> the extensions regarding
+      the fonts will be taken, as well as the feature of setting the
+      direction of writing.  However <span class="sysname">ExTeX</span>
+      will not adopt the encoding functions of <span
+      class="sysname">&Omega;</span>, but instead realise 16-bit
+      capability with its own easily comprehensible methodes. Here
+      established basic facilities of Java will be used.
+    </p>
+    <p>
+      There are two kinds of <span class="sysname">pdfTeX</span>
+      features: those controlling PDF output, and those providing
+      additional typographic features. The latter shall be widely
+      adopted. Here the problem arises that in <span
+      class="sysname">pdfTeX</span> these primitives are prefixed with
+      »<span class="code">pdf</span>«, too. Hence new names and
+      partially other primitives will replace them in <span
+      class="sysname">ExTeX</span>. As above, macros may be used as the
+      connective link. In most cases, e.g. with <span
+      class="sysname">LaTeX</span> packages like <span
+      class="code">graphics</span> or <span
+      class="code">hyperref</span>, a change to a new driver is
+      recommended. This all the more, as the way to implement
+      capabilities that are strongly depenent on the backend is
+      different in <span class="sysname">ExTeX</span>.
+    </p>
+
+    <h3>New features</h3>
+
+    <p>
+      Although <span class="sysname">ExTeX</span> is designed so that
+      new facilities can easily be added to every main module &ndash;
+      actually on the level of primitives &ndash; <span
+      class="sysname">ExTeX</span> will right from start be equipped
+      with some innovations. One of these is the handling of different
+      encodings of input files. At this <span
+      class="sysname">ExTeX</span> uses Java's built-in facilities to
+      transfer read characters into an internal 32-bit coding.
+    </p>
+    <p>
+      As several of <span class="sysname">TeX</span>'s primitives are
+      limited to 8-bit, and <span class="sysname">&Omega;</span> to
+      16-bit, new appropriate equivalents will be defined, e.g. for
+      <span class="code">\mathcode</span>. On the other hand, <span
+      class="code">\char</span> will be able to handle values greater
+      than 255 directly. Actually this is an incompatibility to <span
+      class="sysname">TeX</span>, but since <span
+      class="sysname">TeX</span> would report an error in this case,
+      this behaviour is compatible to existing error-free documents.
+    </p>
+    <p>
+      Expansions that do not depend on a specific output format, but are
+      &ndash; even in various ways &ndash; supported by different output
+      formats, will have their own primitives. Examples for this are the
+      begin and end of links as well as their targets.
+    </p>
+    <p>
+      <span class="sysname">TeX</span> knows elements that do not deal
+      with typography of the page, but they must be processed when it is
+      outputted (<span class="code">\shipout</span>). Examples for this
+      <em>whatsits</em> are <span class="code">\openout</span>, <span
+      class="code">\closeout</span> and <span
+      class="code">\write</span>, always without being prefixed with
+      <span class="code">\immediate</span>. Especially these should not
+      have any effect on page breaking, which can't be guaranteed by
+      <span class="sysname">TeX</span> really. This deficency shall be
+      improved in <span class="sysname">ExTeX</span>, despite arising
+      incompatibilities.
+    </p>
+    <p>
+      Among the <em>whatsits</em>, the <span
+      class="code">\special</span> primitive plays a special role.
+      Depending on its meaning, it may have effects on line or page
+      breaking (e.g. if a graphic is inserted), or not (e.g. if colour
+      is changed).  Apart from the fact that <span
+      class="sysname">ExTeX</span> will support colours directly, <span
+      class="sysname">ExTeX</span> will have a new primitive for
+      extensions that depend on the output format.  When encountering
+      this primitive, the typesetter will demand the decision whether
+      the element affects line or page breaking from the backend (see
+      IObject and Boxsize in the figure).  For example, a PDF backend
+      may return the size of an image that was inserted by this
+      primitive.
+    </p>
+    <p>
+      Medium-term <span class="sysname">ExTeX</span> shall provide
+      graphical elements like lines of arbitrary gradient, ellipses,
+      bezier curves etc.  Also graphical transformations like rotation,
+      reflexion, or scaling shall be realised.
+    </p>
+
+    <h3>Implemented so far</h3>
+
+    <ul>
+      <li>
+	<strong>Tokenizer:</strong>
+	<p>
+	  The tokenizer generates single tokens from various sources
+	  (e.g. a file) and provides them in a stack.  The encoding of
+	  each file is taken into account, which can also be
+          set by a primitive.  All of Java's standard encodings are
+	  supported (others may be defined in special cases).
+	</p>
+	<p>
+	  Special or unicode characters can be read in various ways:
+	</p>
+	<ul>
+	  <li>
+	  Standard <span class="sysname">TeX</span> variant:&nbsp;<span
+	      class="code">^^...</span>
+	  </li>
+
+	  <li>
+	  Unicode:&nbsp;<span class="code">^^^<em>Unicodename;</em></span>
+	  </li>
+
+	  <li>
+	  Omega variant:&nbsp;<span class="code">^^^^<em>Hex-number</em></span>
+	  </li>
+	</ul>
+
+	<p>
+	  The TokenizerStack may be shown optionally in a window (visual
+	  debugger), in order to follow the progress and generation of
+	  tokens.
+	</p>
+      </li>
+
+      <li>
+	<strong>Filemanager</strong>
+	<p>
+	  All files are loaded by a central FileManager.  All accesses
+	  are cached.  The FileManager searches and loads files in
+	  directories defined in <span class="var">TEXINPUTS</span>, and
+	  additionally in given JAR archives.
+	</p>
+	<p>
+	  Newly created files are saved to the directory <span
+	  class="var">TEXOUTPUTS</span>, or to the current one.  If it
+	  is not writeable, the substitution directory <span
+	  class="var">TEXMFOUTPUT</span> is used instead.
+	</p>
+      </li>
+
+      <li>
+	<strong>EqTable</strong>
+	<p>
+	  The EqTable takes all primitives, parameters etc. and stores
+	  them in the appropriate group levels.
+	</p>
+	<p>
+	  This table (the keys and their according values) may
+	  optionally be shown in a special window (visual debugger), in
+	  order to track values etc.  A filter is provided for setting
+	  the visible range.  A breakpoint mechanism allows to stop the
+	  processing if the value of an entry changes.
+	</p>
+      </li>
+
+      <li>
+	<strong>Log Output</strong>
+	<p>
+	  Output is generated according to the applied filter
+	  (separately for terminal and logfile).  An appropriate output
+	  encoding may be specified, too.
+	</p>
+      </li>
+
+      <li>
+	<strong>Registers</strong>
+	<p>
+	  Registers are not explicitly limited to a certain size.  It
+	  only depends on the counter (a 32-bit integer is used) and the
+	  available memory.
+	</p>
+      </li>
+
+      <li>
+	<strong>Primitives</strong>
+	<p>
+	  &hellip;&nbsp;are considered step-by-step.
+	</p>
+      </li>
+    </ul>
+
+    <h3>Unsolved things</h3>
+
+    <p>
+      A large part of what is to be programmed in <span
+      class="sysname">ExTeX</span> shall provide the same functionality
+      as <span class="sysname">TeX</span> does.  The way to go is
+      determined by and large, but not always easy because it's desired
+      to get a structure as modular as possible.  The extensions offered
+      by <span class="sysname">&epsilon;-TeX</span> will probably be
+      realised similarly to the already implemented primitives and
+      operators of <span class="sysname">TeX</span>.  However the
+      following (so far only suggested) extensions and modifications are
+      different. They require a more intense analysis of the matter.
+      Hence the ##placing## of diplomas and thesis on them would be
+      perfect:
+    </p>
+
+    <ol>
+      <li>
+	<p>
+	  Typesetting of paragraphs that differ from the usual
+	  rectangular shape.  We look for a general solution that
+	  provides more than what is offered by the <span
+	  class="code">\parshape</span> primitive.  A lot of
+          difficulties arise if multiple attempts of breaking these
+	  paragraphs are considered, as well as breaking of pages.
+	</p>
+      </li>
+
+      <li>
+	<p>
+	  Fonts management. The way <span class="sysname">TeX</span>
+	  currently deals with fonts has many limitations which makes it
+	  very awkward.  The internal use of 32-bit encoded characters
+	  in <span class="sysname">ExTeX</span> aggravates the problem.
+	  The following briefly mentioned problems are related to that:
+	</p>
+	<ul>
+	  <li>
+	    micro adjustment of kerning and letter size
+	  </li>
+
+	  <li>
+	    protruding characters
+	  </li>
+
+	  <li>
+	    letterspacing and the like
+	  </li>
+
+	  <li>
+	    right-to-left typesetting
+	  </li>
+	</ul>
+
+      <li>
+	<p>
+	  The possibility to optimise line and page breaking across
+	  several pages.  It would be desirable to have alternative page
+	  breaks of certain pages calculated within a single <span
+	  class="sysname">ExTeX</span> run, and to have improper results
+	  rejected.  Apart from technical questions about this kind of
+	  optimisation a basic strategy is widely unknown.  This is
+	  connected with the possibility to typeset only single pages or
+	  even parts of it, instead of a complete document.  This would
+	  help to build a WYSIWYG <span class="sysname">TeX</span>.
+	</p>
+      </li>
+
+      <li>
+	So-called &ldquo;backing up&rdquo; of boxes of a page.  This
+	means that lines of text may be positioned only at specific
+	vertical locations of the page, so that adjacent pages harmonise
+	better with each other.  Considering that a page does not only
+	contain text lines of equal size, but also graphics,
+	mathematical formulae etc, a solution is expected to be not
+	trivial.
+      </li>
+    </ol>
+    
+    <h2>Call for support</h2>
+
+    <p>
+      During the three days while the <span class="sysname">ExTeX</span>
+      team intensively discussed own and potential expectations
+      regarding a new typesetting program, it became obvious that we
+      could not completely evaluate all aspects.  In several fields we
+      were simply lacking necessary competence.
+    </p>
+    <p>
+      Moreover there are more or less urgent wishes, expecially from
+      format and package developers, we did not think of at all so far.
+      We hope that this article will help to make people to tell us
+      these wishes.  Futher articles about certain aspects of <span
+      class="sysname">ExTeX</span> will possibly follow.  It would be
+      helpful however that important problems or ideas would early
+      (i.e. before the development and implementation of fundamental
+      functions) be sent to us.
+    </p>
+    <p>
+      As refered in the secton »unsolved things« there are many fields
+      where new concepts are to be developed.  Here and on the plain
+      implementation, support is welcomed and desired.
+    </p>
+
+  </body>
+
+  <!-- Vielen Dank an TB für die Hilfe bei der Uebersetzung -->
+
+</html>
+
