@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer </a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -75,7 +75,7 @@ public class CharNode extends AbstractNode implements Node {
             setWidth(new Dimen(0));
             setHeight(new Dimen(0));
             setDepth(new Dimen(0));
-            character = null;
+            //character = null;
         }
     }
 
