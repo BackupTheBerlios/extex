@@ -65,7 +65,7 @@ import de.dante.util.GeneralException;
  * sequence diagram.
  * </p>
  * <div class="Figure">
- *  <img src="nodeVisitor.png" />
+ *  <img src="doc-files/nodeVisitor.png" />
  *  <br />
  *  <caption>A sequence diagram for the NodeVisitor</caption>
  * </div>
@@ -183,7 +183,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface NodeVisitor {
 
