@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!--
+  -  Copyright (C) 2004 The ExTeX Group
+  -
+  -  This library is free software; you can redistribute it and/or modify it
+  -  under the terms of the GNU Lesser General Public License as published by
+  -  the Free Software Foundation; either version 2.1 of the License, or (at
+  -  your option) any later version.
+  -
+  -  This library is distributed in the hope that it will be useful, but
+  -  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  -  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+  -  License for more details.
+  -
+  -  You should have received a copy of the GNU Lesser General Public License
+  -  along with this library; if not, write to the Free Software Foundation,
+  -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  -
+  -->
+<Resource>
+  <Finder class="de.dante.util.resource.FileFinder"
+          default="default"
+          trace="false">
+    <tex>
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension></extension>
+      <extension>.tex</extension>
+    </tex>
+    <fmt>
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension></extension>
+      <extension>.fmt</extension>
+    </fmt>
+    <default>
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension></extension>
+    </default>
+  </Finder>
+  <Finder class="de.dante.extex.main.ResourceFinderImpl" default="default">
+    <tex>
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension></extension>
+      <extension>.tex</extension>
+    </tex>
+    <fmt>
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension></extension>
+      <extension>.fmt</extension>
+    </fmt>
+    <default>
+      <path property="extex.texinputs"/>
+      <path property="texinputs"/>
+      <path>.</path>
+      <extension/>
+    </default>
+  </Finder>
+</Resource>

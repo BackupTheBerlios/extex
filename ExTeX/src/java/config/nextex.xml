@@ -23,54 +23,7 @@
   <!-- 
     -  The section "Resource" contains the search specification for input files.
     -->
-  <Resource>
-    <Finder class="de.dante.util.resource.FileFinder"
-            default="default"
-            trace="false">
-      <tex>
-        <path property="extex.texinputs"/>
-        <path property="texinputs"/>
-        <path>.</path>
-        <extension></extension>
-        <extension>.tex</extension>
-      </tex>
-      <fmt>
-        <path property="extex.texinputs"/>
-        <path property="texinputs"/>
-        <path>.</path>
-        <extension></extension>
-        <extension>.fmt</extension>
-      </fmt>
-      <default>
-        <path property="extex.texinputs"/>
-        <path property="texinputs"/>
-        <path>.</path>
-        <extension></extension>
-      </default>
-    </Finder>
-    <Finder class="de.dante.extex.main.ResourceFinderImpl" default="default">
-      <tex>
-        <path property="extex.texinputs"/>
-        <path property="texinputs"/>
-        <path>.</path>
-        <extension></extension>
-        <extension>.tex</extension>
-      </tex>
-      <fmt>
-        <path property="extex.texinputs"/>
-        <path property="texinputs"/>
-        <path>.</path>
-        <extension></extension>
-        <extension>.fmt</extension>
-      </fmt>
-      <default>
-        <path property="extex.texinputs"/>
-        <path property="texinputs"/>
-        <path>.</path>
-        <extension/>
-      </default>
-    </Finder>
-  </Resource>
+  <Resource src="path/fileFinder.xml"/>
 
   <!-- 
     -  The section "Fonts" contains the search specification for font files.
@@ -85,32 +38,7 @@
         <tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFount"/>
         <tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
     </Type>
-    <Resource>
-      <Finder class="de.dante.util.resource.FileFinder"
-            default="default"
-            trace="false">
-        <efm>
-          <extension>.efm</extension>
-          <path>.</path>
-          <path property="extex.fonts"/>
-        </efm>
-        <pfb>
-          <extension>.pfb</extension>
-          <path>.</path>
-          <path property="extex.fonts"/>
-        </pfb>
-        <ttf>
-          <extension>.ttf</extension>
-          <path>.</path>
-          <path property="extex.fonts"/>
-        </ttf>
-        <default>
-          <extension/>
-          <path>.</path>
-          <path property="extex.fonts"/>
-        </default>
-      </Finder>
-    </Resource>
+    <Resource src="path/fontFinder.xml"/>
   </Fonts>
 
   <!-- 
@@ -148,6 +76,10 @@
       -  The attribute "size" can be used to specify the size. Default: design size.
       -->
     <Font/>
+
+    <!-- The configuration of the token factory.
+      -->
+    <TokenFactory class="de.dante.extex.scanner.TokenFactoryImpl"/>
 
     <!-- The configuration of the context implementation to use.
       -->
@@ -190,6 +122,11 @@
       <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl"/>
       <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
     </TeX>
+    <devel class="de.dante.extex.typesetter.impl.TypesetterImpl">
+      <PageBuilder class="de.dante.extex.typesetter.pageBuilder.impl.PageBuilderImpl"/>
+      <ParagraphBuilder class="de.dante.extex.typesetter.paragraphBuilder.trivial.TrivialBuilder"/>
+      <LigatureBuilder class="de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl"/>
+    </devel>
   </Typesetter>
 
   <!-- 
