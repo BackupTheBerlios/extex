@@ -1,0 +1,14 @@
+Makefile.in
+*.aux
+*.dvi
+*.log
+*.debug
+*.out
+*.xxx
+Makefile
+marray.txt
+mhash.txt
+sarray.txt
+testlocal.tex
+*.lck
+*.log*

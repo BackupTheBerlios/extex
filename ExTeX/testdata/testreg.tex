@@ -1,0 +1,198 @@
+%
+% @version $Revision: 1.1 $ $Date: 2004/01/01 16:13:15 $
+%
+% Test für Register
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+%
+%
+\count7=11
+
+\the\count7
+%%%
+%%%
+%%%
+%\endinput
+%\count7=13
+%\count1=01
+%\count2=2
+%\count70000=70001
+%\countdef\hugo=7
+%\count9=\hugo
+%\the\count2
+%\the\hugo
+%%
+%% gacount 
+%\gacount0=123
+%\gacount100=2
+%\gacountdef\peter=100
+%\gacount0=\peter
+%\the\peter
+%%
+%% alloccountarray
+%\alloccountarray\anja50
+%\anja1=34
+%\anja49=33
+%%\anja50=50% wirft einen Fehler
+%\countarraydef\anja\uschi=49
+%\uschi=1033
+%\the\uschi
+%%
+%% size (im Moment nur Ausgabe im Log)
+%\size\count
+%\size\gacount
+%\size\anja
+%\size\uschi
+%%
+%% advance
+%%\advance  % wirft Fehler, da kein Register folgt
+%%\advance\count7 % wirft Fehler, da kein by gefunden
+%%\advance\count7 by % wirft Fehler, da keine Nummer folgt
+%\advance\count7 by 10
+%\advance\count7 by -1
+%\advance\gacount0 by 7
+%\advance\hugo by 1
+%\advance\anja1 by -34
+%\advance\uschi by 2
+%%
+%% multiply & divide
+%\multiply\count7 by 2
+%\multiply\gacount0 by 3
+%\multiply\hugo by 4
+%\multiply\anja49 by 2
+%\multiply\uschi by 3
+%\multiply\uschi by 999
+%%
+%\divide\uschi by 100
+%%
+%\count300=7
+%\the\count300
+%%
+%% 
+%\dimen1=100pt
+%%
+%\the\dimen1
+%%
+%\dimen2=100000sp
+%\dimen3=20cm
+%\dimen4=1in
+%%
+%\gadimen1=12pt
+%\the\gadimen1
+%%
+%\dimen7=99pt
+%\dimendef\dhugo=7
+%\dimen9=\dhugo
+%\the\dimen7
+%\the\dhugo
+%%
+%% allocdimenarray
+%\allocdimenarray\petra50
+%\petra1=34pt
+%\petra49=33pt
+%\dimenarraydef\petra\heike=49
+%\heike=1033pt
+%\the\heike
+%%
+%% size (im Moment nur Ausgabe im Log)
+%\size\dimen
+%\size\gadimen
+%\size\petra
+%\size\heike
+%%
+%%
+%% real ----------------------------------
+%\real7=234.45
+%\the\real7
+%%
+%\gareal1=12.34
+%\the\gareal1
+%%
+%\real7=99
+%\realdef\rhugo=7
+%\real9=\rhugo
+%\the\real7
+%\the\rhugo
+%%
+%% allocdimenarray
+%\allocrealarray\pet50
+%\pet1=34
+%\pet49=33
+%\realarraydef\pet\hei=49
+%\hei=1033
+%\the\hei
+%%
+%% size (im Moment nur Ausgabe im Log)
+%\size\real
+%\size\gareal
+%\size\pet
+%\size\hei
+
+%%
+%\skip6=45pt plus 1pt minus 2pt
+%\the\skip6
+%%
+%\gaskip1=12.34mm minus 1.2mm
+%\the\gaskip1
+%%
+%\skip7=99pt
+%\skipdef\shugo=7
+%\skip9=\shugo
+%\the\skip7
+%\the\shugo
+%%
+%% allocskiparray
+%\allocskiparray\asd50
+%\asd1=34cm
+%\asd49=33pt
+%\skiparraydef\asd\heido=49
+%\heido=1033pt
+%\the\heido
+%%
+%% -------------------------------------------------
+%\muskip7=4mu plus 3mu minus 2mu
+%\the\muskip6
+%%
+%\gamuskip1=12.34mu minus 1.2mu
+%\the\gamuskip1
+%%
+%\muskip7=99mu
+%\muskipdef\mushugo=7
+%\muskip9=\mushugo
+%\the\muskip7
+%\the\mushugo
+%%
+%% allocskiparray
+%\allocmuskiparray\amusd50
+%\amusd1=34mu
+%\amusd49=33mu
+%\muskiparraydef\amusd\muheido=49
+%\muheido=1033mu
+
+%\the\muheido
+%%
+%% ------------------------------
+%\toks89={Heute ist \today}
+%\the\toks89
+%%
+%\gatoks1=\toks89
+%\the\gatoks1
+%%
+%\toks7={777}
+%\toksdef\tokshugo=7
+%\toks9=\tokshugo
+%\the\toks7
+%\the\tokshugo
+%%
+%% allocskiparray
+%%\allocmuskiparray\amusd50
+%%\amusd1=34mu
+%%\amusd49=33mu
+%%\muskiparraydef\amusd\muheido=49
+%%\muheido=1033mu
+%%\the\muheido
+
+%\toks6={\relax}
+
+%\endinput

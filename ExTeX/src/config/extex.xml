@@ -296,7 +296,7 @@
     <Define name="tabskip" class=""/>
     <Define name="textfont" class=""/>
     <Define name="textstyle" class=""/>
-    <Define name="the" class=""/>
+    <define name="the" class="de.dante.extex.interpreter.primitives.show.The"/>
     <Define name="thickmuskip" class=""/>
     <Define name="thinmuskip" class=""/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
