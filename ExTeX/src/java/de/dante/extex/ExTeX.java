@@ -121,7 +121,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *  This program is normally used through a wrapper which performs all
  *  necessary initializations and hides the implementation language from the
  *  casual user. Since this is the default case it is described here first.
- *  Details about the direct usage wothout the wrapper can be found in section
+ *  Details about the direct usage without the wrapper can be found in section
  *  <a href="#invocation">Direct Java Invocation</a>.
  * </p>
  * <p>
@@ -373,7 +373,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *    on the command line the code has to start with a backslash. This
  *    restriction does not hold for the property settings.
  *   </dd>
- *   <dd>Command line: <tt>&lang</a>;code&rang;</tt></dd>
+ *   <dd>Command line: <tt>&lang;code&rang;</tt></dd>
  *
  *   <dt><a name="extex.config"/><tt>extex.config</tt></dt>
  *   <dd>
@@ -618,7 +618,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.59 $
+ * @version $Revision: 1.60 $
  */
 public class ExTeX {
 
@@ -1082,15 +1082,14 @@ public class ExTeX {
                 Locale.setDefault(new Locale(m.group(1), m.group(2)));
             } else if ((m = Pattern.compile("^(..)[_-](..)[_-](..)$").matcher(
                     lang)).matches()) {
-                Locale
-                        .setDefault(new Locale(m.group(1), m.group(2), m
+                Locale.setDefault(new Locale(m.group(1), m.group(2), m
                                 .group(3)));
             }
         }
 
         String bundle = (String) properties.get(PROP_POOL);
 
-        if (bundle == null) {
+        if (bundle != null) {
             HelpingException.setResource(ResourceBundle.getBundle(bundle));
             Messages.configure(bundle);
         }
@@ -1912,4 +1911,5 @@ public class ExTeX {
             }
         }
     }
+
 }
