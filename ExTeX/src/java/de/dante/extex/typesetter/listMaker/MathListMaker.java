@@ -31,7 +31,7 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.type.noad.MathCharNoad;
+import de.dante.extex.typesetter.type.noad.CharNoad;
 import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -51,7 +51,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
      * instance.
      */
-    private MathList noades = new MathList();
+    private MathList noads = new MathList();
 
     /**
      * Creates a new object.
@@ -69,7 +69,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void add(final Noad noad) throws GeneralException {
 
-        noades.add(noad);
+        noads.add(noad);
     }
 
     /**
@@ -78,7 +78,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void add(final Node node) {
 
-        noades.add(node);
+        //TODO noads.add(node);
     }
 
     /**
@@ -120,7 +120,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public NodeList close() {
 
-        return noades.typeset(new MathContext(StyleNoad.TEXTSTYLE)); //TODO ???
+        return noads.typeset(new MathContext(StyleNoad.TEXTSTYLE)); //TODO ???
     }
 
     /**
@@ -146,7 +146,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     protected MathList getNoades() {
 
-        return this.noades;
+        return this.noads;
     }
 
     /**
@@ -179,7 +179,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void removeLastNode() {
 
-        noades.remove(noades.size() - 1); // TODO allow this?
+        noads.remove(noads.size() - 1); // TODO allow this?
     }
 
     /**
@@ -202,14 +202,14 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         }
         MathListMaker ml = (MathListMaker) getManager().pop();
 
-        switch (ml.noades.size()) { //TODO accessing the attribute directly is horrible
+        switch (ml.noads.size()) { //TODO accessing the attribute directly is horrible
             case 0:
                 //TODO error unimplemented
                 throw new RuntimeException("unimplemented");
             case 1:
-                return (Noad) ml.noades.get(0); //TODO cast???
+                return (Noad) ml.noads.get(0); //TODO cast???
             default:
-                return ml.noades;
+                return ml.noads;
         }
     }
 
@@ -220,6 +220,11 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void subscriptMark(final TypesettingContext context,
             final Token token) throws GeneralException {
+
+        if (noads.size() == 0) {
+            add(new MathList());
+        }
+        Noad n = noads.get(noads.size() - 1);
 
         //TODO _ unimplemented
         throw new RuntimeException("unimplemented");
@@ -253,7 +258,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
         int fam = 0; //TODO determine the correct family
         //TODO: use a factory for math chars
-        noades.add(new MathCharNoad(fam, symbol));
+        noads.add(new CharNoad(fam, symbol));
     }
 
 }
