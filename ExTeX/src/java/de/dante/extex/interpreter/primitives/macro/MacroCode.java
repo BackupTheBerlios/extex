@@ -36,6 +36,8 @@ import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides an implementation for any macro code bound to a
@@ -50,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -163,6 +165,16 @@ public class MacroCode extends AbstractCode
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.AbstractCode#getLocalizer()
+     */
+    protected Localizer getLocalizer() {
+
+        Localizer localizer = super.getLocalizer();
+        return (localizer != null ? localizer : LocalizerFactory
+                .getLocalizer(MacroCode.class.getName()));
+    }
+
+    /**
      * Get a single token or a block if the first token is a LeftBraceToken.
      *
      * @param context the processor context
@@ -170,7 +182,7 @@ public class MacroCode extends AbstractCode
      *
      * @return the tokens accumulated
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private Tokens getTokenOrBlock(final Context context,
             final TokenSource source) throws InterpreterException {
