@@ -28,6 +28,8 @@ import de.dante.extex.interpreter.type.ExpandableCode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.Localizable;
 
 /**
  * This class provides an implementation for the primitive <code>\if</code>.
@@ -58,9 +60,15 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Unless extends AbstractIf {
+public class Unless extends AbstractIf implements Localizable {
+    /**
+     * Object for localize strings messages.
+     *
+     */
+    private Localizer localizer = null;
+
 
     /**
      * Creates a new object.
@@ -83,7 +91,7 @@ public class Unless extends AbstractIf {
             throws GeneralException {
 
 
-        Token token = source.getToken();
+        Token token = source.getToken(context);
         Code code;
         AbstractIf abstractIf;
 
@@ -94,11 +102,22 @@ public class Unless extends AbstractIf {
             abstractIf = (AbstractIf) code;
         } catch (ClassCastException e) {
              // TODO: message (TE)
-            throw new HelpingException("Except If Conditional",
+            throw new HelpingException(localizer, "Except If Conditional",
                                        printableControlSequence(context));
         }
 
         return !abstractIf.conditional(context, source, typesetter);
+    }
+
+    /**
+     * Set the <code>Localizer</code> here.
+     *
+     * @param theLocalizer a <code>Localizer</code> value
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
+     */
+    public void enableLocalization(final Localizer theLocalizer) {
+        localizer = theLocalizer;
     }
 
 }
