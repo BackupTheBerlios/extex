@@ -25,7 +25,7 @@ import de.dante.util.GeneralException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HyphenationException extends GeneralException {
 
@@ -37,7 +37,6 @@ public class HyphenationException extends GeneralException {
     public HyphenationException(final String message) {
 
         super(message);
-        // TODO gene: HypenationException constructor unimplemented
     }
 
     /**
