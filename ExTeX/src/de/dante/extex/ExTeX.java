@@ -112,7 +112,7 @@ import de.dante.util.observer.Observer;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.43 $
+ * @version $Revision: 1.44 $
  */
 public class ExTeX {
     /**
@@ -166,7 +166,9 @@ public class ExTeX {
     private static final String PROP_ENCODING = "extex.encoding";
 
     /**
-     * The field <tt>PROP_ERROR_HANDLER</tt> contains the ...
+     * The field <tt>PROP_ERROR_HANDLER</tt> contains the name of the property
+     * for the error handler type to use. Possible values are resolved via the
+     * configuration.
      */
     private static final String PROP_ERROR_HANDLER = "extex.errorhandler";
 
@@ -254,7 +256,7 @@ public class ExTeX {
 
     /**
      * The field <tt>PROP_TEXINPUTS</tt> contains the name of the
-     * property for the ...
+     * property for the additional texinputs specification of directories.
      */
     private static final String PROP_TEXINPUTS = "extex.texinputs";
 
@@ -281,12 +283,15 @@ public class ExTeX {
     private static final String PROP_TYPESETTER_TYPE = "extex.typesetter";
 
     /**
-     * The field <tt>TAG_ERRORHANDLER</tt> contains the ...
+     * The field <tt>TAG_ERRORHANDLER</tt> contains the name of the tag in the
+     * configuration file which contains the specification for the
+     * error handler factory.
      */
     private static final String TAG_ERRORHANDLER = "ErrorHandler";
 
     /**
-     * The field <tt>TAG_FONT</tt> contains the ...
+     * The field <tt>TAG_FONT</tt> contains the name of the tag in the
+     * configuration file which contains the specification for the font.
      */
     private static final String TAG_FONT = "Font";
 
@@ -573,8 +578,7 @@ public class ExTeX {
                     properties.getProperty(PROP_OUTPUTDIR),
                     properties.getProperty(PROP_FALLBACKOUTPUTDIR)});
 
-            showBanner();
-
+            showBanner(config);
             FileFinder finder = makeFileFinder(config.getConfiguration("File"));
             TokenStreamFactory tokenStreamFactory //
             = makeTokenStreamFactory(config.getConfiguration("Scanner"), finder);
@@ -604,6 +608,7 @@ public class ExTeX {
                                         Integer.toString(pages)));
         } catch (ConfigurationException e) {
             logger.throwing(this.getClass().getName(), "run", e);
+            e.printStackTrace();
             throw new MainConfigurationException(e);
         } catch (CharacterCodingException e) {
             logger.throwing(this.getClass().getName(), "run", e);
@@ -743,11 +748,19 @@ public class ExTeX {
                 run();
             }
         } catch (MainException e) {
-            showBanner();
+            try {
+                showBanner(null);
+            } catch (MainException e1) {
+                logException(e1.getMessage(), e1);
+            }
             logException(e.getMessage(), e);
             returnCode = e.getCode();
         } catch (Throwable e) {
-            showBanner();
+            try {
+                showBanner(null);
+            } catch (MainException e1) {
+                logException(e1.getMessage(), e1);
+            }
             logInternalError(e);
             logger.info(Messages.format("ExTeX.Logfile", properties
                     .getProperty(PROP_JOBNAME)));
@@ -894,7 +907,8 @@ public class ExTeX {
     }
 
     /**
-     * ...
+     * Loads a properties file into the already existing properties.
+     * The values from the file overwrite existing values.
      *
      * @param arg the name of the resource to load
      *
@@ -1202,10 +1216,10 @@ public class ExTeX {
             throws GeneralException,
                 ConfigurationException {
 
+        Interpreter interpreter = new InterpreterFactory(config).newInstance();
         ErrorHandler errorHandler = (new ErrorHandlerFactory(config
                 .getConfiguration(TAG_ERRORHANDLER))).newInstance(properties
                 .getProperty(PROP_ERROR_HANDLER), logger);
-        Interpreter interpreter = new InterpreterFactory(config).newInstance();
         interpreter.setErrorHandler(errorHandler);
         interpreter.setFileFinder(finder);
         interpreter.setTokenStreamFactory(factory);
@@ -1219,8 +1233,7 @@ public class ExTeX {
             throw new ConfigurationMissingException(TAG_FONT, config.toString());
         }
         interpreter.getContext()
-                .setTypesettingContext(
-                                       makeDefaultFont(fontConfiguration,
+                .setTypesettingContext(makeDefaultFont(fontConfiguration,
                                                        fontFactory));
 
         initializeStreams(interpreter);
@@ -1392,16 +1405,28 @@ public class ExTeX {
     /**
      * Print the program banner to the logger stream and remember that this has
      * been done already to avoid repeating.
+     *
+     * @param config the configuration to use
+     *
+     * @throws MainException in case of an error
      */
-    private void showBanner() {
+    private void showBanner(final Configuration config) throws MainException {
 
         if (showBanner) {
-            logger
-                    .info(Messages
-                            .format("ExTeX.Version", //
-                                    properties.getProperty(PROP_PROGNAME),
-                                    EXTEX_VERSION, //
-                                    properties.getProperty("java.version")));
+            String banner = "";
+            if (config != null) {
+                try {
+                    banner = config.getConfiguration("banner").getValue();
+                } catch (ConfigurationException e) {
+                    banner = properties.getProperty("java.version");
+                }
+            } else {
+                banner = properties.getProperty("java.version");
+            }
+            logger.info(Messages.format("ExTeX.Version", //
+                                        properties.getProperty(PROP_PROGNAME),
+                                        EXTEX_VERSION, //
+                                        banner));
             showBanner = false;
         }
     }
