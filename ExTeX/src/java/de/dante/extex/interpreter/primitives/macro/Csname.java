@@ -59,7 +59,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Csname extends AbstractCode
         implements
@@ -87,7 +87,7 @@ public class Csname extends AbstractCode
         Token t = source.getControlSequence();
 
         if ((t instanceof ControlSequenceToken)
-                && t.getValue().equals("csname")) {
+                && ((ControlSequenceToken) t).getName().equals("csname")) {
             Tokens toks = scanToEndCsname(context, source);
             t = context.getTokenFactory().createToken(Catcode.ESCAPE,
                     toks.toString(), context.getNamespace());

@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
@@ -126,23 +126,36 @@ public class Show extends AbstractCode implements LogEnabled {
         Tokens toks;
 
         if (t instanceof ControlSequenceToken) {
-            toks = new Tokens(context, Character.toString((char) (context
-                    .getCount("escapechar").getValue())));
+
+            toks = new Tokens(context, //
+                    t.toText((char) (context.getCount("escapechar")
+                            .getValue())));
+
         } else {
-            toks = new Tokens();
+            toks = new Tokens(context, t.getChar().getCodePoint());
         }
-        toks.add(new Tokens(context, t.getValue()));
+
         toks.add(new Tokens(context, "="));
         Code code = context.getCode((CodeToken) t);
         if (code == null) {
-            toks.add(new Tokens(context, getLocalizer().format(
-                            "TTP.Undefined")));
+
+            toks.add(new Tokens(context, //
+                    getLocalizer().format("TTP.Undefined")));
+
         } else if ((code instanceof Showable)) {
+
             toks.add(((Showable) code).show(context));
+
+        } else if (t instanceof ControlSequenceToken) {
+
+            toks.add(new Tokens(context, //
+                    t.toText((char) (context.getCount("escapechar")
+                                    .getValue()))));
+
         } else {
-            toks.add(new Tokens(context, Character.toString((char) (context
-                    .getCount("escapechar").getValue()))));
-            toks.add(new Tokens(context, t.getValue()));
+
+            toks.add(new Tokens(context, t.getChar().getCodePoint()));
+
         }
         return toks;
     }

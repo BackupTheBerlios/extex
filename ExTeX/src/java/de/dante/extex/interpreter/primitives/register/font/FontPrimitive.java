@@ -47,7 +47,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  * <h3>The Primitive <tt>\font</tt></h3>
  * <p>
  *  The primitive <tt>\font</tt>
- *  TODO documentation missing
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description of this primitive is the following:
@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -171,12 +171,12 @@ public class FontPrimitive extends AbstractAssignment
                     ligatures, kerning);
         } catch (ConfigurationIOException e) {
             throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
-                    context.esc(fontId.getValue()), fontname);
+                    context.esc(fontId), fontname);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         }
 
-        Code code = new FontCode(fontId.getValue(), font);
+        Code code = new FontCode(fontId.getName(), font);
         context.setCode(fontId, code, prefix.isGlobal());
     }
 
@@ -237,15 +237,15 @@ public class FontPrimitive extends AbstractAssignment
                     printableControlSequence(context));
         }
 
-        StringBuffer sb = new StringBuffer(t.getValue());
+        StringBuffer sb = new StringBuffer((char) t.getChar().getCodePoint());
 
-        for (t = source.getToken(); t != null && !(t instanceof SpaceToken); t = source
-                .getToken()) {
+        for (t = source.getToken(); t != null && !(t instanceof SpaceToken); //
+        t = source.getToken()) {
             if (t instanceof ControlSequenceToken) {
                 source.push(t);
                 break;
             }
-            sb.append(t.getValue());
+            sb.append((char) t.getChar().getCodePoint());
         }
 
         return sb.toString();

@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -227,7 +227,7 @@ public class Tokens implements Serializable, FixedTokens {
         StringBuffer sb = new StringBuffer();
 
         for (int i = 0; i < tokens.size(); i++) {
-            sb.append(((Token) tokens.get(i)).getValue());
+            sb.append(((Token) tokens.get(i)).toText());
         }
 
         return sb.toString();

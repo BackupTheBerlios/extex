@@ -37,7 +37,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -187,15 +187,15 @@ public abstract class AbstractFileCode extends AbstractCode
      *
      * </doc>
      *
-     * @param source the source for new tokens
      * @param context the processing context
+     * @param source the source for new tokens
      *
      * @return the file name as string
      *
      * @throws GeneralException in case of an error
      */
-    protected String scanFileName(final TokenSource source,
-            final Context context) throws GeneralException {
+    protected String scanFileName(final Context context,
+            final TokenSource source) throws GeneralException {
 
         Token t = source.scanNonSpace();
 
@@ -209,12 +209,12 @@ public abstract class AbstractFileCode extends AbstractCode
             }
 
         } else {
-            StringBuffer sb = new StringBuffer(t.getValue());
+            StringBuffer sb = new StringBuffer(t.toText());
 
             for (t = source.getToken(); //
             t != null && !(t instanceof SpaceToken); //
             t = source.getToken()) {
-                sb.append(t.getValue());
+                sb.append(t.toText());
             }
 
             return sb.toString();

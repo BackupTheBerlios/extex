@@ -41,6 +41,7 @@ import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.RightBraceToken;
 import de.dante.extex.scanner.Token;
@@ -73,7 +74,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public abstract class Moritz
         implements
@@ -481,7 +482,7 @@ public abstract class Moritz
         Token t;
 
         if (token != null && token.isa(Catcode.OTHER)) {
-            switch (token.getValue().charAt(0)) {
+            switch (token.getChar().getCodePoint()) {
                 case '0':
                 case '1':
                 case '2':
@@ -492,12 +493,12 @@ public abstract class Moritz
                 case '7':
                 case '8':
                 case '9':
-                    n = token.getValue().charAt(0) - '0';
+                    n = token.getChar().getCodePoint() - '0';
 
                     for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                            && t.getValue().matches("[0-9]"); //
+                            && t.getChar().isDigit(); //
                     t = getToken()) {
-                        n = n * 10 + t.getValue().charAt(0) - '0';
+                        n = n * 10 + t.getChar().getCodePoint() - '0';
                     }
 
                     if (t != null) {
@@ -509,35 +510,40 @@ public abstract class Moritz
                 case '`':
                     t = getToken();
 
-                    if (t != null) {
-                        String val = t.getValue();
+                    if (t instanceof ControlSequenceToken) {
+                        String val = ((ControlSequenceToken) t).getName();
                         if (val.length() != 1) {
                             throw new HelpingException(localizer,
-                                    "TTP.NonNumericToken", t.getValue());
+                                    "TTP.NonNumericToken", t.toString());
                         }
                         return val.charAt(0);
+                    } else if (t != null) {
+                        return t.getChar().getCodePoint();
                     }
                     // fall through to error handling
                     break;
 
                 case '\'':
-                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                            && t.getValue().matches("[0-7]"); //
+                    for (t = getToken(); t instanceof OtherToken; //
                     t = getToken()) {
-                        n = n * 8 + t.getValue().charAt(0) - '0';
+                        int no = t.getChar().getCodePoint() - '0';
+                        if (no < 0 || no >= 7) {
+                            break;
+                        }
+                        n = n * 8 + no;
                     }
 
-                    if (t != null) {
-                        stream.put(t);
-                    }
+                    stream.put(t);
                     skipSpace();
                     return n;
 
                 case '"':
-                    for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                            && t.getValue().matches("[0-9a-fA-F]"); //
+                    boolean om = true;
+
+                    for (t = getToken(); om && t instanceof OtherToken; //
                     t = getToken()) {
-                        switch (t.getValue().charAt(0)) {
+                        int no = t.getChar().getCodePoint();
+                        switch (no) {
                             case '0':
                             case '1':
                             case '2':
@@ -548,7 +554,7 @@ public abstract class Moritz
                             case '7':
                             case '8':
                             case '9':
-                                n = n * 16 + t.getValue().charAt(0) - '0';
+                                n = n * 16 + no - '0';
                                 break;
                             case 'a':
                             case 'b':
@@ -556,7 +562,7 @@ public abstract class Moritz
                             case 'd':
                             case 'e':
                             case 'f':
-                                n = n * 16 + t.getValue().charAt(0) - 'a' + 10;
+                                n = n * 16 + no - 'a' + 10;
                                 break;
                             case 'A':
                             case 'B':
@@ -564,16 +570,14 @@ public abstract class Moritz
                             case 'D':
                             case 'E':
                             case 'F':
-                                n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
+                                n = n * 16 + no - 'A' + 10;
                                 break;
                             default:
-                                throw new PanicException("this can't happen");
+                                om = false;
                         }
                     }
 
-                    if (t != null) {
-                        stream.put(t);
-                    }
+                    stream.put(t);
                     skipSpace();
                     return n;
 
@@ -904,9 +908,9 @@ public abstract class Moritz
                     case '9':
                         n = c - '0';
 
-                        for (t = scanToken(); t != null && t.isa(Catcode.OTHER)
-                                && t.getValue().matches("[0-9]"); t = scanToken()) {
-                            n = n * 10 + t.getValue().charAt(0) - '0';
+                        for (t = scanToken(); t instanceof OtherToken
+                                && t.getChar().isDigit(); t = scanToken()) {
+                            n = n * 10 + t.getChar().getCodePoint() - '0';
                         }
 
                         if (t != null) {
@@ -918,18 +922,23 @@ public abstract class Moritz
                     case '`':
                         t = getToken();
 
-                        if (t != null) {
-                            String s = t.getValue();
+                        if (t instanceof ControlSequenceToken) {
+                            String s = ((ControlSequenceToken) t).getName();
                             return ("".equals(s) ? 0 : s.charAt(0));
+                        } else if (t != null) {
+                            return t.getChar().getCodePoint();
                         }
                         // fall through to error handling
                         break;
 
                     case '\'':
-                        for (t = getToken(); t != null && t.isa(Catcode.OTHER)
-                                && t.getValue().matches("[0-7]"); //
+                        for (t = getToken(); t instanceof OtherToken; //
                         t = scanToken()) {
-                            n = n * 8 + t.getValue().charAt(0) - '0';
+                            int no = t.getChar().getCodePoint() - '0';
+                            if (no < 0 || no >= 7) {
+                                break;
+                            }
+                            n = n * 8 + no;
                         }
 
                         if (t != null) {
@@ -939,10 +948,12 @@ public abstract class Moritz
                         return n;
 
                     case '"':
-                        for (t = scanToken(); t != null && t.isa(Catcode.OTHER)
-                                && t.getValue().matches("[0-9a-fA-F]"); //
+                        boolean om = true;
+
+                        for (t = scanToken(); om && t instanceof OtherToken; //
                         t = scanToken()) {
-                            switch (t.getValue().charAt(0)) {
+                            int no = t.getChar().getCodePoint();
+                            switch (no) {
                                 case '0':
                                 case '1':
                                 case '2':
@@ -953,7 +964,7 @@ public abstract class Moritz
                                 case '7':
                                 case '8':
                                 case '9':
-                                    n = n * 16 + t.getValue().charAt(0) - '0';
+                                    n = n * 16 + no - '0';
                                     break;
                                 case 'a':
                                 case 'b':
@@ -961,8 +972,7 @@ public abstract class Moritz
                                 case 'd':
                                 case 'e':
                                 case 'f':
-                                    n = n * 16 + t.getValue().charAt(0) - 'a'
-                                            + 10;
+                                    n = n * 16 + no - 'a' + 10;
                                     break;
                                 case 'A':
                                 case 'B':
@@ -970,19 +980,14 @@ public abstract class Moritz
                                 case 'D':
                                 case 'E':
                                 case 'F':
-                                    n = n * 16 + t.getValue().charAt(0) - 'A'
-                                            + 10;
+                                    n = n * 16 + no - 'A' + 10;
                                     break;
                                 default:
-                                    throw new PanicException(localizer,
-                                            "Panic.HexNumber",
-                                            "Strange character in hex number");
+                                    om = false;
                             }
                         }
 
-                        if (t != null) {
-                            stream.put(t);
-                        }
+                        stream.put(t);
                         skipSpace();
                         return n;
 

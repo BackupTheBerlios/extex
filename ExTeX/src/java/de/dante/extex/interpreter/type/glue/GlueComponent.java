@@ -32,6 +32,7 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.OtherToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -55,7 +56,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
@@ -155,10 +156,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             // @see "TeX -- The Program [102]"
             int[] dig = new int[FLOAT_DIGITS];
             int k = 0;
-            for (t = source.getToken(); t != null && t.isa(Catcode.OTHER)
-                    && t.getValue().matches("[0-9]"); t = source.getToken()) {
+            for (t = source.getToken(); t instanceof OtherToken
+                    && t.getChar().isDigit(); t = source.getToken()) {
                 if (k < FLOAT_DIGITS) {
-                    dig[k++] = t.getValue().charAt(0) - '0';
+                    dig[k++] = t.getChar().getCodePoint() - '0';
                 }
             }
             if (k < FLOAT_DIGITS) {

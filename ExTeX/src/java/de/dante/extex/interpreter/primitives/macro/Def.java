@@ -65,7 +65,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
 public class Def extends AbstractAssignment {
 
@@ -80,7 +80,8 @@ public class Def extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -95,9 +96,9 @@ public class Def extends AbstractAssignment {
                 ? expandedBody(context, source, typesetter)//
                 : source.getTokens());
 
-        String name = cs.getValue();
-        context.setCode(cs, new MacroCode(name, prefix, pattern, body), prefix
-                .isGlobal());
+        context.setCode(cs,
+                new MacroCode(cs.getName(), prefix, pattern, body), prefix
+                        .isGlobal());
     }
 
     /**
@@ -157,7 +158,7 @@ public class Def extends AbstractAssignment {
 
             if (afterHash) {
                 if (t instanceof OtherToken) {
-                    if (t.getValue().charAt(0) != '0' + no) {
+                    if (t.getChar().getCodePoint() != '0' + no) {
                         throw new HelpingException(getLocalizer(),
                                 "TTP.NonConsequtiveParams",
                                 printableControlSequence(context));

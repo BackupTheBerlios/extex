@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Read extends AbstractCode {
 
@@ -88,7 +88,7 @@ public class Read extends AbstractCode {
 
         Tokens toks = file.read(context.getTokenFactory(), context
                 .getTokenizer());
-        context.setCode(cs, new MacroCode(cs.getValue(), prefix,
+        context.setCode(cs, new MacroCode(cs.getName(), prefix,
                 MacroPattern.EMPTY, toks), prefix.isGlobal());
 
         return true;
