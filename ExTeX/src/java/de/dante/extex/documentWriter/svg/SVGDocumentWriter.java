@@ -71,7 +71,7 @@ import de.dante.util.configuration.Configuration;
  * TODO incomplete !!!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class SVGDocumentWriter
         implements
@@ -330,7 +330,8 @@ public class SVGDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode value,
+            final Object value2) {
 
         //        Element element = new Element("alignedleaders");
         //        AlignedLeadersNode node = (AlignedLeadersNode) value;
@@ -352,7 +353,8 @@ public class SVGDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
      * java.lang.Object)
      */
-    public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object value) {
+    public Object visitCenteredLeaders(final CenteredLeadersNode node,
+            final Object value) {
 
         //        Element element = new Element("centeredleaders");
         //        CenteredLeadersNode node = (CenteredLeadersNode) value;
@@ -365,9 +367,8 @@ public class SVGDocumentWriter
      */
     public Object visitChar(final CharNode node, final Object value) {
 
-        CharNode cnode = (CharNode) node;
-        UnicodeChar uc = cnode.getCharacter();
-        Font font = cnode.getTypesettingContext().getFont();
+        UnicodeChar uc = node.getCharacter();
+        Font font = node.getTypesettingContext().getFont();
 
         // ------- text --------------
         Element text = new Element("text", SVGNAMESPACE);
@@ -405,7 +406,8 @@ public class SVGDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
      * java.lang.Object)
      */
-    public Object visitDiscretionary(final DiscretionaryNode node, final Object value) {
+    public Object visitDiscretionary(final DiscretionaryNode node,
+            final Object value) {
 
         //        Element element = new Element("discretionary");
         //        DiscretionaryNode node = (DiscretionaryNode) value;
@@ -416,7 +418,8 @@ public class SVGDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value) {
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+            final Object value) {
 
         //        Element element = new Element("expandedleaders");
         //        ExpandedLeadersNode node = (ExpandedLeadersNode) value;
@@ -441,17 +444,16 @@ public class SVGDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
      * java.lang.Object)
      */
-    public Object visitHorizontalList(final HorizontalListNode node, final Object value)
-            throws GeneralException {
+    public Object visitHorizontalList(final HorizontalListNode node,
+            final Object value) throws GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
-        HorizontalListNode lnode = (HorizontalListNode) node;
 
         setDimenLength(rect, "x", currentX);
         setDimenLength(rect, "y", currentY);
-        setDimenLength(rect, "width", lnode.getWidth());
-        Dimen rH = new Dimen(lnode.getHeight());
-        rH.add(lnode.getDepth());
+        setDimenLength(rect, "width", node.getWidth());
+        Dimen rH = new Dimen(node.getHeight());
+        rH.add(node.getDepth());
         setDimenLength(rect, "height", rH);
         rect.setAttribute("fill", "none");
         rect.setAttribute("stroke", "red");
@@ -464,16 +466,16 @@ public class SVGDocumentWriter
         Dimen saveY = new Dimen(currentY);
 
         // set x to baseline
-        currentY.add(lnode.getHeight());
+        currentY.add(node.getHeight());
 
         // baseline
-        if (lnode.getDepth().getValue() != 0) {
+        if (node.getDepth().getValue() != 0) {
 
             Element line = new Element("line", SVGNAMESPACE);
             setDimenLength(line, "x1", currentX);
             setDimenLength(line, "y1", currentY);
             Dimen x2 = new Dimen(currentX);
-            x2.add(lnode.getWidth());
+            x2.add(node.getWidth());
             setDimenLength(line, "x2", x2);
             setDimenLength(line, "y2", currentY);
             line.setAttribute("stroke", "red");
@@ -482,15 +484,15 @@ public class SVGDocumentWriter
             parent.addContent(line);
         }
 
-        NodeIterator it = lnode.iterator();
+        NodeIterator it = node.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
-            newnode.visit(this, lnode);
+            newnode.visit(this, node);
         }
         currentX.set(saveX);
         currentY.set(saveY);
-        currentY.add(lnode.getHeight());
-        currentY.add(lnode.getDepth());
+        currentY.add(node.getHeight());
+        currentY.add(node.getDepth());
 
         return null;
     }
@@ -604,17 +606,16 @@ public class SVGDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
      * java.lang.Object)
      */
-    public Object visitVerticalList(final VerticalListNode node, final Object value)
-            throws GeneralException {
+    public Object visitVerticalList(final VerticalListNode node,
+            final Object value) throws GeneralException {
 
         Element rect = new Element("rect", SVGNAMESPACE);
-        VerticalListNode lnode = (VerticalListNode) node;
 
         setDimenLength(rect, "x", currentX);
         setDimenLength(rect, "y", currentY);
-        setDimenLength(rect, "width", lnode.getWidth());
-        Dimen rH = new Dimen(lnode.getHeight());
-        rH.add(lnode.getDepth());
+        setDimenLength(rect, "width", node.getWidth());
+        Dimen rH = new Dimen(node.getHeight());
+        rH.add(node.getDepth());
         setDimenLength(rect, "height", rH);
         rect.setAttribute("fill", "none");
         rect.setAttribute("stroke", "yellow");
@@ -626,15 +627,15 @@ public class SVGDocumentWriter
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
-        NodeIterator it = lnode.iterator();
+        NodeIterator it = node.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
-            newnode.visit(this, lnode);
+            newnode.visit(this, node);
         }
         currentX.set(saveX);
         currentY.set(saveY);
-        currentY.add(lnode.getDepth());
-        currentY.add(lnode.getHeight());
+        currentY.add(node.getDepth());
+        currentY.add(node.getHeight());
 
         return null;
     }

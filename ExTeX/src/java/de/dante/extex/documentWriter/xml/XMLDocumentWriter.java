@@ -66,7 +66,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class XMLDocumentWriter
         implements
@@ -477,10 +477,9 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode,
      * java.lang.Object)
      */
-    public Object visitAdjust(final AdjustNode value, final Object value2) {
+    public Object visitAdjust(final AdjustNode node, final Object value2) {
 
         Element element = new Element("adjust");
-        AdjustNode node = (AdjustNode) value;
         addNodeAttributes(node, element);
         return element;
     }
@@ -489,10 +488,9 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode,
      * java.lang.Object)
      */
-    public Object visitAfterMath(final AfterMathNode value, final Object value2) {
+    public Object visitAfterMath(final AfterMathNode node, final Object value2) {
 
         Element element = new Element("aftermath");
-        AfterMathNode node = (AfterMathNode) value;
         addNodeAttributes(node, element);
         return element;
     }
@@ -501,10 +499,9 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode node, final Object value2) {
 
         Element element = new Element("alignedleaders");
-        AlignedLeadersNode node = (AlignedLeadersNode) value;
         addNodeAttributes(node, element);
         return element;
     }
@@ -538,10 +535,9 @@ public class XMLDocumentWriter
     public Object visitChar(final CharNode node, final Object value) {
 
         Element element = new Element("char");
-        CharNode cnode = (CharNode) node;
-        UnicodeChar uc = cnode.getCharacter();
+        UnicodeChar uc = node.getCharacter();
         addNodeAttributes(node, element);
-        element.setAttribute("font", cnode.getTypesettingContext().getFont()
+        element.setAttribute("font", node.getTypesettingContext().getFont()
                 .getFontName());
         element.setAttribute("codepoint", String.valueOf(uc.getCodePoint()));
         String ucname = uc.getUnicodeName();
@@ -566,8 +562,7 @@ public class XMLDocumentWriter
     public Object visitDiscretionary(final DiscretionaryNode node, final Object value) {
 
         Element element = new Element("discretionary");
-        DiscretionaryNode dnode = (DiscretionaryNode) node;
-        addNodeAttributes(dnode, element);
+        addNodeAttributes(node, element);
         return element;
     }
 
@@ -578,8 +573,7 @@ public class XMLDocumentWriter
     public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value) {
 
         Element element = new Element("expandedleaders");
-        ExpandedLeadersNode lnode = (ExpandedLeadersNode) node;
-        addNodeAttributes(lnode, element);
+        addNodeAttributes(node, element);
         return element;
     }
 
@@ -605,7 +599,6 @@ public class XMLDocumentWriter
             throws GeneralException {
 
         Element element = new Element("horizontallist");
-        HorizontalListNode lnode = (HorizontalListNode) node;
         addNodeAttributes(node, element);
         //        element.setAttribute("x_depth",String.valueOf(node.getDepth()));
         //        setBaseline(node);
@@ -613,7 +606,7 @@ public class XMLDocumentWriter
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
-        NodeIterator it = lnode.iterator();
+        NodeIterator it = node.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
             Object o = newnode.visit(this, node);
@@ -657,10 +650,9 @@ public class XMLDocumentWriter
     public Object visitLigature(final LigatureNode node, final Object value) {
 
         Element element = new Element("ligature");
-        LigatureNode lnode = (LigatureNode) node;
         addNodeAttributes(node, element);
-        Node first = lnode.getFirst();
-        Node second = lnode.getSecond();
+        Node first = node.getFirst();
+        Node second = node.getSecond();
         if (first != null) {
             Element e = getNodeElement(first);
             if (e != null) {
@@ -694,9 +686,8 @@ public class XMLDocumentWriter
     public Object visitPenalty(final PenaltyNode node, final Object value) {
 
         Element element = new Element("penalty");
-        PenaltyNode pnode = (PenaltyNode) node;
         addNodeAttributes(node, element);
-        element.setAttribute("penalty", String.valueOf(pnode.getPenalty()));
+        element.setAttribute("penalty", String.valueOf(node.getPenalty()));
         return element;
     }
 
@@ -730,13 +721,12 @@ public class XMLDocumentWriter
             throws GeneralException {
 
         Element element = new Element("verticallist");
-        VerticalListNode lnode = (VerticalListNode) node;
         addNodeAttributes(node, element);
 
         Dimen saveX = new Dimen(currentX);
         Dimen saveY = new Dimen(currentY);
 
-        NodeIterator it = lnode.iterator();
+        NodeIterator it = node.iterator();
         while (it.hasNext()) {
             Node newnode = it.next();
 
@@ -758,10 +748,9 @@ public class XMLDocumentWriter
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode,
      * java.lang.Object)
      */
-    public Object visitWhatsIt(final WhatsItNode nde, final Object value) {
+    public Object visitWhatsIt(final WhatsItNode node, final Object value) {
 
         Element element = new Element("whatsit");
-        WhatsItNode node = (WhatsItNode) nde;
         addNodeAttributes(node, element);
         return element;
     }
