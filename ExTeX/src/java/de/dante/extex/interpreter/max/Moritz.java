@@ -73,7 +73,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.44 $
+ * @version $Revision: 1.45 $
  */
 public abstract class Moritz
         implements
@@ -251,6 +251,8 @@ public abstract class Moritz
      * @throws GeneralException in case of an error
      */
     protected abstract Token expand(final Token token) throws GeneralException;
+
+    public abstract void execute(final Token token) throws GeneralException;
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#getBox(

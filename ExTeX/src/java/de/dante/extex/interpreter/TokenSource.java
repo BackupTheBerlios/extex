@@ -44,7 +44,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public interface TokenSource {
 
@@ -73,6 +73,15 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     void closeNextFileStream() throws GeneralException;
+
+    /**
+     * Tries to execute a token.
+     *
+     * @param token the Token to execute
+     *
+     * @throws GeneralException in case of an error
+     */
+    void execute(final Token token) throws GeneralException;
 
     /**
      * Scan and execute tokens until the group ends.

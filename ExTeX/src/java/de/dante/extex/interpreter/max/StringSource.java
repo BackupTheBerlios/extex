@@ -30,7 +30,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class StringSource extends Moritz {
 
@@ -70,6 +70,15 @@ public class StringSource extends Moritz {
      * @see de.dante.extex.interpreter.TokenSource#executeGroup()
      */
     public void executeGroup() throws GeneralException {
+
+        // TODO unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#execute(de.dante.extex.scanner.Token)
+     */
+    public void execute(final Token token) throws GeneralException {
 
         // TODO unimplemented
         throw new RuntimeException("unimplemented");

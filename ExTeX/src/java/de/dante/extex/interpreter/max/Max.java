@@ -83,7 +83,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class Max extends Moritz
         implements
@@ -291,6 +291,30 @@ public class Max extends Moritz
                 e.printStackTrace();
                 throw new PanicException(e);
             }
+        }
+    }
+
+    public void execute(final Token token) throws GeneralException {
+        
+        observersExpand.update(this, token);
+        try {
+            token.visit(this, null, null);
+        } catch (PanicException e) {
+            throw e;
+        } catch (GeneralException e) {
+            if (++errorCount > maxErrors) { // cf. TTP[82]
+                throw new PanicException(getLocalizer(),
+                        "TTP.ErrorLimitReached", //
+                        Integer.toString(maxErrors));
+            } else if (errorHandler != null) {
+                if (!errorHandler.handleError(e, token, this, context)) {
+                    return;
+                }
+            } else {
+                throw e;
+            }
+        } catch (Exception e) {
+            throw new PanicException(e);
         }
     }
 
