@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -178,6 +178,19 @@ public class Tokens implements Serializable, FixedTokens {
     public int length() {
 
         return tokens.size();
+    }
+
+    /**
+     * ...
+     *
+     * @return the last token or <code>null</code>
+     */
+    public Token removeLast() {
+
+        if (tokens.size() == 0) {
+            return null;
+        }
+        return (Token) tokens.remove(tokens.size() - 1);
     }
 
     /**
