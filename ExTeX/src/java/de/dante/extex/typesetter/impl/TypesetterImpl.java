@@ -41,6 +41,7 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
+import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.impl.ParagraphBuilderImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -53,7 +54,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
@@ -379,5 +380,14 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void toggleMath() throws GeneralException {
 
         listMaker.toggleMath();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setParshape(
+     *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
+     */
+    public void setParshape(final ParagraphShape parshape) {
+
+        paragraphBuilder.setParshape(parshape);
     }
 }

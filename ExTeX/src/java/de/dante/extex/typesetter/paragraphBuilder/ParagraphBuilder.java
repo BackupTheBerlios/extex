@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.TypesetterOptions;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ParagraphBuilder {
 
@@ -49,5 +49,13 @@ public interface ParagraphBuilder {
      * @param options the options to set.
      */
     void setOptions(TypesetterOptions options);
+
+
+    /**
+     * ...
+     *
+     * @param parshape the parshape specification for the next paragraph
+     */
+    void setParshape(ParagraphShape parshape);
 
 }
