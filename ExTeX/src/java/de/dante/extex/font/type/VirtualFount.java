@@ -20,14 +20,14 @@
 package de.dante.extex.font.type;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.typesetter.type.node.VitualCharNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.util.UnicodeChar;
 
 /**
  * Virtual Fount Interface
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface VirtualFount {
 
@@ -37,6 +37,6 @@ public interface VirtualFount {
      * @param uc        the character
      * @return Returns the virt. char node.
      */
-    VitualCharNode getVirtualCharNode(TypesettingContext context, UnicodeChar uc);
+    VirtualCharNode getVirtualCharNode(TypesettingContext context, UnicodeChar uc);
 
 }

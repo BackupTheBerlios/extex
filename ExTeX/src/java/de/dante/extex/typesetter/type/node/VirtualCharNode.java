@@ -40,7 +40,7 @@ import de.dante.util.UnicodeChar;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class VitualCharNode extends CharNode implements NodeList {
+public class VirtualCharNode extends CharNode implements NodeList {
 
     /**
      * TODO gene: missing JavaDoc.
@@ -53,14 +53,14 @@ public class VitualCharNode extends CharNode implements NodeList {
         /**
          * The field <tt>node</tt> contains the parent node.
          */
-        private VitualCharNode node;
+        private VirtualCharNode node;
 
         /**
          * Creates a new object.
          *
          * @param node the parent node
          */
-        public NL(final VitualCharNode node) {
+        public NL(final VirtualCharNode node) {
 
             super();
             this.node = node;
@@ -104,7 +104,7 @@ public class VitualCharNode extends CharNode implements NodeList {
      * @param context the typesetting context
      * @param uc the character represented by this node
      */
-    public VitualCharNode(final TypesettingContext context, final UnicodeChar uc) {
+    public VirtualCharNode(final TypesettingContext context, final UnicodeChar uc) {
 
         super(context, uc);
         nodes = new NL(this);

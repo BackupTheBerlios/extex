@@ -23,14 +23,14 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.typesetter.type.node.VitualCharNode;
+import de.dante.extex.typesetter.type.node.VirtualCharNode;
 import de.dante.util.UnicodeChar;
 
 /**
  * Implemetation for a virtual font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VirtualFontImpl extends FontImpl implements VirtualFount {
 
@@ -48,11 +48,11 @@ public class VirtualFontImpl extends FontImpl implements VirtualFount {
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
-    public VitualCharNode getVirtualCharNode(final TypesettingContext context,
+    public VirtualCharNode getVirtualCharNode(final TypesettingContext context,
             final UnicodeChar uc) {
 
         // incomplete
-        VitualCharNode cnode = new VitualCharNode(context, uc);
+        VirtualCharNode cnode = new VirtualCharNode(context, uc);
 
         Glyph vglyph = getFount().getGlyph(uc);
 
