@@ -27,22 +27,19 @@ import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.util.UnicodeChar;
-import de.dante.util.configuration.Configuration;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
     /**
      * Creates a new object.
-     *
-     * @param configuration ...
      */
-    public LigatureBuilderImpl(final Configuration configuration) {
+    public LigatureBuilderImpl() {
 
         super();
     }

@@ -19,17 +19,10 @@
 
 package de.dante.extex.main;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.logging.Logger;
-
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * This is the factory for instances of
@@ -41,108 +34,49 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class ErrorHandlerFactory {
-
-    /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * used to get the class name.
-     */
-    private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The constant <tt>DEFAULT_ATTRIBUTE</tt> contains the name of the
-     * attribute used to get the default configuration.
-     */
-    private static final String DEFAULT_ATTRIBUTE = "default";
-
-    /**
-     * The field <tt>config</tt> contains the configuration for this factory.
-     */
-    private Configuration config = null;
+public class ErrorHandlerFactory extends AbstractFactory {
 
     /**
      * Creates a new object.
-     *
-     * @param configuration the configuration for this factory
      */
-    public ErrorHandlerFactory(final Configuration configuration) {
+    public ErrorHandlerFactory() {
 
         super();
-        config = configuration;
     }
 
     /**
-     * Get an instance of a typesetter.
+     * Creates a new object and configures it according to the parameter.
+     *
+     * @param configuration the configuration to use
+     *
+     * @throws ConfigurationException in case of an error during configuration
+     */
+    public ErrorHandlerFactory(final Configuration configuration)
+            throws ConfigurationException {
+
+        super();
+        configure(configuration);
+    }
+
+    /**
+     * Get an instance of an error handler.
      * This method selects one of the entries in the configuration. The
      * selection is done with the help of a type String. If the type is
      * <code>null</code> or the empty string then the default from the
      * configuration is used.
      *
      * @param type the type to use
-     * @param logger the logger to pass to the rror handler
      *
-     * @return a new typesetter
+     * @return a new error handler
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    public ErrorHandler newInstance(final String type, final Logger logger)
+    public ErrorHandler newInstance(final String type)
             throws ConfigurationException {
 
-        Configuration cfg = config.findConfiguration(type != null ? type : "");
-        if (cfg == null) {
-            String fallback = config.getAttribute(DEFAULT_ATTRIBUTE);
-            if (fallback == null) {
-                throw new ConfigurationMissingAttributeException(
-                        DEFAULT_ATTRIBUTE, config);
-            }
-            cfg = config.findConfiguration(fallback);
-            if (cfg == null) {
-                throw new ConfigurationMissingAttributeException(fallback,
-                        config);
-            }
-        }
-
-        String className = cfg.getAttribute(CLASS_ATTRIBUTE);
-
-        if (className == null) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    cfg);
-        }
-
-        ErrorHandler errorHandler;
-
-        try {
-            Constructor constructor = Class.forName(className)
-                    .getConstructor(new Class[]{Configuration.class, Logger.class});
-            errorHandler = (ErrorHandler) constructor
-                    .newInstance(new Object[]{cfg, logger});
-        } catch (SecurityException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(className
-                                                         + "("
-                                                         + Configuration.class
-                                                                 .getName()
-                                                         + ")");
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(className, config);
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            Throwable c = e.getCause();
-            if (c != null && c instanceof ConfigurationException) {
-                throw (ConfigurationException) c;
-            }
-            throw new ConfigurationInstantiationException(e);
-        }
-
-        return errorHandler;
+        return (ErrorHandler) createInstance(type, ErrorHandler.class);
     }
 
 }

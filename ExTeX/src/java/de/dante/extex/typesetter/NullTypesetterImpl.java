@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
@@ -32,16 +33,15 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
     /**
      * Creates a new object.
-     *
-     * @param config the configuration object to consider
      */
-    public NullTypesetterImpl(final Configuration config) {
+    public NullTypesetterImpl() {
+
         super();
     }
 
@@ -50,6 +50,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) {
+
         // nothing to do
     }
 
@@ -59,6 +60,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.util.UnicodeChar)
      */
     public void add(final TypesettingContext font, final UnicodeChar symbol) {
+
         // nothing to do
     }
 
@@ -67,6 +69,7 @@ public class NullTypesetterImpl implements Typesetter {
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addGlue(final Glue g) {
+
         // nothing to do
     }
 
@@ -77,6 +80,7 @@ public class NullTypesetterImpl implements Typesetter {
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) {
+
         // nothing to do
     }
 
@@ -84,14 +88,16 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#close()
      */
     public NodeList close() {
+
         return null;
     }
 
     /**
-     * @see de.dante.util.configuration.Configurable#configure(
+     * @see de.dante.util.framework.configuration.Configurable#configure(
      *     de.dante.util.configuration.Configuration)
      */
     public void configure(final Configuration config) {
+
         // nothing to do
     }
 
@@ -99,6 +105,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
     public void finish() {
+
         // nothing to do
     }
 
@@ -106,6 +113,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
      */
     public CharNodeFactory getCharNodeFactory() {
+
         return null;
     }
 
@@ -121,6 +129,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#getMode()
      */
     public Mode getMode() {
+
         return null;
     }
 
@@ -142,6 +151,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#par()
      */
     public void par() {
+
         // nothing to do
     }
 
@@ -157,7 +167,16 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter doc) {
+
         // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setOptions(
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void setOptions(final TypesetterOptions options) {
+
     }
 
     /**
@@ -165,6 +184,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setPrevDepth(final Dimen pd) {
+
         // nothing to do
     }
 
@@ -173,6 +193,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void setSpacefactor(final Count f) {
+
         // nothing to do
     }
 
@@ -181,6 +202,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.typesetter.NodeList)
      */
     public void shipout(final NodeList nodes) {
+
         // nothing to do
     }
 
@@ -188,6 +210,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
      */
     public void toggleDisplaymath() {
+
         // nothing to do
     }
 
@@ -195,6 +218,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#toggleMath()
      */
     public void toggleMath() {
+
         // nothing to do
     }
 

@@ -57,6 +57,7 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationMissingException;
+import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -70,7 +71,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Max extends Moritz
         implements
@@ -169,22 +170,10 @@ public class Max extends Moritz
 
     /**
      * Creates a new object.
-     *
-     * @param config the configuration object to take into account
-     *
-     * @throws ConfigurationException in case of an error
-     * @throws GeneralException in case of another error
      */
-    public Max(final Configuration config)
-            throws ConfigurationException,
-                GeneralException {
+    public Max() {
 
-        super(config);
-        //long t = System.currentTimeMillis();
-        configure(config);
-        //        System.err.println("init: " +
-        //                           Long.toString(System.currentTimeMillis() -
-        //                                         t) + "ms");
+        super();
     }
 
     /**
@@ -193,11 +182,11 @@ public class Max extends Moritz
      * @param config the configuration object to consider.
      *
      * @throws ConfigurationException in case of a configuration error
-     * @throws GeneralException in case of another error
      */
-    private void configure(final Configuration config)
-            throws ConfigurationException,
-                GeneralException {
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
+        super.configure(config);
 
         if (config == null) {
             throw new ConfigurationMissingException("Interpreter");
@@ -206,7 +195,11 @@ public class Max extends Moritz
         context = new ContextFactory(config.getConfiguration("Context"))
                 .newInstance(null);
         setContext(context);
-        context.setInteraction(Interaction.ERRORSTOPMODE, true);
+        try {
+            context.setInteraction(Interaction.ERRORSTOPMODE, true);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
+        }
 
         maxErrors = config.getValueAsInteger("maxErrors", maxErrors);
 
@@ -252,6 +245,8 @@ public class Max extends Moritz
                 throw new ConfigurationInstantiationException(e);
             } catch (ClassNotFoundException e) {
                 throw new ConfigurationClassNotFoundException(classname, config);
+            } catch (GeneralException e) {
+                throw new ConfigurationWrapperException(e);
             }
         }
 

@@ -43,7 +43,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.24 $
+ * @version $Revision: 1.25 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -92,6 +92,11 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
     }
 
     /**
+     * Add a character node to the list.
+     *
+     * @param context the typesetting context for the symbol
+     * @param symbol the symbol to add
+     *
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)

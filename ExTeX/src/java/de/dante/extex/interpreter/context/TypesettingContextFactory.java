@@ -24,6 +24,7 @@ import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * This class provides a factory for a
@@ -31,9 +32,9 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
-public class TypesettingContextFactory {
+public class TypesettingContextFactory extends AbstractFactory {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the

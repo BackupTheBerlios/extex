@@ -28,6 +28,7 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -36,9 +37,10 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class DumpTypesetter implements Typesetter {
+
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
      * nodes.
@@ -161,11 +163,19 @@ public class DumpTypesetter implements Typesetter {
      */
     public void setDocumentWriter(final DocumentWriter doc) {
     }
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setOptions(
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void setOptions(final TypesetterOptions options) {
+
+    }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#setParshape(
      *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
      */
+
     public void setParshape(final ParagraphShape parshape) {
 
     }
@@ -174,6 +184,7 @@ public class DumpTypesetter implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
+
     public void setPrevDepth(final Dimen pd) throws GeneralException {
     }
 

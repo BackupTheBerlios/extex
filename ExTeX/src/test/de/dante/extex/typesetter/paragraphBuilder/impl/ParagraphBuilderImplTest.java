@@ -34,7 +34,7 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
@@ -42,7 +42,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class MockOptions implements TypesetterOptions {
         /**
@@ -116,7 +116,7 @@ public class ParagraphBuilderImplTest extends TestCase {
      */
     public void test1() {
 
-        ParagraphBuilder builder = new ParagraphBuilderImpl(null);
+        ParagraphBuilder builder = new ParagraphBuilderImpl();
         builder.setOptions(new MockOptions());
         HorizontalListNode nodes = new HorizontalListNode();
         assertEquals(0, builder.build(nodes).size());

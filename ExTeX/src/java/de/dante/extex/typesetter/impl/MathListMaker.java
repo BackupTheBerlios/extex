@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
 
@@ -121,6 +121,11 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
+     * Emitting a new paragraph is not supported in math mode.
+     * Thus an exception is thrwon.
+     *
+     * @throws GeneralException in any case
+     *
      * @see de.dante.extex.typesetter.ListMaker#par()
      * @see "TeX -- The Program [1047]"
      */

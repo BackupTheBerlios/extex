@@ -31,9 +31,15 @@ import de.dante.extex.interpreter.Namespace;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
+
+    /**
+     * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
+     * the hash code.
+     */
+    private static final int HASH_FACTOR = 17;
 
     /**
      * The field <tt>namespace</tt> contains the namespace for this token.
@@ -97,7 +103,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public int hashCode() {
 
-        return super.hashCode() + 17 * namespace.hashCode();
+        return super.hashCode() + HASH_FACTOR * namespace.hashCode();
     }
 
     /**

@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.documentWriter;
 
 import java.lang.reflect.Constructor;
@@ -27,26 +28,21 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class DocumentWriterFactory {
+public class DocumentWriterFactory extends AbstractFactory {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
      * used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The constant <tt>DEFAULT_ATTRIBUTE</tt> contains the name of the
-     * attribute used to get the default configuration.
-     */
-    private static final String DEFAULT_ATTRIBUTE = "default";
 
     /**
      * The field <tt>config</tt> contains the configuration to use.
@@ -57,11 +53,14 @@ public class DocumentWriterFactory {
      * Creates a new object.
      *
      * @param configuration the configuration to use for the factory
+     * @throws ConfigurationException ...
      */
-    public DocumentWriterFactory(final Configuration configuration) {
+    public DocumentWriterFactory(final Configuration configuration)
+            throws ConfigurationException {
 
         super();
         this.config = configuration;
+        configure(configuration);
     }
 
     /**
@@ -76,23 +75,9 @@ public class DocumentWriterFactory {
      * @throws ConfigurationException in case of an error
      */
     public DocumentWriter newInstance(final String type,
-            final DocumentWriterOptions options)
-            throws ConfigurationException {
+            final DocumentWriterOptions options) throws ConfigurationException {
 
-        Configuration cfg = config.findConfiguration(type != null ? type : "");
-        if (cfg == null) {
-            String fallback = config.getAttribute(DEFAULT_ATTRIBUTE);
-            if (fallback == null) {
-                throw new ConfigurationMissingAttributeException(
-                        DEFAULT_ATTRIBUTE, config);
-            }
-            cfg = config.findConfiguration(fallback);
-            if (cfg == null) {
-                throw new ConfigurationMissingAttributeException(fallback,
-                        config);
-            }
-        }
-
+        Configuration cfg = selectConfiguration(type);
         String className = cfg.getAttribute(CLASS_ATTRIBUTE);
 
         if (className == null) {
@@ -103,21 +88,17 @@ public class DocumentWriterFactory {
         DocumentWriter docWriter;
 
         try {
-            Constructor constructor = Class.forName(className)
-                    .getConstructor(new Class[]{Configuration.class, DocumentWriterOptions.class});
-            docWriter = (DocumentWriter) constructor
-                    .newInstance(new Object[]{cfg, options});
+            Constructor constructor = Class.forName(className).getConstructor(
+                    new Class[]{Configuration.class,
+                            DocumentWriterOptions.class});
+            docWriter = (DocumentWriter) constructor.newInstance(//
+                    new Object[]{cfg, options});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(className
-                                                         + "("
-                                                         + Configuration.class
-                                                                 .getName()
-                                                         + ", "
-                                                         + DocumentWriterOptions.class
-                                                                 .getName()
-                                                         + ")");
+            throw new ConfigurationNoSuchMethodException(className + "("
+                    + Configuration.class.getName() + ", "
+                    + DocumentWriterOptions.class.getName() + ")");
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(className, config);
         } catch (IllegalArgumentException e) {
@@ -133,6 +114,8 @@ public class DocumentWriterFactory {
             }
             throw new ConfigurationInstantiationException(e);
         }
+
+        enableLogging(docWriter, getLogger());
 
         return docWriter;
 

@@ -46,7 +46,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -66,7 +66,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MockFont extends NullFont {
 
@@ -117,7 +117,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MockGlyph implements Glyph {
 
@@ -349,7 +349,7 @@ public class LigatureBuilderImplTest extends TestCase {
     /**
      * The field <tt>builder</tt> contains the ...
      */
-    private static LigatureBuilder builder = new LigatureBuilderImpl(null);
+    private static LigatureBuilder builder = new LigatureBuilderImpl();
 
     /**
      * The field <tt>tc1</tt> contains the ...

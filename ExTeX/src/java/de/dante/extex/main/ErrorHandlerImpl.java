@@ -32,8 +32,8 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Token;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
-import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This is a simple implementation of the error handler interacting with the
@@ -46,9 +46,13 @@ import de.dante.util.configuration.ConfigurationException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
+public class ErrorHandlerImpl
+        implements
+            ErrorHandler,
+            LogEnabled,
+            InteractionVisitor {
 
     /**
      * The constant <tt>NL</tt> contains the String with the newline character,
@@ -62,19 +66,22 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
      * this handler is invoked. Thus only additional logging output should be
      * produced in this class.
      */
-    private Logger logger;
+    private Logger logger = null;
 
     /**
      * Creates a new object.
-     *
-     * @param configuration the configuration to consider.
-     * This argument is ignored currently
-     * @param theLogger the logger for the interaction logging
      */
-    public ErrorHandlerImpl(final Configuration configuration,
-            final Logger theLogger) {
+    public ErrorHandlerImpl() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger theLogger) {
+
         this.logger = theLogger;
     }
 
@@ -90,6 +97,52 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
             throws GeneralException {
 
         return context.getInteraction().visit(this, source, context, exception);
+    }
+
+    /**
+     * Read a line of characters from the standard input stream.
+     * Leading spaces are ignored. At end of file <code>null</code> is returned.
+     *
+     * @return the line read or <code>null</code> to signal EOF
+     *
+     * @throws IOException in case of an error during IO. This is rather
+     * unlikely
+     */
+    private String readLine() throws IOException {
+
+        StringBuffer sb = new StringBuffer();
+
+        for (int c = System.in.read(); c > 0; c = System.in.read()) {
+            if (c == '\n') {
+                sb.append((char) c);
+                return sb.toString();
+            } else if (c != ' ' || sb.length() > 0) {
+                sb.append((char) c);
+            }
+        }
+
+        return (sb.length() > 0 ? sb.toString() : null);
+    }
+
+    /**
+     * This method is invoked to present the current line causing the error.
+     *
+     * @param aLogger the logger to use for output
+     * @param message the error message
+     * @param locator the locator for the error position
+     */
+    protected void showErrorLine(final Logger aLogger, final String message,
+            final Locator locator) {
+
+        String file = locator.getFilename();
+        StringBuffer sb = new StringBuffer();
+
+        for (int i = locator.getLinePointer(); i > 0; i--) {
+            sb.append('_');
+        }
+        aLogger.severe(NL + NL + (file == null ? "" : file) + ":"
+                + Integer.toString(locator.getLineno()) + ": " + message + NL
+                + NL + locator.getLine() + NL + sb.toString() + "^" + NL);
     }
 
     /**
@@ -145,7 +198,7 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                         case '1':
                             int count = line.charAt(0) - '0';
                             if (line.length() > 1
-                                && Character.isDigit(line.charAt(1))) {
+                                    && Character.isDigit(line.charAt(1))) {
                                 count = count * 10 + line.charAt(1) - '0';
                             }
                             while (count-- > 0) {
@@ -186,31 +239,31 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
                             context.setInteraction(Interaction.BATCHMODE, true);
                             logger.info(Messages
                                     .format("ErrorHandler.batchmode")
-                                        + NL);
+                                    + NL);
                             return true;
                         case 'r':
                         case 'R':
                             context.setInteraction(Interaction.NONSTOPMODE,
-                                                   true);
+                                    true);
                             logger.info(Messages
                                     .format("ErrorHandler.nonstopmode")
-                                        + NL);
+                                    + NL);
                             return true;
                         case 's':
                         case 'S':
                             context
                                     .setInteraction(Interaction.SCROLLMODE,
-                                                    true);
+                                            true);
                             logger.info(Messages
                                     .format("ErrorHandler.scrollmode")
-                                        + NL);
+                                    + NL);
                             return true;
                         case 'x':
                         case 'X':
                             return false;
                         default:
                             logger.severe(Messages.format("ErrorHandler.help")
-                                          + NL);
+                                    + NL);
                     }
                 }
             }
@@ -241,53 +294,6 @@ public class ErrorHandlerImpl implements ErrorHandler, InteractionVisitor {
             final Object oException) throws GeneralException {
 
         return false;
-    }
-
-    /**
-     * Read a line of characters from the standard input stream.
-     * Leading spaces are ignored. At end of file <code>null</code> is returned.
-     *
-     * @return the line read or <code>null</code> to signal EOF
-     *
-     * @throws IOException in case of an error during IO. This is rather
-     * unlikely
-     */
-    private String readLine() throws IOException {
-
-        StringBuffer sb = new StringBuffer();
-
-        for (int c = System.in.read(); c > 0; c = System.in.read()) {
-            if (c == '\n') {
-                sb.append((char) c);
-                return sb.toString();
-            } else if (c != ' ' || sb.length() > 0) {
-                sb.append((char) c);
-            }
-        }
-
-        return (sb.length() > 0 ? sb.toString() : null);
-    }
-
-    /**
-     * This method is invoked to present the current line causing the error.
-     *
-     * @param aLogger the logger to use for output
-     * @param message the error message
-     * @param locator the locator for the error position
-     */
-    protected void showErrorLine(final Logger aLogger, final String message,
-            final Locator locator) {
-
-        String file = locator.getFilename();
-        StringBuffer sb = new StringBuffer();
-
-        for (int i = locator.getLinePointer(); i > 0; i--) {
-            sb.append('_');
-        }
-        aLogger.severe(NL + NL + (file == null ? "" : file) + ":"
-                      + Integer.toString(locator.getLineno()) + ": " + message
-                      + NL + NL + locator.getLine() + NL + sb.toString() + "^"
-                      + NL);
     }
 
 }

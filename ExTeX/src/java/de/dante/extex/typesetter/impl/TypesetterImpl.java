@@ -53,7 +53,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
@@ -104,19 +104,14 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
 
     /**
      * Creates a new object.
-     *
-     * @param config the configuration
-     * @param theOptions the interpreter context
      */
-    public TypesetterImpl(final Configuration config,
-            final TypesetterOptions theOptions) {
+    public TypesetterImpl() {
 
         super();
-        this.options = theOptions;
+
         listMaker = new VerticalListMaker(this);
-        ligatureBuilder = new LigatureBuilderImpl(config);    //TODO: IoC
-        paragraphBuilder = new ParagraphBuilderImpl(config);  //TODO: IoC
-        paragraphBuilder.setOptions(theOptions);
+        ligatureBuilder = new LigatureBuilderImpl();    //TODO: IoC
+        paragraphBuilder = new ParagraphBuilderImpl();  //TODO: IoC
     }
 
     /**
@@ -329,6 +324,16 @@ public class TypesetterImpl implements Typesetter, Manager, LogEnabled {
     public void setDocumentWriter(final DocumentWriter writer) {
 
         documentWriter = writer;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setOptions(
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void setOptions(final TypesetterOptions theOptions) {
+
+        this.options = theOptions;
+        paragraphBuilder.setOptions(theOptions); //TODO IoC
     }
 
     /**

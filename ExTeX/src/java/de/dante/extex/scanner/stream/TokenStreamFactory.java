@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -33,6 +33,7 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.configuration.ConfigurationWrapperException;
+import de.dante.util.framework.AbstractFactory;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -119,9 +120,9 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
-public class TokenStreamFactory implements Observable {
+public class TokenStreamFactory extends AbstractFactory implements Observable {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the
@@ -191,6 +192,7 @@ public class TokenStreamFactory implements Observable {
 
     /**
      * Creates a new object.
+     *
      * @param theConfiguration the configuration to use
      * @param theOptions the options for the token stream
      *
@@ -200,12 +202,13 @@ public class TokenStreamFactory implements Observable {
             final TokenStreamOptions theOptions) throws ConfigurationException {
 
         super();
-        this.configuration = theConfiguration;
+        configure(theConfiguration);
+        this.configuration = selectConfiguration("base");
         this.options = theOptions;
-        String classname = theConfiguration.getAttribute(CLASS_ATTRIBUTE);
+        String classname = configuration.getAttribute(CLASS_ATTRIBUTE);
         if (classname == null) {
             throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    theConfiguration);
+                    configuration);
         }
         try {
             readerConstructor = Class.forName(classname).getConstructor(
@@ -217,7 +220,7 @@ public class TokenStreamFactory implements Observable {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(classname,
-                    theConfiguration);
+                    configuration);
         }
 
         try {
@@ -230,7 +233,7 @@ public class TokenStreamFactory implements Observable {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(classname,
-                    theConfiguration);
+                    configuration);
         }
 
         try {
@@ -243,7 +246,7 @@ public class TokenStreamFactory implements Observable {
             throw new ConfigurationNoSuchMethodException(e);
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(classname,
-                    theConfiguration);
+                    configuration);
         }
     }
 
@@ -277,6 +280,8 @@ public class TokenStreamFactory implements Observable {
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
+
+        enableLogging(stream, getLogger());
         return stream;
     }
 
@@ -310,6 +315,8 @@ public class TokenStreamFactory implements Observable {
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
+
+        enableLogging(stream, getLogger());
         return stream;
     }
 
@@ -359,6 +366,8 @@ public class TokenStreamFactory implements Observable {
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
+
+        enableLogging(stream, getLogger());
         return tStream;
     }
 

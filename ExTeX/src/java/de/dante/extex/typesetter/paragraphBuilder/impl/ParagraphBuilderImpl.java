@@ -49,7 +49,6 @@ import de.dante.extex.typesetter.paragraphBuilder.HangingParagraphShape;
 import de.dante.extex.typesetter.paragraphBuilder.Hyphenator;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.util.configuration.Configuration;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -139,7 +138,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breakes separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
@@ -217,10 +216,8 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
     /**
      * Creates a new object.
-     *
-     * @param config the configuration
      */
-    public ParagraphBuilderImpl(final Configuration config) {
+    public ParagraphBuilderImpl() {
 
         super();
     }
@@ -231,7 +228,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      * @param t ... given t >= 0
      * @param s ...
      *
-     * @return ...
+     * @return the comuted badness
      *
      * @see "TTP [108]"
      */
@@ -433,14 +430,15 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
     }
 
     /**
-     * ...
+     * Skip over any discartable nodes and return the index of the next
+     * non-discartable node.
      *
-     * @param start ...
-     * @param len ...
-     * @param nodes ...
-     * @param wd ...
+     * @param start the index to start at
+     * @param len the length of the node list
+     * @param nodes the node list to take into account
+     * @param wd the  accumulator for the width of the discarted nodes
      *
-     * @return ...
+     * @return the index of the next non-discartable node
      */
     private int discartNodes(final int start, final int len,
             final NodeList nodes, final Glue wd) {
@@ -470,7 +468,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      * @param pointIndex the index of the point
      * @param leftskip the skip for the left side
      * @param rightskip the skip for the right side
-     * @param emergencystretch TODO
+     * @param emergencystretch ...
      *
      * @return the container with the breaks or <code>null</code> if none is
      *  found.
@@ -515,8 +513,9 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
     /**
      * ...
+     *
      * @param nodes the horizontal node list containing all nodes for the
-     *   paragraph
+     *  paragraph
      * @param hyphenpenalty penalty for a discretionary node with non-empty
      *  pre-text
      * @param exhyphenpenalty penalty for a discretionary node with empty

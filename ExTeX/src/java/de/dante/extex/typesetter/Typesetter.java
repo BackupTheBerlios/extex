@@ -28,25 +28,9 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public interface Typesetter extends ListMaker {
-
-    /**
-     * Setter for the document writer.
-     * The document writer is addressed whenever a complete page has to be
-     * shipped out.
-     *
-     * @param doc the new document writer
-     */
-    void setDocumentWriter(DocumentWriter doc);
-
-    /**
-     * Getter for the CharNodeFactory.
-     *
-     * @return the character node factory
-     */
-    CharNodeFactory getCharNodeFactory();
 
     /**
      * Instructs the typesetter to perform any actions necessary for cleaning up
@@ -58,13 +42,11 @@ public interface Typesetter extends ListMaker {
     void finish() throws GeneralException;
 
     /**
-     * Send a list of nodes to the document writer.
+     * Getter for the CharNodeFactory.
      *
-     * @param nodes the nodes to send to the typesetter
-     *
-     * @throws GeneralException in case of an error
+     * @return the character node factory
      */
-    void shipout(NodeList nodes) throws GeneralException;
+    CharNodeFactory getCharNodeFactory();
 
     /**
      * Open a new horizontal box and put it in the top of the stack as current
@@ -77,5 +59,30 @@ public interface Typesetter extends ListMaker {
      * box.
      */
     void openVbox();
+
+    /**
+     * Setter for the document writer.
+     * The document writer is addressed whenever a complete page has to be
+     * shipped out.
+     *
+     * @param doc the new document writer
+     */
+    void setDocumentWriter(DocumentWriter doc);
+
+    /**
+     * Setter for the typesetter specific options.
+     *
+     * @param options the options to use
+     */
+    void setOptions(TypesetterOptions options);
+
+    /**
+     * Send a list of nodes to the document writer.
+     *
+     * @param nodes the nodes to send to the typesetter
+     *
+     * @throws GeneralException in case of an error
+     */
+    void shipout(NodeList nodes) throws GeneralException;
 
 }

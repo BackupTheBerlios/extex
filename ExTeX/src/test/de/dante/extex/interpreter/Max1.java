@@ -32,6 +32,7 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -39,7 +40,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.25 $
+ * @version $Revision: 1.26 $
  */
 public class Max1 extends TestCase {
 
@@ -47,6 +48,7 @@ public class Max1 extends TestCase {
      * Inner class to collect the things the typesetter sees.
      */
     private static class TestTypesetter implements Typesetter {
+
         /**
          */
         private StringBuffer sb = new StringBuffer();
@@ -95,7 +97,7 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.util.configuration.Configurable#configure(
+         * @see de.dante.util.framework.configuration.Configurable#configure(
          *      de.dante.util.configuration.Configuration)
          */
         public void configure(final Configuration config) {
@@ -176,6 +178,12 @@ public class Max1 extends TestCase {
          */
         public void setDocumentWriter(final DocumentWriter doc) {
             // nothing to do
+        }
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#setOptions(de.dante.extex.typesetter.TypesetterOptions)
+         */
+        public void setOptions(final TypesetterOptions options) {
+
         }
         /**
          * @see de.dante.extex.typesetter.Typesetter#setParshape(

@@ -108,8 +108,12 @@
     -  The section "Scanner" contains the specification for the scanner, i.e. the
     -  token stream.
     -->
-  <Scanner class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"
-           buffersize=""/>
+  <Scanner default="base">
+    <base class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"
+          buffersize=""/>
+    <base32 class="de.dante.extex.scanner.stream.impl32.TokenStreamImpl"
+            buffersize=""/>
+  </Scanner>
 
   <!-- 
     -  The section "Interpreter" contains the specification for the core

@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Code {
 
@@ -45,14 +45,14 @@ public interface Code {
      * This simple little method distinguishes the conditionals from the other
      * primitives. This is necessary for the processing of all \if* primitives.
      *
-     * @return <code>true</code> iff this is some sort if \if
+     * @return <code>true</code> iff this is some sort if <tt>\if</tt>.
      */
     boolean isIf();
 
     /**
-     * ...
+     * Getter for the outer flag.
      *
-     * @return ...
+     * @return <code>true</code> iff the code is defined outer.
      */
     boolean isOuter();
 
@@ -74,16 +74,15 @@ public interface Code {
      * This method takes the first token and executes it. The result is placed
      * on the stack. This operation might have side effects. To execute a token
      * it might be necessary to consume further tokens.
-     * <p>
-     * For expandable primitives the execution is identical to expansion.
-     * </p>
      *
      * @param prefix the prefix controlling the execution
      * @param context the interpreter context
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @return ...
+     * @return <tt>false</tt> iff the prefix should be preserved after the
+     * invocation is complete. This means that the most primitives return
+     * <tt>true</tt> and only the prefix primitives return <tt>false</tt>.
      *
      * @throws GeneralException in case of an error
      */

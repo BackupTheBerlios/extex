@@ -50,6 +50,7 @@ import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -67,9 +68,9 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.28 $
+ * @version $Revision: 1.29 $
  */
-public abstract class Moritz implements TokenSource, Observable {
+public abstract class Moritz implements TokenSource, Configurable, Observable {
 
     /**
      * The constant <tt>MAX_CHAR_CODE</tt> contains the maximum value for a
@@ -154,11 +155,8 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Creates a new object.
-     *
-     * @param configuration
-     *            the configuration to use
      */
-    public Moritz(final Configuration configuration) {
+    public Moritz() {
 
         super();
     }
@@ -205,6 +203,15 @@ public abstract class Moritz implements TokenSource, Observable {
             int last = streamStack.size() - 1;
             stream = (last >= 0 ? (TokenStream) streamStack.remove(last) : null);
         }
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.configuration.Configuration)
+     */
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
     }
 
     /**
@@ -519,8 +526,7 @@ public abstract class Moritz implements TokenSource, Observable {
                                 n = n * 16 + t.getValue().charAt(0) - 'A' + 10;
                                 break;
                             default:
-                                throw new PanicException(
-                                        "this can't happen");
+                                throw new PanicException("this can't happen");
                         }
                     }
 
@@ -768,8 +774,8 @@ public abstract class Moritz implements TokenSource, Observable {
         long cc = scanNumber();
 
         if (cc < 0 || cc > MAX_CHAR_CODE) {
-            throw new HelpingException("TTP.BadCharCode", Long
-                    .toString(cc), "0", Long.toString(MAX_CHAR_CODE));
+            throw new HelpingException("TTP.BadCharCode", Long.toString(cc),
+                    "0", Long.toString(MAX_CHAR_CODE));
         }
 
         return new UnicodeChar((int) cc);
@@ -942,8 +948,7 @@ public abstract class Moritz implements TokenSource, Observable {
                                             + 10;
                                     break;
                                 default:
-                                    throw new PanicException(
-                                            "TTP.Confusion");
+                                    throw new PanicException("TTP.Confusion");
                             }
                         }
 
@@ -961,8 +966,8 @@ public abstract class Moritz implements TokenSource, Observable {
                 if (code == null) {
                     throw new HelpingException("TTP.MissingNumber");
                 } else if (code instanceof CountConvertible) {
-                    return ((CountConvertible) code)
-                            .convertCount(context, this, getTypesetter());
+                    return ((CountConvertible) code).convertCount(context,
+                            this, getTypesetter());
                 } else if (code instanceof ExpandableCode) {
                     ((ExpandableCode) code).expand(Flags.NONE, context, this,
                             getTypesetter());

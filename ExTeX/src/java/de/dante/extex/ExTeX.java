@@ -616,7 +616,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public class ExTeX {
 
@@ -1301,7 +1301,9 @@ public class ExTeX {
             throws ConfigurationException,
                 FileNotFoundException {
 
-        DocumentWriter docWriter = new DocumentWriterFactory(config)
+        DocumentWriterFactory factory = new DocumentWriterFactory(config);
+        factory.enableLogging(logger);
+        DocumentWriter docWriter = factory
                 .newInstance(properties.getProperty(PROP_OUTPUT_TYPE), options);
 
         if (outStream == null) {
@@ -1387,10 +1389,16 @@ public class ExTeX {
             throws GeneralException,
                 ConfigurationException {
 
-        Interpreter interpreter = new InterpreterFactory(config).newInstance();
-        ErrorHandler errorHandler = (new ErrorHandlerFactory(config
-                .getConfiguration(TAG_ERRORHANDLER))).newInstance(properties
-                .getProperty(PROP_ERROR_HANDLER), logger);
+        InterpreterFactory interpreterFactory = new InterpreterFactory();
+        interpreterFactory.configure(config);
+        interpreterFactory.enableLogging(logger);
+
+        Interpreter interpreter = interpreterFactory.newInstance();
+        ErrorHandlerFactory errorHandlerFactory = new ErrorHandlerFactory(config
+                .getConfiguration(TAG_ERRORHANDLER));
+        errorHandlerFactory.enableLogging(logger);
+        ErrorHandler errorHandler = errorHandlerFactory.newInstance(properties
+                .getProperty(PROP_ERROR_HANDLER));
         interpreter.setErrorHandler(errorHandler);
         interpreter.setFileFinder(finder);
         interpreter.setTokenStreamFactory(factory);
@@ -1475,8 +1483,10 @@ public class ExTeX {
 
         TokenStreamFactory factory = new TokenStreamFactory(config, options);
 
+        factory.enableLogging(logger);
         factory.setResourceFinder(finder);
         factory.registerObserver("file", new FileOpenObserver(logger));
+
         return factory;
     }
 
@@ -1496,7 +1506,9 @@ public class ExTeX {
             final DocumentWriter docWriter, final Context context)
             throws ConfigurationException {
 
-        Typesetter typesetter = new TypesetterFactory(config).newInstance(
+        TypesetterFactory factory = new TypesetterFactory(config);
+        factory.enableLogging(logger);
+        Typesetter typesetter = factory.newInstance(
                 properties.getProperty(PROP_TYPESETTER_TYPE), context);
         typesetter.setDocumentWriter(docWriter);
 

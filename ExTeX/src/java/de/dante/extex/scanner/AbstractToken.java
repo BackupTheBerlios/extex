@@ -26,9 +26,15 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public abstract class AbstractToken implements Token {
+
+    /**
+     * The constant <tt>HASH_FACTOR</tt> contains the factor used to construct
+     * the hash code.
+     */
+    private static final int HASH_FACTOR = 17;
 
     /**
      * The field <tt>uniCode</tt> contains the Unicode character assigned to
@@ -138,7 +144,7 @@ public abstract class AbstractToken implements Token {
      */
     public int hashCode() {
 
-        return getCatcode().hashCode() + 17 * uniCode.hashCode();
+        return getCatcode().hashCode() + HASH_FACTOR * uniCode.hashCode();
     }
 
     /**

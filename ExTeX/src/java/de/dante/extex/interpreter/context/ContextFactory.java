@@ -28,6 +28,7 @@ import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 import de.dante.util.configuration.ConfigurationNoSuchMethodException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * This class provides a factory for a
@@ -40,26 +41,15 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class ContextFactory {
+public class ContextFactory extends AbstractFactory {
 
     /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
      * used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The constant <tt>DEFAULT_ATTRIBUTE</tt> contains the name of the
-     * attribute used to get the default configuration.
-     */
-    private static final String DEFAULT_ATTRIBUTE = "default";
-
-    /**
-     * The field <tt>config</tt> contains the configuration for this factory.
-     */
-    private Configuration config = null;
 
     /**
      * Creates a new object.
@@ -72,7 +62,7 @@ public class ContextFactory {
             throws ConfigurationException {
 
         super();
-        config = configuration;
+        configure(configuration);
     }
 
     /**
@@ -88,23 +78,9 @@ public class ContextFactory {
      *
      * @throws ConfigurationException in case of an configuration error
      */
-    public Context newInstance(final String type)
-            throws ConfigurationException {
+    public Context newInstance(final String type) throws ConfigurationException {
 
-        Configuration cfg = config.findConfiguration(type != null ? type : "");
-        if (cfg == null) {
-            String fallback = config.getAttribute(DEFAULT_ATTRIBUTE);
-            if (fallback == null || "".equals(fallback)) {
-                throw new ConfigurationMissingAttributeException(
-                        DEFAULT_ATTRIBUTE, config);
-            }
-            cfg = config.findConfiguration(fallback);
-            if (cfg == null) {
-                throw new ConfigurationMissingAttributeException(fallback,
-                        config);
-            }
-        }
-
+        Configuration cfg = selectConfiguration(type);
         String className = cfg.getAttribute(CLASS_ATTRIBUTE);
 
         if (className == null) {
@@ -115,20 +91,17 @@ public class ContextFactory {
         Context context;
 
         try {
-            Constructor constructor = Class.forName(className)
-                    .getConstructor(new Class[]{Configuration.class});
-            context = (Context) constructor
-                    .newInstance(new Object[]{cfg});
+            Constructor constructor = Class.forName(className).getConstructor(
+                    new Class[]{Configuration.class});
+            context = (Context) constructor.newInstance(new Object[]{cfg});
         } catch (SecurityException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(className
-                                                         + "("
-                                                         + Configuration.class
-                                                                 .getName()
-                                                         + ")");
+            throw new ConfigurationNoSuchMethodException(className + "("
+                    + Configuration.class.getName() + ")");
         } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(className, config);
+            throw new ConfigurationClassNotFoundException(className,
+                    getConfiguration());
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (InstantiationException e) {
@@ -136,12 +109,14 @@ public class ContextFactory {
         } catch (IllegalAccessException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (InvocationTargetException e) {
-            Throwable c = e.getCause();
-            if (c != null && c instanceof ConfigurationException) {
-                throw (ConfigurationException) c;
+            Throwable cause = e.getCause();
+            if (cause != null && cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
             }
             throw new ConfigurationInstantiationException(e);
         }
+
+        enableLogging(context, getLogger());
 
         return context;
     }

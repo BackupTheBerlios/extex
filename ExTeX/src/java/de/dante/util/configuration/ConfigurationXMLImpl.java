@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -95,7 +95,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * </pre>
      *
      *
-     * ...
+     * TODO documentation incomplete
      *
      * searches the following files on the classpath:
      *
@@ -108,7 +108,8 @@ public class ConfigurationXMLImpl implements Configuration {
      *
      * </p>
      *
-     * @param aResource the name of the resource to be used; i.e. the file name
+     * @param theResource the name of the resource to be used;
+     * i.e. the file name
      *
      * @throws ConfigurationInvalidResourceException in case that the given
      *  resource name is nullor empty
@@ -119,7 +120,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * @throws ConfigurationIOException in case of an IO exception while
      *  reading the resource
      */
-    public ConfigurationXMLImpl(final String aResource)
+    public ConfigurationXMLImpl(final String theResource)
             throws ConfigurationInvalidResourceException,
                 ConfigurationNotFoundException,
                 ConfigurationSyntaxException,
@@ -127,22 +128,22 @@ public class ConfigurationXMLImpl implements Configuration {
 
         super();
 
-        if (aResource == null || aResource.equals("")) {
+        if (theResource == null || theResource.equals("")) {
             throw new ConfigurationInvalidResourceException();
         }
 
-        this.resource = aResource;
+        this.resource = theResource;
 
-        int i = aResource.lastIndexOf("/");
+        int i = theResource.lastIndexOf("/");
 
         if (i >= 0) {
-            this.base = aResource.substring(0, i + 1);
+            this.base = theResource.substring(0, i + 1);
         }
 
-        InputStream stream = findConfig(aResource);
+        InputStream stream = findConfig(theResource);
 
         if (stream == null) {
-            throw new ConfigurationNotFoundException(aResource, null);
+            throw new ConfigurationNotFoundException(theResource, null);
         }
 
         try {
@@ -152,11 +153,66 @@ public class ConfigurationXMLImpl implements Configuration {
         } catch (IOException e) {
             throw new ConfigurationIOException(null, e);
         } catch (ParserConfigurationException e) {
-            throw new ConfigurationSyntaxException(e.getMessage(), aResource);
+            throw new ConfigurationSyntaxException(e.getMessage(), theResource);
         } catch (SAXException e) {
-            throw new ConfigurationSyntaxException(e.getMessage(), aResource);
+            throw new ConfigurationSyntaxException(e.getMessage(), theResource);
         } catch (FactoryConfigurationError e) {
-            throw new ConfigurationSyntaxException(e.getMessage(), aResource);
+            throw new ConfigurationSyntaxException(e.getMessage(), theResource);
+        }
+    }
+
+    /**
+     * Creates a new object.
+     * <p>
+     * The path given is the location of the XML file containing the
+     * configuration information. This path is used to determine the XML file
+     * utilizing the class loader for this class. Thus it is possible to place
+     * the XML file into a jar archive.
+     * </p>
+     * <p>
+     * Beside of the class loader a search is performed by appending
+     * <tt>.xml</tt> and/or prepending <tt>config/</tt> if the path is not
+     * sufficient to find the resource.
+     * </p>
+     *
+     * @param theStream the stream to read the configuration from.
+     * @param theResource the name of the resource to be used;
+     * i.e. the file name
+     *
+     * @throws ConfigurationInvalidResourceException in case that the given
+     *  resource name is <code>null</code> or empty.
+     * @throws ConfigurationNotFoundException in case that the named path does
+     *  not lead to a resource.
+     * @throws ConfigurationSyntaxException in case that the resource contains
+     *  syntax errors.
+     * @throws ConfigurationIOException in case of an IO exception while
+     *  reading the resource.
+     */
+    public ConfigurationXMLImpl(final InputStream theStream,
+            final String theResource)
+            throws ConfigurationInvalidResourceException,
+                ConfigurationNotFoundException,
+                ConfigurationSyntaxException,
+                ConfigurationIOException {
+
+        super();
+
+        if (theStream == null) {
+            throw new ConfigurationNotFoundException(theResource, null);
+        }
+
+        try {
+            DocumentBuilder builder = DocumentBuilderFactory.newInstance()
+                    .newDocumentBuilder();
+            root = builder.parse(theStream).getDocumentElement();
+        } catch (IOException e) {
+            throw new ConfigurationIOException(null, e);
+        } catch (ParserConfigurationException e) {
+            throw new ConfigurationSyntaxException(e.getMessage(), theResource);
+        } catch (SAXException e) {
+            throw new ConfigurationSyntaxException(e.getMessage(), theResource);
+        } catch (FactoryConfigurationError e) {
+            throw new ConfigurationSyntaxException(e.getMessage(), theResource);
         }
     }
 
@@ -219,10 +275,14 @@ public class ConfigurationXMLImpl implements Configuration {
      *
      * @return the sub-configuration
      *
-     * @throws ConfigurationNotFoundException ...
-     * @throws ConfigurationIOException ...
-     * @throws ConfigurationSyntaxException ...
-     * @throws ConfigurationInvalidResourceException ...
+     * @throws ConfigurationNotFoundException in case that the configuration
+     *  does not exist.
+     * @throws ConfigurationIOException in case that an IOException occurred
+     *  while reading the configiuration.
+     * @throws ConfigurationSyntaxException in case of a syntax error in the
+     *  configuration.
+     * @throws ConfigurationInvalidResourceException in case that the given
+     *  resource name is <code>null</code> or empty
      *
      * @see #findConfiguration(String)
      */
@@ -274,7 +334,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * @return the sub-configuration or <code>null</code> if none was found
      *
      * @throws ConfigurationInvalidResourceException in case that the given
-     *  resource name is nullor empty
+     *  resource name is <code>null</code> or empty
      * @throws ConfigurationNotFoundException in case that the named path does
      *  not lead to a resource
      * @throws ConfigurationSyntaxException in case that the resource contains

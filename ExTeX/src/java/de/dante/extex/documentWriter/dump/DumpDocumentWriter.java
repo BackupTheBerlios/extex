@@ -31,7 +31,7 @@ import de.dante.util.configuration.Configuration;
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
@@ -47,11 +47,6 @@ public class DumpDocumentWriter implements DocumentWriter {
     private int shippedPages = 0;
 
     /**
-     * The field <tt>options</tt> contains the ...
-     */
-    private DocumentWriterOptions options;
-
-    /**
      * Creates a new object.
      *
      * @param cfg the configuration object
@@ -61,7 +56,6 @@ public class DumpDocumentWriter implements DocumentWriter {
             final DocumentWriterOptions opts) {
 
         super();
-        options = opts;
     }
 
     /**

@@ -20,11 +20,11 @@ package de.dante.extex.scanner;
 
 
 /**
- * The code token extends the <tt>{@link de.dante.extex.scanner.Token Token}</tt>
- * with the ability to retrieve a namespace.
+ * The code token extends the {@link de.dante.extex.scanner.Token Token} with
+ * the ability to retrieve a namespace.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface CodeToken extends Token {
 
@@ -36,9 +36,10 @@ public interface CodeToken extends Token {
     String getNamespace();
 
     /**
-     * ...
+     * Create a new instance of the token where the namespace is the default
+     * namespace.
      *
-     * @return ...
+     * @return the new token
      */
     Token cloneInDefaultNamespace();
 

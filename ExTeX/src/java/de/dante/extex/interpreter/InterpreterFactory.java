@@ -16,42 +16,28 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
-import java.lang.reflect.InvocationTargetException;
-
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
-import de.dante.util.configuration.ConfigurationNoSuchMethodException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * Factory for the Interpreter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
-public class InterpreterFactory {
+public class InterpreterFactory extends AbstractFactory {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
-     * for the class name to be used.
+     * Creates a new object.
      */
-    private static final String CLASS_ATTRIBUTE = "class";
+    public InterpreterFactory() {
 
-    /**
-     * The field <tt>config</tt> contains the configuration for this factory
-     */
-    private Configuration config;
-
-    /**
-     * The field <tt>classname</tt> contains the name of the class to
-     * instantiate.
-     */
-    private String classname;
+        super();
+    }
 
     /**
      * Creates a new object.
@@ -60,16 +46,13 @@ public class InterpreterFactory {
      *
      * @throws ConfigurationException in case that the attribute
      *             <tt>classname</tt> is missing
+     * @deprecated use the constructor without arguments and configure()
      */
     public InterpreterFactory(final Configuration configuration)
             throws ConfigurationException {
+
         super();
-        this.config = configuration;
-        classname = config.getAttribute(CLASS_ATTRIBUTE);
-        if (classname == null) {
-            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
-                    config);
-        }
+        configure(configuration);
     }
 
     /**
@@ -78,39 +61,11 @@ public class InterpreterFactory {
      *
      * @return a new instance for the interface Interpreter
      *
-     * @throws ConfigurationException in case that the instantiation failes
+     * @throws ConfigurationException in case of an error in the configuration
      */
     public Interpreter newInstance() throws ConfigurationException {
 
-        Interpreter interpreter;
-
-        try {
-            interpreter = (Interpreter) (Class.forName(classname)
-                    .getConstructor(new Class[]{Configuration.class})
-                    .newInstance(new Object[]{config}));
-        } catch (IllegalArgumentException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (SecurityException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InstantiationException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (IllegalAccessException e) {
-            throw new ConfigurationInstantiationException(e);
-        } catch (InvocationTargetException e) {
-            Throwable c = e.getCause();
-            if (c != null && c instanceof ConfigurationException) {
-                throw (ConfigurationException) c;
-            }
-            throw new ConfigurationInstantiationException(e);
-        } catch (NoSuchMethodException e) {
-            throw new ConfigurationNoSuchMethodException(classname
-                                                         + "("
-                                                         + Configuration.class
-                                                                 .getName()
-                                                         + ")");
-        } catch (ClassNotFoundException e) {
-            throw new ConfigurationClassNotFoundException(classname, config);
-        }
+        Interpreter interpreter = (Interpreter) createInstance(Interpreter.class);
 
         return interpreter;
     }
