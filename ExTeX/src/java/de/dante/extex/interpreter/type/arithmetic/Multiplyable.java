@@ -1,19 +1,19 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 package de.dante.extex.interpreter.type.arithmetic;
@@ -32,14 +32,23 @@ import de.dante.util.GeneralException;
  * <h3>Extending <tt>\multiply</tt></h3>
  * <p>
  *  The primitive <tt>\multiply</tt> is designed to be expanded. It is fairly
- *  simple to write an multiplyable primitive.
- *  ...
+ *  simple to write a multiplyable primitive. The associated code simply has to
+ *  implement the interface <tt>Multiplyable</tt>. Whenever <tt>\multiply</tt>
+ *  is encountered immediately followed by a token which has the proper code
+ *  associated, the method <tt>multiply</tt> is invoked. It is up to this
+ *  method to gather further arguments and perform the multiplication.
+ * </p>
+ * <p>
+ *  With this interface the multiplication is in fact tied to the implementing
+ *  code and not to the primitive <tt>\multiply</tt>. Each primitive can be
+ *  made aware for multiplication without touchíng the code for
+ *  <tt>\multiply</tt>.
  * </p>
  * </doc>
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Multiplyable {
 

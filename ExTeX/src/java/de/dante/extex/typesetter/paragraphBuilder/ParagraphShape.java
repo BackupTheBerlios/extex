@@ -29,12 +29,14 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ParagraphShape {
 
     /**
-     * The field <tt>points</tt> contains the ...
+     * The field <tt>points</tt> contains the list of reference points for
+     * the parshape. There are always two consecutive points for the left and
+     * the right margin.
      */
     private List points = new ArrayList();
 
@@ -47,10 +49,10 @@ public class ParagraphShape {
     }
 
     /**
-     * ...
+     * Add another pair of points.
      *
-     * @param left ...
-     * @param right ...
+     * @param left the left margin
+     * @param right the right margin
      */
     public void add(final Dimen left, final Dimen right) {
 
@@ -59,11 +61,12 @@ public class ParagraphShape {
     }
 
     /**
-     * ...
+     * Getter for the left hand margin of a certain position.
+     * The position is given by an index into the list.
      *
-     * @param index ...
+     * @param index the index of the position
      *
-     * @return ...
+     * @return the left hand margin
      */
     public FixedDimen getLeft(final int index) {
 
@@ -72,11 +75,12 @@ public class ParagraphShape {
     }
 
     /**
-     * ...
+     * Getter for the right hand margin of a certain position.
+     * The position is given by an index into the list.
      *
-     * @param index ...
+     * @param index the index of the position
      *
-     * @return ...
+     * @return the right hand margin
      */
     public FixedDimen getRight(final int index) {
 
@@ -85,9 +89,9 @@ public class ParagraphShape {
     }
 
     /**
-     * ...
+     * Getter for the number of points.
      *
-     * @return ...
+     * @return the number of points stored in this instance
      */
     public long getSize() {
 
