@@ -18,6 +18,8 @@
  */
 package de.dante.extex.token;
 
+import java.util.Iterator;
+
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.impl.ContextImpl;
@@ -26,13 +28,17 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl;
+import de.dante.extex.scanner.stream.impl.TokenStreamBuffersImpl;
+import de.dante.util.StringList;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
 
 import junit.framework.TestCase;
 
 /**
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamStringImplTest extends TestCase {
     /**
@@ -46,14 +52,31 @@ public class TokenStreamStringImplTest extends TestCase {
     public static void main(String[] args) {
         junit.textui.TestRunner.run(TokenStreamStringImplTest.class);
     }
-
+    
+    private static TokenFactory fac;
+    private static Context context;
+    private static Tokenizer tokenizer;
+    
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    protected void setUp() throws Exception {
+        super.setUp();
+        fac    = new TokenFactoryImpl();
+        context     = new ContextImpl(new MockConfiguration());
+        tokenizer = context.getTokenizer();
+    }
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
+    protected void tearDown() throws Exception {
+        super.tearDown();
+    }
+    
     /**
      * The empty string does not contain any characters
      */
     public void testEmpty() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("");
         assertNull(stream.get(fac, tokenizer));
     }
@@ -61,54 +84,56 @@ public class TokenStreamStringImplTest extends TestCase {
     /**
      */
     public void test1() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("1");
-        assertEquals("<other 1>", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 1", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void test12() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("12");
-        assertEquals("<other 1>", stream.get(fac, tokenizer).toString());
-        assertEquals("<other 2>", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 2", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
+     * A single space at the beginning of the processing is skipped
      */
     public void testSpace() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl(" ");
-        assertEquals("<space ' '>", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void testSpaces() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("  ");
-        assertEquals("<space '  '>", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
+    public void testSpace2() throws Exception {
+        TokenStream stream  = new TokenStreamBufferImpl(". ");
+        assertEquals("the character .", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
+
+    /**
+     */
+    public void testSpace3() throws Exception {
+        TokenStream stream  = new TokenStreamBufferImpl(". ");
+        assertEquals("the character .", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
+    
+    /**
+     */
     public void testIgnore() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("\0");
         assertNull(stream.get(fac, tokenizer));
     }
@@ -116,89 +141,169 @@ public class TokenStreamStringImplTest extends TestCase {
     /**
      */
     public void testLetter() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("A");
-        assertEquals("<letter A>", stream.get(fac, tokenizer).toString());
+        assertEquals("the letter A", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void testCaretEnd() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
         context.setCatcode('^',Catcode.SUPMARK);
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("^");
-        assertEquals("<supMark ^>", stream.get(fac, tokenizer).toString());
+        assertEquals("superscript character ^", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void testCaret1() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
         context.setCatcode('^',Catcode.SUPMARK);
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("^1");
-        assertEquals("<supMark ^>", stream.get(fac, tokenizer).toString());
-        assertEquals("<other 1>", stream.get(fac, tokenizer).toString());
+        assertEquals("superscript character ^", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 1", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void testCaretA() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
         context.setCatcode('^',Catcode.SUPMARK);
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("^^41");
-        assertEquals("<letter A>", stream.get(fac, tokenizer).toString());
+        assertEquals("the letter A", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void testCaretA2() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
         context.setCatcode('^',Catcode.SUPMARK);
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("^^A");
-        assertEquals("<other \1>", stream.get(fac, tokenizer).toString());
+        assertEquals("the character \1", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
 
     /**
      */
     public void testCaretA3() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
         context.setCatcode('^',Catcode.SUPMARK);
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("^^A;");
-        assertEquals("<other \1>", stream.get(fac, tokenizer).toString());
-        assertEquals("<other ;>", stream.get(fac, tokenizer).toString());
+        assertEquals("the character \1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character ;", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
-
 
     /**
      */
     public void testMixed() throws Exception {
-        TokenFactory fac    = new TokenFactoryImpl();
-        Context context     = new ContextImpl();
-        Tokenizer tokenizer = context.getTokenizer();
         TokenStream stream  = new TokenStreamBufferImpl("12 34");
-        assertEquals("<other 1>", stream.get(fac, tokenizer).toString());
-        assertEquals("<other 2>", stream.get(fac, tokenizer).toString());
-        assertEquals("<space ' '>", stream.get(fac, tokenizer).toString());
-        assertEquals("<other 3>", stream.get(fac, tokenizer).toString());
-        assertEquals("<other 4>", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 1", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 2", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 3", stream.get(fac, tokenizer).toString());
+        assertEquals("the character 4", stream.get(fac, tokenizer).toString());
         assertNull(stream.get(fac, tokenizer));
     }
+
+    /**
+     */
+    public void testCr1() throws Exception {
+        TokenStream stream  = new TokenStreamBufferImpl("x\nx");
+        assertEquals("the letter x", stream.get(fac, tokenizer).toString());
+        assertEquals("blank space  ", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
+
+    /**
+     */
+    public void testCr2() throws Exception {
+        TokenStream stream  = new TokenStreamBufferImpl("\n\n");
+        assertEquals("the control sequence par", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
+
+    /**
+     */
+    public void testCr3() throws Exception {
+        TokenStream stream  = new TokenStreamBuffersImpl(new String[]{"\naaa","  x"});
+        assertEquals("the control sequence par", stream.get(fac, tokenizer).toString());
+        assertEquals("the letter x", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
+
+    /**
+     */
+    public void testCr4() throws Exception {
+        TokenStream stream  = new TokenStreamBuffersImpl(new String[]{"\n","\nx"});
+        assertEquals("the control sequence par", stream.get(fac, tokenizer).toString());
+        assertEquals("the control sequence par", stream.get(fac, tokenizer).toString());
+        assertNull(stream.get(fac, tokenizer));
+    }
+    
+    
+    private static class MockConfiguration implements Configuration {
+        private String classname = "de.dante.extex.interpreter.context.impl.ContextImpl";
+        /**
+         * Creates a new object.
+         */
+        public MockConfiguration() {
+            super();
+        }
+        public MockConfiguration(String cn) {
+            super();
+            classname = cn;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
+         */
+        public String getAttribute(String name) throws ConfigurationException {
+            return classname;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String, java.lang.String)
+         */
+        public Configuration getConfiguration(String key, String attribute)
+                throws ConfigurationException {
+            return null;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String)
+         */
+        public Configuration getConfiguration(String key)
+                throws ConfigurationException {
+            return new MockConfiguration("de.dante.extex.interpreter.context.impl.GroupImpl");
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getValue()
+         */
+        public String getValue() throws ConfigurationException {
+            return null;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getValue(java.lang.String)
+         */
+        public String getValue(String key) throws ConfigurationException {
+            return null;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String, int)
+         */
+        public int getValueAsInteger(String key, int defaultValue)
+                throws ConfigurationException {
+            return 0;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#getValues(java.lang.String)
+         */
+        public StringList getValues(String key) throws ConfigurationException {
+            return null;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#iterator(java.lang.String)
+         */
+        public Iterator iterator(String key) throws ConfigurationException {
+            return null;
+        }
+}
+    
 }
