@@ -48,13 +48,13 @@
     <path property="extex.texinputs"/>
     <path property="texinputs"/>
 
-    <tfm><extension>.tfm</extension></tfm>
-    <efm><extension>.efm</extension></efm>
-    <afm><extension>.afm</extension></afm>
-    <pfb><extension>.pfb</extension></pfb>
-    <pfa><extension>.pfa</extension></pfa>
-    <map><extension>.map</extension></map>
-    <ttf><extension>.ttf</extension></ttf>
+    <tfm><extension/><extension>.tfm</extension></tfm>
+    <efm><extension/><extension>.efm</extension></efm>
+    <afm><extension/><extension>.afm</extension></afm>
+    <pfb><extension/><extension>.pfb</extension></pfb>
+    <pfa><extension/><extension>.pfa</extension></pfa>
+    <map><extension/><extension>.map</extension></map>
+    <ttf><extension/><extension>.ttf</extension></ttf>
     <default><extension/></default>
   </Finder>
 </Resource>
