@@ -63,12 +63,12 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Accent extends AbstractCode {
 
     /**
-     * The constant <tt>UNIT</tt> contains the ...
+     * The constant <tt>UNIT</tt> contains the unit amount.
      */
     private static final int UNIT = 65536;
 
@@ -117,7 +117,7 @@ public class Accent extends AbstractCode {
             a = glyph.getWidth().getValue();
         }
         long x = currentFont.getEx().getValue();
-        long s = 0; // TODO currentFont.getSlant();
+        long s = 0; // TODO gene: currentFont.getSlant();
 
         if (token == null) {
 
@@ -154,17 +154,19 @@ public class Accent extends AbstractCode {
             } else if (g != null) {
                 typesetter.treatLetter(context, tc, c);
             } else {
-                //TODO letter and accent are undefined
+                //TODO gene: letter and accent are undefined
                 throw new RuntimeException("unimplemented");
             }
 
         } else if (token.isa(Catcode.LEFTBRACE)) {
             source.push(token);
 
-            throw new RuntimeException("unimplemented"); //TODO unimplemented
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
 
         } else {
-            throw new RuntimeException("unimplemented"); //TODO unimplemented
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
         }
 
         typesetter.setSpacefactor(Count.THOUSAND);

@@ -73,7 +73,6 @@ import de.dante.extex.main.exception.MainUnknownOptionException;
 import de.dante.extex.main.observer.FileCloseObserver;
 import de.dante.extex.main.observer.FileOpenObserver;
 import de.dante.extex.main.observer.InteractionObserver;
-import de.dante.extex.main.observer.MessageObserver;
 import de.dante.extex.main.observer.TokenObserver;
 import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.observer.TraceObserver;
@@ -344,7 +343,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *
  * <a name="fileSearch"/><h3>Searching Files</h3>
  *
- * TODO doc incomplete
+ * TODO gene: doc incomplete
  *
  *
  *
@@ -576,7 +575,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  *  the default configuration resource.
  * </p>
  *
- * TODO doc incomplete
+ * TODO gene: doc incomplete
  *
  *
  *
@@ -611,7 +610,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.77 $
+ * @version $Revision: 1.78 $
  */
 public class ExTeX {
 
@@ -894,7 +893,7 @@ public class ExTeX {
     }
 
     /**
-     * The field <tt>errorHandler</tt> contains the ...
+     * The field <tt>errorHandler</tt> contains the error handler to use.
      */
     private ErrorHandler errorHandler = null;
 
@@ -1460,7 +1459,7 @@ public class ExTeX {
 
         initializeStreams(interpreter);
 
-        //TODO: if weak references are used then the instances have to be kept in some variables:-(
+        //TODO gene: if weak references are used then the instances have to be kept in some variables:-(
 
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         //interpreter.registerObserver("message", new MessageObserver(logger));
