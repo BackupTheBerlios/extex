@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathList extends AbstractNoad implements Noad {
 
@@ -165,12 +165,4 @@ public class MathList extends AbstractNoad implements Noad {
         //TODO gene: subscript and superscript unimplemented ???
     }
 
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        visitor.visitMathList(this);
-    }
 }

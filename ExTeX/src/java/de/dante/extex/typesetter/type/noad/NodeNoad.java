@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * This noad contains a node which is passed through the math apparatus.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NodeNoad implements Noad {
 
@@ -110,16 +110,6 @@ public class NodeNoad implements Noad {
             final TypesetterOptions context) {
 
         list.add(node);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        // TODO gene: visit unimplemented
-
     }
 
 }

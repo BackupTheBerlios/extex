@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class OperatorNoad extends AbstractNucleusNoad {
 
@@ -91,12 +91,4 @@ public class OperatorNoad extends AbstractNucleusNoad {
         throw new RuntimeException("unimplemented");
     }
 
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        visitor.visitOperator(this);
-    }
 }

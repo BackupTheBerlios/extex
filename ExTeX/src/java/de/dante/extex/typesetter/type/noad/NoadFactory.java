@@ -21,13 +21,12 @@ package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathClassVisitor;
-import de.dante.extex.typesetter.type.MathGlyph;
 
 /**
  * This class is a factory for CharNoades.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NoadFactory {
 
@@ -35,7 +34,7 @@ public class NoadFactory {
      * Inner class for the visiting of a MathClass.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private static final class ClassVisitor implements MathClassVisitor {
 

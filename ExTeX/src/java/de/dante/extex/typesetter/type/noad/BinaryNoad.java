@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BinaryNoad extends AbstractNucleusNoad {
 
@@ -62,15 +62,6 @@ public class BinaryNoad extends AbstractNucleusNoad {
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        visitor.visitBin(this);
     }
 
 }

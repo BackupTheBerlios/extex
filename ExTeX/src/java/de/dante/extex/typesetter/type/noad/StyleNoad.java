@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class StyleNoad implements Noad {
 
@@ -161,12 +161,4 @@ public final class StyleNoad implements Noad {
         mathContext.setStyle(this);
     }
 
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        visitor.visitStyle(this);
-    }
 }

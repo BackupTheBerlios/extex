@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,14 +26,13 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
 
@@ -102,12 +101,4 @@ public class CharNoad extends AbstractNoad implements Noad {
         list.addGlyph(new CharNode(tc, mg.getCharacter()));
     }
 
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
-     */
-    public void visit(final NoadVisitor visitor) {
-
-        visitor.visitChar(this);
-    }
 }
