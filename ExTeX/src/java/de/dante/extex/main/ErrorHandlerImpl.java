@@ -46,7 +46,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class ErrorHandlerImpl
         implements
@@ -134,6 +134,9 @@ public class ErrorHandlerImpl
     protected void showErrorLine(final Logger aLogger, final String message,
             final Locator locator) {
 
+        if (locator == null) {
+            return;
+        }
         String file = locator.getFilename();
         StringBuffer sb = new StringBuffer();
 
