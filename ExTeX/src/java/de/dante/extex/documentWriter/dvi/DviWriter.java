@@ -36,8 +36,6 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.EmptyStackException;
 import java.util.Enumeration;
 import java.util.Stack;
@@ -48,7 +46,7 @@ import java.util.Vector;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DviWriter {
 
@@ -88,14 +86,18 @@ public class DviWriter {
      * dvi-code for "typeset a rule and move right".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int DVI_SET_RULE = 132;
+    */
 
 
     /**
      * dvi-code for "typeset a character".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int[] DVI_PUT = {133, 134, 135, 136};
+    */
 
 
     /**
@@ -109,7 +111,9 @@ public class DviWriter {
      * dvi-code for "no operation".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int DVI_NOP = 138;
+    */
 
 
     /**
@@ -151,28 +155,36 @@ public class DviWriter {
      * dvi-code for "move right by w".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int DVI_W0 = 147;
+    */
 
 
     /**
      * dvi-codes for "move right, update w".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int[] DVI_W = {148, 149, 150, 151};
+    */
 
 
     /**
      * dvi-code for "move right by x".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int DVI_X0 = 152;
+    */
 
 
     /**
      * dvi-codes for "move right, update x".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int[] DVI_X = {153, 154, 155, 156};
+    */
 
 
     /**
@@ -186,28 +198,36 @@ public class DviWriter {
      * dvi-code for "move down by y".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int DVI_Y0 = 161;
+    */
 
 
     /**
      * dvi-codes for "move down, update y".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int[] DVI_Y = {162, 163, 164, 165};
+    */
 
 
     /**
      * dvi-code for "move down by z".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int DVI_Z0 = 166;
+    */
 
 
     /**
      * dvi-codes for "move down, udpate z".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int[] DVI_Z = {167, 168, 169, 170};
+    */
 
 
     /**
@@ -238,7 +258,9 @@ public class DviWriter {
      * dvi-codes for "extension to DVI primitives".
      *
      */
+    /* TODO: not used, yet (TE)
     private static final int[] DVI_XXX = {239, 240, 241, 242};
+    */
 
 
     /**
@@ -289,6 +311,13 @@ public class DviWriter {
      *
      */
     private static final int DVI_ALIGN_SIZE = 4;
+
+
+    /**
+     * The constant <tt>MINUTES_PER_HOUR</tt> contains the number of minutes
+     * per hour.
+     */
+    private static final int MINUTES_PER_HOUR = 60;
 
 
     /**
@@ -520,6 +549,20 @@ public class DviWriter {
     }
 
 
+    /**
+     * Append number to buffer.  If number is less 10 a 0 is inserted before.
+     *
+     * @param buffer <code>StringBuffer</code> to append
+     * @param number the value
+     */
+    private void appendZeroFilledToBuffer(final StringBuffer buffer,
+                                          final long number) {
+        if (number < 10) {
+            buffer.append("0");
+        }
+        buffer.append(number);
+    }
+
 
     /**
      * Before any output the method <code>beginDviFile</code> have to
@@ -528,14 +571,23 @@ public class DviWriter {
      * @exception GeneralException if an error occurs
      */
     public void beginDviFile() throws GeneralException {
-        /* TODO: should the DviWriter get the Date from the program
-         * state? (TE) */
-        Date date = new Date();
-        SimpleDateFormat dateFormater = new SimpleDateFormat("yyyy.MM.dd:kkmm");
+        /* TODO: is this correct? Should the dviwrite get the year
+           of the count registers? (TE) */
         StringBuffer comment = new StringBuffer();
+        long time = documentWriterOptions.getCountOption("time").getValue();
+        long hour = time / MINUTES_PER_HOUR;
+        long minute = time % MINUTES_PER_HOUR;
 
+        // create dvi-comment
         comment.append(" ExTeX output ");
-        comment.append(dateFormater.format(date));
+        comment.append(documentWriterOptions.getCountOption("year"));
+        appendZeroFilledToBuffer(comment,
+            documentWriterOptions.getCountOption("month").getValue());
+        appendZeroFilledToBuffer(comment,
+            documentWriterOptions.getCountOption("day").getValue());
+        comment.append(":");
+        appendZeroFilledToBuffer(comment, hour);
+        appendZeroFilledToBuffer(comment, minute);
 
         // write preamble, see TTP[587]
         dviOutputStream.writeByte(DVI_PRE);
