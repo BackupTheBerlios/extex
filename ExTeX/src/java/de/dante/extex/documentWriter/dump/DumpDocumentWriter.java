@@ -25,13 +25,27 @@ import java.io.OutputStream;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.SingleDocumentStream;
-import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
@@ -42,7 +56,7 @@ import de.dante.util.framework.configuration.Configurable;
  * and as.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class DumpDocumentWriter
         implements
@@ -54,7 +68,7 @@ public class DumpDocumentWriter
      * This class provides the internal node visitor to traverse the nodes.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.20 $
+     * @version $Revision: 1.21 $
      */
     private static class Visitor implements NodeVisitor {
 
@@ -100,9 +114,6 @@ public class DumpDocumentWriter
 
             try {
                 out.write(s);
-                if (vmode) {
-                    out.write('\n');
-                }
             } catch (IOException e) {
                 throw new GeneralException(e);
             }
@@ -135,9 +146,9 @@ public class DumpDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode, java.lang.Object)
          */
-        public Object visitAdjust(final Node oNode, final Object oOut)
+        public Object visitAdjust(final AdjustNode node, final Object oOut)
                 throws GeneralException {
 
             // TODO gene: visitAdjust unimplemented
@@ -145,94 +156,97 @@ public class DumpDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode, java.lang.Object)
          */
-        public Object visitAfterMath(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitAfterMath(final AfterMathNode oNode,
+                final Object oOut) throws GeneralException {
 
             write("\\)");
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode, java.lang.Object)
          */
-        public Object visitAlignedLeaders(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object oOut) throws GeneralException {
 
             // TODO gene: visitAlignedLeaders unimplemented
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode, java.lang.Object)
          */
-        public Object visitBeforeMath(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object oOut) throws GeneralException {
 
             write("\\(");
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode, java.lang.Object)
          */
-        public Object visitCenteredLeaders(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
+                final Object oOut) throws GeneralException {
 
             // TODO gene: visitCenteredLeaders unimplemented
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode, java.lang.Object)
          */
-        public Object visitChar(final Node oNode, final Object oOut)
+        public Object visitChar(final CharNode node, final Object oOut)
                 throws GeneralException {
 
-            write(((CharNode) oNode).getCharacter().getCodePoint());
+            write(node.getCharacter().getCodePoint());
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode, java.lang.Object)
          */
-        public Object visitDiscretionary(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                final Object oOut) throws GeneralException {
 
             write("--");
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode, java.lang.Object)
          */
-        public Object visitExpandedLeaders(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+                final Object oOut) throws GeneralException {
 
             // TODO gene: visitExpandedLeaders unimplemented
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode, java.lang.Object)
          */
-        public Object visitGlue(final Node oNode, final Object oOut)
+        public Object visitGlue(final GlueNode node, final Object oOut)
                 throws GeneralException {
 
-            write(' ');
+            if (vmode) {
+                write('\n');
+            } else {
+                write(' ');
+            }
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode, java.lang.Object)
          */
-        public Object visitHorizontalList(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitHorizontalList(final HorizontalListNode list,
+                final Object oOut) throws GeneralException {
 
             boolean mode = vmode;
             vmode = false;
-            NodeList list = (HorizontalListNode) oNode;
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).visit(this, oOut);
             }
@@ -242,55 +256,55 @@ public class DumpDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode, java.lang.Object)
          */
-        public Object visitInsertion(final Node oNode, final Object oOut)
+        public Object visitInsertion(final InsertionNode node, final Object oOut)
                 throws GeneralException {
 
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode, java.lang.Object)
          */
-        public Object visitKern(final Node oNode, final Object oOut)
+        public Object visitKern(final KernNode node, final Object oOut)
                 throws GeneralException {
 
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode, java.lang.Object)
          */
-        public Object visitLigature(final Node oNode, final Object oOut)
+        public Object visitLigature(final LigatureNode node, final Object oOut)
                 throws GeneralException {
 
-            write(((LigatureNode) oNode).getCharacter().getCodePoint());
+            write(node.getCharacter().getCodePoint());
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode, java.lang.Object)
          */
-        public Object visitMark(final Node oNode, final Object oOut)
-                throws GeneralException {
-
-            return null;
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(Node, java.lang.Object)
-         */
-        public Object visitPenalty(final Node oNode, final Object oOut)
+        public Object visitMark(final MarkNode node, final Object oOut)
                 throws GeneralException {
 
             return null;
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode, java.lang.Object)
          */
-        public Object visitRule(final Node oNode, final Object oOut)
+        public Object visitPenalty(final PenaltyNode node, final Object oOut)
+                throws GeneralException {
+
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode, java.lang.Object)
+         */
+        public Object visitRule(final RuleNode node, final Object oOut)
                 throws GeneralException {
 
             write("---");
@@ -298,9 +312,9 @@ public class DumpDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode, java.lang.Object)
          */
-        public Object visitSpace(final Node oNode, final Object oOut)
+        public Object visitSpace(final SpaceNode node, final Object oOut)
                 throws GeneralException {
 
             write(' ');
@@ -308,14 +322,13 @@ public class DumpDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode, java.lang.Object)
          */
-        public Object visitVerticalList(final Node oNode, final Object oOut)
-                throws GeneralException {
+        public Object visitVerticalList(final VerticalListNode list,
+                final Object oOut) throws GeneralException {
 
             boolean mode = vmode;
             vmode = true;
-            NodeList list = (VerticalListNode) oNode;
             for (int i = 0; i < list.size(); i++) {
                 list.get(i).visit(this, oOut);
             }
@@ -325,9 +338,9 @@ public class DumpDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode, java.lang.Object)
          */
-        public Object visitWhatsIt(final Node oNode, final Object oOut)
+        public Object visitWhatsIt(final WhatsItNode node, final Object oOut)
                 throws GeneralException {
 
             return null;

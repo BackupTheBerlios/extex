@@ -48,8 +48,25 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.Unit;
 import de.dante.util.configuration.Configuration;
@@ -59,7 +76,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -100,9 +117,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode, java.lang.Object)
          */
-        public Object visitAdjust(final Node node, final Object value) {
+        public Object visitAdjust(final AdjustNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Adjust");
@@ -111,9 +128,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode, java.lang.Object)
          */
-        public Object visitAfterMath(final Node node, final Object value) {
+        public Object visitAfterMath(final AfterMathNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("AfterMath");
@@ -122,9 +140,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode, java.lang.Object)
          */
-        public Object visitAlignedLeaders(final Node node, final Object value) {
+        public Object visitAlignedLeaders(final AlignedLeadersNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("AlignedLeaders");
@@ -133,9 +152,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode, java.lang.Object)
          */
-        public Object visitBeforeMath(final Node node, final Object value) {
+        public Object visitBeforeMath(final BeforeMathNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("BeforeMath");
@@ -144,9 +164,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode, java.lang.Object)
          */
-        public Object visitCenteredLeaders(final Node node, final Object value) {
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("CenterLeaders");
@@ -155,9 +176,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode, java.lang.Object)
          */
-        public Object visitChar(final Node node, final Object value) {
+        public Object visitChar(final CharNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             CharNode cnode = (CharNode) node;
@@ -195,9 +216,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode, java.lang.Object)
          */
-        public Object visitDiscretionary(final Node node, final Object value) {
+        public Object visitDiscretionary(final DiscretionaryNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Discretionary");
@@ -206,9 +228,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode, java.lang.Object)
          */
-        public Object visitExpandedLeaders(final Node node, final Object value) {
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("ExpandedLeaders");
@@ -217,9 +240,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode, java.lang.Object)
          */
-        public Object visitGlue(final Node node, final Object value) {
+        public Object visitGlue(final GlueNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Glue");
@@ -228,9 +251,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode, java.lang.Object)
          */
-        public Object visitHorizontalList(final Node node, final Object value) {
+        public Object visitHorizontalList(final HorizontalListNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("HorizontalList");
@@ -239,9 +263,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode, java.lang.Object)
          */
-        public Object visitInsertion(final Node node, final Object value) {
+        public Object visitInsertion(final InsertionNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Insertion");
@@ -250,9 +275,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode, java.lang.Object)
          */
-        public Object visitKern(final Node node, final Object value) {
+        public Object visitKern(final KernNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Kern");
@@ -261,9 +286,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode, java.lang.Object)
          */
-        public Object visitLigature(final Node node, final Object value) {
+        public Object visitLigature(final LigatureNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Ligature");
@@ -272,9 +297,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode, java.lang.Object)
          */
-        public Object visitMark(final Node node, final Object value) {
+        public Object visitMark(final MarkNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Mark");
@@ -283,9 +308,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode, java.lang.Object)
          */
-        public Object visitPenalty(final Node node, final Object value) {
+        public Object visitPenalty(final PenaltyNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Penalty");
@@ -294,9 +319,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode, java.lang.Object)
          */
-        public Object visitRule(final Node node, final Object value) {
+        public Object visitRule(final RuleNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Rule");
@@ -305,9 +330,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode, java.lang.Object)
          */
-        public Object visitSpace(final Node node, final Object value) {
+        public Object visitSpace(final SpaceNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Space");
@@ -316,9 +341,10 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode, java.lang.Object)
          */
-        public Object visitVerticalList(final Node node, final Object value) {
+        public Object visitVerticalList(final VerticalListNode node,
+                final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("VerticalList");
@@ -327,9 +353,9 @@ public class PdfDocumentWriter
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(de.dante.extex.typesetter.type.Node, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode, java.lang.Object)
          */
-        public Object visitWhatsIt(final Node node, final Object value) {
+        public Object visitWhatsIt(final WhatsItNode node, final Object value) {
 
             StringBuffer sb = (StringBuffer) value;
             sb.append("Whatsit");
@@ -975,7 +1001,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitAdjust(final Node node, final Object value) {
+    public Object visitAdjust(final AdjustNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -988,7 +1014,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitAfterMath(final Node node, final Object value) {
+    public Object visitAfterMath(final AfterMathNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1001,7 +1027,8 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitAlignedLeaders(final Node node, final Object value) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode node,
+            final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1014,7 +1041,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitBeforeMath(final Node node, final Object value) {
+    public Object visitBeforeMath(final BeforeMathNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1027,7 +1054,8 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitCenteredLeaders(final Node node, final Object value) {
+    public Object visitCenteredLeaders(final CenteredLeadersNode node,
+            final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1040,7 +1068,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitChar(final Node node, final Object value) {
+    public Object visitChar(final CharNode node, final Object value) {
 
         StringBuffer operators = new StringBuffer(BUFFER_SIZE);
         operators.append(op.fillColor(Color.GREEN));
@@ -1056,7 +1084,8 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitDiscretionary(final Node node, final Object value) {
+    public Object visitDiscretionary(final DiscretionaryNode node,
+            final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1069,7 +1098,8 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitExpandedLeaders(final Node node, final Object value) {
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node,
+            final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1082,7 +1112,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitGlue(final Node node, final Object value) {
+    public Object visitGlue(final GlueNode node, final Object value) {
 
         StringBuffer operators = new StringBuffer(BUFFER_SIZE);
         operators.append(op.fillColor(Color.BLUE));
@@ -1100,14 +1130,13 @@ public class PdfDocumentWriter
     }
 
     /**
-     * horizontallist
-     * @param node     the value
+     * horizontal list
+     * @param nodes    the value
      * @param value    the next value
      * @return null
      */
-    public Object visitHorizontalList(final Node node, final Object value) {
-
-        NodeList nodes = (HorizontalListNode) node;
+    public Object visitHorizontalList(final HorizontalListNode nodes,
+            final Object value) {
 
         State oldstate = state;
         state = HORIOZONTAL;
@@ -1145,7 +1174,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitInsertion(final Node node, final Object value) {
+    public Object visitInsertion(final InsertionNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1158,7 +1187,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitKern(final Node node, final Object value) {
+    public Object visitKern(final KernNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1171,7 +1200,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitLigature(final Node node, final Object value) {
+    public Object visitLigature(final LigatureNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1184,7 +1213,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitMark(final Node node, final Object value) {
+    public Object visitMark(final MarkNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1197,7 +1226,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitPenalty(final Node node, final Object value) {
+    public Object visitPenalty(final PenaltyNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1210,7 +1239,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitRule(final Node node, final Object value) {
+    public Object visitRule(final RuleNode node, final Object value) {
 
         debugNode(node);
         setPosition(node);
@@ -1223,7 +1252,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitSpace(final Node node, final Object value) {
+    public Object visitSpace(final SpaceNode node, final Object value) {
 
         StringBuffer operators = new StringBuffer(BUFFER_SIZE);
         operators.append(op.fillColor(Color.YELLOW));
@@ -1234,13 +1263,13 @@ public class PdfDocumentWriter
 
     /**
      * verticallist
-     * @param node     the value
+     * @param nodes    the value
      * @param value    the next value
      * @return null
      */
-    public Object visitVerticalList(final Node node, final Object value) {
+    public Object visitVerticalList(final VerticalListNode nodes,
+            final Object value) {
 
-        NodeList nodes = (NodeList) node;
         StringBuffer operators = new StringBuffer(BUFFER_SIZE);
 
         State oldstate = state;
@@ -1282,7 +1311,7 @@ public class PdfDocumentWriter
      * @param value    the next value
      * @return null
      */
-    public Object visitWhatsIt(final Node nde, final Object value) {
+    public Object visitWhatsIt(final WhatsItNode nde, final Object value) {
 
         Node node = (Node) nde;
         debugNode(node);

@@ -37,6 +37,7 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.ContextFactory;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.CantUseInException;
 import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.loader.SerialLoader;
@@ -84,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public class Max extends Moritz
         implements
@@ -473,8 +474,7 @@ public class Max extends Moritz
      */
     public void run()
             throws ConfigurationException,
-                GeneralException,
-                ErrorLimitException {
+                ErrorLimitException, InterpreterException {
 
         if (typesetter == null) {
             throw new NoTypesetterException(getClass().getName() + "#run()");
@@ -494,8 +494,15 @@ public class Max extends Moritz
 
         push(context.getToks("everyjob"));
 
-        execute(new Switch(true));
-        typesetter.finish();
+        try {
+            execute(new Switch(true));
+
+            typesetter.finish();
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
 
         //TODO gene: TTP[1335]
     }
@@ -506,8 +513,7 @@ public class Max extends Moritz
      */
     public void run(final TokenStream stream)
             throws ConfigurationException,
-                GeneralException,
-                ErrorLimitException {
+                ErrorLimitException, InterpreterException {
 
         addStream(stream);
         run();

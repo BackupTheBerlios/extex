@@ -30,6 +30,25 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 
@@ -37,7 +56,7 @@ import de.dante.util.configuration.Configuration;
  * This is a text dummy implementation of a document writer (very simple).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TextDocumentWriter
         implements
@@ -162,172 +181,172 @@ public class TextDocumentWriter
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode,
      * java.lang.Object)
      */
-    public Object visitAdjust(final Node value, final Object value2) {
+    public Object visitAdjust(final AdjustNode value, final Object value2) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode,
      * java.lang.Object)
      */
-    public Object visitAfterMath(final Node value, final Object value2) {
+    public Object visitAfterMath(final AfterMathNode value, final Object value2) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitAlignedLeaders(final Node value, final Object value2) {
+    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode,
      * java.lang.Object)
      */
-    public Object visitBeforeMath(final Node node, final Object value2) {
+    public Object visitBeforeMath(final BeforeMathNode node, final Object value2) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode,
      * java.lang.Object)
      */
-    public Object visitCenteredLeaders(final Node node, final Object value) {
+    public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode,
      * java.lang.Object)
      */
-    public Object visitChar(final Node node, final Object value) {
+    public Object visitChar(final CharNode node, final Object value) {
 
         return node.toString();
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
      * java.lang.Object)
      */
-    public Object visitDiscretionary(final Node node, final Object value) {
+    public Object visitDiscretionary(final DiscretionaryNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
      * java.lang.Object)
      */
-    public Object visitExpandedLeaders(final Node node, final Object value) {
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode,
      * java.lang.Object)
      */
-    public Object visitGlue(final Node node, final Object value) {
+    public Object visitGlue(final GlueNode node, final Object value) {
 
         return " ";
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
      * java.lang.Object)
      */
-    public Object visitHorizontalList(final Node node, final Object value) {
+    public Object visitHorizontalList(final HorizontalListNode node, final Object value) {
 
         return "\n";
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode,
      * java.lang.Object)
      */
-    public Object visitInsertion(final Node node, final Object value) {
+    public Object visitInsertion(final InsertionNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode,
      * java.lang.Object)
      */
-    public Object visitKern(final Node node, final Object value) {
+    public Object visitKern(final KernNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode,
      * java.lang.Object)
      */
-    public Object visitLigature(final Node node, final Object value) {
+    public Object visitLigature(final LigatureNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode,
      * java.lang.Object)
      */
-    public Object visitMark(final Node node, final Object value) {
+    public Object visitMark(final MarkNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode,
      * java.lang.Object)
      */
-    public Object visitPenalty(final Node node, final Object value) {
+    public Object visitPenalty(final PenaltyNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode,
      * java.lang.Object)
      */
-    public Object visitRule(final Node node, final Object value) {
+    public Object visitRule(final RuleNode node, final Object value) {
 
         return "\n---------------------------------------------------------------------";
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode,
      * java.lang.Object)
      */
-    public Object visitSpace(final Node node, final Object value) {
+    public Object visitSpace(final SpaceNode node, final Object value) {
 
         return " ";
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode,
      * java.lang.Object)
      */
-    public Object visitVerticalList(final Node node, final Object value) {
+    public Object visitVerticalList(final VerticalListNode node, final Object value) {
 
         return null;
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode,
      * java.lang.Object)
      */
-    public Object visitWhatsIt(final Node nde, final Object value) {
+    public Object visitWhatsIt(final WhatsItNode nde, final Object value) {
 
         return null;
     }

@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.MissingLeftBraceException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
@@ -77,7 +78,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.54 $
+ * @version $Revision: 1.55 $
  */
 public abstract class Moritz
         implements
@@ -758,9 +759,9 @@ public abstract class Moritz
      *
      * @param tokens the tokens to push
      *
-     * @throws GeneralException in case that the stream is already closed
+     * @throws InterpreterException in case of an error
      */
-    public void push(final Tokens tokens) throws GeneralException {
+    public void push(final Tokens tokens) throws InterpreterException {
 
         if (tokens == null || tokens.length() == 0) {
             return;
@@ -770,13 +771,19 @@ public abstract class Moritz
             try {
                 stream = getTokenStreamFactory().newInstance("");
             } catch (ConfigurationException e) {
-                throw new GeneralException(e);
+                throw new InterpreterException(e);
             }
         }
 
-        for (int i = tokens.length() - 1; i >= 0; i--) {
-            observersPush.update(this, tokens.get(i));
-            stream.put(tokens.get(i));
+        try {
+            for (int i = tokens.length() - 1; i >= 0; i--) {
+                observersPush.update(this, tokens.get(i));
+                stream.put(tokens.get(i));
+            }
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
     }
 

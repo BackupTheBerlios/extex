@@ -24,6 +24,25 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.type.InspectableNodeVisitor;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 
 
@@ -31,7 +50,7 @@ import de.dante.util.GeneralException;
  * This is a implementation of a NodeVisitor for debugging.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class DebugNodeVisitor implements InspectableNodeVisitor {
     /**
@@ -134,9 +153,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value2 the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAdjust(AdjustNode, Object)
      */
-    public Object visitAdjust(final Node value, final Object value2)
+    public Object visitAdjust(final AdjustNode value, final Object value2)
         throws GeneralException {
 
         debugMessage("visitAdjust", value, value2);
@@ -151,9 +170,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value2 the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(AfterMathNode, Object)
      */
-    public Object visitAfterMath(final Node value, final Object value2)
+    public Object visitAfterMath(final AfterMathNode value, final Object value2)
         throws GeneralException {
 
         debugMessage("visitAfterMath", value, value2);
@@ -168,9 +187,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value2 the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitAlignedLeaders(AlignedLeadersNode, Object)
      */
-    public Object visitAlignedLeaders(final Node value, final Object value2)
+    public Object visitAlignedLeaders(final AlignedLeadersNode value, final Object value2)
         throws GeneralException {
 
         debugMessage("visitAlignedLeaders", value, value2);
@@ -185,9 +204,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value2 the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitBeforeMath(BeforeMathNode, Object)
      */
-    public Object visitBeforeMath(final Node node, final Object value2)
+    public Object visitBeforeMath(final BeforeMathNode node, final Object value2)
         throws GeneralException {
 
         debugMessage("visitBeforeMath", node, value2);
@@ -202,9 +221,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitCenteredLeaders(CenteredLeadersNode, Object)
      */
-    public Object visitCenteredLeaders(final Node node, final Object value)
+    public Object visitCenteredLeaders(final CenteredLeadersNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitCenteredLeaders", node, value);
@@ -219,9 +238,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(CharNode, Object)
      */
-    public Object visitChar(final Node node, final Object value)
+    public Object visitChar(final CharNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitChar", node, value);
@@ -236,10 +255,10 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitDiscretionary(DiscretionaryNode,
      *      Object)
      */
-    public Object visitDiscretionary(final Node node, final Object value)
+    public Object visitDiscretionary(final DiscretionaryNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitDiscretionary", node, value);
@@ -254,10 +273,10 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitExpandedLeaders(ExpandedLeadersNode,
      *      Object)
      */
-    public Object visitExpandedLeaders(final Node node, final Object value)
+    public Object visitExpandedLeaders(final ExpandedLeadersNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitExpandedLeaders", node, value);
@@ -272,9 +291,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitGlue(GlueNode, Object)
      */
-    public Object visitGlue(final Node node, final Object value)
+    public Object visitGlue(final GlueNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitGlue", node, value);
@@ -289,10 +308,10 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(Node,
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitHorizontalList(HorizontalListNode,
      *      Object)
      */
-    public Object visitHorizontalList(final Node node, final Object value)
+    public Object visitHorizontalList(final HorizontalListNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitHorizontalList", node, value);
@@ -307,9 +326,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitInsertion(InsertionNode, Object)
      */
-    public Object visitInsertion(final Node node, final Object value)
+    public Object visitInsertion(final InsertionNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitInsertion", node, value);
@@ -324,9 +343,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitKern(KernNode, Object)
      */
-    public Object visitKern(final Node node, final Object value)
+    public Object visitKern(final KernNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitKern", node, value);
@@ -341,9 +360,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitLigature(LigatureNode, Object)
      */
-    public Object visitLigature(final Node node, final Object value)
+    public Object visitLigature(final LigatureNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitLigature", node, value);
@@ -358,9 +377,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitMark(MarkNode, Object)
      */
-    public Object visitMark(final Node node, final Object value)
+    public Object visitMark(final MarkNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitMark", node, value);
@@ -375,9 +394,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitPenalty(PenaltyNode, Object)
      */
-    public Object visitPenalty(final Node node, final Object value)
+    public Object visitPenalty(final PenaltyNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitPenalty", node, value);
@@ -392,9 +411,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitRule(RuleNode, Object)
      */
-    public Object visitRule(final Node node, final Object value)
+    public Object visitRule(final RuleNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitRule", node, value);
@@ -409,9 +428,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitSpace(SpaceNode, Object)
      */
-    public Object visitSpace(final Node node, final Object value)
+    public Object visitSpace(final SpaceNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitSpace", node, value);
@@ -426,9 +445,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitVerticalList(VerticalListNode, Object)
      */
-    public Object visitVerticalList(final Node node, final Object value)
+    public Object visitVerticalList(final VerticalListNode node, final Object value)
         throws GeneralException {
 
         debugMessage("visitVerticalList", node, value);
@@ -443,9 +462,9 @@ public class DebugNodeVisitor implements InspectableNodeVisitor {
      * @param value the second parameter for the visitor
      * @return the visitor specific value of inspecting visitor
      * @exception GeneralException if an error occurs
-     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(Node, Object)
+     * @see de.dante.extex.typesetter.type.NodeVisitor#visitWhatsIt(WhatsItNode, Object)
      */
-    public Object visitWhatsIt(final Node nde, final Object value)
+    public Object visitWhatsIt(final WhatsItNode nde, final Object value)
         throws GeneralException {
 
         debugMessage("visitWhatsIt", nde, value);

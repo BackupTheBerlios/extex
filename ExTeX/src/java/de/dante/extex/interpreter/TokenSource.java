@@ -21,6 +21,7 @@ package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.MissingNumberException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
@@ -48,7 +49,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.41 $
+ * @version $Revision: 1.42 $
  */
 public interface TokenSource {
 
@@ -311,10 +312,9 @@ public interface TokenSource {
      * ignored.
      *
      * @param tokens the tokens to push
-     *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException TODO
      */
-    void push(Tokens tokens) throws GeneralException;
+    void push(Tokens tokens) throws InterpreterException;
 
     /**
      * Scan the input stream for tokens making up a character code, this is a

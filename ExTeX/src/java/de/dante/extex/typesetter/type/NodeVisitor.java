@@ -16,8 +16,28 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type;
 
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
+import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
+import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
+import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 
 /**
@@ -121,11 +141,11 @@ import de.dante.util.GeneralException;
  *         <i>// Do something with node depending on its type</i>
  *     }
  * <b>
- *     public Object visitAdjust(final Node node, final Object arg) {
+ *     public Object visitAdjust(final AdjustNode node, final Object arg) {
  *         <i>// do something for adjust nodes</i>
  *     }
  *
- *     public Object visitChar(final Node node, final Object arg) {
+ *     public Object visitChar(final CharNode node, final Object arg) {
  *         <i>// do something for char nodes</i>
  *     }
  *
@@ -137,8 +157,9 @@ import de.dante.util.GeneralException;
  * Now we just have to make sure that those methods are invoked. This is done
  * with the method <tt>visit()</tt> of the Node. The signature allows us to
  * provide two additional arguments and receive a return value. Since we want
- * to do something with the node itself, we use the first free argument for the
- * node and <code>null</code> as the second argument.
+ * to do something with the node itself, this node is provided with the
+ * correct type to the node visitor. The second argument can be casted to the
+ * appropriate type.
  * </p>
  * <p>
  * In the <tt>visit</tt> methods we can now savely assume that the node is of
@@ -149,16 +170,16 @@ import de.dante.util.GeneralException;
  * public class MyDocumentWriter implements DocumentWriter, NodeVisitor {
  *
  *     public void myMethod(final Node node) {
- *         <b>node.visit(this, node, null);</b>
+ *         <b>node.visit(this, "some value");</b>
  *     }
  *
- *     public Object visitAdjust(final Node node, final Object arg) {
- *         <b>AdjustNode anode = (AdjustNode) node;</b>
+ *     public Object visitAdjust(final AdjustNode node, final Object arg) {
+ *         <b>String s = (String) arg;</b>
  *         <i>// do something for adjust nodes</i>
  *     }
  *
- *     public Object visitChar(final Node node, final Object arg) {
- *         <b>CharNode cnode = (CharNode) node;</b>
+ *     public Object visitChar(final CharNode node, final Object arg) {
+ *         <b>String s = (String) arg;</b>
  *         <i>// do something for char nodes</i>
  *     }
  *
@@ -167,7 +188,7 @@ import de.dante.util.GeneralException;
  * }
  * </pre>
  * <p>
- * In the example above we have not used the second additional argument or the
+ * In the example above we have not used the additional argument or the
  * return value. In the <tt>visit</tt> methods we are free to use them in all
  * ways we like.
  * </p>
@@ -183,7 +204,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface NodeVisitor {
 
@@ -199,7 +220,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitAdjust(Node node, Object value) throws GeneralException;
+    Object visitAdjust(AdjustNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when an
@@ -213,7 +234,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitAfterMath(Node node, Object value) throws GeneralException;
+    Object visitAfterMath(AfterMathNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when an
@@ -227,7 +249,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitAlignedLeaders(Node node, Object value) throws GeneralException;
+    Object visitAlignedLeaders(AlignedLeadersNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -241,7 +264,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitBeforeMath(Node node, Object value) throws GeneralException;
+    Object visitBeforeMath(BeforeMathNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -255,7 +279,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitCenteredLeaders(Node node, Object value) throws GeneralException;
+    Object visitCenteredLeaders(CenteredLeadersNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -269,7 +294,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitChar(Node node, Object value) throws GeneralException;
+    Object visitChar(CharNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -283,7 +308,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitDiscretionary(Node node, Object value) throws GeneralException;
+    Object visitDiscretionary(DiscretionaryNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when an
@@ -297,7 +323,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitExpandedLeaders(Node node, Object value) throws GeneralException;
+    Object visitExpandedLeaders(ExpandedLeadersNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -311,7 +338,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitGlue(Node node, Object value) throws GeneralException;
+    Object visitGlue(GlueNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -325,7 +352,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitHorizontalList(Node node, Object value) throws GeneralException;
+    Object visitHorizontalList(HorizontalListNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when an
@@ -339,7 +367,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitInsertion(Node node, Object value) throws GeneralException;
+    Object visitInsertion(InsertionNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -353,7 +382,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitKern(Node node, Object value) throws GeneralException;
+    Object visitKern(KernNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -367,7 +396,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitLigature(Node node, Object value) throws GeneralException;
+    Object visitLigature(LigatureNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -381,7 +411,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitMark(Node node, Object value) throws GeneralException;
+    Object visitMark(MarkNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -395,7 +425,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitPenalty(Node node, Object value) throws GeneralException;
+    Object visitPenalty(PenaltyNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -409,7 +439,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitRule(Node node, Object value) throws GeneralException;
+    Object visitRule(RuleNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -423,7 +453,7 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitSpace(Node node, Object value) throws GeneralException;
+    Object visitSpace(SpaceNode node, Object value) throws GeneralException;
 
     /**
      * This method is called when a
@@ -437,7 +467,8 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitVerticalList(Node node, Object value) throws GeneralException;
+    Object visitVerticalList(VerticalListNode node, Object value)
+            throws GeneralException;
 
     /**
      * This method is called when a
@@ -451,6 +482,6 @@ public interface NodeVisitor {
      *
      * @throws GeneralException in case of an error
      */
-    Object visitWhatsIt(Node n0de, Object value) throws GeneralException;
+    Object visitWhatsIt(WhatsItNode n0de, Object value) throws GeneralException;
 
 }

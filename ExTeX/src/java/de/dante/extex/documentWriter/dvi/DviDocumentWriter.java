@@ -34,9 +34,24 @@ import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeIterator;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.NodeVisitor;
+import de.dante.extex.typesetter.type.node.AdjustNode;
+import de.dante.extex.typesetter.type.node.AfterMathNode;
+import de.dante.extex.typesetter.type.node.AlignedLeadersNode;
+import de.dante.extex.typesetter.type.node.BeforeMathNode;
+import de.dante.extex.typesetter.type.node.CenteredLeadersNode;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.DiscretionaryNode;
+import de.dante.extex.typesetter.type.node.ExpandedLeadersNode;
+import de.dante.extex.typesetter.type.node.GlueNode;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
+import de.dante.extex.typesetter.type.node.InsertionNode;
+import de.dante.extex.typesetter.type.node.KernNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
+import de.dante.extex.typesetter.type.node.MarkNode;
+import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.RuleNode;
+import de.dante.extex.typesetter.type.node.SpaceNode;
+import de.dante.extex.typesetter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.type.node.WhatsItNode;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
@@ -47,7 +62,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class DviDocumentWriter
         implements
@@ -196,72 +211,71 @@ public class DviDocumentWriter
 
         }
 
-        public Object visitAdjust(final Node value, final Object value2)
+        public Object visitAdjust(final AdjustNode value, final Object value2)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAfterMath(final Node value, final Object value2)
+        public Object visitAfterMath(final AfterMathNode value, final Object value2)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitAlignedLeaders(final Node value,
+        public Object visitAlignedLeaders(final AlignedLeadersNode value,
                 final Object value2) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitBeforeMath(final Node node, final Object value2)
+        public Object visitBeforeMath(final BeforeMathNode node, final Object value2)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitCenteredLeaders(final Node node,
+        public Object visitCenteredLeaders(final CenteredLeadersNode node,
                 final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitChar(final Node node, final Object value)
+        public Object visitChar(final CharNode node, final Object value)
                 throws GeneralException {
 
-            CharNode cnode = (CharNode) node;
-            Font font = cnode.getTypesettingContext().getFont();
+            Font font = node.getTypesettingContext().getFont();
 
             if (currentFont != font) {
                 dviWriter.selectFont(font);
                 currentFont = font;
             }
 
-            dviWriter.writeNode(cnode);
+            dviWriter.writeNode(node);
 
             return null;
         }
 
-        public Object visitDiscretionary(final Node node, final Object value)
+        public Object visitDiscretionary(final DiscretionaryNode node, final Object value)
                 throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitExpandedLeaders(final Node node,
+        public Object visitExpandedLeaders(final ExpandedLeadersNode node,
                 final Object value) throws GeneralException {
 
             // TODO unimplemented
             throw new GeneralException("unimplemented");
         }
 
-        public Object visitGlue(final Node node, final Object value)
+        public Object visitGlue(final GlueNode node, final Object value)
                 throws GeneralException {
 
             dviWriter.writeSpace(node.getWidth(), mode);
@@ -269,10 +283,9 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitHorizontalList(final Node node,
+        public Object visitHorizontalList(final HorizontalListNode nodes,
                 final Object value) throws GeneralException {
 
-            NodeList nodes = (NodeList) node;
             Mode oldMode = mode;
 
             mode = Mode.HORIZONTAL;
@@ -283,13 +296,13 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitInsertion(final Node node, final Object value)
+        public Object visitInsertion(final InsertionNode node, final Object value)
                 throws GeneralException {
 
             throw confusion("insertion");
         }
 
-        public Object visitKern(final Node node, final Object value)
+        public Object visitKern(final KernNode node, final Object value)
                 throws GeneralException {
 
             dviWriter.writeSpace(node.getWidth(), mode);
@@ -297,7 +310,7 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitLigature(final Node node, final Object value)
+        public Object visitLigature(final LigatureNode node, final Object value)
                 throws GeneralException {
 
             LigatureNode lnode = (LigatureNode) node;
@@ -307,19 +320,19 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitMark(final Node node, final Object value)
+        public Object visitMark(final MarkNode node, final Object value)
                 throws GeneralException {
 
             throw confusion("mark");
         }
 
-        public Object visitPenalty(final Node node, final Object value)
+        public Object visitPenalty(final PenaltyNode node, final Object value)
                 throws GeneralException {
 
             throw confusion("penalty");
         }
 
-        public Object visitRule(final Node node, final Object value)
+        public Object visitRule(final RuleNode node, final Object value)
                 throws GeneralException {
 
             dviWriter.writeNode((RuleNode) node);
@@ -327,7 +340,7 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitSpace(final Node node, final Object value)
+        public Object visitSpace(final SpaceNode node, final Object value)
                 throws GeneralException {
 
             dviWriter.writeSpace(node.getWidth(), mode);
@@ -335,10 +348,9 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitVerticalList(final Node node, final Object value)
+        public Object visitVerticalList(final VerticalListNode nodes, final Object value)
                 throws GeneralException {
 
-            NodeList nodes = (NodeList) node;
             Mode oldMode = mode;
 
             mode = Mode.VERTICAL;
@@ -349,7 +361,7 @@ public class DviDocumentWriter
             return null;
         }
 
-        public Object visitWhatsIt(final Node nde, final Object value)
+        public Object visitWhatsIt(final WhatsItNode nde, final Object value)
                 throws GeneralException {
 
             dviWriter.writeNode((WhatsItNode) nde);
