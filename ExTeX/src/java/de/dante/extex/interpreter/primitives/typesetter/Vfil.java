@@ -19,14 +19,11 @@
 
 package de.dante.extex.interpreter.primitives.typesetter;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
-import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -53,9 +50,9 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class Vfil extends AbstractCode {
+public class Vfil extends AbstractVerticalCode {
 
     /**
      * The field <tt>FIL</tt> contains the amount of 1 fil.
@@ -84,11 +81,7 @@ public class Vfil extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Mode mode = typesetter.getMode();
-        if (mode != Mode.VERTICAL && mode != Mode.INNER_VERTICAL) {
-            throw new HelpingException(getLocalizer(), "TTP.MissingInserted",
-            "}");
-        }
+        ensureVerticalMode(typesetter);
         typesetter.addGlue(FIL);
         return true;
     }
