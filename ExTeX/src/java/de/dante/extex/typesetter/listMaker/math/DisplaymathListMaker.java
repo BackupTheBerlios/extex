@@ -17,13 +17,15 @@
  *
  */
 
-package de.dante.extex.typesetter.listMaker;
+package de.dante.extex.typesetter.listMaker.math;
 
 import de.dante.extex.interpreter.exception.CantUseInException;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.listMaker.EqConsumer;
+import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -33,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
 public class DisplaymathListMaker extends MathListMaker implements EqConsumer {
 

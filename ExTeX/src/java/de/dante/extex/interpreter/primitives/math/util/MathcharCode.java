@@ -24,14 +24,14 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.Mathchar;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
  * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MathcharCode extends Mathchar {
 

@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.EqConsumer;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
@@ -53,7 +53,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Eqno extends AbstractMathCode {
 

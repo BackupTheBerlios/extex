@@ -17,7 +17,9 @@
  *
  */
 
-package de.dante.extex.typesetter.listMaker;
+package de.dante.extex.typesetter.listMaker.math;
+
+import java.util.Stack;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
@@ -26,6 +28,7 @@ import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.EofException;
 import de.dante.extex.interpreter.exception.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
@@ -35,8 +38,13 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.listMaker.AbstractListMaker;
+import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.MathGlyph;
+import de.dante.extex.typesetter.type.noad.FractionNoad;
+import de.dante.extex.typesetter.type.noad.GlueNoad;
 import de.dante.extex.typesetter.type.noad.MathList;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.NoadFactory;
@@ -49,9 +57,67 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
+
+    /**
+     * This inner class is a memento of the state of the math list maker.
+     * It is used to store to the stack and restore the state from the stack.
+     *
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+     * @version $Revision: 1.1 $
+     */
+    private class MathMemento {
+
+        /**
+         * The field <tt>ip</tt> contains the ...
+         */
+        private MathList ip;
+
+        /**
+         * The field <tt>noads</tt> contains the ...
+         */
+        private Noad noads;
+
+        /**
+         * Creates a new object.
+         *
+         * @param ip ...
+         * @param noads ...
+         */
+        public MathMemento(final MathList ip, final Noad noads) {
+
+            super();
+            this.ip = ip;
+            this.noads = noads;
+        }
+
+        /**
+         * Getter for ip.
+         *
+         * @return the ip
+         */
+        public MathList getIp() {
+
+            return this.ip;
+        }
+
+        /**
+         * Getter for noads.
+         *
+         * @return the noads
+         */
+        public Noad getNoads() {
+
+            return this.noads;
+        }
+    }
+
+    /**
+     * The field <tt>noadFactory</tt> contains the noad factory.
+     */
+    private static final NoadFactory noadFactory = new NoadFactory();
 
     /**
      * The field <tt>insertionPoint</tt> contains the the MathList to which
@@ -60,20 +126,15 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     private MathList insertionPoint;
 
     /**
-     * The field <tt>noadFactory</tt> contains the noad factory.
-     */
-    private NoadFactory noadFactory = new NoadFactory();
-
-    /**
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
      * instance.
      */
-    private MathList noads;
+    private Noad noads;
 
     /**
-     * The field <tt>fraction</tt> contains the ...
+     * The field <tt>stack</tt> contains the ...
      */
-    private Noad fraction = null;
+    private Stack stack = new Stack();
 
     /**
      * Creates a new object.
@@ -83,12 +144,12 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     public MathListMaker(final ListManager manager) {
 
         super(manager);
-        noads = new MathList();
-        insertionPoint = noads;
+        insertionPoint = new MathList();
+        noads = insertionPoint;
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.typesetter.type.MathClass,
      *      de.dante.extex.typesetter.type.MathGlyph)
      */
@@ -99,14 +160,12 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#add(
      *      de.dante.extex.interpreter.type.muskip.Muskip)
      */
     public void add(final Muskip glue) throws GeneralException {
 
-        //TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
-
+        add(new GlueNoad(glue));
     }
 
     /**
@@ -124,8 +183,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void add(final Node node) {
 
-        //TODO gene: error unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -134,8 +192,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void addGlue(final Glue g) throws GeneralException {
 
-        // TODO gene: unimplemented
-        throw new RuntimeException("unimplemented");
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -171,7 +228,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
         HorizontalListNode list = new HorizontalListNode();
 
-        noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context), context);
+        System.err.println(noads.toString());
+
+        noads.typeset(list, new MathContext(StyleNoad.TEXTSTYLE, context),
+                context);
         //TODO gene: ???
         return list;
     }
@@ -197,9 +257,40 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *
      * @return the noades.
      */
-    protected MathList getNoades() {
+    protected Noad getNoades() {
 
         return this.noads;
+    }
+
+    /**
+     * Notification method to deal the case that a left brace has been
+     * encountered.
+     */
+    public void leftBrace() {
+
+        stack.push(new MathMemento(insertionPoint, noads));
+        insertionPoint = new MathList();
+        noads = insertionPoint;
+    }
+
+    /**
+     * Add a math character node to the list.
+     *
+     * @param context the interpreter context
+     * @param tc the typesetting context for the symbol. This parameter is
+     *  ignored in math mode.
+     * @param symbol the symbol to add
+     *
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void letter(final Context context, final TypesettingContext tc,
+            final UnicodeChar symbol) {
+
+        Count mcode = context.getMathcode(symbol);
+        insertionPoint.add(noadFactory.getNoad((mcode == null ? 0 : mcode
+                .getValue())));
     }
 
     /**
@@ -237,7 +328,24 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoad(
+     * Notification method to deal the case that a right brace has been
+     * encountered.
+     */
+    public void rightBrace() {
+
+        if (stack.empty()) {
+            //TODO gene: unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+        Noad n = noads;
+        MathMemento memento = (MathMemento) stack.pop();
+        insertionPoint = memento.getIp();
+        noads = memento.getNoads();
+        insertionPoint.add(n);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#scanNoad(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
@@ -256,14 +364,14 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         }
         MathListMaker ml = (MathListMaker) getManager().pop();
 
-        switch (ml.noads.size()) { //TODO gene: accessing the attribute directly is horrible
+        switch (ml.insertionPoint.size()) { //TODO gene: accessing the attribute directly is horrible
             case 0:
                 //TODO gene: error unimplemented
                 throw new RuntimeException("unimplemented");
             case 1:
-                return ml.noads.get(0);
+                return ml.insertionPoint.get(0);
             default:
-                return ml.noads;
+                return ml.insertionPoint;
         }
     }
 
@@ -286,10 +394,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             final Token token) throws GeneralException {
 
         Noad sub = scanNoad(context, source);
-        if (noads.size() == 0) {
+        if (insertionPoint.size() == 0) {
             add(new MathList());
         }
-        Noad noad = noads.get(noads.size() - 1);
+        Noad noad = insertionPoint.get(insertionPoint.size() - 1);
         if (noad.getSubscript() != null) {
             throw new HelpingException(getLocalizer(), "TTP.DoubleSubscript");
         }
@@ -307,10 +415,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
             throws GeneralException {
 
         Noad sup = scanNoad(context, source);
-        if (noads.size() == 0) {
+        if (insertionPoint.size() == 0) {
             add(new MathList());
         }
-        Noad noad = noads.get(noads.size() - 1);
+        Noad noad = insertionPoint.get(insertionPoint.size() - 1);
         if (noad.getSuperscript() != null) {
             throw new HelpingException(getLocalizer(), "TTP.DoubleSuperscript");
         }
@@ -319,21 +427,20 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * Add a math character node to the list.
-     *
-     * @param context the interpreter context
-     * @param tc the typesetting context for the symbol. This parameter is
-     *  ignored in math mode.
-     * @param symbol the symbol to add
-     *
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#switchToFraction(
+     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.typesetter.type.MathDelimiter,
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void treatLetter(final Context context, final TypesettingContext tc,
-            final UnicodeChar symbol) {
+    public void switchToFraction(final MathDelimiter leftDelimiter,
+            final MathDelimiter rightDelimiter, final Dimen ruleWidth)
+            throws GeneralException {
 
-        Count mcode = context.getMathcode(symbol);
-        noads.add(noadFactory.getNoad((mcode == null ? 0 : mcode.getValue())));
+        if (!(noads instanceof MathList)) {
+            throw new HelpingException(getLocalizer(), "TTP.AmbiguousFraction");
+        }
+        insertionPoint = new MathList();
+        noads = new FractionNoad((MathList) noads, insertionPoint,
+                leftDelimiter, rightDelimiter, ruleWidth);
     }
 }

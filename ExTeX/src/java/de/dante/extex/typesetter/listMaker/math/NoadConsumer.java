@@ -16,12 +16,14 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.typesetter.listMaker;
+package de.dante.extex.typesetter.listMaker.math;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
@@ -32,7 +34,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public interface NoadConsumer {
 
@@ -77,4 +79,14 @@ public interface NoadConsumer {
      * @throws GeneralException in case of an error
      */
     void add(MathClass mclass, MathGlyph mg) throws GeneralException;
+
+    /**
+     * TODO gene: missing JavaDoc
+     * @param leftDelimiter TODO
+     * @param rightDelimiter TODO
+     * @param ruleWidth TODO
+     *
+     * @throws GeneralException in case of an error
+     */
+    void switchToFraction(MathDelimiter leftDelimiter, MathDelimiter rightDelimiter, Dimen ruleWidth) throws GeneralException;
 }

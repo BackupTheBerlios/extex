@@ -24,7 +24,7 @@ import de.dante.extex.interpreter.exception.MissingMathException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * It tries to ensure that the primitive is invoked in math mode only.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class AbstractMathCode extends AbstractCode {
 
