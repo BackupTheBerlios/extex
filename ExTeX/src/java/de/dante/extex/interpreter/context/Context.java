@@ -21,19 +21,14 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
-import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
-import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.file.InFile;
-import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
@@ -48,7 +43,6 @@ import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.observer.Observer;
 
 /**
  * This interface describes the container for all data of an interpreter
@@ -56,36 +50,16 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
-public interface Context extends Tokenizer, Serializable {
-
-    /**
-     * Register a observer to be called at the end of the group.
-     *
-     * @param observer the observer to register
-     */
-    void afterGroup(Observer observer);
-
-    /**
-     * Add a token to the tokens inserted after the group has been closed.
-     *
-     * @param t the token to add
-     *
-     * @throws GeneralException in case of an error
-     */
-    void afterGroup(Token t) throws GeneralException;
-
-    /**
-     * Perform all actions required upon the closing of a group.
-     *
-     * @param typesetter the typesetter to invoke if needed
-     * @param source the source to get Tokens from if needed
-     *
-     * @throws GeneralException in case of an error
-     */
-    void closeGroup(Typesetter typesetter, TokenSource source)
-            throws GeneralException;
+public interface Context
+        extends
+            ContextFont,
+            ContextDimen,
+            ContextFile,
+            ContextGroup,
+            Tokenizer,
+            Serializable {
 
     /**
      * Attach the current escape character in front of a name and return the
@@ -144,7 +118,7 @@ public interface Context extends Tokenizer, Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    //TODO change the signature to use CodeToken instead of Token
+    //TODO gene: change the signature to use CodeToken instead of Token
     Code getCode(Token t) throws GeneralException;
 
     /**
@@ -160,38 +134,13 @@ public interface Context extends Tokenizer, Serializable {
     Count getCount(String name);
 
     /**
-     * Getter for the delcode mapping.
+     * Getter for the delimiter code mapping.
      *
      * @param c the character to which the delcode is assigned
      *
      * @return the delcode for the given character
      */
     Count getDelcode(UnicodeChar c);
-
-    /**
-     * Get the current value of the dimen register with a given name.
-     *
-     * @param name the name or the number of the register
-     *
-     * @return the dimen register for the given name
-     */
-    Dimen getDimen(String name);
-
-    /**
-     * Getter for a current font register.
-     *
-     * @param name the name or the number of the register
-     *
-     * @return the named font register or <code>null</code> if none is set
-     */
-    Font getFont(String name);
-
-    /**
-     * Getter for the font factory.
-     *
-     * @return the fontFactory.
-     */
-    FontFactory getFontFactory();
 
     /**
      * Getter for a glue register.
@@ -202,14 +151,6 @@ public interface Context extends Tokenizer, Serializable {
      *  if none is set
      */
     Glue getGlue(String name);
-
-    /**
-     * Getter for the group level. The group level is the number of groups which
-     * are currently open. Thus this number of groups can be closed.
-     *
-     * @return the group level
-     */
-    long getGroupLevel();
 
     /**
      * Getter for the hyphenation record for a given language. The language is
@@ -233,17 +174,6 @@ public interface Context extends Tokenizer, Serializable {
      * @return the id string
      */
     String getId();
-
-    /**
-     * Getter for a input file register.  In the case that the named
-     * descriptor doe not exist yet a new one is returned. Especially if the
-     * name is <code>null</code> then the default input stream is used.
-     *
-     * @param name the name or the number of the file register
-     *
-     * @return the input file descriptor
-     */
-    InFile getInFile(String name);
 
     /**
      * Getter for the interaction. The interaction determines how verbose the
@@ -296,15 +226,6 @@ public interface Context extends Tokenizer, Serializable {
      * @return the current namespace
      */
     String getNamespace();
-
-    /**
-     * Getter for an output file descriptor.
-     *
-     * @param name the name or the number of the file register
-     *
-     * @return the output file descriptor
-     */
-    OutFile getOutFile(String name);
 
     /**
      * Getter fot the paragraph shape.
@@ -366,24 +287,6 @@ public interface Context extends Tokenizer, Serializable {
      * @return the upper case equivalent or null if none exists
      */
     UnicodeChar getUccode(UnicodeChar lc);
-
-    /**
-     * Test whether this group is the first one, which means that there is no
-     * group before and closing this group would fail.
-     *
-     * @return <code>true</code> iff this is the first group
-     */
-    boolean isGlobalGroup();
-
-    /**
-     * This method can be used to open another group. The current group is
-     * pushed onto the stack to be reactivated when the new group will be
-     * closed.
-     *
-     * @throws ConfigurationException in case of an error in the configuration,
-     *             e.g. the class for the group can not be determined.
-     */
-    void openGroup() throws ConfigurationException;
 
     /**
      * Pop the management information for a conditional from the stack and
@@ -478,7 +381,7 @@ public interface Context extends Tokenizer, Serializable {
     void setCount(String name, long value, boolean global);
 
     /**
-     * Setter for the delcode mapping.
+     * Setter for the delimiter code mapping.
      *
      * @param c the character to which the delcode is assigned
      * @param code the del code
@@ -486,49 +389,6 @@ public interface Context extends Tokenizer, Serializable {
      *            groups; otherwise the current group is affected only
      */
     void setDelcode(UnicodeChar c, Count code, boolean global);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
-     * register in all requested groups. Dimen registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setDimen(String name, Dimen value, boolean global);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.dimen.Dimen Dimen}
-     * register in all requested groups. Dimen registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setDimen(String name, long value, boolean global);
-
-    /**
-     * Setter for font registers.
-     *
-     * @param name the name or the number of the register
-     * @param font the new Font value
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setFont(String name, Font font, boolean global);
-
-    /**
-     * Setter for the font factory.
-     *
-     * @param fontFactory the fontFactory to set.
-     */
-    void setFontFactory(FontFactory fontFactory);
 
     /**
      * Setter for a glue register.
@@ -547,19 +407,6 @@ public interface Context extends Tokenizer, Serializable {
      * @param id the id string
      */
     void setId(String id);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.file.InFile InFile}
-     * register in all requested groups. InFile registers are named, either with
-     * a number or an arbitrary string. The numbered registers where limited to
-     * 16 in TeX. This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or the number of the file register
-     * @param file the input file descriptor
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     */
-    void setInFile(String name, InFile file, boolean global);
 
     /**
      * Setter for the interaction in all requested groups. The interaction
@@ -620,21 +467,12 @@ public interface Context extends Tokenizer, Serializable {
 
     /**
      * Setter for the namespace.
+     *
      * @param namespace the new namespace
      * @param global the indicator for the scope; <code>true</code> means all
      *  groups; otherwise the current group is affected only
      */
     void setNamespace(String namespace, boolean global);
-
-    /**
-     * Setter for a outfile descriptor.
-     *
-     * @param name the name or the number of the file register
-     * @param file the descriptor of the output file
-     * @param global the indicator for the scope; <code>true</code> means all
-     *  groups; otherwise the current group is affected only
-     */
-    void setOutFile(String name, OutFile file, boolean global);
 
     /**
      * Setter for the paragraph shape.
