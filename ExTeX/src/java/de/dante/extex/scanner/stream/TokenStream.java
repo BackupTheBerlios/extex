@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -35,7 +35,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TokenStream {
     /**
@@ -46,21 +46,21 @@ public interface TokenStream {
      *
      * @return the locator
      */
-    public abstract Locator getLocator();
+    Locator getLocator();
 
     /**
      * ...
      *
      * @return <code>true</code> if the closing was successful
      */
-    public abstract boolean closeFileStream();
+    boolean closeFileStream();
 
     /**
      * ...
      *
      * @return <code>true</code> if the stream is a file stream
      */
-    public abstract boolean isFileStream();
+    boolean isFileStream();
 
 
     /**
@@ -75,7 +75,7 @@ public interface TokenStream {
      * @return the next Token or <code>null</code> if no more tokens are
      * available
      */
-    public abstract Token get(TokenFactory factory, Tokenizer tokenizer)
+    Token get(TokenFactory factory, Tokenizer tokenizer)
                        throws GeneralException;
 
     /**
@@ -91,5 +91,6 @@ public interface TokenStream {
      * @param token the token to push back
      * @see "TeX -- The Program [325]"
      */
-    public abstract void put(Token token);
+    void put(Token token);
+
 }

@@ -33,7 +33,7 @@ import java.util.Stack;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 
@@ -53,7 +53,7 @@ public class TokenStreamBaseImpl implements TokenStream {
 	 * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
 	 */
 	public Locator getLocator() {
-		return new Locator(null, 0);
+		return new Locator(null, 0,null,0);
 	}
 
 	/**

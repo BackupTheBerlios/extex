@@ -30,8 +30,6 @@ import java.nio.charset.CharacterCodingException;
 import java.nio.charset.Charset;
 import java.nio.charset.CharsetDecoder;
 
-import de.dante.util.Locator;
-
 /**
  * This class represents a token stream which is optionally fed from a file.
  * First of all the tokens stored locally are used. They are inherited from the
@@ -41,7 +39,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TokenStreamImpl extends TokenStreamBufferImpl {
 
@@ -85,7 +83,7 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
      * 
      * @throws CharacterCodingException in case of an error
      */
-    public TokenStreamImpl(String line, String encoding)
+    public TokenStreamImpl(final String line, final String encoding)
             throws CharacterCodingException {
         super(line, encoding);
     }
@@ -95,7 +93,7 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
      * 
      * @param filename the name of the file to read
      */
-    public TokenStreamImpl(File filename, String encoding)
+    public TokenStreamImpl(final File filename, final String encoding)
             throws FileNotFoundException, IOException {
         super("", encoding);
         this.source = filename.getPath();
@@ -109,9 +107,11 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
      * Creates a new object.
      * 
      * @param reader the source reader
+     *
      * @throws IOException in case of an IO error
      */
-    public TokenStreamImpl(Reader reader, String encoding) throws IOException {
+    public TokenStreamImpl(final Reader reader, final String encoding)
+        throws IOException {
         super("", encoding);
         this.source = reader.toString();
         this.reader = new LineNumberReader(reader);
@@ -127,11 +127,21 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 	}
 
     /**
-     * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
+     * Getter for source.
+     *
+     * @return the source.
      */
-    public Locator getLocator() {
-        return new Locator(source,
-                (reader == null ? 0 : reader.getLineNumber()));
+    protected String getSource() {
+        return source;
+    }
+
+    /**
+     * ...
+     * 
+     * @return
+     */
+    protected int getLineno() {
+        return (reader == null ? 0 : reader.getLineNumber());
     }
 
 	/**
@@ -145,9 +155,6 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 
     /**
      * Get a new bunch of characters.
-     * 
-     * @return a new buffer of characters read or <code>null</code> at end of
-     *         file
      * 
      * @return <code>false</code> iff no more character is available
      */
@@ -176,4 +183,5 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
         setBuffer(buffer);
         return true;
     }
+
 }

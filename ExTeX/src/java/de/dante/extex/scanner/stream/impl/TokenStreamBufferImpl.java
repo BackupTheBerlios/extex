@@ -41,7 +41,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
  * 
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 
 /**
@@ -56,7 +56,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
@@ -108,7 +108,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * 
      * @throws CharacterCodingException in case of an error
      */
-    public TokenStreamBufferImpl(String line, String encoding)
+    public TokenStreamBufferImpl(final String line, final String encoding)
             throws CharacterCodingException {
         super();
         buffer = Charset.forName(encoding).newDecoder().decode(
@@ -134,7 +134,25 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.stream.TokenStream#getLocator()
      */
     public Locator getLocator() {
-        return new Locator("<buffer>", 1);
+        return new Locator(getSource(), getLineno(), buffer, pointer);
+    }
+
+    /**
+     * ...
+     * 
+     * @return
+     */
+    protected String getSource() {
+        return "<buffer>";
+    }
+
+    /**
+     * ...
+     * 
+     * @return
+     */
+    protected int getLineno() {
+        return 1;
     }
 
     /**
@@ -142,7 +160,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * 
      * @return the next Token or <code>null</code>
      */
-    public Token getNext(TokenFactory factory, Tokenizer tokenizer)
+    public Token getNext(final TokenFactory factory, final Tokenizer tokenizer)
             throws GeneralException {
         Token t = null;
         int c;
@@ -171,7 +189,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
      */
-    public Object visitActive(Object oFactory, Object oTokenizer)
+    public Object visitActive(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -185,7 +203,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
      */
-    public Object visitComment(Object oFactory, Object oTokenizer)
+    public Object visitComment(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         endLine();
         return null;
@@ -194,7 +212,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
      */
-    public Object visitCr(Object oFactory, Object oTokenizer)
+    public Object visitCr(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         TokenFactory factory = (TokenFactory) oFactory;
         Token t = null;
@@ -212,7 +230,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
      */
-    public Object visitEscape(Object oFactory, Object oTokenizer)
+    public Object visitEscape(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
 
         TokenFactory factory = (TokenFactory) oFactory;
@@ -249,7 +267,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitIgnore(Object oFactory, Object oTokenizer)
+    public Object visitIgnore(final Object oFactory, final Object oTokenizer)
         throws GeneralException {
         return null;
     }
@@ -258,7 +276,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitInvalid(Object oFactory, Object oTokenizer)
+    public Object visitInvalid(final Object oFactory, final Object oTokenizer)
         throws GeneralException {
         state = MID_LINE;
 
@@ -269,7 +287,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitLeftBrace(Object oFactory, Object oTokenizer)
+    public Object visitLeftBrace(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -281,7 +299,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitLetter(Object oFactory, Object oTokenizer)
+    public Object visitLetter(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -293,7 +311,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visitMacroParam(Object oFactory, Object oTokenizer)
+    public Object visitMacroParam(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -304,7 +322,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
      */
-    public Object visitMathShift(Object oFactory, Object oTokenizer)
+    public Object visitMathShift(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -315,7 +333,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
      */
-    public Object visitOther(Object oFactory, Object oTokenizer)
+    public Object visitOther(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -326,7 +344,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object,java.lang.Object)
      */
-    public Object visitRightBrace(Object oFactory, Object oTokenizer)
+    public Object visitRightBrace(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -338,7 +356,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
      * @see "The TeXbook [Chapter 8, page 47]"
      */
-    public Object visitSpace(Object oFactory, Object oTokenizer)
+    public Object visitSpace(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         TokenFactory factory = (TokenFactory) oFactory;
 
@@ -353,7 +371,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSubMark(Object oFactory, Object oTokenizer)
+    public Object visitSubMark(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -364,7 +382,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSupMark(Object oFactory, Object oTokenizer)
+    public Object visitSupMark(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -441,7 +459,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitTabMark(Object oFactory, Object oTokenizer)
+    public Object visitTabMark(final Object oFactory, final Object oTokenizer)
             throws GeneralException {
         state = MID_LINE;
 
@@ -454,7 +472,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * 
      * @param cs the new buffer
      */
-    protected void setBuffer(CharBuffer cs) {
+    protected void setBuffer(final CharBuffer cs) {
         buffer = cs;
     }
 
@@ -507,7 +525,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * 
      * @param c ...
      */
-    private void ungetChar(char c) {
+    private void ungetChar(final char c) {
         buffer.put(pointer--, c);
     }
 
@@ -526,7 +544,7 @@ public class TokenStreamBufferImpl extends TokenStreamBaseImpl implements
      * 
      * @return the integer value of a hex digit or -1 if no hex digit is given
      */
-    private int hex2int(char c) {
+    private int hex2int(final char c) {
         if ('0' <= c && c <= '9') {
             return c - '0';
         } else if ('a' <= c && c <= 'f') {
