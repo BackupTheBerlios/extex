@@ -19,10 +19,21 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.leaders;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.primitives.typesetter.spacing.VerticalSkip;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.box.Boxable;
+import de.dante.extex.interpreter.type.box.RuleConvertible;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.node.AlignedLeadersNode;
+import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -49,7 +60,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Leaders extends AbstractCode  {
 
@@ -74,9 +85,39 @@ public class Leaders extends AbstractCode  {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return false;
+        CodeToken cs = source.getControlSequence(context);
+        Code code = context.getCode(cs);
+
+        if (code == null) {
+            throw new UndefinedControlSequenceException(//
+                    context.esc(cs.getName()));
+        }
+
+        Node node = null;
+        if (code instanceof Boxable) {
+            Box b = ((Boxable) code).getBox(context, source, typesetter);
+            node = b.getNodes();
+        } else if (code instanceof RuleConvertible) {
+            node = ((RuleConvertible) code)
+                    .getRule(context, source, typesetter);
+        } else {
+            throw new HelpingException(getLocalizer(), "TTP.BoxExpected");
+        }
+
+        CodeToken vskip = source.getControlSequence(context);
+        code = context.getCode(cs);
+
+        if (code == null) {
+            throw new UndefinedControlSequenceException(//
+                    context.esc(vskip.getName()));
+        } else if (!(code instanceof VerticalSkip)) {
+            throw new HelpingException(getLocalizer(),
+                    "TTP.BadGlueAfterLeaders");
+        }
+        Glue skip = ((VerticalSkip) code).verticalSkip(context, source);
+
+        typesetter.add(new AlignedLeadersNode(node, skip));
+        return false;
     }
 
 }
