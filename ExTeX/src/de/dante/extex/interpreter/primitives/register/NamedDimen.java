@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.Flags;
@@ -38,11 +39,13 @@ import de.dante.util.GeneralException;
  * \day=345
  * </pre>
  *
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NamedDimen extends AbstractCode implements Advanceable {
-    /**
+
+	/**
      * Creates a new object.
      *
      * @param name the name for debugging
@@ -54,12 +57,9 @@ public class NamedDimen extends AbstractCode implements Advanceable {
     /**
      * Return the key (the name of the primitive) for the register.
      * 
-     * @param source the source for new tokens
-     * 
+     * @param source	the tokensource
      * @return the key for the current register
-     * 
-     * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this one is declared.
+     * @throws GeneralException in case that a derived class need to throw an Exception this one is declared.
      */
     protected String getKey(final TokenSource source) throws GeneralException {
         return getName();
@@ -73,13 +73,11 @@ public class NamedDimen extends AbstractCode implements Advanceable {
     public void advance(final Flags prefix, final Context context,
         final TokenSource source) throws GeneralException {
         String key = getKey(source);
-        source.scanKeyword("by");
-
+        source.scanKeyword("by",true);
         Dimen add = new Dimen(context,source);
         Dimen dimen = context.getDimen(key);
         add.add(dimen);
         dimen.set(add);
-        
         if (prefix.isGlobal()) {
             context.setDimen(key, add, true);
         }
@@ -95,10 +93,8 @@ public class NamedDimen extends AbstractCode implements Advanceable {
     public void execute(final Flags prefix, final Context context,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
-
         String key = getKey(source);
         source.scanOptionalEquals();
-        
         Dimen dimen = new Dimen(context, source);
         context.setDimen(key, dimen, prefix.isGlobal());
         prefix.clear();
@@ -106,18 +102,17 @@ public class NamedDimen extends AbstractCode implements Advanceable {
     }
 
     /**
-     * ...
-     *
-     * @param context the interpreter context
-     * @param value ...
-     *
+     * Set the new value (String)
+     * @param context 	the interpreter context
+     * @param value		the new value
      * @throws GeneralException in case of an error
      */
     public void set(final Context context, final String value)
              throws GeneralException {
-                 //TODO
-//        context.setDimen(getName(),
-//                         (value.equals("") ? 0 : ...));
+    	try {
+    		context.setDimen(getName(), (value.equals("") ? 0 : new Dimen(context,value).getValue()));
+    	} catch (NumberFormatException e) {
+    		throw new GeneralHelpingException("TTP.NumberFormatError", value);
+    	}
     }
-
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -41,98 +41,91 @@ import de.dante.util.GeneralException;
  *  \advance\dimen12 \wd0
  * </pre>
  * 
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Wd extends NumberedBox implements Serializable, Theable,
-    CountConvertable, DimenConvertable {
-    
-    /**
-     * Creates a new object.
-     * 
-     * @param name the name for debugging
-     */
-    public Wd(final String name) {
-        super(name);
-    }
+public class Wd extends NumberedBox implements Serializable, Theable, CountConvertable, DimenConvertable {
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
-        String key = getKey(source);
-        source.scanOptionalEquals();
-        Dimen d = new Dimen(context, source);
-        Box b = context.getBox(key);
+	/**
+	 * Creates a new object.
+	 * 
+	 * @param name the name for debugging
+	 */
+	public Wd(final String name) {
+		super(name);
+	}
 
-        if (b == null) {
-            throw new RuntimeException("unimplemented"); //TODO unimplemented
-        } else {
-            b.setWidth(d);
-        }
+	/**
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource,
+	 *      de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(final Flags prefix, final Context context, final TokenSource source, final Typesetter typesetter) throws GeneralException {
+		String key = getKey(source);
+		source.scanOptionalEquals();
+		Dimen d = new Dimen(context, source);
+		Box b = context.getBox(key);
 
-        prefix.clear();
-    }
+		if (b == null) {
+			throw new RuntimeException("unimplemented"); //TODO unimplemented
+		} else {
+			b.setWidth(d);
+		}
 
-    /**
-     * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public boolean expand(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
-        source.push(the(context, source));
-        return true;
-    }
+		prefix.clear();
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Tokens the(final Context context, final TokenSource source)
-        throws GeneralException {
-        String key = getKey(source);
-        Box b = context.getBox(key);
-        Dimen d;
-        if (b == null) {
-            d = Dimen.ZERO_PT;
-        } else {
-            d = b.getWidth();
-        }
-        return d.toToks(context.getTokenFactory());
-    }
+	/**
+	 * @see de.dante.extex.interpreter.Code#expand(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource,
+	 *      de.dante.extex.typesetter.Typesetter)
+	 */
+	public boolean expand(final Flags prefix, final Context context, final TokenSource source, final Typesetter typesetter) throws GeneralException {
+		source.push(the(context, source));
+		return true;
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.CountConvertable#convertCount(de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public long convertCount(final Context context, final TokenSource source)
-        throws GeneralException {
-        return convertCount(context, source);
-    }
-    
-    /**
-     * @see de.dante.extex.interpreter.DimenConvertable#convertDimen(de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public long convertDimen(final Context context, final TokenSource source)
-        throws GeneralException {
-        String key = getKey(source);
-        Box b = context.getBox(key);
-        long d;
-        if (b == null) {
-            d = 0;
-        } else {
-            d = b.getWidth().getValue();
-        }
-        return d;
-    }
+	/**
+	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public Tokens the(final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		Box b = context.getBox(key);
+		Dimen d;
+		if (b == null) {
+			d = Dimen.ZERO_PT;
+		} else {
+			d = b.getWidth();
+		}
+		return new Tokens(context, d.toPT());
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.CountConvertable#convertCount(de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public long convertCount(final Context context, final TokenSource source) throws GeneralException {
+		return convertCount(context, source);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.DimenConvertable#convertDimen(de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public long convertDimen(final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		Box b = context.getBox(key);
+		long d;
+		if (b == null) {
+			d = 0;
+		} else {
+			d = b.getWidth().getValue();
+		}
+		return d;
+	}
 
 }

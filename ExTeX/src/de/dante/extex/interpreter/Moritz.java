@@ -52,7 +52,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public abstract class Moritz implements TokenSource, Observable {
     /**
@@ -239,7 +239,7 @@ public abstract class Moritz implements TokenSource, Observable {
             return t;
         }
 
-        Tokens toks = new Tokens();
+        // Tokens toks = new Tokens();
         //scanToEndcsname();
         
         
@@ -403,6 +403,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#scanFloat()
+     * @deprecated use new Dimen(TokenSource source) instead
      */
     //TODO: gene: this method should be moved out of here
     public long scanFloat() throws GeneralException {
@@ -462,6 +463,7 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * @see de.dante.extex.interpreter.TokenSource#scanReal()
+     * @deprecated use new Real(Tokensource ...) instead
      */
     //TODO: gene: this method should be moved out of here
     public Real scanReal() throws GeneralException {
@@ -512,6 +514,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @throws GeneralException in case that no number is found or the end of
      *             file has been reached before an integer could be acquired
+     * @deprecated use new Count(Tokensource source) instead!
      */
     public long scanInteger() throws GeneralException {
         Token t = scanNonSpace();

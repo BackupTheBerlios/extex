@@ -22,15 +22,16 @@ import java.io.Serializable;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Real implements Serializable {
+public class Real extends AbstractComponent implements Serializable {
 
 	/** 
 	 * ZERO-Real
@@ -59,10 +60,15 @@ public class Real implements Serializable {
 
 	/**
 	 * Creates a new object.
+	 * 
+	 * Scan the <code>TokenSource</code> for a <code>Real</code>.
+	 * 
+	 * @param source	the tokensource
 	 */
-	public Real(TokenSource source) throws GeneralException {
+	public Real(Context context, TokenSource source) throws GeneralException {
 		super();
-		value = source.scanReal().getValue();
+		Real r = scanReal(context,source);
+		value = r.getValue();
 	}
 
 	/**

@@ -30,7 +30,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -49,199 +48,150 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
-public class NamedCount extends AbstractCode implements 
-    Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
+public class NamedCount extends AbstractCode implements Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
 
-    /**
-     * Creates a new object.
-     * 
-     * @param name the name for debugging
-     */
-    public NamedCount(final String name) {
-        super(name);
-    }
+	/**
+	 * Creates a new object.
+	 * 
+	 * @param name the name for debugging
+	 */
+	public NamedCount(final String name) {
+		super(name);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.Advanceable#advance(int,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public void advance(final Flags prefix, final Context context,
-        final TokenSource source) throws GeneralException {
-        String key = getKey(source);
-        source.scanKeyword("by");
+	/**
+	 * Add a value to the register.
+	 * 
+	 * @see de.dante.extex.interpreter.Advanceable#advance(int,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public void advance(final Flags prefix, final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		source.scanKeyword("by", true);
+		long value = new Count(context, source).getValue();
+		Count count = context.getCount(key);
+		count.add(value);
+		if (prefix.isGlobal()) {
+			value = count.getValue();
+			context.setCount(key, value, true);
+		}
+	}
 
-        long value = scanCount(context, source);
+	/**
+	 * ...
+	 * 
+	 * @param context ...
+	 * @param source ...
+	 * 
+	 * @return ...
+	 */
+	public long convertCount(final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		Count c = context.getCount(key);
+		return (c != null ? c.getValue() : 0);
+	}
 
-        Count count = context.getCount(key);
-        count.add(value);
+	/**
+	 * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public void divide(final Flags prefix, final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		source.scanKeyword("by", true);
 
-        if (prefix.isGlobal()) {
-            value = count.getValue();
-            context.setCount(key, value, true);
-        }
-    }
+		long value = new Count(context, source).getValue();
 
-    /**
-     * ...
-     * 
-     * @param context ...
-     * @param source ...
-     * 
-     * @return ...
-     */
-    public long convertCount(final Context context, final TokenSource source)
-        throws GeneralException {
-        String key = getKey(source);
-        Count c = context.getCount(key);
-        return (c != null ? c.getValue() : 0);
-    }
+		if (value == 0) {
+			throw new GeneralHelpingException("TTP.ArithOverflow");
+		}
 
-    /**
-     * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public void divide(final Flags prefix, final Context context,
-        final TokenSource source) throws GeneralException {
-        String key = getKey(source);
-        source.scanKeyword("by");
+		Count count = context.getCount(key);
+		count.divide(value);
 
-        long value = scanCount(context, source);
+		if (prefix.isGlobal()) {
+			value = count.getValue();
+			context.setCount(key, value, true);
+		}
+	}
 
-        if (value == 0) {
-            throw new GeneralHelpingException("TTP.ArithOverflow");
-        }
+	/**
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource,
+	 *      de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(final Flags prefix, final Context context, final TokenSource source, Typesetter typesetter) throws GeneralException {
+		String key = getKey(source);
+		source.scanOptionalEquals();
+		long value = new Count(context, source).getValue();
+		context.setCount(key, value, prefix.isGlobal());
+		prefix.clear();
+		doAfterAssignment(context, source);
+	}
 
-        Count count = context.getCount(key);
-        count.divide(value);
+	/**
+	 * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public void multiply(final Flags prefix, final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		source.scanKeyword("by", true);
+		long value = new Count(context, source).getValue();
+		Count count = context.getCount(key);
+		count.setValue(count.getValue() * value);
+		if (prefix.isGlobal()) {
+			value = count.getValue();
+			context.setCount(key, value, true);
+		}
+	}
 
-        if (prefix.isGlobal()) {
-            value = count.getValue();
-            context.setCount(key, value, true);
-        }
-    }
+	/**
+	 * ...
+	 * 
+	 * @param context the interpreter context
+	 * @param value ...
+	 */
+	public void set(final Context context, final long value) {
+		context.setCount(getName(), value);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-        final TokenSource source, Typesetter typesetter)
-        throws GeneralException {
-        String key = getKey(source);
-        source.scanOptionalEquals();
+	/**
+	 * ...
+	 * 
+	 * @param context the interpreter context
+	 * @param value ...
+	 */
+	public void set(final Context context, final String value) throws GeneralException {
+		try {
+			context.setCount(getName(), (value.equals("") ? 0 : Long.parseLong(value)));
+		} catch (NumberFormatException e) {
+			throw new GeneralHelpingException("TTP.NumberFormatError", value);
+		}
+	}
 
-        long value = scanCount(context, source);
-        context.setCount(key, value, prefix.isGlobal());
-        prefix.clear();
-        doAfterAssignment(context, source);
-    }
-    
-    /**
-     * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public void multiply(final Flags prefix, final Context context,
-        final TokenSource source) throws GeneralException {
-        String key = getKey(source);
-        source.scanKeyword("by");
+	/**
+	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public Tokens the(final Context context, final TokenSource source) throws GeneralException {
+		String key = getKey(source);
+		String s = context.getCount(key).toString();
+		return new Tokens(context, s);
+	}
 
-        long value = scanCount(context, source);
-
-        Count count = context.getCount(key);
-        count.setValue(count.getValue() * value);
-
-        if (prefix.isGlobal()) {
-            value = count.getValue();
-            context.setCount(key, value, true);
-        }
-    }
-
-    /**
-     * ...
-     * 
-     * @param context the interpreter context
-     * @param value ...
-     */
-    public void set(final Context context, final long value) {
-        context.setCount(getName(), value);
-    }
-
-    /**
-     * ...
-     * 
-     * @param context the interpreter context
-     * @param value ...
-     */
-    public void set(final Context context, final String value)
-        throws GeneralException {
-        try {
-            context.setCount(getName(), (value.equals("") ? 0 : Long
-                .parseLong(value)));
-        } catch (NumberFormatException e) {
-            // TODO
-            throw new GeneralException(e);
-        }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Tokens the(final Context context, final TokenSource source)
-        throws GeneralException {
-        String key = getKey(source);
-        String s = context.getCount(key).toString();
-        Tokens toks = new Tokens(context, s);
-        return toks;
-    }
-
-    /**
-     * Return the key (the name of the primitive) for the register.
-     * 
-     * @param source the source for new tokens
-     * 
-     * @return the key for the current register
-     * 
-     * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this on e is declared.
-     */
-    protected String getKey(final TokenSource source) throws GeneralException {
-        return getName();
-    }
-
-    /**
-     * ...
-     * 
-     * @param context ...
-     * @param source ...
-     * 
-     * @return ...
-     * 
-     * @throws GeneralException ...
-     */
-    private long scanCount(final Context context, final TokenSource source)
-        throws GeneralException {
-        Token t = source.getNonSpace();
-
-        if (t == null) {
-            // TODO
-            return 0;
-        } else if (t instanceof CountConvertable) {
-            return ((CountConvertable) t).convertCount(context, source);
-        } else {
-            source.push(t);
-
-            //TODO
-        }
-
-        return source.scanInteger();
-    }
-
+	/**
+	 * Return the key (the name of the primitive) for the register.
+	 * 
+	 * @param source the source for new tokens
+	 * @return the key for the current register
+	 * @throws GeneralException in case that a derived class need to throw an Exception this on e is declared.
+	 */
+	protected String getKey(final TokenSource source) throws GeneralException {
+		return getName();
+	}
 }

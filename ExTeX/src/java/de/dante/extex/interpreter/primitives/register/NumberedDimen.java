@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,31 +31,28 @@ import de.dante.util.GeneralException;
  * \dimen12=345.67pt
  * </pre>
  *
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NumberedDimen extends NamedDimen {
 
-    /**
-     * Creates a new object.
-     *
-     * @param name the name for debugging
-     */
-    public NumberedDimen(final String name) {
-        super(name);
-    }
+	/**
+	 * Creates a new object.
+	 * @param name the name for debugging
+	 */
+	public NumberedDimen(final String name) {
+		super(name);
+	}
 
-    /**
-     * Return the key (the number) for the register.
-     *
-     * @param source ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException ...
-     */
-    protected String getKey(TokenSource source) throws GeneralException {
-        return getName() + "#" + Long.toString(source.scanNumber());
-    }
-
+	/**
+	 * Return the key (the number) for the register.
+	 *
+	 * @param source 	the tokensource
+	 * @return Return the key
+	 * @throws GeneralException in case of an error
+	 */
+	protected String getKey(TokenSource source) throws GeneralException {
+		return getName() + "#" + Long.toString(source.scanNumber());
+	}
 }

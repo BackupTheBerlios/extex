@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NamedToks extends AbstractCode implements Theable {
 
@@ -52,15 +52,14 @@ public class NamedToks extends AbstractCode implements Theable {
 		super(name);
 	}
 
-    /**
-     * Return the register value as <code>Tokens</code> for <code>\the</code>.
-     * 
-     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
-     */
-    public Tokens the(Context context, TokenSource source)
-        throws GeneralException {
-        return context.getToks(getName());
-    }
+	/**
+	 * Return the register value as <code>Tokens</code> for <code>\the</code>.
+	 * 
+	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context)
+	 */
+	public Tokens the(Context context, TokenSource source) throws GeneralException {
+		return context.getToks(getName());
+	}
 
 	/**
 	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
@@ -95,16 +94,13 @@ public class NamedToks extends AbstractCode implements Theable {
 	/**
 	 * Expand
 	 * <p>
-	 * Scan the tokens between <code>{</code> and <code>}</code> and store
-	 * it.
+	 * Scan the tokens between <code>{</code> and <code>}</code> and store it.
 	 * 
 	 * @param prefix the prefix flags
 	 * @param context the interpreter context
 	 * @param source the tokensource
 	 * @param key the key
-	 * 
 	 * @throws GeneralException
-	 *                 ...
 	 */
 	protected void expand(Flags prefix, Context context, TokenSource source, String key) throws GeneralException {
 		Tokens toks = source.getTokens();

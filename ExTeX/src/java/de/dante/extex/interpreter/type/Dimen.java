@@ -22,8 +22,6 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
@@ -31,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
@@ -46,12 +44,6 @@ public class Dimen extends GlueComponent implements Serializable {
 	public static final Dimen ONE_PT = new Dimen(1 << 16);
 
 	/**
-	 * The constant <tt>ONE</tt> contains the internal representation for 1pt.
-	 * @see "TeX -- The Program [101]"
-	 */
-	public static final long ONE = 1 << 16;
-
-	/**
 	 * Creates a new object.
 	 * The length stored in it is initialized to 0pt.
 	 */
@@ -62,7 +54,7 @@ public class Dimen extends GlueComponent implements Serializable {
 	/**
 	 * Creates a new object.
 	 * 
-	 * @param value ...
+	 * @param value the new dimenvalue
 	 */
 	public Dimen(final long value) {
 		super(value);
@@ -76,91 +68,87 @@ public class Dimen extends GlueComponent implements Serializable {
 	public Dimen(final Dimen value) {
 		super(value.getValue());
 	}
+
+	/**
+	 * Creates a new object.
+	 * Scan the <code>TokenSource</code> and create a new <code>Dimen</code>.
+	 *
+	 * @param source	the tokensource
+	 * @param context	the context
+	 * @throws GeneralException in case of an error
+	 */
+	public Dimen(final Context context, final TokenSource source) throws GeneralException {
+		super(source, context, false);
+	}
+
+	/**
+	 * Creates a new object.
+	 * Scan the <code>String</code> and create a new <code>Dimen</code>.
+	 *
+	 * @param s			the String 
+	 * @param context	the context
+	 * @throws GeneralException in case of an error
+	 */
+	public Dimen(final Context context, final String s) throws GeneralException {
+		super(s, context, false);
+	}
 	
 	
-    /**
-     * Creates a new object.
-     *
-     * @param source ...
-     * @param context ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    public Dimen(final Context context, final TokenSource source)
-        throws GeneralException {
-        super(source, context, false);
-    }
+	/**
+	 * Creates a new object with a width with a possibly higher order.
+	 *
+	 * @param value the fixed width or the factor
+	 * @param order the order
+	 */
+	public Dimen(final long value, final int order) {
+		super(value, order);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.type.GlueComponent#set(de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public void set(final Context context, final TokenSource source)
-        throws GeneralException {
-        set(source, context, false);
-    }
+	/**
+	 * @see de.dante.extex.interpreter.type.GlueComponent#set(de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource)
+	 */
+	public void set(final Context context, final TokenSource source) throws GeneralException {
+		set(source, context, false);
+	}
 
-    /**
-     * ...
-     * 
-     * @param d the Dimen to add to
-     */
-    public Dimen add(final Dimen d) {
-        setValue(getValue() + d.getValue());
-        return new Dimen(getValue());
-    }
-
-    /**
-     * ...
-     * 
-     * @param d the Dimen to add to
-     */
-    public Dimen subtract(final Dimen d) {
-        setValue(getValue() - d.getValue());
-        return new Dimen(getValue());
-    }
-
-    /**
-     * ...
-     * 
-     * @param d ...
-     */
-    public boolean lt(final Dimen d) {
-        return (getValue() < d.getValue());
-    }
-
-    /**
-     * ...
-     * 
-     * @param d ...
-     */
-    public boolean le(final Dimen d) {
-        return (getValue() <= d.getValue());
-    }
-    
 	/**
 	 * ...
-	 *
-	 * @param factory ...
-	 *
-	 * @return ...
-	 *
-	 * @throws GeneralException ...
-	 * @see "TeX -- The Program [103]"
+	 * 
+	 * @param d the Dimen to add to
 	 */
-	public Tokens toToks(final TokenFactory factory) throws GeneralException {
-		Tokens toks = new Tokens();
-		String s    = Long.toString(getValue()/ONE);
+	public Dimen add(final Dimen d) {
+		setValue(getValue() + d.getValue());
+		return new Dimen(getValue());
+	}
 
-		for (int i = 0; i < s.length(); i++) {
-			toks.add(factory.newInstance(Catcode.OTHER,
-										 s.substring(i, i + 1)));
-		}
+	/**
+	 * ...
+	 * 
+	 * @param d the Dimen to add to
+	 */
+	public Dimen subtract(final Dimen d) {
+		setValue(getValue() - d.getValue());
+		return new Dimen(getValue());
+	}
 
-		//TODO: decimal places and rounding
-		toks.add(factory.newInstance(Catcode.LETTER, "p"));
-		toks.add(factory.newInstance(Catcode.LETTER, "t"));
+	/**
+	 * Return <code>true</code>, if the internal value is
+	 * less than the dimenvalue.
+	 * 
+	 * @param d dimenvalue to compare
+	 */
+	public boolean lt(final Dimen d) {
+		return (getValue() < d.getValue());
+	}
 
-		return toks;
+	/**
+	 * Return <code>true</code>, if the internal value is
+	 * less than or equals the dimenvalue.
+	 * 
+	 * @param d dimenvalue to compare
+	 */
+	public boolean le(final Dimen d) {
+		return (getValue() <= d.getValue());
 	}
 }

@@ -57,7 +57,7 @@
     <define name="clubpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="copy" class=""/>
     <define name="count" class="de.dante.extex.interpreter.primitives.register.NumberedCount"/>
-    <Define name="countdef" class=""/>
+    <define name="countdef" class="de.dante.extex.interpreter.primitives.register.CountDef"/>
     <define name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal" extension="yes"/>
     <Define name="realdef" class="" extension="yes"/>
     <Define name="cr" class=""/>
@@ -132,7 +132,7 @@
     <define name="hoffset" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="holdinginserts" class=""/>
     <Define name="hrule" class=""/>
-    <define name="hsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
+    <define name="hsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen">15cm</define>
     <Define name="hskip" class=""/>
     <Define name="hss" class=""/>
     <Define name="ht" class=""/>
@@ -392,6 +392,7 @@
   <DocumentWriter>
   	<WriterOutput name="dump" class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
   	<WriterOutput name="pdf" class="de.dante.extex.documentWriter.pdf.PDFDocumentWriter"/>
+  	<WriterOutput name="txt" class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
   </DocumentWriter>  	
 
   <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"/>

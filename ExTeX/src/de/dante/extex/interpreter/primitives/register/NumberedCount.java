@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NumberedCount extends NamedCount {
 
@@ -56,11 +56,9 @@ public class NumberedCount extends NamedCount {
 	/**
 	 * Return the key (the number) for the register.
 	 *
-	 * @param source ...
-	 *
-	 * @return ...
-	 *
-	 * @throws GeneralException ...
+	 * @param source 	the tokensource
+	 * @return Return the key for the register
+	 * @throws GeneralException, if a error ocoured
 	 */
 	protected String getKey(TokenSource source) throws GeneralException {
 		return getName() + "#" + Long.toString(source.scanNumber());

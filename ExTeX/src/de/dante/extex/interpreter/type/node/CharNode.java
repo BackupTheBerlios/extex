@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [134]"
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -117,5 +117,12 @@ public class CharNode extends AbstractNode implements Node {
 	 */
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitChar(value, value2);
+	}
+	
+	/**
+	 * @return Returns the character.
+	 */
+	public UnicodeChar getCharacter() {
+		return character;
 	}
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,37 +22,43 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\dimen</code>.
- * It sets the named count register to the value given,
- * and as a side effect all prefixes are zeroed.
- *
- * <p>Example</p>
- * <pre>
- * \dimen12=345.67pt
- * </pre>
- *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * This class provides an implementation for a defined <code>\count</code>-register
+ * with <code>\countdef</code>.
+ * 
+ * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.1 $
  */
-public class NumberedDimen extends NamedDimen {
+public class DefinedCount extends NamedCount {
 
 	/**
 	 * Creates a new object.
+	 *
 	 * @param name the name for debugging
 	 */
-	public NumberedDimen(final String name) {
+	public DefinedCount(String name, String regname, long number) {
 		super(name);
+		this.number = number;
+		this.regname = regname;
 	}
+
+	/**
+	 * the number for the register
+	 */
+	private long number;
+
+	/**
+	 * the name of the register
+	 */
+	private String regname;
 
 	/**
 	 * Return the key (the number) for the register.
 	 *
 	 * @param source 	the tokensource
-	 * @return Return the key
-	 * @throws GeneralException in case of an error
+	 * @return Return the key for the register
+	 * @throws GeneralException, if a error ocoured
 	 */
 	protected String getKey(TokenSource source) throws GeneralException {
-		return getName() + "#" + Long.toString(source.scanNumber());
+		return regname + "#" + Long.toString(number);
 	}
 }
