@@ -29,16 +29,16 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class OrdNoad extends AbstractNucleusNoad {
+public class OrdinaryNoad extends AbstractNucleusNoad {
 
     /**
      * Creates a new object.
      *
      * @param nucleus the nucleus
      */
-    public OrdNoad(final Noad nucleus) {
+    public OrdinaryNoad(final Noad nucleus) {
 
         super(nucleus);
     }
