@@ -56,7 +56,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.29 $
+ * @version $Revision: 1.30 $
  */
 public interface Context extends Tokenizer, Serializable {
 
@@ -198,6 +198,15 @@ public interface Context extends Tokenizer, Serializable {
      * @throws GeneralException in case of an error
      */
     HyphenationTable getHyphenationTable(int language) throws GeneralException;
+
+    /**
+     * Getter for the id string. The id string is the classification of the
+     * original source like given in the fmt file. The id string can be
+     * <code>null</code> if not known yet.
+     *
+     * @return the id string
+     */
+    String getId();
 
     /**
      * Getter for a input file register.
@@ -504,6 +513,14 @@ public interface Context extends Tokenizer, Serializable {
     void setGlue(String name, Glue value, boolean global);
 
     /**
+     * Setter for the id string. The id string is the classification of the
+     * original source like given in the fmt file.
+     *
+     * @param id the id string
+     */
+    void setId(String id);
+
+    /**
      * Setter for the {@link de.dante.extex.interpreter.type.file.InFile InFile}
      * register in all requested groups. InFile registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
@@ -616,6 +633,13 @@ public interface Context extends Tokenizer, Serializable {
      * @param standardTokenStream the standardTokenStream to set.
      */
     void setStandardTokenStream(TokenStream standardTokenStream);
+
+    /**
+     * Setter for the token factory.
+     *
+     * @param factory the new token factory
+     */
+    void setTokenFactory(TokenFactory factory);
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}

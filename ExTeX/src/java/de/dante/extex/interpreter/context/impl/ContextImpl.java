@@ -62,7 +62,6 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
-import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.typesetter.Typesetter;
@@ -113,7 +112,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.46 $
+ * @version $Revision: 1.47 $
  */
 public class ContextImpl
         implements
@@ -124,6 +123,7 @@ public class ContextImpl
             TokenStreamOptions,
             Observable,
             Serializable {
+
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
      * sub-configuration for the group factory.
@@ -153,10 +153,10 @@ public class ContextImpl
      * The field <tt>codeChangeObservers</tt> contains the list of observers
      * registered for change event on the code.
      */
-    private transient Map codeChangeObservers = new HashMap();
+    private transient Map codeChangeObservers;
 
     /**
-     * The field <tt>conditionalStack</tt> contains the  stack for conditionals.
+     * The field <tt>conditionalStack</tt> contains the stack for conditionals.
      */
     private List conditionalStack = new ArrayList();
 
@@ -187,6 +187,8 @@ public class ContextImpl
      * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
     private transient HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+
+    private String id = null;
 
     /**
      * The field <tt>magnification</tt> contains the magnification for the
@@ -240,7 +242,13 @@ public class ContextImpl
      * The field <tt>tokenFactory</tt> contains the token factory implementation
      * to use.
      */
-    private transient TokenFactory tokenFactory = new TokenFactoryImpl();
+    private transient TokenFactory tokenFactory;
+
+    protected ContextImpl() {
+        
+        super();
+        codeChangeObservers = new HashMap();
+    }
 
     /**
      * Creates a new object.
@@ -254,7 +262,7 @@ public class ContextImpl
             throws ConfigurationException,
                 GeneralException {
 
-        super();
+        this();
         groupFactory = new GroupFactory(configuration
                 .getConfiguration(GROUP_TAG));
         openGroup();
@@ -470,6 +478,20 @@ public class ContextImpl
 
         return hyphenationManager.getHyphenationTable(Integer
                 .toString(language));
+    }
+
+    /**
+     * Getter for the id string. The id string is the classification of the
+     * original source like given in the fmt file. The id string can be
+     * <code>null</code> if not known yet.
+     *
+     * @return the id string
+     *
+     * @see de.dante.extex.interpreter.context.Context#getId()
+     */
+    public String getId() {
+
+        return id;
     }
 
     /**
@@ -835,6 +857,19 @@ public class ContextImpl
     }
 
     /**
+     * Setter for the id string. The id string is the classification of the
+     * original source like given in the fmt file.
+     *
+     * @param theId the id string
+     *
+     * @see de.dante.extex.interpreter.context.Context#setId(java.lang.String)
+     */
+    public void setId(final String theId) {
+
+        this.id = theId;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#setInFile(
      *      java.lang.String,
      *      de.dante.extex.interpreter.type.file.InFile, boolean)
@@ -961,6 +996,18 @@ public class ContextImpl
 
         this.standardTokenStream = standardTokenStream;
         group.setStandardTokenStream(standardTokenStream);
+    }
+
+    /**
+     * ...
+     *
+     * @param factory ...
+     *
+     * @see de.dante.extex.interpreter.context.Context#setTokenFactory(de.dante.extex.scanner.TokenFactory)
+     */
+    public void setTokenFactory(final TokenFactory factory) {
+
+        tokenFactory = factory;
     }
 
     /**
