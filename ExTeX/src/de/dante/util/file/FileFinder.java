@@ -31,9 +31,10 @@ import java.io.File;
  * implementations. Also an interaction with the user can be envisioned.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FileFinder {
+
     /**
      * Find a file which can be opened for reading.
      *
@@ -45,4 +46,5 @@ public interface FileFinder {
      * @throws ConfigurationException in case of an exception
      */
     File findFile(String name, String type) throws ConfigurationException;
+
 }

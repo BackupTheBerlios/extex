@@ -22,13 +22,14 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.util.UnicodeChar;
 
 /**
- * A tokenizer is a class which is able to characterize characters according to
+ * A tokenizer is a class which is able to categorize characters according to
  * the catcodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Tokenizer {
+
     /**
      * Getter for the catcode of a character.
      *

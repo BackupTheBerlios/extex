@@ -26,9 +26,9 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [141]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
@@ -51,16 +51,22 @@ public class MarkNode extends AbstractNode implements Node {
 	}
 
 	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+	 *      java.lang.String)
 	 */
-	public void toString(StringBuffer sb, String prefix) {
-		sb.append("mark "); //TODO
-	}
+    public void toString(final StringBuffer sb, final String prefix) {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException {
-		return visitor.visitMark(value, value2);
-	}
+        sb.append("mark "); //TODO
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitMark(value, value2);
+    }
 }
+

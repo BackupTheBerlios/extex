@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,10 +31,12 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Hrule extends AbstractCode {
-    /** ... */
+    /**
+     * The constant <tt>DEFAULT_RULE</tt> contains the equivalent to 0.4pt.
+     */
     private static final long DEFAULT_RULE = 26214; //0.4pt
 
     /**

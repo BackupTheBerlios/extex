@@ -24,20 +24,20 @@ import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
-/*
+/**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NumberedBox extends NamedBox implements Code, Serializable {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name
      */
-    public NumberedBox(String name) {
+    public NumberedBox(final String name) {
         super(name);
     }
 
@@ -50,7 +50,8 @@ public class NumberedBox extends NamedBox implements Code, Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source) throws GeneralException {
+
         return getName() + "#" + Long.toString(source.scanNumber());
     }
 }

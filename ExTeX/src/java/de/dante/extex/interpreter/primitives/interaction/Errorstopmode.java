@@ -32,25 +32,29 @@ import de.dante.extex.typesetter.Typesetter;
  * <tt>errorstopmode</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Errorstopmode extends AbstractCode {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public Errorstopmode(String name) {
+    public Errorstopmode(final String name) {
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) {
-        context.setInteraction(Interaction.ERRORSTOPMODE,prefix.isGlobal());
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter) {
 
+        context.setInteraction(Interaction.ERRORSTOPMODE, prefix.isGlobal());
         prefix.clear();
     }
 }

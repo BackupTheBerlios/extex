@@ -24,115 +24,146 @@ import de.dante.util.UnicodeChar;
 
 /**
  * Font Interface
- * 
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.12 $
  */
 public interface Font {
 
-	/**
-	 * Return the Glyph of a <code>UnicodeChar</code>, or 
-	 * <code>null</code>, if the character is not defined.
-	 * 
-	 * @param c ...
-	 * @return ...
-	 */
-	Glyph getGlyph(UnicodeChar c);
+    /**
+     * Return the Glyph of a <code>UnicodeChar</code>, or
+     * <code>null</code>, if the character is not defined.
+     *
+     * @param c ...
+     * @return ...
+     */
+    Glyph getGlyph(UnicodeChar c);
 
-	/**
-	 * Check, if the <code>UnicodeChar</code> is defined in the font.
-	 * 
-	 * @param c ...
-	 * @return ...
-	 */
-	boolean isDefined(UnicodeChar c);
+    /**
+     * Check, if the <code>UnicodeChar</code> is defined in the font.
+     *
+     * @param c ...
+     * @return ...
+     */
+    boolean isDefined(UnicodeChar c);
 
-	/**
-	 * Return the kerning between c1 und c2.
-	 *
-	 * @param c1	the first character
-	 * @param c2	the second character
-	 *
-	 * @return	the kerning
-	 */
-	Dimen kern(UnicodeChar c1, UnicodeChar c2);
+    /**
+     * Return the kerning between c1 und c2.
+     *
+     * @param c1    the first character
+     * @param c2    the second character
+     *
+     * @return    the kerning
+     */
+    Dimen kern(UnicodeChar c1, UnicodeChar c2);
 
-	/**
-	 * Return the ligature as <code>UnicodeChar</code>, 
-	 * or <code>null</code>, if no ligature exists.
-	 * 
-	 * If you get a ligature character, then you MUST call the 
-	 * method <code>ligature()</code> twice, if a ligature with 
-	 * more then two characters exist.
-	 * (e.g. f - ff - ffl)
-	 * 
-	 * @param c1	the first character
-	 * @param c2	the second character
-	 *
-	 * @return	the ligature character as <code>UnicodeChar</code>, or
-	 * 	        <code>null</code>, if none exists
-	 */
-	UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2);
+    /**
+     * Return the ligature as <code>UnicodeChar</code>,
+     * or <code>null</code>, if no ligature exists.
+     *
+     * If you get a ligature character, then you MUST call the
+     * method <code>ligature()</code> twice, if a ligature with
+     * more then two characters exist.
+     * (e.g. f - ff - ffl)
+     *
+     * @param c1    the first character
+     * @param c2    the second character
+     *
+     * @return    the ligature character as <code>UnicodeChar</code>, or
+     *             <code>null</code>, if none exists
+     */
+    UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2);
 
-	/**
-	 * Return the width of space character.
-	 *
-	 * @return	the width of the space character
-	 */
-	Glue getSpace();
+    /**
+     * ...
+     *
+     * @param hyphen ...
+     */
+    void setHyphenChar(UnicodeChar hyphen);
 
-	/**
-	 * Return the em size of the font.
-	 *
-	 * @return ...
-	 */
-	Dimen getEm();
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    UnicodeChar getHyphenChar();
 
-	/**
-	 * Return the ex size of the font.
-	 *
-	 * @return ...
-	 */
-	Dimen getEx();
+    /**
+     * ...
+     *
+     * @param skew ...
+     */
+    void setSkewChar(UnicodeChar skew);
 
-	/**
-	 * Return font dimen size with a key.
-	 *
-	 * @return the font-dimen.
-	 */
-	Dimen getFontDimen(String key);
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    UnicodeChar getSkewChar();
 
-	/**
-	 * Set the font dimen size with a key.
-	 */
-	void setFontDimen(String key, Dimen value);
-	
-	/**
-	 * Return the font name.
-	 *
-	 * @return ...
-	 */
-	String getFontName();
+    /**
+     * Return the width of space character.
+     *
+     * @return the width of the space character
+     */
+    Glue getSpace();
 
-	/**
-	 * Return the <code>File</code> object of a external font file or 
-	 * <code>null</code>, if no such file exists.
-	 *
-	 * @return ...
-	 */
-	File getExternalFile();
+    /**
+     * Return the em size of the font.
+     *
+     * @return ...
+     */
+    Dimen getEm();
 
-	/**
-	 * Return the external ID to find the glyph in the external file.
-	 *
-	 * @return the external ID, or <code>null</code>, if none exists.
-	 */
-	String getExternalID(UnicodeChar c);
-	
-	/**
-	 * Return the font-type as <code>String</code>.
-	 * @return	the font-type
-	 */
-	String getFontType();
+    /**
+     * Return the ex size of the font.
+     *
+     * @return ...
+     */
+    Dimen getEx();
+
+    /**
+     * Return font dimen size with a key.
+     *
+     * @param key ...
+     * @return ...
+     */
+    Dimen getFontDimen(String key);
+
+    /**
+     * Setter for the font dimen register.
+     *
+     * @param key ...
+     * @param value ...
+     *
+     * @return ...
+     */
+    void setFontDimen(String key, Dimen value);
+
+    /**
+     * Return the font name.
+     *
+     * @return ...
+     */
+    String getFontName();
+
+    /**
+     * Return the <code>File</code> object of a external font file or
+     * <code>null</code>, if no such file exists.
+     *
+     * @return ...
+     */
+    File getExternalFile();
+
+    /**
+     * Return the external ID to find the glyph in the external file.
+     *
+     * @param uc ...
+     *
+     * @return the external ID, or <code>null</code>, if none exists.
+     */
+    String getExternalID(UnicodeChar uc);
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,35 +18,40 @@
  */
 package de.dante.extex.main;
 
-import de.dante.extex.logging.Logger;
-import de.dante.util.Observable;
-import de.dante.util.Observer;
+import java.util.logging.Logger;
+
+import de.dante.util.observer.Observable;
+import de.dante.util.observer.Observer;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FileOpenObserver implements Observer {
 
+    /**
+     * The field <tt>logger</tt> contains the ...
+     */
     private Logger logger;
-    
+
     /**
      * Creates a new object.
-     * 
-     * 
+     *
      */
-    public FileOpenObserver(Logger logger) {
+    public FileOpenObserver(final Logger logger) {
         super();
         this.logger = logger;
     }
 
     /**
-     * @see de.dante.util.Observer#update(de.dante.util.Observable, java.lang.Object)
+     * @see de.dante.util.observer.Observer#update(de.dante.util.Observable,
+     *       java.lang.Object)
      */
-    public void update(Observable observable, Object item) {
-        logger.info("("+item.toString());
+    public void update(final Observable observable, final Object item) {
+
+        logger.info("(" + item.toString());
     }
 
 }

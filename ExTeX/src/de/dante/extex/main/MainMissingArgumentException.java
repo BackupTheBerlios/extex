@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,11 +21,11 @@ package de.dante.extex.main;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the main program detects that an adverticed 
+ * This exception is thrown when the main program detects that an advertised
  * argument is missing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainMissingArgumentException extends MainException {
     /**
@@ -33,7 +33,7 @@ public class MainMissingArgumentException extends MainException {
      *
      * @param message the name of the missing argument
      */
-    public MainMissingArgumentException(String message) {
+    public MainMissingArgumentException(final String message) {
         super(-10, message);
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,32 +25,36 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\showthe</code>.
+ * This class provides an implementation for the primitive
+ * <code>\showthe</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Showthe extends The {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for tracing and debugging
-	 */
-	public Showthe(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for tracing and debugging
+     */
+    public Showthe(final String name) {
+        super(name);
+    }
 
-	/**
-	 * Get the next token (not expand) and 
-	 * put the value (as text) on the log.
-	 * 
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
-	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
-		super.execute(prefix, context, source, typesetter);
-		source.update("message", source.getToken().toText());
-		prefix.clear();
-	}
+    /**
+     * Get the next token (not expand) and 
+     * put the value (as text) into the log.
+     *
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        super.execute(prefix, context, source, typesetter);
+        source.update("message", source.getToken().toText());
+        prefix.clear();
+    }
 }

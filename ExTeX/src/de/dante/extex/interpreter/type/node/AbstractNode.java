@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,139 +22,132 @@ import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.typesetter.Node;
 
 /**
- * Abstract class for all <code>Nodes</code>.
+ * ...
  *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractNode implements Node {
+    /**
+     * The field <tt>depth</tt> contains the depth of the node.
+     * The depth is the extend of the node below the baseline.
+     */
+    private Dimen depth;
 
-	/** 
-	 * This is the depth of the node.<p>
-	 * The depth is the extend of the node below the baseline.
-	 * A <code>null</code> value indicates
-	 * a running value which has to be set or computed later.
-	 */
-	private Dimen theDepth;
+    /**
+     * The field <tt>height</tt> contains the height of the node.
+     *  The height is the extend of the node above the baseline.
+     */
+    private Dimen height;
 
-	/** 
-	 * This is the height of the node.<p>
-	 * The height is the extend of the node above the baseline.
-	 * A <code>null</code> value indicates
-	 * a running value which has to be set or computed later.
-	 */
-	private Dimen theHeight;
+    /** This is the width of the node.
+     *  The width is the extend of the node along the baseline.
+     */
+    private Dimen width;
 
-	/** 
-	 * This is the width of the node.<p>
-	 * The width is the extend of the node along the baseline.
-	 * <code>null</code> indicates
-	 * a running value which has to be set or computed later.
-	 */
-	private Dimen theWidth;
+    /**
+     * Creates a new object.
+     * All dimensions (width, height, depth) are initially set to 0pt.
+     */
+    public AbstractNode() {
+        super();
+        width  = new Dimen();
+        height = new Dimen();
+        depth  = new Dimen();
+    }
 
-	/**
-	 * Creates a new object.<p>
-	 * All dimensions (width, height, depth) are initially unset.
-	 */
-	public AbstractNode() {
-		super();
-		theWidth = new Dimen();
-		theHeight = new Dimen();
-		theDepth = new Dimen();
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param aWidth the width of the node
+     */
+    public AbstractNode(final Dimen aWidth) {
+        super();
+        this.width = new Dimen(aWidth);
+        this.height = new Dimen();
+        this.depth = new Dimen();
+    }
 
-	/**
-	 * Creates a new object.
-	 * @param width the width of the node; <code>null</code> denotes the unset value
-	 */
-	public AbstractNode(final Dimen width) {
-		super();
-		theWidth = width;
-		theHeight = new Dimen();
-		theDepth = new Dimen();
-	}
+    /**
+     * Creates a new object.
+     * 
+     * @param aWidth the width of the node
+     * @param aHeight the height of the node
+     * @param aDepth the depth of the node
+     */
+    public AbstractNode(final Dimen aWidth, final Dimen aHeight,
+        final Dimen aDepth) {
+        super();
+        this.width = new Dimen(aWidth);
+        this.height = new Dimen(aHeight);
+        this.depth = new Dimen(aDepth);
+    }
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param width the width of the node; <code>null</code> denotes the unset value
-	 * @param height the height of the node; <code>null</code> denotes the unset value
-	 * @param depth the depth of the node; <code>null</code> denotes the unset value
-	 */
-	public AbstractNode(final Dimen width, final Dimen height, final Dimen depth) {
-		super();
-		theWidth = width;
-		theHeight = height;
-		theDepth = depth;
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#setDepth(de.dante.extex.interpreter.type.Dimen)
+     */
+    public void setDepth(final Dimen aDepth) {
+        depth.set(aDepth);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#setDepth(de.dante.extex.interpreter.type.Dimen)
-	 */
-	public void setDepth(final Dimen depth) {
-		theDepth.set(depth);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#getDepth()
+     */
+    public Dimen getDepth() {
+        return depth;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#getDepth()
-	 */
-	public Dimen getDepth() {
-		return new Dimen(theDepth);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#setHeight(de.dante.extex.interpreter.type.Dimen)
+     */
+    public void setHeight(final Dimen aHeight) {
+        height.set(aHeight);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#setHeight(de.dante.extex.interpreter.type.Dimen)
-	 */
-	public void setHeight(final Dimen height) {
-		theHeight.set(height);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#getHeight()
+     */
+    public Dimen getHeight() {
+        return height;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#getHeight()
-	 */
-	public Dimen getHeight() {
-		return new Dimen(theHeight);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#setWidth(de.dante.extex.interpreter.type.Dimen)
+     */
+    public void setWidth(final Dimen aWidth) {
+        width.set(aWidth);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#setWidth(de.dante.extex.interpreter.type.Dimen)
-	 */
-	public void setWidth(final Dimen width) {
-		theWidth.set(width);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#getWidth()
+     */
+    public Dimen getWidth() {
+        return width;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#getWidth()
-	 */
-	public Dimen getWidth() {
-		return new Dimen(theWidth);
-	}
+    /**
+     * ...
+     *
+     * @param prefix ...
+     *
+     * @return ...
+     */
+    protected String toText(final String prefix) {
+        StringBuffer sb = new StringBuffer();
+        toText(sb, prefix);
+        return sb.toString();
+    }
 
-	/**
-	 * ...
-	 *
-	 * @param prefix ...
-	 *
-	 * @return ...
-	 */
-	protected String toText(final String prefix) {
-		StringBuffer sb = new StringBuffer();
-		toText(sb, prefix);
-		return sb.toString();
-	}
+    /**
+     * ...
+     *
+     * @param sb the output string buffer
+     * @param prefix ...
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append(prefix);
 
-	/**
-	 * ...
-	 *
-	 * @param sb the output string buffer
-	 * @param prefix ...
-	 */
-	public void toText(final StringBuffer sb, final String prefix) {
-		sb.append(prefix);
-
-		//TODO incomplete
-	}
+        //TODO incomplete
+    }
 
 }

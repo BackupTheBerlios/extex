@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,21 +25,22 @@ import de.dante.util.UnicodeChar;
 /**
  * This class represents a math shift token.
  * <p>
- * This class has a protected constructor only. Use the factory 
- * {@link de.dante.extex.scanner.stream.TokenFactoryIml TokenFactoryImpl}
+ * This class has a protected constructor only. Use the factory
+ * {@link de.dante.extex.scanner.TokenFactory TokenFactory}
  * to get an instance of this class.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathShiftToken extends AbstractToken implements Token {
+
     /**
      * Creates a new object.
      *
      * @param uc the actual value
      */
-    protected MathShiftToken(UnicodeChar uc) {
+    protected MathShiftToken(final UnicodeChar uc) {
         super(uc);
     }
 
@@ -54,10 +55,12 @@ public class MathShiftToken extends AbstractToken implements Token {
      * Get the string representation of this object for debugging purposes.
      *
      * @return the string representation
-     * 
+     *
      * @see "TeX -- The Program [298]"
      */
     public String toString() {
-        return Messages.format("MathShiftToken.Text",getValue());
+
+        return Messages.format("MathShiftToken.Text", getValue());
     }
+
 }

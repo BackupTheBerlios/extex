@@ -23,9 +23,11 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\endinput</code>.
+ * This class provides an implementation for the primitive
+ * <code>\endinput</code>.
  * It sets the named count register to the value given,
  * and as a side effect all prefixes are zeroed.
  *
@@ -35,7 +37,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Endinput extends AbstractCode {
 
@@ -55,7 +57,9 @@ public class Endinput extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         source.closeNextFileStream();
         prefix.clear();
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,23 +18,66 @@
  */
 package de.dante.extex.interpreter.type;
 
+import java.io.File;
 import java.io.Serializable;
+
+import de.dante.extex.scanner.Token;
+import de.dante.util.GeneralException;
 
 /**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class OutFile implements Serializable {
 
     /**
-     * Creates a new object.
-     * 
-     * 
+     * The constant <tt>MAX_FILE_NO</tt> contains the ...
      */
-    public OutFile() {
+    public static int MAX_FILE_NO = 15;
+
+    /**
+     * The field <tt>file</tt> contains the ...
+     */
+    private File file = null;
+
+    /**
+     * Creates a new object.
+     *
+     * @param name the file to write to
+     */
+    public OutFile(final File name) {
         super();
+        file = name;
+    }
+
+    /**
+     * ...
+     *
+     * @throws GeneralException ...
+     */
+    public void open() throws GeneralException {
+        
+    }
+
+    /**
+     * ...
+     *
+     * @throws GeneralException ...
+     */
+    public void close() throws GeneralException {
+        
+    }
+
+    /**
+     * ...
+     *
+     * @param t ...
+     * @throws GeneralException ...
+     */
+    public void write(final Token t) throws GeneralException {
+        
     }
 
 }

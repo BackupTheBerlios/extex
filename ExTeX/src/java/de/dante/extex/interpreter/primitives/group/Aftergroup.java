@@ -28,31 +28,34 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\aftergroup</code>.
- * 
+ * This class provides an implementation for the primitive
+ * <code>\aftergroup</code>.
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Aftergroup extends AbstractCode {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public Aftergroup(String name) {
+    public Aftergroup(final String name) {
         super(name);
     }
 
     /**
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter)
-        throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Token t = source.getToken();
-        if ( t==null ) {
-            throw new GeneralHelpingException("xxx");   //TODO: exception text
+        if (t == null) {
+            throw new GeneralHelpingException("UnexpectedEOF",
+                    printableControlSequence(context));
         }
         context.afterGroup(t);
 

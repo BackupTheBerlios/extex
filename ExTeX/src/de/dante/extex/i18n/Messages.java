@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,14 +31,14 @@ import java.util.ResourceBundle;
  * The Strings used are read from the resource <tt>extex.messages</tt> or one
  * of its localized variants.
  * </p>
- * 
+ *
  * <p>
  * For ExTeX this properties file has many similarities to <tt>TEX.POOL</tt>
  * in TeX.
  * </p>
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class Messages {
     /**
@@ -160,11 +160,13 @@ public final class Messages {
     }
 
     /**
-     *  Initialize the messages with a given locale.
+     * Initialize the messages with a given locale. This method should be
+     * called early in the application and not called again. Otherwise the
+     * change in the language might confuse the user.
      *
      * @param locale the preferred locale to use
      */
-    public static void init(final Locale locale) {
+    public static void configure(final Locale locale) {
         bundle = ResourceBundle.getBundle(BUNDLE_NAME, locale);
     }
 
@@ -213,8 +215,8 @@ public final class Messages {
     /**
      * Apply the given argument to the format string stored in the resource
      * bundle under the given key and print the result to a writer. The
-     * argument object's value of toString() replaces the substring <tt>'{0}'</tt>,
-     * <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
+     * argument object's value of toString() replaces the substring 
+     * <tt>'{0}'</tt>, <tt>'{1}'</tt>, and <tt>'{2}'</tt> in the format.
      *
      * @param writer the target output writer
      * @param fmt the key in the resource bundle to search for

@@ -37,7 +37,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ContextFactory {
 
@@ -54,7 +54,8 @@ public class ContextFactory {
     /**
      * The field <tt>constructor</tt> contains the constructor of the class to
      * instantiate. It is kept here to speed up the method
-     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group) newInstance}.
+     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group)
+     *  newInstance}.
      */
     private Constructor constructor;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -31,18 +31,20 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Vrule extends AbstractCode {
-    /** ... */
-    private static final long DEFAULT_RULE = 26214; //0.4pt 
+    /**
+     * The constant <tt>DEFAULT_RULE</tt> contains the equivalent to 0.4pt.
+     */
+    private static final long DEFAULT_RULE = 26214;
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Vrule(String name) {
+    public Vrule(final String name) {
         super(name);
     }
 
@@ -53,13 +55,15 @@ public class Vrule extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      * @see "TeX -- The Program [463]"
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         Dimen width = new Dimen(DEFAULT_RULE);
         Dimen height = new Dimen(0);
         Dimen depth = new Dimen(0);
 
-        for (; ; ) {
+        for (;;) {
             if (source.scanKeyword("width")) {
                 width.set(context, source);
             } else if (source.scanKeyword("height")) {

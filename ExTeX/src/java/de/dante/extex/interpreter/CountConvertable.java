@@ -23,13 +23,14 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This is an interface which describes the feature to be convertibe into a 
+ * This is an interface which describes the feature to be convertibe into a
  * count.
  *
- * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.5 $
  */
 public interface CountConvertable {
+
     /**
      * ...
      *
@@ -42,4 +43,5 @@ public interface CountConvertable {
      */
     long convertCount(Context context, TokenSource source)
             throws GeneralException;
+
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,49 +18,247 @@
  */
 package de.dante.extex.scanner;
 
-import de.dante.util.UnicodeChar;
 
 /**
  * This interface describes the capabilities for a visitor class on the category
  * codes.
  * This interface is used to implement the visitor pattern.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface CatcodeVisitor {
 
-	public abstract Object visitEscape(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on an escape token.
+     * In TeX this normally means a control sequence.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitEscape(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitLeftBrace(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a left brace token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitLeftBrace(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitRightBrace(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a right brace token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitRightBrace(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitMathShift(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a math shift token.
+     * In TeX this normally is a $.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitMathShift(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitTabMark(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a tab mark token.
+     * In TeX this normally is a &.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitTabMark(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitCr(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a cr token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitCr(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitMacroParam(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a macro parameter token.
+     * In TeX this normally is a #.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitMacroParam(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitSupMark(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a sup mark token.
+     * In TeX this normally is a ^.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitSupMark(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitSubMark(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a sub mark token.
+     * In TeX this normally is a _.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitSubMark(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitIgnore(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on an ignore token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitIgnore(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitSpace(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a space token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitSpace(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitLetter(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a letter token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitLetter(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitOther(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on an other token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitOther(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitActive(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on an active token.
+     * In TeX this is e.g. ~.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitActive(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitComment(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on a comment token.
+     * In TeX this normally is a %.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitComment(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
-	public abstract Object visitInvalid(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
+    /**
+     * This visit method is invoked on an invalid token.
+     *
+     * @param arg1 the first argument to pass
+     * @param arg2 the second argument to pass
+     * @param arg3 the third argument to pass
+     *
+     * @return some value
+     *
+     * @throws Exception in case of an error
+     */
+    Object visitInvalid(Object arg1, Object arg2, Object arg3)
+	throws Exception;
 
 }

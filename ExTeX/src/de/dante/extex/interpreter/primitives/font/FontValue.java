@@ -34,75 +34,76 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\fontvalue</code>.
+ * This class provides an implementation for the primitive
+ * <code>\fontvalue</code>.
  * <p>
  * Example:
  * <pre>
  * 	\fontvalue\ff{key}=5pt
  *  \the\fontvalue\ff{key}
  * </pre>
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FontValue extends AbstractCode implements Theable {
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param name the name for debugging
-	 */
-	public FontValue(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for debugging
+     */
+    public FontValue(final String name) {
+        super(name);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-	 *      de.dante.extex.interpreter.context.Context,
-	 *      de.dante.extex.interpreter.TokenSource,
-	 *      de.dante.extex.typesetter.Typesetter)
-	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    /**
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
 
-		// \fontvalue\ff{key}=5pt
-		Token tok = source.scanNonSpace();
-		if (tok == null || !(tok instanceof ControlSequenceToken)) {
-			throw new GeneralHelpingException("FONT.nofontprimitive");
-		}
-		Code code = context.getMacro(tok.getValue());
-		if (code == null || !(code instanceof FontCode)) {
-			throw new GeneralHelpingException("FONT.nofontprimitive");
-		}
-		String key = source.scanTokensAsString();
-		if (key == null || key.trim().length() == 0) {
-			throw new GeneralHelpingException("FONT.fontkeynotfound");
-		}
+        // \fontvalue\ff{key}=5pt
+        Token tok = source.scanNonSpace();
+        if (tok == null || !(tok instanceof ControlSequenceToken)) {
+            throw new GeneralHelpingException("FONT.nofontprimitive");
+        }
+        Code code = context.getMacro(tok.getValue());
+        if (code == null || !(code instanceof FontCode)) {
+            throw new GeneralHelpingException("FONT.nofontprimitive");
+        }
+        String key = source.scanTokensAsString();
+        if (key == null || key.trim().length() == 0) {
+            throw new GeneralHelpingException("FONT.fontkeynotfound");
+        }
 
-		source.scanOptionalEquals();
-		Dimen size = new Dimen(context, source);
-		Font font = ((FontCode) code).getFont();
-		font.setFontDimen(key, size);
-		prefix.clear();
-	}
+        source.scanOptionalEquals();
+        Dimen size = new Dimen(context, source);
+        Font font = ((FontCode) code).getFont();
+        font.setFontDimen(key, size);
+        prefix.clear();
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
-	 */
-	public Tokens the(Context context, TokenSource source) throws GeneralException {
-		// \the\fontvalue\ff{key}
-		Token tok = source.scanNonSpace();
-		if (tok == null || !(tok instanceof ControlSequenceToken)) {
-			throw new GeneralHelpingException("FONT.nofontprimitive");
-		}
-		Code code = context.getMacro(tok.getValue());
-		if (code == null || !(code instanceof FontCode)) {
-			throw new GeneralHelpingException("FONT.nofontprimitive");
-		}
-		String key = source.scanTokensAsString();
-		if (key == null || key.trim().length() == 0) {
-			throw new GeneralHelpingException("FONT.fontkeynotfound");
-		}
-		Font font = ((FontCode) code).getFont();
-		return new Tokens(context, font.getFontDimen(key).toString());
-	}
+    /**
+     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public Tokens the(Context context, TokenSource source) throws GeneralException {
+        // \the\fontvalue\ff{key}
+        Token tok = source.scanNonSpace();
+        if (tok == null || !(tok instanceof ControlSequenceToken)) {
+            throw new GeneralHelpingException("FONT.nofontprimitive");
+        }
+        Code code = context.getMacro(tok.getValue());
+        if (code == null || !(code instanceof FontCode)) {
+            throw new GeneralHelpingException("FONT.nofontprimitive");
+        }
+        String key = source.scanTokensAsString();
+        if (key == null || key.trim().length() == 0) {
+            throw new GeneralHelpingException("FONT.fontkeynotfound");
+        }
+        Font font = ((FontCode) code).getFont();
+        return new Tokens(context, font.getFontDimen(key).toString());
+    }
 }

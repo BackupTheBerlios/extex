@@ -23,12 +23,13 @@ import java.io.OutputStream;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.util.configuration.Configuration;
 
 /**
  * This is a first dummy implementation of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class DumpDocumentWriter implements DocumentWriter {
 
@@ -45,7 +46,7 @@ public class DumpDocumentWriter implements DocumentWriter {
     /**
      * Creates a new object.
      */
-    public DumpDocumentWriter() {
+    public DumpDocumentWriter(final Configuration cfg) {
         super();
     }
 
@@ -64,7 +65,7 @@ public class DumpDocumentWriter implements DocumentWriter {
     }
 
     /**
-     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.Writer)
+     * @see de.dante.extex.documentWriter.DocumentWriter#setOutputStream(java.io.OutputStream)
      */
     public void setOutputStream(final OutputStream outStream) {
         out = outStream;

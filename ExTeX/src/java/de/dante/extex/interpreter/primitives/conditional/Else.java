@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\else</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Else extends AbstractIf {
 
@@ -50,9 +50,10 @@ public class Else extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
-        if (context.ifPop()!=0) {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        if (context.popConditional() != 0) {
             if (skipToElseOrFi(context, source)) {
                 throw new GeneralHelpingException("TTP.ExtraOrElseFi", "\\else");
             }
@@ -67,7 +68,8 @@ public class Else extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter) {
+
         return false;
     }
 
@@ -75,7 +77,7 @@ public class Else extends AbstractIf {
      * This method is overwritten here since <tt>\else</tt> does not count as
      * an opening conditional even so it is derived from
      * {@link de.dante.extex.interpreter.AbstractIf AbstractIf}.
-     * 
+     *
      * @see de.dante.extex.interpreter.Code#isIf()
      */
     public boolean isIf() {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import de.dante.util.configuration.ConfigurationException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FileFinderConfigImpl implements FileFinder {
 
@@ -43,14 +43,15 @@ public class FileFinderConfigImpl implements FileFinder {
     private static final String PATH_TAG = "path";
 
     /**
-     * The field <tt>config</tt> ...
+     * The field <tt>config</tt> contains the configuration object on which this
+     * file finder is based.
      */
     private Configuration config;
 
     /**
      * Creates a new object.
      *
-     * @param configuration ...
+     * @param configuration the encapsulated configuration object
      */
     public FileFinderConfigImpl(final Configuration configuration) {
         super();
@@ -63,6 +64,7 @@ public class FileFinderConfigImpl implements FileFinder {
      */
     public File findFile(final String name, final String type)
             throws ConfigurationException {
+
         File file;
 
         Configuration cfg = config.getConfiguration(type);

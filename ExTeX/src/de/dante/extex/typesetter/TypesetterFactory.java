@@ -29,9 +29,9 @@ import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
- * This is the factory for Typesetter instances.
- * 
- * 
+ * This is the factory for instances of
+ * {@link de.dante.extex.typesetter.Typesetter Typesetter}.
+ *
  * <pre>
  *  &lt;Typesetter class="the.package.TheClass"&gt;
  *  &lt;/Typesetter&gt;
@@ -39,78 +39,88 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TypesetterFactory {
 
-	/**
-	 * The constant <tt>CLASS_ATTRIBUTE</tt> ...
-	 */
-	private static final String CLASS_ATTRIBUTE = "class";
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
 
-	/**
-	 * The field <tt>config</tt> contains the configuration for this factory.
-	 */
-	private Configuration config = null;
+    /**
+     * The field <tt>config</tt> contains the configuration for this factory.
+     */
+    private Configuration config = null;
 
-	/**
-	 * The field <tt>constructor</tt> contains the constructor of the class to
-	 * instantiate. It is kept here to speed up the method
-	 * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group) newInstance}.
-	 */
-	private Constructor constructor;
+    /**
+     * The field <tt>constructor</tt> contains the constructor of the class to
+     * instantiate. It is kept here to speed up the method
+     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group)
+     *   newInstance}.
+     */
+    private Constructor constructor;
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param config the configuration for this factory
-	 */
-	public TypesetterFactory(Configuration config) throws ConfigurationException {
-		super();
-		this.config = config;
+    /**
+     * Creates a new object.
+     *
+     * @param config the configuration for this factory
+     */
+    public TypesetterFactory(final Configuration config)
+            throws ConfigurationException {
 
-		String classname = config.getAttribute(CLASS_ATTRIBUTE);
-		if (classname == null) {
-			throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE, config);
-		}
+        super();
+        this.config = config;
 
-		try {
-			constructor = Class.forName(classname).getConstructor(new Class[] { Configuration.class, Context.class });
-		} catch (SecurityException e) {
-			throw new ConfigurationInstantiationException(e);
-		} catch (NoSuchMethodException e) {
-			throw new ConfigurationInstantiationException(e);
-		} catch (ClassNotFoundException e) {
-			throw new ConfigurationClassNotFoundException(classname, config);
-		}
-	}
+        String classname = config.getAttribute(CLASS_ATTRIBUTE);
+        if (classname == null) {
+            throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE,
+                    config);
+        }
 
-	/**
-	 * Get an instance of a typesetter.
-	 * 
-	 * @return a new typesetter
-	 * 
-	 * @throws ConfigurationException in case of an configuration error
-	 */
-	public Typesetter newInstance(Context context) throws ConfigurationException {
-		Typesetter typesetter;
+        try {
+            constructor = Class.forName(classname)
+                    .getConstructor(
+                                    new Class[]{Configuration.class,
+                                            Context.class});
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname, config);
+        }
+    }
 
-		try {
-			typesetter = (Typesetter) constructor.newInstance(new Object[] { config, context });
-		} catch (IllegalArgumentException e) {
-			throw new ConfigurationInstantiationException(e);
-		} catch (InstantiationException e) {
-			throw new ConfigurationInstantiationException(e);
-		} catch (IllegalAccessException e) {
-			throw new ConfigurationInstantiationException(e);
-		} catch (InvocationTargetException e) {
-			Throwable c = e.getCause();
-			if (c != null && c instanceof ConfigurationException) {
-				throw (ConfigurationException) c;
-			}
-			throw new ConfigurationInstantiationException(e);
-		}
+    /**
+     * Get an instance of a typesetter.
+     *
+     * @return a new typesetter
+     *
+     * @throws ConfigurationException in case of an configuration error
+     */
+    public Typesetter newInstance(final Context context)
+            throws ConfigurationException {
 
-		return typesetter;
-	}
+        Typesetter typesetter;
+
+        try {
+            typesetter = (Typesetter) constructor.newInstance(new Object[]{
+                    config, context});
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getCause();
+            if (c != null && c instanceof ConfigurationException) {
+                throw (ConfigurationException) c;
+            }
+            throw new ConfigurationInstantiationException(e);
+        }
+
+        return typesetter;
+    }
 }

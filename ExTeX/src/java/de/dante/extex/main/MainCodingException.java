@@ -21,11 +21,11 @@ package de.dante.extex.main;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the main program detects an configuration 
+ * This exception is thrown when the main program detects an configuration
  * error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainCodingException extends MainException {
     /**
@@ -33,7 +33,8 @@ public class MainCodingException extends MainException {
      *
      * @param cause the root of all evil
      */
-    public MainCodingException(Throwable cause) {
+    public MainCodingException(final Throwable cause) {
+
         super(-32, cause);
     }
 

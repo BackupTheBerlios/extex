@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,65 +28,67 @@ import de.dante.util.GeneralException;
  * vertical list
  *
  * @see "TeX -- The Program [137]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @see "TeX -- The Program [136]"
-	 */
-	public VerticalListNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     *
+     * @see "TeX -- The Program [136]"
+     */
+    public VerticalListNode() {
+        super();
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toText(final StringBuffer sb, final String prefix) {
-		sb.append("(vlist ");
-		super.toText(sb, prefix);
-	}
+    /**
+     * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
+     */
+    public void addSkip(final Glue glue) {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toString(final StringBuffer sb, final String prefix) {
-		sb.append("\\vbox");
-		super.toString(sb, prefix);
-	}
+        Node gNode = new GlueNode(glue); // TODO: use factory?
+        gNode.setHeight(glue.getLength());
+        add(gNode);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitVerticalList(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append("(vlist ");
+        super.toText(sb, prefix);
+    }
 
-	/**
-	 * Propagate the size
-	 */
-	protected void propagateSizes(Node node) {
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("\\vbox");
+        super.toString(sb, prefix);
+    }
 
-		if (getWidth().lt(node.getHeight())) {
-			setWidth(node.getWidth());
-		}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
 
-		setHeight(getHeight().add(node.getHeight()));
-		setDepth(getDepth().add(node.getDepth()));
-	}
+        return visitor.visitVerticalList(value, value2);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
-	 */
-	public void addSkip(final Glue glue) {
-		add(new GlueNode(glue,true)); // TODO: use factory?
-	}
-	
+    /**
+     * @see de.dante.extex.interpreter.type.node.AbstractNodeList#updateDimensions(de.dante.extex.typesetter.Node)
+     */
+    protected void updateDimensions(final Node node) {
+
+        getWidth().max(node.getWidth());
+        getHeight().add(node.getHeight());  //TODO incorrect
+        getDepth().add(node.getDepth());    //TODO incorrect
+    }
+
 }

@@ -19,6 +19,7 @@
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
@@ -31,28 +32,45 @@ import de.dante.util.GeneralException;
  *  \toks12{123}
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NumberedToks extends NamedToks {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for debugging
-	 */
-	public NumberedToks(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for debugging
+     */
+    public NumberedToks(final String name) {
+        super(name);
+    }
 
-	/**
-	 * Return the key (the number) for the register.
-	 *
-	 * @param source 	the tokensource
-	 * @return Return the key for the register
-	 * @throws GeneralException, if a error ocoured
-	 */
-	protected String getKey(final TokenSource source) throws GeneralException {
-		return getName() + "#" + Long.toString(source.scanNumber());
-	}
+    /**
+     * Set the value for the register.
+     * This method is void since a whole array of values can not be initialized.
+     *
+     * @param context the interpreter context
+     * @param value the value for the tokens
+     */
+    public void set(final Context context, final String value)
+        throws GeneralException {
+        //TODO
+    }
+
+    /**
+     * Return the key (the number) for the register.
+     *
+     * @param source ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException ...
+     */
+    protected String getKey(final TokenSource source) throws GeneralException {
+
+        return getName() + "#" + Long.toString(source.scanNumber());
+    }
+    
 }

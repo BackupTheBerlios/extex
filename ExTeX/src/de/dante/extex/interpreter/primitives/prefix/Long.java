@@ -30,7 +30,7 @@ import de.dante.extex.typesetter.Typesetter;
  * added to the prefixes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Long extends AbstractCode {
     /**
@@ -38,7 +38,7 @@ public class Long extends AbstractCode {
      *
      * @param name the name for debugging
      */
-    public Long(String name) {
+    public Long(final String name) {
         super(name);
     }
 
@@ -48,8 +48,9 @@ public class Long extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter) {
+
         prefix.setLong();
     }
 }

@@ -25,13 +25,14 @@ import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 
 /**
  * Factory for the Interpreter.
  *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.13 $
  */
 public class InterpreterFactory {
 
@@ -53,11 +54,11 @@ public class InterpreterFactory {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param configuration the configuration object to use
-     * 
-     * @throws ConfigurationException in case that the attribute <tt>classname</tt>
-     *             is missing
+     *
+     * @throws ConfigurationException in case that the attribute
+     *             <tt>classname</tt> is missing
      */
     public InterpreterFactory(final Configuration configuration)
             throws ConfigurationException {
@@ -75,10 +76,11 @@ public class InterpreterFactory {
      * <tt>{@link de.dante.extex.interpreter.Interpreter Interpreter}</tt>.
      *
      * @return a new instance for the interface Interpreter
-     * 
+     *
      * @throws ConfigurationException in case that the instantiation failes
      */
     public Interpreter newInstance() throws ConfigurationException {
+
         Interpreter interpreter;
 
         try {
@@ -100,7 +102,11 @@ public class InterpreterFactory {
             }
             throw new ConfigurationInstantiationException(e);
         } catch (NoSuchMethodException e) {
-            throw new ConfigurationInstantiationException(e);
+            throw new ConfigurationNoSuchMethodException(classname
+                                                         + "("
+                                                         + Configuration.class
+                                                                 .getName()
+                                                         + ")");
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(classname, config);
         }

@@ -18,7 +18,6 @@
  */
 package de.dante.extex.interpreter.primitives.file;
 
-import de.dante.extex.i18n.GeneralTerminateException;
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -35,7 +34,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class End extends AbstractCode {
     /**
@@ -56,6 +55,7 @@ public class End extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
-        throw new GeneralTerminateException("\\end"); //TODO incomplete
+
+        source.closeAllStreams();
     }
 }

@@ -22,154 +22,224 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
 
 /**
  * This class implements the dimen value.
  *
- * <table border="1">
- * 	<tr><td>1 pt     </td><td>=</td><td>65536 sp</td></tr>
- * 	<tr><td>1 pc     </td><td>=</td><td>12 pt   </td></tr>
- *  <tr><td>1 in     </td><td>=</td><td>72,27 pt</td></tr>
- *  <tr><td>72 bp    </td><td>=</td><td>1 in    </td></tr>
- *  <tr><td>2,54 cm  </td><td>=</td><td>1 in    </td></tr>
- *  <tr><td>10 mm    </td><td>=</td><td>1 cm    </td></tr>
- *  <tr><td>1157 dd  </td><td>=</td><td>1238 pt </td></tr>
- *  <tr><td>1 cc     </td><td>=</td><td>12 dd   </td></tr>
- *  <tr><td>65536 sp </td><td>=</td><td>1 pt    </td></tr> 
- * </table>
-
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
-	/**
-	 * The constant <tt>ZERO_PT</tt> contains the ...
-	 */
-	public static final Dimen ZERO_PT = new Dimen(0);
+     /**
+      * The constant <tt>ZERO_PT</tt> contains the ...
+      */
+     public static final Dimen ZERO_PT = new Dimen(0);
 
-	/**
-	 * The constant <tt>ONE_PT</tt> contains the ...
-	 */
-	public static final Dimen ONE_PT = new Dimen(1 << 16);
+     /**
+      * The constant <tt>ONE_PT</tt> contains the ...
+      */
+     public static final Dimen ONE_PT = new Dimen(1 << 16);
 
-	/**
-	 * Creates a new object.
-	 * The length stored in it is initialized to 0pt.
-	 */
-	public Dimen() {
-		super();
-	}
+     /**
+      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
+      *
+      * @see "TeX -- The Program [101]"
+      */
+     public static final long ONE = 1 << 16;
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param value the new dimenvalue
-	 */
-	public Dimen(final long value) {
-		super(value);
-	}
+     /**
+      * Creates a new object.
+      * The length stored in it is initialized to 0pt.
+      */
+     public Dimen() {
+          super();
+     }
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param value the value as <code>Dimen</code>
-	 */
-	public Dimen(final Dimen value) {
-		super(value.getValue());
-	}
+     /**
+      * Creates a new object.
+     * This method makes a new instance of the class with the given value.
+      *
+      * @param value the value to set
+      */
+     public Dimen(final long value) {
+          super(value);
+     }
 
-	/**
-	 * Creates a new object.
-	 * Scan the <code>TokenSource</code> and create a new <code>Dimen</code>.
-	 *
-	 * @param source	the tokensource
-	 * @param context	the context
-	 * @throws GeneralException in case of an error
-	 */
-	public Dimen(final Context context, final TokenSource source) throws GeneralException {
-		super(source, context, false);
-	}
+    /**
+     * Creates a new object.
+     * This method makes a new instance of the class with the same value as
+     * the given instance. I.e. it acts like clone().
+     *
+     * @param value the value to imitate
+     */
+    public Dimen(final Dimen value) {
+        super(value == null ? 0 : value.getValue());
+    }
 
-	/**
-	 * Creates a new object.
-	 * Scan the <code>String</code> and create a new <code>Dimen</code>.
-	 *
-	 * @param s			the String 
-	 * @param context	the context
-	 * @throws GeneralException in case of an error
-	 */
-	public Dimen(final Context context, final String s) throws GeneralException {
-		super(s, context, false);
-	}
-	
-	
-	/**
-	 * Creates a new object with a width with a possibly higher order.
-	 *
-	 * @param value the fixed width or the factor
-	 * @param order the order
-	 */
-	public Dimen(final long value, final int order) {
-		super(value, order);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param context the interpreter context
+     * @param source the source for next tokens
+     *
+     * @throws GeneralException in case of an error
+     */
+    public Dimen(final Context context, final TokenSource source)
+        throws GeneralException {
+        super(source, context, false);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.GlueComponent#set(de.dante.extex.interpreter.context.Context,
-	 *      de.dante.extex.interpreter.TokenSource)
-	 */
-	public void set(final Context context, final TokenSource source) throws GeneralException {
-		set(source, context, false);
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.GlueComponent#set(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void set(final Context context, final TokenSource source)
+        throws GeneralException {
+        set(source, context, false);
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @param d the Dimen to add to
-	 */
-	public Dimen add(final Dimen d) {
-		setValue(getValue() + d.getValue());
-		return new Dimen(getValue());
-	}
+    /**
+     * Add the value of the argument to the current value.
+     * This modifies this instance.
+     *
+     * @param d the Dimen to add to
+     *
+     * @return ...
+     */
+    public Dimen add(final Dimen d) {
+        setValue(getValue() + d.getValue());
+        return new Dimen(getValue());
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @param d the Dimen to add to
-	 */
-	public Dimen subtract(final Dimen d) {
-		setValue(getValue() - d.getValue());
-		return new Dimen(getValue());
-	}
+    /**
+     * Subtract the value of the argument from the current value.
+     * This modifies this instance.
+     *
+     * @param d the Dimen to add to
+     *
+     * @return ...
+     */
+    public Dimen subtract(final Dimen d) {
+        setValue(getValue() - d.getValue());
+        return new Dimen(getValue());
+    }
 
-	/**
-	 * Return <code>true</code>, if the internal value is
-	 * less than the dimenvalue.
-	 * 
-	 * @param d dimenvalue to compare
-	 */
-	public boolean lt(final Dimen d) {
-		return (getValue() < d.getValue());
-	}
+    /**
+     * ...
+     *
+     * @param d ...
+     *
+     * @return ...
+     */
+    public boolean lt(final Dimen d) {
+        return (getValue() < d.getValue());
+    }
 
-	/**
-	 * Return <code>true</code>, if the internal value is
-	 * less than or equals the dimenvalue.
-	 * 
-	 * @param d dimenvalue to compare
-	 */
-	public boolean le(final Dimen d) {
-		return (getValue() <= d.getValue());
-	}
-	
-	/**
+    /**
+     * ...
+     *
+     * @param d ...
+     *
+     * @return ...
+     */
+    public boolean le(final Dimen d) {
+        return (getValue() <= d.getValue());
+    }
+
+    /**
+     * ...
+     *
+     * @param d ...
+     *
+     * @return ...
+     */
+    public void max(final Dimen d) {
+
+        long val = d.getValue();
+        if (val > getValue()) {
+            setValue(val);
+        }
+    }
+
+     /**
+      * ...
+      *
+      * @return ...
+      */
+     public String toString() {
+          return Long.toString(getValue()) + "sp";
+     }
+
+     /**
+      * ...
+      *
+      * @param sb the output string buffer
+      */
+     public void toString(final StringBuffer sb) {
+          sb.append(Long.toString(getValue()));
+          sb.append("sp");
+     }
+
+     /**
+      * Return a String with the Dimen value in pt
+      *
+      * @return a String with the Dimen value in pt
+      */
+     public String toPT() {
+          return String.valueOf(round((double)getValue() / ONE)) + "pt";
+     }
+
+     /**
+      * Rounds a floating-point number to nearest whole number.
+      * It uses exactly the same algorithm as web2c implementation of TeX.
+      *
+      * @param d number to be rounded
+      *
+      * @return rounded value
+      */
+     private long round(double d) {
+
+         return (long) ((d >= 0.0) ? d + 0.5 : d - 0.5);
+     }
+
+     /**
+     * ...
+     *
+     * @param factory the token factory to get the required tokens from
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     *
+     * @see "TeX -- The Program [103]"
+     */
+    public Tokens toToks(final TokenFactory factory) throws GeneralException {
+
+        Tokens toks = new Tokens();
+        String s = Long.toString(getValue() / ONE);
+
+        for (int i = 0; i < s.length(); i++) {
+            toks.add(factory.newInstance(Catcode.OTHER, s.substring(i, i + 1)));
+        }
+
+        //TODO: decimal places and rounding
+        toks.add(factory.newInstance(Catcode.LETTER, "p"));
+        toks.add(factory.newInstance(Catcode.LETTER, "t"));
+
+        return toks;
+    }
+
+    /**
 	 * Return the <code>Dimen</code>-value in bp
 	 * @return	the value in bp
 	 */
 	public double toBP() {
 		return ((double) getValue() * 7200) / (7227 << 16);
 	}
-	
+
 }

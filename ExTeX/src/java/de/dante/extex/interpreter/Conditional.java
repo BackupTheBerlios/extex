@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,30 +25,36 @@ import de.dante.util.Locator;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Conditional {
-    /** the locator to the position of the opening <tt>\if</tt> */
+
+    /**
+     * The field <tt>locator</tt> contains the locator to the position of the
+     * opening <tt>\if</tt>.
+     */
     private Locator locator;
 
-    /** the value of the conditional */
+    /**
+     * The field <tt>value</tt> contains the value of the conditional.
+     */
     private long value;
 
     /**
      * Creates a new object.
      *
-     * @param theLocator the locator
-     * @param theValue the new value
+     * @param aLocator the locator
+     * @param aValue the new value
      */
-    public Conditional(final Locator theLocator, final long theValue) {
+    public Conditional(final Locator aLocator, final long aValue) {
         super();
-        this.locator = theLocator;
-        this.value   = theValue;
+        this.locator = aLocator;
+        this.value   = aValue;
     }
 
     /**
      * Getter for the locator of this conditional.
-     * the locator points to the initiating <tt>\if</tt>.
+     * The locator points to the initiating <tt>\if</tt>.
      *
      * @return the locator
      */
@@ -64,4 +70,5 @@ public class Conditional {
     public long getValue() {
         return value;
     }
+
 }

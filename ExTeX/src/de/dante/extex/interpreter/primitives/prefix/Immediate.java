@@ -25,12 +25,13 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides an implementation for the primitive <code>\immediate</code>.
+ * This class provides an implementation for the primitive
+ * <code>\immediate</code>.
  * It does simply nothing, but as a side effect the prefix <i>IMMEDIATE</i> is
  * added to the prefixes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Immediate extends AbstractCode {
     /**
@@ -38,7 +39,7 @@ public class Immediate extends AbstractCode {
      *
      * @param name the name for debugging
      */
-    public Immediate(String name) {
+    public Immediate(final String name) {
         super(name);
     }
 
@@ -48,8 +49,9 @@ public class Immediate extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter) {
+
         prefix.setImmediate();
     }
 }

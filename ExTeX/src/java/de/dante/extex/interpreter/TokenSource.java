@@ -18,12 +18,10 @@
  */
 package de.dante.extex.interpreter;
 
-import de.dante.extex.interpreter.type.Real;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.NotObservableException;
@@ -42,11 +40,11 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface TokenSource {
 
-	/**
+    /**
      * Getter for the locator.
      *
      * @return the current locator
@@ -90,13 +88,13 @@ public interface TokenSource {
 
     /**
      * ...
-     * 
-     * @return
      *
-     * @throws GeneralException
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
      */
     Token getControlSequence() throws GeneralException;
-    
+
     /**
      * Getter for the token stream factory.
      *
@@ -116,36 +114,46 @@ public interface TokenSource {
      * All input streams are closed and not further Token is available for
      * processing. This normally means that the interpreter is forced to
      * terminate more or less gracefully.
+     *
+     * @throws GeneralException in case of an error
      */
-    void closeAllStreams();
+    void closeAllStreams() throws GeneralException;
 
     /**
      * Close all streams on the stack until a file stream is found. This file
      * stream is closed as last one. The other streams are left unchanged.
      * If no file stream is found the all streams are closed and none is left.
+     *
+     * @throws GeneralException in case of an error
      */
-    void closeNextFileStream();
+    void closeNextFileStream() throws GeneralException;
 
     /**
      * Push back a token onto the input stream for subsequent reading.
-     * 
+     *
      * @param token the token to push
+     *
+     * @throws GeneralException in case of an error
      */
-    void push(Token token);
+    void push(Token token) throws GeneralException;
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
      *
      * @param tokens the tokens to push
+     *
+     * @throws GeneralException in case of an error
      */
-    void push(Token[] tokens);
+    void push(Token[] tokens) throws GeneralException;
 
     /**
      * Push back a list of tokens onto the input stream for subsequent reading.
      *
      * @param tokens the tokens to push
+     *
+     * @throws GeneralException in case of an error
      */
-    void push(Tokens tokens);
+    void push(Tokens tokens) throws GeneralException;
 
     /**
      * Scan the input stream for tokens making up a character code, this is a
@@ -161,24 +169,6 @@ public interface TokenSource {
     UnicodeChar scanCharacterCode() throws GeneralException;
 
     /**
-     * ...
-     *
-     * @return ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    long scanFloat() throws GeneralException;
-
-    /**
-     * Scan a real-value
-     *
-     * @return the real value
-     *
-     * @throws GeneralException in case of an error
-     */
-    Real scanReal() throws GeneralException;
-    
-    /**
      * Scan the input stream for tokens making up an integer, this is a number
      * optionally preceeded by a sign (+ or -). The number can be preceeded by
      * optional whitespace. Whitespace is also ignored between the sign and the
@@ -192,9 +182,9 @@ public interface TokenSource {
 
     /**
      * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and <code>true</code>
-     * is returned. Otherwise all tokens are left in the input stream and
-     * <code>false</code> is returned.
+     * tokens are found then they are removed from the input stream and
+     * <code>true</code> is returned. Otherwise all tokens are left in the
+     * input stream and <code>false</code> is returned.
      *
      * @param s the tokens to scan
      *
@@ -207,11 +197,11 @@ public interface TokenSource {
 
     /**
      * Scan the expanded token stream for a sequence of letter tokens. If all
-     * tokens are found then they are removed from the input stream and <code>true</code>
-     * is returned. Otherwise all tokens are left in the input stream and
-     * <code>false</code> is returned.
+     * tokens are found then they are removed from the input stream and
+     * <code>true</code> is returned. Otherwise all tokens are left in the
+     * input stream and <code>false</code> is returned.
      *
-     * @param s 	the tokens to scan
+     * @param s the tokens to scan
      * @param space skip space
      *
      * @return <code>true</code> iff the tokens could have been successfully
@@ -220,8 +210,7 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     boolean scanKeyword(String s, boolean space) throws GeneralException;
-    
-    
+
     /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
@@ -314,11 +303,11 @@ public interface TokenSource {
 
     /**
      * Skip spaces.
-     * 
+     *
      * @throws GeneralException in case of an error
      */
     void skipSpace() throws GeneralException;
-    
+
     /**
      * Send the string to the named observer. The observer must be capable to
      * deal with a string argument.
@@ -329,6 +318,14 @@ public interface TokenSource {
      * @throws NotObservableException in case that the named observer is not
      *             accessible
      */
-    void update(String name, String text) throws NotObservableException;
+    void update(String name, String text)
+            throws GeneralException, NotObservableException;
+
+    /**
+     * ...
+     *
+     * @throws GeneralException ...
+     */
+    void executeGroup() throws GeneralException;
 
 }

@@ -19,22 +19,17 @@
 package de.dante.extex.typesetter.impl;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Stack;
+import java.util.ArrayList;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
-import de.dante.extex.typesetter.LineBreaker;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -45,286 +40,261 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.configuration.ConfigurationInstantiationException;
-import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * This is a reference implementation of the
- * {@link de.dante.extex.typesetter.Typesetter Typesetter}interface.
- * 
- * The class load all <code>LineBreaker</code>classes, wich are defined
- * in <tt>extex.xml</tt>.
- * 
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * {@link de.dante.extex.typesetter.Typesetter Typesetter} interface.
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.12 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
-	/**
-	 * The constant <tt>LINEBREAKER_TAG</tt> ...
-	 */
-	private static final String LINEBREAKER_TAG = "LineBreaker";
+    /**
+     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     */
+    private static final String CLASS_ATTRIBUTE = "class";
 
-	/**
-	 * The constant <tt>CLASS_ATTRIBUTE</tt> ...
-	 */
-	private static final String CLASS_ATTRIBUTE = "class";
+    /**
+     * The constant <tt>NAME_ATTRIBUTE</tt> ...
+     */
+    private static final String NAME_ATTRIBUTE = "name";
 
-	/**
-	 * The constant <tt>NAME_ATTRIBUTE</tt> ...
-	 */
-	private static final String NAME_ATTRIBUTE = "name";
+    /**
+     * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
+     * nodes.
+     */
+    private CharNodeFactory charNodeFactory = new CharNodeFactory();
 
-	/**
-	 * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
-	 * nodes.
-	 */
-	private CharNodeFactory charNodeFactory = new CharNodeFactory();
+    /**
+     * The field <tt>documentWriter</tt> contains the document writer for
+     * producing the output.
+     */
+    private DocumentWriter documentWriter;
 
-	/**
-	 * The field <tt>documentWriter</tt> contains the document writer for
-	 * producing the output.
-	 */
-	private DocumentWriter documentWriter;
+    /**
+     * The field <tt>context</tt> contains the context for accessing parameters.
+     */
+    private Context context;
+    
+    /**
+     * The field <tt>listMaker</tt> contains the current list maker for
+     * efficiency. Thus we can avoid to peek at the stack whenever the list
+     * maker is needed.
+     */
+    private ListMaker listMaker;
 
-	/**
-	 * The field <tt>listMaker</tt> contains the current list maker for
-	 * efficiency. Thus we can avoid to peek at the stack whenever the list
-	 * maker is needed.
-	 */
-	private ListMaker listMaker;
+    /**
+     * The field <tt>saveStack</tt> contains the stack of list makers.
+     */
+    private ArrayList saveStack = new ArrayList();
 
-	/**
-	 * The field <tt>saveStack</tt> contains the stack of list makers.
-	 */
-	private Stack saveStack = new Stack();
+    /**
+     * Creates a new object.
+     *
+     * @param config the configuration
+     * @param context the interpreter context
+     *
+     * @throws ConfigurationException
+     * @throws GeneralException
+     */
+    public TypesetterImpl(final Configuration config, final Context context)
+        throws ConfigurationException, GeneralException {
+        super();
+        this.context = context;
+        listMaker = new VerticalListMaker(this);
+    }
 
-	/**
-	 * The hash for the <code>LineBreaker</code>s
-	 */
-	private Map linebreakerMap = new HashMap();
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
+     */
+    public CharNodeFactory getCharNodeFactory() {
+        return charNodeFactory;
+    }
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param config the configuration
-	 */
-	public TypesetterImpl(final Configuration config, Context context) throws ConfigurationException, GeneralException {
-		super();
-		this.context = context;
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getContext()
+     */
+    public Context getContext() {
+        return context;
+    }
 
-		// load all LineBreaker
-		Iterator iterator = config.iterator(LINEBREAKER_TAG);
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
+     */
+    public void setDocumentWriter(final DocumentWriter doc) {
+        documentWriter = doc;
+    }
 
-		while (iterator.hasNext()) {
-			Configuration cfg = (Configuration) iterator.next();
-			String name = cfg.getAttribute(NAME_ATTRIBUTE);
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
+     */
+    public DocumentWriter getDocumentWriter() {
+        return documentWriter;
+    }
 
-			if (name == null || name.equals("")) {
-				throw new ConfigurationMissingAttributeException(NAME_ATTRIBUTE, cfg);
-			}
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#getMode()
+     */
+    public Mode getMode() {
+        return listMaker.getMode();
+    }
 
-			String classname = cfg.getAttribute(CLASS_ATTRIBUTE);
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
+     */
+    public void add(final Node c) throws GeneralException {
+        listMaker.add(c);
+    }
 
-			if (classname == null || classname.equals("")) {
-				throw new ConfigurationMissingAttributeException(CLASS_ATTRIBUTE, cfg);
-			}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void add(final TypesettingContext font, final UnicodeChar symbol)
+        throws GeneralException {
+        listMaker.add(font, symbol);
+    }
 
-			try {
-				LineBreaker linebreaker = (LineBreaker) (Class.forName(classname).newInstance());
-				linebreakerMap.put(name,linebreaker);
-			} catch (Exception e) {
-				throw new ConfigurationInstantiationException(e);
-			}
-		}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
+     */
+    public void addGlue(final Glue g) throws GeneralException {
+        listMaker.addGlue(g);
+    }
 
-		// vertical list
-		listMaker = new VerticalListMaker(this);
-	}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.type.Count)
+     */
+    public void addSpace(final TypesettingContext typesettingContext,
+        final Count spacefactor) throws GeneralException {
+        listMaker.addSpace(typesettingContext, null);
+    }
 
-	/**
-	 * The context
-	 */
-	private Context context;
-	
-	/**
-	 * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
-	 */
-	public CharNodeFactory getCharNodeFactory() {
-		return charNodeFactory;
-	}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#close()
+     */
+    public NodeList close() throws GeneralException {
+        NodeList nodes = listMaker.close();
+        pop();
+        return nodes;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
-	 */
-	public void setDocumentWriter(final DocumentWriter doc) {
-		documentWriter = doc;
-	}
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#closeTopList()
+     */
+    public void closeTopList() throws GeneralException {
+        NodeList list = listMaker.close();
+        pop();
+        if (list instanceof VerticalListNode) {
+            NodeIterator it = list.iterator();
+            while (it.hasNext()) {
+                listMaker.add(it.next());
+            }
+        } else {
+            listMaker.add(list);
+        }
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
-	 */
-	public DocumentWriter getDocumentWriter() {
-		return documentWriter;
-	}
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
+     */
+    public void finish(final Context context) throws GeneralException {
+        par();
+        //TODO incomplete
+        try {
+            documentWriter.shipout(listMaker.close());
+            documentWriter.close();
+        } catch (IOException e) {
+            throw new GeneralPanicException(e);
+        }
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Typesetter#getMode()
-	 */
-	public Mode getMode() {
-		return listMaker.getMode();
-	}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#par()
+     */
+    public void par() throws GeneralException {
+        listMaker.par();
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
-	 */
-	public void add(final Node c) throws GeneralException {
-		listMaker.add(c);
-	}
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#pop()
+     */
+    public void pop() throws GeneralException {
+        if (saveStack.isEmpty()) {
+            throw new GeneralPanicException("xxx"); //TODO internal error
+        }
 
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
-	 */
-	public void add(final TypesettingContext font, final UnicodeChar symbol) throws GeneralException {
-		listMaker.add(font, symbol);
-	}
+        this.listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
-	 */
-	public void addGlue(final Glue g) throws GeneralException {
-		listMaker.addGlue(g);
-	}
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#push(de.dante.extex.typesetter.ListMaker)
+     */
+    public void push(final ListMaker list) {
+        saveStack.add(this.listMaker);
+        this.listMaker = list;
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
-	 *      de.dante.extex.interpreter.type.Count)
-	 */
-	public void addSpace(final TypesettingContext typesettingContext, final Count spacefactor) throws GeneralException {
-		listMaker.addSpace(typesettingContext, null);
-	}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
+     */
+    public void toggleDisplaymath() throws GeneralException {
+        listMaker.toggleDisplaymath();
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#close()
-	 */
-	public NodeList close() {
-		return null;
-	}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
+     */
+    public void toggleMath() throws GeneralException {
+        listMaker.toggleMath();
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#closeTopList()
-	 */
-	public void closeTopList() throws GeneralException {
-		NodeList list = listMaker.close();
-		pop();
-		if (list instanceof VerticalListNode) {
-			NodeIterator it = list.iterator();
-			while (it.hasNext()) {
-				listMaker.add(it.next());
-			}
-		} else {
-			listMaker.add(list);
-		}
-	}
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
+     */
+    public void setSpacefactor(final Count sf) throws GeneralException {
+        listMaker.setSpacefactor(sf);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
-	 */
-	public void finish(final Context context) throws GeneralException {
-		par();
-		//TODO incomplete
-		try {
-			documentWriter.shipout(listMaker.close());
-			documentWriter.close();
-		} catch (IOException e) {
-			throw new GeneralPanicException(e);
-		}
-	}
+    /**
+     * Setter for the previous depth.
+     *
+     * @param pd the value for previous depth
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void setPrevDepth(final Dimen pd) throws GeneralException {
+        listMaker.setPrevDepth(pd);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#par()
-	 */
-	public void par() throws GeneralException {
-		listMaker.par();
-	}
+    /**
+     * This is the entry point for the document writer. Here it receives a
+     * complete node list to be sent to the output writer.
+     *
+     * @param nodes the nodes to send
+     */
+    public void shipout(final NodeList nodes) throws GeneralException {
+        try {
+            documentWriter.shipout(nodes);
+        } catch (IOException e) {
+            throw new GeneralPanicException(e);
+        }
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#pop()
-	 */
-	public void pop() throws GeneralException {
-		if (saveStack.empty()) {
-			throw new GeneralException("xxx");
-		}
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openHbox()
+     */
+    public void openHbox() {
+        push(new RestrictedHorizontalListMaker(this));
+    }
 
-		this.listMaker = (ListMaker) (saveStack.pop());
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#push(de.dante.extex.typesetter.ListMaker)
-	 */
-	public void push(final ListMaker list) {
-		saveStack.push(this.listMaker);
-		this.listMaker = list;
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
-	 */
-	public void toggleDisplaymath() throws GeneralException {
-		listMaker.toggleDisplaymath();
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#toggleMath()
-	 */
-	public void toggleMath() throws GeneralException {
-		listMaker.toggleMath();
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
-	 */
-	public void setSpacefactor(final Count sf) throws GeneralException {
-		listMaker.setSpacefactor(sf);
-	}
-
-	/**
-	 * Setter for the previous depth.
-	 *
-	 * @param pd the value for previous depth
-	 *
-	 * @throws GeneralException in case of an error
-	 */
-	public void setPrevDepth(final Dimen pd) throws GeneralException {
-		listMaker.setPrevDepth(pd);
-	}
-
-	/**
-	 * This is the entry point for the document writer. Here it receives a
-	 * complete node list to be sent to the output writer.
-	 *
-	 * @param nodes the nodes to send
-	 */
-	public void shipout(final Box nodes) throws GeneralException {
-		try {
-			documentWriter.shipout(nodes);
-		} catch (IOException e) {
-			throw new GeneralPanicException(e);
-		}
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#getContext()
-	 */
-	public Context getContext() {
-		return context;
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.impl.Manager#getLineBreakerMap()
-	 */
-	public Map getLineBreakerMap() {
-		return linebreakerMap;
-	}
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openVbox()
+     */
+    public void openVbox() {
+        push(new InnerVerticalListMaker(this));
+    }
 }

@@ -25,21 +25,24 @@ import de.dante.extex.i18n.Messages;
  * This Exception is thrown when a configuration is requested with the path
  * <code>null</code>> or the empty string. Alternatively it can be used when
  * some other kind of configuration information is missing.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ConfigurationMissingException extends ConfigurationException {
 
+    /**
+     * The field <tt>item</tt> contains the name of the missing item.
+     */
     private String item = "";
-    
+
     /**
      * Create a new object.
      *
      * @param message the message string
      */
-    public ConfigurationMissingException(String message) {
-        super(message,(String)null);
+    public ConfigurationMissingException(final String message) {
+        super(message, (String) null);
     }
 
     /**
@@ -48,18 +51,20 @@ public class ConfigurationMissingException extends ConfigurationException {
      * @param message the message string
      * @param location the location of the missing configuration item
      */
-    public ConfigurationMissingException(String message, String location) {
-        super(null,location);
+    public ConfigurationMissingException(final String message,
+        final String location) {
+        super(null, location);
         item = message;
     }
-    
+
     /**
      * Creates a new object.
      *
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationMissingException(String message, Throwable cause) {
+    public ConfigurationMissingException(final String message,
+        final Throwable cause) {
         super(message, cause);
     }
 
@@ -69,6 +74,6 @@ public class ConfigurationMissingException extends ConfigurationException {
      * @return the text
      */
     protected String getText() {
-        return Messages.format("ConfigurationMissingException.Text",item);
+        return Messages.format("ConfigurationMissingException.Text", item);
     }
 }

@@ -26,9 +26,9 @@ import de.dante.util.GeneralException;
 /**
  * ...
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class SpaceNode extends AbstractNode implements Node {
 
@@ -77,4 +77,5 @@ public class SpaceNode extends AbstractNode implements Node {
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitSpace(value, value2);
 	}
+
 }

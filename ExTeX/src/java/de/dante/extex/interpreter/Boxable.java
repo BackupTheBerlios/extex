@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,13 +20,14 @@ package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Box;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This interface dscribes the capability to ...
+ * This interface describes the capability to deliver a Box.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Boxable {
 
@@ -35,12 +36,13 @@ public interface Boxable {
      *
      * @param context the interpreter context
      * @param source the source for new tokens
+     * @param typesetter ...
      *
      * @return ...
      *
      * @throws GeneralException in case of an error
      */
-    Box getBox(Context context, TokenSource source)
+    Box getBox(Context context, TokenSource source, Typesetter typesetter)
             throws GeneralException;
 
 }

@@ -25,23 +25,25 @@ import de.dante.util.configuration.ConfigurationException;
 
 /**
  * FontFactory-Interface
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface FontFactory {
 
     /**
      * ...
-     * 
-     * @param name	the filename of the font
-     * @param size	the size of the font.
+     *
+     * @param name the filename of the font
+     * @param size the size of the font.
+     *
      * @return the Font, or <code>null</code>, if the font are not aviable
+     *
      * @throws GeneralException ...
      * @throws ConfigurationException ...
      */
-    public abstract Font getInstance(String name, Dimen size) throws GeneralException,
-            ConfigurationException;
-    
+    Font getInstance(String name, Dimen size)
+            throws GeneralException, ConfigurationException;
+
 }

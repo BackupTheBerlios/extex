@@ -23,28 +23,29 @@ import de.dante.util.UnicodeChar;
 
 
 /**
- * This class represents an active character token. 
- * The active character token is characterized by its name. 
+ * This class represents an active character token.
+ * The active character token is characterized by its name.
  * This name is a single letter string.
  * <p>
- * This class has a protected constructor only. Use the factory 
- * {@link de.dante.extex.scanner.stream.TokenFactoryIml TokenFactoryImpl}
+ * This class has a protected constructor only. Use the factory
+ * {@link de.dante.extex.scanner.TokenFactory TokenFactory}
  * to get an instance of this class.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ActiveCharacterToken extends AbstractToken implements Token {
+
     /**
      * Creates a new object.
      *
-     * @param value the string value
+     * @param uc the string value
      */
-    protected ActiveCharacterToken(UnicodeChar uc) {
+    protected ActiveCharacterToken(final UnicodeChar uc) {
         super(uc);
     }
-    
+
     /**
      * @see de.dante.extex.scanner.Token#getCatcode()
      */
@@ -54,10 +55,11 @@ public class ActiveCharacterToken extends AbstractToken implements Token {
 
     /**
      * Get the string representation of this object for debugging purposes.
-     * 
+     *
      * @return the string representation
      */
     public String toString() {
         return Messages.format("ActiveCharacterToken.Text", getValue());
     }
+
 }

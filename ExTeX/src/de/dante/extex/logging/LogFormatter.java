@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,11 +24,22 @@ import java.util.logging.LogRecord;
 /**
  * This class provides a means to format the log entries.
  * This implementation simply uses the messages as delivered.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class LogFormatter extends Formatter {
+
+    /**
+     * The constant <tt>LINE_LENGTH</tt> contains the target line length for
+     * line breaking in the log file.
+     */
+    private static int LINE_LENGTH = 80;
+
+    /**
+     * The field <tt>col</tt> contains the ...
+     */
+    private int col = 0;
 
     /**
      * Creates a new object.
@@ -40,7 +51,26 @@ public class LogFormatter extends Formatter {
     /**
      * @see java.util.logging.Formatter#format(java.util.logging.LogRecord)
      */
-    public String format(LogRecord record) {
-        return record.getMessage();
+    public String format(final LogRecord record) {
+
+        StringBuffer msg = new StringBuffer(record.getMessage());
+
+        if (col == 0 && msg.charAt(0) == '\n') {
+            msg.deleteCharAt(0);
+        }
+        int idx = msg.lastIndexOf("\n");
+        if (idx >= 0) {
+            col = msg.length() - idx; //TODO off by one?
+        } else {
+            col += msg.length();
+        }
+
+        if (col >= LINE_LENGTH) {
+            //TODO
+            msg.append('\n');
+            col = 0;
+        }
+
+        return msg.toString();
     }
 }

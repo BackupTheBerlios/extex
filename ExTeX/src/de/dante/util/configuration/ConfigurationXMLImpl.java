@@ -18,16 +18,8 @@
  */
 package de.dante.util.configuration;
 
-import de.dante.extex.i18n.Messages;
-import de.dante.util.StringList;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-
 import java.io.IOException;
 import java.io.InputStream;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,13 +27,21 @@ import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.FactoryConfigurationError;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
+
+import de.dante.util.StringList;
 
 
 /**
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -49,25 +49,19 @@ public class ConfigurationXMLImpl implements Configuration {
      * The field <tt>ext</tt> contains extensions to use when searching for
      * configuration files.
      */
-    private static final String[] ext = {
-            "",
-            ".xml"
-    };
+    private static final String[] EXTENSIONS = {"", ".xml"};
 
     /**
      * The field <tt>path</tt> contains  path to use when searching for
      * configuration files.
      */
-    private static final String[] path = {
-            "",
-            "config/"
-    };
-    
+    private static final String[] PATHS = {"", "config/"};
+
     /**
-     * The field <tt>resource</tt> ...
+     * The field <tt>resource</tt> contains the name of the resource
      */
     private String resource = null;
-    
+
     /**
      * The field <tt>root</tt> contains the root element for this configuration.
      */
@@ -89,61 +83,60 @@ public class ConfigurationXMLImpl implements Configuration {
      * the XML file into a jar archive.
      * </p>
      * <p>
-     * Beside of the class loader a search is performed by appending <tt>.xml</tt>
-     * and/or prepending <tt>config/</tt> if the path is not sufficient to
-     * find the resource.
+     * Beside of the class loader a search is performed by appending
+     * <tt>.xml</tt> and/or prepending <tt>config/</tt> if the path is not
+     * sufficient to find the resource.
      * </p>
      * <p>
      * Example
-     * 
+     *
      * <pre>
      *  cfg = new XMLConfig("cfg");
      * </pre>
-     * 
-     * 
+     *
+     *
      * ...
-     * 
+     *
      * searches the following files on the classpath:
-     * 
+     *
      * <pre>
      *  cfg cfg.xml config/cfg config/cfg.xml
      * </pre>
-     * 
-     * 
-     * 
-     * 
+     *
+     *
+     *
+     *
      * </p>
-     * 
-     * @param resource the name of the resource to be used; i.e. the file name
-     * 
-     * @throws ConfigNotFoundException in case that the named path does not
-     *             lead to a resource
-     * @throws ConfigSyntaxException in case that the resource contains syntax
-     *             errors
-     * @throws ConfigException in case of an IO exception while reading the
-     *             resource
+     *
+     * @param aResource the name of the resource to be used; i.e. the file name
+     *
+     * @throws ConfigurationNotFoundException in case that the named path does
+     * not lead to a resource
+     * @throws ConfigurationSyntaxException in case that the resource contains
+     * syntax errors
+     * @throws ConfigurationException in case of an IO exception while reading
+     * the resource
      */
-    public ConfigurationXMLImpl(final String resource)
+    public ConfigurationXMLImpl(final String aResource)
         throws ConfigurationException {
         super();
 
-        if (resource == null || resource.equals("")) {
-            throw new ConfigurationInvalidNameException(Messages
-                .format("XMLConfig.Empty_path"));
+        if (aResource == null || aResource.equals("")) {
+            throw new ConfigurationInvalidResourceException();
         }
 
-        this.resource = resource;
+        this.resource = aResource;
 
-        int i = resource.lastIndexOf("/");
+        int i = aResource.lastIndexOf("/");
 
         if (i >= 0) {
-            base = resource.substring(0, i + 1);
+             this.base = aResource.substring(0, i + 1);
         }
 
-        InputStream stream = findConfig(resource);
+        InputStream stream = findConfig(aResource);
 
         if (stream == null) {
-            throw new ConfigurationNotFoundException(resource, null);
+            throw new ConfigurationNotFoundException(aResource, null);
         }
 
         try {
@@ -152,32 +145,36 @@ public class ConfigurationXMLImpl implements Configuration {
             root = builder.parse(stream).getDocumentElement();
         } catch (IOException e) {
             throw new ConfigurationIOException(null, e);
-        } catch (Exception e) {
-            throw new ConfigurationSyntaxException(e.getMessage(), resource);
+        } catch (ParserConfigurationException e) {
+            throw new ConfigurationSyntaxException(e.getMessage(), aResource);
+        } catch (SAXException e) {
+            throw new ConfigurationSyntaxException(e.getMessage(), aResource);
         } catch (FactoryConfigurationError e) {
-            throw new ConfigurationSyntaxException(e.getMessage(), resource);
+            throw new ConfigurationSyntaxException(e.getMessage(), aResource);
         }
     }
 
     /**
      * Creates a new object with a given root element. This constructor is
      * private since it is meant for internal purposes only.
-     * 
-     * @param top the new root element
+     *
+     * @param aRoot the new root element
+     * @param aBase ...
+     * @param aResource ...
      */
-    private ConfigurationXMLImpl(final Element top, final String base,
-        final String resource) {
+    private ConfigurationXMLImpl(final Element aRoot, final String aBase,
+        final String aResource) {
         super();
-        root = top;
-        this.base = base;
-        this.resource = resource;
+        this.root = aRoot;
+        this.base = aBase;
+        this.resource = aResource;
     }
 
     /**
      * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
      */
     public String getAttribute(final String name) {
-        return root.getAttribute(name);
+        return this.root.getAttribute(name);
     }
 
     /**
@@ -186,11 +183,17 @@ public class ConfigurationXMLImpl implements Configuration {
      * Consider the following example with the configuration currently rooted
      * at cfg:
      * </p>
-     * 
+     *
      * <pre>
-     *  &lt;cfg&gt; . . . &lt;abc&gt; . . . &lt;/abc&gt; . . . &lt;/cfg&gt;
+     *  &lt;cfg&gt;
+     *    . . .
+     *    &lt;abc&gt;
+     *      . . .
+     *    &lt;/abc&gt;
+     *    . . .
+     *  &lt;/cfg&gt;
      * </pre>
-     * 
+     *
      * <p>
      * Then <tt>getConfig("abc")</tt> returns a new XMLConfig rooted at abc.
      * </p>
@@ -201,29 +204,51 @@ public class ConfigurationXMLImpl implements Configuration {
      * <p>
      * If there are no tags with the given name then an exception is thrown.
      * </p>
-     * 
+     *
      * @param name the tag name of the sub-configuration
-     * 
+     *
      * @return the sub-configuration
-     * 
-     * @throws ConfigNotFoundException in case that the given name does not
-     *             correspond to one of the tags in the current configuration
+     *
+     * @throws ConfigurationNotFoundException in case that the given name does
+     * not correspond to one of the tags in the current configuration
+     * @throws ConfigurationException in case of another type of error
      */
     public Configuration getConfiguration(final String name)
             throws ConfigurationException {
+
+        Configuration cfg = findConfiguration(name);
+        
+        if ( cfg == null ) {
+            throw new ConfigurationNotFoundException(name, toString());
+        }
+        return cfg;
+    }
+
+    /**
+     * ...
+     *
+     * @param name ...
+     *
+     * @return ...
+     *
+     * @throws ConfigurationException
+     */
+    public Configuration findConfiguration(final String name)
+            throws ConfigurationException {
+
         for (Node node = root.getFirstChild(); node != null; node = node
                 .getNextSibling()) {
             if (node.getNodeName().equals(name)) {
                 String src = ((Element) node).getAttribute("src");
 
-                return (src != null && !src.equals("") ? new ConfigurationXMLImpl(
-                        base + src)
+                return (src != null && !src.equals("") //
+                        ? new ConfigurationXMLImpl(base + src)
                         : new ConfigurationXMLImpl((Element) node, base,
                                 resource));
             }
         }
 
-        throw new ConfigurationNotFoundException(name, toString());
+        return null;
     }
 
     /**
@@ -232,11 +257,20 @@ public class ConfigurationXMLImpl implements Configuration {
      * Consider the following example with the configuration currently rooted
      * at cfg:
      * </p>
-     * 
+     *
      * <pre>
-     *  &lt;cfg&gt; . . . &lt;abc name="one"&gt; . . . &lt;/abc&gt; &lt;abc name="two"&gt; . . . &lt;/abc&gt; . . . &lt;/cfg&gt;
+     *  &lt;cfg&gt;
+     *    . . .
+     *    &lt;abc name="one"&gt;
+     *      . . .
+     *    &lt;/abc&gt;
+     *    &lt;abc name="two"&gt;
+     *      . . .
+     *    &lt;/abc&gt;
+     *    . . .
+     *  &lt;/cfg&gt;
      * </pre>
-     * 
+     *
      * <p>
      * Then <tt>getConfig("abc","two")</tt> returns a new XMLConfig rooted at
      * the abc with the name attribute "two".
@@ -248,17 +282,20 @@ public class ConfigurationXMLImpl implements Configuration {
      * <p>
      * If there are no tags with the given name then an exception is thrown.
      * </p>
-     * 
+     *
      * @param key the tag name of the sub-configuration
      * @param attribute the value of the attribute name
-     * 
+     *
      * @return the sub-configuration
-     * 
-     * @throws ConfigNotFoundException in case that the given name does not
-     *             correspond to one of the tags in the current configuration
+     *
+     * @throws ConfigurationNotFoundException in case that the given name does
+     * not correspond to one of the tags in the current configuration
+     * @throws ConfigurationException in case of some other kind of error
      */
     public Configuration getConfiguration(final String key,
-        final String attribute) throws ConfigurationException {
+        final String attribute) throws ConfigurationNotFoundException,
+        ConfigurationException {
+
         for (Node node = root.getFirstChild(); node != null; node = node
             .getNextSibling()) {
             if (key.equals(node.getNodeName())
@@ -267,8 +304,8 @@ public class ConfigurationXMLImpl implements Configuration {
             }
         }
 
-        throw new ConfigurationNotFoundException(null, key + "[" + attribute
-                                                       + "]");
+        throw new ConfigurationNotFoundException(null, //
+                                                 key + "[" + attribute + "]");
     }
 
     /**
@@ -412,23 +449,24 @@ public class ConfigurationXMLImpl implements Configuration {
     /**
      * Search for a configuration file taking into account a list of prefixes
      * (path) and postfixes (ext)
-     * 
+     *
      * @param name the basename of the configuration to find.
-     * 
-     * @return an input stream to the requested configuration or <code>null</code>
-     *         if none could be opened.
+     *
+     * @return an input stream to the requested configuration or
+     * <code>null</code> if none could be opened.
      */
     private InputStream findConfig(final String name) {
         ClassLoader classLoader = getClass().getClassLoader();
 
-        for (int pi = 0; pi < path.length; pi++) {
-            for (int ei = 0; ei < ext.length; ei++) {
-                InputStream stream = classLoader.getResourceAsStream(path[pi]
+        for (int pi = 0; pi < PATHS.length; pi++) {
+            for (int ei = 0; ei < EXTENSIONS.length; ei++) {
+                InputStream stream = classLoader.getResourceAsStream(PATHS[pi]
                                                                      + name
-                                                                     + ext[ei]);
+                                                                     + EXTENSIONS[ei]);
 
-                if (stream != null)
+                if (stream != null) {
                     return stream;
+                }
             }
         }
         return null;
@@ -454,19 +492,19 @@ public class ConfigurationXMLImpl implements Configuration {
         toString(sb, root);
         return sb.toString();
     }
-    
+
     /**
      * ...
-     * 
-     * @param sb
-     * @param e
+     *
+     * @param sb the output string buffer
+     * @param node ....
      */
     private void toString(final StringBuffer sb, final Node node) {
         Node p = node.getParentNode();
-        if ( p != null && ! (p instanceof Document) ) {
-            toString(sb,p);
+        if (p != null && !(p instanceof Document)) {
+            toString(sb, p);
         }
-        sb.append("/");
+        sb.append('/');
         sb.append(node.getNodeName());
     }
 

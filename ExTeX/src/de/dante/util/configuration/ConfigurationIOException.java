@@ -25,9 +25,9 @@ import de.dante.extex.i18n.Messages;
  * This Exception is thrown when a configuration is requested with the path
  * <code>null</code>> or the empty string. Alternatively it can be used when
  * some other kind of configuration information is missing.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationIOException extends ConfigurationException {
     /**
@@ -35,8 +35,8 @@ public class ConfigurationIOException extends ConfigurationException {
      *
      * @param message the message string
      */
-    public ConfigurationIOException(String message) {
-        super(message,(String)null);
+    public ConfigurationIOException(final String message) {
+        super(message, (String) null);
     }
 
     /**
@@ -45,22 +45,22 @@ public class ConfigurationIOException extends ConfigurationException {
      * @param message the message string
      * @param location the location of the IO configuration item
      */
-    public ConfigurationIOException(String message, String location) {
-        super(message,location);
+    public ConfigurationIOException(final String message, final String location) {
+        super(message, location);
     }
-    
+
     /**
      * Creates a new object.
      *
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationIOException(String message, Throwable cause) {
+    public ConfigurationIOException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
-     * Getter for the text prefix of this ConfigException.
+     * Getter for the text prefix of this Exception.
      *
      * @return the text
      */

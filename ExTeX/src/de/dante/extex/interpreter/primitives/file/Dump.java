@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -41,15 +42,31 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Dump extends AbstractCode {
+
+    /**
+     * The constant <tt>FORMAT_VERSION</tt> contains the ...
+     */
+    private static final String FORMAT_VERSION = "1.0";
+
+    /**
+     * The constant <tt>FORMAT_MAGIC_NUMBER</tt> contains the ...
+     */
+    private static final String FORMAT_MAGIC_NUMBER = "#!extex";
+
+    /**
+     * The constant <tt>FORMAT_EXTENSION</tt> contains the ...
+     */
+    private static final String FORMAT_EXTENSION = ".fmt";
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Dump(String name) {
+    public Dump(final String name) {
         super(name);
     }
 
@@ -60,21 +77,29 @@ public class Dump extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
-        if (!context.isGlobalGroup()) { throw new GeneralHelpingException(
-                "TTP.DumpInGroup"); }
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        if (!context.isGlobalGroup()) {
+            throw new GeneralHelpingException("TTP.DumpInGroup");
+        }
 
         Calendar calendar = Calendar.getInstance();
 
         //TODO @see "TeX -- The Program [1328]"
 
+        Tokens tJobname = context.getToks("jobname");
+        if (tJobname == null) {
+            throw new GeneralException("invalid jobname"); //TODO i18n
+        }
+        String format = tJobname.toText() + FORMAT_EXTENSION;
+        
         try {
-            String format = "xxx"; //TODO: replace by jobname
             ObjectOutputStream os = new ObjectOutputStream(
-                    new FileOutputStream(format + "fmt"));
-            os.writeChars("#!extex");
-            os.writeObject("1.0");
+                    new FileOutputStream(format));
+            os.writeChars(FORMAT_MAGIC_NUMBER);
+            os.writeObject(FORMAT_VERSION);
             os.writeObject(format + " " + //
                            calendar.get(Calendar.YEAR) + "."
                            + calendar.get(Calendar.MONTH) + "."

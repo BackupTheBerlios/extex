@@ -29,46 +29,51 @@ import de.dante.util.file.FileFinder;
 
 /**
  * Factory to load a font.
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class FontFactoryImpl implements FontFactory {
 
-	/**
-	 * Fontmap
-	 */
-	private Map fontmap = new HashMap();
+    /**
+     * Fontmap
+     */
+    private Map fontmap = new HashMap();
 
-	/**
-	 * the file finder
-	 */
-	private FileFinder finder;
-	
-	/**
-	 * Creates a new object.
-	 */
-	public FontFactoryImpl(FileFinder fileFinder) {
-		super();
-		finder = fileFinder;
-	}
+    /**
+     * the file finder
+     */
+    private FileFinder finder;
 
-	/**
-	 * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
-	 */
-	// TODO the name is not only the key for the font!
-	public Font getInstance(String name, Dimen size) throws GeneralException, ConfigurationException {
-		Font font = (Font) (fontmap.get(name));
-		if (font == null) {
-			font = new EFMFont(name,size,finder);
-			// System.err.println(font);
-			 // System.err.println(font.getFontDimen("SPACE").toPT());
-			 // UnicodeChar uc;
-			 // System.err.println((uc = font.ligature(new UnicodeChar('f'),new UnicodeChar('f'))).getCodePoint());
-			 // System.err.println(font.ligature(uc,new UnicodeChar('l')).getCodePoint());
-			 // System.err.println(font.kern(new UnicodeChar('W'),new UnicodeChar('o')).toPT());
-		}
-		return font;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param fileFinder ...
+     */
+    public FontFactoryImpl(final FileFinder fileFinder) {
+        super();
+        finder = fileFinder;
+    }
+
+    /**
+     * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
+     */
+    // TODO the name is not only the key for the font!
+    public Font getInstance(final String name, final Dimen size)
+            throws GeneralException, ConfigurationException {
+
+        Font font = (Font) (fontmap.get(name));
+        if (font == null) {
+            font = new EFMFont(name, size, finder);
+            // System.err.println(font);
+            // System.err.println(font.getFontDimen("SPACE").toPT());
+            // UnicodeChar uc;
+            // System.err.println((uc = font.ligature(new UnicodeChar('f'),new UnicodeChar('f'))).getCodePoint());
+            // System.err.println(font.ligature(uc,new UnicodeChar('l')).getCodePoint());
+            // System.err.println(font.kern(new UnicodeChar('W'),new UnicodeChar('o')).toPT());
+        }
+        return font;
+    }
+
 }

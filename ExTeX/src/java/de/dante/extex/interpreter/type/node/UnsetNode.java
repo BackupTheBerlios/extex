@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
@@ -26,42 +27,53 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [159]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class UnsetNode extends AbstractNodeList implements Node {
 
-	//TODO maybe this node type is not needed
+    //TODO maybe this node type is not needed
 
-	/**
-	 * Creates a new object.
-	 *
-	 */
-	public UnsetNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     *
+     */
+    public UnsetNode() {
+        super();
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-	 */
-	public void toString(StringBuffer sb, String prefix) {
-		// TODO Auto-generated method stub
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *     java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
 
-	}
+        // TODO Auto-generated method stub
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(NodeVisitor visitor, Object value, Object value2) throws GeneralException {
-		throw new GeneralException("unimplemented"); //TODO
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor, java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
 
-	/**
-	 * Propagate the size
-	 */
-	protected void propagateSizes(Node node) {
-		// TODO incomplete
+        throw new GeneralException("unimplemented"); //TODO
+    }
 
-	}
+    /**
+     * Propagate the size
+     */
+    protected void updateDimensions(final Node node) {
+        // TODO incomplete
+
+    }
+    
+    /**
+     * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
+     */
+    public void addSkip(final Glue glue) {
+
+        // TODO Auto-generated method stub
+    }
 }

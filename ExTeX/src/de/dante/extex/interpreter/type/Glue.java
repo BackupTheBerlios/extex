@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,172 +25,162 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * Class for a <tt>glue</tt>-component.
+ * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class Glue extends AbstractComponent implements Serializable {
+public class Glue implements Serializable {
+    /**
+     * The field <tt>length</tt> contains the ...
+     */
+    private GlueComponent length = new GlueComponent(0);
 
-	/**
-	 * the length 
-	 */
-	private GlueComponent length = new GlueComponent(0);
+    /**
+     * The field <tt>shrink</tt> contains the ...
+     */
+    private GlueComponent shrink = new GlueComponent(0);
 
-	/** 
-	 * the shrink
-	 */
-	private GlueComponent shrink = new GlueComponent(0);
+    /**
+     * The field <tt>stretch</tt> contains the ...
+     */
+    private GlueComponent stretch = new GlueComponent(0);
 
-	/**
-	 * the stretch 
-	 */
-	private GlueComponent stretch = new GlueComponent(0);
+    /**
+     * Creates a new object.
+     *
+     * @param length ...
+     */
+    public Glue(final long length) {
+        super();
+        this.length = new Dimen(length);
+    }
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param length 	the new length
-	 */
-	public Glue(final long length) {
-		super();
-		this.length = new Dimen(length);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param length ...
+     * @param stretch ...
+     * @param shrink ...
+     */
+    public Glue(final GlueComponent length, final GlueComponent stretch,
+            final GlueComponent shrink) {
+        super();
+        this.length = length;
+        this.stretch = stretch;
+        this.shrink = shrink;
+    }
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param length 	the length
-	 * @param stretch 	the stretch
-	 * @param shrink 	the shrink
-	 */
-	public Glue(final GlueComponent length, final GlueComponent stretch, final GlueComponent shrink) {
-		super();
-		this.length = length;
-		this.stretch = stretch;
-		this.shrink = shrink;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param length ...
+     */
+    public Glue(final Dimen length) {
+        super();
+        this.length = length;
+    }
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param length 	the dimenlength
-	 */
-	public Glue(final Dimen length) {
-		super();
-		this.length = length;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param source ...
+     * @param context ...
+     * @throws GeneralException in case of an error
+     */
+    public Glue(final TokenSource source, final Context context)
+            throws GeneralException {
 
-	/**
-	 * Creates a new object.
-	 * Scan the tokensource and create a new <code>Glue</code>.
-	 * 
-	 * @param source 	the tokensource
-	 * @param context 	the context
-	 * @throws GeneralException in case of an error
-	 */
-	public Glue(final TokenSource source, final Context context) throws GeneralException {
-		super();
-		Glue g = scanGlue(source, context);
-		this.length = g.getLength();
-		this.stretch = g.getStretch();
-		this.shrink = g.getShrink();
-	}
+        super();
+        this.length = new Dimen(context, source);
+        if (source.scanKeyword("plus")) {
+            this.stretch = new GlueComponent(source, context, true);
+        }
+        if (source.scanKeyword("minus")) {
+            this.shrink = new GlueComponent(source, context, true);
+        }
+    }
 
-	/**
-	 * @return Returns the length.
-	 */
-	public Dimen getLength() {
-		return new Dimen(length.getValue());
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public Dimen getLength() {
+        return new Dimen(length.getValue());
+    }
 
-	/**
-	 * @return Returns the shrink.
-	 */
-	public GlueComponent getShrink() {
-		return shrink;
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    public Glue copy() {
 
-	/**
-	 * @return Returns the stretch.
-	 */
-	public GlueComponent getStretch() {
-		return stretch;
-	}
-	
-	
-	/**
-	 * Copy the <code>Glue</code>.
-	 * 
-	 * @return a copy of the <code>Glue</code>
-	 */
-	public Glue copy() {
-		return new Glue(length.copy(), stretch.copy(), shrink.copy());
-	}
+        return new Glue(length.copy(), stretch.copy(), shrink.copy());
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @param g the glue to add
-	 *
-	 * @return this to allow the combination in an expression
-	 */
-	public Glue add(final Glue g) {
-		//TODO incomplete
-		return this;
-	}
+    /**
+     * ...
+     *
+     * @param g the glue to add
+     *
+     * @return this to allow the combination in an expression
+     */
+    public Glue add(final Glue g) {
+        //TODO incomplete
+        return this;
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @param nom
-	 * @param denom
-	 * @return
-	 */
-	public Glue multiply(final long nom, final long denom) {
-		//TODO incomplete
-		return this;
-	}
+    /**
+     * ...
+     *
+     * @param nom nominator
+     * @param denom denominator
+     *
+     * @return this
+     */
+    public Glue multiply(final long nom, final long denom) {
+        //TODO incomplete
+        return this;
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @param nom
-	 * @param denom
-	 * @return
-	 */
-	public Glue multiplyStretch(final long nom, final long denom) {
-		//TODO incomplete
-		return this;
-	}
+    /**
+     * ...
+     *
+     * @param nom nominator
+     * @param denom denominator
+     *
+     * @return this
+     */
+    public Glue multiplyStretch(final long nom, final long denom) {
+        //TODO incomplete
+        return this;
+    }
 
-	/**
-	 * ...
-	 * 
-	 * @param nom
-	 * @param denom
-	 * @return
-	 */
-	public Glue multiplyShrink(final long nom, final long denom) {
-		//TODO incomplete
-		return this;
-	}
+    /**
+     * ...
+     *
+     * @param nom nominator
+     * @param denom denominator
+     *
+     * @return this
+     */
+    public Glue multiplyShrink(final long nom, final long denom) {
+        //TODO incomplete
+        return this;
+    }
 
-	/**
-	 * Return a String with the Glue-value in sp
-	 * @return the string representation of this glue
-	 * @see "TeX -- The Program [178,177]"
-	 */
-	public String toString() {
-		return length.toString() + " plus " + stretch.toString() + " minus " + shrink.toString();
-	}
+    /**
+     * ...
+     *
+     * @return the string representation of this glue
+     * @see "TeX -- The Program [178,177]"
+     */
+    public String toString() {
 
-	/**
-	 * Return a String with the Glue-value in pt 
-	 * @return a String with the Glue-value in pt
-	 */
-	public String toPT() {
-		return length.toPT() + " plus " + stretch.toPT() + " minus " + shrink.toPT();
-	}
+        return length.toString() + " "; //TODO incomplete
+    }
+
 }

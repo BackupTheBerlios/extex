@@ -29,11 +29,11 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class AbstractCode implements Code {
     /**
-     * This variable contains the name of this code for debugging.
+     * The field <tt>name</tt> contains the name of this code for debugging.
      */
     private String name = "";
 
@@ -72,20 +72,6 @@ public class AbstractCode implements Code {
     }
 
     /**
-     * ...
-     *
-     * @param context the interpreter context
-     * @param source the source for new tokens
-     *
-     * @throws GeneralException in case of an error. This implementation does
-     *             nothing; not even throwing an Exception.
-     */
-    public void doAfterAssignment(final Context context,
-            final TokenSource source) throws GeneralException {
-        // TODO: to be completed
-    }
-
-    /**
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -100,12 +86,31 @@ public class AbstractCode implements Code {
     /**
      * In general this method is simply a noop. Classes which need this feature
      * can overwrite this method.
-     * 
-     * @see de.dante.extex.interpreter.Code#set(java.lang.String)
+     *
+     * @see de.dante.extex.interpreter.Code#set(de.dante.extex.interpreter.context.Context, java.lang.String)
      */
     public void set(final Context context, final String value)
         throws GeneralException {
+
         // nothing to do
+    }
+
+    /**
+     * Attach the current escape character in front of the name and return the
+     * result.
+     * <p>
+     * This method is meant to produce a printable version of the control
+     * sequence for error messages.
+     * </p>
+     *
+     * @param context the processing context
+     *
+     * @return the control sequence including the escape character
+     */
+    protected String printableControlSequence(final Context context) {
+
+        char esc = (char) (context.getCount("escapechar").getValue());
+        return Character.toString(esc) + name;
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,9 +23,9 @@ import de.dante.util.GeneralException;
 /**
  * This exception is thrown when something in the context of catcode creation or
  * access goes wrong.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CatcodeException extends GeneralException {
 
@@ -38,29 +38,29 @@ public class CatcodeException extends GeneralException {
 
     /**
      * Creates a new object.
-     * 
-     * @param message
+     *
+     * @param message the message of the exception
      */
-    public CatcodeException(String message) {
+    public CatcodeException(final String message) {
         super(message);
     }
 
     /**
      * Creates a new object.
-     * 
-     * @param message
-     * @param cause
+     *
+     * @param message the message of the exception
+     * @param cause the cause of the exception in a chained exception
      */
-    public CatcodeException(String message, Throwable cause) {
+    public CatcodeException(final String message, final Throwable cause) {
         super(message, cause);
     }
 
     /**
      * Creates a new object.
-     * 
-     * @param cause
+     *
+     * @param cause the cause of the exception in a chained exception
      */
-    public CatcodeException(Throwable cause) {
+    public CatcodeException(final Throwable cause) {
         super(cause);
     }
 

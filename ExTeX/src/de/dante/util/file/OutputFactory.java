@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationMissingException;
  * ...
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class OutputFactory {
 
@@ -66,11 +66,13 @@ public class OutputFactory {
 
     /**
      * Creates a new object.
-     * 
+     *
+     * @param configuration ...
      * @param outdirs the list of output directories
      */
     public OutputFactory(final Configuration configuration,
         final String[] outdirs) throws ConfigurationException {
+
         super();
         outputDirectories = outdirs;
         config = configuration;
@@ -85,32 +87,32 @@ public class OutputFactory {
 
     /**
      * ...
-     * 
+     *
      * @param name ...
      * @param type ...
-     * 
+     *
      * @return ...
-     * 
+     *
      * @throws FileNotFoundException in case that the output file coud not be
      *             opened
      */
     public Writer createWriter(final String name, final String type)
-        throws FileNotFoundException, ConfigurationException {
+            throws FileNotFoundException, ConfigurationException {
+
         return createWriter(name, type, config.getAttribute(ENCODING_ATTRIBUTE));
     }
 
     /**
      * ...
-     * 
+     *
      * @param name ...
      * @param type ...
      * @param encoding the name of the encoding to use. This overrules the
-     *            default encoding in the configuration. A value of <code>null</code>
-     *            signals that no encoding is requested.
+     *      default encoding in the configuration. A value of <code>null</code>
+     *      signals that no encoding is requested.
      * @return ...
-     * 
+     *
      * @throws FileNotFoundException ...
-     * @throws UnsupportedEncodingException ...
      * @throws ConfigurationException ...
      */
     public Writer createWriter(final String name, final String type,
@@ -149,17 +151,17 @@ public class OutputFactory {
 
     /**
      * ...
-     * 
+     *
      * @param name
      * @param type
-     * 
+     *
      * @return ...
      *
-     * @throws FileNotFoundException
-     * @throws ConfigurationException
+     * @throws FileNotFoundException ...
+     * @throws ConfigurationException ...
      */
     public OutputStream createOutputStream(final String name, final String type)
-        throws FileNotFoundException, ConfigurationException {
+            throws FileNotFoundException, ConfigurationException {
 
         String filename = name + "." + type;
         String dir;
@@ -193,10 +195,10 @@ public class OutputFactory {
 
     /**
      * ...
-     * 
+     *
      * @param file ...
-     * @param enc the encoding to use
-     * 
+     * @param enc the name of the encoding to use
+     *
      * @return ...
      */
     private Writer openFile(final File file, final String enc) {
@@ -221,7 +223,7 @@ public class OutputFactory {
 
     /**
      * ...
-     * 
+     *
      * @param file ...
      *
      * @return ...

@@ -19,7 +19,7 @@
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
@@ -41,15 +41,15 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Divide extends AbstractCode {
+public class Divide extends AbstractAssignment {
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public Divide(String name) {
+    public Divide(final String name) {
         super(name);
     }
 
@@ -59,14 +59,15 @@ public class Divide extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public void assign(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         Token cs = source.scanToken();
 
         if (!(cs instanceof ControlSequenceToken)) {
-            char esc = (char) (context.getCount("escapechar").getValue());
             throw new GeneralHelpingException("TTP.CantUseAfter",
-                    cs.toString(), Character.toString(esc) + getName());
+                    cs.toString(), printableControlSequence(context));
         }
 
         Code code = context.getMacro(cs.getValue());
@@ -77,11 +78,8 @@ public class Divide extends AbstractCode {
         } else if (code instanceof Divideable) {
             ((Divideable) code).divide(prefix, context, source);
         } else {
-            char esc = (char) (context.getCount("escapechar").getValue());
             throw new GeneralHelpingException("TTP.CantUseAfter",
-                    cs.toString(), Character.toString(esc) + getName());
+                    cs.toString(), printableControlSequence(context));
         }
-
-        prefix.clear();
     }
 }

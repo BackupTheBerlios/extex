@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,7 +21,6 @@ package de.dante.extex.typesetter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
@@ -32,14 +31,16 @@ import de.dante.util.configuration.Configuration;
 /**
  * The dummy typesetter which does nothing but provide the appropriate
  * interface.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
     /**
      * Creates a new object.
+     * 
+     * @param config the configuration object to consider
      */
     public NullTypesetterImpl(final Configuration config) {
         super();
@@ -53,10 +54,11 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#addSpace()
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-        final Count spacefactor) {
+            final Count spacefactor) {
         // nothing to do
     }
 
@@ -82,7 +84,7 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#add(de.dante.extex.interpreter.type.node.CharNode)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) {
         // nothing to do
@@ -103,13 +105,6 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#open()
-     */
-    public void open() {
-        // nothing to do
-    }
-
-    /**
      * @see de.dante.extex.typesetter.Typesetter#addGlue(de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(final Glue g) {
@@ -117,14 +112,15 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#add(de.dante.extex.interpreter.type.Font, java.lang.String)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      */
     public void add(final TypesettingContext font, final UnicodeChar symbol) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#finish()
+     * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
      */
     public void finish(final Context context) {
         // nothing to do
@@ -145,7 +141,7 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(int)
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
      */
     public void setSpacefactor(final Count f) {
         // nothing to do
@@ -161,7 +157,22 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.NodeList)
      */
-    public void shipout(final Box nodes) {
+    public void shipout(final NodeList nodes) {
         // nothing to do
     }
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openHbox()
+     */
+    public void openHbox() {
+
+        // TODO Auto-generated method stub
+    }
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#openVbox()
+     */
+    public void openVbox() {
+
+        // TODO Auto-generated method stub
+    }
+
 }

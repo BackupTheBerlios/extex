@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,16 +20,16 @@ package de.dante.extex.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import de.dante.extex.i18n.Messages;
-import de.dante.extex.logging.Logger;
 import de.dante.util.file.FileFinder;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FileFinderImpl implements FileFinder {
 
@@ -41,32 +41,40 @@ public class FileFinderImpl implements FileFinder {
     /**
      * Creates a new object.
      */
-    public FileFinderImpl(Logger logger) {
+    public FileFinderImpl(final Logger logger) {
         super();
         this.logger = logger;
     }
 
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
+     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     *      java.lang.String)
      */
-    public File findFile(String name, String type) {
+    public File findFile(final String name, final String type) {
+
         File file = null;
+        String line = name;
 
         try {
             do {
-                if (!name.equals("")) {
-                    logger.severe("\n! "+Messages.format("CLI.FileNotFound",
-                                                  name));
+                if (!line.equals("")) {
+                    logger.severe("\n! "
+                                  + Messages.format("CLI.FileNotFound", name));
                 }
 
                 logger.severe(Messages.format("CLI.PromptFile"));
-                name = readLine();
+                line = readLine();
 
-                if (name.equals("")) {
+                if (line.equals("")) {
                     //TODO ???
-                } else if (name.charAt(0) == '\\') {
+                } else if (line.charAt(0) == '\\') {
                     //TODO make use of the line read
                     return null;
+                } else {
+                    file = new File(line);
+                    if (!file.canRead()) {
+                        file = null;
+                    }
                 }
             } while (file == null);
         } catch (IOException e) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,63 +23,67 @@ import de.dante.extex.interpreter.type.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 
 /**
- * Nodelist
- * 
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * ...
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface NodeList extends Node {
 
     /**
-     * ...
-     * 
-     * @param node ...
+     * Add anode to the node list.
+     *
+     * @param node the node to add
      */
     void add(Node node);
 
     /**
-     * ...
-     * 
-     * @param node ...
+     * Add a character to the node list.
+     *
+     * @param node the character to add
      */
     void addGlyph(CharNode node);
 
     /**
-     * ...
-     * 
-     * @param glue ...
+     * add some glue to the node list.
+     *
+     * @param glue the glue to add
      */
     void addSkip(Glue glue);
 
     /**
-     * ...
-     * 
-     * @param d
+     * Setter for the shift value of the node list.
+     *
+     * @param d the amount to be shifted
      */
     void setShift(Dimen d);
 
     /**
-     * ...
-     * 
-     * @return
+     * Getter for the shift value of the node list.
+     *
+     * @return the shift value
      */
     Dimen getShift();
 
     /**
-     * ...
-     * 
-     * @param d
+     * Setter for the move value of the node list.
+     *
+     * @param d the move value
      */
     void setMove(Dimen d);
 
     /**
-     * ...
-     * 
-     * @return
+     * Getter for the move value of the node list.
+     *
+     * @return the move value
      */
     Dimen getMove();
-    
+
+    /**
+     * Get a new iterator for all nodes in the list.
+     *
+     * @return the iuterator for all nodes in the list
+     */
     NodeIterator iterator();
-        
+
 }

@@ -29,9 +29,10 @@ import de.dante.util.GeneralException;
  * {@link de.dante.extex.interpreter.type.Tokens Tokens}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Theable {
+
     /**
      * This method is the getter for the description of the primitive.
      *

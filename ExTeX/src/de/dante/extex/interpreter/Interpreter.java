@@ -25,9 +25,9 @@ import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-import de.dante.util.Observable;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.FileFinder;
+import de.dante.util.observer.Observable;
 
 /**
  * ...
@@ -35,16 +35,10 @@ import de.dante.util.file.FileFinder;
  * @see "TeX -- The Program [1029]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Interpreter extends TokenSource,
                                      Observable {
-
-    /**
-     * Setter for the file finder.
-     * @param fileFinder    the new filefinder
-     */
-    void setFileFinder(FileFinder fileFinder);
 
     /**
      * Setter for the error handler.
@@ -65,6 +59,13 @@ public interface Interpreter extends TokenSource,
     ErrorHandler getErrorHandler();
 
     /**
+     * Setter for the file finder.
+     *
+     * @param fileFinder the new filefinder
+     */
+    void setFileFinder(FileFinder fileFinder);
+
+    /**
      * Setter for the interaction mode.
      *
      * @param interaction the interaction mode
@@ -80,17 +81,17 @@ public interface Interpreter extends TokenSource,
 
     /**
      * Getter for the context
-     * 
+     *
      * @return	the context
      */
     Context getContext();
-    
+
     /**
      * ...
      *
      * @param jobname ...
      */
-    void setJobname(String jobname);
+    void setJobname(String jobname) throws GeneralException;
 
     /**
      * Setter for the token stream factory.
@@ -121,10 +122,7 @@ public interface Interpreter extends TokenSource,
     /**
      * Process the current token streams by repeatedly reading a single token
      * and processing it until no token is left. The visitor pattern is used to
-     * branch to the appropriate method for processing a single token. E.g. the
-     * method
-     * {@link TokenSource#visitActive(java.lang.Object,java.lang.Object) visitActive}
-     * is used when the current token is an active character.
+     * branch to the appropriate method for processing a single token.
      *
      * @throws ConfigurationException in case of a configuration error
      * @throws GeneralException in case of another error

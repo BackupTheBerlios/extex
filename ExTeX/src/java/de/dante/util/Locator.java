@@ -26,17 +26,28 @@ import java.nio.CharBuffer;
  * and the current line number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Locator {
-    /** the name of the file */
+
+    /**
+     * The field <tt>filename</tt> contains the name of the file.
+     */
     private String filename;
 
-    /** the line number */
+    /**
+     * The field <tt>lineno</tt> contains the line number.
+     */
     private int lineno;
-    
+
+    /**
+     * The field <tt>line</tt> contains the ...
+     */
     private CharBuffer line;
-    
+
+    /**
+     * The field <tt>linePointer</tt> contains the ...
+     */
     private int linePointer;
 
     /**
@@ -44,11 +55,15 @@ public class Locator {
      *
      * @param fileName the file name
      * @param lineNo the line number
+     * @param line ...
+     * @param linePointer ...
      */
-    public Locator(final String fileName, final int lineNo, final CharBuffer line, final int linePointer) {
+    public Locator(final String fileName, final int lineNo,
+            final CharBuffer line, final int linePointer) {
+
         super();
         this.filename = fileName;
-        this.lineno   = lineNo;
+        this.lineno = lineNo;
         this.line = line;
         this.linePointer = linePointer;
     }
@@ -61,6 +76,7 @@ public class Locator {
     public CharBuffer getLine() {
         return line;
     }
+
     /**
      * Getter for linePointer.
      *

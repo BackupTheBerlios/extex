@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,45 +24,54 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a problem in the configuration is detected.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class ConfigurationException extends Exception {
-    /** The message string for this exception */
-    public String message = null;
 
-    /** The location for this exception */
-    public String source = null;
+    /**
+     * The field <tt>message</tt> contains the message string for this
+     * exception.
+     */
+    private String message = null;
+
+    /**
+     * The field <tt>source</tt> contains the location for this exception.
+     */
+    private String source = null;
 
     /**
      * Creates a new object.
      *
-     * @param message the message string
+     * @param aMessage the message string
      */
-    public ConfigurationException(final String message) {
-        super(message);
+    public ConfigurationException(final String aMessage) {
+        super(aMessage);
+        this.message = aMessage;
     }
 
     /**
      * Creates a new object.
      *
-     * @param message the message string
+     * @param aMessage the message string
      * @param source the name of the file causing this error
      */
-    public ConfigurationException(final String message, final String source) {
-        super(message);
-        this.message = message;
-        this.source  = source;
+    public ConfigurationException(final String aMessage, final String source) {
+
+        super(aMessage);
+        this.message = aMessage;
+        this.source = source;
     }
 
     /**
      * Creates a new object.
-     * 
-     * @param message message the message string
+     *
+     * @param aMessage message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationException(final String message, final Throwable cause) {
-        super(message, cause);
-        this.message = message;
+    public ConfigurationException(final String aMessage, final Throwable cause) {
+
+        super(aMessage, cause);
+        this.message = aMessage;
     }
 
     /**
@@ -71,26 +80,33 @@ public abstract class ConfigurationException extends Exception {
      * @return the message
      */
     public String getMessage() {
+
         if (getCause() != null) {
-            for (Throwable t = getCause(); t != null;
-                     t = t.getCause()) {
+            for (Throwable t = getCause(); t != null; t = t.getCause()) {
                 String msg = t.getMessage();
 
                 if (msg != null) {
                     if (source != null) {
                         if (message != null) {
-                            return Messages.format("ConfigException.format_text_cause_message_location",
-                                                   getText(), msg, message, source);
+                            return Messages
+                                    .format(
+                                            "ConfigException.format_text_cause_message_location",
+                                            getText(), msg, message, source);
                         } else {
-                            return Messages.format("ConfigException.format_text_cause_location",
-                                                   getText(), msg, source);
+                            return Messages
+                                    .format(
+                                            "ConfigException.format_text_cause_location",
+                                            getText(), msg, source);
                         }
                     } else if (message != null) {
-                        return Messages.format("ConfigException.format_text_cause_message",
-                                               getText(), msg, message);
+                        return Messages
+                                .format(
+                                        "ConfigException.format_text_cause_message",
+                                        getText(), msg, message);
                     } else {
-                        return Messages.format("ConfigException.format_text_cause",
-                                               getText(),msg);
+                        return Messages
+                                .format("ConfigException.format_text_cause",
+                                        getText(), msg);
                     }
                 }
             }
@@ -98,8 +114,9 @@ public abstract class ConfigurationException extends Exception {
 
         if (source != null) {
             if (message != null) {
-                return Messages.format("ConfigException.format_text_message_location",
-                                       getText(), message, source);
+                return Messages
+                        .format("ConfigException.format_text_message_location",
+                                getText(), message, source);
             } else {
                 return Messages.format("ConfigException.format_text_location",
                                        getText(), source);
@@ -108,8 +125,7 @@ public abstract class ConfigurationException extends Exception {
             return Messages.format("ConfigException.format_text_message",
                                    getText(), message);
         } else {
-            return Messages.format("ConfigException.format_text",
-                                   getText());
+            return Messages.format("ConfigException.format_text", getText());
         }
     }
 

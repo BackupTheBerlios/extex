@@ -25,30 +25,41 @@ import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.InvocationTargetException;
 
+import de.dante.util.GeneralException;
 import de.dante.util.NotObservableException;
-import de.dante.util.Observable;
-import de.dante.util.Observer;
-import de.dante.util.ObserverList;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationWrapperException;
 import de.dante.util.file.FileFinder;
 import de.dante.util.file.FileFinderConfigImpl;
+import de.dante.util.observer.Observable;
+import de.dante.util.observer.Observer;
+import de.dante.util.observer.ObserverList;
 
 /**
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
-    /** the observers registered for the "file" event */
+    /**
+     * The field <tt>openFileObservers</tt> contains the observers registered
+     * for the "file" event
+     */
     private ObserverList openFileObservers = new ObserverList();
 
-    /** the observers registered for the "stream" event */
+    /**
+     * The field <tt>openStreamObservers</tt> contains the observers registered
+     * for the "stream" event.
+     */
     private ObserverList openStreamObservers = new ObserverList();
 
-    /** the observers registered for the "string" event */
+    /**
+     * The field <tt>openStringObservers</tt> contains the observers registered
+     * for the "string" event.
+     */
     private ObserverList openStringObservers = new ObserverList();
 
     /**
@@ -65,6 +76,8 @@ public class TokenStreamFactory implements FileFinder, Observable {
      * Creates a new object.
      *
      * @param config the configuration to use
+     *
+     * @throws ConfigurationException ...
      */
     public TokenStreamFactory(final Configuration config)
                        throws ConfigurationException {
@@ -76,9 +89,12 @@ public class TokenStreamFactory implements FileFinder, Observable {
     /**
      * Provide a new instance of a token stream.
      *
+     * @param line ...
+     * @param encoding the name of the encoding to use
+     *
      * @return the new instance
      *
-     * @throws ConfigurationInstantiationException ...
+     * @throws ConfigurationException ...
      */
     public TokenStream newInstance(final String line, final String encoding)
                             throws ConfigurationException {
@@ -98,20 +114,31 @@ public class TokenStreamFactory implements FileFinder, Observable {
             throw new ConfigurationInstantiationException(e);
         }
 
-        openStringObservers.update(this, line);
+        try {
+            openStringObservers.update(this, line);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
+        }
         return stream;
     }
 
     /**
      * Provide a new instance of a token stream.
-     * 
+     *
+     * @param file ...
+     * @param type ...
+     * @param encoding the name of the encoding to use
+     *
      * @return the new instance
-     * 
-     * @throws ConfigurationInstantiationException ...
+     *
+     * @throws ConfigurationException ...
+     * @throws FileNotFoundException ...
+     * @throws IOException ...
      */
     public TokenStream newInstance(final String file, final String type,
         final String encoding) throws ConfigurationException, IOException,
         FileNotFoundException {
+
         TokenStream stream;
         File theFile = fileFinder.findFile(file, type);
         if (theFile == null) {
@@ -138,19 +165,27 @@ public class TokenStreamFactory implements FileFinder, Observable {
             throw new ConfigurationInstantiationException(e);
         }
 
-        openFileObservers.update(this, file);
+        try {
+            openFileObservers.update(this, file);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
+        }
         return stream;
     }
 
     /**
      * Provide a new instance of a token stream.
-     * 
+     *
+     * @param reader ...
+     * @param encoding the name of the encoding to use
+     *
      * @return the new instance
-     * 
-     * @throws ConfigurationInstantiationException ...
+     *
+     * @throws ConfigurationException ...
      */
     public TokenStream newInstance(final InputStreamReader reader,
         final String encoding) throws ConfigurationException {
+
         TokenStream stream;
 
         try {
@@ -161,16 +196,21 @@ public class TokenStreamFactory implements FileFinder, Observable {
             throw new ConfigurationInstantiationException(e);
         }
 
-        openStreamObservers.update(this, reader);
+        try {
+            openStreamObservers.update(this, reader);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
+        }
         return stream;
     }
 
     /**
-     * @see de.dante.util.Observable#registerObserver(java.lang.String,
+     * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
      *      de.dante.util.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
         throws NotObservableException {
+
         if ("file".equals(name)) {
             openFileObservers.add(observer);
         } else if ("stream".equals(name)) {
@@ -181,31 +221,38 @@ public class TokenStreamFactory implements FileFinder, Observable {
             throw new NotObservableException(name);
         }
     }
-    
+
     /**
-     * ...
-     * 
-     * @return
+     * Getter for the file finder.
+     *
+     * @return the file finder
      */
     public FileFinder getFileFinder() {
         return fileFinder;
     }
 
     /**
-     * ...
-     * 
-     * @param finder
+     * Setter for the file finder
+     *
+     * @param finder the new file finder
      */
     public void setFileFinder(final FileFinder finder) {
         fileFinder = finder;
     }
-    
+
     /**
-     * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
+     * @see de.dante.util.file.FileFinder#findFile(java.lang.String,
+     *      java.lang.String)
      */
     public File findFile(final String name, final String type)
             throws ConfigurationException {
-        openFileObservers.update(this,name);
-        return fileFinder.findFile(name,type);
+
+        try {
+            openFileObservers.update(this, name);
+        } catch (GeneralException e) {
+            throw new ConfigurationWrapperException(e);
+        }
+        return fileFinder.findFile(name, type);
     }
+
 }

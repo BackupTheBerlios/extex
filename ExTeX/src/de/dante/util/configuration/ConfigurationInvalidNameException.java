@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,11 +22,11 @@ import de.dante.extex.i18n.Messages;
 
 
 /**
- * This Exception is thrown when a configuration is requested with the path 
+ * This Exception is thrown when a configuration is requested with the path
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationInvalidNameException extends ConfigurationException {
     /**
@@ -34,8 +34,8 @@ public class ConfigurationInvalidNameException extends ConfigurationException {
      *
      * @param message the message string
      */
-    public ConfigurationInvalidNameException(String message) {
-        super(message,(String)null);
+    public ConfigurationInvalidNameException(final String message) {
+        super(message, (String) null);
     }
 
     /**
@@ -44,7 +44,8 @@ public class ConfigurationInvalidNameException extends ConfigurationException {
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationInvalidNameException(String message, Throwable cause) {
+    public ConfigurationInvalidNameException(final String message,
+        final Throwable cause) {
         super(message, cause);
     }
 

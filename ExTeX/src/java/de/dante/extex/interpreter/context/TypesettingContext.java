@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,33 +25,33 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface TypesettingContext {
 
     /**
-     * ...
+     * Setter for the font component.
      *
-     * @param font ...
+     * @param font the font to store
      */
     void setFont(Font font);
 
     /**
-     * ...
+     * Getter for the font component.
      *
-     * @return ...
+     * @return the font
      */
     Font getFont();
 
     /**
-     * ...
+     * Setter for the writing direction.
      *
      * @param direction ...
      */
     void setDirection(Direction direction);
 
     /**
-     * ...
+     * Getter for the writing direction.
      *
      * @return ...
      */
@@ -72,28 +72,28 @@ public interface TypesettingContext {
     HyphenationTable getLanguage();
 
     /**
-     * ...
+     * Setter for the color.
      *
      * @param color ...
      */
     void setColor(Color color);
 
     /**
-     * ...
+     * Getter for the color.
      *
      * @return ...
      */
     Color getColor();
 
     /**
-     * ...
+     * Setter for the angle.
      *
      * @param angle ...
      */
     void setAngle(int angle);
 
     /**
-     * ...
+     * Getter for the angle.
      *
      * @return ...
      */

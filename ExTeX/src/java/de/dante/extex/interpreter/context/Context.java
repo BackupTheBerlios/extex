@@ -29,14 +29,20 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.InFile;
+import de.dante.extex.interpreter.type.Muskip;
+import de.dante.extex.interpreter.type.OutFile;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.observer.Observer;
 
 /**
  * This interface describes the container for all data of an interpreter
@@ -44,9 +50,20 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Context extends Serializable {
+
+    /**
+     * ...
+     *
+     * @param t ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    Code getCode(Token t) throws GeneralException;
 
     /**
      * Setter for active characters in the current group.
@@ -75,6 +92,20 @@ public interface Context extends Serializable {
      *         if none is assigned
      */
     Code getActive(String name);
+
+    /**
+     * ...
+     *
+     * @return ...
+     */
+    Token getAfterassignment();
+
+    /**
+     * ...
+     *
+     * @param token ...
+     */
+    void setAfterassignment(Token token);
 
     /**
      * Setter for the catcode of a character in the current group.
@@ -269,6 +300,33 @@ public interface Context extends Serializable {
     /**
      * ...
      *
+     * @param name ...
+     * @param value ...
+     */
+    void setGlue(String name, Glue value);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param value ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setGlue(String name, Glue value, boolean global);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     *
+     * @return ...
+     */
+    Glue getGlue(String name);
+
+    /**
+     * ...
+     *
      * @param context ...
      */
     void setTypesettingContext(TypesettingContext context);
@@ -341,6 +399,45 @@ public interface Context extends Serializable {
     Interaction getInteraction();
 
     /**
+     * Declare the translation from an upper case character to a lower case
+     * character.
+     *
+     * @param uc upper case character
+     * @param lc lower case equivalent
+     */
+    void setLccode(UnicodeChar uc, UnicodeChar lc);
+
+    /**
+     * Getter for the lccode mapping of upper case characters to their
+     * lower case equivalent.
+     *
+     * @param uc the upper case character
+     *
+     * @return the lower case equivalent or null if none exists
+     */
+    UnicodeChar getLccode(UnicodeChar uc);
+
+    /**
+     * Declare the translation from a lower case character to an upper case
+     * character.
+     *
+     * @param lc lower  case character
+     * @param uc uppercase equivalent
+     */
+    void setUccode(UnicodeChar lc, UnicodeChar uc);
+
+    /**
+     * Getter for the uccode mapping of lower case characters to their
+     * upper case equivalent.
+     *
+     * @param lc the upper case character
+     *
+     * @return the upper case equivalent or null if none exists
+     */
+    UnicodeChar getUccode(UnicodeChar lc);
+
+
+    /**
      * ...
      *
      * @param name the name of the macro
@@ -390,6 +487,33 @@ public interface Context extends Serializable {
     long getMagnification();
 
     /**
+     * ...
+     *
+     * @param name ...
+     * @param value ...
+     */
+    void setMuskip(String name, Muskip value);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param value ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setMuskip(String name, Muskip value, boolean global);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     *
+     * @return ...
+     */
+    Muskip getMuskip(String name);
+
+    /**
      * Getter for the token factory. The token factory can be used to get new
      * tokens of some kind.
      *
@@ -405,29 +529,36 @@ public interface Context extends Serializable {
     Tokenizer getTokenizer();
 
     /**
-     * ...
+     * Add a token to the tokens inserted after the group has been closed.
      *
-     * @param t ...
+     * @param t the token to add
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
     void afterGroup(Token t) throws GeneralException;
 
     /**
+     * Register a observer to be called at the end of the group.
+     *
+     * @param observer the observer to register
+     */
+    void afterGroup(Observer observer);
+
+    /**
      * ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
-    void closeGroup() throws GeneralException;
+    void closeGroup(Typesetter typesetter) throws GeneralException;
 
     /**
      * ...
      *
      * @return ...
      *
-     * @throws GeneralException ...
+     * @throws GeneralException in case of an error
      */
-    long ifPop() throws GeneralException;
+    long popConditional() throws GeneralException;
 
     /**
      * ...
@@ -435,7 +566,7 @@ public interface Context extends Serializable {
      * @param locator the locator of the start
      * @param value the boolean value
      */
-    void ifPush(Locator locator, long value);
+    void pushConditional(Locator locator, long value);
 
     /**
      * This method can be used to open another group. The current group is
@@ -447,5 +578,55 @@ public interface Context extends Serializable {
      */
     void openGroup() throws ConfigurationException;
 
-    //TODO to be completed
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param file ...
+     */
+    void setInFile(String name, InFile file);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param file ...
+     * @param global ...
+     */
+    void setInFile(String name, InFile file, boolean global);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @return ...
+     */
+    InFile getInFile(String name);
+    
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param file ...
+     */
+    void setOutFile(String name, OutFile file);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     * @param file ...
+     * @param global ...
+     */
+    void setOutFile(String name, OutFile file, boolean global);
+
+    /**
+     * ...
+     *
+     * @param name ...
+     *
+     * @return ...
+     */
+    OutFile getOutFile(String name);
+
 }

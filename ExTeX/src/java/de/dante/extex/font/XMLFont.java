@@ -23,39 +23,39 @@ import java.util.List;
 import org.jdom.Element;
 
 /**
- * This class implements meethods for reading fonts with
+ * This class implements methods for reading fonts from
  * a xml-file.
- * 
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class XMLFont {
-	
-	/**
-	 * Return the Element in the tree or <code>null</code>, if not found.
-	 * @param e	the Element
-	 * @return	the element or <code>null</code>, if not found
-	 */
-	protected Element scanForElement(Element e, String name) {
 
-		if (e.getName().equals(name)) {
-			return e;
-		} else {
-			Element element = e.getChild(name);
-			if (element != null) {
-				return element;
-			} else {
-				List liste = e.getChildren();
-				for (int i = 0; i < liste.size(); i++) {
-					element = scanForElement((Element) liste.get(i), name);
-					if (element != null) {
-						return element;
-					}
-				}
-			}
-		}
-		return null;
-	}
+    /**
+     * Return the Element in the tree or <code>null</code>, if not found.
+     * @param e    the Element
+     * @return    the element or <code>null</code>, if not found
+     */
+    protected Element scanForElement(Element e, String name) {
+
+        if (e.getName().equals(name)) {
+            return e;
+        } else {
+            Element element = e.getChild(name);
+            if (element != null) {
+                return element;
+            } else {
+                List liste = e.getChildren();
+                for (int i = 0; i < liste.size(); i++) {
+                    element = scanForElement((Element) liste.get(i), name);
+                    if (element != null) {
+                        return element;
+                    }
+                }
+            }
+        }
+        return null;
+    }
 
 }
 

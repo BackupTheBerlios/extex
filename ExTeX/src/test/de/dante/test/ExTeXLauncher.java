@@ -21,27 +21,27 @@ package de.dante.test;
 import java.util.Properties;
 
 import de.dante.extex.ExTeX;
-import de.dante.test.logging.BufferLogger;
 
 
 public class ExTeXLauncher {
 
     private Properties properties = new Properties();
     
-    public ExTeXLauncher(String profile) {
+    public ExTeXLauncher(final String profile) {
         super();
         if (profile.indexOf('*') >= 0) {
             properties.setProperty("extex.traceTokenizer", "true");
         }
         properties.setProperty("extex.logger",
                                "de.dante.extex.logging.BufferLogger");
-        BufferLogger.setProfile(profile);
+//        BufferLogger.setProfile(profile);
     }
 
-    public String run(String code) throws Exception {
+    public String run(final String code) throws Exception {
         ExTeX main = new ExTeX(properties);
         properties.setProperty("extex.code",code);
         main.run();
-        return BufferLogger.close();
+//        return BufferLogger.close();
+        return null; //TODO
     }
 }

@@ -1,20 +1,20 @@
 /*
  * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
- * 
+ *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
  * Free Software Foundation; either version 2.1 of the License, or (at your
  * option) any later version.
- * 
+ *
  * This library is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
  * for more details.
- * 
+ *
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *  
+ * 
  */
 package de.dante.extex.scanner.stream.impl;
 
@@ -36,51 +36,52 @@ import java.nio.charset.CharsetDecoder;
  * class TokenStreamBaseImpl. If they are used up then the file stream is used
  * to extract token by token. This action is performed in the superclass
  * TokenStreamStringImpl.
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.9 $
  */
 public class TokenStreamImpl extends TokenStreamBufferImpl {
 
-	/** 
-	 * The decoder for the input stream 
-	 */
-	private CharsetDecoder decoder;
+    /**
+     * The field <tt>decoder</tt> contains the decoder for the input stream.
+     */
+    private CharsetDecoder decoder;
 
-	/** 
-	 * The reader to get the input from 
-	 */
-	private LineNumberReader reader;
+    /**
+     * The field <tt>reader</tt> contains the reader to get the input from.
+     */
+    private LineNumberReader reader;
 
-	/** 
-	 * The last input line as it has been read 
-	 */
-	private String line;
+    /**
+     * The field <tt>line</tt> contains the last input line as it has been read.
+     */
+    private String line;
 
-	/** 
-	 * The name of the source to read from 
-	 */
-	private String source;
+    /**
+     * The field <tt>source</tt> contains the name of the source to read from.
+     */
+    private String source;
 
-	/**
-	 * Indicate whether the stream is a filestrem
-	 */
-	private boolean isFileStream = false;
+    /**
+     * The field <tt>isFileStream</tt> contains the indicator whether the stream
+     * is a file stream.
+     */
+    private boolean isFileStream = false;
 
-	/**
-	 * Creates a new object.
-	 */
-	public TokenStreamImpl() {
-		super();
-	}
+     /**
+      * Creates a new object.
+      */
+     public TokenStreamImpl() {
+          super();
+     }
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param line a string to read from
      * @param encoding the encoding to use
-     * 
+     *
      * @throws CharacterCodingException in case of an error
      */
     public TokenStreamImpl(final String line, final String encoding)
@@ -92,6 +93,7 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
      * Creates a new object.
      * 
      * @param filename the name of the file to read
+     * @param encoding the name of the encoding to use
      */
     public TokenStreamImpl(final File filename, final String encoding)
             throws FileNotFoundException, IOException {
@@ -105,8 +107,9 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param reader the source reader
+     * @param encoding the name of the encoding to use
      *
      * @throws IOException in case of an IO error
      */
@@ -119,44 +122,38 @@ public class TokenStreamImpl extends TokenStreamBufferImpl {
         refill();
     }
 
-	/**
-	 * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
-	 */
-	public boolean isFileStream() {
-		return isFileStream;
-	}
+     /**
+      * @see de.dante.extex.scanner.stream.TokenStream#isFileStream()
+      */
+     public boolean isFileStream() {
+          return isFileStream;
+     }
 
     /**
-     * Getter for source.
-     *
-     * @return the source.
+     * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#getSource()
      */
     protected String getSource() {
         return source;
     }
 
     /**
-     * ...
-     * 
-     * @return
+     * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#getLineno()
      */
     protected int getLineno() {
         return (reader == null ? 0 : reader.getLineNumber());
     }
 
-	/**
-	 * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
-	 */
-	public boolean closeFileStream() {
-		super.closeFileStream();
+     /**
+      * @see de.dante.extex.scanner.stream.TokenStream#closeFileStream()
+      */
+     public boolean closeFileStream() {
+          super.closeFileStream();
 
-		return true;
-	}
+          return true;
+     }
 
     /**
-     * Get a new bunch of characters.
-     * 
-     * @return <code>false</code> iff no more character is available
+     * @see de.dante.extex.scanner.stream.impl.TokenStreamBufferImpl#refill()
      */
     protected boolean refill() throws IOException {
         if (reader == null) {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TypesettingContextFactory {
     /**
@@ -51,17 +51,16 @@ public class TypesettingContextFactory {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param configuration the configuration for this factory
-     * 
+     *
      * @throws ConfigurationMissingAttributeException in case that the
-     *             attribute {@link #CLASS_ATTRIBUTE CLASS_ATTRIBUTE}is not
-     *             set for the given configuration.
+     *      attribute <tt>CLASS_ATTRIBUTE</tt>
+     *      is not set for the given configuration.
      * @throws ConfigurationInstantiationException in case that the
-     *             instantiation of the given class causes a
-     *             SecurityException.
+     *      instantiation of the given class causes a SecurityException.
      * @throws ConfigurationClassNotFoundException in case that the named class
-     *             could not be loaded.
+     *      could not be loaded.
      */
     public TypesettingContextFactory(final Configuration configuration)
             throws ConfigurationException {
@@ -85,9 +84,9 @@ public class TypesettingContextFactory {
 
     /**
      * Factory method to acquire an instance of the TypesettingContext.
-     * 
+     *
      * @return an appropriate instance of the TypesettingContext.
-     * 
+     *
      * @throws ConfigurationInstantiationException in case that the
      *             instantiation of the class failed.
      */

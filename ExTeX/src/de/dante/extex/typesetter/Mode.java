@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,42 +24,63 @@ import de.dante.extex.i18n.Messages;
  * This class provides type-safe constants for the modes of a typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Mode {
-    /** constant for the horizontal mode of the typesetter */
+public final class Mode {
+
+    /**
+     * The constant <tt>HORIZONTAL</tt> contains the horizontal mode of the
+     * typesetter.
+     */
     public static final Mode HORIZONTAL = new Mode("Mode.HorizontalMode");
 
-    /** constant for the vertical mode of the typesetter */
+    /**
+     * The constant <tt>VERTICAL</tt> contains the vertical mode of the
+     * typesetter.
+     */
     public static final Mode VERTICAL = new Mode("Mode.VerticalMode");
 
-    /** constant for the restricted horizontal mode of the typesetter */
+    /**
+     * The constant <tt>RESTRICTED_HORIZONTAL</tt> contains the restricted
+     * horizontal mode of the typesetter.
+     */
     public static final Mode RESTRICTED_HORIZONTAL = new Mode("Mode.HorizontalMode");
 
-    /** constant for the inner vertical mode of the typesetter */
+    /**
+     * The constant <tt>INNER_VERTICAL</tt> contains the inner vertical mode of
+     * the typesetter.
+     */
     public static final Mode INNER_VERTICAL = new Mode("Mode.VerticalMode");
 
-    /** constant for the math mode of the typesetter */
+    /**
+     * The constant <tt>MATH</tt> contains the math mode of the typesetter.
+     */
     public static final Mode MATH = new Mode("Mode.MathMode");
 
-    /** constant for the display math mode of the typesetter */
+    /**
+     * The constant <tt>DISPLAYMATH</tt> contains the display math mode of
+     * the typesetter.
+     */
     public static final Mode DISPLAYMATH = new Mode("Mode.DisplayMathMode");
 
-    /** this attribute contains the key for the message (cf. i18n)
+    /**
+     * The field <tt>tag</tt> contains the key for the message (cf. i18n)
      *  to be used as a short description of the mode.
      */
     private String tag;
 
     /**
      * Creates a new object.
-     * This constructor is private since only a limited number of modes should 
+     * <p>
+     * This constructor is private since only a limited number of modes should
      * be usable. Those are provided by the static constants in this class.
+     * </p>
      *
-     * @param tag the tag of the mode
+     * @param aTag the tag of the mode
      */
-    private Mode(String tag) {
+    private Mode(final String aTag) {
         super();
-        this.tag = tag;
+        this.tag = aTag;
     }
 
     /**

@@ -21,11 +21,11 @@ package de.dante.extex.main;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is a wrapper for the IOException. It converts this exception 
- * into a MainException with an appropriate exit status. 
+ * This exception is a wrapper for the IOException. It converts this exception
+ * into a MainException with an appropriate exit status.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MainIOException extends MainException {
     /**
@@ -33,7 +33,7 @@ public class MainIOException extends MainException {
      *
      * @param cause the root of all evil
      */
-    public MainIOException(Throwable cause) {
+    public MainIOException(final Throwable cause) {
         super(-1, cause);
     }
 

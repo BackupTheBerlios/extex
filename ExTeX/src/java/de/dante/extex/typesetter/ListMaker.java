@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -27,34 +27,106 @@ import de.dante.util.UnicodeChar;
 
 /**
  * ...
- * 
- * 
+ *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ListMaker {
 
-	public abstract void add(Node node) throws GeneralException;
+    /**
+     * ...
+     *
+     * @param node ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(Node node) throws GeneralException;
 
-	public abstract void add(TypesettingContext typesettingContext, UnicodeChar symbol) throws GeneralException;
+    /**
+     * ...
+     * 
+     * @param typesettingContext ...
+     * @param symbol ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(TypesettingContext typesettingContext, UnicodeChar symbol)
+        throws GeneralException;
 
-	public abstract void addSpace(TypesettingContext typesettingContext, Count spacefactor) throws GeneralException;
+    /**
+     * ...
+     *
+     * @param typesettingContext ...
+     * @param spacefactor ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void addSpace(TypesettingContext typesettingContext, Count spacefactor)
+        throws GeneralException;
 
-	public abstract void addGlue(Glue g) throws GeneralException;
+    /**
+     * ...
+     *
+     * @param g the glue to add
+     *
+     * @throws GeneralException in case of an error
+     */
+    void addGlue(Glue g) throws GeneralException;
 
-	public abstract void par() throws GeneralException;
+    /**
+     * ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void par() throws GeneralException;
 
-	public abstract void toggleMath() throws GeneralException;
+    /**
+     * ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void toggleMath() throws GeneralException;
 
-	public abstract void toggleDisplaymath() throws GeneralException;
+    /**
+     * ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    void toggleDisplaymath() throws GeneralException;
 
-	public abstract void setSpacefactor(Count f) throws GeneralException;
+    /**
+     * Setter for the space factor.
+     *
+     * @param sf the space factor to set
+     *
+     * @throws GeneralException in case of an error
+     */
+    void setSpacefactor(Count sf) throws GeneralException;
 
-	public abstract void setPrevDepth(Dimen pd) throws GeneralException;
+    /**
+     * ...
+     *
+     * @param pd the prec depth parameter
+     *
+     * @throws GeneralException in case of an error
+     */
+    void setPrevDepth(Dimen pd) throws GeneralException;
 
-	public abstract Mode getMode();
+    /**
+     * Getter for the current mode.
+     *
+     * @return the mode
+     */
+    Mode getMode();
 
-	public abstract NodeList close() throws GeneralException;
+    /**
+     * ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    NodeList close() throws GeneralException;
 
 }

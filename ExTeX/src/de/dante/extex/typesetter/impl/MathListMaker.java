@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathListMaker extends AbstractListMaker implements ListMaker {
     /**
@@ -52,23 +52,22 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.node.CharNode)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) {
         nodes.add(c);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font,
-     *      java.lang.String)
+     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
      */
     public void add(final TypesettingContext font, final UnicodeChar symbol)
             throws GeneralException {
-        nodes.add(manager.getCharNodeFactory().newInstance(font, symbol));
+        nodes.add(getManager().getCharNodeFactory().newInstance(font, symbol));
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(TypesettingContext)
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
@@ -88,7 +87,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      * @see "TeX -- The Program [1047]"
      */
     public void par() throws GeneralException {
-        manager.closeTopList();
+        getManager().closeTopList();
         throw new GeneralHelpingException("TTP.MissingDollar");
     }
 
@@ -100,18 +99,9 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#open()
-     */
-    public void open() {
-        // TODO Auto-generated method stub
-
-    }
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#close()
      */
     public NodeList close() {
-        manager = null;
         return nodes;
     }
 
@@ -126,7 +116,7 @@ public class MathListMaker extends AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#toggleMath()
      */
     public void toggleMath() throws GeneralException {
-        manager.closeTopList();
+        getManager().closeTopList();
     }
 
 }

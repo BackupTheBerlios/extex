@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,12 +22,13 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This is a interface to mark those Classes which are able to divide something.
+ * This is a interface to mark those classes which are able to divide something.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Divideable {
+
     /**
      * This method is called when the macro <tt>\divide</tt> has been seen.
      * It performs the remaining tasks for the expansion.
@@ -40,4 +41,5 @@ public interface Divideable {
      */
     void divide(Flags prefix, Context context, TokenSource source)
             throws GeneralException;
+
 }

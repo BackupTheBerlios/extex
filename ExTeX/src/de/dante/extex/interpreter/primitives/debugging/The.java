@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -36,47 +36,52 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class The extends AbstractCode {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for tracing and debugging
-	 */
-	public The(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for tracing and debugging
+     */
+    public The(final String name) {
+        super(name);
+    }
 
-	/**
-	 * Get the next token (not expand) and if it <code>Theable</code>, 
-	 * then call <code>the()</code> and put the result on the stack.
-	 * 
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource, de.dante.extex.typesetter.Typesetter)
-	 */
-	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
+    /**
+     * Get the next token (not expand) and if it <code>Theable</code>, then
+     * call <code>the()</code> and put the result on the stack.
+     *
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
-		Token cs = source.getToken();
+        Token cs = source.getToken();
 
-		if (!(cs instanceof ControlSequenceToken)) {
-			char esc = (char) (context.getCount("escapechar").getValue());
-			// TODO change char to UnicodeChar
-			throw new GeneralHelpingException("TTP.CantUseAfter", cs.toString(), Character.toString(esc) + getName());
-		}
+        if (!(cs instanceof ControlSequenceToken)) {
+            throw new GeneralHelpingException("TTP.CantUseAfter",
+                    cs.toString(), printableControlSequence(context));
+        }
 
-		Code code = context.getMacro(cs.getValue());
+        Code code = context.getMacro(cs.getValue());
 
-		if (code == null) {
-			throw new GeneralHelpingException("TTP.UndefinedToken", cs.toString());
-		} else if (code instanceof Theable) {
-			Tokens toks = ((Theable) code).the(context, source);
-			source.push(toks);
-		} else {
-			char esc = (char) (context.getCount("escapechar").getValue());
-			throw new GeneralHelpingException("TTP.CantUseAfter", cs.toString(), Character.toString(esc) + getName());
-		}
+        if (code == null) {
+            throw new GeneralHelpingException("TTP.UndefinedToken", cs
+                    .toString());
+        } else if (code instanceof Theable) {
+            Tokens toks = ((Theable) code).the(context, source);
+            source.push(toks);
+        } else {
+            throw new GeneralHelpingException("TTP.CantUseAfter",
+                    cs.toString(), printableControlSequence(context));
+        }
 
-		prefix.clear();
-	}
+        prefix.clear();
+    }
 }

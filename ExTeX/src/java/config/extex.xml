@@ -18,8 +18,9 @@
   -->
 <ExTeX>
 
-  <Interpreter class="de.dante.extex.interpreter.Max">
+  <Interpreter class="de.dante.extex.interpreter.max.Max">
     <maxErrors>100</maxErrors>
+
     <!-- NOTE: Only the tags "define" are used for initializing.
       -        The tags "Define" are pure comments waiting to be activated!
       -->
@@ -27,39 +28,39 @@
     <Define name="/" class=""/>
     <Define name="\\" class=""/>
     <Define name="above" class=""/>
-    <Define name="abovedisplayshortskip" class=""/>
-    <Define name="abovedisplayskip" class=""/>
+    <define name="abovedisplayshortskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
+    <define name="abovedisplayskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="abovewithdelims" class=""/>
     <Define name="accent" class=""/>
     <define name="adjdemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="advance" class="de.dante.extex.interpreter.primitives.register.Advance"/>
-    <Define name="afterassignment" class=""/>
+    <define name="afterassignment" class="de.dante.extex.interpreter.primitives.Afterassignment"/>
     <define name="aftergroup" class="de.dante.extex.interpreter.primitives.group.Aftergroup"/>
     <Define name="atop" class=""/>
     <Define name="atopwithdelims" class=""/>
     <Define name="badness" class=""/>
-    <Define name="baselineskip" class=""/>
+    <define name="baselineskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="batchmode" class="de.dante.extex.interpreter.primitives.interaction.Batchmode"/>
     <define name="begingroup" class="de.dante.extex.interpreter.primitives.group.Begingroup"/>
-    <Define name="belowdisplayshortskip" class=""/>
-    <Define name="belowdisplayskip" class=""/>
+    <define name="belowdisplayshortskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
+    <define name="belowdisplayskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="binoppenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="botmark" class=""/>
-    <Define name="box" class="de.dante.extex.interpreter.primitives.register.NumberedBox"/>
+    <define name="box" class="de.dante.extex.interpreter.primitives.register.NumberedBox"/>
     <define name="boxmaxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="brokenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <define name="catcode" class="de.dante.extex.interpreter.primitives.register.NumberedCatcode"/>
-    <define name="char" class="de.dante.extex.interpreter.primitives.Char"/>
+    <define name="catcode" class="de.dante.extex.interpreter.primitives.register.CatcodePrimitive"/>
+    <define name="char" class="de.dante.extex.interpreter.primitives.string.Char"/>
     <Define name="chardef" class=""/>
     <Define name="cleaders" class=""/>
-    <Define name="closein" class=""/>
-    <Define name="closeout" class=""/>
+    <define name="closein" class="de.dante.extex.interpreter.primitives.file.Closein"/>
+    <define name="closeout" class="de.dante.extex.interpreter.primitives.file.Closeout"/>
     <define name="clubpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="copy" class=""/>
     <define name="count" class="de.dante.extex.interpreter.primitives.register.NumberedCount"/>
-    <define name="countdef" class="de.dante.extex.interpreter.primitives.register.CountDef"/>
-    <define name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal" extension="yes"/>
-    <define name="realdef" class="de.dante.extex.interpreter.primitives.register.RealDef" extension="yes"/>
+    <define name="countdef" class="de.dante.extex.interpreter.primitives.register.Countdef"/>
+    <TRASH name="real" class="de.dante.extex.interpreter.primitives.register.NumberedReal" extension="yes"/>
+    <TRASH name="realdef" class="" extension="yes"/>
     <Define name="cr" class=""/>
     <Define name="crcr" class=""/>
     <Define name="csname" class=""/>
@@ -73,29 +74,29 @@
     <Define name="delimiterfactor" class=""/>
     <Define name="delimitershortfall" class=""/>
     <define name="dimen" class="de.dante.extex.interpreter.primitives.register.NumberedDimen"/>
-    <define name="dimendef" class="de.dante.extex.interpreter.primitives.register.DimenDef"/>
+    <define name="dimendef" class="de.dante.extex.interpreter.primitives.register.Dimendef"/>
     <Define name="discretionary" class=""/>
-    <Define name="displayindent" class=""/>
+    <define name="displayindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="displaylimits" class=""/>
     <Define name="displaystyle" class=""/>
     <define name="displaywidowpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="displaywidth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="divide" class="de.dante.extex.interpreter.primitives.register.Divide"/>
     <define name="doublehyphendemerits" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="dp" class=""/>
+    <define name="dp" class="de.dante.extex.interpreter.primitives.register.Dp"/>
     <Define name="dump" class=""/>
     <define name="edef" class="de.dante.extex.interpreter.primitives.macro.Edef"/>
     <define name="else" class="de.dante.extex.interpreter.primitives.conditional.Else"/>
-    <Define name="emergencystretch" class=""/>
+    <define name="emergencystretch" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="end" class="de.dante.extex.interpreter.primitives.file.End"/>
-    <Define name="endcsname" class=""/>
+    <define name="endcsname" class="de.dante.extex.interpreter.primitives.macro.Endcsname"/>
     <define name="endgroup" class="de.dante.extex.interpreter.primitives.group.Endgroup"/>
-    <Define name="endinput" class="de.dante.extex.interpreter.primitives.file.Endinput"/>
+    <define name="endinput" class="de.dante.extex.interpreter.primitives.file.Endinput"/>
     <define name="endlinechar" class="de.dante.extex.interpreter.primitives.register.NamedCount">13</define>
     <Define name="eqno" class=""/>
     <Define name="errhelp" class=""/>
     <Define name="errmessage" class=""/>
-    <Define name="errorcontextlines" class=""/>
+    <define name="errorcontextlines" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="errorstopmode" class="de.dante.extex.interpreter.primitives.interaction.Errorstopmode"/>
     <define name="escapechar" class="de.dante.extex.interpreter.primitives.register.NamedCount">92</define>
     <define name="everycr" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
@@ -105,7 +106,7 @@
     <define name="everymath" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
     <define name="everypar" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
     <define name="everyvbox" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
-    <Define name="exhyphenpenalty" class=""/>
+    <define name="exhyphenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="expandafter" class=""/>
     <Define name="fam" class=""/>
     <define name="fi" class="de.dante.extex.interpreter.primitives.conditional.Fi"/>
@@ -114,7 +115,7 @@
     <define name="floatingpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="font" class="de.dante.extex.interpreter.primitives.font.DefFont"/>
     <define name="fontdimen" class="de.dante.extex.interpreter.primitives.font.FontDimen"/>
-    <define name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
+    <TRASH name="fontvalue" class="de.dante.extex.interpreter.primitives.font.FontValue"/>
     <define name="fontname" class="de.dante.extex.interpreter.primitives.font.FontName"/>
     <Define name="futurelet" class=""/>
     <define name="gdef" class="de.dante.extex.interpreter.primitives.macro.Gdef"/>
@@ -124,35 +125,35 @@
     <Define name="hangafter" class=""/>
     <define name="hangindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="hbadness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="hbox" class=""/>
+    <define name="hbox" class="de.dante.extex.interpreter.primitives.box.Hbox"/>
     <Define name="hfil" class=""/>
     <Define name="hfill" class=""/>
     <Define name="hfilneg" class=""/>
     <define name="hfuzz" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="hoffset" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="holdinginserts" class=""/>
-    <Define name="hrule" class=""/>
-    <define name="hsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen">15cm</define>
+    <define name="hrule" class="de.dante.extex.interpreter.primitives.box.Hrule"/>
+    <define name="hsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="hskip" class=""/>
     <Define name="hss" class=""/>
-    <Define name="ht" class=""/>
+    <define name="ht" class="de.dante.extex.interpreter.primitives.register.Ht"/>
     <define name="hyphenation" class="de.dante.extex.interpreter.primitives.hyphen.Hyphenation"/>
     <Define name="hyphenchar" class=""/>
-    <Define name="hyphenpenalty" class=""/>
+    <Define name="hyphenpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="if" class=""/>
     <Define name="ifcase" class=""/>
-    <Define name="ifcat" class=""/>
-    <Define name="ifdim" class=""/>
-    <Define name="ifeof" class=""/>
+    <define name="ifcat" class="de.dante.extex.interpreter.primitives.conditional.Ifcat"/>
+    <define name="ifdim" class="de.dante.extex.interpreter.primitives.conditional.Ifdim"/>
+    <define name="ifeof" class="de.dante.extex.interpreter.primitives.conditional.Ifeof"/>
     <define name="iffalse" class="de.dante.extex.interpreter.primitives.conditional.Iffalse"/>
-    <Define name="ifhbox" class=""/>
+    <define name="ifhbox" class="de.dante.extex.interpreter.primitives.conditional.Ifhbox"/>
     <define name="ifhmode" class="de.dante.extex.interpreter.primitives.conditional.Ifhmode"/>
     <define name="ifinner" class="de.dante.extex.interpreter.primitives.conditional.Ifinner"/>
     <define name="ifmmode" class="de.dante.extex.interpreter.primitives.conditional.Ifmmode"/>
-    <Define name="ifnum" class=""/>
-    <Define name="ifodd" class=""/>
+    <define name="ifnum" class="de.dante.extex.interpreter.primitives.conditional.Ifnum"/>
+    <define name="ifodd" class="de.dante.extex.interpreter.primitives.conditional.Ifodd"/>
     <define name="iftrue" class="de.dante.extex.interpreter.primitives.conditional.Iftrue"/>
-    <Define name="ifvbox" class=""/>
+    <define name="ifvbox" class="de.dante.extex.interpreter.primitives.conditional.Ifvbox"/>
     <define name="ifvmode" class="de.dante.extex.interpreter.primitives.conditional.Ifvmode"/>
     <define name="ifvoid" class="de.dante.extex.interpreter.primitives.conditional.Ifvoid"/>
     <define name="ifx" class="de.dante.extex.interpreter.primitives.conditional.Ifx"/>
@@ -160,9 +161,9 @@
     <define name="immediate" class="de.dante.extex.interpreter.primitives.prefix.Immediate"/>
     <Define name="indent" class=""/>
     <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
-    <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks" extension="yes">ISO8859-1</define>
-    <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile" extension="yes"/>
-    <define name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding" extension="yes"/>
+    <TRASH name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks" extension="yes">ISO8859-1</TRASH>
+    <TRASH name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile" extension="yes"/>
+    <TRASH name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding" extension="yes"/>
     <Define name="inputlineno" class=""/>
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>
@@ -173,18 +174,18 @@
     <Define name="lastbox" class=""/>
     <Define name="lastkern" class=""/>
     <define name="lastpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="lastskip" class=""/>
-    <Define name="lccode" class=""/>
+    <define name="lastskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
+    <define name="lccode" class="de.dante.extex.interpreter.primitives.string.Lccode"/>
     <Define name="leaders" class=""/>
     <Define name="left" class=""/>
     <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.LeftHyphenmin"/>
-    <define name="hyphenactive" class="de.dante.extex.interpreter.primitives.hyphen.HyphenActive"/>
-    <Define name="leftskip" class=""/>
+    <TRASH name="hyphenactive" class="de.dante.extex.interpreter.primitives.hyphen.HyphenActive" extension="yes"/>
+    <define name="leftskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="leqno" class=""/>
     <define name="let" class="de.dante.extex.interpreter.primitives.macro.Let"/>
     <Define name="limits" class=""/>
     <define name="linepenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="lineskip" class=""/>
+    <define name="lineskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="lineskiplimit" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="long" class="de.dante.extex.interpreter.primitives.prefix.Long"/>
     <define name="looseness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -206,10 +207,10 @@
     <Define name="mathpunct" class=""/>
     <Define name="mathrel" class=""/>
     <define name="mathsurround" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <Define name="maxdeadcycles" class=""/>
+    <define name="maxdeadcycles" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="maxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="meaning" class=""/>
-    <Define name="medmuskip" class=""/>
+    <define name="medmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
     <define name="message" class="de.dante.extex.interpreter.primitives.debugging.Message"/>
     <Define name="mkern" class=""/>
     <define name="month" class="de.dante.extex.interpreter.primitives.register.NamedCount">1</define>
@@ -217,8 +218,8 @@
     <Define name="moveright" class=""/>
     <Define name="mskip" class=""/>
     <define name="multiply" class="de.dante.extex.interpreter.primitives.register.Multiply"/>
-    <Define name="muskip" class=""/>
-    <Define name="muskipdef" class=""/>
+    <define name="muskip" class="de.dante.extex.interpreter.primitives.register.NumberedMuskip"/>
+    <define name="muskipdef" class="de.dante.extex.interpreter.primitives.register.Muskipdef"/>
     <define name="newlinechar" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="noalign" class=""/>
     <Define name="noboundary" class=""/>
@@ -228,11 +229,11 @@
     <Define name="nonscript" class=""/>
     <define name="nonstopmode" class="de.dante.extex.interpreter.primitives.interaction.Nonstopmode"/>
     <Define name="nulldelimiterspace" class=""/>
-    <Define name="nullfont" class=""/>
+    <define name="nullfont" class="de.dante.extex.interpreter.primitives.font.NullFontPrimitive"/>
     <Define name="number" class=""/>
     <Define name="omit" class=""/>
-    <Define name="openin" class=""/>
-    <Define name="openout" class=""/>
+    <define name="openin" class="de.dante.extex.interpreter.primitives.file.Openin"/>
+    <define name="openout" class="de.dante.extex.interpreter.primitives.file.Openout"/>
     <Define name="or" class=""/>
     <define name="outer" class="de.dante.extex.interpreter.primitives.prefix.Outer"/>
     <Define name="output" class=""/>
@@ -242,20 +243,20 @@
     <Define name="overline" class=""/>
     <Define name="overwithdelims" class=""/>
     <define name="pagedepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <Define name="pagefilllstretch" class=""/>
-    <Define name="pagefillstretch" class=""/>
-    <Define name="pagefilstretch" class=""/>
+    <Define name="pagefilllstretch" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
+    <Define name="pagefillstretch" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
+    <Define name="pagefilstretch" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="pagegoal" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <Define name="pageshrink" class=""/>
-    <Define name="pagestretch" class=""/>
+    <Define name="pageshrink" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
+    <Define name="pagestretch" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="pagetotal" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="par" class="de.dante.extex.interpreter.primitives.box.Par"/>
-    <Define name="parfillskip" class=""/>
+    <define name="parfillskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="parindent" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="parshape" class=""/>
-    <Define name="parskip" class=""/>
+    <define name="parskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="patterns" class="de.dante.extex.interpreter.primitives.hyphen.Patterns"/>
-    <Define name="pausing" class=""/>
+    <define name="pausing" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="penalty" class=""/>
     <define name="postdisplaypenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="predisplaypenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -270,7 +271,7 @@
     <define name="relpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="right" class=""/>
     <define name="righthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.RightHyphenmin"/>
-    <Define name="rightskip" class=""/>
+    <define name="rightskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="romannumeral" class=""/>
     <Define name="scriptfont" class=""/>
     <Define name="scriptscriptfont" class=""/>
@@ -279,7 +280,7 @@
     <Define name="scriptstyle" class=""/>
     <define name="scrollmode" class="de.dante.extex.interpreter.primitives.interaction.Scrollmode"/>
     <Define name="setbox" class=""/>
-    <define name="setlanguage" class="de.dante.extex.interpreter.primitives.hyphen.SetLanguage"/>
+    <TRASH name="setlanguage" class="de.dante.extex.interpreter.primitives.hyphen.SetLanguage"/>
     <Define name="sfcode" class=""/>
     <Define name="shipout" class=""/>
     <Define name="show" class=""/>
@@ -289,31 +290,31 @@
     <Define name="showlists" class=""/>
     <define name="showthe" class="de.dante.extex.interpreter.primitives.debugging.Showthe"/>
     <Define name="skewchar" class=""/>
-    <Define name="skip" class=""/>
-    <Define name="skipdef" class=""/>
+    <define name="skip" class="de.dante.extex.interpreter.primitives.register.NumberedSkip"/>
+    <define name="skipdef" class="de.dante.extex.interpreter.primitives.register.Skipdef"/>
     <define name="spacefactor" class="de.dante.extex.interpreter.primitives.parameter.Spacefactor"/>
-    <Define name="spaceskip" class=""/>
+    <define name="spaceskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="span" class=""/>
     <define name="special" class="de.dante.extex.interpreter.primitives.box.Special"/>
     <Define name="splitbotmark" class=""/>
     <Define name="splitfirstmark" class=""/>
     <define name="splitmaxdepth" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <Define name="splittopskip" class=""/>
+    <define name="splittopskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="string" class=""/>
-    <Define name="tabskip" class=""/>
+    <define name="tabskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <Define name="textfont" class=""/>
     <Define name="textstyle" class=""/>
     <define name="the" class="de.dante.extex.interpreter.primitives.debugging.The"/>
-    <define name="tosp" class="de.dante.extex.interpreter.primitives.debugging.ToSP"/>
-    <define name="printformat" class="de.dante.extex.interpreter.primitives.debugging.PrintFormat"/>
-    <Define name="thickmuskip" class=""/>
-    <Define name="thinmuskip" class=""/>
+    <TRASH name="tosp" class="de.dante.extex.interpreter.primitives.debugging.ToSP"/>
+    <TRASH name="printformat" class="de.dante.extex.interpreter.primitives.debugging.PrintFormat"/>
+    <define name="thickmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
+    <define name="thinmuskip" class="de.dante.extex.interpreter.primitives.register.NamedMuskip"/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="toks" class="de.dante.extex.interpreter.primitives.register.NumberedToks"/>
-    <define name="toksdef" class="de.dante.extex.interpreter.primitives.register.ToksDef"/>
+    <define name="toksdef" class="de.dante.extex.interpreter.primitives.register.Toksdef"/>
     <define name="tolerance" class="de.dante.extex.interpreter.primitives.register.NamedCount">10000</define>
     <Define name="topmark" class=""/>
-    <Define name="topskip" class=""/>
+    <define name="topskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="tracingcommands" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="tracinglostchars" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="tracingmacros" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
@@ -323,7 +324,7 @@
     <define name="tracingparagraphs" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="tracingrestores" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="tracingstats" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="uccode" class=""/>
+    <define name="uccode" class="de.dante.extex.interpreter.primitives.string.Uccode"/>
     <define name="uchyph" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="underline" class=""/>
     <Define name="unhbox" class=""/>
@@ -337,14 +338,14 @@
     <Define name="vadjust" class=""/>
     <Define name="valign" class=""/>
     <define name="vbadness" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
-    <Define name="vbox" class=""/>
+    <define name="vbox" class="de.dante.extex.interpreter.primitives.box.Vbox"/>
     <Define name="vcenter" class=""/>
     <Define name="vfil" class=""/>
     <Define name="vfill" class=""/>
     <Define name="vfilneg" class=""/>
     <define name="vfuzz" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <define name="voffset" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
-    <Define name="vrule" class=""/>
+    <define name="vrule" class="de.dante.extex.interpreter.primitives.box.Vrule"/>
     <define name="vsize" class="de.dante.extex.interpreter.primitives.register.NamedDimen"/>
     <Define name="vskip" class=""/>
     <Define name="vsplit" class=""/>
@@ -355,13 +356,14 @@
     <Define name="write" class=""/>
     <define name="xdef" class="de.dante.extex.interpreter.primitives.macro.Xdef"/>
     <Define name="xleaders" class=""/>
-    <Define name="xspaceskip" class=""/>
+    <define name="xspaceskip" class="de.dante.extex.interpreter.primitives.register.NamedSkip"/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
-    <define name="linebreaker" class="de.dante.extex.interpreter.primitives.register.NamedToks"/>
 
-    <Context class="de.dante.extex.interpreter.context.impl.extension.ContextExtensionImpl">
+    <TRASH name="linebreaker" class="de.dante.extex.interpreter.primitives.register.NamedToks" extension="yes"/>
 
-      <Group class="de.dante.extex.interpreter.context.impl.extension.GroupExtensionImpl"/>
+    <Context class="de.dante.extex.interpreter.context.impl.ContextImpl">
+
+      <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
 
       <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
 
@@ -370,11 +372,13 @@
         <File>
           <efm>
             <extension>.efm</extension>
-            <path>./font</path>
+            <path>.</path>
+            <path>font</path>
    	      </efm>
           <pfb>
             <extension>.pfb</extension>
-            <path>./font</path>
+            <path>.</path>
+            <path>font</path>
    	      </pfb>
         </File>
       </Font>
@@ -391,11 +395,11 @@
   		<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
  	</Typesetter>
 
-  <DocumentWriter>
-  	<WriterOutput name="dump" class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
-  	<WriterOutput name="pdf" class="de.dante.extex.documentWriter.pdf.PDFDocumentWriter"/>
-  	<WriterOutput name="txt" class="de.dante.extex.documentWriter.dump.TextDocumentWriter"/>
-  </DocumentWriter>  	
+  <DocumentWriter default="out">
+    <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+  </DocumentWriter>
 
   <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"/>
 
@@ -403,9 +407,8 @@
     <tex>
       <extension></extension>
       <extension>.tex</extension>
-      <path></path>
-      <path>./</path>
-      <path>./testdata</path>
+      <path>.</path>
+      <path>testdata</path>
     </tex>
    </File>
 

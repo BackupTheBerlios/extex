@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,79 +28,67 @@ import de.dante.util.GeneralException;
  * horizontal list
  *
  * @see "TeX -- The Program [135]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class HorizontalListNode extends AbstractNodeList implements NodeList {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @see "TeX -- The Program [136]"
-	 */
-	public HorizontalListNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     *
+     * @see "TeX -- The Program [136]"
+     */
+    public HorizontalListNode() {
+        super();
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toText(final StringBuffer sb, String prefix) {
-		sb.append("(hlist ");
-		super.toText(sb, prefix);
-	}
+    /**
+     * @see de.dante.extex.typesetter.NodeList#addSkip(de.dante.extex.interpreter.type.Glue)
+     */
+    public void addSkip(final Glue glue) {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toString(final StringBuffer sb, String prefix) {
-		sb.append("\\hbox");
-		super.toString(sb, prefix);
-	}
+        Node gNode = new GlueNode(glue); // TODO: use factory?
+        gNode.setWidth(glue.getLength());
+        add(gNode);
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitHorizontalList(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append("(hlist ");
+        super.toText(sb, prefix);
+    }
 
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("\\hbox");
+        super.toString(sb, prefix);
+    }
 
-	/**
-	 * Is a linebreak occured 
-	 */
-	private boolean linebreak = false;
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
 
-	/**
-	 * @return Returns the linebreak.
-	 */
-	public boolean isLineBreak() {
-		return linebreak;
-	}
+        return visitor.visitHorizontalList(value, value2);
+    }
 
-	/**
-	 * @param linebreak The linebreak to set.
-	 */
-	public void setLineBreak(boolean linebreak) {
-		this.linebreak = linebreak;
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.node.AbstractNodeList#updateDimensions(de.dante.extex.typesetter.Node)
+     */
+    protected void updateDimensions(final Node node) {
+        getWidth().add(node.getWidth());
+        getHeight().max(node.getHeight());
+        getDepth().max(node.getDepth());
+    }
 
-	/**
-	 * Propagate the size
-	 */
-	protected void propagateSizes(Node node) {
-
-		setWidth(getWidth().add(node.getWidth()));
-
-		if (getHeight().lt(node.getHeight())) {
-			setHeight(node.getHeight());
-		}
-		if (getDepth().lt(node.getDepth())) {
-			setDepth(node.getDepth());
-		}
-	}
 }

@@ -35,7 +35,7 @@ import de.dante.util.configuration.Configuration;
 /**
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TokenStreamStringImplTest extends TestCase {
     /**
@@ -260,6 +260,12 @@ public class TokenStreamStringImplTest extends TestCase {
          * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String, java.lang.String)
          */
         public Configuration getConfiguration(final String key, final String attribute) {
+            return null;
+        }
+        /**
+         * @see de.dante.util.configuration.Configuration#findConfiguration(java.lang.String)
+         */
+        public Configuration findConfiguration(final String key) {
             return null;
         }
         /**

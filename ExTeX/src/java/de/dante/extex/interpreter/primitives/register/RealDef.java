@@ -32,52 +32,56 @@ import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\realdef</code>.
- * 
+ *
  * <p>
  * Example
  * </p>
- * 
+ *
  * <pre>
  *  \realdef\hugo=7
  * </pre>
- * 
+ *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class RealDef extends AbstractCode {
 
-	/**
-	 * Creates a new object.
-	 * 
-	 * @param name the name for debugging
-	 */
-	public RealDef(final String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for debugging
+     */
+    public RealDef(final String name) {
+        super(name);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-	 *      de.dante.extex.interpreter.context.Context,
-	 *      de.dante.extex.interpreter.TokenSource,
-	 *      de.dante.extex.typesetter.Typesetter)
-	 */
-	public void execute(final Flags prefix, final Context context, final TokenSource source, Typesetter typesetter) throws GeneralException {
-		//  \realdef\hugo=7
-		Token tok = source.scanNonSpace();
-		if (!(tok instanceof ControlSequenceToken)) {
-			throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-		}
-		source.scanOptionalEquals();
-		long value = new Count(context, source).getValue();
+    /**
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
-		// create new primitive
-		Code code = context.getMacro(tok.getValue());
-		if (code != null) {
-			throw new GeneralHelpingException("TTP.AlreadyDefinedToken", code.getName());
-		}
-		code = new DefinedReal(tok.getValue(), "real", value);
-		context.setMacro(tok.getValue(), code);
-		prefix.clear();
-		doAfterAssignment(context, source);
-	}
+        //  \realdef\hugo=7
+        Token tok = source.scanNonSpace();
+        if (!(tok instanceof ControlSequenceToken)) {
+            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
+        }
+        source.scanOptionalEquals();
+        long value = new Count(context, source).getValue();
+
+        // create new primitive
+        Code code = context.getMacro(tok.getValue());
+        if (code != null) {
+            throw new GeneralHelpingException("TTP.AlreadyDefinedToken", code
+                    .getName());
+        }
+        code = new DefinedReal(tok.getValue(), "real", value);
+        context.setMacro(tok.getValue(), code);
+        prefix.clear();
+        //doAfterAssignment(context, source);
+    }
 }

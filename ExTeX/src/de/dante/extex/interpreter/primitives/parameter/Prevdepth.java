@@ -27,10 +27,11 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\prevdepth</code>.
+ * This class provides an implementation for the primitive
+ * <code>\prevdepth</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Prevdepth extends AbstractCode {
     /**
@@ -38,7 +39,7 @@ public class Prevdepth extends AbstractCode {
      *
      * @param name the name for debugging
      */
-    public Prevdepth(String name) {
+    public Prevdepth(final String name) {
         super(name);
     }
 
@@ -48,8 +49,10 @@ public class Prevdepth extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         source.scanOptionalEquals();
         Dimen pd = new Dimen(context, source);
         typesetter.setPrevDepth(pd);

@@ -1,0 +1,8 @@
+[Jar files]
+C:\gene\src\ExTeX
+[Source dirs]
+C:\gene\src\ExTeX\src
+[Aux classpath entries]
+C:\gene\src\ExTeX\lib\icu4j_2_6_1.jar
+C:\gene\src\ExTeX\lib\iText.jar
+C:\gene\src\ExTeX\lib\jdom.jar

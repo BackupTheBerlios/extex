@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,51 +24,43 @@ import de.dante.extex.i18n.Messages;
  * This exception is thrown when a dynamically loaded class could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ConfigurationClassNotFoundException
     extends ConfigurationException {
-    
+
     /**
-     * The field <tt>classname</tt> ...
+     * The field <tt>classname</tt> contains the name of the class which
+     * could not be found.
      */
     private String classname = null;
 
     /**
      * Creates a new object.
-     * 
-     * @param classname ...
-     * @param config ...
+     *
+     * @param aClassName the name of the class which could not be found
+     * @param config the configuration in which the problem occurred or
+     * <code>null</code>
      */
-    public ConfigurationClassNotFoundException(String classname,
-            Configuration config) {
+    public ConfigurationClassNotFoundException(final String aClassName,
+            final Configuration config) {
         super(null, config.toString());
-        this.classname = classname;
+        this.classname = aClassName;
     }
 
     /**
      * Creates a new object.
-     * 
-     * @param classname ...
-     * @param config ...
-     */
-    public ConfigurationClassNotFoundException(String classname) {
-        super(null);
-        this.classname = classname;
-    }
-    
-    /**
-     * Creates a new object.
      *
-     * @param cause the next Throwable in the list
+     * @param aClassName the name of the class which could not be found
      */
-    public ConfigurationClassNotFoundException(Throwable cause) {
-        super(null, cause);
+    public ConfigurationClassNotFoundException(final String aClassName) {
+        super(null);
+        this.classname = aClassName;
     }
-    
+
     /**
      * Getter for the text prefix of this ConfigException.
-     * 
+     *
      * @return the text
      */
     protected String getText() {
@@ -78,4 +70,5 @@ public class ConfigurationClassNotFoundException
                                    : getCause() != null ? getCause()
                                        .getMessage() : ""));
     }
+
 }

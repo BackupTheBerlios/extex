@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,40 +20,45 @@ package de.dante.util.configuration;
 
 import de.dante.extex.i18n.Messages;
 
-
 /**
- * This Exception is thrown when a configuration is requested with the path 
+ * This Exception is thrown when a configuration is requested with the path
  * <code>null</code>> or the empty string.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class ConfigurationMissingAttributeException extends ConfigurationException {
+public class ConfigurationMissingAttributeException extends
+    ConfigurationException {
     /**
      * Create a new object.
      *
      * @param message the message string
+     * @param location the location where the exception has occured
      */
-    public ConfigurationMissingAttributeException(String message, String location) {
-        super(message,location);
+    public ConfigurationMissingAttributeException(final String message,
+        final String location) {
+        super(message, location);
     }
-    
+
     /**
      * Create a new object.
      *
      * @param message the message string
+     * @param origin the configuration in which the exception has occurred
      */
-    public ConfigurationMissingAttributeException(String message, Configuration origin) {
-        super(message,origin.toString());
+    public ConfigurationMissingAttributeException(final String message,
+        final Configuration origin) {
+        super(message, origin.toString());
     }
-    
+
     /**
      * Creates a new object.
      *
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationMissingAttributeException(String message, Throwable cause) {
+    public ConfigurationMissingAttributeException(final String message,
+        final Throwable cause) {
         super(message, cause);
     }
 
@@ -63,6 +68,7 @@ public class ConfigurationMissingAttributeException extends ConfigurationExcepti
      * @return the text
      */
     public String getMessage() {
-        return Messages.format("ConfigurationMissingAttributeException.Text", super.getMessage());
+        return Messages.format("ConfigurationMissingAttributeException.Text",
+                               super.getMessage());
     }
 }

@@ -26,9 +26,9 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [149]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class AlignedLeadersNode extends GlueNode implements Node {
 
@@ -57,4 +57,5 @@ public class AlignedLeadersNode extends GlueNode implements Node {
 	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
 		return visitor.visitAlignedLeaders(value, value2);
 	}
+
 }

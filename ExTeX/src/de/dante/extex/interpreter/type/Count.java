@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,109 +18,152 @@
  */
 package de.dante.extex.interpreter.type;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
-
-import de.dante.util.GeneralException;
-
 import java.io.Serializable;
 
+import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.scanner.Token;
+import de.dante.util.GeneralException;
+
 /**
- * The <code>Count</code>-component.
+ * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class Count extends AbstractComponent implements Serializable {
+public class Count implements Serializable {
+    /**
+     * The constant <tt>ZERO</tt> contains the ...
+     */
+    public static final Count ZERO = new Count(0);
 
-	/**
-	 * ZERO
-	 */
-	public static final Count ZERO = new Count(0);
+    /**
+     * The field <tt>ONE</tt> contains the ...
+     */
+    public static final Count ONE = new Count(1);
 
-	/** 
-	  * the value
-	  */
-	private long value = 0;
+    /**
+     * The field <tt>value</tt> contains the value of the count register.
+     */
+    private long value = 0;
 
-	/**
-	 * Creates a new object.
-	 */
-	public Count(long value) {
-		super();
-		this.value = value;
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param aValue the value
+     */
+    public Count(final long aValue) {
+        super();
+        this.value = aValue;
+    }
 
-	/**
-	 * Creates a new object.
-	 * Scant the tokensource and create a new <code>Count</code>     
-	 */
-	public Count(final Context context, final TokenSource source) throws GeneralException {
-		super();
-		value = scanCountAsLong(context, source);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param context the processor context
+     * @param source the source for new tokens
+     *
+     * @throws GeneralException in case of an error
+     */
+    public Count(final Context context, final TokenSource source)
+            throws GeneralException {
 
-	/**
-	 * Setter for the value.
-	 *
-	 * @param l the new value
-	 */
-	public void setValue(long l) {
-		value = l;
-	}
+        super();
+        value = scanCount(context, source);
+    }
 
-	/**
-	 * Getter for the value
-	 *
-	 * @return the value
-	 */
-	public long getValue() {
-		return value;
-	}
+    /**
+     * Scan the input stream for a count value.
+     *
+     * @param context the processor context
+     * @param source the source for new tokens
+     *
+     * @return the value of the count
+     *
+     * @throws GeneralException in case of an error
+     */
+    public static long scanCount(final Context context,
+            final TokenSource source) throws GeneralException {
 
-	/**
-	 * Add a value to the count
-	 * @param val 	the value to add
-	 * @return	the new value as <code>Count</code> (copy) 
-	 */
-	public Count add(long val) {
-		value += val;
-		return new Count(value);
-	}
+        Token t = source.getNonSpace();
 
-	/**
-	 * Devide a value to the count
-	 * @param val 	the value to divide
-	 * @return	the new value as <code>Count</code> (copy) 
-	 * @throws GeneralHelpingException in case of a division by zero
-	 */
-	public Count divide(long val) throws GeneralException {
-		if (val == 0) {
-			throw new GeneralHelpingException("TTP.ArithOverflow");
-		}
+        if (t == null) {
+            // TODO
+            return 0;
+        }
 
-		value /= val;
-		return new Count(value);
-	}
+        Code code = context.getCode(t);
+        if (code != null && code instanceof CountConvertable) {
+            return ((CountConvertable) code).convertCount(context, source);
+        }
 
-	/**
-	 * Multiply a value to the count
-	 * @param val 	the value to multiply
-	 * @return	the new value as <code>Count</code> (copy) 
-	 */
-	public Count multiply(long val) {
-		value *= val;
-		return new Count(value);
-	}
+        source.push(t);
 
-	/**
-	 * Return the value as <code>String</code>
-	 *
-	 * @return the value as <code>String</code>
-	 */
-	public String toString() {
-		return Long.toString(value);
-	}
+        return source.scanInteger();
+    }
+
+
+    /**
+     * Setter for the value.
+     *
+     * @param l the new value
+     */
+    public void setValue(final long l) {
+        value = l;
+    }
+
+    /**
+     * Getter for the value
+     *
+     * @return the value
+     */
+    public long getValue() {
+        return value;
+    }
+
+    /**
+     * Increment the value.
+     *
+     * @param val the value to add to
+     */
+    public void add(final long val) {
+        value += val;
+    }
+
+    /**
+     * ...
+     *
+     * @param val ...
+     *
+     * @throws GeneralException in case of a division by zero
+     */
+    public void divide(final long val) throws GeneralException {
+        if (val == 0) {
+            throw new GeneralHelpingException("TTP.ArithOverflow");
+        }
+
+        value /= val;
+    }
+
+    /**
+     * ...
+     *
+     * @param val ...
+     */
+    public void multiply(final long val) {
+        value *= val;
+    }
+
+    /**
+     * Return the value as <code>String</code>
+     *
+     * @return the value as <code>String</code>
+     */
+    public String toString() {
+        return Long.toString(value);
+    }
 }

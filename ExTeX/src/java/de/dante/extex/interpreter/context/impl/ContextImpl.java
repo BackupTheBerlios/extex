@@ -23,8 +23,8 @@ import java.util.Stack;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationManager;
-import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
 import de.dante.extex.hyphenation.HyphenationTable;
+import de.dante.extex.hyphenation.impl.HyphenationManagerImpl;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Conditional;
@@ -36,13 +36,21 @@ import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.InFile;
+import de.dante.extex.interpreter.type.Muskip;
+import de.dante.extex.interpreter.type.OutFile;
 import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
+import de.dante.util.NotObservableException;
 import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -54,6 +62,8 @@ import de.dante.util.file.FileFinder;
 import de.dante.util.file.FileFinderConfigImpl;
 import de.dante.util.file.FileFinderDirect;
 import de.dante.util.file.FileFinderList;
+import de.dante.util.observer.Observable;
+import de.dante.util.observer.Observer;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -89,12 +99,13 @@ import de.dante.util.file.FileFinderList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
-public class ContextImpl implements Context, Serializable {
+public class ContextImpl implements Context, Observable, Serializable {
 
     private static final String TYPESETTING_CONTEXT_TAG = "TypesettingContext";
-	/**
+
+    /**
      * The field <tt>FILE_TAG</tt> ...
      */
     private static final String FILE_TAG = "File";
@@ -104,10 +115,10 @@ public class ContextImpl implements Context, Serializable {
      */
     private static final String DEFAULT_ATTRIBUTE = "default";
 
-	/**
-	 * The constant <tt>DEFAULT_SIZE</tt> ...
-	 */
-	private static final String DEFAULT_SIZE = "size";
+    /**
+     * The constant <tt>DEFAULT_SIZE</tt> ...
+     */
+    private static final String DEFAULT_SIZE = "size";
 
     /**
      * The constant <tt>FONT_TAG</tt> ...
@@ -120,41 +131,43 @@ public class ContextImpl implements Context, Serializable {
     private static final String GROUP_TAG = "Group";
 
     /**
-     * The constant <tt>MAGNIFICATION_MAX</tt> ...
-     */
-    private static final int MAGNIFICATION_MAX = 32768;
-
-    /**
      * The constant <tt>CLASS_ATTRIBUTE</tt> ...
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
     /**
-     * The saved configuration
+     * The constant <tt>MAGNIFICATION_MAX</tt> contains the maximal allowed
+     * magnification value. This is the fallback value which can be changed in
+     * the configuration.
      */
-
-    private Configuration config = null;
+    private static final long MAGNIFICATION_MAX = 32768;
 
     /**
-     * This is the entry to the linked list of groups. The current group is the
-     * first one.
+     * The field <tt>group</tt> contains the entry to the linked list of groups.
+     * The current group is the first one.
      */
     private Group group = null;
 
     /**
-     * The factory to acquire a new group
+     * The field <tt>afterassignment</tt> contains the ...
+     */
+    private Token afterassignment = null;
+
+    /**
+     * The field <tt>groupFactory</tt> contains the factory to acquire
+     * a new group.
      */
     private transient GroupFactory groupFactory;
 
     /**
-     * ...
+     * The field <tt>hyphenationManager</tt> contains the ...
      */
     private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
     /**
      * The stack for conditionals
      */
-    private Stack ifStack = new Stack();
+    private Stack conditionalStack = new Stack();
 
     /**
      * The token factory implementation to use
@@ -162,14 +175,24 @@ public class ContextImpl implements Context, Serializable {
     private TokenFactory tokenFactory = new TokenFactoryImpl();
 
     /**
-     * This boolean is used to determine whether the magnification has already
-     * been set to a new value. It it is <code>true</code> then it is not
+     * The field <tt>magnificationMax</tt> contains the maximal allowed
+     * maginification value. This is initialized to MAGNIFICATION_MAX and
+     * may be overwritten from within the configuration.
+     */
+    private long magnificationMax = MAGNIFICATION_MAX;
+
+    /**
+     * The field <tt>magnificationLock</tt> is used to determine whether the
+     * magnification has already been set to a new value.
+     * It it is <code>true</code> then it is not
      * desirable to change the value of <i>magnification</i>.
      */
     private boolean magnificationLock = false;
 
     /**
-     * The magnification for the whole document in permille
+     * The field <tt>magnification</tt> contains the magnification for the
+     * whole document in permille. The value is always greater than 0 and
+     * less or equal to magnificationMax.
      */
     private long magnification = 1000;
 
@@ -187,17 +210,18 @@ public class ContextImpl implements Context, Serializable {
      * Creates a new object.
      *
      * @param configuration ...
+     *
      * @throws ConfigurationException ...
      * @throws GeneralException ...
      */
     public ContextImpl(final Configuration configuration)
             throws ConfigurationException, GeneralException {
+
         super();
-        this.config = configuration;
-        groupFactory = new GroupFactory(config.getConfiguration(GROUP_TAG));
+        groupFactory = new GroupFactory(configuration.getConfiguration(GROUP_TAG));
         group = groupFactory.newInstance(group);
 
-        Configuration fontConfiguration = config.getConfiguration(FONT_TAG);
+        Configuration fontConfiguration = configuration.getConfiguration(FONT_TAG);
         String fontClass = fontConfiguration.getAttribute(CLASS_ATTRIBUTE);
 
         if (fontClass == null || fontClass.equals("")) {
@@ -218,35 +242,45 @@ public class ContextImpl implements Context, Serializable {
         }
 
         // default font and size
-		String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
-        String size = fontConfiguration.getAttribute(DEFAULT_SIZE);
+        String defaultFont = fontConfiguration.getAttribute(DEFAULT_ATTRIBUTE);
 
         if (defaultFont == null || defaultFont.equals("")) {
             throw new ConfigurationMissingAttributeException(DEFAULT_ATTRIBUTE,
                     fontConfiguration);
         }
 
-        Configuration typesettingConfig = config
+        Configuration typesettingConfig = configuration
                 .getConfiguration(TYPESETTING_CONTEXT_TAG);
 
         if (typesettingConfig == null) {
             throw new ConfigurationMissingException(TYPESETTING_CONTEXT_TAG,
-                    config.toString());
+                    configuration.toString());
         }
-        
-        Dimen fontsize = null;
+
+        long s;
+        String size = fontConfiguration.getAttribute(DEFAULT_SIZE);
+        if (size == null) {
+            throw new ConfigurationMissingAttributeException(DEFAULT_SIZE,
+                    fontConfiguration);
+        }
         try {
-        	float f = Float.parseFloat(size);
-        	fontsize = new Dimen((long)(Dimen.ONE * f));
+            float f = Float.parseFloat(size);
+            s = (long) (Dimen.ONE * f);
         } catch (NumberFormatException e) {
-			fontsize = new Dimen(Dimen.ONE * 12);
-		}
+            throw new ConfigurationMissingAttributeException(DEFAULT_SIZE,
+                    fontConfiguration);
+        }
+        Dimen fontsize = new Dimen(s);
 
         tcFactory = new TypesettingContextFactory(typesettingConfig);
         TypesettingContext typesettingContext = tcFactory.newInstance();
-        typesettingContext.setFont(fontFactory.getInstance(defaultFont,fontsize));
+        typesettingContext.setFont(fontFactory.getInstance(defaultFont,
+                                                           fontsize));
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
+
+        magnificationMax = configuration.getValueAsInteger("maximalMagnification",
+                                                    (int) MAGNIFICATION_MAX);
 
     }
 
@@ -271,14 +305,30 @@ public class ContextImpl implements Context, Serializable {
      * @see de.dante.extex.interpreter.context.Context#getActive(java.lang.String)
      */
     public Code getActive(final String name) {
+
         return group.getActive(name);
     }
 
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getAfterassignment()
+     */
+    public Token getAfterassignment() {
+
+        return afterassignment;
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(de.dante.extex.scanner.Token)
+     */
+    public void setAfterassignment(final Token token) {
+
+        afterassignment = token;
+    }
     /**
      * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode)
      */
     public void setCatcode(final UnicodeChar c, final Catcode cc) {
+
         group.setCatcode(c, cc);
     }
 
@@ -404,7 +454,7 @@ public class ContextImpl implements Context, Serializable {
     public void setFontFactory(final FontFactory factory) {
         this.fontFactory = factory;
     }
-    
+
     /**
      * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
      */
@@ -413,7 +463,29 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getHyphenation(int)
+     * @see de.dante.extex.interpreter.context.Context#getGlue(java.lang.String)
+     */
+    public Glue getGlue(final String name) {
+        return group.getSkip(name);
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setGlue(java.lang.String,
+     *      de.dante.extex.interpreter.type.Glue, boolean)
+     */
+    public void setGlue(final String name, final Glue value,
+        final boolean global) {
+        group.setSkip(name, value, global);
+    }
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setGlue(java.lang.String,
+     *      de.dante.extex.interpreter.type.Glue)
+     */
+    public void setGlue(final String name, final Glue value) {
+        group.setSkip(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
      */
     public HyphenationTable getHyphenationTable(final int language) {
         return hyphenationManager.getHyphenationTable(Integer
@@ -471,12 +543,15 @@ public class ContextImpl implements Context, Serializable {
      * Setter for the magnification. The magnification is a global value which
      * can be assigned at most once. It contains the magnification factor in
      * permille. The default value is 1000. It can only take positive numbers
-     * as values. The maximal value is taken from the configuration option <tt>maximalMaginification</tt>.
+     * as values. The maximal value is taken from the configuration option
+     * <tt>maximalMaginification</tt>.
      * The default value for the maximal magnification is 32768.
-     * 
+     *
      * @see de.dante.extex.interpreter.context.Context#setMagnification(long)
      */
-    public void setMagnification(final long mag) throws GeneralHelpingException {
+    public void setMagnification(final long mag)
+             throws GeneralHelpingException {
+
         if (magnificationLock && this.magnification != mag) {
             throw new GeneralHelpingException("TTP.IncompatMag", Long
                     .toString(mag));
@@ -486,15 +561,7 @@ public class ContextImpl implements Context, Serializable {
 
         long maximalMagnification;
 
-        try {
-            maximalMagnification = config
-                    .getValueAsInteger("maximalMagnification",
-                                        MAGNIFICATION_MAX);
-        } catch (ConfigurationException e) {
-            throw new GeneralHelpingException(e);
-        }
-
-        if (mag < 1 || mag > maximalMagnification) {
+        if (mag < 1 || mag > magnificationMax) {
             throw new GeneralHelpingException("TTP.IllegalMag", Long
                     .toString(mag));
         }
@@ -507,6 +574,33 @@ public class ContextImpl implements Context, Serializable {
      */
     public long getMagnification() {
         return magnification;
+    }
+
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getMuskip(java.lang.String)
+     */
+    public Muskip getMuskip(final String name) {
+
+        return group.getMuskip(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setMuskip(java.lang.String,
+     *      de.dante.extex.interpreter.type.Muskip)
+     */
+    public void setMuskip(final String name, final Muskip value) {
+
+        group.setMuskip(name, value);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setMuskip(java.lang.String, de.dante.extex.interpreter.type.Muskip, boolean)
+     */
+    public void setMuskip(final String name, final Muskip value,
+            final boolean global) {
+
+        group.setMuskip(name, value, global);
     }
 
     /**
@@ -527,14 +621,14 @@ public class ContextImpl implements Context, Serializable {
         return (Tokenizer) group;
     }
 
-	/**
-	 * Setter for the typesetting context in the current group.
-	 *
-	 * @param context the new context to use
-	 */
-	public void setTypesettingContext(final TypesettingContext context) {
-		group.setTypesettingContext(context);
-	}
+    /**
+     * Setter for the typesetting context in the current group.
+     *
+     * @param context the new context to use
+     */
+    public void setTypesettingContext(final TypesettingContext context) {
+        group.setTypesettingContext(context);
+    }
 
     /**
      * Setter for the typesetting context in the specified groups.
@@ -565,20 +659,32 @@ public class ContextImpl implements Context, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#closeGroup()
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.util.Observer)
      */
-    public void closeGroup() throws GeneralException {
+    public void afterGroup(final Observer observer) {
+
+        group.afterGroup(observer);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#closeGroup(de.dante.extex.typesetter.Typesetter)
+     */
+    public void closeGroup(final Typesetter typesetter)
+            throws GeneralException {
+
         Group next = group.getNext();
 
         if (next == null) {
             throw new GeneralHelpingException("TTP.TooManyRightBraces");
-        } else {
-            Tokens toks = group.getAfterGroup();
-            group = next;
+        }
 
-            if (toks != null) {
-                //TODO execute aftergroup
-            }
+        group.runAfterGroup(this, typesetter);
+
+        Tokens toks = group.getAfterGroup();
+        group = next;
+
+        if (toks != null) {
+            //TODO execute aftergroup
         }
     }
 
@@ -587,18 +693,18 @@ public class ContextImpl implements Context, Serializable {
      *
      * @return ...
      */
-    public long ifPop() {
-        return ((Conditional) ifStack.pop()).getValue();
+    public long popConditional() {
+        return ((Conditional) conditionalStack.pop()).getValue();
     }
 
     /**
      * Put a boolean value onto the if stack.
      *
-     * @param value
-     *                 the value to push
+     * @param locator the locator for the start of the if statement
+     * @param value the value to push
      */
-    public void ifPush(final Locator locator, final long value) {
-        ifStack.add(new Conditional(locator, value));
+    public void pushConditional(final Locator locator, final long value) {
+        conditionalStack.add(new Conditional(locator, value));
     }
 
     /**
@@ -640,4 +746,113 @@ public class ContextImpl implements Context, Serializable {
     protected Group getGroup() {
         return group;
     }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getInFile(java.lang.String)
+     */
+    public InFile getInFile(final String name) {
+        return group.getInFile(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getOutFile(java.lang.String)
+     */
+    public OutFile getOutFile(final String name) {
+        return group.getOutFile(name);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setInFile(java.lang.String,
+     *      de.dante.extex.interpreter.type.InFile)
+     */
+    public void setInFile(final String name, final InFile file) {
+        group.setInFile(name, file);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setInFile(java.lang.String,
+     *      de.dante.extex.interpreter.type.InFile, boolean)
+     */
+    public void setInFile(final String name, final InFile file,
+        final boolean global) {
+        group.setInFile(name, file, global);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setOutFile(java.lang.String,
+     *      de.dante.extex.interpreter.type.OutFile)
+     */
+    public void setOutFile(final String name, final OutFile file) {
+        group.setOutFile(name, file);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setOutFile(java.lang.String,
+     *      de.dante.extex.interpreter.type.OutFile, boolean)
+     */
+    public void setOutFile(final String name, final OutFile file,
+        final boolean global) {
+        group.setOutFile(name, file, global);
+    }
+
+    /**
+     * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
+     *      de.dante.util.Observer)
+     */
+    public void registerObserver(final String name, final Observer observer)
+        throws NotObservableException {
+        // Currently left empty.
+        // Needed for the observer pattern on closing groups
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getCode(de.dante.extex.scanner.Token)
+     */
+    public Code getCode(final Token t) throws GeneralException {
+
+        if (t == null) {
+            return null;
+        } else if (t instanceof ControlSequenceToken) {
+            return getMacro(t.getValue());
+        } else if (t instanceof ActiveCharacterToken) {
+            return getActive(t.getValue());
+        }
+
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getLccode(de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getLccode(final UnicodeChar uc) {
+
+        return group.getLccode(uc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getUccode(de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar getUccode(final UnicodeChar lc) {
+
+        return group.getUccode(lc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setLccode(de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void setLccode(final UnicodeChar uc, final UnicodeChar lc) {
+
+        group.setLccode(uc, lc);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setUccode(de.dante.util.UnicodeChar,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void setUccode(final UnicodeChar lc, final UnicodeChar uc) {
+
+        group.setUccode(lc, uc);
+    }
+
 }

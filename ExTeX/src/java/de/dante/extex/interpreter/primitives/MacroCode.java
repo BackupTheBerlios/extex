@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.LeftBraceToken;
 import de.dante.extex.scanner.MacroParamToken;
 import de.dante.extex.scanner.OtherToken;
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MacroCode extends AbstractCode implements Code {
     /**
@@ -56,9 +57,11 @@ public class MacroCode extends AbstractCode implements Code {
     private int numberOfParams = 10;
 
     /**
-     * The field <tt>longP</tt> contains the ...
+     * The field <tt>notLong</tt> contains the negated <tt>\long</tt> flag.
+     * This field indicates that no macros <tt>\par</tt> are allowed in macro
+     * parameter values.
      */
-    private boolean longP;
+    private boolean notLong;
 
     /**
      * The field <tt>outerP</tt> contains the ...
@@ -75,11 +78,12 @@ public class MacroCode extends AbstractCode implements Code {
      */
     public MacroCode(final String name, final Flags flags,
             final Tokens pattern, final Tokens body) {
+
         super(name);
-        this.body    = body;
+        this.body = body;
         this.pattern = pattern;
-        this.longP   = flags.isLong();  //TODO: use the flag long
-        this.outerP  = flags.isOuter(); //TODO: use the flag outer
+        this.notLong = !flags.isLong();
+        this.outerP = flags.isOuter(); //TODO: use the flag outer
     }
 
     /**
@@ -89,8 +93,8 @@ public class MacroCode extends AbstractCode implements Code {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Tokens[] args = matchPattern(context, source);
         int len = body.length();
@@ -103,14 +107,11 @@ public class MacroCode extends AbstractCode implements Code {
             if (t instanceof MacroParamToken) {
                 t = body.get(++i);
                 if (t == null) {
-                    char esc = (char) (context.getCount("escapechar")
-                        .getValue());
-                    throw new GeneralHelpingException("TTP.EOFinMatch", //
-                        Character.toString(esc) + getName());
+                    throw new GeneralHelpingException("TTP.EOFinMatch",
+                            printableControlSequence(context));
                 } else if (t instanceof MacroParamToken) {
                     toks.add(t);
-                } else if (t instanceof OtherToken
-                           && t.getChar().isDigit()) {
+                } else if (t instanceof OtherToken && t.getChar().isDigit()) {
                     no = t.getValue().charAt(0) - '0';
                     if (args[no] == null) {
                         throw new GeneralException("internal error");
@@ -118,6 +119,7 @@ public class MacroCode extends AbstractCode implements Code {
                     }
                     toks.add(args[no]);
                 } else {
+                    throw new GeneralException("internal error");
                     //TODO: error
                 }
             } else {
@@ -134,18 +136,19 @@ public class MacroCode extends AbstractCode implements Code {
      * source. As a result the matching arguments are stored in an array of
      * {@link de.dante.extex.interpreter.type.Tokens Tokens}. This array is
      * returned.
-     * 
+     *
      * @param context the processor context
      * @param source the source for new tokens
-     * 
+     *
      * @return a new array of parameters which have been found during the
      *         matching. Note that some of th elements of the array might be
      *         <code>null</code>.
-     * 
+     *
      * @throws GeneralException in case of an error
      */
     private Tokens[] matchPattern(final Context context,
-        final TokenSource source) throws GeneralException {
+            final TokenSource source) throws GeneralException {
+
         Tokens[] args = new Tokens[numberOfParams];
         Token ti;
         Token t;
@@ -156,13 +159,14 @@ public class MacroCode extends AbstractCode implements Code {
             ti = pattern.get(pi);
             if (ti instanceof MacroParamToken) {
                 pi = matchParameter(context, source, args, len, pi);
+            } else if (notLong && ti.equals(Catcode.ESCAPE, "par")) {
+                throw new GeneralHelpingException("TTP.RunawayArg",
+                        printableControlSequence(context));
             } else {
                 t = source.getToken();
                 if (!t.equals(ti)) {
-                    char esc = (char) (context.getCount("escapechar")
-                        .getValue());
                     throw new GeneralHelpingException("TTP.UseDoesntMatch",
-                        Character.toString(esc) + getName());
+                            printableControlSequence(context));
                 }
             }
         }
@@ -172,7 +176,7 @@ public class MacroCode extends AbstractCode implements Code {
 
     /**
      * ...
-     * 
+     *
      * @param context the processor context
      * @param source the source for new tokens
      * @param args the array of Tokens to fill
@@ -185,14 +189,14 @@ public class MacroCode extends AbstractCode implements Code {
      * @throws GeneralException in case of an error
      */
     private int matchParameter(final Context context, final TokenSource source,
-        final Tokens[] args, final int len, final int i)
-        throws GeneralHelpingException, GeneralException {
+            final Tokens[] args, final int len, final int i)
+            throws GeneralHelpingException, GeneralException {
+
         int pi = i + 1;
 
         if (pi >= len) {
-            char esc = (char) (context.getCount("escapechar").getValue());
-            throw new GeneralHelpingException("TTP.UseDoesntMatch", Character
-                .toString(esc) + getName());
+            throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                    printableControlSequence(context));
             //TODO;
             // maybe
             // another
@@ -203,9 +207,8 @@ public class MacroCode extends AbstractCode implements Code {
         if (ti instanceof MacroParamToken) {
             Token t = source.getToken();
             if (!ti.equals(t)) {
-                char esc = (char) (context.getCount("escapechar").getValue());
                 throw new GeneralHelpingException("TTP.UseDoesntMatch",
-                    Character.toString(esc) + getName());
+                        printableControlSequence(context));
             }
             return pi;
         } else if (ti instanceof OtherToken && ti.getChar().isDigit()) {
@@ -222,15 +225,10 @@ public class MacroCode extends AbstractCode implements Code {
             }
             return pi;
         }
-        
-        char esc = (char) (context.getCount("escapechar").getValue());
-        throw new GeneralHelpingException("TTP.UseDoesntMatch", Character
-                                          .toString(esc) + getName());
-        //TODO;
-        // maybe
-        // another
-        // error
-        // text?
+
+        throw new GeneralHelpingException("TTP.UseDoesntMatch",
+                printableControlSequence(context));
+        //TODO maybe another error text?
     }
 
     /**
@@ -244,30 +242,29 @@ public class MacroCode extends AbstractCode implements Code {
      * @throws GeneralException in case of an error
      */
     private Tokens scanToken(final Context context, final TokenSource source)
-        throws GeneralException {
+            throws GeneralException {
+
         Token t = source.getToken();
 
         if (t == null) {
-            char esc = (char) (context.getCount("escapechar").getValue());
-            throw new GeneralHelpingException("TTP.EOFinMatch", //
-                Character.toString(esc) + getName());
+            throw new GeneralHelpingException("TTP.EOFinMatch",
+                    printableControlSequence(context));
         } else if (t instanceof LeftBraceToken) {
             source.push(t);
             Tokens toks = source.getTokens();
             if (toks == null) {
-                char esc = (char) (context.getCount("escapechar").getValue());
-                throw new GeneralHelpingException("TTP.EOFinMatch", //
-                    Character.toString(esc) + getName());
+                throw new GeneralHelpingException("TTP.EOFinMatch",
+                        printableControlSequence(context));
             }
             return toks;
         }
-        
+
         return new Tokens(t);
     }
 
     /**
      * ...
-     * 
+     *
      * @param context the processor context
      * @param source the source for new tokens
      * @param to the terminating token
@@ -277,7 +274,8 @@ public class MacroCode extends AbstractCode implements Code {
      * @throws GeneralException in case of an error
      */
     private Tokens scanTo(final Context context, final TokenSource source,
-        final Token to) throws GeneralException {
+            final Token to) throws GeneralException {
+
         Tokens toks = new Tokens();
 
         for (Token t = source.getToken(); t != null; t = source.getToken()) {
@@ -287,9 +285,8 @@ public class MacroCode extends AbstractCode implements Code {
             toks.add(t);
         }
 
-        char esc = (char) (context.getCount("escapechar").getValue());
-        throw new GeneralHelpingException("TTP.EOFinMatch", //
-            Character.toString(esc) + getName());
+        throw new GeneralHelpingException("TTP.EOFinMatch",
+                printableControlSequence(context));
     }
 
 }

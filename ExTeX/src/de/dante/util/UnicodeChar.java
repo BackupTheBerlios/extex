@@ -24,262 +24,212 @@ import com.ibm.icu.text.UTF16;
 /**
  * UnicodeChar
  *
- * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.13 $
  */
 public class UnicodeChar {
 
-	/**
-	 * The codepoint of the unicode char (32 bit)
-	 */
-	private int code;
+    /**
+     * The constant <tt>NULL</tt> contains the Unicode character with the
+     * code point 0.
+     */
+    public static final UnicodeChar NULL = new UnicodeChar(0);
 
-	/**
-	 * init with a 32 bit int value
-	 *
-	 * @param code the 32 bit codepoint
-	 */
-	public UnicodeChar(final int code) {
-		super();
-		this.code = code;
-	}
+    /**
+     * The codepoint of the unicode char (32 bit)
+     */
+    private int code;
 
-	/**
-	 * init with a 16 bit char value
-	 *
-	 * @param char16 16 bit character
-	 */
-	public UnicodeChar(final char char16) {
-		code = UCharacter.getCodePoint(char16);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param codePoint the 32 bit code point
+     */
+    public UnicodeChar(final int codePoint) {
+        super();
+        this.code = codePoint;
+    }
 
-	/**
-	 * init with two 16 bit char values
-	 *
-	 * @param char1 first 16 bit character
-	 * @param char2 second 16 bit character
-	 */
-	public UnicodeChar(final char char1, final char char2) {
-		code = UCharacter.getCodePoint(char1, char2);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param char16 16 bit character
+     */
+    public UnicodeChar(final char char16) {
+        super();
+        this.code = UCharacter.getCodePoint(char16);
+    }
 
-	/**
-	 * Init with a cahr32 froma String at position idx.
-	 * @param s		the <code>String</code>
-	 * @param idx	the position in the string
-	 */
-	public UnicodeChar(final String s, final int idx) {
-		code = UTF16.charAt(s, idx);
-	}
+    /**
+     * init with two 16 bit char values
+     *
+     * @param char1 first 16 bit character
+     * @param char2 second 16 bit character
+     */
+    public UnicodeChar(final char char1, final char char2) {
+        super();
+        this.code = UCharacter.getCodePoint(char1, char2);
+    }
 
-	/**
-	 * Init with a Unicode name.
-	 *
-	 * @param unicodename Unicode name as String
-	 */
-	public UnicodeChar(final String unicodename) {
-		code = UCharacter.getCharFromName(unicodename);
-	}
+    /**
+     * Init with a char32 from a String at position idx.
+     * @param s the <code>String</code>
+     * @param idx the position in the string
+     */
+    public UnicodeChar(final String s, final int idx) {
+        super();
+        this.code = UTF16.charAt(s, idx);
+    }
 
-	/**
-	 * Return the unicode codepoint.
-	 *
-	 * @return the unicode codepoint
-	 */
-	public int getCodePoint() {
-		return code;
-	}
+    /**
+     * Init with a Unicode name.
+     *
+     * @param unicodename Unicode name as String
+     */
+    public UnicodeChar(final String unicodename) {
+        super();
+        this.code = UCharacter.getCharFromName(unicodename);
+    }
 
-	/**
-	 * Returns the Unicode name of the code.
-	 *
-	 * @return unicodename of the code
-	 */
-	public String getUnicodeName() {
-		return UCharacter.getName(code);
-	}
+    /**
+     * Return the unicode codepoint.
+     *
+     * @return the unicode codepoint
+     */
+    public int getCodePoint() {
+        return code;
+    }
 
-	/**
-	 * Returns the lowercase character of this object.
-	 * <p>
-	 * (this method does not use the TeX lccode!)
-	 * </p>
-	 *
-	 * @return character in lowercase
-	 */
-	public int toLowerCase() {
-		return UCharacter.toLowerCase(code);
-	}
+    /**
+     * Returns the Unicode name of the code.
+     *
+     * @return Unicode name of the code
+     */
+    public String getUnicodeName() {
+        return UCharacter.getName(code);
+    }
 
-	/**
-	 * Returns the uppercase character of this object.
-	 * <p>
-	 * (this method does not use the TeX uccode!)
-	 * </p>
-	 *
-	 * @return character in uppercase
-	 */
-	public int toUpperCase() {
-		return UCharacter.toUpperCase(code);
-	}
+    /**
+     * Returns the lowercase character of this object.
+     * <p>
+     * (this method does not use the TeX lccode!)
+     * </p>
+     *
+     * @return character in lowercase
+     */
+    public int toLowerCase() {
+        return UCharacter.toLowerCase(code);
+    }
 
-	/**
-	 * Compares a <code>UnicodeChar</code> character with the value of this
-	 * object. They are considered equal if the are both UnicodeChars and have
-	 * the same code.
-	 * <p>
-	 * The general signature for comparison to an arbitray object is required
-	 * for the implementation of {@link java.util.HashMap HashMap} and friends.
-	 * </p>
-	 * 
-	 * @param unicodeChar the character to compare
-	 * @return <code>true</code> if the characters are equal, otherwise
-	 *         <code>false</code>
-	 */
-	public boolean equals(final Object unicodeChar) {
-		return ((unicodeChar instanceof UnicodeChar) && //
-		code == ((UnicodeChar) unicodeChar).getCodePoint());
-	}
+    /**
+     * Returns the uppercase character of this object.
+     * <p>
+     * (this method does not use the TeX uccode!)
+     * </p>
+     *
+     * @return character in uppercase
+     */
+    public int toUpperCase() {
+        return UCharacter.toUpperCase(code);
+    }
 
-	/**
-	 * Computes the hash code for the character. The hash code of equal objects
-	 * must be equal, but the hash code of different object need not to be
-	 * different. This is needed for the implementations of HashMap and friends.
-	 * 
-	 * @return the hash code
-	 */
-	public int hashCode() {
-		return code;
-	}
+    /**
+     * Compares a <code>UnicodeChar</code> character with the value of this
+     * object. They are considered equal if the are both UnicodeChars and have
+     * the same code.
+     * <p>
+     * The general signature for comparison to an arbitray object is required
+     * for the implementation of {@link java.util.HashMap HashMap} and friends.
+     * </p>
+     *
+     * @param unicodeChar the character to compare
+     * @return <code>true</code> if the characters are equal, otherwise
+     *         <code>false</code>
+     */
+    public boolean equals(final Object unicodeChar) {
+        return ((unicodeChar instanceof UnicodeChar) && //
+        code == ((UnicodeChar) unicodeChar).getCodePoint());
+    }
 
-	/**
-	 * Returns the bidirection property of the character.
-	 *
-	 * @return the bidirection property
-	 */
-	public int getDirection() {
-		return UCharacter.getDirection(code);
-	}
+    /**
+     * Computes the hash code for the character. The hash code of equal objects
+     * must be equal, but the hash code of different object need not to be
+     * different. This is needed for the implementations of HashMap and friends.
+     *
+     * @return the hash code
+     */
+    public int hashCode() {
+        return code;
+    }
 
-	/**
-	 * Return the character as a char array.
-	 *
-	 * @return char array of code
-	 */
-	public char[] toCharArray() {
-		String tmp = toString();
-		return tmp.toCharArray();
-	}
+    /**
+     * Returns the bidirection property of the character.
+     *
+     * @return the bidirection property
+     */
+    public int getDirection() {
+        return UCharacter.getDirection(code);
+    }
 
-	/**
-	 * Returns a String of this object.
-	 *
-	 * @return String representation of the stored value.
-	 */
-	public String toString() {
-		return UCharacter.toString(code);
-	}
+    /**
+     * Return the character as a char array.
+     *
+     * @return char array of code
+     */
+    public char[] toCharArray() {
+        String tmp = toString();
+        return tmp.toCharArray();
+    }
 
-	/**
-	 * Test, of the code is a letter
-	 *
-	 * @return <code>true</code>, if the code is a letter,
-	 * otherwise <code>false</code>
-	 */
-	public boolean isLetter() {
-		return UCharacter.isLetter(code);
-	}
+    /**
+     * Returns a String of this object.
+     *
+     * @return String representation of the stored value.
+     */
+    public String toString() {
+        return UCharacter.toString(code);
+    }
 
-	/**
-	 * Test, of the code is a digit.
-	 *
-	 * @return <code>true</code>, if the code is a digit,
-	 * otherwise <code>false</code>
-	 */
-	public boolean isDigit() {
-		return UCharacter.isDigit(code);
-	}
+    /**
+     * Test, of the code is a letter
+     *
+     * @return <code>true</code>, if the code is a letter,
+     * otherwise <code>false</code>
+     */
+    public boolean isLetter() {
+        return UCharacter.isLetter(code);
+    }
 
-	/**
-	 * Test, of the code is a letter or digit.
-	 *
-	 * @return <code>true</code>, if the code is a letter or digit,
-	 *            otherwise <code>false</code>
-	 * @deprecated
-	 */
-	public boolean isLetterOrDigit() {
-		return UCharacter.isLetterOrDigit(code);
-	}
+    /**
+     * Test, of the code is a digit.
+     *
+     * @return <code>true</code>, if the code is a digit,
+     * otherwise <code>false</code>
+     */
+    public boolean isDigit() {
+        return UCharacter.isDigit(code);
+    }
 
-	/**
-	 * Test, of the code is printable.
-	 *
-	 * @return <code>true</code>, if the code is printable,
-	 * otherwise <code>false</code>
-	 */
-	public boolean isPrintable() {
-		return UCharacter.isPrintable(code);
-	}
+    /**
+     * Test, of the code is a letter or digit.
+     *
+     * @return <code>true</code>, if the code is a letter or digit,
+     *            otherwise <code>false</code>
+     * @deprecated
+     */
+    public boolean isLetterOrDigit() {
+        return UCharacter.isLetterOrDigit(code);
+    }
 
-	private static final UnicodeChar C0 = new UnicodeChar('0');
-	private static final UnicodeChar C9 = new UnicodeChar('9');
-	private static final UnicodeChar Ca = new UnicodeChar('a');
-	private static final UnicodeChar Cf = new UnicodeChar('f');
-	private static final UnicodeChar CA = new UnicodeChar('A');
-	private static final UnicodeChar CF = new UnicodeChar('F');
-
-	/**
-	 * Check, if the letter is a hexdigit (0-9, a-f, A-F)
-	 * @return	<code>true</code>, if the letter is a hexdigit, otherwise <code>false</code>
-	 */
-	public boolean isHexDigit() {
-		return (
-			(code >= C0.getCodePoint() && code <= C9.getCodePoint())
-				|| (code >= Ca.getCodePoint() && code <= Cf.getCodePoint())
-				|| (code >= CA.getCodePoint() && code <= CF.getCodePoint()));
-	}
-
-	/**
-	 * Convert a hexdigit to a int-value.<p>
-	 * '0' to 0, ... '9' to 9, 'a','A' to 10, 'f','F' to 15
-	 * @return	int-value
-	 */
-	public int getHexDigit() {
-		if (code >= C0.getCodePoint() || code <= C9.getCodePoint()) {
-			return code - C0.getCodePoint();
-		} else if (code >= Ca.getCodePoint() || code <= Cf.getCodePoint()) {
-			return code - Ca.getCodePoint() + 10;
-		} else {
-			return code - CA.getCodePoint() + 10;
-		}
-	}
-
-	/**
-	 * Return the ASCII-char of the character (if possible)
-	 * @return	ASCII-char
-	 */
-	public char getASCIIChar() {
-		return toString().charAt(0);
-	}
-
-	/**
-	 * Return the count of char16 of the code
-	 * @return the count of char16 for this code
-	 */
-	public int getCharCount() {
-		return UTF16.getCharCount(code);
-	}
-
-	/**
-	 * Return the code of a String at the index
-	 * 
-	 * @param s		the String
-	 * @param idx	ths index
-	 * @return the code on the position
-	 */
-	public static synchronized int charAt(String s, int idx) {
-		return UTF16.charAt(s, idx);
-	}
+    /**
+     * Test, of the code is printable.
+     *
+     * @return <code>true</code>, if the code is printable,
+     * otherwise <code>false</code>
+     */
+    public boolean isPrintable() {
+        return UCharacter.isPrintable(code);
+    }
 
 }

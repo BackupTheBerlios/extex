@@ -21,11 +21,11 @@ package de.dante.extex.main;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the main program detects an configuration 
+ * This exception is thrown when the main program detects an configuration
  * error.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainConfigurationException extends MainException {
     /**
@@ -33,7 +33,7 @@ public class MainConfigurationException extends MainException {
      *
      * @param cause the root of all evil
      */
-    public MainConfigurationException(Throwable cause) {
+    public MainConfigurationException(final Throwable cause) {
         super(-1, cause);
     }
 
@@ -41,7 +41,8 @@ public class MainConfigurationException extends MainException {
      * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
+        String message = super.getMessage();
         return Messages.format("MainConfigurationException.Message",
-                               super.getMessage());
+                               (message != null ? message : ""));
     }
 }

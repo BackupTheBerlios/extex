@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,104 +25,82 @@ import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
 
 /**
- * Node for a glue.
+ * ...
  *
  * @see "TeX -- The Program [149]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.8 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
-	/**
-	 * The field <tt>theSize</tt> ...
-	 */
-	private Glue theSize;
+    /**
+     * The field <tt>theSize</tt> ...
+     */
+    private Glue theSize;
 
-	/**
-	 * Creates a new object.
-	 */
-	public GlueNode() {
-		super();
-		theSize = null;
-	}
+    /**
+     * Creates a new object.
+     */
+    public GlueNode() {
+        super();
+        theSize = null;
+    }
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param size the actual size
-	 */
-	public GlueNode(final Glue size) {
-		this(size,false);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param size the actual size
+     */
+    public GlueNode(final Glue size) {
+        super();
+        theSize = size;
+    }
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param size 		the actual size
-	 * @param vertical	if <code>true</code>, the size-length is used
-	 * 	                fopr the hight, otherwise for the width. 
-	 */
-	public GlueNode(final Glue size, boolean vertical) {
-		super();
-		theSize = size;
-		if (vertical) {
-			setHeight(size.getLength());
-		} else {
-			setWidth(size.getLength());
-		}
-	}
-	
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [186]"
-	 */
-	public String toText() {
-		return " ";
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [186]"
+     */
+    public String toText() {
+        return " "; //TODO incomplete
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
-	 *      java.lang.String)
-	 */
-	public void toText(final StringBuffer sb, final String prefix) {
-		sb.append(" ");
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toText(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toText(final StringBuffer sb, final String prefix) {
+        sb.append(" "); //TODO incomplete
+    }
 
-	/**
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		StringBuffer sb = new StringBuffer();
-		toText(sb,"");
-		return sb.toString();
-	}
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        return " "; //TODO incomplete
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-	 */
-	public void toString(final StringBuffer sb, String prefix) {
-		sb.append("\\skip ");
-		sb.append(theSize.toString());
-		
-		// TODO delete after test
-		sb.append(" (" + theSize.toPT() + ")");
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitGlue(value, value2);
-	}
-	
-	/**
-	 * @return Returns the size of the <code>GlueNode</code>.
-	 */
-	public Glue getSize() {
-		return theSize;
-	}
+        sb.append("\\skip ");
+        sb.append(theSize.toString());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitGlue(value, value2);
+    }
+
 }

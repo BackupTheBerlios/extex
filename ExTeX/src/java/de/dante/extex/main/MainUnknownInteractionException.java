@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,11 +21,11 @@ package de.dante.extex.main;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when the user attempty to set the interaction mode 
+ * This exception is thrown when the user attempty to set the interaction mode
  * but specifies an invalid value for the mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class MainUnknownInteractionException extends MainException {
     /**
@@ -33,7 +33,7 @@ public class MainUnknownInteractionException extends MainException {
      *
      * @param message the name of the missing argument
      */
-    public MainUnknownInteractionException(String message) {
+    public MainUnknownInteractionException(final String message) {
         super(-14, message);
     }
 
@@ -41,7 +41,7 @@ public class MainUnknownInteractionException extends MainException {
      * @see java.lang.Throwable#getMessage()
      */
     public String getMessage() {
-        return Messages.format("MainMissignArgumentException.Message",
+        return Messages.format("MainUnknownInteractionException.Message",
                                super.getMessage());
     }
 }

@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.conditional;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractIf;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -29,13 +30,13 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ifx</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Ifx extends AbstractIf {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
     public Ifx(final String name) {
@@ -48,13 +49,15 @@ public class Ifx extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         Token t1 = source.getToken();
         Token t2 = source.getToken();
 
         if (t1 == null || t2 == null) {
-            throw new GeneralException("unexpected EOF");//TODO: i18n
+            throw new GeneralHelpingException("UnexpectedEOF",
+                    printableControlSequence(context));
         }
 
         return t1.equals(t2);

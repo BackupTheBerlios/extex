@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Par extends AbstractCode {
     /**
@@ -38,7 +38,7 @@ public class Par extends AbstractCode {
      *
      * @param name the name for debugging
      */
-    public Par(String name) {
+    public Par(final String name) {
         super(name);
     }
 
@@ -48,8 +48,10 @@ public class Par extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         typesetter.par();
         prefix.clear();
     }

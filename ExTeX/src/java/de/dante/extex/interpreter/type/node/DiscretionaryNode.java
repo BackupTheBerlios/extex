@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.type.node;
 
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeVisitor;
 import de.dante.util.GeneralException;
@@ -26,23 +27,80 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [145]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class DiscretionaryNode extends AbstractNode implements Node {
 
-	/**
-	 * Creates a new object.
-	 */
-	public DiscretionaryNode() {
-		super();
-	}
+    /**
+     * The field <tt>preBreak</tt> contains the Tokens to be inserted at the
+     * end of the line in case of a line breaking at this position.
+     */
+    private Tokens preBreak;
+
+    /**
+     * The field <tt>postBreak</tt> contains the Tokens to be inserted at the
+     * beginning of th next ine in case of a line breaking at this position.
+     */
+    private Tokens postBreak;
+
+    /**
+     * The field <tt>noBreak</tt> contains the Tokens to be inserted in case
+     * of no line breaking at this position.
+     */
+    private Tokens noBreak;
+
+    /**
+     * Creates a new object.
+     * 
+     * @param pre the Tokens to be inserted at the end of the line in case of a
+     *            line breaking at this position.
+     * @param post the Tokens to be inserted at the beginning of th next ine in
+     *            case of a line breaking at this position.
+     * @param no the Tokens to be inserted in case of no line breaking at this
+     *            position.
+     */
+    public DiscretionaryNode(final Tokens pre, final Tokens post,
+        final Tokens no) {
+        super();
+        preBreak = pre;
+        postBreak = post;
+        noBreak = no;
+    }
+
+    /**
+     * Getter for noBreak.
+     *
+     * @return the noBreak.
+     */
+    public Tokens getNoBreak() {
+        return noBreak;
+    }
+    /**
+     * Getter for postBreak.
+     *
+     * @return the postBreak.
+     */
+    public Tokens getPostBreak() {
+        return postBreak;
+    }
+    
+    /**
+     * Getter for preBreak.
+     *
+     * @return the preBreak.
+     */
+    public Tokens getPreBreak() {
+        return preBreak;
+    }
 
 	/**
 	 * ...
 	 *
 	 * @return ...
+	 *
 	 * @see "TeX -- The Program [195]"
 	 */
 	public String toString() {
@@ -50,17 +108,21 @@ public class DiscretionaryNode extends AbstractNode implements Node {
 	}
 
 	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+	 *      java.lang.String)
 	 */
-	public void toString(final StringBuffer sb, String prefix) {
-		sb.append("descretionary"); //TODO incomplete
-	}
+    public void toString(final StringBuffer sb, final String prefix) {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitDiscretionary(value, value2);
-	}
+        sb.append("discretionary"); //TODO incomplete
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+        final Object value2) throws GeneralException {
+        return visitor.visitDiscretionary(value, value2);
+    }
+
 }

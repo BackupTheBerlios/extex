@@ -19,7 +19,7 @@
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -36,9 +36,9 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\def</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Def extends AbstractCode {
+public class Def extends AbstractAssignment {
     /**
      * Creates a new object.
      *
@@ -54,36 +54,43 @@ public class Def extends AbstractCode {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
+    public void assign(final Flags prefix, final Context context,
         final TokenSource source, final Typesetter typesetter)
         throws GeneralException {
         Token cs = source.getControlSequence();
         String name = cs.getValue();
-        Tokens pattern = getPattern(context, source, name, prefix.isLong());
+        Tokens pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
             ? expandedBody(source)//
             : source.getTokens());
         context.setMacro(name, new MacroCode(name, prefix, pattern, body),
                          prefix.isGlobal());
-        prefix.clear();
     }
 
-    private Tokens expandedBody(TokenSource source) {
+    /**
+     * ...
+     *
+     * @param source ...
+     * @return ...
+     */
+    private Tokens expandedBody(final TokenSource source) {
         //TODO
         return null;
     }
 
     /**
      * ...
-     * 
+     *
+     * @param context the processor context
      * @param source the source for new tokens
-     * 
+     *
      * @return the tokens read
-     * 
+     *
      * @throws GeneralException in case of an error
      */
-    protected Tokens getPattern(final Context context, final TokenSource source,
-        final String name, final boolean notLong) throws GeneralException {
+    protected Tokens getPattern(final Context context, final TokenSource source)
+            throws GeneralException {
+
         Tokens toks = new Tokens();
         int no = 1;
         boolean afterHash = false;
@@ -93,31 +100,30 @@ public class Def extends AbstractCode {
                 source.push(t);
                 return toks;
             }
-            /*
-            if (notLong && t.equals(Catcode.ESCAPE,"par") ) {
-                throw new GeneralHelpingException("");
-            }
-            */
 
             if (afterHash) {
                 if (t instanceof MacroParamToken) {
                     //ok
                 } else if (t instanceof OtherToken) {
                     if (t.getValue().charAt(0) != '0' + no) {
-                        //TODO error
+                        throw new GeneralHelpingException(
+                                "TTP.NonConseqParams",
+                                printableControlSequence(context));
                     }
                     no++;
                 } else {
-                    //TODO error
+                    throw new GeneralHelpingException("TTP.NonConseqParams",
+                            printableControlSequence(context));
                 }
+                afterHash = false;
+            } else {
+                afterHash = (t instanceof MacroParamToken);
             }
-            afterHash = (t instanceof MacroParamToken);
             toks.add(t);
         }
 
-        char esc = (char) (context.getCount("escapechar").getValue());
-        throw new GeneralHelpingException("TTP.EOFinDef", //
-            Character.toString(esc) + name);
+        throw new GeneralHelpingException("TTP.EOFinDef",
+                printableControlSequence(context));
     }
-    
+
 }

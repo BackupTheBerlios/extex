@@ -27,12 +27,12 @@ import de.dante.util.GeneralException;
  * and as a side effect all prefixes are zeroed.
  *
  * <p>
- * All features are inherited from 
- * {@link de.dante.extex.interpreter.type.NamedCount NamedCount}. Just the key 
- * has to be provided under which this Count has to be stored. This key is
- * constructed from the name, a hash amrk and the running number.
+ * All features are inherited from
+ * {@link de.dante.extex.interpreter.primitives.register.NamedCount NamedCount}.
+ * Just the key has to be provided under which this Count has to be stored.
+ * This key is constructed from the name, a hash mark and the running number.
  * </p>
- * 
+ *
  * <p>Example</p>
  * <pre>
  * \count12=345
@@ -40,27 +40,30 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NumberedCount extends NamedCount {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for debugging
-	 */
-	public NumberedCount(String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for debugging
+     */
+    public NumberedCount(final String name) {
+        super(name);
+    }
 
-	/**
-	 * Return the key (the number) for the register.
-	 *
-	 * @param source 	the tokensource
-	 * @return Return the key for the register
-	 * @throws GeneralException, if a error ocoured
-	 */
-	protected String getKey(TokenSource source) throws GeneralException {
-		return getName() + "#" + Long.toString(source.scanNumber());
-	}
+    /**
+     * Return the key (the number) for the register.
+     *
+     * @param source ...
+     *
+     * @return ...
+     *
+     * @throws GeneralException ...
+     */
+    protected String getKey(final TokenSource source) throws GeneralException {
+
+        return getName() + "#" + Long.toString(source.scanNumber());
+    }
 }

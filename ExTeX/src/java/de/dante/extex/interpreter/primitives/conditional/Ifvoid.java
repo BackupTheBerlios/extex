@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.conditional;
 import de.dante.extex.interpreter.AbstractIf;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -28,7 +29,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ifvoid</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Ifvoid extends AbstractIf {
     /**
@@ -46,10 +47,12 @@ public class Ifvoid extends AbstractIf {
      *      de.dante.extex.typesetter.Typesetter)
      */
     protected boolean conditional(final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         String key = getKey(source);
-        return (context.getBox(key)==null);
+        Box box = context.getBox(key);
+        return (box == null || box.isVoid());
     }
 
     /**
@@ -61,7 +64,8 @@ public class Ifvoid extends AbstractIf {
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source) throws GeneralException {
+
         return "box#" + Long.toString(source.scanNumber());
     }
 

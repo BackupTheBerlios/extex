@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,21 +23,26 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This is an interface which describes the feature to be convertibe into a dimen.
+ * This is an interface which describes the feature to be convertibe into a
+ * dimen.
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @author <a href="gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface DimenConvertable {
 
-	/**
-	 * Convert ot a <code>Dimen</code>.
-	 *
-	 * @param context	the interpreter context
-	 * @param source	the source for new tokens
-	 * @return the converted value
-	 * @throws GeneralException in case of an error
-	 */
-	long convertDimen(Context context, TokenSource source) throws GeneralException;
+    /**
+     * ...
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     *
+     * @return the converted value
+     *
+     * @throws GeneralException in case of an error
+     */
+    long convertDimen(Context context, TokenSource source)
+            throws GeneralException;
+
 }

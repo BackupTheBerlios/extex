@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,8 +18,6 @@
  */
 package de.dante.extex.typesetter.impl;
 
-import java.util.Map;
-
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
@@ -28,25 +26,55 @@ import de.dante.util.GeneralException;
 
 /**
  * Interface for the Manager of a typesetter.
- * 
+ *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Manager {
 
+	/**
+	 * ...
+	 *
+	 * @throws GeneralException ...
+	 */
 	void pop() throws GeneralException;
 
+	/**
+	 * ...
+	 *
+	 * @param listMaker ...
+	 *
+	 * @throws GeneralException ...
+	 */
 	void push(ListMaker listMaker) throws GeneralException;
 
+	/**
+	 * ...
+	 *
+	 * @throws GeneralException ...
+	 */
 	void closeTopList() throws GeneralException;
 
+	/**
+	 * ...
+	 *
+	 * @return ...
+	 */
 	CharNodeFactory getCharNodeFactory();
 
+	/**
+	 * ...
+	 *
+	 * @return ...
+	 */
 	DocumentWriter getDocumentWriter();
 
+	/**
+	 * Getter for the context.
+	 * 
+	 * @return ...
+	 */
 	Context getContext();
-
-	Map getLineBreakerMap();
 
 }

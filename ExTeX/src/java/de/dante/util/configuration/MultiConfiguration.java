@@ -28,7 +28,7 @@ import de.dante.util.StringList;
  * Container for several {@link de.dante.util.configuration.Configuration Configuration} objects.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MultiConfiguration implements Configuration {
     /** The internal array of configs */
@@ -53,22 +53,45 @@ public class MultiConfiguration implements Configuration {
         List v = new ArrayList();
 
         for (int i = 0; i < configs.length; i++) {
-            try {
-                v.add(configs[i].getConfiguration(key));
-            } catch (ConfigurationNotFoundException e) {
-                // ignored during the search
+            Configuration cfg =configs[i].findConfiguration(key);
+            if (cfg != null){
+                v.add(cfg);
             }
         }
 
-        if (v.size() == 0) {
-            throw new ConfigurationNotFoundException("",key);
+        switch (v.size()) {
+            case 0 :
+                return null;
+            case 1 :
+                return (Configuration) v.get(0);
+            default :
+                return new MultiConfiguration((Configuration[]) v.toArray());
+        }
+    }
+
+/**
+     * @see de.dante.util.configuration.Configuration#findConfiguration(java.lang.String)
+     */
+    public Configuration findConfiguration(String key)
+            throws ConfigurationException {
+
+        List v = new ArrayList();
+
+        for (int i = 0; i < configs.length; i++) {
+            Configuration cfg = configs[i].findConfiguration(key);
+            if (cfg != null) {
+                v.add(cfg);
+            }
         }
 
-        if (v.size() == 1) {
-            return (Configuration) v.get(0);
+        switch (v.size()) {
+            case 0 :
+                return null;
+            case 1 :
+                return (Configuration) v.get(0);
+            default :
+                return new MultiConfiguration((Configuration[]) v.toArray());
         }
-
-        return new MultiConfiguration((Configuration[]) v.toArray());
     }
 
     /**

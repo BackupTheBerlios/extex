@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,17 +25,19 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
     /**
-     * This is the color to use. The effect depends on the object to be
-     * colored.
-     * E.g.
-     * in a CharNode it is the color of the text (background is always
-     * transparent)
-     * in a RuleNode it is the color of the rule
-     * in a HListNode or VListNode it is the background color
+     * The field <tt>color</tt> contains the color to use.
+     * The effect depends on the object to be colored.
+     * For instance
+     * <ul>
+     * <li>in a CharNode it is the color of the text (background is always
+     * transparent)</li>
+     * <li>in a RuleNode it is the color of the rule</li>
+     * <li>in a HListNode or VListNode it is the background color</li>
+     * </ul>
      */
     private Color color;
 
@@ -50,10 +52,14 @@ public class TypesettingContextImpl implements TypesettingContext {
      */
     private Font font;
 
-    /** ... */
+    /**
+     * The field <tt>hyphenation</tt> contains the ...
+     */
     private HyphenationTable hyphenation;
 
-    /** ... */
+    /**
+     * The field <tt>angle</tt> contains the ...
+     */
     private int angle;
 
     /**
@@ -61,8 +67,6 @@ public class TypesettingContextImpl implements TypesettingContext {
      */
     public TypesettingContextImpl() {
         super();
-
-        // TODO Auto-generated constructor stub
     }
 
     /**

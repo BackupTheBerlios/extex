@@ -28,9 +28,9 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [138]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public class RuleNode extends AbstractNode implements Node {
 
@@ -62,46 +62,44 @@ public class RuleNode extends AbstractNode implements Node {
 	}
 
 	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
+	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+	 *      java.lang.String)
 	 * @see "TeX -- The Program [187]"
 	 */
-	public void toString(final StringBuffer sb, String prefix) {
-		sb.append("rule(");
+    public void toString(final StringBuffer sb, final String prefix) {
 
-		Dimen x = getHeight();
+        sb.append("rule(");
+        Dimen x = getHeight();
+        if (x == null) {
+            sb.append("*");
+        } else {
+            x.toString(sb);
+        }
+        sb.append("+");
+        x = getDepth();
+        if (x == null) {
+            sb.append("*");
+        } else {
+            x.toString(sb);
+        }
+        sb.append(")x");
+        x = getWidth();
+        if (x == null) {
+            sb.append("*");
+        } else {
+            x.toString(sb);
+        }
+        sb.append(")");
+    }
 
-		if (x == null) {
-			sb.append("*");
-		} else {
-			x.toString(sb);
-		}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
 
-		sb.append("+");
-		x = getDepth();
+        return visitor.visitRule(value, value2);
+    }
 
-		if (x == null) {
-			sb.append("*");
-		} else {
-			x.toString(sb);
-		}
-
-		sb.append(")x");
-		x = getWidth();
-
-		if (x == null) {
-			sb.append("*");
-		} else {
-			x.toString(sb);
-		}
-
-		sb.append(")");
-	}
-
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitRule(value, value2);
-	}
 }

@@ -21,7 +21,6 @@ package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.util.GeneralException;
 
@@ -30,16 +29,16 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Typesetter extends ListMaker {
 
     /**
-     * Setter for the docuemnt writer.
+     * Setter for the document writer.
      * The document writer is addressed whenever a complete page has to be
      * shipped out.
      *
-     * @param doc the new docuemnt writer
+     * @param doc the new document writer
      */
     void setDocumentWriter(DocumentWriter doc);
 
@@ -52,7 +51,9 @@ public interface Typesetter extends ListMaker {
 
     /**
      * ...
-     * 
+     *
+     * @param context the processor context
+     *
      * @throws GeneralException in case of an error
      */
     void finish(Context context) throws GeneralException;
@@ -60,10 +61,22 @@ public interface Typesetter extends ListMaker {
     /**
      * ...
      *
-     * @param nodes
+     * @param nodes ...
      *
      * @throws GeneralException in case of an error
      */
-    void shipout(Box nodes) throws GeneralException;
+    void shipout(NodeList nodes) throws GeneralException;
+
+    /**
+     * ...
+     *
+     */
+    void openHbox();
+
+    /**
+     * ...
+     *
+     */
+    void openVbox();
 
 }

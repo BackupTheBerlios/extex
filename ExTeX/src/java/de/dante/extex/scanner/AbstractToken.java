@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,24 +20,19 @@ package de.dante.extex.scanner;
 
 import de.dante.util.UnicodeChar;
 
-/*
- * ...
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
- */
 /**
  * This is the abstract base class for all Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractToken implements Token {
 
-	/**
+    /**
      * The field <tt>value</tt> contains the string value. In case that the
-     * token has a single character value only this may also be <code>null</code>
+     * token has a single character value only this may also be
+     * <code>null</code>
      * or it is used to cache the string representation of the character.
      */
     private String value = null;
@@ -46,27 +41,27 @@ public abstract class AbstractToken implements Token {
      * The field <tt>uniCode</tt> ...
      */
     private UnicodeChar uniCode = null;
-    
+
     /**
      * Creates a new object.
      *
-     * @param value the value of the token
+     * @param aValue the value of the token
      */
-    protected AbstractToken(String value) {
+    protected AbstractToken(final String aValue) {
         super();
-        this.value = value;
+        this.value = aValue;
     }
 
     /**
      * Creates a new object.
      *
-     * @param value the value of the token
+     * @param uc the value of the token
      */
-    protected AbstractToken(UnicodeChar uc) {
+    protected AbstractToken(final UnicodeChar uc) {
         super();
         this.uniCode = uc;
     }
-    
+
     /**
      * This abstract class forces a derived class to overwrite this definition.
      *
@@ -87,7 +82,8 @@ public abstract class AbstractToken implements Token {
      * @return the text representation
      */
     public String toText() {
-        if ( value == null ) {
+
+        if (value == null) {
             value = uniCode.toString();
         }
         return value;
@@ -97,17 +93,16 @@ public abstract class AbstractToken implements Token {
      * @see de.dante.extex.scanner.Token#getChar()
      */
     public UnicodeChar getChar() {
-    	if (uniCode == null) {
-    		uniCode = new UnicodeChar(getValue(),0);
-    	}
+
         return uniCode;
     }
-    
+
     /**
      * @see de.dante.extex.scanner.Token#getValue()
      */
     public String getValue() {
-        if ( value == null ) {
+
+        if (value == null) {
             value = uniCode.toString();
         }
         return value;
@@ -116,38 +111,45 @@ public abstract class AbstractToken implements Token {
     /**
      * @see de.dante.extex.scanner.Token#equals(de.dante.extex.scanner.Token)
      */
-    public boolean equals(Token t) {
-        return this == t ||
-               (getCatcode() == t.getCatcode() &&
-               getValue().equals(t.getValue()));
+    public boolean equals(final Token t) {
+
+        return this == t
+               || (getCatcode() == t.getCatcode() && getValue()
+                       .equals(t.getValue()));
     }
 
     /**
      * @see de.dante.extex.scanner.Token#equals(Catcode,String)
      */
-    public boolean equals(Catcode cc, String s) {
+    public boolean equals(final Catcode cc, final String s) {
+
         return getCatcode() == cc && getValue().equals(s);
     }
 
     /**
-     * @see de.dante.extex.scanner.Token#equals(de.dante.extex.scanner.Catcode, char)
+     * @see de.dante.extex.scanner.Token#equals(de.dante.extex.scanner.Catcode,
+     *      char)
      */
-    public boolean equals(Catcode cc, char c) {
-        return getCatcode() == cc && getValue().length() == 1 &&
-               value.charAt(0) == c;
+    public boolean equals(final Catcode cc, final char c) {
+
+        return getCatcode() == cc && getValue().length() == 1
+               && value.charAt(0) == c;
     }
 
     /**
      * @see de.dante.extex.scanner.Token#equals(char)
      */
-    public boolean equals(char c) {
+    public boolean equals(final char c) {
+
         return value.length() == 1 && getValue().charAt(0) == c;
     }
 
     /**
      * @see de.dante.extex.scanner.Token#isa(Catcode)
      */
-    public boolean isa(Catcode cc) {
+    public boolean isa(final Catcode cc) {
+
         return getCatcode() == cc;
     }
+
 }

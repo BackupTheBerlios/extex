@@ -43,7 +43,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class InputFileEncoding extends InputFile {
 
@@ -69,7 +69,7 @@ public class InputFileEncoding extends InputFile {
             Typesetter typesetter) throws GeneralException {
 
         String encoding = source.scanTokensAsString();
-        String name = scanFileName(source);
+        String name = scanFileName(source, context);
         TokenStreamFactory factory = source.getTokenStreamFactory();
 
         try {

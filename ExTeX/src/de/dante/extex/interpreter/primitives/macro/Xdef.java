@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\xdef</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Xdef extends Edef {
     /**
@@ -46,12 +46,12 @@ public class Xdef extends Edef {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+    public void assign(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         prefix.setGlobal();
-        super.execute(prefix,context,source,typesetter);
+        super.execute(prefix, context, source, typesetter);
     }
-    
+
 }

@@ -28,97 +28,74 @@ import de.dante.util.UnicodeChar;
 
 /**
  * This class implements a dummy font which does not contain any characters.
- * 
- * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.11 $
  */
 public class NullFont implements Font {
 
-	/**
-	 * Creates a new object.
-	 */
-	public NullFont() {
-		super();
-	}
+    /**
+     * The field <tt>hyphen</tt> contains the ...
+     */
+    private UnicodeChar hyphen = new UnicodeChar('-');
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getSpace()
-	 */
-	public Glue getSpace() {
-		return new Glue(12 * Dimen.ONE);
-	}
+    /**
+     * The field <tt>skew</tt> contains the ...
+     */
+    private UnicodeChar skew = new UnicodeChar('-');
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getEm()
-	 */
-	public Dimen getEm() {
-		return new Dimen(12 * Dimen.ONE);
-	}
+    /**
+     * Creates a new object.
+     */
+    public NullFont() {
+        super();
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getEx()
-	 */
-	public Dimen getEx() {
-		return new Dimen(6 * Dimen.ONE);
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getHyphenChar()
+     */
+    public UnicodeChar getHyphenChar() {
+        return hyphen;
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getFontDimen(long)
-	 */
-	public Dimen getFontDimen(String key) {
-		return null;
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getSkewChar()
+     */
+    public UnicodeChar getSkewChar() {
+        return skew;
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getFontName()
-	 */
-	public String getFontName() {
-		return "dummy";
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.Font#setHyphenChar(de.dante.util.UnicodeChar)
+     */
+    public void setHyphenChar(final UnicodeChar hyphen) {
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
-	 */
-	public boolean isDefined(UnicodeChar c) {
-		return false;
-	}
+        this.hyphen = hyphen;
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-	 */
-	public Dimen kern(UnicodeChar c1, UnicodeChar c2) {
-		return null;
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.Font#setSkewChar(de.dante.util.UnicodeChar)
+     */
+    public void setSkewChar(final UnicodeChar skew) {
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
-	 */
-	public UnicodeChar ligature(UnicodeChar c1, UnicodeChar c2) {
-		return null;
-	}
+        this.skew = skew;
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getExternalFile()
-	 */
-	public File getExternalFile() {
-		return null;
-	}
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getSpace()
+     */
+    public Glue getSpace() {
+        return new Glue(0);
+    }
 
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getExternalID(UnicodeChar)
-	 */
-	public String getExternalID(UnicodeChar c) {
-		return null;
-	}
-
-	/**
-	 * @see de.dante.extex.interpreter.type.Font#getGlyph(de.dante.util.UnicodeChar)
-	 */
-	public Glyph getGlyph(UnicodeChar c) {
-		return null;
-	}
-	
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getEm()
+     */
+    public Dimen getEm() {
+        return new Dimen(0);
+    }
 	
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getFontType()
@@ -131,6 +108,71 @@ public class NullFont implements Font {
 	 * @see de.dante.extex.interpreter.type.Font#setFontDimen(java.lang.String, de.dante.extex.interpreter.type.Dimen)
 	 */
 	public void setFontDimen(String key, Dimen value) {
-	}
+
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getEx()
+     */
+    public Dimen getEx() {
+
+        return new Dimen(0);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getFontDimen(java.lang.String)
+     */
+    public Dimen getFontDimen(final String key) {
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getFontName()
+     */
+    public String getFontName() {
+        return "nullFont";
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#isDefined(de.dante.util.UnicodeChar)
+     */
+    public boolean isDefined(final UnicodeChar c) {
+        return false;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#kern(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public Dimen kern(final UnicodeChar c1, final UnicodeChar c2) {
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#ligature(de.dante.util.UnicodeChar, de.dante.util.UnicodeChar)
+     */
+    public UnicodeChar ligature(final UnicodeChar c1, final UnicodeChar c2) {
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getExternalFile()
+     */
+    public File getExternalFile() {
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getExternalID(UnicodeChar)
+     */
+    public String getExternalID(final UnicodeChar c) {
+        return null;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.Font#getGlyph(de.dante.util.UnicodeChar)
+     */
+    public Glyph getGlyph(final UnicodeChar c) {
+        return null;
+    }
 
 }

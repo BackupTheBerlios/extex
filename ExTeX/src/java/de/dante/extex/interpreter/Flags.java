@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,19 +23,38 @@ package de.dante.extex.interpreter;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Flags {
-    
+
+    /**
+     * The field <tt>globalP</tt> contains the ...
+     */
     private boolean globalP = false;
+
+    /**
+     * The field <tt>longP</tt> contains the ...
+     */
     private boolean longP = false;
+
+    /**
+     * The field <tt>outerP</tt> contains the ...
+     */
     private boolean outerP = false;
+
+    /**
+     * The field <tt>expandedP</tt> contains the ...
+     */
     private boolean expandedP = false;
+
+    /**
+     * The field <tt>immediateP</tt> contains the ...
+     */
     private boolean immediateP = false;
 
     /**
      * Creates a new object.
-     * Initially No flags are set.
+     * Initially no flags are set.
      */
     public Flags() {
         super();
@@ -58,28 +77,37 @@ public class Flags {
     public void setGlobal() {
         globalP = true;
     }
-    
+
+    /**
+     * Setter for the global flag.
+     *
+     * @param value the new value for the global flag
+     */
+    public void setGlobal(final boolean value) {
+        globalP = value;
+    }
+
     /**
      * Setter for the long flag.
      */
     public void setLong() {
         longP = true;
     }
-    
+
     /**
      * Setter for the outer flag.
      */
     public void setOuter() {
         outerP = true;
     }
-    
+
     /**
      * Setter for the immediate flag.
      */
     public void setImmediate() {
         immediateP = true;
     }
-    
+
     /**
      * Setter for the expanded flag.
      */
@@ -89,13 +117,13 @@ public class Flags {
 
     /**
      * Getter for the global flag.
-     * 
+     *
      * @return the current value of the global flag
      */
     public boolean isGlobal() {
         return globalP;
     }
-    
+
     /**
      * Getter for the long flag.
      *

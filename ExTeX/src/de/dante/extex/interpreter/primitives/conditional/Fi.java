@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\fi</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Fi extends AbstractCode {
 
@@ -39,7 +39,7 @@ public class Fi extends AbstractCode {
      *
      * @param name the name for debugging
      */
-    public Fi(String name) {
+    public Fi(final String name) {
         super(name);
     }
 
@@ -50,10 +50,12 @@ public class Fi extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
-        if (context.ifPop()==0) {
-            throw new GeneralHelpingException("TTP.ExtraOrElseFi", "\\fi");
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
+        if (context.popConditional() == 0) {
+            throw new GeneralHelpingException("TTP.ExtraOrElseFi",
+                    printableControlSequence(context));
         }
         prefix.clear();
     }

@@ -26,22 +26,23 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\message</code>.
+ * This class provides an implementation for the primitive
+ * <code>\message</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Message extends AbstractCode {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for tracing and debugging
-	 */
-	public Message(final String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for tracing and debugging
+     */
+    public Message(final String name) {
+        super(name);
+    }
 
     /**
      * Scan the next tokens (between braces) and put the value (as text) on the
@@ -54,8 +55,9 @@ public class Message extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         source.update("message", source.scanTokens().toText());
         prefix.clear();
     }

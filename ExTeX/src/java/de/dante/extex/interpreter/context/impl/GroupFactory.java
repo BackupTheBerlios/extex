@@ -29,15 +29,15 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
 /**
  * ...
- * 
- * 
+ *
+ *
  * <pre>
  *  &lt;Group class="the.package.TheClass"&gt;
  *  &lt;/Group&gt;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GroupFactory {
     /**
@@ -48,16 +48,20 @@ public class GroupFactory {
     /**
      * The field <tt>constructor</tt> contains the constructor of the class to
      * instantiate. It is kept here to speed up the method
-     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group) newInstance}.
+     * {@link #newInstance(de.dante.extex.interpreter.context.impl.Group)
+     *  newInstance}.
      */
     private Constructor constructor;
-    
+
     /**
      * Creates a new object.
-     * 
+     *
      * @param config the configuration for this factory
+     *
+     * @throws ConfigurationException ...
      */
-    public GroupFactory(Configuration config) throws ConfigurationException {
+    public GroupFactory(final Configuration config)
+            throws ConfigurationException {
         super();
 
         String classname = config.getAttribute(CLASS_ATTRIBUTE);
@@ -81,10 +85,14 @@ public class GroupFactory {
     /**
      * Get a instance of a
      * {@link de.dante.extex.interpreter.context.impl.Group Group}.
-     * 
+     *
+     * @param next the next group
+     *
      * @return a new instance for the interface Group
+     *
+     * @throws ConfigurationException ...
      */
-    public Group newInstance(Group next) throws ConfigurationException {
+    public Group newInstance(final Group next) throws ConfigurationException {
         Group group;
 
         try {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004  Gerd Neugebauer
+ * Copyright (C) 2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,12 +25,12 @@ import java.nio.charset.Charset;
 
 import de.dante.extex.scanner.stream.TokenStream;
 
-/*
+/**
  * ...
- * 
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de"> Gerd Neugebauer </a>
- * 
- * @version $Revision: 1.2 $
+ *
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
         TokenStream {
@@ -44,7 +44,7 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param line
      * @param encoding
      * @throws CharacterCodingException
@@ -64,15 +64,18 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
      */
     private String[] lines = null;
 
+    /**
+     * The field <tt>encoding</tt> contains the ...
+     */
     private String encoding;
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param lines the array of lines to consider
      * @throws CharacterCodingException in cas of an error
      */
-    public TokenStreamBuffersImpl(String[] lines, String encoding)
+    public TokenStreamBuffersImpl(final String[] lines, final String encoding)
             throws CharacterCodingException {
         super(lines[0], encoding);
         this.lines = lines;
@@ -90,4 +93,5 @@ public class TokenStreamBuffersImpl extends TokenStreamBufferImpl implements
                 ByteBuffer.wrap(lines[nextLine++].getBytes())));
         return true;
     }
+
 }

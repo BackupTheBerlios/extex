@@ -24,18 +24,18 @@ import de.dante.extex.i18n.Messages;
 
 /**
  * This is the factory for configurations.
+ * <p>
+ * The class to be used for the configuration can be set with the
+ * <tt>System.property</tt> named <tt>Util.Configuarion.class</tt>.
+ * If this property is nit set then the fallback class
+ * {@link de.dante.util.configuration.ConfigurationXMLImpl ConfigurationXMLImpl}
+ * is used instead.
+ * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ConfigurationFactory {
-    
-    /**
-     * The constant <tt>DEFAULT_CONFIG_CLASS</tt> contains the name of the
-     * class to be delivered as implementation for Configuration if anything
-     * else fails.
-     */
-    private static final String DEFAULT_CONFIG_CLASS = "de.dante.util.configuration.ConfigurationXMLImpl";
 
     /**
      * Creates a new object.
@@ -46,39 +46,43 @@ public class ConfigurationFactory {
 
     /**
      * Delivers a new
-     * {@link de.dante.extex.util.configuration.Configuration Configuration}
+     * {@link de.dante.util.configuration.Configuration Configuration}
      * object which is initialized from a named source. This source is usually
      * a file name but can be anything else, like a URL or a reference to a
      * database -- depending on the underlying implementation.
      *
-     * @param source the source of the confugration
+     * @param source the source of the configration
      *
      * @return a new Configuration object
      *
-     * @throws ConfigurationNoTypesetterException in case that the source is
+     * @throws NoTypesetterException in case that the source is
      *             <code>null</code>
+     * @throws ConfigurationInstantiationException in case of some kind of
+     *             error during instantiation
+     * @throws ConfigurationClassNotFoundException in case that the class could
+     *             not be found
      * @throws ConfigurationException in case that the creation of the
      *             Configuration fails
      */
     public Configuration newInstance(final String source)
         throws ConfigurationException {
+
         if (source == null) {
             throw new ConfigurationInvalidNameException(Messages
                 .format("ConfigurationFactory.EmptySourceMessage"));
         }
 
-        //return new ConfigurationXMLImpl(source);
-        
         String classname = System.getProperty("Util.Configuration.class");
-        if ( classname == null ) {
-            classname = DEFAULT_CONFIG_CLASS;
+
+        if (classname == null) {
+            return new ConfigurationXMLImpl(source);
         }
+
         Configuration config = null;
 
         try {
-            config = (Configuration) (Class.forName(classname)
-                .getConstructor(new Class[]{String.class})
-                .newInstance(new Object[]{source}));
+            config = (Configuration) (Class.forName(classname).getConstructor(
+                new Class[]{String.class}).newInstance(new Object[]{source}));
         } catch (IllegalArgumentException e) {
             throw new ConfigurationInstantiationException(e);
         } catch (SecurityException e) {
@@ -98,7 +102,8 @@ public class ConfigurationFactory {
         } catch (ClassNotFoundException e) {
             throw new ConfigurationClassNotFoundException(classname);
         }
-        
+
         return config;
     }
+
 }

@@ -27,48 +27,49 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [142]"
  *
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class AdjustNode extends AbstractNode implements Node {
 
-	/**
-	 * The field <tt>adjust</tt> ...
-	 */
-	private VerticalListNode adjust = null;
+    /**
+     * The field <tt>adjust</tt> ...
+     */
+    private VerticalListNode adjust = null;
 
-	/**
-	 * Creates a new object.
-	 *
-	 */
-	public AdjustNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     *
+     */
+    public AdjustNode() {
+        super();
+    }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [197]"
-	 */
-	public String toString() {
-		return "vadjust "; //TODO incomplete
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [197]"
+     */
+    public String toString() {
+        return "vadjust "; //TODO incomplete
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-	 */
-	public void toString(final StringBuffer sb, String prefix) {
-		sb.append("vadjust "); //TODO unimplemented
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+        sb.append("vadjust "); //TODO unimplemented
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitAdjust(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
+        return visitor.visitAdjust(value, value2);
+    }
 
 }

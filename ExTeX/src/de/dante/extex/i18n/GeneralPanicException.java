@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -24,7 +24,7 @@ import de.dante.util.GeneralException;
  * This exception can be used to terminate the interpreter loop.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GeneralPanicException extends GeneralException {
     /**
@@ -32,13 +32,19 @@ public class GeneralPanicException extends GeneralException {
      */
     private static final int PANIC_ERROR_CODE = -666;
 
-    /** the first argument */
+    /**
+     * The field <tt>arg1</tt> contains the first argument.
+     */
     private String arg1 = "?";
 
-    /** the second argument */
+    /**
+     * The field <tt>arg2</tt> contains the second argument.
+     */
     private String arg2 = "?";
 
-    /** the third argument */
+    /**
+     * The field <tt>arg3</tt> contains the third argument.
+     */
     private String arg3 = "?";
 
     /** the name of the message to show; cf. Messages */
@@ -64,7 +70,7 @@ public class GeneralPanicException extends GeneralException {
      */
     public GeneralPanicException(final String messageTag, final String a1) {
         super(PANIC_ERROR_CODE);
-        tag       = messageTag;
+        tag = messageTag;
         this.arg1 = a1;
     }
 

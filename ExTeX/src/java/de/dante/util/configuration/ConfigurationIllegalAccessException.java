@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -21,19 +21,21 @@ package de.dante.util.configuration;
 import de.dante.extex.i18n.Messages;
 
 /**
- * This exception is thrown when a dynamicaly loaded class has signaled an illegal access.
+ * This exception is thrown when a dynamicaly loaded class has signaled an
+ * illegal access.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationIllegalAccessException
     extends ConfigurationException {
+
     /**
      * Creates a new object.
      *
      * @param cause the next Throwable in the list
      */
-    public ConfigurationIllegalAccessException(Throwable cause) {
+    public ConfigurationIllegalAccessException(final Throwable cause) {
         super(null, cause);
     }
 
@@ -46,4 +48,5 @@ public class ConfigurationIllegalAccessException
         return Messages.format("ConfigIllegalAccessException.Text",
                                getCause().getMessage());
     }
+
 }

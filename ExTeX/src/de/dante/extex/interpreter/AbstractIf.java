@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractIf extends AbstractCode {
 
@@ -58,11 +58,12 @@ public abstract class AbstractIf extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
+
         if (conditional(context, source, typesetter)) {
-            context.ifPush(source.getLocator(), 1);
+            context.pushConditional(source.getLocator(), 1);
         } else {
             if (skipToElseOrFi(context, source)) {
-                context.ifPush(source.getLocator(), 1);
+                context.pushConditional(source.getLocator(), 1);
             }
         }
 
@@ -99,6 +100,7 @@ public abstract class AbstractIf extends AbstractCode {
      */
     protected boolean skipToElseOrFi(final Context context,
             final TokenSource source) throws GeneralException {
+
         Code code;
         int n = 1;
 

@@ -27,42 +27,47 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @see "TeX -- The Program [147]"
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class BeforeMathNode extends AbstractNode implements Node, Discartable {
 
-	/**
-	 * Creates a new object.
-	 */
-	public BeforeMathNode() {
-		super();
-	}
+    /**
+     * Creates a new object.
+     */
+    public BeforeMathNode() {
+        super();
+    }
 
-	/**
-	 * ...
-	 *
-	 * @return ...
-	 * @see "TeX -- The Program [192]"
-	 */
-	public String toString() {
-		return "mathon"; //TODO incomplete
-	}
+    /**
+     * ...
+     *
+     * @return ...
+     * @see "TeX -- The Program [192]"
+     */
+    public String toString() {
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer)
-	 */
-	public void toString(final StringBuffer sb, String prefix) {
-		sb.append("mathon");
-	}
+        return "mathon"; //TODO incomplete
+    }
 
-	/**
-	 * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
-	 *      java.lang.Object, java.lang.Object)
-	 */
-	public Object visit(final NodeVisitor visitor, final Object value, final Object value2) throws GeneralException {
-		return visitor.visitBeforeMath(value, value2);
-	}
+    /**
+     * @see de.dante.extex.typesetter.Node#toString(java.lang.StringBuffer,
+     *      java.lang.String)
+     */
+    public void toString(final StringBuffer sb, final String prefix) {
+
+        sb.append("mathon");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#visit(de.dante.extex.typesetter.NodeVisitor,
+     *      java.lang.Object, java.lang.Object)
+     */
+    public Object visit(final NodeVisitor visitor, final Object value,
+            final Object value2) throws GeneralException {
+
+        return visitor.visitBeforeMath(value, value2);
+    }
 
 }

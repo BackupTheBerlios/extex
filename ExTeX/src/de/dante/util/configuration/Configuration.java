@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -51,9 +51,10 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Configuration {
+
     /**
      * Getter for an attribute with a given name.
      *
@@ -64,8 +65,7 @@ public interface Configuration {
      *
      * @throws ConfigurationException in case of any kind of problem
      */
-    public abstract String getAttribute(String name)
-                                 throws ConfigurationException;
+    String getAttribute(String name) throws ConfigurationException;
 
     /**
      * Extract a sub-configuration with a given name.
@@ -97,10 +97,45 @@ public interface Configuration {
      *
      * @return the sub-configuration
      *
-     * @throws ConfigNotFoundException in case that the given name does not
-     * correspond to one of the tags in the current configuration
+     * @throws ConfigurationNotFoundException in case that the given name does
+     * not correspond to one of the tags in the current configuration
      */
-    public abstract Configuration getConfiguration(String key)
+    Configuration getConfiguration(String key)
+        throws ConfigurationNotFoundException, ConfigurationException;
+
+    /**
+     * Extract a sub-configuration with a given name.
+     * <p>
+     * Consider the following example with the configuration currently rooted
+     * at cfg:
+     * </p>
+     * <pre>
+     *   &lt;cfg&gt;
+     *     . . .
+     *     &lt;abc&gt;
+     *     . . .
+     *     &lt;/abc&gt;
+     *     . . .
+     *   &lt;/cfg&gt;
+     * </pre>
+     * <p>
+     * Then <tt>getConfig("abc")</tt> returns a new XMLConfig rooted at abc.
+     * </p>
+     * <p>
+     * If there are more than one tags with the same name then the first one is
+     * used.
+     * </p>
+     * <p>
+     * If there are no tags with the given name then an exception is thrown.
+     * </p>
+     *
+     * @param key the tag name of the sub-configuration
+     *
+     * @return the sub-configuration or <code>null</code> if none is found
+     *
+     * @throws ConfigurationException in case of an error in the configuration
+     */
+    Configuration findConfiguration(String key)
         throws ConfigurationException;
 
     /**
@@ -138,12 +173,11 @@ public interface Configuration {
      *
      * @return the sub-configuration
      *
-     * @throws ConfigNotFoundException in case that the given name does not
-     * correspond to one of the tags in the current configuration
+     * @throws ConfigurationNotFoundException in case that the given name does
+     * not correspond to one of the tags in the current configuration
      */
-    public abstract Configuration getConfiguration(String key,
-                                                   String attribute)
-        throws ConfigurationException;
+    Configuration getConfiguration(String key, String attribute)
+        throws ConfigurationNotFoundException, ConfigurationException;
 
     /**
      * Retrieve a value from the configuration as <i>String</i>.
@@ -169,34 +203,32 @@ public interface Configuration {
      *
      * @return the value of key or <code>null</code>
      *
-     * @throws ConfigException in case that something went wrong
+     * @throws ConfigurationException in case that something went wrong
      */
-    public abstract String getValue(String key)
-                             throws ConfigurationException;
+    String getValue(String key) throws ConfigurationException;
 
     /**
-     * Goetter for the textual value of this configuration.
+     * Getter for the textual value of this configuration.
      *
      * @return the text stored directly in this configuration
      *
-     * @throws ConfigException in case that something went wrong
+     * @throws ConfigurationException in case that something went wrong
      */
-    public abstract String getValue() throws ConfigurationException;
+    String getValue() throws ConfigurationException;
 
     /**
-     * Retrieve a value from the configuration as <i>int</i>.
-     * If the value could not be determined then a given default value is
-     * returned.
+     * Retrieve a value from the configuration as <i>int</i>. If the value
+     * could not be determined then a given default value is returned.
      *
      * @param key the name of the desired value
      * @param defaultValue the default value
      *
      * @return the value of key or the default value
      *
-     * @throws ConfigException in case that something went wrong
+     * @throws ConfigurationException in case that something went wrong
      */
-    public abstract int getValueAsInteger(String key, int defaultValue)
-                                   throws ConfigurationException;
+    int getValueAsInteger(String key, int defaultValue)
+        throws ConfigurationException;
 
     /**
      * Get the list of all values with the given tag name in the current
@@ -206,10 +238,9 @@ public interface Configuration {
      *
      * @return the list of values
      *
-     * @throws ConfigException in case that something went wrong
+     * @throws ConfigurationException in case that something went wrong
      */
-    public abstract StringList getValues(String key)
-                                  throws ConfigurationException;
+    StringList getValues(String key) throws ConfigurationException;
 
     /**
      * Retrieve an iterator over all items of a sub-configuration.
@@ -218,8 +249,8 @@ public interface Configuration {
      *
      * @return the iterator
      *
-     * @throws ConfigException in case that something went wrong
+     * @throws ConfigurationException in case that something went wrong
      */
-    public abstract Iterator iterator(String key)
-                               throws ConfigurationException;
+    Iterator iterator(String key) throws ConfigurationException;
+
 }

@@ -27,21 +27,22 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\special</code>.
+ * This class provides an implementation for the primitive
+ * <code>\special</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Special extends AbstractCode {
 
-	/**
-	 * Creates a new object.
-	 *
-	 * @param name the name for tracing and debugging
-	 */
-	public Special(final String name) {
-		super(name);
-	}
+    /**
+     * Creates a new object.
+     *
+     * @param name the name for tracing and debugging
+     */
+    public Special(final String name) {
+        super(name);
+    }
 
     /**
      * Scan the next tokens (between braces) and send the value (as text) to the
@@ -53,8 +54,9 @@ public class Special extends AbstractCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
+
         String text = source.scanTokens().toText();
         typesetter.add(new SpecialNode(text));
         prefix.clear();

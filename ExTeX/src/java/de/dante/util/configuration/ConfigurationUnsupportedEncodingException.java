@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -25,17 +25,19 @@ import de.dante.extex.i18n.Messages;
  * This Exception is thrown when a configuration could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class ConfigurationUnsupportedEncodingException extends ConfigurationException {
+public class ConfigurationUnsupportedEncodingException extends
+    ConfigurationException {
     /**
      * Create a new object.
      *
      * @param message the message string
      * @param source the the name of the file for which this exception occurred
      */
-    public ConfigurationUnsupportedEncodingException(String message,String source) {
-        super(message,source);
+    public ConfigurationUnsupportedEncodingException(final String message,
+        final String source) {
+        super(message, source);
     }
 
     /**
@@ -44,7 +46,8 @@ public class ConfigurationUnsupportedEncodingException extends ConfigurationExce
      * @param message message the message string
      * @param cause the next Throwable in the list
      */
-    public ConfigurationUnsupportedEncodingException(String message, Throwable cause) {
+    public ConfigurationUnsupportedEncodingException(final String message,
+        final Throwable cause) {
         super(message, cause);
     }
 

@@ -24,19 +24,20 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides an implementation for the primitive <code>\iffalse</code>.
+ * This class provides an implementation for the primitive
+ * <code>\iffalse</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Iffalse extends AbstractIf {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param name the name for debugging
      */
-    public Iffalse(String name) {
+    public Iffalse(final String name) {
         super(name);
     }
 

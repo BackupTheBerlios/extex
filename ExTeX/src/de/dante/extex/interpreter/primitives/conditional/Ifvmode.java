@@ -25,10 +25,11 @@ import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 
 /**
- * This class provides an implementation for the primitive <code>\ifvmode</code>.
+ * This class provides an implementation for the primitive
+ * <code>\ifvmode</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Ifvmode extends AbstractIf {
     /**
