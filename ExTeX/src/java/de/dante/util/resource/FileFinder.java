@@ -32,15 +32,16 @@ import de.dante.util.StringListIterator;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This file finder searches for the file in different directories and with
  * several extensions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class FileFinder implements ResourceFinder, LoggerTaker, PropertiesTaker {
+public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
 
     /**
      * The constant <tt>EXTENSION_TAG</tt> contains the name of the tag to get
@@ -230,7 +231,7 @@ public class FileFinder implements ResourceFinder, LoggerTaker, PropertiesTaker 
      *
      * @param logger the logger to set.
      */
-    public void setLogger(final Logger logger) {
+    public void enableLogging(final Logger logger) {
 
         this.logger = logger;
     }
