@@ -21,7 +21,6 @@ package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
@@ -29,8 +28,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.scanner.ControlSequenceToken;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -44,8 +41,9 @@ import de.dante.util.GeneralException;
  * \the\fontvalue\ff{key}
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FontValue extends AbstractAssignment implements Theable {
 
@@ -71,14 +69,8 @@ public class FontValue extends AbstractAssignment implements Theable {
             throws GeneralException {
 
         // \fontvalue\ff{key}=5pt
-        Token tok = source.scanNonSpace();
-        if (tok == null || !(tok instanceof ControlSequenceToken)) {
-            throw new GeneralHelpingException("FONT.nofontprimitive");
-        }
-        Code code = context.getMacro(tok.getValue());
-        if (code == null || !(code instanceof FontCode)) {
-            throw new GeneralHelpingException("FONT.nofontprimitive");
-        }
+        source.skipSpace();
+        Font font = source.getFont();
         String key = source.scanTokensAsString();
         if (key == null || key.trim().length() == 0) {
             throw new GeneralHelpingException("FONT.fontkeynotfound");
@@ -86,7 +78,6 @@ public class FontValue extends AbstractAssignment implements Theable {
 
         source.scanOptionalEquals();
         Dimen size = new Dimen(context, source);
-        Font font = ((FontCode) code).getFont();
         font.setFontDimen(key, size);
         prefix.clear();
     }
@@ -99,20 +90,15 @@ public class FontValue extends AbstractAssignment implements Theable {
     public Tokens the(final Context context, final TokenSource source)
             throws GeneralException {
 
-        // \the\fontvalue\ff{key}
-        Token tok = source.scanNonSpace();
-        if (tok == null || !(tok instanceof ControlSequenceToken)) {
-            throw new GeneralHelpingException("FONT.nofontprimitive");
-        }
-        Code code = context.getMacro(tok.getValue());
-        if (code == null || !(code instanceof FontCode)) {
-            throw new GeneralHelpingException("FONT.nofontprimitive");
-        }
+        source.skipSpace();
+        Font font = source.getFont();
         String key = source.scanTokensAsString();
         if (key == null || key.trim().length() == 0) {
             throw new GeneralHelpingException("FONT.fontkeynotfound");
         }
-        Font font = ((FontCode) code).getFont();
-        return new Tokens(context, font.getFontDimen(key).toString());
+        Dimen size = font.getFontDimen(key);
+
+        return size.toToks(context.getTokenFactory());
     }
+
 }

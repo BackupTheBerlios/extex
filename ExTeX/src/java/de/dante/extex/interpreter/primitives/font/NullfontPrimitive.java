@@ -20,7 +20,7 @@ package de.dante.extex.interpreter.primitives.font;
 
 import de.dante.extex.font.NullFont;
 import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.FontConvertable;
+import de.dante.extex.interpreter.FontConvertible;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Font;
@@ -31,28 +31,30 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class NullFontPrimitive extends AbstractCode
-        implements FontConvertable {
+public class NullfontPrimitive extends AbstractCode
+        implements FontConvertible {
 
     /**
-     * The field <tt>theFont</tt> contains the ...
+     * The field <tt>theFont</tt> contains the font returned by this
+     * primitive. It is not a static constant since several incarnations might
+     * exist which should be independently mutable.
      */
     private Font theFont = new NullFont();
 
     /**
      * Creates a new object.
      *
-     * @param codeName the name of the primitive
+     * @param name the name of the primitive
      */
-    public NullFontPrimitive(final String codeName) {
+    public NullfontPrimitive(final String name) {
 
-        super(codeName);
+        super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.FontConvertable#convertFont(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.FontConvertible#convertFont(de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Font convertFont(final Context context, final TokenSource source)

@@ -19,86 +19,71 @@
 
 package de.dante.extex.interpreter.primitives.font;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractAssignment;
+import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.ExpandableCode;
 import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive
- * <code>\fontvalue</code>.
+ * This class provides an implementation for the primitive <code>\fontname</code>.
  * <p>
  * Example:
  * <pre>
- * \fontvalue\ff{key}=5pt
- * \the\fontvalue\ff{key}
+ * \fontname\myfont
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
-public class FontValue extends AbstractAssignment implements Theable {
+public class Fontname extends AbstractCode implements ExpandableCode {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public FontValue(final String name) {
+    public Fontname(final String name) {
 
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
+     * Get the next <code>ControlSequenceToken</code> with the <code>FontCode</code>
+     * and put the fontname on the stack.
+     *
+     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void assign(final Flags prefix, final Context context,
+    public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        // \fontvalue\ff{key}=5pt
         source.skipSpace();
         Font font = source.getFont();
-        String key = source.scanTokensAsString();
-        if (key == null || key.trim().length() == 0) {
-            throw new GeneralHelpingException("FONT.fontkeynotfound");
-        }
+        source.push(new Tokens(context, font.getFontName()));
 
-        source.scanOptionalEquals();
-        Dimen size = new Dimen(context, source);
-        font.setFontDimen(key, size);
         prefix.clear();
     }
 
     /**
-     * @see de.dante.extex.interpreter.Theable#the(
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
      */
-    public Tokens the(final Context context, final TokenSource source)
+    public void expand(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        source.skipSpace();
-        Font font = source.getFont();
-        String key = source.scanTokensAsString();
-        if (key == null || key.trim().length() == 0) {
-            throw new GeneralHelpingException("FONT.fontkeynotfound");
-        }
-        Dimen size = font.getFontDimen(key);
-
-        return size.toToks(context.getTokenFactory());
+        execute(prefix, context, source, typesetter);
     }
-
 }

@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.font;
+package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -53,10 +53,11 @@ import de.dante.util.configuration.ConfigurationException;
  * \font\myfont=cmr12 at 15pt noligatures
  * </pre>
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
-public class DefFont extends AbstractAssignment {
+public class FontPrimitive extends AbstractAssignment {
 
     /**
      * Default-Scale-factor
@@ -68,7 +69,7 @@ public class DefFont extends AbstractAssignment {
      *
      * @param name the name for debugging
      */
-    public DefFont(final String name) {
+    public FontPrimitive(final String name) {
 
         super(name);
     }
@@ -84,12 +85,9 @@ public class DefFont extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token tok = source.getControlSequence();
-        if (tok == null) {
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        }
-        source.scanOptionalEquals();
-        String filename = scanFileName(source);
+        Token t = source.getControlSequence();
+        source.getOptionalEquals();
+        String filename = scanFontName(source);
         int size = getFontSize(filename);
         Dimen fontsize;
 
@@ -139,8 +137,8 @@ public class DefFont extends AbstractAssignment {
         }
 
         // create new primitive
-        Code code = new FontCode(tok.getValue(), font);
-        context.setMacro(tok.getValue(), code, prefix.isGlobal());
+        Code code = new FontCode(t.getValue(), font);
+        context.setMacro(t.getValue(), code, prefix.isGlobal());
     }
 
     /**
@@ -176,7 +174,7 @@ public class DefFont extends AbstractAssignment {
      * @return the file name as string
      * @throws GeneralException in case of an error
      */
-    private String scanFileName(final TokenSource source)
+    private String scanFontName(final TokenSource source)
             throws GeneralException {
 
         Token t = source.scanNonSpace();

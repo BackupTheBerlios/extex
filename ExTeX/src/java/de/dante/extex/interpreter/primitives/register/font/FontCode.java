@@ -17,10 +17,11 @@
  *
  */
 
-package de.dante.extex.interpreter.primitives.font;
+package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.FontConvertible;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -31,12 +32,13 @@ import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * This class provides an implementation for a font-primitve.
+ * This class provides an implementation for a font primitve.
  *
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
-public class FontCode extends AbstractCode implements Theable {
+public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
     /**
      * The <code>Font</code>
@@ -61,7 +63,9 @@ public class FontCode extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
-    public void execute(final Flags prefix, final Context context, final TokenSource source, final Typesetter typesetter) throws GeneralException {
+    public void execute(final Flags prefix, final Context context,
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         try {
             context.setTypesettingContext(font);
@@ -75,27 +79,20 @@ public class FontCode extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Tokens the(final Context context, final TokenSource source) throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source)
+            throws GeneralException {
 
         return new Tokens(context, font.getFontName());
     }
 
     /**
-     * Return the fontname.
-     * @return  the fontname
+     * @see de.dante.extex.interpreter.FontConvertible#convertFont(de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
      */
-    public String getFontname() {
-
-        return font.getFontName();
-    }
-
-    /**
-     * Return the font.
-     * @return  the font.
-     */
-    public Font getFont() {
+    public Font convertFont(final Context context, final TokenSource source)
+            throws GeneralException {
 
         return font;
     }
-
 }
