@@ -36,17 +36,16 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface HyphenationTable extends Serializable {
 
     /**
      * Add a pattern
-     *
-     * @param word      the pattern-word
      * @param pattern   the pattern-word with numbers
+     * @throws HyphenationException TODO
      */
-    void addPattern(String word, String pattern);
+    void addPattern(Tokens pattern) throws HyphenationException;
 
     /**
      * Add a user hyphenation.
@@ -100,11 +99,12 @@ public interface HyphenationTable extends Serializable {
      * Insert the hyphenation marks for a horizontal list of nodes.
      * @param nodelist the horizonzal nodelist
      * @param context the context
+     * @param hyphen TODO
      * @return a nodelist with hyphenation marks inserted
      *
      * @throws GeneralException in case of an error
      */
-    HorizontalListNode hyphenate(HorizontalListNode nodelist, Context context)
+    HorizontalListNode hyphenate(HorizontalListNode nodelist, Context context, Tokens hyphen)
             throws GeneralException;
 
 }
