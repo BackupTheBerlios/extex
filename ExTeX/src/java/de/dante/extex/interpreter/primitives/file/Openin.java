@@ -45,7 +45,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Openin extends AbstractFileCode {
 
@@ -72,7 +72,7 @@ public class Openin extends AbstractFileCode {
 
         String key = AbstractFileCode.scanInFileKey(source);
         source.getOptionalEquals();
-        String name = scanFileName(source, context);
+        String name = scanFileName(context, source);
 
         InFile file;
         try {

@@ -61,7 +61,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Input extends AbstractFileCode {
 
@@ -95,7 +95,7 @@ public class Input extends AbstractFileCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        String name = scanFileName(source, context);
+        String name = scanFileName(context, source);
         String encoding = getEncoding(context);
         TokenStreamFactory factory = source.getTokenStreamFactory();
 

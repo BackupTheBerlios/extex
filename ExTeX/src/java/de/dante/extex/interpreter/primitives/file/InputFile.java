@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class InputFile extends Input {
 
@@ -48,14 +48,14 @@ public class InputFile extends Input {
 
     /**
      * scan the filename between <code>{</code> and <code>}</code>.
-     *
-     * @param source    the source for new tokens
      * @param context   the context
+     * @param source    the source for new tokens
+     *
      * @return the file name as string
      *
      * @throws GeneralException in case of an error
      */
-    protected String scanFileName(final TokenSource source, final Context context)
+    protected String scanFileName(final Context context, final TokenSource source)
             throws GeneralException {
         return source.scanTokensAsString();
     }
