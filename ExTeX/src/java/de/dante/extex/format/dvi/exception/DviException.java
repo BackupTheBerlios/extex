@@ -25,12 +25,12 @@ package de.dante.extex.format.dvi.exception;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class DVIException extends Exception {
+public class DviException extends Exception {
 
     /**
      * Create anew object.
      */
-    public DVIException() {
+    public DviException() {
 
         super();
     }
@@ -40,7 +40,7 @@ public class DVIException extends Exception {
      *
      * @param message   the message
      */
-    public DVIException(final String message) {
+    public DviException(final String message) {
 
         super(message);
     }

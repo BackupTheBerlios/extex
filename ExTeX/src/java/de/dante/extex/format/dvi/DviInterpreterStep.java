@@ -21,14 +21,14 @@ package de.dante.extex.format.dvi;
 
 import java.io.IOException;
 
-import de.dante.extex.format.dvi.exception.DVIException;
+import de.dante.extex.format.dvi.exception.DviException;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
  * Interface for a DVI interpreter step.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface DviInterpreterStep {
 
@@ -40,5 +40,5 @@ public interface DviInterpreterStep {
      * @throws DVIException in case of a DVI-error.
      */
     void interpret(RandomAccessR rar, int opcode) throws IOException,
-            DVIException;
+            DviException;
 }

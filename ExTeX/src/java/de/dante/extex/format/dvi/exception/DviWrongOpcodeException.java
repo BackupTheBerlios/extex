@@ -24,12 +24,12 @@ package de.dante.extex.format.dvi.exception;
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class DVIWrongOpcodeException extends DVIException {
+public class DviWrongOpcodeException extends DviException {
 
     /**
      * Create anew object.
      */
-    public DVIWrongOpcodeException() {
+    public DviWrongOpcodeException() {
 
         super();
     }
@@ -39,7 +39,7 @@ public class DVIWrongOpcodeException extends DVIException {
      *
      * @param message   the message
      */
-    public DVIWrongOpcodeException(final String message) {
+    public DviWrongOpcodeException(final String message) {
 
         super(message);
     }

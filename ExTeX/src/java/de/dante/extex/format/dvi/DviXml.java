@@ -23,8 +23,8 @@ import java.io.IOException;
 
 import org.jdom.Element;
 
-import de.dante.extex.format.dvi.exception.DVIException;
-import de.dante.extex.format.dvi.exception.DVIUndefinedOpcodeException;
+import de.dante.extex.format.dvi.exception.DviException;
+import de.dante.extex.format.dvi.exception.DviUndefinedOpcodeException;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -35,7 +35,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class DviXml implements DviInterpreter {
@@ -61,6 +61,11 @@ public class DviXml implements DviInterpreter {
     public static final int BOP_LENGTH = 10;
 
     /**
+     * the unit
+     */
+    private static final int UNIT = 1000;
+
+    /**
      * Interpreter step for setchar
      *
      * set_char_1 through set_char_127 (opcodes 1 to 127):
@@ -74,7 +79,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("setchar");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -101,7 +106,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int fn = opcode - MIN_FONTNUM + 1;
             Element element = new Element("fntnum" + String.valueOf(fn));
@@ -120,9 +125,9 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
-            throw new DVIUndefinedOpcodeException();
+            throw new DviUndefinedOpcodeException();
         }
     };
 
@@ -287,7 +292,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             // 8 bit
             int ch = rar.readByteAsInt();
@@ -314,7 +319,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             // 16 bit
             int ch = rar.readShort();
@@ -337,7 +342,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             // 24 bit
             int ch = rar.readInt24();
@@ -360,7 +365,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             // 32 bit
             int ch = rar.readInt();
@@ -390,7 +395,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int a = rar.readInt();
             int b = rar.readInt();
@@ -418,7 +423,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int c = rar.readByteAsInt();
 
@@ -440,7 +445,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int c = rar.readShort();
 
@@ -462,7 +467,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int c = rar.readInt24();
 
@@ -484,7 +489,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int c = rar.readInt();
 
@@ -506,7 +511,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             int a = rar.readInt();
             int b = rar.readInt();
@@ -532,7 +537,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("nop");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -559,7 +564,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("bop");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -584,7 +589,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("eop");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -605,7 +610,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("push");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -627,7 +632,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("pop");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -649,7 +654,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("right1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -670,7 +675,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("right2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -691,7 +696,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("right3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -712,7 +717,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("right4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -735,7 +740,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("w0");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -757,7 +762,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("w1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -778,7 +783,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("w2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -799,7 +804,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("w3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -820,7 +825,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("w4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -842,7 +847,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("x0");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -864,7 +869,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("x1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -885,7 +890,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("x2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -906,7 +911,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("x3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -927,7 +932,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("x4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -949,7 +954,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("down1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -970,7 +975,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("down2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -991,7 +996,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("down3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1012,7 +1017,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("down4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1035,7 +1040,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("y0");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1058,7 +1063,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("y1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1079,7 +1084,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("y2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1100,7 +1105,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("y3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1121,7 +1126,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("y4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1143,7 +1148,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("z0");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1165,7 +1170,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("z1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1186,7 +1191,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("z2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1207,7 +1212,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("z3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1228,7 +1233,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("z4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1249,7 +1254,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fntnum0");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1337,7 +1342,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fnt1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1361,7 +1366,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fnt2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1382,7 +1387,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fnt3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1403,7 +1408,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fnt4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1429,7 +1434,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("xxx1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1455,7 +1460,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("xxx2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1481,7 +1486,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("xxx3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1508,7 +1513,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("xxx4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1539,7 +1544,7 @@ public class DviXml implements DviInterpreter {
      *
      * Parameter <code>d</code> is similar to <code>s</code>;
      * it is the design size, and (like <code>s</code>) it is given in DVI units.
-     * Thus, font <code>k</code> is to be used at mag <code>s</code>/1000d
+     * Thus, font <code>k</code> is to be used at <code>mag * s / (1000 * d)</code>
      * times its normal size.
      *
      * The remaining part of a font definition gives the external
@@ -1559,7 +1564,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fntdef1");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1569,7 +1574,6 @@ public class DviXml implements DviInterpreter {
             int d = rar.readInt();
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
-
             StringBuffer bufa = new StringBuffer();
             StringBuffer bufl = new StringBuffer();
             for (int i = 0; i < a; i++) {
@@ -1582,6 +1586,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
             element.setAttribute("designsize", String.valueOf(d));
+            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
@@ -1599,7 +1604,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fntdef2");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1607,7 +1612,6 @@ public class DviXml implements DviInterpreter {
             int c = rar.readInt();
             int s = rar.readInt();
             int d = rar.readInt();
-
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
 
@@ -1623,6 +1627,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
             element.setAttribute("designsize", String.valueOf(d));
+            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
@@ -1640,7 +1645,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fntdef3");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1648,7 +1653,6 @@ public class DviXml implements DviInterpreter {
             int c = rar.readInt();
             int s = rar.readInt();
             int d = rar.readInt();
-
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
 
@@ -1664,6 +1668,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
             element.setAttribute("designsize", String.valueOf(d));
+            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
@@ -1681,7 +1686,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("fntdef4");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1689,7 +1694,6 @@ public class DviXml implements DviInterpreter {
             int c = rar.readInt();
             int s = rar.readInt();
             int d = rar.readInt();
-
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
 
@@ -1705,10 +1709,8 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
             element.setAttribute("designsize", String.valueOf(d));
-            if (bufa.length() >= 0) {
-                System.out.println("bufa :" + bufa.toString());
-                element.setAttribute("area", bufa.toString());
-            }
+            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
+            element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
             root.addContent(element);
         }
@@ -1749,14 +1751,14 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("pre");
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("identifies", String.valueOf(rar
                     .readByteAsInt()));
-            num = rar.readInt();
-            den = rar.readInt();
+            int num = rar.readInt();
+            int den = rar.readInt();
             mag = rar.readInt();
             element.setAttribute("num", String.valueOf(num));
             element.setAttribute("den", String.valueOf(den));
@@ -1818,7 +1820,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("post");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1862,7 +1864,7 @@ public class DviXml implements DviInterpreter {
          *      de.dante.util.file.random.RandomAccessR, int)
          */
         public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DVIException {
+                throws IOException, DviException {
 
             Element element = new Element("postpost");
             element.setAttribute("opcode", String.valueOf(opcode));
@@ -1897,21 +1899,23 @@ public class DviXml implements DviInterpreter {
     private int mag;
 
     /**
-     * the num
+     * Calculate the scaled from a font (with times 1000).
+     *
+     * @param s the scalefactor
+     * @param d the desigsize
+     * @return Return the scaled.
      */
-    private int num;
+    private int getScaled(final int s, final int d) {
 
-    /**
-     * the den
-     */
-    private int den;
+        return (int) ((double) mag * s * UNIT / (UNIT * (double) d) + 0.5);
+    }
 
     /**
      * @see de.dante.extex.format.dvi.DVIInterpreter#interpret(
      *      de.dante.util.file.random.RandomAccessR)
      */
     public void interpret(final RandomAccessR rar) throws IOException,
-            DVIException {
+            DviException {
 
         while (rar.getPointer() < rar.length()) {
             int opcode = rar.readByteAsInt();

@@ -19,17 +19,17 @@
 package de.dante.extex.format.dvi.exception;
 
 /**
- * DVI: stack is empty!
+ * DVI: undefined opcode exception.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @version $Revision: 1.1 $
  */
-public class DVIEmptyStackException extends DVIException {
+public class DviUndefinedOpcodeException extends DviException {
 
     /**
      * Create anew object.
      */
-    public DVIEmptyStackException() {
+    public DviUndefinedOpcodeException() {
 
         super();
     }
@@ -39,7 +39,7 @@ public class DVIEmptyStackException extends DVIException {
      *
      * @param message   the message
      */
-    public DVIEmptyStackException(final String message) {
+    public DviUndefinedOpcodeException(final String message) {
 
         super(message);
     }
