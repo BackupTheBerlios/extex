@@ -29,7 +29,6 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -69,7 +68,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Char extends AbstractCode implements ExpandableCode {
 
@@ -92,7 +91,7 @@ public class Char extends AbstractCode implements ExpandableCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         expand(prefix, context, source, typesetter);
     }

@@ -21,19 +21,18 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.exception.TypesetterHelpingException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.SpaceNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -45,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -88,7 +87,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.Node)
      */
-    public void add(final Node c) {
+    public void add(final Node c) throws TypesetterException {
 
         nodes.add(c);
         spacefactor = DEFAULT_SPACEFACTOR;
@@ -98,7 +97,7 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue g) {
+    public void addGlue(final Glue g) throws TypesetterException {
 
         nodes.addSkip(g);
         spacefactor = DEFAULT_SPACEFACTOR;
@@ -109,7 +108,8 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.count.Count)
      */
-    public void addSpace(final TypesettingContext context, final Count sfCount) {
+    public void addSpace(final TypesettingContext context, final Count sfCount)
+            throws TypesetterException {
 
         long sf = (sfCount != null ? sfCount.getValue() : spacefactor);
         Glue space = context.getFont().getSpace();
@@ -147,7 +147,8 @@ public class HorizontalListMaker extends AbstractListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList complete(TypesetterOptions context) throws InterpreterException {
+    public NodeList complete(TypesetterOptions context)
+            throws TypesetterException {
 
         ListManager manager = getManager();
         manager.getLigatureBuilder().insertLigatures(nodes);
@@ -183,7 +184,7 @@ public class HorizontalListMaker extends AbstractListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() throws GeneralException {
+    public void par() throws TypesetterException {
 
         getManager().endParagraph();
     }
@@ -210,12 +211,12 @@ public class HorizontalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *      de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count f) throws GeneralException {
+    public void setSpacefactor(final Count f) throws TypesetterException {
 
         long sf = f.getValue();
         if (sf <= 0) {
-            throw new HelpingException(getLocalizer(), "TTP.BadSpaceFactor",
-                    Long.toString(sf));
+            throw new TypesetterHelpingException(getLocalizer(),
+                    "TTP.BadSpaceFactor", Long.toString(sf));
         }
         spacefactor = sf;
     }
@@ -230,11 +231,10 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void letter(Context context,
-            final TypesettingContext tc, final UnicodeChar symbol) {
+    public void letter(Context context, final TypesettingContext tc,
+            final UnicodeChar symbol) throws TypesetterException {
 
-        CharNode c = getManager().getCharNodeFactory().newInstance(tc,
-                symbol);
+        CharNode c = getManager().getCharNodeFactory().newInstance(tc, symbol);
         nodes.add(c);
 
         int f = c.getSpaceFactor();

@@ -24,6 +24,7 @@ import java.io.FileNotFoundException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -45,7 +46,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Openin extends AbstractFileCode {
 
@@ -68,7 +69,7 @@ public class Openin extends AbstractFileCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = AbstractFileCode.scanInFileKey(context, source);
         source.getOptionalEquals(context);
@@ -82,7 +83,7 @@ public class Openin extends AbstractFileCode {
         } catch (FileNotFoundException e) {
             //ignored on purpose
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
     }
 

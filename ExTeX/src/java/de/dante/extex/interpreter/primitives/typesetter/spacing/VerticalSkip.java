@@ -16,19 +16,19 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.typesetter.spacing;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.util.GeneralException;
-
 
 /**
  * This interfac describes macros which produce a vertical glue.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface VerticalSkip {
 
@@ -40,8 +40,9 @@ public interface VerticalSkip {
      *
      * @return the amount of vertical skip
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    Glue verticalSkip(Context context, TokenSource source) throws GeneralException;
+    Glue verticalSkip(Context context, TokenSource source)
+            throws InterpreterException;
 
 }

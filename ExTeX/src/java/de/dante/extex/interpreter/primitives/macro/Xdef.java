@@ -22,8 +22,8 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\xdef</code>.
@@ -55,7 +55,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Xdef extends Edef {
 
@@ -77,7 +77,7 @@ public class Xdef extends Edef {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         prefix.setGlobal();
         super.execute(prefix, context, source, typesetter);

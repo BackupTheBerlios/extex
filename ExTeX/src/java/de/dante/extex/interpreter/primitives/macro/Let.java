@@ -23,9 +23,8 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ImpossibleException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.primitives.register.CharCode;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
@@ -77,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.26 $
+ * @version $Revision: 1.27 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -100,7 +99,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);
@@ -119,10 +118,10 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      * @param t the new meaning of the control sequence token. If this
      *  parameter is <code>null</code> then an exception is thrown.
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected void let(final Flags prefix, final Context context,
-            final CodeToken cs, final Token t) throws GeneralException {
+            final CodeToken cs, final Token t) throws InterpreterException {
 
         if (t == null) {
             throw new EofException(printableControlSequence(context));
@@ -131,10 +130,10 @@ public class Let extends AbstractAssignment implements TokenVisitor {
         Code code;
         try {
             code = (Code) t.visit(this, context, null);
-        } catch (GeneralException e) {
+        } catch (InterpreterException e) {
             throw e;
         } catch (Exception e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
         context.setCode(cs, code, prefix.isGlobal());
     }
@@ -171,7 +170,7 @@ public class Let extends AbstractAssignment implements TokenVisitor {
     public final Object visitCr(final CrToken token, final Object oContext)
             throws GeneralException {
 
-        //TODO gene: unimplemented
+        //TODO gene: cr unimplemented
         throw new RuntimeException("unimplemented");
     }
 

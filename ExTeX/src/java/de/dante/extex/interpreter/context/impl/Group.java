@@ -23,6 +23,7 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
@@ -38,7 +39,6 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
@@ -53,7 +53,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -321,10 +321,10 @@ public interface Group extends Tokenizer, Serializable {
      * @param observable the observable to use as sender
      * @param typesetter the typesetter
      *
-     *  @throws GeneralException in case of an error
+     *  @throws InterpreterException in case of an error
      */
     void runAfterGroup(Observable observable, Typesetter typesetter)
-            throws GeneralException;
+            throws InterpreterException;
 
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.box.Box box}

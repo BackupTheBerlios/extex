@@ -19,13 +19,12 @@
 
 package de.dante.extex.interpreter.type.real;
 
-import de.dante.util.GeneralException;
 
 /**
  * An immutable Real.
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ImmutableReal extends Real {
 
@@ -82,10 +81,8 @@ public class ImmutableReal extends Real {
      * ...
      *
      * @param val ...
-     *
-     * @throws GeneralException in case of a division by zero
      */
-    public void divide(final double val) throws GeneralException {
+    public void divide(final double val) {
 
         throw new RuntimeException("Unable to set an immutable object");
     }
@@ -94,10 +91,8 @@ public class ImmutableReal extends Real {
      * ...
      *
      * @param val ...
-     *
-     * @throws GeneralException in case of a division by zero
      */
-    public void divide(final Real val) throws GeneralException {
+    public void divide(final Real val) {
 
         throw new RuntimeException("Unable to set an immutable object");
     }

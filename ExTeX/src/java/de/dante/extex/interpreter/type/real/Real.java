@@ -23,6 +23,7 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -30,13 +31,12 @@ import de.dante.extex.interpreter.type.dimen.DimenConvertible;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.Token;
-import de.dante.util.GeneralException;
 
 /**
  * Real (with a double value)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Real implements Serializable {
 
@@ -73,10 +73,10 @@ public class Real implements Serializable {
      *
      * @param context ...
      * @param source the token source
-     * @throws GeneralException ...
+     * @throws InterpreterException ...
      */
     public Real(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         super();
         value = scanReal(context, source);
@@ -88,10 +88,10 @@ public class Real implements Serializable {
      * @param context ...
      * @param source ...
      * @return the <code>Real</code>-value
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private double scanReal(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         long val = 0;
         boolean neg = false;
@@ -186,9 +186,9 @@ public class Real implements Serializable {
      * Creates a new object.<p>
      * If the string equlas <code>null</code> or empty, the value is set to zero
      * @param s     the value as String
-     * @throws GeneralException if a NumberFormatException is throws
+     * @throws InterpreterException if a NumberFormatException is throws
      */
-    public Real(final String s) throws GeneralException {
+    public Real(final String s) throws InterpreterException {
 
         if (s == null || s.trim().length() == 0) {
             value = 0.0d;
@@ -247,9 +247,9 @@ public class Real implements Serializable {
      *
      * @param val the value to divide
      *
-     * @throws GeneralException in case of a division by zero
+     * @throws InterpreterException in case of a division by zero
      */
-    public void divide(final double val) throws GeneralException {
+    public void divide(final double val) throws InterpreterException {
 
         if (val == 0.0d) {
             throw new HelpingException("TTP.ArithOverflow");
@@ -263,9 +263,9 @@ public class Real implements Serializable {
      *
      * @param val the value to divide
      *
-     * @throws GeneralException in case of a division by zero
+     * @throws InterpreterException in case of a division by zero
      */
-    public void divide(final Real val) throws GeneralException {
+    public void divide(final Real val) throws InterpreterException {
 
         divide(val.getValue());
     }

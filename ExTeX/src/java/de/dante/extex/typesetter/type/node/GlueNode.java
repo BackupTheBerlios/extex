@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
@@ -116,7 +116,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      */
     public String toString() {
 
-        return " "; //TODO gene: incomplete
+        return " "; //TODO gene: toString() incomplete
     }
 
     /**
@@ -145,7 +145,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      */
     public String toText() {
 
-        return " "; //TODO gene: incomplete
+        return " "; //TODO gene: toText() incomplete
     }
 
     /**

@@ -30,9 +30,9 @@ import java.io.StringReader;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.helping.InvalidCharacterException;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
-import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
@@ -53,7 +53,7 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.35 $
+ * @version $Revision: 1.36 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -64,7 +64,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl
      * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.35 $
+     * @version $Revision: 1.36 $
      */
     private static final class State {
 

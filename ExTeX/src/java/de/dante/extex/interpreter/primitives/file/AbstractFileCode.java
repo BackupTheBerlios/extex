@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -92,10 +92,10 @@ public abstract class AbstractFileCode extends AbstractCode
      *
      * @return the key read in the form of a String
      *
-     * @throws GeneralException in case of a failure
+     * @throws InterpreterException in case of a failure
      */
     public static String scanOutFileKey(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         long no = source.scanInteger(context);
         if (no < 0) {
@@ -195,10 +195,10 @@ public abstract class AbstractFileCode extends AbstractCode
      *
      * @return the file name as string
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected String scanFileName(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         Token t = source.scanNonSpace(context);
 

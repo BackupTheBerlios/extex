@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.group;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -50,7 +51,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Begingroup extends AbstractCode {
 
@@ -73,12 +74,12 @@ public class Begingroup extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         try {
             context.openGroup();
         } catch (ConfigurationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         }
     }
 }

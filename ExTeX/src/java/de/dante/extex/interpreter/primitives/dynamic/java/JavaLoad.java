@@ -21,11 +21,11 @@ package de.dante.extex.interpreter.primitives.dynamic.java;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 
 /**
@@ -91,7 +91,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class JavaLoad extends AbstractCode {
 
@@ -114,7 +114,7 @@ public class JavaLoad extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens name = source.getTokens(context);
         String classname = name.toText();
@@ -130,8 +130,10 @@ public class JavaLoad extends AbstractCode {
         } catch (ClassNotFoundException e) {
             throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
                     classname);
-        } catch (Throwable e) {
-            throw new GeneralException(e);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new InterpreterException(e);
         }
     }
 }

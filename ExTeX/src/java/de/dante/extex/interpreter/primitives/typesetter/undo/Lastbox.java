@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\lastbox</code>.
@@ -56,7 +55,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Lastbox extends AbstractCode implements Boxable {
 
@@ -79,7 +78,7 @@ public class Lastbox extends AbstractCode implements Boxable {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
     }
 

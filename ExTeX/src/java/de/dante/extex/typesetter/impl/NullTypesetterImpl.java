@@ -23,7 +23,6 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -32,6 +31,7 @@ import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -48,7 +48,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -64,7 +64,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.Node)
      */
-    public void add(final Node c) {
+    public void add(final Node c) throws TypesetterException {
 
         // nothing to do
     }
@@ -73,7 +73,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue g) {
+    public void addGlue(final Glue g) throws TypesetterException {
 
         // nothing to do
     }
@@ -84,7 +84,7 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) {
+            final Count spacefactor) throws TypesetterException {
 
         // nothing to do
     }
@@ -99,7 +99,8 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.Typesetter#complete(TypesetterOptions)
      */
-    public NodeList complete(final TypesetterOptions context) throws InterpreterException {
+    public NodeList complete(final TypesetterOptions context)
+            throws TypesetterException {
 
         return null;
     }
@@ -184,7 +185,7 @@ public class NullTypesetterImpl implements Typesetter {
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc) throws GeneralException {
+            final UnicodeChar uc) throws TypesetterException {
 
     }
 
@@ -193,14 +194,14 @@ public class NullTypesetterImpl implements Typesetter {
      *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#par()
      */
-    public void par() {
+    public void par() throws TypesetterException {
 
         // nothing to do
     }
@@ -209,7 +210,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.Typesetter#push(
      *      de.dante.extex.typesetter.ListMaker)
      */
-    public void push(final ListMaker listMaker) {
+    public void push(final ListMaker listMaker) throws TypesetterException {
 
     }
 
@@ -223,7 +224,7 @@ public class NullTypesetterImpl implements Typesetter {
     /**
      * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
-    public void rightBrace() throws GeneralException {
+    public void rightBrace() throws TypesetterException {
 
     }
 
@@ -287,7 +288,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
      *     de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setPrevDepth(final Dimen pd) {
+    public void setPrevDepth(final Dimen pd) throws TypesetterException {
 
         // nothing to do
     }
@@ -296,7 +297,7 @@ public class NullTypesetterImpl implements Typesetter {
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *     de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count f) {
+    public void setSpacefactor(final Count f) throws TypesetterException {
 
         // nothing to do
     }
@@ -316,7 +317,7 @@ public class NullTypesetterImpl implements Typesetter {
      *      TokenSource, de.dante.extex.scanner.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
     }
 
@@ -326,7 +327,7 @@ public class NullTypesetterImpl implements Typesetter {
      *      TokenSource, de.dante.extex.scanner.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, final Token t) throws GeneralException {
+            final TokenSource source, final Token t) throws TypesetterException {
 
     }
 
@@ -336,7 +337,7 @@ public class NullTypesetterImpl implements Typesetter {
      *      TokenSource, de.dante.extex.scanner.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
     }
 

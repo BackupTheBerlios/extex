@@ -18,6 +18,7 @@
  */
 package de.dante.extex.scanner.stream.exception;
 
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.util.UnicodeChar;
 
 
@@ -25,7 +26,7 @@ import de.dante.util.UnicodeChar;
  * This is thrown when an invalid character has been encountered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InvalidCharacterScannerException extends ScannerException {
 

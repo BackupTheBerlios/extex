@@ -23,6 +23,7 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
@@ -56,7 +57,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ItalicCorrection extends AbstractCode {
 
@@ -79,7 +80,7 @@ public class ItalicCorrection extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Node node = typesetter.getLastNode();
 
@@ -87,7 +88,11 @@ public class ItalicCorrection extends AbstractCode {
             Dimen ic = italicCorrection(//
                     ((CharNode) node).getCharacter(), //
                     ((CharNode) node).getTypesettingContext().getFont());
-            typesetter.add(new ExplicitKernNode(ic));
+            try {
+                typesetter.add(new ExplicitKernNode(ic));
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
         }
     }
 

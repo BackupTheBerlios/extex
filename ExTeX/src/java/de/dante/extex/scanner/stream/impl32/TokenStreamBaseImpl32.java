@@ -27,8 +27,8 @@ import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.main.exception.MainIOException;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.extex.scanner.type.Token;
@@ -45,7 +45,7 @@ import de.dante.util.UnicodeCharList;
  * It use 32 bit characters!
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public abstract class TokenStreamBaseImpl32
         implements

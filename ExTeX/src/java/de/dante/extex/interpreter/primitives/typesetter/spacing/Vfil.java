@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractVerticalCode;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
@@ -51,7 +52,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Vfil extends AbstractVerticalCode implements VerticalSkip {
 
@@ -80,10 +81,14 @@ public class Vfil extends AbstractVerticalCode implements VerticalSkip {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         ensureVerticalMode(typesetter);
-        typesetter.addGlue(FIL);
+        try {
+            typesetter.addGlue(FIL);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -91,8 +96,7 @@ public class Vfil extends AbstractVerticalCode implements VerticalSkip {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Glue verticalSkip(final Context context, final TokenSource source)
-            throws GeneralException {
+    public Glue verticalSkip(final Context context, final TokenSource source) {
 
         return FIL;
     }

@@ -31,7 +31,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CenteredLeadersNode extends GlueNode implements Node {
 
@@ -63,7 +63,7 @@ public class CenteredLeadersNode extends GlueNode implements Node {
      */
     public String toString() {
 
-        return "cleaders "; //TODO gene: incomplete
+        return "cleaders "; //TODO gene: toString() incomplete
     }
 
     /**

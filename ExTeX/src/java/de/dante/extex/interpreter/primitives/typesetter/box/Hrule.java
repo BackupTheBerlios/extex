@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.box;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.RuleConvertible;
@@ -81,7 +82,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Hrule extends AbstractCode implements RuleConvertible {
 
@@ -110,8 +111,6 @@ public class Hrule extends AbstractCode implements RuleConvertible {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @throws GeneralException in case of an error
-     *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -121,9 +120,15 @@ public class Hrule extends AbstractCode implements RuleConvertible {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
-        typesetter.add(getRule(context, source, typesetter));
+        try {
+            typesetter.add(getRule(context, source, typesetter));
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -133,7 +138,7 @@ public class Hrule extends AbstractCode implements RuleConvertible {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public RuleNode getRule(final Context context, final TokenSource source,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
         Mode mode = typesetter.getMode();
         if (mode.isHmode()) {

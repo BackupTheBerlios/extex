@@ -25,18 +25,18 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides a Box parameter implementation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  *
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class BoxParameter extends AbstractCode implements Code, Serializable {
 
@@ -59,7 +59,7 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(source, context);
         source.getOptionalEquals(context);
@@ -75,10 +75,10 @@ public class BoxParameter extends AbstractCode implements Code, Serializable {
      *
      * @return the key for the box register
      *
-     * @throws GeneralException in case oif an error
+     * @throws InterpreterException in case oif an error
      */
     protected String getKey(final TokenSource source, final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (Namespace.SUPPORT_NAMESPACE_BOX) {
             return context.getNamespace() + "\b" + getName();

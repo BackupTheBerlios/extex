@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
@@ -58,7 +59,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -675,9 +676,15 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void runAfterGroup(final Observable observable,
-            final Typesetter typesetter) throws GeneralException {
+            final Typesetter typesetter) throws InterpreterException {
 
-        afterGroupObservers.update(observable, typesetter);
+        try {
+            afterGroupObservers.update(observable, typesetter);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**

@@ -70,7 +70,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class Wd extends Setbox
         implements
@@ -99,7 +99,7 @@ public class Wd extends Setbox
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Box box = context.getBox(getKey(context, source));
         source.getOptionalEquals(context);

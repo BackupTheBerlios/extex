@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CharNode extends AbstractNode implements Node {
 
@@ -107,7 +107,7 @@ public class CharNode extends AbstractNode implements Node {
      */
     public int getSpaceFactor() {
 
-        return 0; //TODO gene: incomplete
+        return 0; //TODO gene: getSpaceFactor() incomplete
     }
 
     /**

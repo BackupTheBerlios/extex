@@ -23,18 +23,19 @@ import java.io.File;
 import java.io.Serializable;
 
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.type.Catcode;
+import de.dante.extex.scanner.type.CrToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
-import de.dante.util.GeneralException;
 
 /**
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class InFile implements Serializable {
 
@@ -65,13 +66,13 @@ public class InFile implements Serializable {
      *
      * @return <code>true</code> iff no further token can be read.
      */
-    public boolean isEof() {
+    public boolean isEof() throws InterpreterException {
 
-        if (stream == null) {
-            return true;
+        try {
+            return (stream == null || stream.isEof());
+        } catch (ScannerException e) {
+            throw new InterpreterException(e);
         }
-        //TODO gene: return stream.isEof();
-        return false;
     }
 
     /**
@@ -102,22 +103,27 @@ public class InFile implements Serializable {
      *
      * @return the tokens read or <code>null</code> in case of eof
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public Tokens read(final TokenFactory factory, final Tokenizer tokenizer)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (stream == null) {
             return null;
         }
 
         Tokens toks = new Tokens();
+        Token t;
 
         for (;;) {
-            Token t = stream.get(factory, tokenizer);
+            try {
+                t = stream.get(factory, tokenizer);
+            } catch (ScannerException e) {
+                throw new InterpreterException(e);
+            }
             if (t == null) {
                 return (toks.length() > 0 ? toks : null);
-            } else if (t.isa(Catcode.CR)) { //TODO gene: correct???
+            } else if (t instanceof CrToken) { //TODO gene: correct?
                 return toks;
             }
             toks.add(t);

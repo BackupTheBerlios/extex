@@ -56,7 +56,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Vsplit extends AbstractBox implements Boxable {
 
@@ -79,10 +79,14 @@ public class Vsplit extends AbstractBox implements Boxable {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         NodeList nl = vsplit(context, source, typesetter);
-        typesetter.add(nl);
+        try {
+            typesetter.add(nl);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**

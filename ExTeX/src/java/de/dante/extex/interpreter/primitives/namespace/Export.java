@@ -22,10 +22,10 @@ package de.dante.extex.interpreter.primitives.namespace;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\export</code>.
@@ -57,7 +57,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.primitives.namespace.Import
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Export extends AbstractAssignment {
 
@@ -80,7 +80,7 @@ public class Export extends AbstractAssignment {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens export = source.getTokens(context);
         context.setToks(context.getNamespace() + "\bexport", export, true);

@@ -22,15 +22,15 @@ package de.dante.extex.interpreter.primitives.register.muskip;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.util.GeneralException;
 
 /**
  * This abstract base class provides the methods to compute the keys for
  * numbered muskip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public abstract class AbstractMuskip extends AbstractAssignment {
 
@@ -53,11 +53,11 @@ public abstract class AbstractMuskip extends AbstractAssignment {
      *
      * @return the key for the current register
      *
-     * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this on e is declared.
+     * @throws InterpreterException in case that a derived class need to throw
+     *  an Exception this one is declared.
      */
     protected String getKey(final TokenSource source, final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         String name = source.scanRegisterName(context);
 

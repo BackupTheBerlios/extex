@@ -28,10 +28,10 @@ import java.nio.CharBuffer;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
 import de.dante.extex.scanner.stream.exception.InvalidCharacterScannerException;
-import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CatcodeVisitor;
@@ -55,7 +55,7 @@ import de.dante.util.file.InputLineDecoder;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TokenStreamTeXImpl extends AbstractTokenStreamImpl
         implements

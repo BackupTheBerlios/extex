@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -61,7 +60,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- the Program [69]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class StringPrimitive extends AbstractCode implements ExpandableCode {
 
@@ -84,7 +83,7 @@ public class StringPrimitive extends AbstractCode implements ExpandableCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         expand(prefix, context, source, typesetter);
     }

@@ -21,17 +21,16 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -39,7 +38,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -71,7 +70,7 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.Node)
      */
-    public void add(final Node n) throws GeneralException {
+    public void add(final Node n) throws TypesetterException {
 
         nodes.add(n);
     }
@@ -80,7 +79,7 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue g) throws GeneralException {
+    public void addGlue(final Glue g) throws TypesetterException {
 
         nodes.addSkip(g);
     }
@@ -91,14 +90,15 @@ public class VerticalListMaker extends AbstractListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws GeneralException {
+            final Count spacefactor) throws TypesetterException {
 
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public final NodeList complete(final TypesetterOptions context) throws InterpreterException {
+    public final NodeList complete(final TypesetterOptions context)
+            throws TypesetterException {
 
         return nodes;
     }
@@ -124,7 +124,7 @@ public class VerticalListMaker extends AbstractListMaker {
      *
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() {
+    public void par() throws TypesetterException {
 
         // nothing to do
     }
@@ -141,7 +141,7 @@ public class VerticalListMaker extends AbstractListMaker {
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setPrevDepth(final Dimen pd) throws GeneralException {
+    public void setPrevDepth(final Dimen pd) throws TypesetterException {
 
         prevDepth.set(pd);
     }
@@ -153,7 +153,7 @@ public class VerticalListMaker extends AbstractListMaker {
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext font,
-            final UnicodeChar symbol) throws GeneralException {
+            final UnicodeChar symbol) throws TypesetterException {
 
         ListMaker hlist = new HorizontalListMaker(getManager());
         hlist.letter(context, font, symbol);

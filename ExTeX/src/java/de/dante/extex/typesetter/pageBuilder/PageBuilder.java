@@ -23,15 +23,15 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
 
 /**
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public interface PageBuilder {
 
@@ -39,9 +39,9 @@ public interface PageBuilder {
      * Close the page builder. Any material left should be processed now since
      * it can not be expected that the page builder is invoked later in any way.
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void close() throws GeneralException;
+    void close() throws TypesetterException;
 
     /**
      * This method is used when the page builder has received its last nodes.
@@ -52,9 +52,9 @@ public interface PageBuilder {
      *
      * @param nodes the nodes to send
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void flush(NodeList nodes) throws GeneralException;
+    void flush(NodeList nodes) throws TypesetterException;
 
     /**
      * This is the entry point for the page builder. Here it receives a
@@ -65,9 +65,9 @@ public interface PageBuilder {
      *
      * @param nodes the nodes to send
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void inspectAndBuild(VerticalListNode nodes) throws GeneralException;
+    void inspectAndBuild(VerticalListNode nodes) throws TypesetterException;
 
     /**
      * Setter for the interpreter context

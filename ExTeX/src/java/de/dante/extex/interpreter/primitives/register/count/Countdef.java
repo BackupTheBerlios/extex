@@ -22,9 +22,9 @@ package de.dante.extex.interpreter.primitives.register.count;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -78,7 +78,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "count#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Countdef extends AbstractCount {
 
@@ -101,7 +101,7 @@ public class Countdef extends AbstractCount {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);

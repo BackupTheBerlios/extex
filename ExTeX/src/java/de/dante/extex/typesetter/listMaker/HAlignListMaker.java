@@ -35,10 +35,10 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides a list maker for horizontal alignments.
@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -56,7 +56,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     protected class Cell {
 
@@ -197,10 +197,10 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @param context the interpreter context
      * @param source the token source
      *
-     * @throws InterpreterException in case of an error
+     * @throws TypesetterException in case of an error
      */
     private void clearLine(final Context context, final TokenSource source)
-            throws InterpreterException {
+            throws TypesetterException {
 
         col = 0;
         line = new Cell[preamble.size()];
@@ -211,7 +211,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws InterpreterException {
+            throws TypesetterException {
 
         NodeList result = new VerticalListNode();
         NodeList nl;
@@ -252,7 +252,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void cr(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws TypesetterException {
 
         rows.add(line);
         clearLine(context, source);
@@ -264,7 +264,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void crcr(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws TypesetterException {
 
         if (col > 0) {
             cr(context, source);
@@ -274,7 +274,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     /**
      * @see de.dante.extex.typesetter.listMaker.AlignmentList#omit()
      */
-    public void omit() {
+    public void omit() throws TypesetterException {
 
     }
 
@@ -284,7 +284,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void span(final Context context, final TokenSource source)
-            throws InterpreterException {
+            throws TypesetterException {
 
         if (col >= line.length) {
             new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", "???");
@@ -301,22 +301,26 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @throws InterpreterException in case of an error
      */
     private void startCell(final Context context, final TokenSource source)
-            throws InterpreterException {
+            throws TypesetterException {
 
         format = (PreambleItem) preamble.get(col);
 
-        Token t = source.scanNonSpace(context);
-        if (t instanceof CodeToken) {
-            Code code = context.getCode((CodeToken) t);
-            if (code instanceof Omit) {
-                format = FIXED;
+        try {
+            Token t = source.scanNonSpace(context);
+            if (t instanceof CodeToken) {
+                Code code = context.getCode((CodeToken) t);
+                if (code instanceof Omit) {
+                    format = FIXED;
+                } else {
+                    source.push(t);
+                }
             } else {
                 source.push(t);
             }
-        } else {
-            source.push(t);
+            source.push(format.getPre());
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
         }
-        source.push(format.getPre());
     }
 
     /**
@@ -342,14 +346,18 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      *      TokenSource, de.dante.extex.scanner.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token token) throws GeneralException {
+            final Token token) throws TypesetterException {
 
         if (col >= line.length) {
             new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", token
                     .toString());
         }
 
-        source.push(format.getPost()); //TODO gene: wrong! process the tokens before closing
+        try {
+            source.push(format.getPost()); //TODO gene: wrong! process the tokens before closing
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
+        }
 
         line[col] = new Cell(super.complete((TypesetterOptions) context));
         wd[col].max(line[col].getList().getWidth());

@@ -16,29 +16,24 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+package de.dante.extex.typesetter.exception;
 
-package de.dante.extex.interpreter.exception;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
-import de.dante.util.GeneralException;
-import de.dante.util.framework.i18n.Localizer;
 
 /**
- * This is the base class for all exceptions of the interpreter.
+ * This is the base class for all exceptions thrown by the typesetter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class InterpreterException extends GeneralException {
-
-    /**
-     * The field <tt>localizer</tt> contains the localizer.
-     */
-    private Localizer localizer = null;
+public class TypesetterException extends InterpreterException {
 
     /**
      * Creates a new object.
+     *
      */
-    public InterpreterException() {
+    public TypesetterException() {
 
         super();
     }
@@ -46,9 +41,9 @@ public class InterpreterException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message field
+     * @param message the textual representation
      */
-    public InterpreterException(final String message) {
+    public TypesetterException(final String message) {
 
         super(message);
     }
@@ -56,10 +51,10 @@ public class InterpreterException extends GeneralException {
     /**
      * Creates a new object.
      *
-     * @param message the message field
+     * @param message the textual representation
      * @param cause the root of all evil
      */
-    public InterpreterException(final String message, final Throwable cause) {
+    public TypesetterException(final String message, final Throwable cause) {
 
         super(message, cause);
     }
@@ -69,31 +64,9 @@ public class InterpreterException extends GeneralException {
      *
      * @param cause the root of all evil
      */
-    public InterpreterException(final Throwable cause) {
+    public TypesetterException(final Throwable cause) {
 
         super(cause);
     }
 
-    /**
-     * Creates a new object.
-     *
-     * @param cause the root of all evil
-     */
-    public InterpreterException(final Localizer localizer) {
-
-        super();
-        this.localizer = localizer;
-    }
-
-    /**
-     * Getter for localizer.
-     * If no localizer is stored within the current instance than the localizer
-     * is created with the class name as key.
-     *
-     * @return the localizer
-     */
-    public Localizer getLocalizer() {
-
-        return (this.localizer != null ? this.localizer : super.getLocalizer());
-    }
 }

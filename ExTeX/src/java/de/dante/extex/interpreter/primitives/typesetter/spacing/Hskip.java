@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.typesetter.AbstractHorizontalCode;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Typesetter;
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Hskip extends AbstractHorizontalCode {
 
@@ -73,11 +74,15 @@ public class Hskip extends AbstractHorizontalCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         ensureHorizontalMode(typesetter);
         Glue g = new Glue(source, context);
-        typesetter.addGlue(g);
+        try {
+            typesetter.addGlue(g);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,9 +20,9 @@ package de.dante.extex.interpreter.type.box;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.RuleNode;
-import de.dante.util.GeneralException;
 
 
 /**
@@ -30,7 +30,7 @@ import de.dante.util.GeneralException;
  * operation.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface RuleConvertible extends BoxOrRule {
 
@@ -43,9 +43,9 @@ public interface RuleConvertible extends BoxOrRule {
      *
      * @return an appropriate Box
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     RuleNode getRule(Context context, TokenSource source, Typesetter typesetter)
-            throws GeneralException;
+            throws InterpreterException;
 
 }

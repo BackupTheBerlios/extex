@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,17 +16,17 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
-
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.CharNodeFactory;
-import de.dante.util.GeneralException;
 
 /**
  * This interface describes the capabilities of a typesetter.
@@ -37,18 +37,26 @@ import de.dante.util.GeneralException;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public interface Typesetter extends ListMaker {
+
+    /**
+     * Clear the internal state about shipouts.
+     * The shipout mark is reset to <code>false</code>. 
+     *
+     * @see #isShipoutMark()
+     */
+    void clearShipoutMark();
 
     /**
      * Instructs the typesetter to perform any actions necessary for cleaning up
      * everything at the end of processing. This should involve a shipout of
      * any material still left unprocessed.
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void finish() throws GeneralException;
+    void finish() throws TypesetterException;
 
     /**
      * Getter for the CharNodeFactory.
@@ -72,12 +80,28 @@ public interface Typesetter extends ListMaker {
     ListManager getManager();
 
     /**
+     * Query the shipout mark.
+     * The shipout mark is an internal state which records whether or not the
+     * shipout method has been called recently. This method can be used to
+     * get the current state.
+     * The method {@link #clearShipoutMark() clearShipoutMark()} can be used to
+     * reset the shipout mark to <code>false</code>.
+     * Initially the shipout mark is <code>false</code>.
+     *
+     * @return <code>true</code> iff there has been an invocation to the method
+     *  {@link #shipout(NodeList) shipout()} since the last clearing
+     * @see #clearShipoutMark()
+     */
+    boolean isShipoutMark();
+
+    /**
      * Open a new list maker and put it in the top of the stack as current
      * box.
      *
      * @param listMaker the list maker
+     * @throws TypesetterException TODO
      */
-    void push(ListMaker listMaker);
+    void push(ListMaker listMaker) throws TypesetterException;
 
     /**
      * Setter for the document writer.
@@ -122,32 +146,9 @@ public interface Typesetter extends ListMaker {
      *
      * @param nodes the nodes to send to the typesetter
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      *
      * @see #clearShipoutMark()
      */
-    void shipout(NodeList nodes) throws GeneralException;
-
-    /**
-     * Clear the internal state about shipouts.
-     * The shipout mark is reset to <code>false</code>. 
-     *
-     * @see #isShipoutMark()
-     */
-    void clearShipoutMark();
-
-    /**
-     * Query the shipout mark.
-     * The shipout mark is an internal state which records whether or not the
-     * shipout method has been called recently. This method can be used to
-     * get the current state.
-     * The method {@link #clearShipoutMark() clearShipoutMark()} can be used to
-     * reset the shipout mark to <code>false</code>.
-     * Initially the shipout mark is <code>false</code>.
-     *
-     * @return <code>true</code> iff there has been an invocation to the method
-     *  {@link #shipout(NodeList) shipout()} since the last clearing
-     * @see #clearShipoutMark()
-     */
-    boolean isShipoutMark();
+    void shipout(NodeList nodes) throws TypesetterException;
 }

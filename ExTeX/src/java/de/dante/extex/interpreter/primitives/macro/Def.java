@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.macro;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
@@ -65,7 +66,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.33 $
+ * @version $Revision: 1.34 $
  */
 public class Def extends AbstractAssignment {
 
@@ -88,7 +89,7 @@ public class Def extends AbstractAssignment {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         MacroPattern pattern = getPattern(context, source);
@@ -109,11 +110,11 @@ public class Def extends AbstractAssignment {
      *
      * @return the tokens making up the body
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     private Tokens expandedBody(final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens body = source.scanTokens(context);
         //TODO gene: maybe the treatment of # is incorrect
@@ -128,10 +129,10 @@ public class Def extends AbstractAssignment {
      *
      * @return the tokens read
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected MacroPattern getPattern(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         MacroPattern pattern = new MacroPattern();
         int no = 1;

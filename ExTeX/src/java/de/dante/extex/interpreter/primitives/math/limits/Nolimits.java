@@ -22,13 +22,13 @@ package de.dante.extex.interpreter.primitives.math.limits;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.OperatorNoad;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\nolimits</code>.
@@ -52,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Nolimits extends AbstractMathCode {
 
@@ -75,7 +75,7 @@ public class Nolimits extends AbstractMathCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         Noad noad = nc.getLastNoad();

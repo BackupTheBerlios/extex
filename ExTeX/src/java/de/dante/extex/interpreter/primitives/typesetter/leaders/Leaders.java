@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.leaders;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
 import de.dante.extex.interpreter.primitives.typesetter.spacing.VerticalSkip;
@@ -60,7 +61,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Leaders extends AbstractCode  {
 
@@ -83,7 +84,7 @@ public class Leaders extends AbstractCode  {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         Code code = context.getCode(cs);
@@ -116,7 +117,11 @@ public class Leaders extends AbstractCode  {
         }
         Glue skip = ((VerticalSkip) code).verticalSkip(context, source);
 
-        typesetter.add(new AlignedLeadersNode(node, skip));
+        try {
+            typesetter.add(new AlignedLeadersNode(node, skip));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

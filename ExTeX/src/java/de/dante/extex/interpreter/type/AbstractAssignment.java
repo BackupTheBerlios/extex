@@ -16,14 +16,15 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This is the base class for assignments.
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class AbstractAssignment extends AbstractCode {
 
@@ -46,6 +47,7 @@ public abstract class AbstractAssignment extends AbstractCode {
      * @param name the name for debugging
      */
     public AbstractAssignment(final String name) {
+
         super(name);
     }
 
@@ -58,7 +60,7 @@ public abstract class AbstractAssignment extends AbstractCode {
      */
     public final void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         long globaldef = context.getCount("globaldefs").getValue();
         if (globaldef != 0) {
@@ -86,10 +88,10 @@ public abstract class AbstractAssignment extends AbstractCode {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public abstract void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException;
+            throws InterpreterException;
     //TODO gene: maybe the typesetter argument can be deleted.
 }

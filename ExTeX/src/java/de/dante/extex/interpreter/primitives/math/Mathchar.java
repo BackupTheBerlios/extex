@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.math;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.Catcode;
@@ -30,7 +31,6 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -54,7 +54,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Mathchar extends AbstractMathCode {
 
@@ -82,7 +82,7 @@ public class Mathchar extends AbstractMathCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
 
@@ -109,10 +109,10 @@ public class Mathchar extends AbstractMathCode {
      * @param nc the interface to the list maker
      * @param mathchar the mathematical character
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected void insert(final NoadConsumer nc, final Count mathchar)
-            throws GeneralException {
+            throws InterpreterException {
 
         long mc = mathchar.getValue();
         nc.add(MathClass.getMathClass((int) ((mc >> 12) & 0xf)), //

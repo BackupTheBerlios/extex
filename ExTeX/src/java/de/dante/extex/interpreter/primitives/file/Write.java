@@ -25,12 +25,16 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.WhatsItWriteNode;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.Configuration;
+import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
@@ -49,14 +53,20 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class Write extends AbstractCode implements LogEnabled {
+public class Write extends AbstractCode implements LogEnabled, Configurable {
 
     /**
      * The field <tt>logger</tt> contains the target channel for the message.
      */
     private Logger logger = null;
+
+    /**
+     * The field <tt>write18</tt> contains the indicator that the ancient
+     * write18 feature of TeX should be enabled.
+     */
+    private boolean write18 = false;
 
     /**
      * Creates a new object.
@@ -66,6 +76,17 @@ public class Write extends AbstractCode implements LogEnabled {
     public Write(final String name) {
 
         super(name);
+    }
+
+    /**
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.configuration.Configuration)
+     */
+    public void configure(final Configuration config)
+            throws ConfigurationException {
+
+        write18 = Boolean.valueOf(config.getAttribute("write18"))
+                .booleanValue();
     }
 
     /**
@@ -86,16 +107,24 @@ public class Write extends AbstractCode implements LogEnabled {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = AbstractFileCode.scanOutFileKey(context, source);
 
         if (prefix.isImmediate()) {
             Tokens toks = source.scanTokens(context);
-            writeImmediate(key, toks, context, source);
+            try {
+                writeImmediate(key, toks, context, source);
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
         } else {
             Tokens toks = source.getTokens(context);
-            typesetter.add(new WhatsItWriteNode(key, toks));
+            try {
+                typesetter.add(new WhatsItWriteNode(key, toks));
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
         }
     }
 

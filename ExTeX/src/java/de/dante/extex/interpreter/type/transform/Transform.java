@@ -24,6 +24,7 @@ import java.util.StringTokenizer;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.util.GeneralException;
@@ -32,7 +33,7 @@ import de.dante.util.GeneralException;
  * Transform (transformation with six values)
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Transform implements Serializable {
 
@@ -137,10 +138,10 @@ public class Transform implements Serializable {
      *
      * @param context   the context
      * @param source    the token source
-     * @throws GeneralException ...
+     * @throws InterpreterException ...
      */
     public Transform(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         super();
         for (int i = 0; i < MAXVAL; i++) {
@@ -152,9 +153,9 @@ public class Transform implements Serializable {
      * Creates a new object.<p>
      * If the string equlas <code>null</code> or empty, the value is set to zero
      * @param s     the value as String
-     * @throws GeneralException if a NumberFormatException is throws
+     * @throws InterpreterException if a NumberFormatException is thrown
      */
-    public Transform(final String s) throws GeneralException {
+    public Transform(final String s) throws InterpreterException {
 
         if (s == null || s.trim().length() == 0) {
             for (int i = 0; i < MAXVAL; i++) {

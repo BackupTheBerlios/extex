@@ -24,6 +24,7 @@ import java.io.File;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.WhatsItOpenNode;
@@ -46,7 +47,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class Openout extends AbstractFileCode {
 
@@ -69,7 +70,7 @@ public class Openout extends AbstractFileCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = AbstractFileCode.scanOutFileKey(context, source);
 
@@ -82,7 +83,11 @@ public class Openout extends AbstractFileCode {
             file.open();
             context.setOutFile(key, file, prefix.isGlobal());
         } else {
-            typesetter.add(new WhatsItOpenNode(key, file));
+            try {
+                typesetter.add(new WhatsItOpenNode(key, file));
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
         }
     }
 

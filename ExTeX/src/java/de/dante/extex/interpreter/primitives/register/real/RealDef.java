@@ -22,11 +22,11 @@ package de.dante.extex.interpreter.primitives.register.real;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\realdef</code>.
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class RealDef extends AbstractAssignment {
 
@@ -60,7 +60,7 @@ public class RealDef extends AbstractAssignment {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         //  \realdef\hugo=7
         CodeToken tok = source.getControlSequence(context);

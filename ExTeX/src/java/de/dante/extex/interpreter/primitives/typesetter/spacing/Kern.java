@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter.spacing;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.typesetter.Typesetter;
@@ -65,7 +66,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Kern extends AbstractCode {
 
@@ -88,16 +89,15 @@ public class Kern extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Dimen kern = new Dimen();
         try {
             kern.set(context, source);
-        } catch (GeneralException e) {
             typesetter.add(new ExplicitKernNode(kern));
-            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
-        typesetter.add(new ExplicitKernNode(kern));
     }
 
 }

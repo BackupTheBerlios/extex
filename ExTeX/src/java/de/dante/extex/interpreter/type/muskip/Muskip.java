@@ -23,12 +23,12 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.extex.scanner.type.Token;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Muskip implements Serializable {
 
@@ -48,10 +48,10 @@ public class Muskip implements Serializable {
      *
      * @return the number of scaled points for the mu
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public static long scanMu(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token t = source.getToken(context);
         if (t == null) {
@@ -102,10 +102,10 @@ public class Muskip implements Serializable {
      * @param context the processor context
      * @param source the source for new tokens
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     public Muskip(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         super();
         this.length = new Dimen(scanMu(context, source));

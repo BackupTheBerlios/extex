@@ -40,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class SkipPrimitive extends AbstractSkip implements Theable {
 
@@ -63,7 +63,7 @@ public class SkipPrimitive extends AbstractSkip implements Theable {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(source, context);
         source.getOptionalEquals(context);

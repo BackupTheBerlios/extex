@@ -22,9 +22,9 @@ package de.dante.extex.interpreter.primitives.register.skip;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\skipdef</code>.
@@ -68,7 +68,7 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "skip#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Skipdef extends AbstractSkip {
 
@@ -91,7 +91,7 @@ public class Skipdef extends AbstractSkip {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         source.getOptionalEquals(context);

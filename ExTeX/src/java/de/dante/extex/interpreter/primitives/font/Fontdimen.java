@@ -68,7 +68,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class Fontdimen extends AbstractAssignment
         implements
@@ -94,7 +94,7 @@ public class Fontdimen extends AbstractAssignment
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.skipSpace();
@@ -126,10 +126,10 @@ public class Fontdimen extends AbstractAssignment
      *
      * @return the key
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token t = source.getNonSpace(context);
         if (t == null) {

@@ -46,7 +46,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class RightHyphenmin extends AbstractCode implements Theable {
 
@@ -72,7 +72,7 @@ public class RightHyphenmin extends AbstractCode implements Theable {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Count language = context.getCount("language");
         HyphenationTable ht = context.getHyphenationTable((int) language

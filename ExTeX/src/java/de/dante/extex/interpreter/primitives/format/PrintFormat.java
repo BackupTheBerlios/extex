@@ -37,7 +37,6 @@ import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\printformat</code>.
@@ -52,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -77,7 +76,7 @@ public class PrintFormat extends AbstractCode implements Theable {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         source.push(the(context, source, typesetter));
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,19 +16,18 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.util.GeneralException;
-
+import de.dante.extex.typesetter.exception.TypesetterException;
 
 /**
  * This interface describes a list for alignments with the associated methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface AlignmentList {
 
@@ -37,9 +36,9 @@ public interface AlignmentList {
      * cell should not be taken from the preamble but the defaut should be used
      * instead.
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void omit() throws GeneralException;
+    void omit() throws TypesetterException;
 
     /**
      * This method is invoked when a row in the alignment is complete and the
@@ -49,9 +48,9 @@ public interface AlignmentList {
      * @param context the interpreter context
      * @param source the token source
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void cr(Context context, TokenSource source) throws GeneralException;
+    void cr(Context context, TokenSource source) throws TypesetterException;
 
     /**
      * This method is invoked when a row in the alignment is complete and the
@@ -63,9 +62,9 @@ public interface AlignmentList {
      * @param context the interpreter context
      * @param source the token source
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void crcr(Context context, TokenSource source) throws GeneralException;
+    void crcr(Context context, TokenSource source) throws TypesetterException;
 
     /**
      * This method is invoked when a cell is complete which should be
@@ -73,8 +72,9 @@ public interface AlignmentList {
      *
      * @param context the interpreter context
      * @param source the token source
-     * @throws InterpreterException TODO
+     *
+     * @throws TypesetterException in case of an error
      */
-    void span(Context context, TokenSource source) throws InterpreterException;
+    void span(Context context, TokenSource source) throws TypesetterException;
 
 }

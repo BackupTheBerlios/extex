@@ -22,14 +22,13 @@ package de.dante.extex.typesetter;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.scanner.type.Token;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -38,7 +37,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public interface ListMaker {
 
@@ -49,18 +48,18 @@ public interface ListMaker {
      *
      * @param node the node to add
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void add(Node node) throws GeneralException;
+    void add(Node node) throws TypesetterException;
 
     /**
      * Add a glue node to the list.
      *
      * @param g the glue to add
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void addGlue(Glue g) throws GeneralException;
+    void addGlue(Glue g) throws TypesetterException;
 
     /**
      * Add a space node to the list.
@@ -70,10 +69,10 @@ public interface ListMaker {
      * <code>null</code> to indicate that the default speacefactor should
      * be used.
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void addSpace(TypesettingContext typesettingContext, Count spacefactor)
-            throws GeneralException;
+            throws TypesetterException;
 
     /**
      * Close the node list. This means that everything is done to ship the
@@ -87,9 +86,10 @@ public interface ListMaker {
      *  interpreter context
      *
      * @return the node list enclosed in this instance.
-     * @throws InterpreterException TODO
+     *
+     * @throws TypesetterException in case of an error
      */
-    NodeList complete(TypesetterOptions context) throws InterpreterException;
+    NodeList complete(TypesetterOptions context) throws TypesetterException;
 
     /**
      * Access the last node on the list.
@@ -121,10 +121,10 @@ public interface ListMaker {
      * @param tc the typesetting context
      * @param uc the character
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void letter(Context context, TypesettingContext tc, UnicodeChar uc)
-            throws GeneralException;
+            throws TypesetterException;
 
     /**
      * Treat a math shift character.
@@ -135,18 +135,18 @@ public interface ListMaker {
      * @param source the source for new tokens
      * @param t the actual math shift character token
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void mathShift(Context context, TokenSource source, Token t)
-            throws GeneralException;
+            throws TypesetterException;
 
     /**
      * Emit a new paragraph.
      * This might be a noop under certain circumstances.
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void par() throws GeneralException;
+    void par() throws TypesetterException;
 
     /**
      * Removes the last node from the list.
@@ -158,27 +158,27 @@ public interface ListMaker {
      * Notification method to deal the case that a right brace hs been
      * encountered.
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void rightBrace() throws GeneralException;
+    void rightBrace() throws TypesetterException;
 
     /**
      * Setter for the previous depth parameter.
      *
      * @param pd the prec depth parameter
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void setPrevDepth(Dimen pd) throws GeneralException;
+    void setPrevDepth(Dimen pd) throws TypesetterException;
 
     /**
      * Setter for the space factor.
      *
      * @param sf the space factor to set
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void setSpacefactor(Count sf) throws GeneralException;
+    void setSpacefactor(Count sf) throws TypesetterException;
 
     /**
      * Treat a subscript mark. This might be meaningful in math mode only.
@@ -187,10 +187,10 @@ public interface ListMaker {
      * @param source the source for new tokens
      * @param t the actual sub mark token
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void subscriptMark(Context context, TokenSource source, Token t)
-            throws GeneralException;
+            throws TypesetterException;
 
     /**
      * Treat a superscript mark. This might be meaningful in math mode only.
@@ -199,10 +199,10 @@ public interface ListMaker {
      * @param source the source for new tokens
      * @param t the actual super mark token
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void superscriptMark(Context context, TokenSource source, Token t)
-            throws GeneralException;
+            throws TypesetterException;
 
     /**
      * Treat a alignment tab character.
@@ -211,9 +211,9 @@ public interface ListMaker {
      * @param source the source for new tokens
      * @param t the actual tab token
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void tab(Context context, TokenSource source, Token t)
-            throws GeneralException;
+            throws TypesetterException;
 
 }

@@ -30,7 +30,6 @@ import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.hash.toks.HashToks;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the hash-toks valued primitives.
@@ -44,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class NamedHashToks extends AbstractAssignment implements Theable {
 
@@ -66,7 +65,7 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
 

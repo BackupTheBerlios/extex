@@ -28,14 +28,13 @@ import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for a font stored under a name in the
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamedFont extends AbstractAssignment implements FontConvertible {
 
@@ -58,7 +57,7 @@ public class NamedFont extends AbstractAssignment implements FontConvertible {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getOptionalEquals(context);

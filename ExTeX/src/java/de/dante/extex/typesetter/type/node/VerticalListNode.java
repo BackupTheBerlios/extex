@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -59,7 +59,8 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     }
 
     /**
-     * TODO gene: missing JavaDoc.
+     * Spread the list vertically to a desired size by distributing the
+     * differences to the glues contained.
      *
      * @param size the target size
      */

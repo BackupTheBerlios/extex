@@ -33,7 +33,6 @@ import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -60,7 +59,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Lowercase extends AbstractCode implements ExpandableCode {
 
@@ -83,7 +82,7 @@ public class Lowercase extends AbstractCode implements ExpandableCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         expand(prefix, context, source, typesetter);
     }

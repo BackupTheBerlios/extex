@@ -22,11 +22,11 @@ package de.dante.extex.interpreter.primitives.math.style;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Displaystyle extends AbstractMathCode {
 
@@ -74,7 +74,7 @@ public class Displaystyle extends AbstractMathCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
         nc.add(StyleNoad.DISPLAYSTYLE);

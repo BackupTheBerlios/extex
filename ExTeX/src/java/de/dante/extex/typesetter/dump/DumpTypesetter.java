@@ -20,21 +20,20 @@
 package de.dante.extex.typesetter.dump;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.impl.TypesetterImpl;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.NodeList;
-import de.dante.util.GeneralException;
 
 /**
  * This class implements the typeetter interface but simply records the events
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -50,7 +49,7 @@ public class DumpTypesetter extends TypesetterImpl {
      * @see de.dante.extex.typesetter.ListMaker#add(
      *      de.dante.extex.typesetter.Node)
      */
-    public void add(final Node node) throws GeneralException {
+    public void add(final Node node) throws TypesetterException {
 
         super.add(node);
     }
@@ -59,7 +58,7 @@ public class DumpTypesetter extends TypesetterImpl {
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *      de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue g) throws GeneralException {
+    public void addGlue(final Glue g) throws TypesetterException {
 
         super.addGlue(g);
     }
@@ -70,7 +69,7 @@ public class DumpTypesetter extends TypesetterImpl {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws GeneralException {
+            final Count spacefactor) throws TypesetterException {
 
         super.addSpace(typesettingContext, spacefactor);
     }
@@ -78,26 +77,10 @@ public class DumpTypesetter extends TypesetterImpl {
     /**
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList complete(TypesetterOptions context) throws InterpreterException {
+    public NodeList complete(TypesetterOptions context)
+            throws TypesetterException {
 
         return super.complete(context);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#finish()
-     */
-    public void finish() throws GeneralException {
-
-        super.finish();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#shipout(
-     *      de.dante.extex.typesetter.NodeList)
-     */
-    public void shipout(final NodeList nodes) throws GeneralException {
-
-        super.shipout(nodes);
     }
 
 }

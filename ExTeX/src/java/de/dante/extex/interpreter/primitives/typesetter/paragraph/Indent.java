@@ -22,15 +22,15 @@ package de.dante.extex.interpreter.primitives.typesetter.paragraph;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\\</code>.
+ * This class provides an implementation for the primitive <code>\indent</code>.
  *
- * <doc name="\\">
- * <h3>The Primitive <tt>\\</tt></h3>
+ * <doc name="\indent">
+ * <h3>The Primitive <tt>\indent</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -38,17 +38,17 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;indent&rang;
- *       &rarr; <tt>\\</tt>  </pre>
+ *       &rarr; <tt>\indent</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \\  </pre>
+ *      </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Indent extends AbstractBox {
 
@@ -71,11 +71,10 @@ public class Indent extends AbstractBox {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
-        //return true;
     }
 
 }

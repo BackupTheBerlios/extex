@@ -23,12 +23,12 @@ import java.io.Serializable;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.RealConvertible;
-import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Bool implements Serializable {
 
@@ -70,10 +70,10 @@ public class Bool implements Serializable {
      * Scan the <code>TokenSource</code> for a <code>Bool</code>.
      * @param context   the context
      * @param source    the token source
-     * @throws GeneralException ...
+     * @throws InterpreterException ...
      */
     public Bool(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         super();
         value = scanBool(context, source);
@@ -84,11 +84,11 @@ public class Bool implements Serializable {
      *
      * @param context   the context
      * @param source    the tokensource
-     * @return the boolean-value
-     * @throws GeneralException in case of an error
+     * @return the boolean value
+     * @throws InterpreterException in case of an error
      */
     private boolean scanBool(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token tok = source.scanNonSpace(context);
 

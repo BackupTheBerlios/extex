@@ -22,7 +22,6 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 import java.io.IOException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.ErrorLimitException;
@@ -30,8 +29,8 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeException;
 import de.dante.extex.scanner.type.CodeToken;
-import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
@@ -41,7 +40,7 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class PageBuilderImpl implements PageBuilder {
 
@@ -84,12 +83,14 @@ public class PageBuilderImpl implements PageBuilder {
     /**
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#close()
      */
-    public void close() throws GeneralException {
+    public void close() throws TypesetterException {
 
         try {
             documentWriter.close();
         } catch (IOException e) {
-            throw new GeneralException(e);
+            throw new TypesetterException(e);
+        } catch (GeneralException e) {
+            throw new TypesetterException(e);
         }
 
     }
@@ -103,13 +104,15 @@ public class PageBuilderImpl implements PageBuilder {
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#flush()
      */
-    public void flush(final NodeList nodes) throws GeneralException {
+    public void flush(final NodeList nodes) throws TypesetterException {
 
         if (nodes.size() > 0) {
             try {
                 this.documentWriter.shipout(nodes);
             } catch (IOException e) {
-                throw new GeneralException(e);
+                throw new TypesetterException(e);
+            } catch (GeneralException e) {
+                throw new TypesetterException(e);
             }
         }
     }
@@ -122,13 +125,13 @@ public class PageBuilderImpl implements PageBuilder {
      *
      * @param nodes the nodes to send
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      *
      * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#inspectAndBuild(
      *      VerticalNodeList)
      */
     public void inspectAndBuild(final VerticalListNode nodes)
-            throws GeneralException {
+            throws TypesetterException {
 
         Dimen d = nodes.getVerticalSize();
         if (d.ge(options.getDimenOption("vsize"))) {

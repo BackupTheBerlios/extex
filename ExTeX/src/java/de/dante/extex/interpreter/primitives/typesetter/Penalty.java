@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.typesetter;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
@@ -62,7 +63,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Penalty extends AbstractCode {
 
@@ -85,16 +86,15 @@ public class Penalty extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         long penalty = 0;
         try {
             penalty = source.scanInteger(context);
-        } catch (GeneralException e) {
             typesetter.add(new PenaltyNode(penalty));
-            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
         }
-        typesetter.add(new PenaltyNode(penalty));
     }
 
 }

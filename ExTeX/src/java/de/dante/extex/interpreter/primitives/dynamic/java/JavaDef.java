@@ -24,6 +24,7 @@ import java.lang.reflect.InvocationTargetException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
@@ -121,7 +122,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -144,7 +145,7 @@ public class JavaDef extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         CodeToken cs = source.getControlSequence(context);
         Tokens name = source.getTokens(context);
@@ -160,17 +161,17 @@ public class JavaDef extends AbstractCode {
                     new Class[]{String.class}).newInstance(new Object[]{cs
                     .getName()}));
         } catch (IllegalArgumentException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (SecurityException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (InstantiationException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (IllegalAccessException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (InvocationTargetException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (NoSuchMethodException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (ClassNotFoundException e) {
             throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
                     classname);

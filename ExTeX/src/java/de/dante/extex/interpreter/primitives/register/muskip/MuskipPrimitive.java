@@ -22,7 +22,7 @@ package de.dante.extex.interpreter.primitives.register.muskip;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
  * This class provides an implementation for the primitive <code>\muskip</code>.
@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MuskipPrimitive extends MuskipParameter {
 
@@ -64,10 +64,10 @@ public class MuskipPrimitive extends MuskipParameter {
      *
      * @return the key for the muskip register
      *
-     * @throws GeneralException in case oif an error
+     * @throws InterpreterException in case of an error
      */
     protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         String number = Long.toString(source.scanNumber(context));
 

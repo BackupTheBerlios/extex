@@ -21,7 +21,7 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.MissingMathException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -29,9 +29,10 @@ import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
+import de.dante.extex.typesetter.exception.TypesetterException;
+import de.dante.extex.typesetter.exception.TypesetterHelpingException;
 import de.dante.extex.typesetter.listMaker.math.DisplaymathListMaker;
 import de.dante.extex.typesetter.listMaker.math.MathListMaker;
-import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
 
@@ -39,7 +40,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -100,28 +101,35 @@ public abstract class AbstractListMaker implements ListMaker {
      *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
-        Token next = source.getToken(context);
+        try {
+            Token next = source.getToken(context);
 
-        if (next == null) {
-            throw new MissingMathException(t.toString());
-        } else if (!next.isa(Catcode.MATHSHIFT)) {
-            source.push(next);
-            manager.push(new MathListMaker(manager));
-            source.push(context.getToks("everymath"));
-        } else {
-            manager.push(new DisplaymathListMaker(manager));
-            source.push(context.getToks("everydisplay"));
-        }
-        //TODO gene: ??? context.setCount("fam", -1, false);
-    }
+            if (next == null) {
+                throw new TypesetterException(
+                        new MissingMathException(t.toString()));
+            } else if (!next.isa(Catcode.MATHSHIFT)) {
+                source.push(next);
+                manager.push(new MathListMaker(manager));
+                source.push(context.getToks("everymath"));
+            } else {
+                manager.push(new DisplaymathListMaker(manager));
+                source.push(context.getToks("everydisplay"));
+            }
+            //TODO gene: ??? context.setCount("fam", -1, false);
+
+        } catch (TypesetterException e) {
+            throw e;
+        } catch (InterpreterException e) {
+            throw new TypesetterException(e);
+        }    }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
      *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
-    public void setPrevDepth(final Dimen pd) throws GeneralException {
+    public void setPrevDepth(final Dimen pd) throws TypesetterException {
 
         throw new UnsupportedOperationException();
     }
@@ -130,7 +138,7 @@ public abstract class AbstractListMaker implements ListMaker {
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *      de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count f) throws GeneralException {
+    public void setSpacefactor(final Count f) throws TypesetterException {
 
         throw new UnsupportedOperationException();
     }
@@ -142,9 +150,9 @@ public abstract class AbstractListMaker implements ListMaker {
      *      de.dante.extex.scanner.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token token) throws GeneralException {
+            final Token token) throws TypesetterException {
 
-        throw new MissingMathException(token.toString());
+        throw new TypesetterException(new MissingMathException(token.toString()));
     }
 
     /**
@@ -155,9 +163,9 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void superscriptMark(final Context context,
             final TokenSource source, final Token token)
-            throws GeneralException {
+            throws TypesetterException {
 
-        throw new MissingMathException(token.toString());
+        throw new TypesetterException(new MissingMathException(token.toString()));
     }
 
     /**
@@ -167,10 +175,10 @@ public abstract class AbstractListMaker implements ListMaker {
      *      de.dante.extex.scanner.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token token) throws GeneralException {
+            final Token token) throws TypesetterException {
 
-        throw new HelpingException(getMyLocalizer(), "TTP.MisplacedTabMark",
-                token.toString());
+        throw new TypesetterHelpingException(getMyLocalizer(),
+                "TTP.MisplacedTabMark", token.toString());
     }
 
     /**
@@ -183,7 +191,7 @@ public abstract class AbstractListMaker implements ListMaker {
     /**
      * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
-    public void rightBrace() throws GeneralException {
+    public void rightBrace() throws TypesetterException {
 
     }
 

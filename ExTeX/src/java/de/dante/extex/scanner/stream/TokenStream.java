@@ -20,7 +20,7 @@
 package de.dante.extex.scanner.stream;
 
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.scanner.stream.exception.ScannerException;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.Locator;
@@ -37,7 +37,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface TokenStream {
 

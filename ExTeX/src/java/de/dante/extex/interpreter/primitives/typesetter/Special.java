@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.typesetter;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.type.node.SpecialNode;
@@ -63,7 +64,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Special extends AbstractCode {
 
@@ -87,9 +88,13 @@ public class Special extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String text = source.scanTokens(context).toText();
-        typesetter.add(new SpecialNode(text));
+        try {
+            typesetter.add(new SpecialNode(text));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 }

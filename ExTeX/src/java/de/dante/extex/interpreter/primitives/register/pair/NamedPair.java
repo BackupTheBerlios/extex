@@ -44,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamedPair extends AbstractAssignment
         implements
@@ -69,7 +69,7 @@ public class NamedPair extends AbstractAssignment
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
 
@@ -90,10 +90,10 @@ public class NamedPair extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value
-     * @throws GeneralException ...
+     * @throws InterpreterException ...
      */
     public void set(final Context context, final Pair value)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;

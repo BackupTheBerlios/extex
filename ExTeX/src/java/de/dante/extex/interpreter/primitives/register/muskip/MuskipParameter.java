@@ -23,10 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\muskip</code>.
@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MuskipParameter extends AbstractAssignment {
 
@@ -60,10 +60,10 @@ public class MuskipParameter extends AbstractAssignment {
      *
      * @return the key for the skip register
      *
-     * @throws GeneralException in case oif an error
+     * @throws InterpreterException in case of an error
      */
     protected String getKey(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (Namespace.SUPPORT_NAMESPACE_MUSKIP) {
             return context.getNamespace() + "\b" + getName();
@@ -81,7 +81,7 @@ public class MuskipParameter extends AbstractAssignment {
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getOptionalEquals(context);

@@ -27,7 +27,6 @@ import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
@@ -85,7 +84,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.57 $
+ * @version $Revision: 1.58 $
  */
 public class Max extends Moritz
         implements
@@ -308,8 +307,6 @@ public class Max extends Moritz
 
             token.visit(this, null, null);
 
-            //TODO gene:        } catch (PanicException e) {
-            //            throw e;
         } catch (InterpreterException e) {
             if (context.incrementErrorCount() > maxErrors) { // cf. TTP[82]
                 throw new ErrorLimitException(maxErrors);
@@ -505,15 +502,9 @@ public class Max extends Moritz
 
         push(context.getToks("everyjob"));
 
-        try {
-            execute(new Switch(true));
+        execute(new Switch(true));
 
-            typesetter.finish();
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        typesetter.finish();
 
         //TODO gene: TTP[1335]
     }

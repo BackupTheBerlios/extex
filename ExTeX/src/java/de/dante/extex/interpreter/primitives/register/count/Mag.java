@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\count</code>.
@@ -64,7 +63,7 @@ import de.dante.util.GeneralException;
  * @see de.dante.extex.interpreter.type.Theable
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Mag extends AbstractCount
         implements
@@ -92,7 +91,7 @@ public class Mag extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         source.getKeyword(context, "by");
 
@@ -111,7 +110,7 @@ public class Mag extends AbstractCount
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         source.getOptionalEquals(context);
 
@@ -152,7 +151,7 @@ public class Mag extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         source.getKeyword(context, "by");
 
@@ -174,7 +173,7 @@ public class Mag extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         source.getKeyword(context, "by");
 

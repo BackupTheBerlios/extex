@@ -30,7 +30,6 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\relax</code>.
@@ -64,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class Parshape extends AbstractCode implements CountConvertible, Theable {
 
@@ -110,7 +109,7 @@ public class Parshape extends AbstractCode implements CountConvertible, Theable 
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         long n = source.scanInteger(context);
         if (n <= 0) {

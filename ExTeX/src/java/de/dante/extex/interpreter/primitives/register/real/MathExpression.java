@@ -25,6 +25,7 @@ import gnu.jel.Evaluator;
 import gnu.jel.Library;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
@@ -43,7 +44,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathExpression extends AbstractMath
         implements
@@ -87,11 +88,11 @@ public class MathExpression extends AbstractMath
      * Calculate
      * @param context   the context
      * @param source    the tokensource
-     * @return  the real-value
-     * @throws GeneralException if a error occoured
+     * @return  the real value
+     * @throws InterpreterException if a error occoured
      */
     protected Real calculate(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         Real real = new Real(0);
 

@@ -24,6 +24,7 @@ import java.util.logging.Logger;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
@@ -60,7 +61,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class Show extends AbstractCode implements LogEnabled {
 
@@ -97,7 +98,7 @@ public class Show extends AbstractCode implements LogEnabled {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Token t = source.getToken(context);
         if (t == null) {
@@ -114,10 +115,10 @@ public class Show extends AbstractCode implements LogEnabled {
      *
      * @return the token list describing the token
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     protected Tokens meaning(final Token t, final Context context)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (!(t instanceof CodeToken)) {
             return new Tokens(context, t.toString());

@@ -22,11 +22,11 @@ package de.dante.extex.interpreter.primitives.typesetter.insert;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Insert extends AbstractBox {
 
@@ -74,7 +74,7 @@ public class Insert extends AbstractBox {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (!typesetter.getMode().isVmode()) {
             throw new HelpingException(getLocalizer(), "???");
@@ -84,7 +84,6 @@ public class Insert extends AbstractBox {
 
         //TODO gene: execute() unimplemented
         throw new RuntimeException("unimplemented");
-        //return true;
     }
 
 }

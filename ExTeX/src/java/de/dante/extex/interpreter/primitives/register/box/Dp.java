@@ -110,7 +110,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Dp extends Setbox
         implements
@@ -139,7 +139,7 @@ public class Dp extends Setbox
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Box box = context.getBox(getKey(context, source));
         source.getOptionalEquals(context);

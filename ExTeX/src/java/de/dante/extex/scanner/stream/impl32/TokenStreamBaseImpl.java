@@ -23,8 +23,8 @@ import java.util.Stack;
 
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.Locator;
@@ -35,7 +35,7 @@ import de.dante.util.Locator;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TokenStreamBaseImpl implements TokenStream {
 

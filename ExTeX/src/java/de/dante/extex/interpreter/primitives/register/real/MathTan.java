@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.primitives.register.real;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
@@ -39,7 +40,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathTan extends AbstractMath
         implements
@@ -67,7 +68,7 @@ public class MathTan extends AbstractMath
      * @throws GeneralException if a error occoured
      */
     protected Real calculate(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         Real real = new Real(context, source);
         return new Real(Math.tan(real.getValue()));

@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\count</code>.
@@ -71,7 +70,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class CountPrimitive extends AbstractCount
         implements
@@ -99,7 +98,7 @@ public class CountPrimitive extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void advance(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
@@ -119,7 +118,7 @@ public class CountPrimitive extends AbstractCount
      */
     public void assign(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         String key = getKey(context, source);
         source.getOptionalEquals(context);
@@ -163,7 +162,7 @@ public class CountPrimitive extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void divide(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");
@@ -186,7 +185,7 @@ public class CountPrimitive extends AbstractCount
      *      de.dante.extex.interpreter.TokenSource)
      */
     public void multiply(final Flags prefix, final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         String key = getKey(context, source);
         source.getKeyword(context, "by");

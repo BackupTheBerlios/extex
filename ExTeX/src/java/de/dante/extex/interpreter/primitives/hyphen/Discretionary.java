@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.hyphen;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
@@ -51,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Discretionary extends AbstractCode {
 
@@ -74,11 +75,15 @@ public class Discretionary extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         Tokens pre = source.getTokens(context);
         Tokens post = source.getTokens(context);
         Tokens nobreak = source.getTokens(context);
-        typesetter.add(new DiscretionaryNode(pre, post, nobreak));
+        try {
+            typesetter.add(new DiscretionaryNode(pre, post, nobreak));
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 }

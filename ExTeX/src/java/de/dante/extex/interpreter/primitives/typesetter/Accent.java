@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.EofException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -64,7 +65,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Accent extends AbstractCode {
 
@@ -93,8 +94,6 @@ public class Accent extends AbstractCode {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @throws GeneralException in case of an error
-     *
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
@@ -104,7 +103,7 @@ public class Accent extends AbstractCode {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (typesetter.getMode().isMath()) {
             throw new HelpingException(getLocalizer(), //
@@ -134,7 +133,11 @@ public class Accent extends AbstractCode {
 
             if (glyph != null) {
                 if (g == null) {
-                    typesetter.letter(context, tc, accent);
+                    try {
+                        typesetter.letter(context, tc, accent);
+                    } catch (GeneralException e) {
+                        throw new InterpreterException(e);
+                    }
                 } else {
                     Node node = typesetter.getCharNodeFactory().newInstance(tc,
                             accent);
@@ -150,14 +153,22 @@ public class Accent extends AbstractCode {
                     // compute delta TTP [1125]
                     long delta = (w - a) / 2 + (h - x) * s / UNIT;
                     d.set(delta);
-                    typesetter.add(new AccentKernNode(d));
-                    typesetter.add(node);
-                    d.set(-a - delta);
-                    typesetter.add(new AccentKernNode(d));
-                    typesetter.letter(context, tc, c);
+                    try {
+                        typesetter.add(new AccentKernNode(d));
+                        typesetter.add(node);
+                        d.set(-a - delta);
+                        typesetter.add(new AccentKernNode(d));
+                        typesetter.letter(context, tc, c);
+                    } catch (GeneralException e) {
+                        throw new InterpreterException(e);
+                    }
                 }
             } else if (g != null) {
-                typesetter.letter(context, tc, c);
+                try {
+                    typesetter.letter(context, tc, c);
+                } catch (GeneralException e) {
+                    throw new InterpreterException(e);
+                }
             } else {
                 //TODO gene: letter and accent are undefined
                 throw new RuntimeException("unimplemented");
@@ -174,7 +185,11 @@ public class Accent extends AbstractCode {
             throw new RuntimeException("unimplemented");
         }
 
-        typesetter.setSpacefactor(Count.THOUSAND);
+        try {
+            typesetter.setSpacefactor(Count.THOUSAND);
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
 }

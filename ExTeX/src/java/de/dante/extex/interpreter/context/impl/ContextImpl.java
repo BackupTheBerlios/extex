@@ -115,7 +115,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public class ContextImpl
         implements
@@ -335,7 +335,7 @@ public class ContextImpl
      *     de.dante.extex.interpreter.TokenSource)
      */
     public void closeGroup(final Typesetter typesetter, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         Group next = group.getNext();
 
@@ -344,7 +344,11 @@ public class ContextImpl
         }
 
         if (group.getInteraction() != next.getInteraction()) {
-            observersInteraction.update(this, next.getInteraction());
+            try {
+                observersInteraction.update(this, next.getInteraction());
+            } catch (GeneralException e) {
+                throw new InterpreterException(e);
+            }
         }
 
         group.runAfterGroup(this, typesetter);
@@ -569,7 +573,7 @@ public class ContextImpl
     /**
      * @see de.dante.extex.interpreter.context.Context#getHyphenationTable(int)
      */
-    public HyphenationTable getHyphenationTable(final int language) {
+    public HyphenationTable getHyphenationTable(final int language) throws InterpreterException {
 
         return hyphenationManager.getHyphenationTable(Integer
                 .toString(language));
@@ -859,7 +863,7 @@ public class ContextImpl
      *      de.dante.extex.interpreter.type.Code, boolean)
      */
     public void setCode(final CodeToken t, final Code code, final boolean global)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (!(t instanceof CodeToken)) {
             throw new HelpingException(localizer, "TTP.MissingCtrlSeq");
@@ -993,10 +997,16 @@ public class ContextImpl
      *      boolean)
      */
     public void setInteraction(final Interaction interaction,
-            final boolean global) throws GeneralException {
+            final boolean global) throws InterpreterException {
 
         group.setInteraction(interaction, global);
-        observersInteraction.update(this, interaction);
+        try {
+            observersInteraction.update(this, interaction);
+        } catch (InterpreterException e) {
+            throw e;
+        } catch (GeneralException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**

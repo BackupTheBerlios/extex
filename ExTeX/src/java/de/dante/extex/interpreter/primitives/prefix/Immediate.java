@@ -22,6 +22,7 @@ package de.dante.extex.interpreter.primitives.prefix;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.PrefixCode;
 import de.dante.extex.typesetter.Typesetter;
@@ -51,7 +52,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Immediate extends AbstractCode implements PrefixCode {
 
@@ -73,7 +74,7 @@ public class Immediate extends AbstractCode implements PrefixCode {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter) {
+            final TokenSource source, final Typesetter typesetter) throws InterpreterException {
 
         prefix.setImmediate();
     }

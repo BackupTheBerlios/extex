@@ -26,10 +26,11 @@ import java.io.OutputStream;
 import java.util.Calendar;
 import java.util.logging.Logger;
 
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.exception.InterpreterPanicException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.loader.SerialLoader;
 import de.dante.extex.interpreter.type.AbstractCode;
@@ -72,7 +73,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class Dump extends AbstractCode implements LogEnabled {
 
@@ -116,8 +117,6 @@ public class Dump extends AbstractCode implements LogEnabled {
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @throws GeneralException in case of an error
-     *
      * @see "TeX -- The Program [1303,1304]"
      * @see de.dante.extex.interpreter.type.Code#execute(
      *      de.dante.extex.interpreter.Flags,
@@ -127,7 +126,7 @@ public class Dump extends AbstractCode implements LogEnabled {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (!context.isGlobalGroup()) {
             throw new HelpingException(getLocalizer(), "TTP.DumpInGroup");
@@ -137,7 +136,7 @@ public class Dump extends AbstractCode implements LogEnabled {
 
         Tokens jobnameTokens = context.getToks("jobname");
         if (jobnameTokens == null) {
-            throw new PanicException(getLocalizer(), "Dump.MissingJobname",
+            throw new InterpreterPanicException(getLocalizer(), "Dump.MissingJobname",
                     printableControlSequence(context));
         }
         String jobname = jobnameTokens.toText();
@@ -155,15 +154,15 @@ public class Dump extends AbstractCode implements LogEnabled {
             logger.info(getLocalizer().format("TTP.Dumping", filename));
             new SerialLoader().save(stream, jobname, context);
         } catch (FileNotFoundException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } catch (IOException e) {
-            throw new GeneralException(e);
+            throw new InterpreterException(e);
         } finally {
             if (stream != null) {
                 try {
                     stream.close();
                 } catch (IOException e) {
-                    throw new GeneralException(e);
+                    throw new InterpreterException(e);
                 }
             }
         }

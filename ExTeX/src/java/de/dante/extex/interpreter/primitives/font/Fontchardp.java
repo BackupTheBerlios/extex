@@ -59,7 +59,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Fontchardp extends AbstractCode
         implements
@@ -113,7 +113,7 @@ public class Fontchardp extends AbstractCode
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         throw new CantUseInException(printableControlSequence(context),
                 typesetter.getMode().toString());

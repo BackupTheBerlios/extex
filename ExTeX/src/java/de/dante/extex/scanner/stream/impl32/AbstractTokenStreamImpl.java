@@ -24,8 +24,8 @@ import java.io.IOException;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.main.exception.MainIOException;
+import de.dante.extex.scanner.exception.ScannerException;
 import de.dante.extex.scanner.stream.TokenStream;
-import de.dante.extex.scanner.stream.exception.ScannerException;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.CatcodeVisitor;
 import de.dante.extex.scanner.type.Token;
@@ -47,7 +47,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
         implements
@@ -697,7 +697,7 @@ public abstract class AbstractTokenStreamImpl extends TokenStreamBaseImpl
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private static class State {
 

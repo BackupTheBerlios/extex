@@ -20,9 +20,9 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.observer.Observer;
 
@@ -31,7 +31,7 @@ import de.dante.util.observer.Observer;
  * context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface ContextGroup {
 
@@ -47,9 +47,9 @@ public interface ContextGroup {
      *
      * @param t the token to add
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
-    void afterGroup(Token t) throws GeneralException;
+    void afterGroup(Token t) throws InterpreterException;
 
     /**
      * Perform all actions required upon the closing of a group.
@@ -57,10 +57,10 @@ public interface ContextGroup {
      * @param typesetter the typesetter to invoke if needed
      * @param source the source to get Tokens from if needed
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
      */
     void closeGroup(Typesetter typesetter, TokenSource source)
-            throws GeneralException;
+            throws InterpreterException;
 
     /**
      * Getter for the group level. The group level is the number of groups which

@@ -21,7 +21,7 @@ package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.util.GeneralException;
+import de.dante.extex.interpreter.exception.InterpreterException;
 
 /**
  * This class provides an implementation for the primitive
@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class InputFile extends Input {
 
@@ -55,10 +55,14 @@ public class InputFile extends Input {
      *
      * @return the file name as string
      *
-     * @throws GeneralException in case of an error
+     * @throws InterpreterException in case of an error
+     *
+     * @see de.dante.extex.interpreter.primitives.file.AbstractFileCode#scanFileName(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     protected String scanFileName(final Context context,
-            final TokenSource source) throws GeneralException {
+            final TokenSource source) throws InterpreterException {
 
         return source.scanTokensAsString(context);
     }

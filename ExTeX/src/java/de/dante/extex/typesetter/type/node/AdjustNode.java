@@ -30,9 +30,10 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class AdjustNode extends AbstractNode implements Node {
+
     /**
      * Creates a new object.
      */
@@ -52,7 +53,7 @@ public class AdjustNode extends AbstractNode implements Node {
      */
     public String toString() {
 
-        return "vadjust "; //TODO gene: incomplete
+        return "vadjust "; //TODO gene: toString() incomplete
     }
 
     /**

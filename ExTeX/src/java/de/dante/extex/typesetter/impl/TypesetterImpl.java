@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.exception.ImpossibleException;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -36,6 +35,7 @@ import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.listMaker.VerticalListMaker;
@@ -49,7 +49,6 @@ import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.InsertionNode;
 import de.dante.extex.typesetter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.framework.i18n.Localizable;
 import de.dante.util.framework.i18n.Localizer;
@@ -61,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.60 $
+ * @version $Revision: 1.61 $
  */
 public class TypesetterImpl
         implements
@@ -147,7 +146,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#add(
      *     de.dante.extex.typesetter.Node)
      */
-    public void add(final Node node) throws GeneralException {
+    public void add(final Node node) throws TypesetterException {
 
         listMaker.add(node);
 
@@ -166,7 +165,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#addGlue(
      *     de.dante.extex.interpreter.type.glue.Glue)
      */
-    public void addGlue(final Glue glue) throws GeneralException {
+    public void addGlue(final Glue glue) throws TypesetterException {
 
         listMaker.addGlue(glue);
     }
@@ -177,7 +176,7 @@ public class TypesetterImpl
      *     de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws GeneralException {
+            final Count spacefactor) throws TypesetterException {
 
         listMaker.addSpace(typesettingContext, null);
     }
@@ -194,7 +193,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
     public NodeList complete(final TypesetterOptions context)
-            throws InterpreterException {
+            throws TypesetterException {
 
         NodeList nodes = listMaker.complete(context);
         pop();
@@ -235,7 +234,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
      */
-    public void endParagraph() throws GeneralException {
+    public void endParagraph() throws TypesetterException {
 
         NodeList list = listMaker.complete(options);
         pop();
@@ -252,7 +251,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish() throws GeneralException {
+    public void finish() throws TypesetterException {
 
         par();
         pageBuilder.flush(listMaker.complete(options));
@@ -363,7 +362,7 @@ public class TypesetterImpl
      *      de.dante.util.UnicodeChar)
      */
     public void letter(final Context context, final TypesettingContext tc,
-            final UnicodeChar uc) throws GeneralException {
+            final UnicodeChar uc) throws TypesetterException {
 
         listMaker.letter(context, tc, uc);
     }
@@ -375,7 +374,7 @@ public class TypesetterImpl
      *      de.dante.extex.scanner.Token)
      */
     public void mathShift(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
         listMaker.mathShift(context, source, t);
     }
@@ -383,7 +382,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
-    public void par() throws GeneralException {
+    public void par() throws TypesetterException {
 
         listMaker.par();
 
@@ -396,7 +395,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.listMaker.ListManager#pop()
      */
-    public ListMaker pop() {
+    public ListMaker pop() throws TypesetterException {
 
         if (saveStack.isEmpty()) {
             throw new ImpossibleException("Typesetter.EmptyStack");
@@ -410,7 +409,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.listMaker.ListManager#push(
      *      de.dante.extex.typesetter.ListMaker)
      */
-    public void push(final ListMaker list) {
+    public void push(final ListMaker list) throws TypesetterException {
 
         saveStack.add(listMaker);
         listMaker = list;
@@ -429,7 +428,7 @@ public class TypesetterImpl
     /**
      * @see de.dante.extex.typesetter.ListMaker#rightBrace()
      */
-    public void rightBrace() throws GeneralException {
+    public void rightBrace() throws TypesetterException {
 
         listMaker.rightBrace();
     }
@@ -501,10 +500,8 @@ public class TypesetterImpl
      * Setter for the previous depth.
      *
      * @param pd the value for previous depth
-     *
-     * @throws GeneralException in case of an error
      */
-    public void setPrevDepth(final Dimen pd) throws GeneralException {
+    public void setPrevDepth(final Dimen pd) throws TypesetterException {
 
         listMaker.setPrevDepth(pd);
     }
@@ -513,7 +510,7 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
      *     de.dante.extex.interpreter.type.count.Count)
      */
-    public void setSpacefactor(final Count sf) throws GeneralException {
+    public void setSpacefactor(final Count sf) throws TypesetterException {
 
         listMaker.setSpacefactor(sf);
     }
@@ -524,9 +521,11 @@ public class TypesetterImpl
      *
      * @param nodes the nodes to send
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
+     *
+     * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.type.NodeList)
      */
-    public void shipout(final NodeList nodes) throws GeneralException {
+    public void shipout(final NodeList nodes) throws TypesetterException {
 
         pageBuilder.flush(nodes);
         shipoutMark = true;
@@ -539,7 +538,7 @@ public class TypesetterImpl
      *      de.dante.extex.scanner.Token)
      */
     public void subscriptMark(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
         listMaker.subscriptMark(context, source, t);
     }
@@ -551,7 +550,7 @@ public class TypesetterImpl
      *      de.dante.extex.scanner.Token)
      */
     public void superscriptMark(final Context context,
-            final TokenSource source, final Token t) throws GeneralException {
+            final TokenSource source, final Token t) throws TypesetterException {
 
         listMaker.superscriptMark(context, source, t);
     }
@@ -562,7 +561,7 @@ public class TypesetterImpl
      *      TokenSource, de.dante.extex.scanner.Token)
      */
     public void tab(final Context context, final TokenSource source,
-            final Token t) throws GeneralException {
+            final Token t) throws TypesetterException {
 
         listMaker.tab(context, source, t);
     }

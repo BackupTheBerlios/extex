@@ -29,7 +29,6 @@ import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
@@ -37,7 +36,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class FontCode extends AbstractCode implements FontConvertible, Theable {
 
@@ -67,12 +66,12 @@ public class FontCode extends AbstractCode implements FontConvertible, Theable {
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
+            throws InterpreterException {
 
         try {
             context.setTypesettingContext(font);
         } catch (ConfigurationException e) {
-            throw new GeneralException(e.getLocalizedMessage());
+            throw new InterpreterException(e);
         }
     }
 

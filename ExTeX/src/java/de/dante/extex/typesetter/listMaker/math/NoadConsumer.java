@@ -25,18 +25,18 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.muskip.Mudimen;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.typesetter.ListMaker;
+import de.dante.extex.typesetter.exception.TypesetterException;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.util.GeneralException;
 
 /**
  * This interface describes list makers which are able to consume a Noad.
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface NoadConsumer extends ListMaker {
 
@@ -44,29 +44,29 @@ public interface NoadConsumer extends ListMaker {
      * Add a mathematical glyph.
      *
      * @param mclass the class
-     * @param mg the glyph.
+     * @param mg the glyph
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void add(MathClass mclass, MathGlyph mg) throws GeneralException;
+    void add(MathClass mclass, MathGlyph mg) throws TypesetterException;
 
     /**
      * Add some math glue Noad to the internal list.
      *
      * @param glue the glue to add
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void add(Muskip glue) throws GeneralException;
+    void add(Muskip glue) throws TypesetterException;
 
     /**
      * Add some math dimen Noad to the internal list.
      *
      * @param skip the length to add
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void add(Mudimen skip) throws GeneralException;
+    void add(Mudimen skip) throws TypesetterException;
 
     /**
      * Add an arbitrary Noad to the internal list if it is prepared to hold one.
@@ -74,45 +74,45 @@ public interface NoadConsumer extends ListMaker {
      *
      * @param noad the noad to add
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void add(Noad noad) throws GeneralException;
+    void add(Noad noad) throws TypesetterException;
 
     /**
      * Get access to the previous noad.
      *
      * @return the previous noad or <code>null</code> if there is none
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    Noad getLastNoad() throws GeneralException;
+    Noad getLastNoad() throws TypesetterException;
 
     /**
      * Open the group for a \left-\right construction.
      *
      * @param delimiter the delimiter to typeset on theleft side
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void left(MathDelimiter delimiter) throws GeneralException;
+    void left(MathDelimiter delimiter) throws TypesetterException;
 
     /**
      * Middle in the group for a \left-\right construction.
-     * 
+     *
      * @param delimiter the delimiter to typeset here
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void middle(MathDelimiter delimiter) throws GeneralException;
+    void middle(MathDelimiter delimiter) throws TypesetterException;
 
     /**
      * Close the group for a \left-\right construction.
      *
      * @param delimiter the delimiter to typeset on the right side
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    void right(MathDelimiter delimiter) throws GeneralException;
+    void right(MathDelimiter delimiter) throws TypesetterException;
 
     /**
      * Process the input until a Noad is completed. A Noad is either a single
@@ -123,9 +123,10 @@ public interface NoadConsumer extends ListMaker {
      *
      * @return the Noad read or <code>null</code> if none could be gathered
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
-    Noad scanNoad(Context context, TokenSource source) throws GeneralException;
+    Noad scanNoad(Context context, TokenSource source)
+            throws TypesetterException;
 
     /**
      * This method instructs the implementing class to use a fraction
@@ -139,10 +140,10 @@ public interface NoadConsumer extends ListMaker {
      * @param ruleWidth th width of the rule or <code>null</code> to indicate
      *  that the default width should be used
      *
-     * @throws GeneralException in case of an error
+     * @throws TypesetterException in case of an error
      */
     void switchToFraction(MathDelimiter leftDelimiter,
             MathDelimiter rightDelimiter, Dimen ruleWidth)
-            throws GeneralException;
+            throws TypesetterException;
 
 }
