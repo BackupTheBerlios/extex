@@ -50,12 +50,12 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Crcr extends Cr {
 
     /**
-     * Creates a new object.O
+     * Creates a new object.
      *
      * @param name the name for tracing and debugging
      */
