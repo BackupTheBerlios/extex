@@ -30,7 +30,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public abstract class AbstractToken implements Token, Serializable {
 
@@ -72,7 +72,8 @@ public abstract class AbstractToken implements Token, Serializable {
      */
     public boolean equals(final Catcode cc, final String s) {
 
-        return false;
+        return getCatcode() == cc && s.length() == 1
+                && (char) uniCode.getCodePoint() == s.charAt(0);
     }
 
     /**
