@@ -9,82 +9,127 @@
 <body>
 
     <h1>State of Implementation</h1>
+    <p>
+     The state of development is associated to the following component
+     diagram of &ExTeX;.
+    </p>
+    <img src="../image/components.gif"
+         alt="Component Diagram"
+         title="Component Diagram"/>
 
-    <ul>
-      <li>
-	<strong>Tokenizer:</strong>
-	<p>
-	  The tokenizer generates single tokens from various sources
-	  (e.g. a file) and provides them in a stack.  The encoding of
-	  each file is taken into account, which can also be
-          set by a primitive.  All of Java's standard encodings are
-	  supported (others may be defined in special cases).
-	</p>
-	<p>
-	  Special or Unicode characters can be read in various ways:
-	</p>
-	<ul>
-	  <li> Standard TeX variant:&nbsp;<tt>^^...</tt>	   </li>
-	  <li>Unicode:&nbsp;<tt>^^^<em>Unicodename;</em></tt>	   </li>
-	  <li>Omega variant:&nbsp;<tt>^^^^<em>Hex-number</em></tt> </li>
-	</ul>
-	<p>
-	  The TokenizerStack may be shown optionally in a window (visual
-	  debugger), in order to follow the progress and generation of
-	  tokens.
-	</p>
-      </li>
-      <li>
-	<strong>Filemanager</strong>
-	<p>
-	  All files are loaded by a central FileManager.  All accesses
-	  are cached.  The FileManager searches and loads files in
-	  directories defined in <var>TEXINPUTS</var>, and
-	  additionally in given JAR archives.
-	</p>
-	<p>
-	  Newly created files are saved to the directory
-	  <var>TEXOUTPUTS</var>, or to the current one. If it is not
-	  writeable, the substitution directory <var>TEXMFOUTPUT</var>
-	  is used instead.
-	</p>
-      </li>
-      <li>
-	<strong>EqTable</strong>
-	<p>
-	  The EqTable takes all primitives, parameters etc. and stores
-	  them in the appropriate group levels.
-	</p>
-	<p>
-	  This table (the keys and their according values) may
-	  optionally be shown in a special window (visual debugger), in
-	  order to track values etc.  A filter is provided for setting
-	  the visible range.  A breakpoint mechanism allows to stop the
-	  processing if the value of an entry changes.
-	</p>
-      </li>
-      <li>
-	<strong>Log Output</strong>
-	<p>
-	  Output is generated according to the applied filter
-	  (separately for terminal and logfile).  An appropriate output
-	  encoding may be specified, too.
-	</p>
-      </li>
-      <li>
-	<strong>Registers</strong>
-	<p>
-	  Registers are not explicitly limited to a certain size.  It
-	  only depends on the counter (a 32-bit integer is used) and the
-	  available memory.
-	</p>
-      </li>
-      <li>
-	<strong>Primitives</strong>
-	<p>
-	  &hellip;&nbsp;are considered step-by-step.
-	</p>
-      </li>
-    </ul>
+    <h2>Input Subsystem</h2>
+    <p>
+     The input subsystem is responsible for reading from an input
+     stream and tokenizes it. Two implementations for the scanner are
+     fully functional. They provide a &TeX;-compatible and an extended
+     functionality. 
+    </p>
+    <p>
+     The concept of an input filter should provide a hook to
+     preprocess the input before it is seen by the scanner. This
+     component is not been started yet.
+    </p>
+
+    <h2>Interpreter Subsystem</h2>
+    <p>
+     The interpreter subsystem provides a &TeX;-compatible macro
+     processor. This is based on a context which contains the state of
+     the whole engine &ndash; like the eqtable of &TeX;.
+    </p>
+    <p>
+     The interpreter is nearly complete. Registers, conditionals,
+     macros, file IO &ndash; including a configurable \write18 &ndash;
+     are in place. Some functionality is not complete &ndash; like the
+     outer flag for macros.
+    </p>
+    <p>
+     There are two implementation of the context. One with the
+     &TeX;-compatible set of registers and one with additional registers
+     &ndash; like real numbers. Those contexts are pretty stable. Onle
+     the observability &nbsp; for tracing and debugging &nbsp; needs
+     to be completed.
+    </p>
+    <p>
+     All primitives of &TeX; are present but not fully functional.
+     Especially the primitives related to math typesetting and table
+     typesetting need further attention. Some extensions from &eTeX;
+     have already been implemented.
+    </p>
+
+    <h2>Typesetting Subsystem</h2>
+
+    <p>
+     The typesetting subsystem is responsible of taking a stream of
+     nodes and producing pages. In the course of this action several
+     tasks have to be performed: hyphenation, ligature insertion,
+     paragraph breaking, and page breaking.
+    </p>
+    <p>
+     The interfaces for the componets are defined. The implementation
+     of several components has to be completed.
+    </p>
+
+    <h2>Font Subsystem</h2>
+
+    <p>
+     The task of the font subsystem is to provide the information
+     about the glyphs in a font. Various types of fonts should be
+     supported. Type-1 fonts and tfm fonts can already be processed.
+     Other types like vf fonts have to be completed or completely
+     implemented. 
+    </p>
+
+    <h2>Backend Subsystem</h2>
+
+    <p>
+     The backend subsystem takes the pages produced by the typesetter
+     and generates the appropriate output format. Several backend
+     imlementations have been started. Amoung them is a PDF backend, a
+     DVI backend, and a XML (SVG) backend.
+    </p>
+    <p>
+     The different backends deserve further development.
+    </p>
+    <p>
+     The concept of an ouput filter completes the chain of processing
+     by manipulation on the level of the output format. This component
+     is not implemented at all.
+    </p>
+
+    <h2>Framework</h2>
+
+    <p>
+     The implementation of &ExTeX; is based on a component framework.
+     This component framework provides means for managing the
+     lifecycle of a component &nbsp; especially the the creation in
+     factories. This includes services like configuration and logging.
+     The framework is inspired by the Apache Avalon framework.
+    </p>
+    <p>
+     The framework is pretty stable. The functionality needed is
+     provided. This part can be considered complete.
+    </p>
+
+    <h2>Minor components</h2>
+
+    <p>
+     There are several minor components in &ExTeX;. Some are described
+     here. 
+    </p>
+    <p>
+     The start of processing consists of the finding of an input file.
+     This applies to &TeX; documents, formats, fonts, etc. The task of
+     finding files of different kinds is accomplished by file finders.
+     The interface and infrastructure is in place. Several
+     implementations of file finders are present. They can be selected
+     and combined in the configuration.
+    </p>
+    <p>
+     The components of &ExTeX; are tied together by a main program.
+     Currently a &TeX;-compatible command line main program is
+     provided with &ExTeX;. This main program is pretty complete.
+     Other main programs can be envisaged in the future.
+    </p>
+
 </body>
 </html>
