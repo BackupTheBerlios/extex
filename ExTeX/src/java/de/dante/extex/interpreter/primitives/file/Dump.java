@@ -26,6 +26,7 @@ import java.io.OutputStream;
 import java.util.Calendar;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.Messages;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -63,7 +64,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class Dump extends AbstractCode {
 
@@ -129,16 +130,24 @@ public class Dump extends AbstractCode {
                 + calendar.get(Calendar.MONTH) + "."
                 + calendar.get(Calendar.DAY_OF_MONTH));
 
+        OutputStream stream = null;
         try {
-            OutputStream stream = new FileOutputStream(jobname
-                    + FORMAT_EXTENSION);
-            //TODO: log "TTP.Dumping", jobname + FORMAT_EXTENSION
+            String filename = jobname + FORMAT_EXTENSION;
+            stream = new FileOutputStream(filename);
+            source.update("message", Messages.format("TTP.Dumping", filename));
             new SerialLoader().save(stream, jobname, context);
-            stream.close();
         } catch (FileNotFoundException e) {
             throw new GeneralException(e);
         } catch (IOException e) {
             throw new PanicException(e);
+        } finally {
+            if (stream != null) {
+                try {
+                    stream.close();
+                } catch (IOException e1) {
+                    throw new PanicException(e1);
+                }
+            }
         }
 
         return true;
