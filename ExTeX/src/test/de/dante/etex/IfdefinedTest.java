@@ -26,7 +26,7 @@ import junit.framework.TestCase;
  * Test for the primivite \currentgrouplevel.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class IfdefinedTest extends TestCase {
 
@@ -46,8 +46,7 @@ public class IfdefinedTest extends TestCase {
     public void testIfdefined()
         throws Exception {
 
-        TestTeX.test("juifdefined",
-                     "src/test/data/juifdefined.testtxt");
+        TestTeX.test("juifdefined");
     }
 
 }

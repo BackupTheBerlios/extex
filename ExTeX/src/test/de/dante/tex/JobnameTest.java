@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * Test for the primitive <tt>jobname</tt>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class JobnameTest extends TestCase {
 
@@ -45,7 +45,7 @@ public class JobnameTest extends TestCase {
     public void testJobname01()
         throws Exception {
 
-        TestTeX.test("jujobnametest", "src/test/data/jujobname.testtxt");
+        TestTeX.test("jujobnametest");
     }
 
 }

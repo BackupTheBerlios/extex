@@ -22,23 +22,48 @@ package de.dante.tex;
 
 
 import de.dante.extex.ExTeX;
+import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.InterpreterFactory;
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.main.errorHandler.editHandler.EditHandler;
+import de.dante.extex.scanner.Token;
+import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.Properties;
 import junit.framework.Assert;
-import de.dante.extex.interpreter.InterpreterFactory;
 
 
 /**
  * Test for ExTeX.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
+ * @version $Revision: 1.9 $
  */
 public final class TestTeX {
+    private static class AssertFailErrorHandler implements ErrorHandler {
+        public boolean handleError(GeneralException e,
+                                   Token token,
+                                   TokenSource source,
+                                   Context context) throws GeneralException {
+            Assert.fail("error in tex document");
+            return false; // not reached
+        }
+
+        public void setEditHandler(EditHandler editHandler) {
+        }
+    }
+
+    private static ErrorHandler errorHandler = new AssertFailErrorHandler();
+
 
     /**
      * private: no instance
@@ -58,26 +83,41 @@ public final class TestTeX {
         throws Exception {
 
         // run ExTeX
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
         Properties pro = System.getProperties();
         ExTeX extex = new ExTeX(pro, ".extex");
-        pro.setProperty("extex.output", "text");
+        pro.setProperty("extex.output", "dump");
         pro.setProperty("extex.file", texfile);
         pro.setProperty("extex.jobname", texfile);
+        // BATCHMODE
+        // TODO: handle errors??? (TE)
+        pro.setProperty("extex.interaction", "0");
+        extex.setErrorHandler(errorHandler);
+        extex.setOutStream(output);
+
         extex.run();
 
         // compare
-        BufferedReader intxt = new BufferedReader(new FileReader(texfile
-            + ".txt"));
+
         BufferedReader intesttxt = new BufferedReader(new FileReader(
             outfile));
+        Reader stringReader = new StringReader(output.toString());
+        BufferedReader intxt = new BufferedReader(stringReader);
 
         String linetxt, linetesttxt;
         while ((linetxt = intxt.readLine()) != null) {
-            linetesttxt = intesttxt.readLine();
+            linetesttxt = intesttxt.readLine().toString();
+
             Assert.assertEquals(linetesttxt, linetxt);
         }
+        Assert.assertTrue(!intesttxt.ready());
         intxt.close();
         intesttxt.close();
+    }
+
+    public static void test(final String basename)
+        throws Exception {
+        test(basename, "src/test/data/"+basename+".testtxt");
     }
 
 

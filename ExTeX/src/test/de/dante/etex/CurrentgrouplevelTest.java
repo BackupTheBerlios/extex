@@ -26,7 +26,7 @@ import junit.framework.TestCase;
  * Test for the primivite \currentgrouplevel.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CurrentgrouplevelTest extends TestCase {
 
@@ -46,8 +46,7 @@ public class CurrentgrouplevelTest extends TestCase {
     public void testCurrentgrouplevel()
         throws Exception {
 
-        TestTeX.test("jucurrentgrouplevel",
-                     "src/test/data/jucurrentgrouplevel.testtxt");
+        TestTeX.test("jucurrentgrouplevel");
     }
 
 }
