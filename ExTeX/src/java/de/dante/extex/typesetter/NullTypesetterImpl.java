@@ -43,7 +43,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -85,9 +85,9 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.Typesetter#complete(TypesetterOptions)
      */
-    public NodeList close(final TypesetterOptions context) {
+    public NodeList complete(final TypesetterOptions context) {
 
         return null;
     }

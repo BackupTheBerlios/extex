@@ -38,7 +38,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -95,9 +95,9 @@ public class VerticalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public final NodeList close(final TypesetterOptions context) {
+    public final NodeList complete(final TypesetterOptions context) {
 
         return nodes;
     }

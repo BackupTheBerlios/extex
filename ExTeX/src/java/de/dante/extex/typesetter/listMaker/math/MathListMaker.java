@@ -64,7 +64,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -73,7 +73,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.7 $
+     * @version $Revision: 1.8 $
      */
     private class MathMemento {
 
@@ -248,10 +248,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *
      * @return the node list enclosed in this instance
      *
-     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      * @see "TeX -- The Program [719]"
      */
-    public NodeList close(final TypesetterOptions context) {
+    public NodeList complete(final TypesetterOptions context) {
 
         HorizontalListNode list = new HorizontalListNode();
 

@@ -73,7 +73,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -168,7 +168,7 @@ public class Halign extends AbstractAlign implements Boxable {
         }
 
         source.executeGroup();
-        return typesetter.close((TypesetterOptions) context);
+        return typesetter.complete((TypesetterOptions) context);
     }
 
 }

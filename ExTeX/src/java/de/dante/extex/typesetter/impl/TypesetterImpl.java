@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.56 $
+ * @version $Revision: 1.57 $
  */
 public class TypesetterImpl
         implements
@@ -149,7 +149,7 @@ public class TypesetterImpl
                         || node instanceof InsertionNode
                         || node instanceof HorizontalListNode || node instanceof VerticalListNode)) {
 
-            pageBuilder.inspectAndBuild(listMaker.close(options));
+            pageBuilder.inspectAndBuild(listMaker.complete(options));
         }
     }
 
@@ -174,12 +174,12 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList close(final TypesetterOptions context)
+    public NodeList complete(final TypesetterOptions context)
             throws GeneralException {
 
-        NodeList nodes = listMaker.close(context);
+        NodeList nodes = listMaker.complete(context);
         pop();
         return nodes;
     }
@@ -220,7 +220,7 @@ public class TypesetterImpl
      */
     public void endParagraph() throws GeneralException {
 
-        NodeList list = listMaker.close(options);
+        NodeList list = listMaker.complete(options);
         pop();
         if (list instanceof VerticalListNode) {
             NodeIterator it = list.iterator();
@@ -238,7 +238,7 @@ public class TypesetterImpl
     public void finish() throws GeneralException {
 
         par();
-        pageBuilder.flush(listMaker.close(options));
+        pageBuilder.flush(listMaker.complete(options));
         if (saveStack != null) {
             //TODO gene: test that nothing is left behind
         }
@@ -361,8 +361,8 @@ public class TypesetterImpl
 
         listMaker.par();
 
-        if (saveStack == null) {
-            pageBuilder.inspectAndBuild(listMaker.close(options));
+        if (saveStack.size() == 1) {
+            pageBuilder.inspectAndBuild(listMaker.complete(options));
         }
     }
 

@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -75,11 +75,11 @@ public class DumpTypesetter extends TypesetterImpl {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList close(TypesetterOptions context) throws GeneralException {
+    public NodeList complete(TypesetterOptions context) throws GeneralException {
 
-        return super.close(context);
+        return super.complete(context);
     }
 
     /**

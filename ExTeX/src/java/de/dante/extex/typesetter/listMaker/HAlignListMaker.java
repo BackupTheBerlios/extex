@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -55,7 +55,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     protected class Cell {
 
@@ -207,9 +207,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList close(final TypesetterOptions context)
+    public NodeList complete(final TypesetterOptions context)
             throws GeneralException {
 
         NodeList result = new VerticalListNode();
@@ -350,7 +350,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
 
         source.push(format.getPost()); //TODO gene: wrong! process the tokens before closing
 
-        line[col] = new Cell(super.close((TypesetterOptions) context));
+        line[col] = new Cell(super.complete((TypesetterOptions) context));
         wd[col].max(line[col].getList().getWidth());
         setNodes(new HorizontalListNode());
         col++;

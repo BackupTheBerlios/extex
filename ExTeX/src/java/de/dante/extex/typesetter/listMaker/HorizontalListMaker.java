@@ -44,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -144,9 +144,9 @@ public class HorizontalListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
+     * @see de.dante.extex.typesetter.ListMaker#complete(TypesetterOptions)
      */
-    public NodeList close(TypesetterOptions context) throws GeneralException {
+    public NodeList complete(TypesetterOptions context) throws GeneralException {
 
         ListManager manager = getManager();
         manager.getLigatureBuilder().insertLigatures(nodes);
