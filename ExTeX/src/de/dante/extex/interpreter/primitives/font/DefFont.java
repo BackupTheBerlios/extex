@@ -18,18 +18,34 @@
  */
 package de.dante.extex.interpreter.primitives.font;
 
+import de.dante.extex.font.FontFactory;
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Font;
+import de.dante.extex.scanner.SpaceToken;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\font</code>.
+ * <p>
+ * Example:
+ * <pre>
+ * 	\font\myfont=cmr12 at 15pt
+ *  \font\magnifiedfiverm=cmr5 scaled 2000
+ *  \font\second=cmr10 at 12truept 
+ * </pre>
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DefFont extends AbstractCode {
 
@@ -51,8 +67,89 @@ public class DefFont extends AbstractCode {
     public void execute(Flags prefix, Context context, TokenSource source,
             Typesetter typesetter) throws GeneralException {
 
+    	Token tok = source.getNonSpace();
+    	source.scanOptionalEquals();
+    	String filename = scanFileName(source);
+    	int size = getFontSize(filename);
+    	if (size <0) {
+    		size=10;
+    	}
+    	Dimen fontsize = new Dimen(Dimen.ONE * size);
     	
+    	if (source.scanKeyword("at",true)) {
+    		// \font\myfont=cmr12 at 15pt
+    		// \font\second=cmr10 at 12truept
+    		source.skipSpace();
+    		fontsize = new Dimen(context,source);
+    	} else if (source.scanKeyword("scaled",true)) {
+    		// \font\magnifiedfiverm=cmr5 scaled 2000
+    		source.skipSpace();
+    		long scale = source.scanInteger();
+    		fontsize = new Dimen(Dimen.ONE * size * scale/1000);
+    	}
     	
+    	FontFactory ff = context.getFontFactory();
+    	Font font;
+    	try {
+    		font = ff.getInstance(filename,fontsize);
+    	} catch (ConfigurationException e) {
+			throw new GeneralException(e);
+		}
+    	
+    	// create new primitive
+    	Code code = context.getMacro(tok.getValue());
+    	if (code != null) {
+    		throw new GeneralException("name " + tok.getValue() + " exists");// TODO change
+    	}
+    	code = new FontCode(tok.getValue(),font);
+    	context.setMacro(tok.getValue(),code);
     	prefix.clear();
+    }
+    
+    /**
+     * Return the size of a font with a fontname. If no number in the
+     * filename exits, -1 is returned.
+     * 
+     * @param filename	the filename (e.g. <tt>cmr12</tt>)
+     * @return	the fontsize or -1, if no digits are found
+     */
+    private int getFontSize(String filename) {
+    	StringBuffer sb = new StringBuffer();
+    	for (int i=0; i<filename.length(); i++) {
+    		UnicodeChar uc = new UnicodeChar(filename,i);
+    		if (uc.isDigit()) {
+    			sb.append(uc.toString());
+    		}
+    	}
+    	int rt = -1;
+		try {
+			rt = Integer.parseInt(sb.toString());
+		}catch (NumberFormatException e) {
+			// do nothing, use default
+		}
+    	return rt;
+    }
+    
+    /**
+     * scan the filename until a <code>SpaceToken</code>.
+     * 
+     * @param source the source for new tokens
+     * @return the file name as string
+     * @throws GeneralException in case of an error
+     */
+    private String scanFileName(TokenSource source) throws GeneralException {
+    	Token t = source.scanNonSpace();
+
+    	if (t == null) {
+    		throw new GeneralHelpingException("EOF"); //TODO
+    	}
+
+    	StringBuffer sb = new StringBuffer(t.getValue());
+
+    	for (t = source.scanToken(); t != null && !(t instanceof SpaceToken); t = source.scanToken()) {
+    		sb.append(t.getValue());
+    	}
+
+    	return sb.toString();
     }
 }

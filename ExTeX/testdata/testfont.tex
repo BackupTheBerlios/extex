@@ -1,0 +1,17 @@
+%
+% @version $Revision: 1.1 $ $Date: 2004/02/12 05:46:13 $
+%
+% Test für font
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+%
+%
+\font\hugo=cmex10
+\the\hugo
+\hugo
+\font\peter=cmex10 at 20pt
+\font\hans=cmex10 at 15truept
+\font\magnifiedfiverm=cmex10 scaled 2000
+\fontname\peter
+%

@@ -46,7 +46,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -93,7 +93,7 @@ public class EFMFont extends XMLFont implements Font {
 
 			fontfile = finder.findFile(name, "efm");
 
-			if (fontfile.exists()) {
+			if (fontfile != null && fontfile.exists()) {
 
 				try {
 

@@ -114,7 +114,7 @@
     <define name="floatingpenalty" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <define name="font" class="de.dante.extex.interpreter.primitives.font.DefFont"/>
     <Define name="fontdimen" class=""/>
-    <Define name="fontname" class=""/>
+    <define name="fontname" class="de.dante.extex.interpreter.primitives.font.FontName"/>
     <Define name="futurelet" class=""/>
     <define name="gdef" class="de.dante.extex.interpreter.primitives.macro.Gdef"/>
     <define name="global" class="de.dante.extex.interpreter.primitives.prefix.Global"/>

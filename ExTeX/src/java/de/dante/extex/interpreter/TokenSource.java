@@ -42,10 +42,11 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public interface TokenSource {
-    /**
+
+	/**
      * Getter for the locator.
      *
      * @return the current locator
@@ -205,6 +206,23 @@ public interface TokenSource {
     boolean scanKeyword(String s) throws GeneralException;
 
     /**
+     * Scan the expanded token stream for a sequence of letter tokens. If all
+     * tokens are found then they are removed from the input stream and <code>true</code>
+     * is returned. Otherwise all tokens are left in the input stream and
+     * <code>false</code> is returned.
+     *
+     * @param s 	the tokens to scan
+     * @param space skip space
+     *
+     * @return <code>true</code> iff the tokens could have been successfully
+     *         removed from the input stream
+     *
+     * @throws GeneralException in case of an error
+     */
+    boolean scanKeyword(String s, boolean space) throws GeneralException;
+    
+    
+    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @return the next non-space token or <code>null</code> at EOF
@@ -294,6 +312,13 @@ public interface TokenSource {
     //gene: this method is subject to be eliminated in favor of getKeyword().
     void scanOptionalEquals() throws GeneralException;
 
+    /**
+     * Skip spaces.
+     * 
+     * @throws GeneralException in case of an error
+     */
+    void skipSpace() throws GeneralException;
+    
     /**
      * Send the string to the named observer. The observer must be capable to
      * deal with a string argument.

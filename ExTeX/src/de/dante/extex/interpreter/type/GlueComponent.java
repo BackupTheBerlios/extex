@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -42,7 +42,8 @@ import java.io.Serializable;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.7 $
  */
 public class GlueComponent implements Serializable {
     /**
@@ -197,7 +198,7 @@ public class GlueComponent implements Serializable {
             Token t = source.scanNonSpace();
 
             if (t == null) {
-                throw new GeneralHelpingException("xxx"); //TODO imcomplete
+                throw new GeneralHelpingException("Glue: unit not found!"); //TODO imcomplete
             }
 
             source.push(t);
