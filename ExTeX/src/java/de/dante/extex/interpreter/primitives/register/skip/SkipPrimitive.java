@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.glue.GlueConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -40,9 +41,12 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class SkipPrimitive extends AbstractSkip implements Theable {
+public class SkipPrimitive extends AbstractSkip
+        implements
+            GlueConvertible,
+            Theable {
 
     /**
      * Creates a new object.
@@ -72,13 +76,25 @@ public class SkipPrimitive extends AbstractSkip implements Theable {
     }
 
     /**
+     * @see de.dante.extex.interpreter.type.glue.GlueConvertible#convertGlue(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Glue convertGlue(Context context, TokenSource source,
+            Typesetter typesetter) throws InterpreterException {
+
+        String key = getKey(source, context);
+        return context.getGlue(key);
+    }
+
+    /**
      * @see de.dante.extex.interpreter.type.Theable#the(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         String key = getKey(source, context);
         try {

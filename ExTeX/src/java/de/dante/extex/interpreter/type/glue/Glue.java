@@ -24,9 +24,12 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
+import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.type.CodeToken;
+import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.util.GeneralException;
 
@@ -36,7 +39,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -118,12 +121,28 @@ public class Glue implements Serializable, FixedGlue {
             throws InterpreterException {
 
         super();
-        this.length = new GlueComponent(context, source, false);
-        if (source.getKeyword(context, "plus")) {
-            this.stretch = new GlueComponent(context, source, true);
-        }
-        if (source.getKeyword(context, "minus")) {
-            this.shrink = new GlueComponent(context, source, true);
+        Token t = source.getToken(context);
+        if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code instanceof GlueConvertible) {
+                Glue g = ((GlueConvertible) code).convertGlue(context, source,
+                        null);
+                this.length = new GlueComponent(g.getLength());
+                this.shrink = new GlueComponent(g.getShrink());
+                this.stretch = new GlueComponent(g.getStretch());
+            } else {
+                //TODO gene: unimplemented
+                throw new RuntimeException("unimplemented");
+            }
+        } else {
+            source.push(t);
+            this.length = new GlueComponent(context, source, false);
+            if (source.getKeyword(context, "plus")) {
+                this.stretch = new GlueComponent(context, source, true);
+            }
+            if (source.getKeyword(context, "minus")) {
+                this.shrink = new GlueComponent(context, source, true);
+            }
         }
     }
 
