@@ -1,18 +1,18 @@
 ; author: Sebastian Waschik
 ; created: 2004-07-26
-; RCS-ID: $Id: .prj.el,v 1.2 2004/08/19 17:10:04 plaicy Exp $
+; RCS-ID: $Id: .prj.el,v 1.3 2004/08/28 14:20:45 plaicy Exp $
 (jde-project-file-version "1.0")
 (jde-set-variables
  '(jde-project-name "ExTeX")
 
 ; allow paths to be relative to project file
  '(jde-resolve-relative-paths-p t)
- '(jde-sourcepath 
-   (quote 
+ '(jde-sourcepath
+   (quote
     ("./src/java"
      "./src/test")))
  '(jde-global-classpath
-   (quote 
+   (quote
     ("./target/classes"
     "./lib"
     "./lib.develop")))
