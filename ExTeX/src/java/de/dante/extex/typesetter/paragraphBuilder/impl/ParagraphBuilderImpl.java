@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breakes separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
@@ -613,7 +613,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
     private void prepareParshape() {
 
         parshape = options.getParshape();
-        
+
         if (parshape == null) {
             int hangafter = (int) options.getCountOption("hangafter")
                     .getValue();

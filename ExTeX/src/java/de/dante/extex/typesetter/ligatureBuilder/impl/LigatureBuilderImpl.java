@@ -33,12 +33,14 @@ import de.dante.util.configuration.Configuration;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LigatureBuilderImpl implements LigatureBuilder {
 
     /**
      * Creates a new object.
+     *
+     * @param configuration ...
      */
     public LigatureBuilderImpl(final Configuration configuration) {
 
@@ -70,19 +72,21 @@ public class LigatureBuilderImpl implements LigatureBuilder {
      * ...
      *
      * @param list the list of nodes to process
-     * @param size the size of <code>list</code>
-     * @param i the index to start with
+     * @param theSize the size of <code>list</code>
+     * @param index the index to start with
      * @param node the node at index <code>i</code>
      *
      * @return the index of the next non-CharNode or the size of
      *   <code>list</code> if none is found
      */
-    private int processCharNodes(final NodeList list, int size,
-            int i, final CharNode node) {
+    private int processCharNodes(final NodeList list, final int theSize,
+            final int index, final CharNode node) {
 
-        UnicodeChar uc1 = ((CharNode)node).getCharacter();
+        int i = index;
+        int size = theSize;
+        UnicodeChar uc1 = ((CharNode) node).getCharacter();
         UnicodeChar uc2;
-        Font font1 = ((CharNode)node).getTypesettingContext().getFont();
+        Font font1 = ((CharNode) node).getTypesettingContext().getFont();
         Font font2;
         Node n1 = node;
         Node n2;
@@ -99,7 +103,7 @@ public class LigatureBuilderImpl implements LigatureBuilder {
 
                 //UnicodeChar lig = font1.getLigature(uc1, uc2);
                 Glyph g = font1.getGlyph(uc1);
-                if (g==null) {
+                if (g == null) {
                     return i; //TODO: DIRTY?
                 }
                 UnicodeChar lig = g.getLigature(uc2);

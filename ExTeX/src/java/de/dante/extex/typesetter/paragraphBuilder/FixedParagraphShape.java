@@ -26,21 +26,24 @@ import de.dante.extex.interpreter.type.dimen.FixedDimen;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class FixedParagraphShape extends ParagraphShape {
 
+    /**
+     * The field <tt>hsize</tt> contains the ...
+     */
     private FixedDimen hsize;
 
     /**
      * Creates a new object.
      *
-     * @param hsize ...
+     * @param theHsize ...
      */
-    public FixedParagraphShape(final FixedDimen hsize) {
+    public FixedParagraphShape(final FixedDimen theHsize) {
 
         super();
-        this.hsize = hsize;
+        this.hsize = theHsize;
     }
 
     /**
@@ -61,10 +64,10 @@ public class FixedParagraphShape extends ParagraphShape {
     /**
      * Setter for hsize.
      *
-     * @param hsize the hsize to set.
+     * @param theHsize the hsize to set.
      */
-    public void setHsize(FixedDimen hsize) {
+    public void setHsize(final FixedDimen theHsize) {
 
-        this.hsize = hsize;
+        this.hsize = theHsize;
     }
 }
