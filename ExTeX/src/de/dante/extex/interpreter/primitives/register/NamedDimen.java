@@ -21,10 +21,16 @@ package de.dante.extex.interpreter.primitives.register;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.CountConvertable;
+import de.dante.extex.interpreter.DimenConvertable;
+import de.dante.extex.interpreter.Divideable;
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Multiplyable;
+import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -39,10 +45,10 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NamedDimen extends AbstractAssignment implements Advanceable,
-        CountConvertable {
+        CountConvertable, DimenConvertable, Multiplyable, Divideable, Theable {
 
     /**
      * Creates a new object.
@@ -133,4 +139,51 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
         return (d != null ? d.getValue() : 0);
     }
 
+    /**
+     * @see de.dante.extex.interpreter.DimenConvertable#convertDimen(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public long convertDimen(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return convertCount(context, source);
+    }
+    /**
+     * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public void multiply(final Flags prefix, final Context context, final TokenSource source)
+            throws GeneralException {
+
+        String key = getKey(source);
+        source.scanKeyword("by");
+        long factor = Count.scanCount(context, source);
+        Dimen dimen = context.getDimen(key);
+        Dimen val = new Dimen(factor*dimen.getValue());
+
+        context.setDimen(key, val, prefix.isGlobal());
+        prefix.clear();
+    }
+    /**
+     * @see de.dante.extex.interpreter.Divideable#divide(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public void divide(final Flags prefix, final Context context, final TokenSource source)
+            throws GeneralException {
+
+        String key = getKey(source);
+        source.scanKeyword("by");
+        long factor = Count.scanCount(context, source);
+        Dimen dimen = context.getDimen(key);
+        Dimen val = new Dimen(dimen.getValue()/factor);
+
+        context.setDimen(key, val, prefix.isGlobal());
+        prefix.clear();
+    }
+    /**
+     * @see de.dante.extex.interpreter.Theable#the(de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
+     */
+    public Tokens the(Context context, TokenSource source)
+            throws GeneralException {
+
+		String key = getKey(source);
+		return new Tokens(context, context.getDimen(key).toPT());
+    }
 }
