@@ -19,6 +19,6 @@
   -->
 <Hyphenation default="TeX">
 
-    <TeX class="de.dante.extex.hyphenation.impl.LiangsHyphentionTable"/>
+    <TeX class="de.dante.extex.hyphenation.liang.LiangsHyphenationTable"/>
 
 </Hyphenation>

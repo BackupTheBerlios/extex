@@ -29,7 +29,7 @@ import java.util.Map;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.type.other.NullFont;
-import de.dante.extex.hyphenation.HyphenationFactory;
+import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.ConditionalSwitch;
@@ -117,7 +117,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.70 $
+ * @version $Revision: 1.71 $
  */
 public class ContextImpl
         implements
@@ -197,9 +197,16 @@ public class ContextImpl
     private transient GroupFactory groupFactory;
 
     /**
+     * The field <tt>HYPHENATION_MANAGER_TAG</tt> contains the tag of the
+     * configuration to select the sub-configuration for the hyphenation
+     * manager.
+     */
+    private final String HYPHENATION_MANAGER_TAG = "Hyphenation";
+
+    /**
      * The field <tt>hyphenationManager</tt> contains the hyphenation manager.
      */
-    private transient HyphenationFactory hyphenationManager;
+    private HyphenationManager hyphenationManager;
 
     /**
      * The field <tt>id</tt> contains the is string.
@@ -372,6 +379,17 @@ public class ContextImpl
         typesettingContext.setFont(new NullFont());
         //typesettingContext.setLanguage(config.getValue("Language"));
         setTypesettingContext(typesettingContext);
+
+        if (hyphenationManager instanceof Configurable) {
+            Configuration config = configuration
+                    .getConfiguration(HYPHENATION_MANAGER_TAG);
+
+            if (config == null) {
+                throw new ConfigurationMissingException(
+                        HYPHENATION_MANAGER_TAG, configuration.toString());
+            }
+            ((Configurable) hyphenationManager).configure(config);
+        }
 
         magnificationMax = configuration.getValueAsInteger(
                 "maximalMagnification", (int) MAGNIFICATION_MAX);
@@ -601,7 +619,11 @@ public class ContextImpl
     public HyphenationTable getHyphenationTable(final String language)
             throws InterpreterException {
 
-        return hyphenationManager.getHyphenationTable(language);
+        try {
+            return hyphenationManager.getHyphenationTable(language);
+        } catch (ConfigurationException e) {
+            throw new InterpreterException(e);
+        }
     }
 
     /**
@@ -784,7 +806,7 @@ public class ContextImpl
 
         countChangeObservers = new HashMap();
         codeChangeObservers = new HashMap();
-        hyphenationManager = new HyphenationFactory(); //TODO gene: make it configurable
+        hyphenationManager = new HyphenationManager(); //TODO gene: make it configurable
         observersInteraction = new ObserverList();
     }
 
@@ -1026,13 +1048,12 @@ public class ContextImpl
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.HyphenationFactoryCarrier#setHyphenationfactory(
+     * @see de.dante.extex.interpreter.context.HyphenationFactoryCarrier#setHyphenationManager(
      *      de.dante.extex.hyphenation.HyphenationFactory)
      */
-    public void setHyphenationfactory(
-            final HyphenationFactory hyphenationFactory) {
+    public void setHyphenationManager(final HyphenationManager manager) {
 
-        hyphenationManager = hyphenationFactory;
+        this.hyphenationManager = manager;
     }
 
     /**
