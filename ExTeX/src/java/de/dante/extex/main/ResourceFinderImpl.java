@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its super class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ResourceFinderImpl
         implements
@@ -156,7 +156,7 @@ public class ResourceFinderImpl
             for (int c = System.in.read(); c > 0 && c != '\n'; c = System.in
                     .read()) {
 
-                if (c != ' ' || sb.length() > 0) {
+                if (c != '\r' && (c != ' ' || sb.length() > 0)) {
                     sb.append((char) c);
                 }
             }
