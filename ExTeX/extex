@@ -30,7 +30,7 @@ fi
 
 sep=':'
 
-# OS specific support.  $var _must_ be set to either true or false.
+# OS specific support.
 cygwin=false;
 case "`uname`" in
   CYGWIN*) cygwin=true ;;
@@ -38,8 +38,8 @@ esac
 
 # For Cygwin, ensure paths are in UNIX format before anything is touched
 if $cygwin ; then
-  [ -n "$JAVA_HOME" ] &&
-    JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
+    [ -n "$JAVA_HOME" ] &&
+        JAVA_HOME=`cygpath --unix "$JAVA_HOME"`
     sep=';'
 fi
 
@@ -49,9 +49,8 @@ LOCALCLASSPATH=$LOCALCLASSPATH$sep$JAVA_HOME/lib/classes.zip
 EXTEX_HOME=`dirname $0`
 LIBDIR="$EXTEX_HOME/lib"
 
-# jar-Dateien
 for i in $LIBDIR/*.jar ; do
-        LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
+    LOCALCLASSPATH=$LOCALCLASSPATH$sep$i
 done
 
 # lib.develop contains development tools, not needed for the end user
