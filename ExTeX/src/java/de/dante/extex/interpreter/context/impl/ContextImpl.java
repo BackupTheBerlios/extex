@@ -64,6 +64,7 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
+import de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
@@ -79,6 +80,7 @@ import de.dante.util.observer.NotObservableException;
 import de.dante.util.observer.Observable;
 import de.dante.util.observer.Observer;
 import de.dante.util.observer.ObserverList;
+
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -114,7 +116,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.52 $
+ * @version $Revision: 1.53 $
  */
 public class ContextImpl
         implements
@@ -129,19 +131,43 @@ public class ContextImpl
 
     /**
      * ...
-     *
      * @param tokens ...
+     *
      * @return ...
+     *
      * @throws GeneralException ....
      *
      * @see de.dante.extex.interpreter.context.Context#expand(
-     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     *      de.dante.extex.interpreter.type.tokens.Tokens, Typesetter)
      */
-    public Tokens expand(final Tokens tokens) throws GeneralException {
+    public Tokens expand(final Tokens tokens, final Typesetter typesetter)
+            throws GeneralException {
 
+        Tokens result = new Tokens();
+        //TODO use interface instead of implementation
+        TokenStreamBaseImpl stream = new TokenStreamBaseImpl(false, tokens);
+
+        /*
+        while (!stream.isEof()) {
+            Token t = stream.get(null, null);
+
+            while (t instanceof CodeToken) {
+                Code code = getCode((CodeToken) t);
+                if (code instanceof ExpandableCode) {
+                    ((ExpandableCode) code).expand(Flags.NONE, (Context) this,
+                            (TokenStream) stream, typesetter);
+                    t = stream.get(null, null);
+                }
+            }
+
+        }
+
+        return result;
+        */
         // TODO expand() unimplemented
         throw new RuntimeException("unimplemented");
     }
+
     /**
      * The constant <tt>GROUP_TAG</tt> contains the name of the tag for the
      * sub-configuration for the group factory.
