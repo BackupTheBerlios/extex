@@ -53,7 +53,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter,
         TokenSource, Observable {
@@ -128,6 +128,15 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
      * The field <tt>config</tt> ...
      */
     private Configuration config;
+
+    /**
+     * Getter for context.
+     *
+     * @return the context.
+     */
+    public Context getContext() {
+        return context;
+    }
 
     /**
      * Creates a new object.
@@ -625,7 +634,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter,
     protected Token expand(final Token token) throws GeneralException {
         Code code;
 
-        for (Token t = token; t == null; t = getToken()) {
+        for (Token t = token; t != null; t = getToken()) { //TODO ???
             if (token instanceof ControlSequenceToken) {
                 observersMacro.update(this, token);
                 code = context.getMacro(token.getValue());

@@ -27,7 +27,7 @@ package de.dante.util;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Observable {
     /**
@@ -35,7 +35,7 @@ public interface Observable {
      * to distinguish several actions to be monitored. It is modeled as String
      * since it should be readable and it is not expected to have too much
      * impact on the performance. It is not expected that this method is calld
-     * too often
+     * too often.
      *
      * @param name the name of the action to be observed
      * @param observer the Observer to be invoked
