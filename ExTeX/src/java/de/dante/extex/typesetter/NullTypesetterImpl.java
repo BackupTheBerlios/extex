@@ -20,11 +20,13 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
@@ -39,7 +41,7 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
@@ -65,16 +67,6 @@ public class NullTypesetterImpl implements Typesetter {
      *     de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) {
-
-        // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *     de.dante.extex.interpreter.context.TypesettingContext,
-     *     de.dante.util.UnicodeChar)
-     */
-    public void add(final TypesettingContext font, final UnicodeChar symbol) {
 
         // nothing to do
     }
@@ -252,6 +244,7 @@ public class NullTypesetterImpl implements Typesetter {
 
         // nothing to do
     }
+
     /**
      * @see de.dante.extex.typesetter.Typesetter#shipout(
      *     de.dante.extex.typesetter.NodeList)
@@ -262,18 +255,60 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
+     * @see de.dante.extex.typesetter.Typesetter#treatLetter(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
      */
-    public void toggleDisplaymath() {
+    public void treatLetter(final TypesettingContext context, final Token t)
+            throws GeneralException {
 
-        // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
+     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      */
-    public void toggleMath() {
+    public void treatLetter(TypesettingContext context, UnicodeChar uc)
+            throws GeneralException {
 
-        // nothing to do
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
+     *      de.dante.extex.scanner.Token, TokenSource)
+     */
+    public void treatMathShift(Token t, TokenSource source) throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatSubMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSubMark(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatSupMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSupMark(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatTabMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatTabMark(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
     }
 }

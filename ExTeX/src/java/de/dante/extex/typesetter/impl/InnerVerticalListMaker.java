@@ -26,11 +26,9 @@ import de.dante.extex.typesetter.Mode;
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class InnerVerticalListMaker extends VerticalListMaker
-        implements
-            ListMaker {
+public class InnerVerticalListMaker extends VerticalListMaker {
 
     /**
      * Creates a new object.

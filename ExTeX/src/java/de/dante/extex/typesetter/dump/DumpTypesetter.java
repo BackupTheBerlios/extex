@@ -20,18 +20,20 @@
 package de.dante.extex.typesetter.dump;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.impl.Manager;
+import de.dante.extex.typesetter.impl.TypesetterImpl;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
@@ -45,15 +47,9 @@ import de.dante.util.UnicodeChar;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class DumpTypesetter implements Typesetter {
-
-    /**
-     * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
-     * nodes.
-     */
-    private CharNodeFactory charNodeFactory = new CharNodeFactory();
+public class DumpTypesetter extends TypesetterImpl {
 
     /**
      * Creates a new object.
@@ -69,6 +65,7 @@ public class DumpTypesetter implements Typesetter {
      */
     public void add(final Noad noad) throws GeneralException {
 
+        super.add(noad);
     }
 
     /**
@@ -77,16 +74,7 @@ public class DumpTypesetter implements Typesetter {
      */
     public void add(final Node node) throws GeneralException {
 
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void add(final TypesettingContext typesettingContext,
-            final UnicodeChar symbol) throws GeneralException {
-
+        super.add(node);
     }
 
     /**
@@ -95,7 +83,7 @@ public class DumpTypesetter implements Typesetter {
      */
     public void addGlue(final Glue g) throws GeneralException {
 
-        // TODO unimplemented
+        super.addGlue(g);
     }
 
     /**
@@ -106,7 +94,7 @@ public class DumpTypesetter implements Typesetter {
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
 
-        // TODO unimplemented
+        super.addSpace(typesettingContext, spacefactor);
     }
 
     /**
@@ -114,7 +102,7 @@ public class DumpTypesetter implements Typesetter {
      */
     public NodeList close() throws GeneralException {
 
-        return null;
+        return super.close();
     }
 
     /**
@@ -122,144 +110,7 @@ public class DumpTypesetter implements Typesetter {
      */
     public void finish() throws GeneralException {
 
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
-     */
-    public CharNodeFactory getCharNodeFactory() {
-
-        return charNodeFactory;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getLastNode()
-     */
-    public Node getLastNode() {
-
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#getManager()
-     */
-    public Manager getManager() {
-
-        return null;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
-     */
-    public Mode getMode() {
-
-        return Mode.HORIZONTAL;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#par()
-     */
-    public void par() throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#push(
-     *      de.dante.extex.typesetter.ListMaker)
-     */
-    public void push(final ListMaker listMaker) {
-
-        // TODO unimplemented
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#removeLastNode()
-     */
-    public void removeLastNode() {
-
-        // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
-     *      de.dante.extex.documentWriter.DocumentWriter)
-     */
-    public void setDocumentWriter(final DocumentWriter doc) {
-
-    }
-
-    /**
-     * Setter for the ligature builder
-     *
-     * @param ligatureBuilder the new ligature builder
-     *
-     * @see de.dante.extex.typesetter.Typesetter#setLigatureBuilder(
-     *      de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder)
-     */
-    public void setLigatureBuilder(final LigatureBuilder ligatureBuilder) {
-
-        // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#setOptions(
-     *      de.dante.extex.typesetter.TypesetterOptions)
-     */
-    public void setOptions(final TypesetterOptions options) {
-
-        // nothing to do
-    }
-
-    /**
-     * Setter for the page builder.
-     *
-     * @param pageBuilder the page builder
-     *
-     * @see de.dante.extex.typesetter.Typesetter#setPageBuilder(
-     *      de.dante.extex.typesetter.pageBuilder.PageBuilder)
-     */
-    public void setPageBuilder(final PageBuilder pageBuilder) {
-
-        // nothing to do
-    }
-
-    /**
-     * Setter for the paragrap builder.
-     *
-     * @param paragraphBuilder the paragraph builder
-     *
-     * @see de.dante.extex.typesetter.Typesetter#setParagraphBuilder(
-     *      de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder)
-     */
-    public void setParagraphBuilder(ParagraphBuilder paragraphBuilder) {
-
-        // nothing to do
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.Typesetter#setParshape(
-     *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
-     */
-
-    public void setParshape(final ParagraphShape parshape) {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
-     *      de.dante.extex.interpreter.type.dimen.Dimen)
-     */
-
-    public void setPrevDepth(final Dimen pd) throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.count.Count)
-     */
-    public void setSpacefactor(final Count f) throws GeneralException {
-
+        super.finish();
     }
 
     /**
@@ -268,19 +119,7 @@ public class DumpTypesetter implements Typesetter {
      */
     public void shipout(final NodeList nodes) throws GeneralException {
 
+        super.shipout(nodes);
     }
 
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
-     */
-    public void toggleDisplaymath() throws GeneralException {
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
-     */
-    public void toggleMath() throws GeneralException {
-
-    }
 }

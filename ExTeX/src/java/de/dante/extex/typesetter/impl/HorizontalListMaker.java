@@ -20,6 +20,8 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.MathHelpingException;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -27,6 +29,8 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.interpreter.type.node.SpaceNode;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -44,9 +48,9 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.30 $
+ * @version $Revision: 1.31 $
  */
-public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
+public class HorizontalListMaker extends AbstractListMaker {
 
     /**
      * The constant <tt>DEFAULT_SPACEFACTOR</tt> contains the default value for
@@ -91,32 +95,6 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
 
         nodes.add(c);
         spacefactor = DEFAULT_SPACEFACTOR;
-    }
-
-    /**
-     * Add a character node to the list.
-     *
-     * @param context the typesetting context for the symbol
-     * @param symbol the symbol to add
-     *
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     * @see "The TeXbook [p.76]"
-     */
-    public void add(final TypesettingContext context, final UnicodeChar symbol) {
-
-        CharNode c = getManager().getCharNodeFactory().newInstance(context,
-                symbol);
-        nodes.add(c);
-
-        int f = c.getSpaceFactor();
-
-        if (f != 0) {
-            spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
-                    && f > DEFAULT_SPACEFACTOR //
-            ? DEFAULT_SPACEFACTOR : f);
-        }
     }
 
     /**
@@ -223,6 +201,33 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
                     Long.toString(sf));
         }
         spacefactor = sf;
+    }
+
+    /**
+     * Add a character node to the list.
+     *
+     * @param context the typesetting context for the symbol
+     * @param symbol the symbol to add
+     *
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     * @see "The TeXbook [p.76]"
+     */
+    public void treatLetter(final TypesettingContext context,
+            final UnicodeChar symbol) {
+
+        CharNode c = getManager().getCharNodeFactory().newInstance(context,
+                symbol);
+        nodes.add(c);
+
+        int f = c.getSpaceFactor();
+
+        if (f != 0) {
+            spacefactor = (spacefactor < DEFAULT_SPACEFACTOR
+                    && f > DEFAULT_SPACEFACTOR //
+            ? DEFAULT_SPACEFACTOR : f);
+        }
     }
 
 }

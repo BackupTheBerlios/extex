@@ -24,12 +24,14 @@ import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.i18n.PanicException;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -53,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.36 $
+ * @version $Revision: 1.37 $
  */
 public class TypesetterImpl
         implements
@@ -145,17 +147,6 @@ public class TypesetterImpl
     public void add(final Node node) throws GeneralException {
 
         listMaker.add(node);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *     de.dante.extex.interpreter.context.TypesettingContext,
-     *     de.dante.util.UnicodeChar)
-     */
-    public void add(final TypesettingContext font, final UnicodeChar symbol)
-            throws GeneralException {
-
-        listMaker.add(font, symbol);
     }
 
     /**
@@ -279,6 +270,19 @@ public class TypesetterImpl
     public LigatureBuilder getLigatureBuilder() {
 
         return ligatureBuilder;
+    }
+
+    /**
+     * Getter for the manager of the list maker stack.
+     * This instance also acts as a manager.
+     *
+     * @return this instance
+     *
+     * @see de.dante.extex.typesetter.Typesetter#getManager()
+     */
+    public Manager getManager() {
+
+        return this;
     }
 
     /**
@@ -442,31 +446,57 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
+     * @see de.dante.extex.typesetter.Typesetter#treatLetter(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
      */
-    public void toggleDisplaymath() throws GeneralException {
+    public void treatLetter(final TypesettingContext context,
+            final UnicodeChar uc) throws GeneralException {
 
-        listMaker.toggleDisplaymath();
+        listMaker.treatLetter(context, uc);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
+     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
+     *      de.dante.extex.scanner.Token, TokenSource)
      */
-    public void toggleMath() throws GeneralException {
+    public void treatMathShift(final Token t, final TokenSource source)
+            throws GeneralException {
 
-        listMaker.toggleMath();
+        listMaker.treatMathShift(t, source);
     }
 
     /**
-     * Getter for the manager of the list maker stack.
-     * This instance also acts as a manager.
-     *
-     * @return this instance
-     *
-     * @see de.dante.extex.typesetter.Typesetter#getManager()
+     * @see de.dante.extex.typesetter.Typesetter#treatSubMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
      */
-    public Manager getManager() {
+    public void treatSubMark(final TypesettingContext context, final Token t)
+            throws GeneralException {
 
-        return this;
+        listMaker.treatSubMark(context, t);
     }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatSupMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSupMark(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
+        listMaker.treatSupMark(context, t);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatTabMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatTabMark(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
+        listMaker.treatTabMark(context, t);
+    }
+
 }

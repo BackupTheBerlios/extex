@@ -21,10 +21,13 @@ package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MathHelpingException;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -36,11 +39,9 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
-public class DisplaymathListMaker extends AbstractListMaker
-        implements
-            ListMaker {
+public class DisplaymathListMaker extends AbstractListMaker {
 
     /**
      * The field <tt>nodes</tt> contains the horizontal node list.
@@ -64,16 +65,6 @@ public class DisplaymathListMaker extends AbstractListMaker
     public void add(final Node c) {
 
         nodes.add(c);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void add(final TypesettingContext font, final UnicodeChar symbol) {
-
-        nodes.add(getManager().getCharNodeFactory().newInstance(font, symbol));
     }
 
     /**
@@ -146,21 +137,58 @@ public class DisplaymathListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
+     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      */
-    public void toggleDisplaymath() throws GeneralException {
+    public void treatLetter(final TypesettingContext font,
+            final UnicodeChar symbol) {
 
-        getManager().endParagraph();
+        nodes.add(getManager().getCharNodeFactory().newInstance(font, symbol));
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
+     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
+     *      de.dante.extex.scanner.Token, TokenSource)
      * @see "TeX -- The Program [1197]"
      */
-    public void toggleMath() throws GeneralException {
+    public void treatMathShift(final Token t, final TokenSource source)
+            throws GeneralException {
+
+        Token next = source.getToken();
+
+        if (next == null) {
+            throw new MathHelpingException(t.toString());
+        } else if (!next.isa(Catcode.MATHSHIFT)) {
+            throw new HelpingException(getLocalizer(),"TTP.DisplayMathEnd");
+        }
 
         getManager().endParagraph();
-        throw new HelpingException(getLocalizer(), "TTP.DisplayMathEnd");
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatSubMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSubMark(final TypesettingContext context, final Token token)
+            throws GeneralException {
+
+        //TODO _ unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatSupMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSupMark(final TypesettingContext context, final Token token)
+            throws GeneralException {
+
+        //TODO _ unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
 }

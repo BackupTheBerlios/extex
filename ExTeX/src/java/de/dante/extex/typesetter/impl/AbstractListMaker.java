@@ -19,9 +19,15 @@
 
 package de.dante.extex.typesetter.impl;
 
+import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.i18n.PanicException;
+import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.type.noad.Noad;
@@ -33,7 +39,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -55,6 +61,25 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
+        throw new PanicException(getMyLocalizer(), "UnexpectedNoad");
+    }
+
+    /**
+     * Getter for the localizer.
+     *
+     * @return the localizer
+     */
+    protected Localizer getLocalizer() {
+
+        return LocalizerFactory.getLocalizer(this.getClass().getName());
+    }
+
+    /**
      * Getter for manager.
      *
      * @return the manager.
@@ -70,15 +95,6 @@ public abstract class AbstractListMaker implements ListMaker {
     public abstract Mode getMode();
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
-     *      de.dante.extex.interpreter.type.count.Count)
-     */
-    public void setSpacefactor(final Count f) throws GeneralException {
-
-        throw new GeneralException();
-    }
-
-    /**
      * Getter for the localizer.
      *
      * @return the localizer
@@ -86,33 +102,6 @@ public abstract class AbstractListMaker implements ListMaker {
     protected Localizer getMyLocalizer() {
 
         return LocalizerFactory.getLocalizer(AbstractListMaker.class.getName());
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.type.noad.Noad)
-     */
-    public void add(final Noad noad) throws GeneralException {
-
-        throw new PanicException(getMyLocalizer(), "UnexpectedNoad");
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
-     */
-    public void toggleDisplaymath() throws GeneralException {
-
-        ListMaker mathList = new DisplaymathListMaker(manager);
-        manager.push(mathList);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#toggleMath()
-     */
-    public void toggleMath() throws GeneralException {
-
-        ListMaker mathList = new MathListMaker(manager);
-        manager.push(mathList);
     }
 
     /**
@@ -125,12 +114,65 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * Getter for the localizer.
-     *
-     * @return the localizer
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *      de.dante.extex.interpreter.type.count.Count)
      */
-    protected Localizer getLocalizer() {
+    public void setSpacefactor(final Count f) throws GeneralException {
 
-        return LocalizerFactory.getLocalizer(this.getClass().getName());
+        throw new GeneralException();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
+     *      de.dante.extex.scanner.Token, TokenSource)
+     */
+    public void treatMathShift(final Token t, final TokenSource source)
+            throws GeneralException {
+
+        Token next = source.getToken();
+
+        if (next == null) {
+            throw new MathHelpingException(t.toString());
+        } else if (!next.isa(Catcode.MATHSHIFT)) {
+            source.push(next);
+            manager.push(new MathListMaker(manager));
+        } else {
+            manager.push(new DisplaymathListMaker(manager));
+        }
+        //TODO everymath
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatSubMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSubMark(final TypesettingContext context, final Token token)
+            throws GeneralException {
+
+        throw new MathHelpingException(token.toString());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#treatSupMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatSupMark(final TypesettingContext context, final Token token)
+            throws GeneralException {
+
+        throw new MathHelpingException(token.toString());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Typesetter#treatTabMark(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.scanner.Token)
+     */
+    public void treatTabMark(final TypesettingContext context, final Token token)
+            throws GeneralException {
+
+        throw new HelpingException(getMyLocalizer(), "TTP.MisplacedTabMark",
+                token.toString());
     }
 }

@@ -19,18 +19,15 @@
 
 package de.dante.extex.typesetter.impl;
 
-import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 
 /**
  * This is the derived class for a list maker in restricted horizontal mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class RestrictedHorizontalListMaker extends HorizontalListMaker
-        implements
-            ListMaker {
+public class RestrictedHorizontalListMaker extends HorizontalListMaker {
 
     /**
      * Creates a new object.

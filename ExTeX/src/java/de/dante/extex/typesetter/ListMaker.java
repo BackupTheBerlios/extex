@@ -18,10 +18,12 @@
  */
 package de.dante.extex.typesetter;
 
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -32,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public interface ListMaker {
 
@@ -57,17 +59,6 @@ public interface ListMaker {
      * @throws GeneralException in case of an error
      */
     void add(Noad noad) throws GeneralException;
-
-    /**
-     * Add a character node to the list.
-     *
-     * @param typesettingContext the typesetting context for the symbol
-     * @param symbol the symbol to add
-     *
-     * @throws GeneralException in case of an error
-     */
-    void add(TypesettingContext typesettingContext, UnicodeChar symbol)
-        throws GeneralException;
 
     /**
      * Add a glue node to the list.
@@ -148,18 +139,14 @@ public interface ListMaker {
      */
     void setSpacefactor(Count sf) throws GeneralException;
 
-    /**
-     * Toggle the displaymath mode.
-     *
-     * @throws GeneralException in case of an error
-     */
-    void toggleDisplaymath() throws GeneralException;
+    void treatLetter(TypesettingContext context, UnicodeChar uc) throws GeneralException;
 
-    /**
-     * Toggle the math mode.
-     *
-     * @throws GeneralException in case of an error
-     */
-    void toggleMath() throws GeneralException;
+    void treatTabMark(TypesettingContext context, Token t) throws GeneralException;
+
+    void treatSubMark(TypesettingContext context, Token t) throws GeneralException;
+
+    void treatSupMark(TypesettingContext context, Token t) throws GeneralException;
+
+    void treatMathShift(Token t, TokenSource source) throws GeneralException;
 
 }

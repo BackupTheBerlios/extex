@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.impl32.TokenStreamStringImpl;
@@ -41,13 +42,14 @@ import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.32 $
+ * @version $Revision: 1.33 $
  */
 public class Max1 extends TestCase {
 
@@ -74,16 +76,6 @@ public class Max1 extends TestCase {
          *      de.dante.extex.interpreter.type.node.CharNode)
          */
         public void add(final Node c) {
-
-            // nothing to do
-        }
-
-        /**
-         * @see de.dante.extex.typesetter.Typesetter#add(
-         *      de.dante.extex.interpreter.type.font.Font,
-         *      java.lang.String)
-         */
-        public void add(final TypesettingContext font, final UnicodeChar symbol) {
 
             // nothing to do
         }
@@ -296,6 +288,65 @@ public class Max1 extends TestCase {
 
             return sb.toString();
         }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#treatLetter(
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.extex.scanner.Token)
+         */
+        public void treatLetter(final TypesettingContext context, final Token t)
+                throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#treatLetter(
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.util.UnicodeChar)
+         */
+        public void treatLetter(TypesettingContext context, UnicodeChar uc)
+                throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
+         *      de.dante.extex.scanner.Token, TokenSource)
+         */
+        public void treatMathShift(Token t, TokenSource source) throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#treatSubMark(
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.extex.scanner.Token)
+         */
+        public void treatSubMark(final TypesettingContext context, final Token t)
+                throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#treatSupMark(
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.extex.scanner.Token)
+         */
+        public void treatSupMark(final TypesettingContext context, final Token t)
+                throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#treatTabMark(
+         *      de.dante.extex.interpreter.context.TypesettingContext,
+         *      de.dante.extex.scanner.Token)
+         */
+        public void treatTabMark(final TypesettingContext context, final Token t)
+                throws GeneralException {
+
+        }
+
     }
 
     /**

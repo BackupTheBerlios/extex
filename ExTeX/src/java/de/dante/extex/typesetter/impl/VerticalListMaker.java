@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -23,6 +24,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -35,9 +37,9 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
-public class VerticalListMaker extends AbstractListMaker implements ListMaker {
+public class VerticalListMaker extends AbstractListMaker {
 
     /**
      * The field <tt>nodes</tt> contains the list of nodes encapsulated.
@@ -59,6 +61,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
      * @param manager the manager to ask for global changes
      */
     public VerticalListMaker(final Manager manager) {
+
         super(manager);
     }
 
@@ -69,19 +72,6 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     public void add(final Node n) throws GeneralException {
 
         nodes.add(n);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
-     */
-    public void add(final TypesettingContext font, final UnicodeChar symbol)
-            throws GeneralException {
-
-        ListMaker hlist = new HorizontalListMaker(getManager());
-        hlist.add(font, symbol);
-        getManager().push(hlist);
     }
 
     /**
@@ -99,7 +89,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
      *      de.dante.extex.interpreter.type.count.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-        final Count spacefactor) throws GeneralException {
+            final Count spacefactor) throws GeneralException {
 
         // TODO unimplemented
         //throw new RuntimeException("unimplemented");
@@ -156,4 +146,47 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
         prevDepth.set(pd);
     }
 
+    /**
+     * ...
+     *
+     * @param context
+     * @param t
+     * @throws GeneralException
+     *
+     * @see de.dante.extex.typesetter.ListMaker#treatLetter(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
+     */
+    public void treatLetter(final TypesettingContext context, final Token t)
+            throws GeneralException {
+
+        treatLetter(context, t.getChar());
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
+     */
+    public void treatLetter(final TypesettingContext font,
+            final UnicodeChar symbol) throws GeneralException {
+
+        ListMaker hlist = new HorizontalListMaker(getManager());
+        hlist.treatLetter(font, symbol);
+        getManager().push(hlist);
+    }
+
+    /**
+     * ...
+     *
+     * @param context
+     * @param t
+     * @throws GeneralException
+     *
+     * @see de.dante.extex.typesetter.ListMaker#treatTabMark(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
+     */
+    public void treatTabMark(TypesettingContext context, Token t)
+            throws GeneralException {
+
+        // TODO unimplemented
+
+    }
 }
