@@ -29,7 +29,7 @@ import de.dante.util.file.FileFinder;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class FileFinderImpl implements FileFinder {
 
@@ -67,15 +67,15 @@ public class FileFinderImpl implements FileFinder {
                 logger.severe(Messages.format("CLI.PromptFile"));
                 line = readLine();
 
-                if (line.equals("")) {
-                    //TODO ???
-                } else if (line.charAt(0) == '\\') {
-                    //TODO make use of the line read
-                    return null;
-                } else {
-                    file = new File(line);
-                    if (!file.canRead()) {
-                        file = null;
+                if (!line.equals("")) {
+                    if (line.charAt(0) == '\\') {
+                        //TODO make use of the line read
+                        throw new RuntimeException("unimplemented");
+                    } else {
+                        file = new File(line);
+                        if (!file.canRead()) {
+                            file = null;
+                        }
                     }
                 }
             } while (file == null);
@@ -88,26 +88,28 @@ public class FileFinderImpl implements FileFinder {
     }
 
     /**
-     * ...
+     * Read a line of characters from the standard input stream.
+     * Leading spaces are ignored. At end of file <code>null</code> is returned.
      *
-     * @return the line read
+     * @return the line read or <code>null</code> to signal EOF
      *
-     * @throws IOException ...
+     * @throws IOException in case of an error during IO. This is rather
+     * unlikely
      */
     private String readLine() throws IOException {
+
         StringBuffer sb = new StringBuffer();
-        int c;
 
-        while ((c = System.in.read()) >= 0 && c == ' ') {
-            // nothing to do
-        }
-
-        if (c >= 0 && c != '\n') {
-            do {
+        for (int c = System.in.read(); c > 0; c = System.in.read()) {
+            if (c == '\n') {
                 sb.append((char) c);
-            } while ((c = System.in.read()) >= 0 && c != '\n');
+                return sb.toString();
+            } else if (c != ' ' || sb.length() > 0) {
+                sb.append((char) c);
+            }
         }
 
-        return sb.toString();
+        return (sb.length() > 0 ? sb.toString() : null);
     }
+
 }

@@ -19,9 +19,9 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  *
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface ListMaker {
 
@@ -45,7 +45,7 @@ public interface ListMaker {
 
     /**
      * ...
-     * 
+     *
      * @param typesettingContext ...
      * @param symbol ...
      *

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.hyphenation.HyphenationTable;
@@ -25,7 +26,7 @@ import de.dante.extex.interpreter.type.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -67,11 +68,17 @@ public class TypesettingContextImpl implements TypesettingContext {
      * Creates a new object.
      */
     public TypesettingContextImpl() {
+
         super();
+        this.font = null;
+        this.color = ColorImpl.BLACK;
+        this.angle = 0;
+        this.hyphenation = null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#set(de.dante.extex.interpreter.context.TypesettingContext)
+     * @see de.dante.extex.interpreter.context.TypesettingContext#set(
+     *      de.dante.extex.interpreter.context.TypesettingContext)
      */
     public void set(final TypesettingContext context) {
 
@@ -85,6 +92,7 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#setAngle(int)
      */
     public void setAngle(final int theAngle) {
+
         this.angle = theAngle;
     }
 
@@ -92,13 +100,16 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#getAngle()
      */
     public int getAngle() {
-        return angle;
+
+        return this.angle;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setColor(de.dante.extex.interpreter.context.Color)
+     * @see de.dante.extex.interpreter.context.TypesettingContext#setColor(
+     *      de.dante.extex.interpreter.context.Color)
      */
     public void setColor(final Color theColor) {
+
         this.color = theColor;
     }
 
@@ -106,13 +117,16 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#getColor()
      */
     public Color getColor() {
-        return color;
+
+        return this.color;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setDirection(de.dante.extex.interpreter.context.Direction)
+     * @see de.dante.extex.interpreter.context.TypesettingContext#setDirection(
+     *       de.dante.extex.interpreter.context.Direction)
      */
     public void setDirection(final Direction theDirection) {
+
         this.direction = theDirection;
     }
 
@@ -120,13 +134,16 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#getDirection()
      */
     public Direction getDirection() {
-        return direction;
+
+        return this.direction;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setFont(de.dante.extex.interpreter.type.Font)
+     * @see de.dante.extex.interpreter.context.TypesettingContext#setFont(
+     *      de.dante.extex.interpreter.type.Font)
      */
     public void setFont(final Font theFont) {
+
         this.font = theFont;
     }
 
@@ -134,21 +151,25 @@ public class TypesettingContextImpl implements TypesettingContext {
      * @see de.dante.extex.interpreter.context.TypesettingContext#getFont()
      */
     public Font getFont() {
-        return font;
+
+        return this.font;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(HyphenationTable)
+     * @see de.dante.extex.interpreter.context.TypesettingContext#setLanguage(
+     *      HyphenationTable)
      */
     public void setLanguage(final HyphenationTable language) {
-        hyphenation = language;
+
+        this.hyphenation = language;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.TypesettingContext#getLanguage()
      */
     public HyphenationTable getLanguage() {
-        return hyphenation;
+
+        return this.hyphenation;
     }
 
 }

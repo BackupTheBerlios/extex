@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.configuration;
 
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ import java.util.List;
 import de.dante.util.StringList;
 
 /**
- * Container for several {@link de.dante.util.configuration.Configuration Configuration} objects.
+ * Container for several
+ * {@link de.dante.util.configuration.Configuration Configuration} objects.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MultiConfiguration implements Configuration {
 
@@ -44,15 +46,20 @@ public class MultiConfiguration implements Configuration {
      *
      * @throws ConfigurationException in case that the configuration is invalid
      */
-    private MultiConfiguration(Configuration[] parts) throws ConfigurationException {
+    public MultiConfiguration(final Configuration[] parts)
+            throws ConfigurationException {
+
         super();
         configs = parts;
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String)
+     * @see de.dante.util.configuration.Configuration#getConfiguration(
+     *      java.lang.String)
      */
-    public Configuration getConfiguration(String key) throws ConfigurationException {
+    public Configuration getConfiguration(final String key)
+            throws ConfigurationException {
+
         List v = new ArrayList();
 
         for (int i = 0; i < configs.length; i++) {
@@ -63,17 +70,18 @@ public class MultiConfiguration implements Configuration {
         }
 
         switch (v.size()) {
-            case 0 :
+            case 0:
                 return null;
-            case 1 :
+            case 1:
                 return (Configuration) v.get(0);
-            default :
+            default:
                 return new MultiConfiguration((Configuration[]) v.toArray());
         }
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#findConfiguration(java.lang.String)
+     * @see de.dante.util.configuration.Configuration#findConfiguration(
+     *      java.lang.String)
      */
     public Configuration findConfiguration(final String key)
             throws ConfigurationException {
@@ -88,17 +96,18 @@ public class MultiConfiguration implements Configuration {
         }
 
         switch (v.size()) {
-            case 0 :
+            case 0:
                 return null;
-            case 1 :
+            case 1:
                 return (Configuration) v.get(0);
-            default :
+            default:
                 return new MultiConfiguration((Configuration[]) v.toArray());
         }
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String, java.lang.String)
+     * @see de.dante.util.configuration.Configuration#getConfiguration(
+     *      java.lang.String, java.lang.String)
      */
     public Configuration getConfiguration(final String key,
             final String attribute) throws ConfigurationException {
@@ -109,7 +118,7 @@ public class MultiConfiguration implements Configuration {
             try {
                 v.add(configs[i].getConfiguration(key, attribute));
             } catch (ConfigurationNotFoundException e) {
-                // ignored
+                // ignored on purpose: it might be found somewhere else
             }
         }
 
@@ -126,7 +135,8 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String, int)
+     * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+     *      java.lang.String, int)
      */
     public int getValueAsInteger(final String key, final int defaultValue)
             throws ConfigurationException {
@@ -180,9 +190,10 @@ public class MultiConfiguration implements Configuration {
 
         return new MultiConfigurationIterator(configs, key);
     }
-    
+
     /**
-     * @see de.dante.util.configuration.Configuration#getAttribute(java.lang.String)
+     * @see de.dante.util.configuration.Configuration#getAttribute(
+     *      java.lang.String)
      */
     public String getAttribute(final String name) {
 

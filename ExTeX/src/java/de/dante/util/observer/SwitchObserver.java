@@ -16,23 +16,23 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.observer;
 
-import de.dante.util.*;
 import de.dante.util.GeneralException;
-
+import de.dante.util.Switch;
 
 /**
- * This class provides an observer which set a
+ * This class provides an observer which sets a
  * {@link de.dante.util.Switch Switch} when an event is received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class SwitchObserver implements Observer {
 
     /**
-     * The field <tt>target</tt> contains the target Switch to set upon the 
+     * The field <tt>target</tt> contains the target Switch to set upon the
      * event.
      */
     private Switch target;
@@ -45,15 +45,15 @@ public class SwitchObserver implements Observer {
 
     /**
      * Creates a new object.
-     * 
-     * @param target the target switch
-     * @param value the new value
+     *
+     * @param theTarget the target switch
+     * @param theValue the new value
      */
-    public SwitchObserver(final Switch target, final boolean value) {
+    public SwitchObserver(final Switch theTarget, final boolean theValue) {
 
         super();
-        this.target = target;
-        this.value = value;
+        this.target = theTarget;
+        this.value = theValue;
     }
 
     /**
@@ -65,4 +65,5 @@ public class SwitchObserver implements Observer {
 
         target.setOn(value);
     }
+
 }

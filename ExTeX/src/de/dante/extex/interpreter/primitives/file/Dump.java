@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.file;
 
 import java.io.FileNotFoundException;
@@ -29,7 +30,7 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -42,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Dump extends AbstractCode {
 
@@ -67,6 +68,7 @@ public class Dump extends AbstractCode {
      * @param name the name for debugging
      */
     public Dump(final String name) {
+
         super(name);
     }
 
@@ -94,7 +96,7 @@ public class Dump extends AbstractCode {
             throw new GeneralException("invalid jobname"); //TODO i18n
         }
         String format = tJobname.toText() + FORMAT_EXTENSION;
-        
+
         try {
             ObjectOutputStream os = new ObjectOutputStream(
                     new FileOutputStream(format));
@@ -115,4 +117,5 @@ public class Dump extends AbstractCode {
 
         prefix.clear();
     }
+
 }

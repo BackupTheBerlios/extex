@@ -41,7 +41,7 @@ import de.dante.util.StringList;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ConfigurationXMLImpl implements Configuration {
 
@@ -58,7 +58,7 @@ public class ConfigurationXMLImpl implements Configuration {
     private static final String[] PATHS = {"", "config/"};
 
     /**
-     * The field <tt>resource</tt> contains the name of the resource
+     * The field <tt>resource</tt> contains the name of the resource.
      */
     private String resource = null;
 
@@ -69,7 +69,7 @@ public class ConfigurationXMLImpl implements Configuration {
 
     /**
      * The field <tt>base</tt> contains the base of the resource name; i.e.
-     * the resource up to the last slash or the empty string if no slash was
+     * the resource up to the last slash or the empty string if no slash is
      * contained.
      */
     private String base = "";
@@ -159,8 +159,8 @@ public class ConfigurationXMLImpl implements Configuration {
      * private since it is meant for internal purposes only.
      *
      * @param aRoot the new root element
-     * @param aBase ...
-     * @param aResource ...
+     * @param aBase the base for the resource
+     * @param aResource the name of the resource
      */
     private ConfigurationXMLImpl(final Element aRoot, final String aBase,
         final String aResource) {
@@ -214,7 +214,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * not correspond to one of the tags in the current configuration
      * @throws ConfigurationException in case of another type of error
      *
-     * @see #findConfiguration(String) 
+     * @see #findConfiguration(String)
      */
     public Configuration getConfiguration(final String name)
             throws ConfigurationException {
@@ -245,7 +245,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * </pre>
      *
      * <p>
-     * Then <tt>findConfiguration("abc")</tt> returns a new XMLConfig 
+     * Then <tt>findConfiguration("abc")</tt> returns a new XMLConfig
      * rooted at abc.
      * </p>
      * <p>
@@ -262,7 +262,7 @@ public class ConfigurationXMLImpl implements Configuration {
      *
      * @throws ConfigurationException in case of an error
      *
-     * @see #getConfiguration(String) 
+     * @see #getConfiguration(String)
      */
     public Configuration findConfiguration(final String name)
             throws ConfigurationException {
@@ -410,7 +410,8 @@ public class ConfigurationXMLImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String, int)
+     * @see de.dante.util.configuration.Configuration#getValueAsInteger(
+     *      java.lang.String, int)
      */
     public int getValueAsInteger(final String key, final int defaultValue)
                           throws ConfigurationException {

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.impl;
 
 import java.io.IOException;
@@ -25,9 +26,9 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.i18n.GeneralPanicException;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.ListMaker;
@@ -39,7 +40,6 @@ import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
-import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This is a reference implementation of the
@@ -47,19 +47,15 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
+     * use to acquire the class name from the configuration.
      */
     private static final String CLASS_ATTRIBUTE = "class";
-
-    /**
-     * The constant <tt>NAME_ATTRIBUTE</tt> ...
-     */
-    private static final String NAME_ATTRIBUTE = "name";
 
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
@@ -77,7 +73,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * The field <tt>context</tt> contains the context for accessing parameters.
      */
     private Context context;
-    
+
     /**
      * The field <tt>listMaker</tt> contains the current list maker for
      * efficiency. Thus we can avoid to peek at the stack whenever the list
@@ -94,15 +90,12 @@ public class TypesetterImpl implements Typesetter, Manager {
      * Creates a new object.
      *
      * @param config the configuration
-     * @param context the interpreter context
-     *
-     * @throws ConfigurationException
-     * @throws GeneralException
+     * @param theContext the interpreter context
      */
-    public TypesetterImpl(final Configuration config, final Context context)
-        throws ConfigurationException, GeneralException {
+    public TypesetterImpl(final Configuration config, final Context theContext) {
+
         super();
-        this.context = context;
+        this.context = theContext;
         listMaker = new VerticalListMaker(this);
     }
 
@@ -110,6 +103,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.Typesetter#getCharNodeFactory()
      */
     public CharNodeFactory getCharNodeFactory() {
+
         return charNodeFactory;
     }
 
@@ -117,13 +111,16 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.impl.Manager#getContext()
      */
     public Context getContext() {
+
         return context;
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
+     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
+     *     de.dante.extex.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter doc) {
+
         documentWriter = doc;
     }
 
@@ -131,6 +128,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
      */
     public DocumentWriter getDocumentWriter() {
+
         return documentWriter;
     }
 
@@ -138,38 +136,47 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.Typesetter#getMode()
      */
     public Mode getMode() {
+
         return listMaker.getMode();
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *     de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) throws GeneralException {
+
         listMaker.add(c);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *     de.dante.extex.interpreter.context.TypesettingContext,
+     *     de.dante.util.UnicodeChar)
      */
     public void add(final TypesettingContext font, final UnicodeChar symbol)
-        throws GeneralException {
+            throws GeneralException {
+
         listMaker.add(font, symbol);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *     de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(final Glue g) throws GeneralException {
+
         listMaker.addGlue(g);
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(
+     *     de.dante.extex.interpreter.context.TypesettingContext,
+     *     de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
-        final Count spacefactor) throws GeneralException {
+            final Count spacefactor) throws GeneralException {
+
         listMaker.addSpace(typesettingContext, null);
     }
 
@@ -177,6 +184,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.ListMaker#close()
      */
     public NodeList close() throws GeneralException {
+
         NodeList nodes = listMaker.close();
         pop();
         return nodes;
@@ -186,6 +194,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.impl.Manager#closeTopList()
      */
     public void closeTopList() throws GeneralException {
+
         NodeList list = listMaker.close();
         pop();
         if (list instanceof VerticalListNode) {
@@ -199,9 +208,10 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish(final Context context) throws GeneralException {
+    public void finish() throws GeneralException {
+
         par();
         //TODO incomplete
         try {
@@ -216,24 +226,28 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.ListMaker#par()
      */
     public void par() throws GeneralException {
-        listMaker.par();
+
+        this.listMaker.par();
     }
 
     /**
      * @see de.dante.extex.typesetter.impl.Manager#pop()
      */
     public void pop() throws GeneralException {
+
         if (saveStack.isEmpty()) {
-            throw new GeneralPanicException("xxx"); //TODO internal error
+            throw new GeneralPanicException("TTP.Confusion");
         }
 
         this.listMaker = (ListMaker) (saveStack.remove(saveStack.size() - 1));
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#push(de.dante.extex.typesetter.ListMaker)
+     * @see de.dante.extex.typesetter.impl.Manager#push(
+     *      de.dante.extex.typesetter.ListMaker)
      */
     public void push(final ListMaker list) {
+
         saveStack.add(this.listMaker);
         this.listMaker = list;
     }
@@ -242,6 +256,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
      */
     public void toggleDisplaymath() throws GeneralException {
+
         listMaker.toggleDisplaymath();
     }
 
@@ -249,13 +264,16 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.ListMaker#toggleMath()
      */
     public void toggleMath() throws GeneralException {
+
         listMaker.toggleMath();
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *     de.dante.extex.interpreter.type.Count)
      */
     public void setSpacefactor(final Count sf) throws GeneralException {
+
         listMaker.setSpacefactor(sf);
     }
 
@@ -267,6 +285,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @throws GeneralException in case of an error
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
+
         listMaker.setPrevDepth(pd);
     }
 
@@ -275,8 +294,11 @@ public class TypesetterImpl implements Typesetter, Manager {
      * complete node list to be sent to the output writer.
      *
      * @param nodes the nodes to send
+     *
+     * @throws GeneralException in case of an error
      */
     public void shipout(final NodeList nodes) throws GeneralException {
+
         try {
             documentWriter.shipout(nodes);
         } catch (IOException e) {
@@ -288,6 +310,7 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.Typesetter#openHbox()
      */
     public void openHbox() {
+
         push(new RestrictedHorizontalListMaker(this));
     }
 
@@ -295,6 +318,8 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.Typesetter#openVbox()
      */
     public void openVbox() {
+
         push(new InnerVerticalListMaker(this));
     }
+
 }

@@ -32,12 +32,13 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class InterpreterFactory {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
+     * for the class name to be used.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 

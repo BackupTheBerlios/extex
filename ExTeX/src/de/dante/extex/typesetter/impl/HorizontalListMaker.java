@@ -21,8 +21,8 @@ package de.dante.extex.typesetter.impl;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.ListMaker;
@@ -39,19 +39,26 @@ import de.dante.util.UnicodeChar;
  * <p>
  * When the horizontal list are closed, the paragraph is split into lines. It
  * use the linebreaker, which is defined with <code>\linebreaker</code>. Is
- * the named linebreaker not found, it use the linebreaker with the name <tt>default</tt>.
+ * the named linebreaker not found, it use the linebreaker with the name
+ * <tt>default</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.14 $
  */
 public class HorizontalListMaker extends AbstractListMaker
     implements ListMaker {
 
     /**
-     * The constant <tt>DEFAULT_SPACEFACTOR</tt> contains the ...
+     * The constant <tt>DEFAULT_SPACEFACTOR</tt> contains the default value for
+     * the space factor. It is 1000 according to TeX.
      */
     private static final int DEFAULT_SPACEFACTOR = 1000;
+
+    /**
+     * The field <tt>SPACEFACTOR_THRESHOLD</tt> contains the ...
+     */
+    private static final int SPACEFACTOR_THRESHOLD = 2000;
 
     /**
      * The field <tt>nodes</tt> contains the ...
@@ -82,7 +89,8 @@ public class HorizontalListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *      de.dante.extex.interpreter.type.Count)
      */
     public void setSpacefactor(final Count f) throws GeneralException {
         long sf = f.getValue();
@@ -94,7 +102,8 @@ public class HorizontalListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) {
         nodes.add(c);
@@ -102,7 +111,9 @@ public class HorizontalListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
     public void add(final TypesettingContext context,
@@ -122,7 +133,8 @@ public class HorizontalListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *      de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(final Glue g) {
         nodes.addSkip(g);
@@ -130,7 +142,8 @@ public class HorizontalListMaker extends AbstractListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext context, final Count sfCount) {
@@ -139,29 +152,30 @@ public class HorizontalListMaker extends AbstractListMaker
         Glue space = context.getFont().getSpace();
 
         // gene: maybe my interpretation of the TeXbook is slightly wrong
-        if (sf == DEFAULT_SPACEFACTOR) { // normal case handled first
-        } else if (sf == 0) {
-            return;
-        } else if (sf >= 2000) {
-            Context co = getManager().getContext();
-            Glue xspaceskip = co.getGlue("xspaceskip");
-            Glue spaceskip = co.getGlue("spaceskip");
+        if (sf != DEFAULT_SPACEFACTOR) { // normal case handled first
+            if (sf == 0) {
+                return;
+            } else if (sf >= SPACEFACTOR_THRESHOLD) {
+                Context co = getManager().getContext();
+                Glue xspaceskip = co.getGlue("xspaceskip");
+                Glue spaceskip = co.getGlue("spaceskip");
 
-            if (xspaceskip != null) {
-                space = xspaceskip.copy();
-            } else if (spaceskip != null) {
-                space = spaceskip.copy();
-                space.multiplyStretch(sf, DEFAULT_SPACEFACTOR);
-                space.multiplyShrink(DEFAULT_SPACEFACTOR, sf);
+                if (xspaceskip != null) {
+                    space = xspaceskip.copy();
+                } else if (spaceskip != null) {
+                    space = spaceskip.copy();
+                    space.multiplyStretch(sf, DEFAULT_SPACEFACTOR);
+                    space.multiplyShrink(DEFAULT_SPACEFACTOR, sf);
+                } else {
+                    space = space.copy();
+                    space.multiplyStretch(sf, DEFAULT_SPACEFACTOR);
+                    space.multiplyShrink(DEFAULT_SPACEFACTOR, sf);
+                }
             } else {
                 space = space.copy();
                 space.multiplyStretch(sf, DEFAULT_SPACEFACTOR);
                 space.multiplyShrink(DEFAULT_SPACEFACTOR, sf);
             }
-        } else {
-            space = space.copy();
-            space.multiplyStretch(sf, DEFAULT_SPACEFACTOR);
-            space.multiplyShrink(DEFAULT_SPACEFACTOR, sf);
         }
 
         addGlue(space);

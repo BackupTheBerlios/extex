@@ -16,12 +16,12 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.conditional;
 
-import de.dante.extex.interpreter.AbstractIf;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Box;
+import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -29,20 +29,23 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ifhbox</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Ifhbox extends AbstractIf {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Ifhbox(final String name) {
+
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractIf#conditional(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.primitives.conditional.AbstractIf#conditional(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
@@ -64,7 +67,8 @@ public class Ifhbox extends AbstractIf {
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source) throws GeneralException {
+
         return "box#" + Long.toString(source.scanNumber());
     }
 

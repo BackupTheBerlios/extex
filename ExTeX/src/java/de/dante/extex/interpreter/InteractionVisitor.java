@@ -16,39 +16,64 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter;
 
+import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface InteractionVisitor {
 
     /**
      * ...
+     * @param arg1 TODO
+     * @param arg2 TODO
+     * @param arg3 TODO
+     * @return TODO
+     * @throws GeneralException TODO
      *
      */
-    void visitBatchmode();
+    boolean visitBatchmode(Object arg1, Object arg2, Object arg3) throws GeneralException;
 
     /**
      * ...
+     * @param arg1 TODO
+     * @param arg2 TODO
+     * @param arg3 TODO
+     * @return TODO
+     * @throws GeneralException TODO
      *
      */
-    void visitNonstopmode();
+    boolean visitNonstopmode(Object arg1, Object arg2, Object arg3)
+            throws GeneralException;
 
     /**
      * ...
+     * @param arg1 TODO
+     * @param arg2 TODO
+     * @param arg3 TODO
+     * @return TODO
+     * @throws GeneralException TODO
      *
      */
-    void visitScrollmode();
+    boolean visitScrollmode(Object arg1, Object arg2, Object arg3)
+            throws GeneralException;
 
     /**
      * ...
+     * @param arg1 TODO
+     * @param arg2 TODO
+     * @param arg3 TODO
+     * @return TODO
+     * @throws GeneralException TODO
      *
      */
-    void visitErrorstopmode();
+    boolean visitErrorstopmode(Object arg1, Object arg2, Object arg3)
+            throws GeneralException;
 
 }

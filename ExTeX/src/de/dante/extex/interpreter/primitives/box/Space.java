@@ -22,8 +22,8 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.ImmutableCount;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.ImmutableCount;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -31,14 +31,15 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ </code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Space extends AbstractCode {
 
     /**
-     * The constant <tt>THOUSAND</tt> contains the ...
+     * The constant <tt>SPACEFACTOR</tt> contains the spacefactor for the
+     * space to add.
      */
-    private static final Count THOUSAND = new ImmutableCount(1000);
+    private static final Count SPACEFACTOR = new ImmutableCount(1000);
 
     /**
      * Creates a new object.
@@ -50,17 +51,17 @@ public class Space extends AbstractCode {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
-     * @see "TeX -- The Program [...]"
      */
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        typesetter.addSpace(context.getTypesettingContext(), THOUSAND);
+        typesetter.addSpace(context.getTypesettingContext(), SPACEFACTOR);
         prefix.clear();
     }
 }

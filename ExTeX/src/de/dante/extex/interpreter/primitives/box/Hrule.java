@@ -16,28 +16,30 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.box;
 
 import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.node.RuleNode;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hrule</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Hrule extends AbstractCode {
+
     /**
      * The constant <tt>DEFAULT_RULE</tt> contains the equivalent to 0.4pt.
      */
-    private static final long DEFAULT_RULE = 26214; //0.4pt
+    private static final long DEFAULT_RULE = 26214;
 
     /**
      * Creates a new object.
@@ -45,11 +47,13 @@ public class Hrule extends AbstractCode {
      * @param name the name for debugging
      */
     public Hrule(final String name) {
+
         super(name);
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -58,6 +62,7 @@ public class Hrule extends AbstractCode {
     public void execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
+
         Dimen width = new Dimen(0);
         Dimen height = new Dimen(DEFAULT_RULE);
         Dimen depth = new Dimen(0);
@@ -74,7 +79,9 @@ public class Hrule extends AbstractCode {
             }
         }
 
-        //TODO: typesetter.add();
+        typesetter.add(new RuleNode(width, height, depth, context
+                .getTypesettingContext()));
         prefix.clear();
     }
+
 }

@@ -23,8 +23,8 @@ import de.dante.extex.interpreter.AbstractCode;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.OutFile;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Write extends AbstractCode {
 
@@ -85,7 +85,8 @@ public class Write extends AbstractCode {
      * @throws GeneralException ...
      */
     private void writeImmediate(final long no, final Tokens toks,
-            final Context context, TokenSource source) throws GeneralException {
+            final Context context, final TokenSource source)
+            throws GeneralException {
 
         if (no < 0) {
             source.update("log", toks.toText());
@@ -94,7 +95,7 @@ public class Write extends AbstractCode {
 
         OutFile file = context.getOutFile(Long.toString(no));
 
-        if (file == null || !file.isOpened()) {
+        if (file == null || !file.isOpen()) {
             source.update("message", toks.toText());
         } else {
             file.write(toks);

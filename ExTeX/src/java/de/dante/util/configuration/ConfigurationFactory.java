@@ -33,7 +33,7 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ConfigurationFactory {
 
@@ -55,7 +55,7 @@ public class ConfigurationFactory {
      *
      * @return a new Configuration object
      *
-     * @throws NoTypesetterException in case that the source is
+     * @throws ConfigurationInvalidNameException in case that the source is
      *             <code>null</code>
      * @throws ConfigurationInstantiationException in case of some kind of
      *             error during instantiation

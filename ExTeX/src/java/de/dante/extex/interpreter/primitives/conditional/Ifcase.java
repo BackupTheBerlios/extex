@@ -20,7 +20,6 @@
 package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractIf;
 import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -34,22 +33,22 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\ifcase</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Ifcase extends AbstractIf {
 
     /**
-     * The field <tt>OR</tt> contains the ...
+     * The constant <tt>OR</tt> contains the value indicating a \or.
      */
     protected static final Tag OR = new Tag();
 
     /**
-     * The field <tt>ELSE</tt> contains the ...
+     * The constant <tt>ELSE</tt> contains the value indicating a \else.
      */
     protected static final Tag ELSE = new Tag();
 
     /**
-     * The field <tt>FI</tt> contains the ...
+     * The constant <tt>FI</tt> contains the value indicating a \fi.
      */
     protected static final Tag FI = new Tag();
 
@@ -64,7 +63,8 @@ public class Ifcase extends AbstractIf {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -102,7 +102,8 @@ public class Ifcase extends AbstractIf {
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -156,7 +157,8 @@ public class Ifcase extends AbstractIf {
     }
 
     /**
-     * @see de.dante.extex.interpreter.AbstractIf#conditional(de.dante.extex.interpreter.context.Context,
+     * @see de.dante.extex.interpreter.primitives.conditional.AbstractIf#conditional(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
      */
@@ -171,7 +173,7 @@ public class Ifcase extends AbstractIf {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     protected static final class Tag {
 

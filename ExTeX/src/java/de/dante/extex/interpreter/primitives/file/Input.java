@@ -14,12 +14,11 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- * 
+ *
  */
 package de.dante.extex.interpreter.primitives.file;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -42,7 +41,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Input extends AbstractFileCode {
 
@@ -59,7 +58,8 @@ public class Input extends AbstractFileCode {
      * Scan the filename (until a <code>SpaceToken</code>) and put the file
      * onto the tokenizer stream.
      *
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -78,8 +78,8 @@ public class Input extends AbstractFileCode {
             throw new GeneralException(e);
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
-        } catch (IOException e) {
-            throw new GeneralException(e);
+        //} catch (IOException e) {
+        //    throw new GeneralException(e);
         }
         prefix.clear();
     }

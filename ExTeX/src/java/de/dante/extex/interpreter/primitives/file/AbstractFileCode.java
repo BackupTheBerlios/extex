@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractFileCode extends AbstractCode {
 
@@ -86,6 +86,7 @@ public abstract class AbstractFileCode extends AbstractCode {
      * Scan the file name until a <code>SpaceToken</code> is found.
      *
      * @param source the source for new tokens
+     * @param context the processing context
      *
      * @return the file name as string
      *

@@ -28,16 +28,16 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
-import de.dante.extex.interpreter.type.Box;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.ImmutableCount;
-import de.dante.extex.interpreter.type.InFile;
-import de.dante.extex.interpreter.type.Muskip;
-import de.dante.extex.interpreter.type.OutFile;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.ImmutableCount;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.file.InFile;
+import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -54,7 +54,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -106,7 +106,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private Map countMap = new HashMap();
 
     /**
-     * The field <tt>delcodeMap</tt> contains the map for ...
+     * The field <tt>delcodeMap</tt> contains the map for the delcode of the
+     * characters.
      */
     private Map delcodeMap = new HashMap();
 
@@ -189,7 +190,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     private ObserverList afterGroupObservers = new ObserverList();
 
     /**
-     * The field <tt>typesettingContext</tt> contains the ...
+     * The field <tt>typesettingContext</tt> contains the typesetting context
+     * to be used.
      */
     private TypesettingContext typesettingContext = null;
 
@@ -206,7 +208,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setActive(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setActive(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.Code)
      */
     public void setActive(final String name, final Code code) {
@@ -215,7 +218,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setActive(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setActive(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.Code, boolean)
      */
     public void setActive(final String name, final Code code,
@@ -229,7 +233,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getActive(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getActive(
+     *      java.lang.String)
      */
     public Code getActive(final String name) {
 
@@ -248,7 +253,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setBox(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setBox(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Box)
      */
     public void setBox(final String name, final Box value) {
@@ -257,7 +263,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setBox(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setBox(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Box, boolean)
      */
     public void setBox(final String name, final Box value, final boolean global) {
@@ -270,7 +277,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getBox(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getBox(
+     *      java.lang.String)
      */
     public Box getBox(final String name) {
 
@@ -284,7 +292,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode)
      */
     public void setCatcode(final UnicodeChar c, final Catcode code) {
@@ -293,7 +302,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setCatcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode, boolean)
      */
     public void setCatcode(final UnicodeChar c, final Catcode value,
@@ -307,7 +317,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.Tokenizer#getCatcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Catcode getCatcode(final UnicodeChar c) {
 
@@ -325,26 +336,27 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
         }
 
         switch (c.getCodePoint()) {
-            case ' ' :
+            case ' ':
                 return Catcode.SPACE;
-            case '\\' :
+            case '\\':
                 return Catcode.ESCAPE;
-            case '\r' :
-            case '\n' :
+            case '\r':
+            case '\n':
                 return Catcode.CR;
-            case '%' :
+            case '%':
                 return Catcode.COMMENT;
-            case 0 :
+            case 0:
                 return Catcode.IGNORE;
-            case 127 :
+            case 127:
                 return Catcode.INVALID;
-            default :
+            default:
                 return Catcode.OTHER;
         }
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCount(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Count)
      */
     public void setCount(final String name, final Count value) {
@@ -353,7 +365,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setCount(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setCount(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setCount(final String name, final Count value,
@@ -367,7 +380,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getCount(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getCount(
+     *      java.lang.String)
      */
     public Count getCount(final String name) {
 
@@ -386,7 +400,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getDelcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.impl.Group#getDelcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Count getDelcode(final UnicodeChar c) {
 
@@ -404,7 +419,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setDelcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setDelcode(final UnicodeChar c, final Count code,
@@ -418,7 +434,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
+     *      java.lang.String,
      *         de.dante.extex.interpreter.type.Dimen)
      */
     public void setDimen(final String name, final Dimen value) {
@@ -427,7 +444,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setDimen(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Dimen, boolean)
      */
     public void setDimen(final String name, final Dimen value,
@@ -441,7 +459,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getDimen(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getDimen(
+     *      java.lang.String)
      */
     public Dimen getDimen(final String name) {
 
@@ -460,7 +479,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getFont(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getFont(
+     *      java.lang.String)
      */
     public Font getFont(final String name) {
 
@@ -474,7 +494,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setFont(java.lang.String, de.dante.extex.interpreter.type.Font, boolean)
+     * @see de.dante.extex.interpreter.context.impl.Group#setFont(
+     *      java.lang.String, de.dante.extex.interpreter.type.Font, boolean)
      */
     public void setFont(final String name, final Font font, final boolean global) {
 
@@ -486,7 +507,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setIf(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setIf(
+     *      java.lang.String,
      *         boolean)
      */
     public void setIf(final String name, final boolean value) {
@@ -495,7 +517,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setIf(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setIf(
+     *      java.lang.String,
      *      boolean, boolean)
      */
     public void setIf(final String name, final boolean value,
@@ -509,7 +532,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getIf(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getIf(
+     *      java.lang.String)
      */
     public boolean getIf(final String name) {
 
@@ -519,7 +543,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getInFile(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getInFile(
+     *      java.lang.String)
      */
     public InFile getInFile(final String name) {
 
@@ -527,7 +552,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.InFile)
      */
     public void setInFile(final String name, final InFile file) {
@@ -536,7 +562,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setInFile(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.InFile, boolean)
      */
     public void setInFile(final String name, final InFile file,
@@ -550,7 +577,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.impl.Group#getMathcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Count getMathcode(final UnicodeChar c) {
 
@@ -572,7 +600,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setMathcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setMathcode(final UnicodeChar c, final Count code,
@@ -586,7 +615,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getOutFile(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getOutFile(
+     *      java.lang.String)
      */
     public OutFile getOutFile(final String name) {
 
@@ -596,7 +626,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.OutFile, boolean)
      */
     public void setOutFile(final String name, final OutFile file,
@@ -610,7 +641,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setOutFile(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.OutFile)
      */
     public void setOutFile(final String name, final OutFile file) {
@@ -619,7 +651,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(de.dante.extex.interpreter.Interaction)
+     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(
+     *      de.dante.extex.interpreter.Interaction)
      */
     public void setInteraction(final Interaction aInteraction) {
 
@@ -627,7 +660,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(de.dante.extex.interpreter.Interaction,
+     * @see de.dante.extex.interpreter.context.impl.Group#setInteraction(
+     *      de.dante.extex.interpreter.Interaction,
      *      boolean)
      */
     public void setInteraction(final Interaction aInteraction,
@@ -649,7 +683,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getLccode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.impl.Group#getLccode(
+     *      de.dante.util.UnicodeChar)
      */
     public UnicodeChar getLccode(final UnicodeChar lc) {
 
@@ -672,7 +707,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setLccode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setLccode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.util.UnicodeChar)
      */
     public void setLccode(final UnicodeChar lc, final UnicodeChar uc) {
@@ -681,7 +717,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMacro(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setMacro(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.Code)
      */
     public void setMacro(final String name, final Code code) {
@@ -690,7 +727,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMacro(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setMacro(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.Code, boolean)
      */
     public void setMacro(final String name, final Code value,
@@ -704,7 +742,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getMacro(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getMacro(
+     *      java.lang.String)
      */
     public Code getMacro(final String name) {
 
@@ -713,7 +752,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(
+     *      java.lang.String,
      *         de.dante.extex.interpreter.type.Muskip)
      */
     public void setMuskip(final String name, final Muskip value) {
@@ -722,7 +762,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setMuskip(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Muskip, boolean)
      */
     public void setMuskip(final String name, final Muskip value,
@@ -736,7 +777,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getMuskip(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getMuskip(
+     *      java.lang.String)
      */
     public Muskip getMuskip(final String name) {
 
@@ -754,7 +796,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getSfcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.impl.Group#getSfcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Count getSfcode(final UnicodeChar c) {
 
@@ -775,7 +818,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setSfcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setSfcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setSfcode(final UnicodeChar c, final Count code,
@@ -789,7 +833,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setSkip(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setSkip(
+     *      java.lang.String,
      *         de.dante.extex.interpreter.type.Glue)
      */
     public void setSkip(final String name, final Glue value) {
@@ -798,7 +843,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setSkip(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setSkip(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Glue, boolean)
      */
     public void setSkip(final String name, final Glue value,
@@ -812,7 +858,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getSkip(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getSkip(
+     *      java.lang.String)
      */
     public Glue getSkip(final String name) {
 
@@ -822,7 +869,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setToks(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setToks(
+     *      java.lang.String,
      *         de.dante.extex.interpreter.type.Tokens)
      */
     public void setToks(final String name, final Tokens value) {
@@ -831,7 +879,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setToks(java.lang.String,
+     * @see de.dante.extex.interpreter.context.impl.Group#setToks(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Tokens, boolean)
      */
     public void setToks(final String name, final Tokens value,
@@ -845,7 +894,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getToks(java.lang.String)
+     * @see de.dante.extex.interpreter.context.impl.Group#getToks(
+     *      java.lang.String)
      */
     public Tokens getToks(final String name) {
 
@@ -855,7 +905,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(de.dante.extex.interpreter.context.TypesettingContext,
+     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
      *      boolean)
      */
     public void setTypesettingContext(final TypesettingContext context,
@@ -869,7 +920,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(de.dante.extex.interpreter.context.TypesettingContext)
+     * @see de.dante.extex.interpreter.context.impl.Group#setTypesettingContext(
+     *      de.dante.extex.interpreter.context.TypesettingContext)
      */
     public void setTypesettingContext(final TypesettingContext context) {
 
@@ -889,7 +941,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
+     *      de.dante.extex.scanner.Token)
      */
     public void afterGroup(final Token t) {
 
@@ -901,7 +954,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(de.dante.util.Observer)
+     * @see de.dante.extex.interpreter.context.impl.Group#afterGroup(
+     *      de.dante.util.Observer)
      */
     public void afterGroup(final Observer observer) {
 
@@ -909,7 +963,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#runAfterGroup(de.dante.util.Observable,
+     * @see de.dante.extex.interpreter.context.impl.Group#runAfterGroup(
+     *      de.dante.util.Observable,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void runAfterGroup(final Observable source,
@@ -919,7 +974,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#getUccode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.impl.Group#getUccode(
+     *      de.dante.util.UnicodeChar)
      */
     public UnicodeChar getUccode(final UnicodeChar uc) {
 
@@ -942,7 +998,8 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.impl.Group#setUccode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.impl.Group#setUccode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.util.UnicodeChar)
      */
     public void setUccode(final UnicodeChar uc, final UnicodeChar lc) {

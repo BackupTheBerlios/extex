@@ -19,10 +19,12 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.UnicodeChar;
@@ -41,7 +43,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public interface TokenSource {
 
@@ -86,6 +88,17 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     Tokens getTokens() throws GeneralException;
+
+    /**
+     * ...
+     *
+     * @param typesetter the typesetter
+     *
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    Box getBox(Typesetter typesetter) throws GeneralException;
 
     /**
      * ...
@@ -301,6 +314,7 @@ public interface TokenSource {
     /**
      * ...
      *
+     * @return ...
      * @throws GeneralException in case of an error
      */
     Font getFont() throws GeneralException;
@@ -319,6 +333,7 @@ public interface TokenSource {
      * @param name name of the observer
      * @param text the text to send to the observer
      *
+     * @throws GeneralException ...
      * @throws NotObservableException in case that the named observer is not
      *             accessible
      */

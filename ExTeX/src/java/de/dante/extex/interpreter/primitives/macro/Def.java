@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.macro;
 
 import de.dante.extex.i18n.GeneralHelpingException;
@@ -24,10 +25,8 @@ import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.primitives.MacroCode;
-import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.scanner.ActiveCharacterToken;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.LeftBraceToken;
 import de.dante.extex.scanner.MacroParamToken;
 import de.dante.extex.scanner.OtherToken;
@@ -39,15 +38,17 @@ import de.dante.util.GeneralException;
  * This class provides an implementation for the primitive <code>\def</code>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Def extends AbstractAssignment {
+
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
     public Def(final String name) {
+
         super(name);
     }
 
@@ -58,22 +59,19 @@ public class Def extends AbstractAssignment {
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void assign(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Token cs = source.getControlSequence();
         Tokens pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
-            ? expandedBody(source)//
-            : source.getTokens());
+                ? expandedBody(source)//
+                : source.getTokens());
 
-        if (cs instanceof ControlSequenceToken) {
+        if (cs instanceof CodeToken) {
             String name = cs.getValue();
-            context.setMacro(name, new MacroCode(name, prefix, pattern, body),
-                    prefix.isGlobal());
-        } else if (cs instanceof ActiveCharacterToken) {
-            context.setCode(cs, new MacroCode("xxx", prefix, pattern, body),
-                    prefix.isGlobal());
+            context.setCode(cs, new MacroCode(name, prefix, pattern, body),
+                            prefix.isGlobal());
         } else if (cs == null) {
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         } else {
@@ -88,6 +86,7 @@ public class Def extends AbstractAssignment {
      * @return ...
      */
     private Tokens expandedBody(final TokenSource source) {
+
         //TODO
         //return null;
         throw new RuntimeException("unimplemented");
@@ -117,16 +116,14 @@ public class Def extends AbstractAssignment {
             }
 
             if (afterHash) {
-                if (t instanceof MacroParamToken) {
-                    //ok
-                } else if (t instanceof OtherToken) {
+                if (t instanceof OtherToken) {
                     if (t.getValue().charAt(0) != '0' + no) {
                         throw new GeneralHelpingException(
                                 "TTP.NonConseqParams",
                                 printableControlSequence(context));
                     }
                     no++;
-                } else {
+                } else if (!(t instanceof MacroParamToken)) {
                     throw new GeneralHelpingException("TTP.NonConseqParams",
                             printableControlSequence(context));
                 }

@@ -17,12 +17,15 @@
  *
  */
 
-package de.dante.extex.interpreter;
+package de.dante.extex.interpreter.primitives.conditional;
 
 import de.dante.extex.i18n.GeneralHelpingException;
+import de.dante.extex.interpreter.AbstractCode;
+import de.dante.extex.interpreter.Code;
+import de.dante.extex.interpreter.ExpandableCode;
+import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.primitives.conditional.Else;
-import de.dante.extex.interpreter.primitives.conditional.Fi;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -32,7 +35,7 @@ import de.dante.util.GeneralException;
  * This is the abstract base class for all ifs.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
 public abstract class AbstractIf extends AbstractCode implements ExpandableCode {
 
@@ -55,7 +58,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
     }
 
     /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -74,7 +78,8 @@ public abstract class AbstractIf extends AbstractCode implements ExpandableCode 
     }
 
     /**
-     * @see de.dante.extex.interpreter.ExpandableCode#expand(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.ExpandableCode#expand(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)

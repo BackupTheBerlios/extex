@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.file;
 
 import java.io.BufferedOutputStream;
@@ -39,7 +40,7 @@ import de.dante.util.configuration.ConfigurationMissingException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class OutputFactory {
 
@@ -76,8 +77,9 @@ public class OutputFactory {
      * attribute for the default encoding is missing
      */
     public OutputFactory(final Configuration configuration,
-            final String[] outdirs) throws ConfigurationMissingException,
-            ConfigurationMissingAttributeException {
+            final String[] outdirs)
+            throws ConfigurationMissingException,
+                ConfigurationMissingAttributeException {
 
         super();
         outputDirectories = outdirs;
@@ -87,7 +89,7 @@ public class OutputFactory {
         }
         if (config.getAttribute(ENCODING_ATTRIBUTE) == null) {
             throw new ConfigurationMissingAttributeException(
-                ENCODING_ATTRIBUTE, config);
+                    ENCODING_ATTRIBUTE, config);
         }
     }
 
@@ -101,9 +103,12 @@ public class OutputFactory {
      *
      * @throws FileNotFoundException in case that the output file coud not be
      *             opened
+     * @throws ConfigurationException in case that the
+     * configuration went wrong
      */
     public Writer createWriter(final String name, final String type)
-            throws FileNotFoundException, ConfigurationException {
+            throws FileNotFoundException,
+                ConfigurationException {
 
         return createWriter(name, type, config.getAttribute(ENCODING_ATTRIBUTE));
     }
@@ -122,8 +127,9 @@ public class OutputFactory {
      * @throws ConfigurationException ...
      */
     public Writer createWriter(final String name, final String type,
-        final String encoding) throws FileNotFoundException,
-        ConfigurationException {
+            final String encoding)
+            throws FileNotFoundException,
+                ConfigurationException {
 
         String filename = name + "." + type;
         String dir;
@@ -158,8 +164,8 @@ public class OutputFactory {
     /**
      * ...
      *
-     * @param name
-     * @param type
+     * @param name ...
+     * @param type ...
      *
      * @return ...
      *
@@ -167,7 +173,8 @@ public class OutputFactory {
      * @throws ConfigurationException ...
      */
     public OutputStream createOutputStream(final String name, final String type)
-            throws FileNotFoundException, ConfigurationException {
+            throws FileNotFoundException,
+                ConfigurationException {
 
         String filename = name + "." + type;
         String dir;
@@ -214,12 +221,12 @@ public class OutputFactory {
         try {
             if (enc != null) {
                 os = new BufferedWriter(new OutputStreamWriter(
-                    new FileOutputStream(file), enc));
+                        new FileOutputStream(file), enc));
             } else {
                 os = new BufferedWriter(new FileWriter(file));
             }
         } catch (IOException e) {
-            // ignored on purpose
+            return null; // ignored on purpose
         }
 
         return os;
@@ -239,7 +246,7 @@ public class OutputFactory {
         try {
             os = new BufferedOutputStream(new FileOutputStream(file));
         } catch (FileNotFoundException e) {
-            // ignored on purpose
+            return null; // ignored on purpose
         }
 
         return os;

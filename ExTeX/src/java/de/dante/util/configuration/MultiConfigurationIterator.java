@@ -24,7 +24,7 @@ import java.util.Iterator;
  * This class provides an Iterator over multiple Configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MultiConfigurationIterator implements Iterator {
     /**
@@ -41,7 +41,7 @@ public class MultiConfigurationIterator implements Iterator {
      * The field <tt>config</tt> contains the list of configurations to iterate
      * over.
      */
-    private Configuration[] config;
+    private Configuration[] configs;
 
     /**
      * The field <tt>ptr</tt> contains the index of configurations to be treated
@@ -52,20 +52,20 @@ public class MultiConfigurationIterator implements Iterator {
     /**
      * Creates a new object.
      *
-     * @param cfg the array of configurations to combine
-     * @param key ...
+     * @param theConfigs the array of configurations to combine
+     * @param theKey ...
      *
      * @throws ConfigurationException in case of an error
      */
-    public MultiConfigurationIterator(final Configuration[] cfg,
-        final String key) throws ConfigurationException {
+    public MultiConfigurationIterator(final Configuration[] theConfigs,
+        final String theKey) throws ConfigurationException {
 
         super();
-        this.config = cfg;
-        this.key = key;
+        this.configs = theConfigs;
+        this.key = theKey;
 
-        if (cfg.length > 0) {
-            iter = cfg[0].iterator(key);
+        if (theConfigs.length > 0) {
+            iter = theConfigs[0].iterator(theKey);
         }
     }
 
@@ -82,9 +82,9 @@ public class MultiConfigurationIterator implements Iterator {
             return true;
         }
 
-        while (++ptr < config.length) {
+        while (++ptr < configs.length) {
             try {
-                iter = config[ptr].iterator(key);
+                iter = configs[ptr].iterator(key);
             } catch (ConfigurationException e) {
                 // ignored on purpose
             }
@@ -111,9 +111,9 @@ public class MultiConfigurationIterator implements Iterator {
             return iter.next();
         }
 
-        while (++ptr < config.length) {
+        while (++ptr < configs.length) {
             try {
-                iter = config[ptr].iterator(key);
+                iter = configs[ptr].iterator(key);
             } catch (ConfigurationException e) {
                 // ignored on purpose
             }

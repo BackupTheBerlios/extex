@@ -19,11 +19,10 @@
 package de.dante.extex.typesetter.dump;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -36,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class DumpTypesetter implements Typesetter {
 
@@ -54,7 +53,8 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
+     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
+     *      de.dante.extex.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter doc) {
     }
@@ -67,26 +67,30 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish(final Context context) throws GeneralException {
+    public void finish() throws GeneralException {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.NodeList)
+     * @see de.dante.extex.typesetter.Typesetter#shipout(
+     *      de.dante.extex.typesetter.NodeList)
      */
     public void shipout(final NodeList nodes) throws GeneralException {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.typesetter.Node)
      */
     public void add(final Node node) throws GeneralException {
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.util.UnicodeChar)
      */
     public void add(final TypesettingContext typesettingContext,
             final UnicodeChar symbol) throws GeneralException {
@@ -94,7 +98,9 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
+     *      de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
@@ -103,7 +109,8 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *      de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(final Glue g) throws GeneralException {
 
@@ -129,13 +136,15 @@ public class DumpTypesetter implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *      de.dante.extex.interpreter.type.Count)
      */
     public void setSpacefactor(final Count f) throws GeneralException {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+     *      de.dante.extex.interpreter.type.Dimen)
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
     }

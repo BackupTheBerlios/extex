@@ -24,15 +24,15 @@ import de.dante.extex.interpreter.Code;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Box;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.InFile;
-import de.dante.extex.interpreter.type.Muskip;
-import de.dante.extex.interpreter.type.OutFile;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.file.InFile;
+import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -51,7 +51,7 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public interface Group extends Tokenizer, Serializable {
 
@@ -87,7 +87,7 @@ public interface Group extends Tokenizer, Serializable {
     Tokens getAfterGroup();
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Box box}register
+     * Setter for the {@link de.dante.extex.interpreter.type.box.Box box}register
      * in all requested groups. Count registers are named, either with a number
      * or an arbitrary string. The numbered registers where limited to 256 in
      * TeX. This restriction does no longer hold for ExTeX.
@@ -100,7 +100,7 @@ public interface Group extends Tokenizer, Serializable {
     void setBox(String name, Box value, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Box box}register.
+     * Getter for the {@link de.dante.extex.interpreter.type.box.Box box}register.
      * Count registers are named, either with a number or an arbitrary string.
      * The numbered registers where limited to 256 in TeX. This restriction
      * does no longer hold for ExTeX.
@@ -191,20 +191,21 @@ public interface Group extends Tokenizer, Serializable {
      * @return the value of the dimen register or its default
      */
     Dimen getDimen(String name);
-    
+
     /**
      * ...
-     * 
-     * @param name ...
+     *
+     * @param name the name of the font
      * @param font ...
-     * @param global ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setFont(String name, Font font, boolean global);
 
     /**
      * ...
-     * 
-     * @param name ...
+     *
+     * @param name the name of the font
      *
      * @return ...
      */

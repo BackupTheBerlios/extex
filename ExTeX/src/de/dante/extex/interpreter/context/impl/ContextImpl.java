@@ -39,15 +39,15 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.Direction;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextFactory;
-import de.dante.extex.interpreter.type.Box;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.InFile;
-import de.dante.extex.interpreter.type.Muskip;
-import de.dante.extex.interpreter.type.OutFile;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.file.InFile;
+import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.ControlSequenceToken;
@@ -100,7 +100,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.27 $
+ * @version $Revision: 1.28 $
  */
 public class ContextImpl implements Context, Observable, Serializable {
 
@@ -265,7 +265,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.Context#setAfterassignment(
+     *      de.dante.extex.scanner.Token)
      */
     public void setAfterassignment(final Token token) {
 
@@ -273,7 +274,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCatcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.Context#setCatcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.scanner.Catcode, boolean)
      */
     public void setCatcode(final UnicodeChar c, final Catcode cc,
@@ -300,7 +302,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getCode(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.Context#getCode(
+     *      de.dante.extex.scanner.Token)
      */
     public Code getCode(final Token t) throws GeneralException {
 
@@ -316,7 +319,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCode(de.dante.extex.scanner.Token,
+     * @see de.dante.extex.interpreter.context.Context#setCode(
+     *      de.dante.extex.scanner.Token,
      *      de.dante.extex.interpreter.Code, boolean)
      */
     public void setCode(final Token t, final Code code, final boolean global)
@@ -332,8 +336,9 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setCount(java.lang.String,
-     *         long, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setCount(
+     *      java.lang.String,
+     *      long, boolean)
      */
     public void setCount(final String name, final long value,
             final boolean global) {
@@ -345,7 +350,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getCount(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getCount(
+     *      java.lang.String)
      */
     public Count getCount(final String name) {
 
@@ -353,7 +359,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getDelcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getDelcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Count getDelcode(final UnicodeChar c) {
 
@@ -361,8 +368,9 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setDelcode(de.dante.util.UnicodeChar,
-     *     de.dante.extex.interpreter.type.Count, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setDelcode(
+     *      de.dante.util.UnicodeChar,
+     *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setDelcode(final UnicodeChar c, final Count code,
             final boolean global) {
@@ -371,8 +379,9 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-     *         de.dante.extex.interpreter.type.Dimen, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setDimen(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Dimen, boolean)
      */
     public void setDimen(final String name, final Dimen value,
             final boolean global) {
@@ -381,8 +390,9 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setDimen(java.lang.String,
-     *         long, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setDimen(
+     *      java.lang.String,
+     *      long, boolean)
      */
     public void setDimen(final String name, final long value,
             final boolean global) {
@@ -394,7 +404,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getDimen(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getDimen(
+     *      java.lang.String)
      */
     public Dimen getDimen(final String name) {
 
@@ -410,7 +421,10 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setFont(java.lang.String, de.dante.extex.interpreter.type.Font, boolean)
+     * @see de.dante.extex.interpreter.context.Context#setFont(
+     *      java.lang.String,
+     *      de.dante.extex.interpreter.type.Font,
+     *      boolean)
      */
     public void setFont(final String name, final Font font, final boolean global) {
 
@@ -426,7 +440,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setFontFactory(de.dante.extex.font.FontFactory)
+     * @see de.dante.extex.interpreter.context.Context#setFontFactory(
+     *      de.dante.extex.font.FontFactory)
      */
     public void setFontFactory(final FontFactory factory) {
 
@@ -469,7 +484,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setInteraction(de.dante.extex.interpreter.Interaction,
+     * @see de.dante.extex.interpreter.context.Context#setInteraction(
+     *      de.dante.extex.interpreter.Interaction,
      *      boolean)
      */
     public void setInteraction(final Interaction interaction,
@@ -488,7 +504,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMacro(java.lang.String,
+     * @see de.dante.extex.interpreter.context.Context#setMacro(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.Code, boolean)
      */
     public void setMacro(final String name, final Code code,
@@ -498,7 +515,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getMacro(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getMacro(
+     *      java.lang.String)
      */
     public Code getMacro(final String name) {
 
@@ -543,7 +561,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getMathcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getMathcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Count getMathcode(final UnicodeChar c) {
 
@@ -551,7 +570,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMathcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.Context#setMathcode(
+     *      de.dante.util.UnicodeChar,
      *      Count, boolean)
      */
     public void setMathcode(final UnicodeChar c, final Count code,
@@ -561,7 +581,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getMuskip(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getMuskip(
+     *      java.lang.String)
      */
     public Muskip getMuskip(final String name) {
 
@@ -569,7 +590,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setMuskip(java.lang.String,
+     * @see de.dante.extex.interpreter.context.Context#setMuskip(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.Muskip, boolean)
      */
     public void setMuskip(final String name, final Muskip value,
@@ -579,7 +601,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getSfcode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getSfcode(
+     *      de.dante.util.UnicodeChar)
      */
     public Count getSfcode(final UnicodeChar c) {
 
@@ -587,7 +610,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setSfcode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.Context#setSfcode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.extex.interpreter.type.Count, boolean)
      */
     public void setSfcode(final UnicodeChar c, final Count code,
@@ -617,7 +641,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Color)
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(
+     *      de.dante.extex.interpreter.context.Color)
      */
     public void setTypesettingContext(final Color color)
             throws ConfigurationException {
@@ -626,7 +651,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.context.Direction)
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(
+     *      de.dante.extex.interpreter.context.Direction)
      */
     public void setTypesettingContext(final Direction direction)
             throws ConfigurationException {
@@ -635,7 +661,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(de.dante.extex.interpreter.type.Font)
+     * @see de.dante.extex.interpreter.context.Context#setTypesettingContext(
+     *      de.dante.extex.interpreter.type.Font)
      */
     public void setTypesettingContext(final Font font)
             throws ConfigurationException {
@@ -686,7 +713,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.extex.scanner.Token)
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(
+     *      de.dante.extex.scanner.Token)
      */
     public void afterGroup(final Token t) {
 
@@ -694,7 +722,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#afterGroup(de.dante.util.Observer)
+     * @see de.dante.extex.interpreter.context.Context#afterGroup(
+     *      de.dante.util.Observer)
      */
     public void afterGroup(final Observer observer) {
 
@@ -702,7 +731,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#closeGroup(de.dante.extex.typesetter.Typesetter,
+     * @see de.dante.extex.interpreter.context.Context#closeGroup(
+     *      de.dante.extex.typesetter.Typesetter,
      *     de.dante.extex.interpreter.TokenSource)
      */
     public void closeGroup(final Typesetter typesetter, final TokenSource source)
@@ -741,7 +771,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#pushConditional(de.dante.util.Locator, boolean)
+     * @see de.dante.extex.interpreter.context.Context#pushConditional(
+     *      de.dante.util.Locator, boolean)
      */
     public void pushConditional(final Locator locator, final boolean value) {
 
@@ -785,7 +816,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getInFile(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getInFile(
+     *      java.lang.String)
      */
     public InFile getInFile(final String name) {
 
@@ -793,7 +825,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getOutFile(java.lang.String)
+     * @see de.dante.extex.interpreter.context.Context#getOutFile(
+     *      java.lang.String)
      */
     public OutFile getOutFile(final String name) {
 
@@ -801,7 +834,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setInFile(java.lang.String,
+     * @see de.dante.extex.interpreter.context.Context#setInFile(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.InFile, boolean)
      */
     public void setInFile(final String name, final InFile file,
@@ -811,7 +845,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setOutFile(java.lang.String,
+     * @see de.dante.extex.interpreter.context.Context#setOutFile(
+     *      java.lang.String,
      *      de.dante.extex.interpreter.type.OutFile, boolean)
      */
     public void setOutFile(final String name, final OutFile file,
@@ -821,7 +856,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
+     * @see de.dante.util.observer.Observable#registerObserver(
+     *      java.lang.String,
      *      de.dante.util.Observer)
      */
     public void registerObserver(final String name, final Observer observer)
@@ -835,7 +871,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getLccode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getLccode(
+     *      de.dante.util.UnicodeChar)
      */
     public UnicodeChar getLccode(final UnicodeChar uc) {
 
@@ -843,7 +880,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getUccode(de.dante.util.UnicodeChar)
+     * @see de.dante.extex.interpreter.context.Context#getUccode(
+     *      de.dante.util.UnicodeChar)
      */
     public UnicodeChar getUccode(final UnicodeChar lc) {
 
@@ -851,7 +889,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setLccode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.Context#setLccode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.util.UnicodeChar)
      */
     public void setLccode(final UnicodeChar uc, final UnicodeChar lc) {
@@ -860,7 +899,8 @@ public class ContextImpl implements Context, Observable, Serializable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setUccode(de.dante.util.UnicodeChar,
+     * @see de.dante.extex.interpreter.context.Context#setUccode(
+     *      de.dante.util.UnicodeChar,
      *      de.dante.util.UnicodeChar)
      */
     public void setUccode(final UnicodeChar lc, final UnicodeChar uc) {

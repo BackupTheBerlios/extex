@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.configuration;
 
 import de.dante.extex.i18n.Messages;
@@ -25,10 +26,9 @@ import de.dante.extex.i18n.Messages;
  * the expected method.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class ConfigurationNoSuchMethodException
-    extends ConfigurationException {
+public class ConfigurationNoSuchMethodException extends ConfigurationException {
 
     /**
      * The field <tt>classname</tt> contains the name of the class which
@@ -39,11 +39,12 @@ public class ConfigurationNoSuchMethodException
     /**
      * Creates a new object.
      *
-     * @param aClassName ...
-     * @param config ...
+     * @param aClassName the name of the class which could not be found
+     * @param config the configuration in which the exception occurred.
      */
     public ConfigurationNoSuchMethodException(final String aClassName,
             final Configuration config) {
+
         super(null, config.toString());
         this.classname = aClassName;
     }
@@ -51,9 +52,10 @@ public class ConfigurationNoSuchMethodException
     /**
      * Creates a new object.
      *
-     * @param aClassName ...
+     * @param aClassName the name of the class which could not be found
      */
     public ConfigurationNoSuchMethodException(final String aClassName) {
+
         super(null);
         this.classname = aClassName;
     }
@@ -64,6 +66,7 @@ public class ConfigurationNoSuchMethodException
      * @param cause the next Throwable in the list
      */
     public ConfigurationNoSuchMethodException(final Throwable cause) {
+
         super(null, cause);
     }
 
@@ -77,10 +80,11 @@ public class ConfigurationNoSuchMethodException
      * @return the text
      */
     protected String getText() {
+
         return Messages.format("ConfigurationNoSuchMethodException.Text",
                                (classname != null //
-                                   ? classname //
-                                   : getCause() != null ? getCause()
-                                       .getMessage() : ""));
+                                       ? classname //
+                                       : getCause() != null ? getCause()
+                                               .getMessage() : ""));
     }
 }

@@ -16,18 +16,19 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.util.configuration;
 
 import de.dante.extex.i18n.Messages;
-
 
 /**
  * This Exception is thrown when a configuration could not be found.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ConfigurationNotFoundException extends ConfigurationException {
+
     /**
      * The field <tt>configName</tt> contains the name of the missing
      * configuration.
@@ -37,13 +38,13 @@ public class ConfigurationNotFoundException extends ConfigurationException {
     /**
      * Create a new object.
      *
-     * @param configName the name of the missing configuration
+     * @param name the name of the missing configuration
      * @param source the the name of the file for which this exception occurred
      */
-    public ConfigurationNotFoundException(final String configName,
-        final String source) {
+    public ConfigurationNotFoundException(final String name, final String source) {
+
         super(null, source);
-        this.configName = configName;
+        this.configName = name;
     }
 
     /**
@@ -57,7 +58,9 @@ public class ConfigurationNotFoundException extends ConfigurationException {
      * @return the text
      */
     protected String getText() {
+
         return Messages.format("ConfigurationNotFoundException.Text",
                                configName);
     }
+
 }

@@ -19,9 +19,9 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class VerticalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -49,7 +49,7 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     private Dimen prevDepth = new Dimen(-1000 * Dimen.ONE);
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the list of nodes encapsulated.
      */
     private VerticalListNode nodes = new VerticalListNode();
 
@@ -71,7 +71,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.node.CharNode)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.type.node.CharNode)
      */
     public void add(final Node n) throws GeneralException {
 
@@ -79,7 +80,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.type.Font,
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *      de.dante.extex.interpreter.type.Font,
      *      java.lang.String)
      */
     public void add(final TypesettingContext font, final UnicodeChar symbol)
@@ -91,7 +93,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.ListMaker#addGlue(
+     *      de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(final Glue g) throws GeneralException {
 
@@ -99,7 +102,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(
+     *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
@@ -127,7 +131,8 @@ public class VerticalListMaker extends AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+     *      de.dante.extex.interpreter.type.Dimen)
      */
     public void setPrevDepth(final Dimen pd) throws GeneralException {
 

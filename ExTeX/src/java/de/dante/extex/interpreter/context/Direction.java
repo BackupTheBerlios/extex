@@ -20,10 +20,10 @@ package de.dante.extex.interpreter.context;
 
 
 /**
- * ...
+ * This class provides a limited set of writing directions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class Direction {
 
@@ -34,7 +34,7 @@ public final class Direction {
     public static final Direction LR = new Direction();
 
     /**
-     * The field <tt>RL</tt> contains the direction for right-to-left
+     * The constant <tt>RL</tt> contains the direction for right-to-left
      * languages.
      */
     public static final Direction RL = new Direction();
@@ -42,7 +42,7 @@ public final class Direction {
     /**
      * Creates a new object.
      * This constructor is private since only a very limited set of instances
-     * of this class is allowed.
+     * of this class is allowed. Those are provided as constants.
      */
     private Direction() {
         super();

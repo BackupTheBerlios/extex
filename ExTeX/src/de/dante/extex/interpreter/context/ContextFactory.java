@@ -37,12 +37,13 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ContextFactory {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
+     * for the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
@@ -64,7 +65,7 @@ public class ContextFactory {
      *
      * @param configuration the configuration for this factory
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     public ContextFactory(final Configuration configuration)
             throws ConfigurationException {
@@ -94,7 +95,7 @@ public class ContextFactory {
      *
      * @return a new instance for the interface Context
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     public Context newInstance() throws ConfigurationException {
         Context context;

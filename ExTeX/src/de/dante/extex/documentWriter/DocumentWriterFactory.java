@@ -32,18 +32,19 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
  * This is the factory to provide an instance of a document writer.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class DocumentWriterFactory {
 
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribiute
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
      * used to get the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
     /**
-     * The constant <tt>DEFAULT_ATTRIBUTE</tt> contains the ...
+     * The constant <tt>DEFAULT_ATTRIBUTE</tt> contains the name of the atribute
+     * used to get the default configuration.
      */
     private static final String DEFAULT_ATTRIBUTE = "default";
 

@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class AbstractCode implements Code {
     /**
@@ -87,7 +87,8 @@ public class AbstractCode implements Code {
      * In general this method is simply a noop. Classes which need this feature
      * can overwrite this method.
      *
-     * @see de.dante.extex.interpreter.Code#set(de.dante.extex.interpreter.context.Context, java.lang.String)
+     * @see de.dante.extex.interpreter.Code#set(
+     *      de.dante.extex.interpreter.context.Context, java.lang.String)
      */
     public void set(final Context context, final String value)
         throws GeneralException {

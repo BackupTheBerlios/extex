@@ -37,11 +37,13 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GroupFactory {
+
     /**
-     * The constant <tt>CLASS_ATTRIBUTE</tt> ...
+     * The constant <tt>CLASS_ATTRIBUTE</tt> contains the name of the attribute
+     * for the class name.
      */
     private static final String CLASS_ATTRIBUTE = "class";
 
@@ -58,7 +60,7 @@ public class GroupFactory {
      *
      * @param config the configuration for this factory
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     public GroupFactory(final Configuration config)
             throws ConfigurationException {
@@ -90,7 +92,7 @@ public class GroupFactory {
      *
      * @return a new instance for the interface Group
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     public Group newInstance(final Group next) throws ConfigurationException {
         Group group;

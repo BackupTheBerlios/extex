@@ -22,7 +22,6 @@ package de.dante.extex.interpreter.context;
 import de.dante.extex.interpreter.type.Font;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
-import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationInstantiationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
 
@@ -30,7 +29,7 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class TypesettingContextFactory {
 
@@ -61,7 +60,9 @@ public class TypesettingContextFactory {
      *      could not be loaded.
      */
     public TypesettingContextFactory(final Configuration configuration)
-            throws ConfigurationException {
+            throws ConfigurationMissingAttributeException,
+                ConfigurationInstantiationException,
+                ConfigurationClassNotFoundException {
 
         super();
 

@@ -19,11 +19,10 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
-import de.dante.extex.interpreter.type.Glue;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -33,13 +32,13 @@ import de.dante.util.configuration.Configuration;
  * interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NullTypesetterImpl implements Typesetter {
 
     /**
      * Creates a new object.
-     * 
+     *
      * @param config the configuration object to consider
      */
     public NullTypesetterImpl(final Configuration config) {
@@ -47,15 +46,17 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(de.dante.extex.documentWriter.DocumentWriter)
+     * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
+     *     de.dante.extex.documentWriter.DocumentWriter)
      */
     public void setDocumentWriter(final DocumentWriter doc) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#addSpace(
+     *     de.dante.extex.interpreter.context.TypesettingContext,
+     *     de.dante.extex.interpreter.type.Count)
      */
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) {
@@ -77,14 +78,16 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.util.configuration.Configurable#configure(de.dante.util.configuration.Configuration)
+     * @see de.dante.util.configuration.Configurable#configure(
+     *     de.dante.util.configuration.Configuration)
      */
     public void configure(final Configuration config) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *     de.dante.extex.typesetter.Node)
      */
     public void add(final Node c) {
         // nothing to do
@@ -105,24 +108,26 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#addGlue(de.dante.extex.interpreter.type.Glue)
+     * @see de.dante.extex.typesetter.Typesetter#addGlue(
+     *     de.dante.extex.interpreter.type.Glue)
      */
     public void addGlue(final Glue g) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     * @see de.dante.extex.typesetter.ListMaker#add(
+     *     de.dante.extex.interpreter.context.TypesettingContext,
+     *     de.dante.util.UnicodeChar)
      */
     public void add(final TypesettingContext font, final UnicodeChar symbol) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#finish(de.dante.extex.interpreter.context.Context)
+     * @see de.dante.extex.typesetter.Typesetter#finish()
      */
-    public void finish(final Context context) {
+    public void finish() {
         // nothing to do
     }
 
@@ -141,21 +146,24 @@ public class NullTypesetterImpl implements Typesetter {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(de.dante.extex.interpreter.type.Count)
+     * @see de.dante.extex.typesetter.ListMaker#setSpacefactor(
+     *     de.dante.extex.interpreter.type.Count)
      */
     public void setSpacefactor(final Count f) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(de.dante.extex.interpreter.type.Dimen)
+     * @see de.dante.extex.typesetter.ListMaker#setPrevDepth(
+     *     de.dante.extex.interpreter.type.Dimen)
      */
     public void setPrevDepth(final Dimen pd) {
         // nothing to do
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#shipout(de.dante.extex.typesetter.NodeList)
+     * @see de.dante.extex.typesetter.Typesetter#shipout(
+     *     de.dante.extex.typesetter.NodeList)
      */
     public void shipout(final NodeList nodes) {
         // nothing to do

@@ -16,8 +16,8 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.context;
 
+package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
@@ -29,15 +29,15 @@ import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
-import de.dante.extex.interpreter.type.Box;
-import de.dante.extex.interpreter.type.Count;
-import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Font;
-import de.dante.extex.interpreter.type.Glue;
-import de.dante.extex.interpreter.type.InFile;
-import de.dante.extex.interpreter.type.Muskip;
-import de.dante.extex.interpreter.type.OutFile;
-import de.dante.extex.interpreter.type.Tokens;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.file.InFile;
+import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.muskip.Muskip;
+import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
@@ -54,36 +54,9 @@ import de.dante.util.observer.Observer;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public interface Context extends Serializable {
-
-    /**
-     * Convenience method to get the code assigned to a Token.
-     * If the Token is a ControlSequenceToken then the macro is returned.
-     * If the Token is a ActiveCharacterToken then the active value is returned.
-     * Otherwise <code>null</code> is returned.
-     *
-     * @param t the Token to differentiate on
-     *
-     * @return the code for the token
-     *
-     * @throws GeneralException in case of an error
-     */
-    Code getCode(Token t) throws GeneralException;
-
-    /**
-     * Convenience method to set the code assigned to a Token.
-     * ...
-     *
-     * @param t the Token to set the code for
-     * @param code the code for the token
-     * @param global the indicator for the scope; <code>true</code> means all
-     *            groups; otherwise the current group is affected only
-     *context.popConditional()
-     * @throws GeneralException in case of an error
-     */
-    void setCode(Token t, Code code, boolean global) throws GeneralException;
 
     /**
      * Setter for active characters in the requested group.
@@ -92,6 +65,7 @@ public interface Context extends Serializable {
      * @param code the assigned code
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     * @deprecated use setCode() instead.
      */
     void setActive(String name, Code code, boolean global);
 
@@ -120,6 +94,31 @@ public interface Context extends Serializable {
     void setAfterassignment(Token token);
 
     /**
+     * Setter for the {@link de.dante.extex.interpreter.type.box.Box box}
+     * register in the current group. Count registers are named, either with a
+     * number or an arbitrary string. The numbered registers where limited to
+     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     *
+     * @param name the name or the number of the register
+     * @param value the new value of the register
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
+     */
+    void setBox(String name, Box value, boolean global);
+
+    /**
+     * Getter for the {@link de.dante.extex.interpreter.type.box.Box box}
+     * register. Count registers are named, either with a number or an
+     * arbitrary string. The numbered registers where limited to 256 in TeX.
+     * This restriction does no longer hold for ExTeX.
+     *
+     * @param name the name or number of the count register
+     *
+     * @return the count register or <code>null</code> if it is void
+     */
+    Box getBox(String name);
+
+    /**
      * Setter for the catcode of a character in the specified groups.
      *
      * @param c the character to assign a catcode for
@@ -133,32 +132,37 @@ public interface Context extends Serializable {
             throws GeneralHelpingException;
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Box box}
-     * register in the current group. Count registers are named, either with a
-     * number or an arbitrary string. The numbered registers where limited to
-     * 256 in TeX. This restriction does no longer hold for ExTeX.
+     * Convenience method to get the code assigned to a Token.
+     * If the Token is a ControlSequenceToken then the macro is returned.
+     * If the Token is a ActiveCharacterToken then the active value is returned.
+     * Otherwise <code>null</code> is returned.
      *
-     * @param name the name or the number of the register
-     * @param value the new value of the register
+     * @param t the Token to differentiate on
+     *
+     * @return the code for the token
+     *
+     * @throws GeneralException in case of an error
+     */
+    Code getCode(Token t) throws GeneralException;
+
+    /**
+     * Convenience method to set the code assigned to a Token.
+     * The Token has to be either a
+     * {@link de.dante.scanner.stream.ActiveCharacterToken ActiveCharacterToken}
+     * or a
+     * {@link de.dante.scanner.stream.ConrolSequenceToken ControlSequenceToken}.
+     *
+     * @param t the Token to set the code for
+     * @param code the code for the token
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     *
+     * @throws GeneralException in case of an error
      */
-    void setBox(String name, Box value, boolean global);
+    void setCode(Token t, Code code, boolean global) throws GeneralException;
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Box box}
-     * register. Count registers are named, either with a number or an
-     * arbitrary string. The numbered registers where limited to 256 in TeX.
-     * This restriction does no longer hold for ExTeX.
-     *
-     * @param name the name or number of the count register
-     *
-     * @return the count register or <code>null</code> if it is void
-     */
-    Box getBox(String name);
-
-    /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Count count}
+     * Setter for the {@link de.dante.extex.interpreter.type.count.Count count}
      * register in all requested groups. Count registers are named, either with
      * a number or an arbitrary string. The numbered registers where limited to
      * 256 in TeX. This restriction does no longer hold for ExTeX.
@@ -171,7 +175,7 @@ public interface Context extends Serializable {
     void setCount(String name, long value, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Count count}
+     * Getter for the {@link de.dante.extex.interpreter.type.count.Count count}
      * register. Count registers are named, either with a number or an
      * arbitrary string. The numbered registers where limited to 256 in TeX.
      * This restriction does no longer hold for ExTeX.
@@ -183,9 +187,9 @@ public interface Context extends Serializable {
     Count getCount(String name);
 
     /**
-     * ...
+     * Setter for the delcode mapping.
      *
-     * @param c ...
+     * @param c the character to which the delcode is assigned
      * @param code ...
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
@@ -193,56 +197,57 @@ public interface Context extends Serializable {
     void setDelcode(UnicodeChar c, Count code, boolean global);
 
     /**
-     * ...
+     * Getter for the delcode mapping.
      *
-     * @param c ...
+     * @param c the character to which the delcode is assigned
      *
-     * @return ...
+     * @return the delcode for the given character
      */
     Count getDelcode(UnicodeChar c);
 
     /**
-     * ...
+     * Setter for dimen registers.
      *
-     * @param name ...
-     * @param value ...
+     * @param name the name or the number of the register
+     * @param value the new value of the register
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
     void setDimen(String name, long value, boolean global);
 
     /**
-     * ...
+     * Setter for dimen registers.
      *
-     * @param name ...
-     * @param value ...
+     * @param name the name or the number of the register
+     * @param value the new value of the register
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
      */
     void setDimen(String name, Dimen value, boolean global);
 
     /**
-     * ...
+     * Get the current value of the dimen register with a given name.
      *
-     * @param name ...
+     * @param name the name or the number of the register
      *
-     * @return ...
+     * @return the dimen register for the given name
      */
     Dimen getDimen(String name);
 
     /**
-     * ...
+     * Setter for font registers.
      *
-     * @param name ...
-     * @param font ...
-     * @param global ...
+     * @param name the name or the number of the register
+     * @param font the new Font value
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setFont(String name, Font font, boolean global);
 
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the register
      *
      * @return ...
      */
@@ -315,7 +320,7 @@ public interface Context extends Serializable {
      * @throws GeneralException in case of an error
      */
     void setInteraction(Interaction interaction, boolean global)
-         throws GeneralException;
+            throws GeneralException;
 
     /**
      * Getter for the interaction. The interaction determines how verbose the
@@ -367,17 +372,18 @@ public interface Context extends Serializable {
     /**
      * ...
      *
-     * @param name ...
-     * @param code ...
+     * @param name the name or the number of the macro
+     * @param code the code which should be assigned as new value
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
+     * @deprecated use setCode() instead.
      */
     void setMacro(String name, Code code, boolean global);
 
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the macro
      *
      * @return ...
      */
@@ -410,7 +416,8 @@ public interface Context extends Serializable {
      *
      * @param c ...
      * @param code ...
-     * @param global ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setMathcode(UnicodeChar c, Count code, boolean global);
 
@@ -426,7 +433,7 @@ public interface Context extends Serializable {
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the register
      * @param value ...
      * @param global the indicator for the scope; <code>true</code> means all
      *            groups; otherwise the current group is affected only
@@ -436,7 +443,7 @@ public interface Context extends Serializable {
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the register
      *
      * @return ...
      */
@@ -477,7 +484,7 @@ public interface Context extends Serializable {
     Tokenizer getTokenizer();
 
     /**
-     * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+     * Setter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
      * register in the current group. Tokens registers are named, either with a
      * number or an arbitrary string. The numbered registers where limited to
      * 256 in TeX. This restriction does no longer hold for ExTeX.
@@ -490,7 +497,7 @@ public interface Context extends Serializable {
     void setToks(String name, Tokens toks, boolean global);
 
     /**
-     * Getter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+     * Getter for the {@link de.dante.extex.interpreter.type.tokens.Tokens toks}
      * register. Tokens registers are named, either with a number or an
      * arbitrary string. The numbered registers where limited to 256 in TeX.
      * This restriction does no longer hold for ExTeX.
@@ -506,7 +513,7 @@ public interface Context extends Serializable {
      *
      * @param font ...
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     void setTypesettingContext(Font font) throws ConfigurationException;
 
@@ -515,7 +522,7 @@ public interface Context extends Serializable {
      *
      * @param color ...
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     void setTypesettingContext(Color color) throws ConfigurationException;
 
@@ -524,16 +531,17 @@ public interface Context extends Serializable {
      *
      * @param direction ...
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
-    void setTypesettingContext(Direction direction) throws ConfigurationException;
+    void setTypesettingContext(Direction direction)
+            throws ConfigurationException;
 
     /**
      * ...
      *
      * @param angle ...
      *
-     * @throws ConfigurationException ...
+     * @throws ConfigurationException in case of an error in the configuration.
      */
     void setTypesettingContext(int angle) throws ConfigurationException;
 
@@ -584,7 +592,8 @@ public interface Context extends Serializable {
      *
      * @throws GeneralException in case of an error
      */
-    void closeGroup(Typesetter typesetter, TokenSource source) throws GeneralException;
+    void closeGroup(Typesetter typesetter, TokenSource source)
+            throws GeneralException;
 
     /**
      * Pop the management information for a conditional from the stack and
@@ -617,16 +626,18 @@ public interface Context extends Serializable {
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the file register
      * @param file ...
-     * @param global ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setInFile(String name, InFile file, boolean global);
 
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the file register
+     *
      * @return ...
      */
     InFile getInFile(String name);
@@ -634,16 +645,17 @@ public interface Context extends Serializable {
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the file register
      * @param file ...
-     * @param global ...
+     * @param global the indicator for the scope; <code>true</code> means all
+     *            groups; otherwise the current group is affected only
      */
     void setOutFile(String name, OutFile file, boolean global);
 
     /**
      * ...
      *
-     * @param name ...
+     * @param name the name or the number of the file register
      *
      * @return ...
      */
