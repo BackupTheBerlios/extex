@@ -48,31 +48,35 @@ import de.dante.util.GeneralException;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class NV implements NodeVisitor {
 
     /**
-     * The field <tt>hyph</tt> contains the ...
+     * The field <tt>hyph</tt> contains the indicator for the hyphenation
+     * positions. A hyphenation is possible at a position <i>i</i> whenever the
+     * value <i>isHyph[i] == true</i>.
      */
     private boolean[] isHyph;
 
     /**
-     * The field <tt>hyphen</tt> contains the ...
+     * The field <tt>hyphen</tt> contains the tokens to insert at a hyphenation
+     * position into the discretionary.
      */
     private Tokens hyphen;
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the node list to add the current
+     * node to, with or without additional discretionary node.
      */
     private NodeList nodes;
 
     /**
      * Creates a new object.
      *
-     * @param nodes TODO
-     * @param hyphen TODO
-     * @param hyph TODO
+     * @param nodes the list of nodes to add the current node to
+     * @param hyphen the tokens to insert into the discretionary
+     * @param hyph the indocator for allowed hyphenation positions
      */
     public NV(final NodeList nodes, final Tokens hyphen, final boolean[] hyph) {
 
@@ -85,10 +89,12 @@ class NV implements NodeVisitor {
     /**
      * TODO gene: missing JavaDoc
      *
-     * @param nodes
-     * @param index
+     * @param list the node list to process
+     * @param index the index in the word to start with
      */
-    private final void processNodeList(final NodeList nodes, final Count index) {
+    private final void processNodeList(final NodeList list, final Count index) {
+
+        this.nodes.add(list);
 
         //TODO gene: unimplemented
         throw new RuntimeException("unimplemented");
@@ -256,12 +262,16 @@ class NV implements NodeVisitor {
         Count index = (Count) value;
         int n = node.countChars();
         int offset = (int) index.getValue();
-        boolean needHyphen = false;
+        int needHyphen = 0;
 
         for (int i = offset; i < offset + n; i++) {
             if (isHyph[i]) {
-                needHyphen = true;
+                needHyphen++;
             }
+        }
+        if (needHyphen == 0) {
+            nodes.add(node);
+            return null;
         }
 
         int leftLen = node.getLeft().countChars();
