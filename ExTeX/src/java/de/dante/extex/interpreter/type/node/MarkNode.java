@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [141]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class MarkNode extends AbstractNode implements Node {
 
@@ -49,18 +49,6 @@ public class MarkNode extends AbstractNode implements Node {
      * The field <tt>mark</tt> contains the tokens of the mark.
      */
     private Tokens mark;
-
-    /**
-     * Creates a new object.
-     *
-     * @param theMark the mark tokens to store
-     */
-    public MarkNode(final Tokens theMark) {
-
-        super();
-        mark = theMark;
-        index = 0;
-    }
 
     /**
      * Creates a new object.
