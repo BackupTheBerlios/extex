@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.impl.AlignmentList;
+import de.dante.extex.typesetter.listMaker.AlignmentList;
 import de.dante.util.GeneralException;
 
 /**
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Crcr extends Cr {
 

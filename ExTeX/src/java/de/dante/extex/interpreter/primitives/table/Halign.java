@@ -34,7 +34,7 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.extex.typesetter.impl.HAlignListMaker;
+import de.dante.extex.typesetter.listMaker.HAlignListMaker;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
@@ -57,9 +57,6 @@ import de.dante.util.configuration.ConfigurationException;
  *         | <tt>to</tt> &lang;rule dimension&rang;
  *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
  *
- *    &lang;preamble&rang;
- *       &rarr; ...
- *
  *    &lang;rows&rang;
  *       &rarr;
  *       | &lang;row&rang; &lang;rows&rang;
@@ -75,7 +72,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 

@@ -19,35 +19,21 @@
 
 package de.dante.extex.typesetter.dump;
 
-import de.dante.extex.documentWriter.DocumentWriter;
-import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.node.CharNodeFactory;
-import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.ListMaker;
-import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.impl.Manager;
 import de.dante.extex.typesetter.impl.TypesetterImpl;
-import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
-import de.dante.extex.typesetter.pageBuilder.PageBuilder;
-import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
-import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
  * This class implements the typeetter interface but simply records the events
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
