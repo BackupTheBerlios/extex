@@ -77,7 +77,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Multiply extends AbstractAssignment {
     /**
@@ -100,7 +100,7 @@ public class Multiply extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.scanToken();
+        Token cs = source.getToken();
 
         if (!(cs instanceof ControlSequenceToken)) {
             throw new GeneralHelpingException("TTP.CantUseAfter",
