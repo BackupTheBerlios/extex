@@ -21,13 +21,14 @@ package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.OutFile;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 
@@ -57,15 +58,14 @@ public class WhatsItOpenNode extends WhatsItNode {
     /**
      * This method performs any action which are required to executed at the
      * time of shipping the node to the DocumentWriter.
-     *
      * @param context the interpreter context
      *
      * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.typesetter.Node#atShipping(
-     *      de.dante.extex.interpreter.context.Context)
+     *      de.dante.extex.interpreter.context.Context, Typesetter)
      */
-    public void atShipping(final Context context) throws GeneralException {
+    public void atShipping(final Context context, Typesetter typesetter) throws GeneralException {
 
         file.open();
         context.setOutFile(key, file, false);
