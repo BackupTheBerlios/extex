@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -23,12 +23,6 @@ import java.util.Map;
 
 import de.dante.util.UnicodeChar;
 
-/*
- * ...
- *
- * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
- */
 /**
  * This is a implementation of a token factory. This means that the factory
  * pattern is applied here. This pattern opens the possibility to cache the
@@ -55,9 +49,11 @@ import de.dante.util.UnicodeChar;
  * </p>
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
+	
     /** cache for active character tokens */
     private Map activeCache = new HashMap();
 
@@ -126,7 +122,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token newInstance(Catcode code, String value)
             throws CatcodeException {
         try {
-            return (Token) code.visit(this, value, null);
+            return (Token) code.visit(this, value, null,null);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -150,7 +146,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token newInstance(Catcode code, char c) throws CatcodeException {
         try {
             return (Token) code.visit(this, null,
-                                      new UnicodeChar(c));
+                                      new UnicodeChar(c),null);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -167,7 +163,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             throws CatcodeException {
 
         try {
-            return (Token) code.visit(this, null, c);
+            return (Token) code.visit(this, null, c,null);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -182,7 +178,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
      */
-    public Object visitActive(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitActive(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -211,7 +207,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
      */
-    public Object visitComment(Object oValue, Object oChar) {
+    public Object visitComment(Object oValue, Object oChar, final UnicodeChar uchar) {
         return null;
     }
     
@@ -220,14 +216,14 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,java.lang.Object)
      */
-    public Object visitCr(Object oValue, Object oChar) {
+    public Object visitCr(Object oValue, Object oChar, final UnicodeChar uchar) {
         return crToken;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,java.lang.Object)
      */
-    public Object visitEscape(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitEscape(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         String value;
         if ( oValue != null) {
             value = (String)oValue;
@@ -252,7 +248,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,java.lang.Object)
      */
-    public Object visitIgnore(Object oValue, Object oChar) {
+    public Object visitIgnore(Object oValue, Object oChar, final UnicodeChar uchar) {
         return null;
     }
 
@@ -261,7 +257,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,java.lang.Object)
      */
-    public Object visitInvalid(Object oValue, Object oChar) {
+    public Object visitInvalid(Object oValue, Object oChar, final UnicodeChar uchar) {
         return null;
     }
 
@@ -270,7 +266,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object,java.lang.Object)
      */
-    public Object visitLeftBrace(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitLeftBrace(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -299,7 +295,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,java.lang.Object)
      */
-    public Object visitLetter(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitLetter(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -326,7 +322,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,java.lang.Object)
      */
-    public Object visitMacroParam(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitMacroParam(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -353,7 +349,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,java.lang.Object)
      */
-    public Object visitMathShift(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitMathShift(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -380,7 +376,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,java.lang.Object)
      */
-    public Object visitOther(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitOther(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -407,7 +403,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRightBrace(java.lang.Object,java.lang.Object)
      */
-    public Object visitRightBrace(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitRightBrace(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -437,14 +433,14 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
      * @see "The TeXbook [Chapter 8, p. 47]"
      */
-    public Object visitSpace(Object oValue, Object oChar) {
+    public Object visitSpace(Object oValue, Object oChar, final UnicodeChar uchar) {
         return spaceToken;
     }
 
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSubMark(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitSubMark(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -471,7 +467,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitSupMark(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitSupMark(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;
@@ -498,7 +494,7 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,java.lang.Object)
      */
-    public Object visitTabMark(Object oValue, Object oChar) throws CatcodeException {
+    public Object visitTabMark(Object oValue, Object oChar, final UnicodeChar uchar) throws CatcodeException {
         UnicodeChar uc;
         if ( oChar != null) {
             uc = (UnicodeChar)oChar;

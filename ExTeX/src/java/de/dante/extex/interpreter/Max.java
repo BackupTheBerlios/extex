@@ -40,6 +40,7 @@ import de.dante.util.NotObservableException;
 import de.dante.util.Observable;
 import de.dante.util.Observer;
 import de.dante.util.ObserverList;
+import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
@@ -53,7 +54,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSource, Observable {
 
@@ -61,7 +62,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * Class-Attribute
 	 */
 	private static final String CLASS_ATTRIBUTE = "class";
-	
+
 	/**
 	 * The constant <tt>MAX_ERRORS_DEFAULT</tt> ...
 	 */
@@ -293,7 +294,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 			observersExpand.update(this, current);
 
 			try {
-				current.getCatcode().visit(this, current, null);
+				current.getCatcode().visit(this, current, null, null);
 			} catch (GeneralPanicException e) {
 				throw e; //TODO report the problem and terminate
 			} catch (GeneralTerminateException e) {
@@ -336,7 +337,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitActive(final Object oToken, final Object arg2) throws GeneralException {
+	public Object visitActive(final Object oToken, final Object arg2, final UnicodeChar uc) throws GeneralException {
 		Token token = (Token) oToken;
 		return execute(token, context.getActive(token.getValue()));
 	}
@@ -348,7 +349,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitComment(final Object arg1, final Object ignore) throws GeneralException {
+	public Object visitComment(final Object arg1, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		throw new GeneralPanicException("this should never happen");
 	}
 
@@ -356,7 +357,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitCr(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitCr(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		//Token token = (Token) oToken;
 		//TODO unimplemented
 		throw new GeneralException("unimplemented");
@@ -366,7 +367,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitEscape(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitEscape(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		Token token = (Token) oToken;
 		observersMacro.update(this, token);
 		return execute(token, context.getMacro(token.getValue()));
@@ -376,7 +377,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitIgnore(final Object oToken, final Object ignore) {
+	public Object visitIgnore(final Object oToken, final Object ignore, final UnicodeChar uc) {
 		return null;
 	}
 
@@ -384,7 +385,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitInvalid(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitInvalid(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		throw new GeneralHelpingException("TTP.InvalidChar", ((Token) oToken).getValue());
 	}
 
@@ -393,7 +394,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 *      java.lang.Object)
 	 * @see "TeX -- The Program [1063]"
 	 */
-	public Object visitLeftBrace(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitLeftBrace(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		try {
 			context.openGroup();
 		} catch (ConfigurationException e) {
@@ -407,7 +408,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitLetter(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitLetter(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		Token token = (Token) oToken;
 		typesetter.add(context.getTypesettingContext(), token.getChar());
 		return null;
@@ -417,7 +418,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitMacroParam(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitMacroParam(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		throw new GeneralHelpingException("TTP.CantUseIn", ((Token) oToken).toString(), typesetter.getMode().toString());
 	}
 
@@ -426,7 +427,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitMathShift(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitMathShift(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		if (typesetter.getMode() == Mode.MATH) {
 			typesetter.toggleMath();
 			return null;
@@ -450,7 +451,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitOther(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitOther(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		Token token = (Token) oToken;
 		typesetter.add(context.getTypesettingContext(), token.getChar());
 		return null;
@@ -460,7 +461,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see "TeX -- The Program [1067]"
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object, java.lang.Object)
 	 */
-	public Object visitRightBrace(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitRightBrace(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		//TODO
 		context.closeGroup();
 		return null;
@@ -470,7 +471,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitSpace(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitSpace(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		typesetter.addSpace(context.getTypesettingContext(), null);
 		return null;
 	}
@@ -479,7 +480,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitSubMark(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitSubMark(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		//Token token = (Token) oToken;
 
 		//TODO unimplemented
@@ -490,7 +491,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitSupMark(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitSupMark(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		//Token token = (Token) oToken;
 
 		//TODO unimplemented
@@ -501,7 +502,7 @@ public class Max extends Moritz implements CatcodeVisitor, Interpreter, TokenSou
 	 * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object,
 	 *      java.lang.Object)
 	 */
-	public Object visitTabMark(final Object oToken, final Object ignore) throws GeneralException {
+	public Object visitTabMark(final Object oToken, final Object ignore, final UnicodeChar uc) throws GeneralException {
 		//Token token = (Token) oToken;
 
 		//TODO unimplemented

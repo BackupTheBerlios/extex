@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,7 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
 
 /**
  * This interface describes the capabilities for a visitor class on the category
@@ -25,40 +26,41 @@ package de.dante.extex.scanner;
  * This interface is used to implement the visitor pattern.
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.4 $
  */
 public interface CatcodeVisitor {
 
-    public abstract Object visitEscape(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitEscape(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitLeftBrace(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitLeftBrace(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitRightBrace(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitRightBrace(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitMathShift(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitMathShift(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitTabMark(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitTabMark(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitCr(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitCr(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitMacroParam(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitMacroParam(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitSupMark(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitSupMark(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitSubMark(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitSubMark(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitIgnore(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitIgnore(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitSpace(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitSpace(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitLetter(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitLetter(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitOther(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitOther(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitActive(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitActive(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitComment(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitComment(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
-    public abstract Object visitInvalid(Object arg1, Object arg2) throws Exception;
+	public abstract Object visitInvalid(Object arg1, Object arg2, UnicodeChar uc) throws Exception;
 
 }

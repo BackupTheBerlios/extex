@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,6 +19,7 @@
 package de.dante.extex.scanner.stream;
 
 import de.dante.extex.interpreter.Tokenizer;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.util.GeneralException;
@@ -34,63 +35,69 @@ import de.dante.util.Locator;
  * meantime.
  * </p>
  *
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface TokenStream {
-    /**
-     * Getter for the locator.
-     * The locator describes the place the tokens have been read from in terms
-     * of the user. This information is meant for the end user to track down
-     * problems.
-     *
-     * @return the locator
-     */
-    Locator getLocator();
 
-    /**
-     * ...
-     *
-     * @return <code>true</code> if the closing was successful
-     */
-    boolean closeFileStream();
+	/**
+	 * Getter for the locator.
+	 * The locator describes the place the tokens have been read from in terms
+	 * of the user. This information is meant for the end user to track down
+	 * problems.
+	 *
+	 * @return the locator
+	 */
+	Locator getLocator();
 
-    /**
-     * ...
-     *
-     * @return <code>true</code> if the stream is a file stream
-     */
-    boolean isFileStream();
+	/**
+	 * ...
+	 *
+	 * @return <code>true</code> if the closing was successful
+	 */
+	boolean closeFileStream();
 
+	/**
+	 * ...
+	 *
+	 * @return <code>true</code> if the stream is a file stream
+	 */
+	boolean isFileStream();
 
-    /**
-     * Get the next token from the token stream.
-     * If tokens are on the push-back stack then those are delivered otherwise
-     * new tokens might be extracted utilizing the token factory and the
-     * tokenizer.
-     *
-     * @param factory the token factory
-     * @param tokenizer the tokenizer
-     *
-     * @return the next Token or <code>null</code> if no more tokens are
-     * available
-     */
-    Token get(TokenFactory factory, Tokenizer tokenizer)
-                       throws GeneralException;
+	/**
+	 * Get the next token from the token stream.
+	 * If tokens are on the push-back stack then those are delivered otherwise
+	 * new tokens might be extracted utilizing the token factory and the
+	 * tokenizer.
+	 *
+	 * @param factory the token factory
+	 * @param tokenizer the tokenizer
+	 *
+	 * @return the next Token or <code>null</code> if no more tokens are
+	 * available
+	 */
+	Token get(TokenFactory factory, Tokenizer tokenizer) throws GeneralException;
 
-    /**
-     * Push back a token into the stream.
-     * If the token is <code>null</code> then nothing happens; a null token is
-     * not pushed!
-     * <p>
-     * Note that it is up to the implementation to accept tokens not produced
-     * with the token factory for push back. In general the behaviour in such a
-     * case is not defined and should be avoided.
-     * </p>
-     *
-     * @param token the token to push back
-     * @see "TeX -- The Program [325]"
-     */
-    void put(Token token);
+	/**
+	 * Push back a token into the stream.
+	 * If the token is <code>null</code> then nothing happens; a null token is
+	 * not pushed!
+	 * <p>
+	 * Note that it is up to the implementation to accept tokens not produced
+	 * with the token factory for push back. In general the behaviour in such a
+	 * case is not defined and should be avoided.
+	 * </p>
+	 *
+	 * @param token the token to push back
+	 * @see "TeX -- The Program [325]"
+	 */
+	void put(Token token);
+
+	/**
+	 * Push back tokens into the stream.
+	 * @param tokens	the tokens to push back
+	 */
+	void put(Tokens toks);
 
 }

@@ -32,13 +32,14 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive <code>\relax</code>.
  * It does simply nothing, but as a side effect all prefixes are zeroed.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Let extends AbstractCode implements CatcodeVisitor {
     /**
@@ -85,7 +86,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
 
         Code code;
         try {
-            code = (Code) (t2.getCatcode().visit(this, t2.getValue(), context));
+            code = (Code) (t2.getCatcode().visit(this, t2.getValue(), context,null));
         } catch (Exception e) {
             throw new GeneralException(e);
         }
@@ -103,7 +104,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object, java.lang.Object)
      */
-    public Object visitActive(Object oName, Object oContext)
+    public Object visitActive(Object oName, Object oContext,final UnicodeChar uc)
                        throws GeneralException {
         Context context = (Context) oContext;
         Code code       = context.getActive((String) oName);
@@ -119,7 +120,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object, java.lang.Object)
      */
-    public Object visitComment(Object oName, Object oContext)
+    public Object visitComment(Object oName, Object oContext,final UnicodeChar uc)
                         throws GeneralException {
         throw new GeneralHelpingException("TTP.Confusion", "");
     }
@@ -127,7 +128,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitCr(java.lang.Object, java.lang.Object)
      */
-    public Object visitCr(Object oName, Object oContext)
+    public Object visitCr(Object oName, Object oContext,final UnicodeChar uc)
                    throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -136,7 +137,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitEscape(java.lang.Object, java.lang.Object)
      */
-    public Object visitEscape(Object oName, Object oContext)
+    public Object visitEscape(Object oName, Object oContext,final UnicodeChar uc)
                        throws GeneralException {
         Context context = (Context) oContext;
         Code code       = context.getMacro((String) oName);
@@ -152,7 +153,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitIgnore(java.lang.Object, java.lang.Object)
      */
-    public Object visitIgnore(Object oName, Object oContext)
+    public Object visitIgnore(Object oName, Object oContext,final UnicodeChar uc)
                        throws GeneralException {
         throw new GeneralHelpingException("TTP.Confusion", "");
     }
@@ -160,7 +161,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitInvalid(java.lang.Object, java.lang.Object)
      */
-    public Object visitInvalid(Object oName, Object oContext)
+    public Object visitInvalid(Object oName, Object oContext,final UnicodeChar uc)
                         throws GeneralException {
         throw new GeneralHelpingException("TTP.Confusion", "");
     }
@@ -168,7 +169,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLeftBrace(java.lang.Object, java.lang.Object)
      */
-    public Object visitLeftBrace(Object oName, Object oContext)
+    public Object visitLeftBrace(Object oName, Object oContext,final UnicodeChar uc)
                           throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -177,7 +178,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitLetter(java.lang.Object, java.lang.Object)
      */
-    public Object visitLetter(Object oName, Object oContext)
+    public Object visitLetter(Object oName, Object oContext,final UnicodeChar uc)
                        throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -186,7 +187,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMacroParam(java.lang.Object, java.lang.Object)
      */
-    public Object visitMacroParam(Object oName, Object oContext)
+    public Object visitMacroParam(Object oName, Object oContext,final UnicodeChar uc)
                            throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -195,7 +196,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitMathShift(java.lang.Object, java.lang.Object)
      */
-    public Object visitMathShift(Object oName, Object oContext)
+    public Object visitMathShift(Object oName, Object oContext,final UnicodeChar uc)
                           throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -204,7 +205,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitOther(java.lang.Object, java.lang.Object)
      */
-    public Object visitOther(Object oName, Object oContext)
+    public Object visitOther(Object oName, Object oContext,final UnicodeChar uc)
                       throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -213,7 +214,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitRigthBrace(java.lang.Object, java.lang.Object)
      */
-    public Object visitRightBrace(Object oName, Object oContext)
+    public Object visitRightBrace(Object oName, Object oContext,final UnicodeChar uc)
                            throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -222,7 +223,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object, java.lang.Object)
      */
-    public Object visitSpace(Object oName, Object oContext)
+    public Object visitSpace(Object oName, Object oContext,final UnicodeChar uc)
                       throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -231,7 +232,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSubMark(java.lang.Object, java.lang.Object)
      */
-    public Object visitSubMark(Object oName, Object oContext)
+    public Object visitSubMark(Object oName, Object oContext,final UnicodeChar uc)
                         throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -240,7 +241,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSupMark(java.lang.Object, java.lang.Object)
      */
-    public Object visitSupMark(Object oName, Object oContext)
+    public Object visitSupMark(Object oName, Object oContext,final UnicodeChar uc)
                         throws GeneralException {
         // TODO Auto-generated method stub
         return null;
@@ -249,7 +250,7 @@ public class Let extends AbstractCode implements CatcodeVisitor {
     /**
      * @see de.dante.extex.scanner.CatcodeVisitor#visitTabMark(java.lang.Object, java.lang.Object)
      */
-    public Object visitTabMark(Object oName, Object oContext)
+    public Object visitTabMark(Object oName, Object oContext,final UnicodeChar uc)
                         throws GeneralException {
         // TODO Auto-generated method stub
         return null;

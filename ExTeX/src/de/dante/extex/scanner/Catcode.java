@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 Gerd Neugebauer
+ * Copyright (C) 2003-2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,8 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.util.UnicodeChar;
+
 /**
  * This class provides a type-save enumeration of the category codes for
  * characters.
@@ -30,9 +32,11 @@ package de.dante.extex.scanner;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.7 $
  */
 public abstract class Catcode {
+	
     /**
      * The constant <tt>ESCAPE</tt> contains the unique object representing the
      * escape catcode used to initiate control sequences.
@@ -241,13 +245,10 @@ public abstract class Catcode {
      * @return some return value form the visit
      */
     public abstract Object visit(final CatcodeVisitor visitor,
-        final Object value, final Object value2) throws Exception;
+        final Object value, final Object value2, final UnicodeChar uc) throws Exception;
 
     /**
      * This inner class represents an active catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeActive extends Catcode {
         /**
@@ -269,16 +270,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object value,
-            final Object value2) throws Exception {
-            return visitor.visitActive(value, value2);
+            final Object value2,final UnicodeChar uc) throws Exception {
+            return visitor.visitActive(value, value2,uc);
         }
     }
 
     /**
      * This inner class represents a comment catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeComment extends Catcode {
         /**
@@ -301,16 +299,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitComment(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitComment(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a CR catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeCr extends Catcode {
         /**
@@ -332,16 +327,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitCr(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitCr(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents an escape catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeEscape extends Catcode {
         /**
@@ -363,16 +355,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitEscape(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitEscape(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents an ignore catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeIgnore extends Catcode {
         /**
@@ -394,16 +383,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitIgnore(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitIgnore(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents an invalid character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeInvalid extends Catcode {
         /**
@@ -425,16 +411,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitInvalid(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitInvalid(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a left brace character.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeLeftBrace extends Catcode {
         /**
@@ -457,16 +440,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitLeftBrace(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitLeftBrace(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a letter character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeLetter extends Catcode {
         /**
@@ -488,16 +468,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitLetter(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitLetter(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a macro parameter character.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeMacroParam extends Catcode {
         /**
@@ -520,16 +497,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitMacroParam(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitMacroParam(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a math shift character token.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeMathShift extends Catcode {
         /**
@@ -552,16 +526,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitMathShift(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitMathShift(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents an other character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeOther extends Catcode {
         /**
@@ -583,16 +554,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitOther(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitOther(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a right brace character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeRigthBrace extends Catcode {
         /**
@@ -615,16 +583,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitRightBrace(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitRightBrace(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a space character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeSpace extends Catcode {
         /**
@@ -646,16 +611,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitSpace(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitSpace(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a sub mark character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeSubMark extends Catcode {
         /**
@@ -677,16 +639,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
-            return visitor.visitSubMark(arg1, arg2);
+            final Object arg2,final UnicodeChar uc) throws Exception {
+            return visitor.visitSubMark(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a sup mark character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeSupMark extends Catcode {
         /**
@@ -708,16 +667,13 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2)  throws Exception {
-            return visitor.visitSupMark(arg1, arg2);
+            final Object arg2,final UnicodeChar uc)  throws Exception {
+            return visitor.visitSupMark(arg1, arg2,uc);
         }
     }
 
     /**
      * This inner class represents a tab mark character catcode.
-     *
-     * @author $Author: gene $
-     * @version $Revision: 1.6 $
      */
     private static class CatcodeTabMark extends Catcode {
         /**
@@ -739,8 +695,8 @@ public abstract class Catcode {
          * @return some return value form the visit
          */
         public Object visit(final CatcodeVisitor visitor, final Object arg1,
-            final Object arg2)  throws Exception {
-            return visitor.visitTabMark(arg1, arg2);
+            final Object arg2,final UnicodeChar uc)  throws Exception {
+            return visitor.visitTabMark(arg1, arg2,uc);
         }
     }
 }
