@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Michael Niedermair
+ * Copyright (C) 2004 Gerd Neugebauer, Michael Niedermair
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class NumberedToks extends NamedToks {
 
@@ -72,5 +72,5 @@ public class NumberedToks extends NamedToks {
 
         return getName() + "#" + Long.toString(source.scanNumber());
     }
-    
+
 }
