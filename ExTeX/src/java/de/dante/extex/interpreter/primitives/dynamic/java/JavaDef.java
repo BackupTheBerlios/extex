@@ -48,7 +48,7 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  * The general form of this primitive is
  * <pre class="syntax">
- *   &lang;javaload&rang;
+ *   &lang;javadef&rang;
  *       &rarr; <tt>\javadef</tt> {@linkplain
  *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
  *       &lang;control sequence&rang;} &lang;<i>tokens</i>&rang; </pre>
@@ -122,7 +122,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class JavaDef extends AbstractCode implements Definer {
 
