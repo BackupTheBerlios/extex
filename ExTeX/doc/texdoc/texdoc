@@ -1,0 +1,974 @@
+##!/usr/local/bin/perl -w
+##*****************************************************************************
+## $Id: texdoc,v 1.1 2003/12/28 00:03:17 gene Exp $
+##*****************************************************************************
+## Author: Gerd Neugebauer
+##=============================================================================
+
+use strict;
+
+#------------------------------------------------------------------------------
+# Function:	usage
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub usage
+{ print STDERR <<__EOF__
+$0 
+
+__EOF__
+}
+
+my $docname = "TeX";
+
+my $pagelimit = 9999;
+
+my $verbose = 0;
+
+my @toc = ();
+
+my $doctitle = '';
+my $creator = 'Gerd Neugebauer <gene@gerd.neugebauer.de>';
+
+my $left   = 'img/left.gif';
+my $left2  = 'img/leftleft.gif';
+my $right  = 'img/right.gif';
+my $right2 = 'img/rightright.gif';
+
+use Getopt::Long;
+GetOptions("creator=s"	=> \$creator,
+	   "docname=s"	=> \$docname,
+	   "h"		=> \&usage,
+	   "help"	=> \&usage,
+	   "pagelimit=s"=> \$pagelimit,
+	   "title=s"	=> \$doctitle,
+	   "v"		=> \$verbose,
+	   "verbose"	=> \$verbose,
+	  );
+
+use FileHandle;
+
+my $outfile = undef;
+
+my $col = 0;
+
+my $contents = '';
+
+my $in = '';
+
+my $verb = 0;
+my $math = 0;
+my $displaymath = 0;
+my @group = ();
+my $tabcol;
+my @tabfmt;
+my @tabpre;
+my @tabpost;
+
+#------------------------------------------------------------------------------
+#
+
+sub a__hat
+{ if ( substr($_,0,1) eq '^' )
+  { my $c = substr($_,1,1);
+    $_ = substr($_,2);
+    if ( $c eq 'Z' )
+    { return $_[0].'^'; }
+    else { die "" }
+  }
+  elsif ( substr($_,0,1) eq '{' )
+  { $_ = substr($_,1); }
+  elsif ( m/^\\[a-zA-Z]+/os or m/^\\./os or m/^./os )
+  { $_ = $&.'}'.$'; }
+  else
+  { die "*^*"; }
+  push @group,'</sup>';
+  return $_[0].'<sup>';
+}
+sub a__percent
+{ s/^.*//o;
+  return $_[0];
+}
+sub a__dollar
+{ if ( $math == 1 )
+  { $math = 0;
+    return $_[0].'</i>'
+  }
+  elsif ( substr($_,0,1) ne '$' ) #'
+  { $math = 1;
+    return $_[0].'<i>';
+  }
+  $_ = substr($_,1);
+  if ( $displaymath == 0 )
+  { $displaymath = 1;
+    return $_[0].'<p><i>';
+  }
+  $displaymath = 0;
+  return $_[0].'</i><p>';
+}
+sub a__leftbrace
+{ push @group,'';
+  return $_[0]
+}
+sub a__rightbrace
+{ my $end = pop @group;
+  defined $end or die "End of group which is not opened.";
+  if ( ref($end) eq 'CODE' ) { return $_[0].&$end(); }
+  else			     { return $_[0].$end; }
+}
+sub a__tilde
+{ return $_[0].'&nbsp;';
+}
+sub a__underscore
+{ if ( substr($_,0,1) eq '{' )
+  { $_ = substr($_,1); }
+  elsif ( m/^\\[a-zA-Z]+/os or m/^\\./os or m/^./os )
+  { $_ = $&.'}'.$'; }
+  else
+  { die "*_*"; }
+  push @group,'</sub>';
+  return $_[0].'<sub>';
+}
+sub m__dot
+{ my $c = substr($_,0,1);
+  length($_) > 1 or die "xxxxxxxx";
+  $_ = substr($_,1);
+  if ( $c eq '{' )
+  { $verb = 1;
+    push @group,sub { $verb = 0; return '</tt>';};
+    return $_[0].'<tt>';
+  }
+  elsif ( $c eq '^' and substr($_,0,1) eq '^' )
+  { $c = substr($_,1,1);
+    $_ = substr($_,2);
+    if ( $c eq 'Z' ) { $c = '&bull;'; }
+    return $_[0].'<tt>'.$c.'</tt>';
+  }
+  elsif ( $c ne "\\" )
+  { return $_[0].'<tt>'.$c.'</tt>';
+  }
+  elsif ( m/^[a-z]+/o )
+  { $_ = $';
+    $c .= $&;
+    $verb = 1;
+    $c = expand($c);
+    $verb = 0;
+    return $_[0].'<tt>'.$c.'</tt>';
+  }
+  else
+  { $c .= substr($_,0,1);
+    $_ = substr($_,1);
+    $verb = 1;
+    $c = expand($c);
+    $verb = 0;
+    return $_[0].'<tt>'.$c.'</tt>';
+  }
+}
+sub m__comma		{ return $_[0]; }
+sub m__semicolon	{ return $_[0]; }
+sub m__exclam		{ return $_[0]; }
+sub m__doublequote	{ return $_[0].'"'; }
+sub m__paragraph	{ return $_[0].'§'; }
+sub m__dollar		{ return $_[0].'&#36;'; }
+sub m__percent		{ return $_[0].'%'; }
+sub m__slash		{ return $_[0].'/'; }
+sub m__backslash {
+  return $_[0].'&#92;' if $verb;
+  my $c = substr($_,0,1);
+  return $_[0] if $_ eq '';
+  $_ = substr($_,1);
+  if ( $c eq '{' )
+  { push @group,'</i>';
+    return $_[0].'<i>';
+  }
+  else
+  { return $_[0].'<i>'.$c.'</i>';
+  }
+}
+sub m__left_paren	{ return $_[0].'('; }
+sub m__right_paren	{ return $_[0].')'; }
+sub m__equals		{ return $_[0].'='; }
+sub m__questionmark	{ return $_[0].'|'; }
+sub m__left_quote	{ return $_[0].'`'; }
+sub m__plus		{ return $_[0].'+'; }
+sub m__times		{ return $_[0].'*'; }
+sub m__tilde		{ return $_[0].'&nbsp;'; }
+sub m__hash		{ return $_[0].'#'; }
+sub m__right_quote	{ return $_[0].'\''; }
+sub m__minus		{ return $_[0].'-'; }
+sub m__underscore	{ return $_[0].'&#95;'; }
+sub m__vertbar		{ return $_[0]; }
+sub m__hat		{ return $_[0].'^'; }
+sub m__space		{ return $_[0].' '; }
+sub m__leftbracket
+{ m/\]/o || die;
+  $_ = $';
+  return $_[0].'<b>'.$`.'</b>';
+}
+sub m__rightbrace	{ return $_[0].'&#125;'; }
+sub m__leftbrace	{ return $_[0].'&#123;'; }
+sub m__rightbracket	{ return $_[0].']'; }
+sub m__lt		{ return $_[0].'&#60;'; }
+sub m__ampercent
+{ return $_[0].'&amp;' if ( $verb );
+  my $c = substr($_,0,1);
+  if ( $c ne '{' )
+  { $_ = substr($_,1);
+    return $_[0]."<b>$c</b>";
+  }
+  $_ = substr($_,1);
+  push @group,'</b> ';
+  return $_[0].'<b>';
+}
+sub m_advance
+{ m/^\\[a-z]+[=]?[-+]?[0-9]+(pt|mm|pc|cm|mu)?/o;
+  $_ = $';
+  return $_[0];
+}
+sub m_baselineskip
+{ m/^[=]?[-+]?[0-9]+(pt|mm|pc|cm|mu)/o;
+  $_ = $';
+  return $_[0];
+}
+sub m_emergencystretch
+{ m/^[=]?[-+]?[0-9]+(pt|mm|pc|cm|mu)/o;
+  $_ = $';
+  return $_[0];
+}
+
+sub m_AM	{ return $_[0].'&#38;'; }
+sub m_BS	{ return $_[0].'&#92;'; }
+sub m_LQ	{ return $_[0].'<tt>`</tt>'; }
+sub m_RQ	{ return $_[0].'<tt>\'</tt>'; }
+sub m_SP	{ return $_[0].' '; }
+sub m_UL	{ return $_[0].'&#95;'; }
+sub m_TL	{ return $_[0].'&#126;'; }
+sub m_AT	{ $_ = substr($_,1); return $_[0].'@'; }
+
+sub m_grp 	{ return $_[0].'&#123;...&#125;'; }
+sub m_fin 	{ return $_[0]; }
+
+sub m_relax	{ return $_[0]; }
+sub m_noindent	{ return $_[0]; }
+sub m_hang	{ return $_[0]; }
+sub m_unskip	{ return $_[0]; }
+sub m_penalty	{ s/^[0-9]+//os; return $_[0]; }
+sub m_ignorespaces	{ s/^[ ]+//os; return $_[0]; }
+sub m_TeX	{ return $_[0].'T<span style="vertical-align:-20%;">E</span>X'; }
+sub m_MF	{ return $_[0].'METAFONT'; }
+sub m_PASCAL	{ return $_[0].'PASCAL'; }
+sub m_ph	{ return $_[0].'PASCAL-H'; }
+sub m_par	{ return $_[0]."<br>\n"; }
+sub m_fi	{ return $_[0]; }
+sub m_to	{ return $_[0].'&nbsp;..&nbsp;'; }
+sub m_prime	{ return $_[0]."'"; }
+sub m_dots	{ return $_[0].'...'; }
+sub m_ldots	{ return $_[0].'...'; }
+sub m_langle	{ return $_[0].'&lang;'; }
+sub m_rangle	{ return $_[0].'&rang;'; }
+sub m_approx	{ return $_[0].'&nbsp;&asymp;&nbsp;'; }
+sub m_equiv	{ return $_[0].'&nbsp;&equiv;&nbsp;'; }
+sub m_cdot	{ return $_[0].'&nbsp;&sdot;&nbsp;'; }
+sub m_cdots	{ return $_[0].'&nbsp;&sdot;&sdot;&sdot;&nbsp;'; }
+sub m_alpha	{ return $_[0].'&alpha;'; }
+sub m_beta	{ return $_[0].'&beta;'; }
+sub m_delta	{ return $_[0].'&delta;'; }
+sub m_gamma	{ return $_[0].'&gamma;'; }
+sub m_le	{ return $_[0].'&le;'; }
+sub m_ge	{ return $_[0].'&ge;'; }
+sub m_infty	{ return $_[0].'&infin;'; }
+sub m_sum	{ return $_[0].'<font size="120%">&sum;</font>'; }
+sub m_min	{ return $_[0].'min'; }
+sub m_max	{ return $_[0].'max'; }
+sub m_vert	{ return $_[0].'|'; }
+sub m_lfloor	{ return $_[0].'&lfloor;'; }
+sub m_rfloor	{ return $_[0].'&rfloor;'; }
+sub m_lceil	{ return $_[0].'&lceil;'; }
+sub m_rceil	{ return $_[0].'&rceil;'; }
+sub m_times	{ return $_[0].'&nbsp;&times;&nbsp;'; }
+sub m_ast	{ return $_[0].'&lowast;'; }
+sub m_in	{ return $_[0].'&isin;'; }
+sub m_ae	{ return $_[0].'æ'; }
+sub m_rm	{ return $_[0]; }
+sub m_textindent{ return $_[0]."<br>\n"; }
+sub m_thinspace { return $_[0]; }
+sub m_quad	{ return $_[0].'&nbsp;&nbsp;'; }
+sub m_qquad	{ return $_[0].'&nbsp;&nbsp;&nbsp;&nbsp;'; }
+sub m_sl	{ push @group,'</i>'.pop(@group); return $_[0].'<i>'; }
+sub m_bf	{ push @group,'</b>'.pop(@group); return $_[0].'<b>'; }
+sub m_mc	{ push @group,'</small>'.pop(@group); return $_[0].'<small>'; }
+sub m__1	{ $in .= '&nbsp;&nbsp;'; return $_[0]; }
+sub m__2	{ $in = substr($in,12); return $_[0]; }
+sub m__3	{ $_ = substr($_,1); return $_[0]; }
+sub m__4	{ $_ = $` if( m/\&nbsp;\&nbsp;$/os ); return $_[0]; }
+#sub m__4	{ local $_ = $_[0]; $_ = $` if( m/\&nbsp;\&nbsp;$/os ); return $_; }
+sub m__5	{ return $_[0]; }
+sub m__6	{ return $_[0]."<br>\n".$in; }
+sub m__7	{ return $_[0]."<br><br>\n".$in; }
+sub m__9	{ get_token_or_group(); return $_[0]; }
+sub prepare_sections
+{ m/\./os || die "missing .";
+  $_ = $';
+  my $s = $`.$&;
+  my $ret = '';
+  $s =~ s/%.*\n//go;
+  while ( $s =~ m/[0-9]+/os )
+  { my $n = $&;
+    $s = $';
+    $ret .= $`."<a href='$docname&#95;$n.html' target='main'><small>$n</small></a>";
+  }
+  $ret .= $s;
+  $ret =~ s/\\ETs/, and /go;
+  $ret =~ s/\\ET/ and /go;
+  return $ret;
+}
+sub m__colon
+{
+  if ( substr($_,0,2) eq "\\X" ) { return $_[0]."<br>\n"; }
+
+  m/,/o  || die "missing comma: ".substr($_,0,21)."\n";
+  my $x = $`;
+  $_ = $';
+  return $_[0]."<br>\n".expand($x).','.expand(prepare_sections());
+}
+sub m_A		{ return $_[0].'<br>See also section '.prepare_sections(); }
+sub m_As	{ return $_[0].'<br>See also sections '.prepare_sections(); }
+sub m_U		{ return $_[0].'<br>This code is used in section '.prepare_sections(); }
+sub m_Us	{ return $_[0].'<br>This code is used in sections '.prepare_sections(); }
+sub m_J		{ return $_[0].'<tt>@&#38;</tt>'; }
+sub m_K		{ return $_[0].'&nbsp;&larr;&nbsp;'; }
+sub m_E		{ print "E "; $_ ='^'.$_; return $_[0].'<FONT FACE="symbol">&#215;</FONT>10'; }
+sub m_B		{ $_ = "\\{".$_; return $_[0].'@'; }
+sub m_T		{ $_ = "\\}".$_; return $_[0].'@'; }
+sub m_P		{ return $_[0].'&nbsp;&nbsp;'; }
+sub m_Y		{ return $_[0].'<br>'; }
+sub m_R		{ return $_[0].'&nbsp;&not;&nbsp;'; }
+sub m_V		{ return $_[0].' &or; '; }
+sub m_W		{ return $_[0].' &and; '; }
+sub m_G		{ return $_[0].'&nbsp;&ge;&nbsp;'; }
+sub m_L		{ return $_[0].'&nbsp;&le;&nbsp;'; }
+sub m_S		{ return $_[0].'&nbsp;&equiv;&nbsp;'; }
+sub m_I		{ return $_[0].'&nbsp;&ne;&nbsp;'; }
+sub m_F		{ return $_[0].'<b>format</b> '; }
+sub m_D		{ return $_[0].'<b>define</b> '; }
+sub m_ET	{ return $_[0].' and&nbsp;'; }
+sub m_ETs	{ return $_[0].', and&nbsp;'; }
+sub m_section	{ return $_[0].'§'; }
+sub m_H
+{ substr($_,0,1) eq '{' or die "missing {";
+  $_ = substr($_,1);
+  push @group,'"<TT>';
+  return $_[0].'</TT>';
+}
+sub m_C
+{ substr($_,0,1) eq '{' or die "";
+  $_ = substr($_,1);
+  push @group,'&#125;';
+  return $_[0].'&nbsp;&nbsp;&#123;';
+}
+sub m_O
+{ my $c = substr($_,0,1);
+  return $_[0] if $_ eq '';
+  $_ = substr($_,1);
+  if ( $c eq '{' )
+  { push @group,'</i>';
+    return $_[0].'<i>\'';
+  }
+  else
+  { return $_[0]."<i>'$c</i>"; }
+}
+sub m_pct
+{ substr($_,0,1) eq '!' or die "";
+  $_ = substr($_,1);
+  return $_[0].'%';
+}
+sub m_biggl 
+{ my $c = substr($_,0,1);
+  $_ = substr($_,1);
+  return $_[0]." <large>$c</large>";
+}
+sub m_biggr
+{ my $c = substr($_,0,1);
+  $_ = substr($_,1);
+  return $_[0]."<large>$c</large> ";
+}
+sub m_mathrel
+{ my $a = expand(get_token_or_group());
+  $a =~ s/[ ]+$//o;
+  return $_[0].' '.$a;
+}
+sub m_mathbin
+{ my $a = expand(get_token_or_group());
+  return $_[0].' '.$a.' ';
+}
+sub m_mathop
+{ my $a = expand(get_token_or_group());
+  return $_[0].$a.' ';
+}
+sub m_hbox
+{ substr($_,0,1) eq '{' or die "";
+  $_ = substr($_,1);
+  push @group,'';
+  return $_[0];
+}
+sub m_X
+{
+  m/:/os or die "Missing colon";
+  $_ = $';
+  my $no = $`;
+  $no = expand($no);
+  m/\\X/os or die "Missing end \\X: $_";
+  $_ = $';
+  my $text = $`;
+  $text = expand($text);
+  return $_[0].'<a href="'.$docname.'_'.$no.'.html" target=\'main\'>&lang;'.$text.' '.$no.'&rang;</a>';
+}
+sub m_kern
+{ if ( m/^[-]?[0-9]+[ ]?(pt|em|ex|mm|cm)/o )
+  { $_ = $'; }
+  return $_[0];
+}
+my %char = ( '174' => '|',
+	     '44' => '&#36;',
+	     '136' => '^',
+	     '137' => '&#95;',
+	     '173' => '{',
+	     '175' => '}',
+	    );
+sub m_char
+{ if ( m/^\'([0-9]+)/o )
+  { my $c = $char{$1};
+    if ( defined $c )
+    { $_ = $';
+      return $_[0].$c;
+    }
+    print "### $1 ### ";
+    return $_[0]."<font color='red'>\\char</font>";
+  }
+  return $_[0];
+}
+sub m_null	{ return $_[0]; }
+sub m_yskip	{ return $_[0]; }
+sub m_glob	{ return $_[0].'13'; }
+sub m_gglob	{ return $_[0].'20, 26'; }
+sub m_inx	{ return $_[0]; }
+sub m_con	{ return $_[0]; }
+
+sub m_chardef
+{
+  m/^[ ]*\\[^=]+=(\'[0-7]+|[0-9]*)/oi || die ;
+  $_ = $';
+  return $_[0];
+}
+
+my %macro = ();
+
+sub m_def
+{
+  m/^[ ]*\\([a-z]*)[^{]+/oi || die "$_";
+  my $name = $1;
+  $_ = $';
+  substr($_,0,1) eq '{' || die "";
+  $macro{'m_'.$name} = get_token_or_group();
+  return $_[0];
+}
+
+sub m_right
+{ my $c = substr($_,0,1);
+  $_ = substr($_,1);
+  return $_[0] if $c eq '.';
+
+  return $_[0];
+}
+sub m_hskip
+{ if ( m/^[-]?[0-9]+[ ]?(pt|em|ex|mm|cm|mu)/o )
+  { $_ = $';
+    my $l = $&;
+    if ( $l eq '25pt') { return $_[0].'&nbsp;&nbsp;&nbsp;&nbsp;'; }
+    if ( $l eq '50pt')
+    { return $_[0].'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'; }
+  }
+  elsif ( m/^[-]?\\fontdimen[0-9]+\\font/o )
+  { $_ = $'; }
+  return $_[0];
+}
+sub m_hfil { return $_[0]; }
+sub m_vbox { return $_[0]; }
+sub m_vcenter { return $_[0]; }
+
+sub a__lt
+{ return '&lt;';
+}
+
+sub a__ampercent
+{
+  my $ret = $_[0].expand($tabpost[$tabcol]);
+  $tabcol++;
+  $ret .= '</TD><TD '.$tabfmt[$tabcol].'>';
+  $_ = $tabpre[$tabcol].$_;
+  return $ret;
+}
+sub m_cr
+{
+  my $ret = $_[0].expand($tabpost[$tabcol]);
+  $tabcol = 0;
+
+  if ( m/^\}/o ) { return $ret; }
+  $_ = $tabpre[0].$_;
+  return $ret.'</td></tr><tr><td '.$tabfmt[$tabcol].'>';
+}
+sub m_halign
+{ # print '---',substr($_,0,22),"\n";
+  if ( m/\\cr/o )
+  { $_ = $';
+    my $fmt = $`;
+    $fmt =~ s/^\{//o;
+    $tabcol = 0;
+    foreach my $f (split /&amp;/,$fmt)
+    { $f =~ s/\\hfil\\qquad$/\\qquad\\hfil/o;
+      $f =~ s/^\\hbox to ([0-9 ]+)pt\{(.*)\}$/$2/o;
+#      print "--> $f\n";
+      $f =~ m/\#/o;
+      $tabpre[$tabcol]  = $`;
+      $tabpost[$tabcol] = $';
+      $tabfmt[$tabcol]  = '';
+      if ( $tabpre[$tabcol] =~ m/^\\hfil/o )
+      { $tabpre[$tabcol] = $';
+	if ( $tabpost[$tabcol] =~ m/\\hfil$/o )
+	{ $tabpost[$tabcol] = $`;
+	  $tabfmt[$tabcol] = 'align="center"';
+	}
+	else
+	{ $tabfmt[$tabcol] = 'align="right"';
+	}
+      }
+      elsif ( $tabpost[$tabcol] =~ m/\\hfil$/o )
+      { $tabpost[$tabcol] = $`;
+	$tabfmt[$tabcol] = 'align="left"';
+      }
+#      print "\n>$tabfmt[$tabcol]<\t>$tabpre[$tabcol]<\t>$tabpost[$tabcol]<\n";
+      $tabcol++;
+    }
+    $tabcol = 0;
+
+#    $verb = 1;
+    push @group,'</td></tr></table>';
+    push @group,sub{$verb=0; return '';};
+    $_ = $tabpre[0].$_;
+    return $_[0].
+	'<table align="center" cellspacing="0" cellpadding="0"><tr><td '.$tabfmt[$tabcol].'>';
+  }
+  print "######";
+  if ( m/^\{.*/o )
+  { $_ = $';
+    push @group,sub{$verb=0; return '</td></tr></table>';};
+    return $_[0].'<table align="center" cellspacing="0" cellpadding="0"><tr><td>';
+  }
+  return $_[0];
+}
+sub m_cases
+{
+  my $line = $_[0];
+  die "***" if not $line =~ m/.*<p><i>/o;
+  my $pre = $';
+  $line = $`.$&;
+
+  $_ = substr($_,1);
+  
+  @tabfmt  = ('','');
+  @tabpre  = ('','');
+  @tabpost = ('&nbsp;&nbsp;','');
+  $tabcol  = 0;
+  push @group,sub { return '</td></tr></table>' };
+  return <<__EOF__;
+$line
+<table align="center" cellspacing="0" cellpadding="0">
+<tr><td rowspan="999">$pre</td>
+<td rowspan="999"><font size="7">{</font></td>
+<td $tabfmt[0]>
+__EOF__
+}
+
+sub m_left
+{
+  my $line = $_[0];
+  die "***" if not $line =~ m/.*<p><i>/o;
+  my $pre = $';
+  $line = $`.$&;
+
+  $_ = substr($_,1);
+  
+  @tabfmt  = ('','');
+  @tabpre  = ('','');
+  @tabpost = ('&nbsp;&nbsp;','');
+  $tabcol  = 0;
+  push @group,sub { return '</td></tr></table>' };
+  return <<__EOF__;
+$line
+<table align="center" cellspacing="0" cellpadding="0">
+<tr><td rowspan="999">$pre</td>
+<td rowspan="999"><font size="7">{</font></td>
+<td $tabfmt[0]>
+__EOF__
+}
+
+
+#------------------------------------------------------------------------------
+# Variable:	%map
+# Description:	Mapping the funny characters to parts of names for
+#		Perl functions.
+#
+my %map = (
+	   '&amp;' => '_ampercent',
+	   '&'	   => '_ampercent',
+	   '&lt;'  => '_lt',
+	   '&gt;'  => '_gt',
+	   '.'     => '_dot',
+	   ','     => '_comma',
+	   ':'     => '_colon',
+	   ';'     => '_semicolon',
+	   '!'     => '_exclam',
+	   '"'     => '_doublequote',
+	   '§'     => '_paragraph',
+	   "\$"    => '_dollar',
+	   '%'     => '_percent',
+	   '/'     => '_slash',
+	   '\\'    => '_backslash',
+	   '('     => '_left_paren',
+	   ')'     => '_right_paren',
+	   '='     => '_equals',
+	   '?'     => '_questionmark',
+	   '`'     => '_left_quote',
+	   '+'     => '_plus',
+	   '*'     => '_times',
+	   '~'     => '_tilde',
+	   '#'     => '_hash',
+	   '\''    => '_right_quote',
+	   '-'     => '_minus',
+	   '_'     => '_underscore',
+	   '|'     => '_vertbar',
+	   '^'     => '_hat',
+	   ' '     => '_space',
+	   "\t"    => '_space',
+	   "\n"    => '_space',
+	   '{'     => '_leftbrace',
+	   '}'     => '_rightbrace',
+	   '['     => '_leftbracket',
+	   ']'     => '_rightbracket',
+	   '0'     => '_0',
+	   '1'     => '_1',
+	   '2'     => '_2',
+	   '3'     => '_3',
+	   '4'     => '_4',
+	   '5'     => '_5',
+	   '6'     => '_6',
+	   '7'     => '_7',
+	   '8'     => '_8',
+	   '9'     => '_9',
+	  );
+
+#------------------------------------------------------------------------------
+# Function:	get_token_or_group
+# Arguments:	none
+# Returns:	
+# Description:	
+#
+sub get_token_or_group
+{
+  if ( m/^\{/os )
+  { $_ = $';
+    my $ret = '{';
+    my $n = 1;
+    while ( m/[{}]/os )
+    { $ret .= $`.$&;
+      $_ = $';
+      if ( $& eq '{' ) { $n++; }
+      else	       { $n--; return $ret if $n == 0; }
+    }
+    die "";
+  }
+  if ( m/^\\[a-zA-Z]+/os or m/^\\./os or m/^./os )
+  { $_ = $';
+    return $&;
+  }
+  die "EOL";
+}
+
+#------------------------------------------------------------------------------
+# Function:	expand
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub expand
+{ local $_ = shift;
+  my $pre  = '';
+  s/1\\over2/½/gos;
+
+  while ( m/[_^\%\$\{\}~]|[\\]?\&amp;|(\\[^a-zA-Z])|(\\[a-zA-Z]+)/os )
+  { my $match = $&;
+    $pre .= $`;
+    $_ = $';
+#    print "==> $match\n";
+    my $cmd = $map{$match};
+    if ( defined $cmd )
+    { $cmd = 'a_'.$cmd; }
+    elsif ( substr($match,0,1) eq '\\' )
+    { s/^ //go;
+      $cmd = $map{substr($match,1)};
+      $cmd = 'm_'.(defined $cmd ? $cmd : substr($match,1) );
+    }
+    else
+    { die $match; }
+
+    no strict 'refs';
+    eval { $cmd = &$cmd($pre); };
+    if ( $@ )
+    { my $mac = $macro{$cmd};
+      if ( defined $mac )
+      { $_ = $mac.$_; }
+      else
+      { $pre .= "<font color='red'>$match</font>";
+	print "<$match:$cmd> ";
+	print $@ if ( substr($@,0,12) ne 'Undefined su' );
+      }
+    }
+    else { $pre = $cmd; }
+  }
+  return $pre.$_;
+}
+
+#------------------------------------------------------------------------------
+# Function:	out
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub out_finish
+{
+  if ( defined $outfile )
+  {
+    $contents =~ s/[ ]*\n[ ]*\n/\n<p>/gos;
+    $contents =~ s/<p>[\n]*<p>/<p>/gos;
+    $contents = expand($contents);
+    $contents =~ s/<p>[\n]*<br>/<p>/gos;
+    $contents =~ s/<br>[\n]*<p>/\n<p>/gos;
+    $contents =~ s/\+&nbsp;\&equiv;/+&equiv;/gos;
+    $contents =~ s/ +&nbsp;/&nbsp;/gos;
+    $contents =~ s/&nbsp; +/&nbsp;/gos;
+    $contents =~ s/--/&mdash;/g;
+    $contents =~ s/---/&ndash;/g;
+    $contents =~ s/``/&ldquo;/g;
+    $contents =~ s/''/&rdquo;/g;
+
+    print $outfile $contents;
+  }
+  $contents = '';
+}
+
+#------------------------------------------------------------------------------
+# Function:	header
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub header
+{ my $title  = shift;
+  my $author = shift;
+  $title =~ s/T<span style="vertical-align:-20%;">E<\/span>X/TeX/go;
+  $title =~ s/<[^>]*>//go;
+  return <<__EOF__;
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML//3.2//EN">
+<html>
+<head>
+  <title>$title</title>
+  <meta name="Author" content="$author">
+  <meta http_equiv="Content-Type" content="text/html;CHARSET=iso-8859-1">
+</head>
+__EOF__
+}
+
+#------------------------------------------------------------------------------
+# Function:	do_open
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub do_open
+{ my $filename = shift;
+  my $title    = shift || $filename;
+  my $bodyargs = shift || '';
+  do_close() if ( defined $outfile );
+  $contents = '';
+  if ( $col > 70 )
+  { print "\n";
+    $col = 0;
+  }
+  $col += length($filename)+1;
+  print "[$filename";
+  $filename = ( $filename ne '' ? "$docname\_$filename" : $docname );
+  $outfile = new FileHandle("$filename.html",'w');
+  print $outfile header($title,$creator);
+  print $outfile "<body $bodyargs>\n";
+  push @toc,"<a href='$filename.html' target='main'>$title</a> ";
+}
+
+#------------------------------------------------------------------------------
+# Function:	do_close
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub do_close
+{ return if not defined $outfile;
+  out_finish();
+  print ']';
+  $col++;
+  print $outfile "\n</body>\n</html>\n";
+  $outfile->close();
+  undef $outfile;
+}
+
+#------------------------------------------------------------------------------
+# Function:	do_files
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub do_files
+{
+  while ( <> )
+  { last if m/^\\[NM][0-9]+\./o;
+    $doctitle = expand($1) if m/\\def\\title\{(.*)\}/os;
+  }
+
+  do
+  { s/&/&amp;/g;
+    s/</&lt;/g;
+    s/>/&gt;/g;
+    if ( m/^\\[NM]([0-9]+)\./os )
+    { $_ = $';
+      my $file = $1;
+      return if $file > $pagelimit;
+      $in = '';
+      $math = 0;
+      $displaymath = 0;
+      if ( m/\\\[([0-9]+)\][ ]*/os )
+      { my $no = $1;
+	my $title = $';
+	chomp $title;
+	
+	do_open($file,
+		"<br><b><font size='2'>$file.&nbsp;$title</font></b>",
+		"bgcolor=\"white\"");
+	$_ = "<b>$file. $title </b>\n";
+      }
+      else
+      { do_open($file,'',"bgcolor=\"white\"");
+	$_ = "<b>$file. </b>\n".$_;
+      }
+    }
+    $contents .= $_;
+  } while ( <> );
+
+
+  do_close();
+}
+
+#------------------------------------------------------------------------------
+# Function:	do_title
+# Arguments:	
+# Returns:	
+# Description:	
+#
+sub do_title
+{
+  $outfile = new FileHandle($docname.'_title.html','w');
+  print "[title";
+  print $outfile header($doctitle,$creator);
+  print $outfile <<__EOF__;
+<body bgcolor='#ffffc4' style='font-family:helvetica,san-serif'>
+<script language="JavaScript"><!--
+function Next(n)
+{ /*if ( n == 5 ) { window.document.RightRight.src = "$right2-down.gif"; }
+   *else          { window.document.Right.src = "$right-down.gif"; }
+   */
+  var text = parent.main.location.href;
+  var m = text.match("(.*_)(.*)(.html)");
+  parent.main.location.href=m[1]+(parseInt(m[2])+n)+m[3];
+}
+function Previous(n)
+{ /*if ( n == 5 ) { window.document.LeftLeft.src = "$left2-down.gif"; }
+   *else          { window.document.Left.src = "$left-down.gif"; }
+   */
+  var text = parent.main.location.href;
+  var m = text.match("(.*_)(.*)(.html)");
+  if ( parseInt(m[2]) > n )
+  { parent.main.location.href=m[1]+(parseInt(m[2])-n)+m[3]; }
+  else
+  { parent.main.location.href=m[1]+"1"+m[3]; }
+}
+//--></script>
+<div style='font-size:180%;text-align:center;'><b>$doctitle</b></div>
+<br>
+__EOF__
+  if ( -e $left2 ) { $_ = "<img name='LeftLeft' src='$left2' border='0'>"; }
+  else             { $_ = 'Previous 5'; }
+  print $outfile "<a href=\"javascript:Previous(5)\">$_</a>&nbsp;\n";
+  if ( -e $left ) { $_ = "<img name='Left' src='$left' border='0'>"; }
+  else            { $_ = 'Previous'; }
+  print $outfile "<a href=\"javascript:Previous(1)\">$_</a>&nbsp;\n";
+  if ( -e $right ) { $_ = "<img name='Right' src='$right' border='0'>"; }
+  else             { $_ = 'Next'; }
+  print $outfile "<a href=\"javascript:Next(1)\">$_</a>&nbsp;\n";
+  if ( -e $right2 ) { $_ = "<img name='RightRight' src='$right2' border='0'>"; }
+  else              { $_ = 'Next 5'; }
+  print $outfile "<a href=\"javascript:Next(5)\">$_</a>\n";
+  print $outfile <<__EOF__;
+<br><a href="TeX_toc.html" target="toc">Contents</a>
+<a href="TeX_1380.html" target="toc">Index</a>
+__EOF__
+  print $outfile "\n</body>\n</html>\n";
+  $outfile->close();
+  undef $outfile;
+  print "]";
+}
+
+#------------------------------------------------------------------------------
+# 
+do_files();
+
+do_title();
+
+do_open('toc',$doctitle,'bgcolor="#ffffc4"');
+print $outfile "<font face='helvetica' size='1'>\n";
+pop @toc;
+foreach $_ (@toc) { print $outfile $_,"\n"; }
+print $outfile "</font>";
+do_close();
+
+$outfile = new FileHandle($docname.'.html','w');
+print "[";
+print $outfile header($doctitle,$creator);
+print $outfile <<__EOF__;
+<frameset   cols="300,*" border="0" frameborder="0">
+  <frameset rows="118,*" border="0" frameborder="0">
+    <frame name="title"  src="$docname\_title.html">
+    <frame name="toc"    src="$docname\_toc.html">
+  </frameset>
+  <frame name="main" src="$docname\_1.html">
+  <noframes>
+  <h1>Sorry!</h1>
+  <h3>This page must be viewed by a browser that is capable of displaying frames.</h3>
+  </noframes>
+</frameset>
+__EOF__
+print $outfile "\n</body>\n</html>\n";
+$outfile->close();
+print "]\n";
+
+#------------------------------------------------------------------------------
+# Local Variables: 
+# mode: perl
+# End: 

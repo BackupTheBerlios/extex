@@ -1,0 +1,7 @@
+
+The following line should be placed in .Xdefaults to allow netscape to
+use the symbol fonts.
+
+Netscape*documentFonts.charset*adobe-fontspecific: iso-8859-1
+
+
