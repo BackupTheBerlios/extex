@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter;
 
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -46,7 +47,7 @@ import de.dante.util.observer.NotObservableException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public interface TokenSource {
 
@@ -86,15 +87,19 @@ public interface TokenSource {
      * @param token the Token to execute
      *
      * @throws GeneralException in case of an error
+     * @throws ErrorLimitException in case that the error limit has been reached
      */
-    void execute(final Token token) throws GeneralException;
+    void execute(final Token token)
+            throws GeneralException,
+                ErrorLimitException;
 
     /**
      * Scan and execute tokens until the group ends.
      *
      * @throws GeneralException in case of an error
+     * @throws ErrorLimitException in case that the error limit has been reached
      */
-    void executeGroup() throws GeneralException;
+    void executeGroup() throws GeneralException, ErrorLimitException;
 
     /**
      * Parse the specification of a box.
