@@ -9,8 +9,8 @@
     <!-- configure the directories -->
     <property name="extexjarfile" value="extex"/>
     <property name="testsuitejarfile" value="testsuite"/>
-    <property name="src" location="src"/>
-    <property name="src.tests" location="test"/>
+    <property name="src" location="src/java"/>
+    <property name="src.tests" location="src/test"/>
     <property name="classes" location="target/classes"/>
     <property name="javadoc" location="doc/javadoc"/>
     <property name="javadocxml" location="doc/javadocxml"/>
