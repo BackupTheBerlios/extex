@@ -47,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Inputlineno extends AbstractCode
         implements
@@ -69,8 +69,8 @@ public class Inputlineno extends AbstractCode
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         return source.getLocator().getLineno();
     }
@@ -96,8 +96,8 @@ public class Inputlineno extends AbstractCode
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         long line = convertCount(context, source, typesetter);
         return new Tokens(context, Long.toString(line));

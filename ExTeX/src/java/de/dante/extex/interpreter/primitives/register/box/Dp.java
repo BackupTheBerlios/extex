@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.box;
 
 import java.io.Serializable;
@@ -107,10 +108,15 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
-public class Dp extends Setbox implements Serializable, ExpandableCode,
-    Theable, CountConvertible, DimenConvertible {
+public class Dp extends Setbox
+        implements
+            Serializable,
+            ExpandableCode,
+            Theable,
+            CountConvertible,
+            DimenConvertible {
 
     /**
      * Creates a new object.
@@ -118,6 +124,7 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
      * @param name the name for debugging
      */
     public Dp(final String name) {
+
         super(name);
     }
 
@@ -129,8 +136,8 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public boolean execute(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         Box box = context.getBox(getKey(source, context.getNamespace()));
         source.getOptionalEquals();
@@ -151,8 +158,8 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
      *      de.dante.extex.typesetter.Typesetter)
      */
     public void expand(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
+            final TokenSource source, final Typesetter typesetter)
+            throws GeneralException {
 
         source.push(the(context, source, typesetter));
     }
@@ -162,8 +169,8 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-        throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         Box box = context.getBox(getKey(source, context.getNamespace()));
         Dimen d = (box == null ? Dimen.ZERO_PT : box.getDepth());
@@ -175,8 +182,8 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
-        throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         return convertDimen(context, source, typesetter);
     }
@@ -186,11 +193,11 @@ public class Dp extends Setbox implements Serializable, ExpandableCode,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source, Typesetter typesetter)
-        throws GeneralException {
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         Box b = context.getBox(getKey(source, context.getNamespace()));
-        return  (b == null ? 0 : b.getDepth().getValue());
+        return (b == null ? 0 : b.getDepth().getValue());
     }
 
 }

@@ -47,9 +47,12 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Lastpenalty extends AbstractCode implements CountConvertible, Theable {
+public class Lastpenalty extends AbstractCode
+        implements
+            CountConvertible,
+            Theable {
 
     /**
      * Creates a new object.
@@ -66,13 +69,13 @@ public class Lastpenalty extends AbstractCode implements CountConvertible, Theab
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
-//        String key = getName();
-//        Count c = context.getCount(key);
-//        return (c != null ? c.getValue() : 0);
+        //        String key = getName();
+        //        Count c = context.getCount(key);
+        //        return (c != null ? c.getValue() : 0);
     }
 
     /**
@@ -87,8 +90,8 @@ public class Lastpenalty extends AbstractCode implements CountConvertible, Theab
             throws GeneralException {
 
         throw new HelpingException("TTP.CantUseIn",
-                printableControlSequence(context),
-                typesetter.getMode().toString());
+                printableControlSequence(context), typesetter.getMode()
+                        .toString());
     }
 
     /**
@@ -96,12 +99,12 @@ public class Lastpenalty extends AbstractCode implements CountConvertible, Theab
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
-//        String key = getName();
-//        return new Tokens(context, context.getCount(key).toString());
+        //        String key = getName();
+        //        return new Tokens(context, context.getCount(key).toString());
     }
 
 }

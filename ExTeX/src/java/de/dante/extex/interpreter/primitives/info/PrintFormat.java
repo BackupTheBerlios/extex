@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  * @see java.text.DecimalFormat
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class PrintFormat extends AbstractCode implements Theable {
 
@@ -85,8 +85,8 @@ public class PrintFormat extends AbstractCode implements Theable {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         // \the\printformat{pattern}\real7
 
@@ -101,15 +101,14 @@ public class PrintFormat extends AbstractCode implements Theable {
         if (!(cs instanceof ControlSequenceToken)) {
             char esc = (char) (context.getCount("escapechar").getValue());
             // TODO change char to UnicodeChar
-            throw new HelpingException("TTP.CantUseAfter",
-                    cs.toString(), Character.toString(esc) + getName());
+            throw new HelpingException("TTP.CantUseAfter", cs.toString(),
+                    Character.toString(esc) + getName());
         }
 
         Code code = context.getCode(cs);
 
         if (code == null) {
-            throw new HelpingException("TTP.UndefinedToken", cs
-                    .toString());
+            throw new HelpingException("TTP.UndefinedToken", cs.toString());
         } else if (code instanceof RealConvertible) {
             Real val = ((RealConvertible) code).convertReal(context, source);
             DecimalFormat form = new DecimalFormat(pattern);
@@ -117,8 +116,8 @@ public class PrintFormat extends AbstractCode implements Theable {
             return toks;
         } else {
             char esc = (char) (context.getCount("escapechar").getValue());
-            throw new HelpingException("TTP.CantUseAfter",
-                    cs.toString(), Character.toString(esc) + getName());
+            throw new HelpingException("TTP.CantUseAfter", cs.toString(),
+                    Character.toString(esc) + getName());
         }
     }
 }

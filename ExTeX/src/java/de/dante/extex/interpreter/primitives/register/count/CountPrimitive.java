@@ -70,10 +70,16 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class CountPrimitive extends AbstractCount implements ExpandableCode,
-        Advanceable, Multiplyable, Divideable, Theable, CountConvertible {
+public class CountPrimitive extends AbstractCount
+        implements
+            ExpandableCode,
+            Advanceable,
+            Multiplyable,
+            Divideable,
+            Theable,
+            CountConvertible {
 
     /**
      * Creates a new object.
@@ -141,8 +147,8 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         String key = getKey(source, context.getNamespace());
         Count c = context.getCount(key);
@@ -193,8 +199,8 @@ public class CountPrimitive extends AbstractCount implements ExpandableCode,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         String key = getKey(source, context.getNamespace());
         return new Tokens(context, context.getCount(key).toString());

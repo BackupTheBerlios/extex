@@ -63,10 +63,12 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
-public class Fontdimen extends AbstractAssignment implements ExpandableCode,
-        Theable {
+public class Fontdimen extends AbstractAssignment
+        implements
+            ExpandableCode,
+            Theable {
 
     /**
      * Creates a new object.
@@ -120,8 +122,8 @@ public class Fontdimen extends AbstractAssignment implements ExpandableCode,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         int idx = (int) source.scanInteger();
         source.skipSpace();

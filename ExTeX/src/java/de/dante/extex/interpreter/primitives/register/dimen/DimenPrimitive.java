@@ -47,11 +47,17 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class DimenPrimitive extends AbstractDimen implements Advanceable,
-        ExpandableCode, CountConvertible, DimenConvertible, Multiplyable,
-        Divideable, Theable {
+public class DimenPrimitive extends AbstractDimen
+        implements
+            Advanceable,
+            ExpandableCode,
+            CountConvertible,
+            DimenConvertible,
+            Multiplyable,
+            Divideable,
+            Theable {
 
     /**
      * Creates a new object.
@@ -121,8 +127,8 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         String key = getKey(source);
         Dimen d = context.getDimen(key);
@@ -134,8 +140,8 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertDimen(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public long convertDimen(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         return convertCount(context, source, typesetter);
     }
@@ -186,8 +192,8 @@ public class DimenPrimitive extends AbstractDimen implements Advanceable,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         String key = getKey(source);
         return context.getDimen(key).toToks(context.getTokenFactory());

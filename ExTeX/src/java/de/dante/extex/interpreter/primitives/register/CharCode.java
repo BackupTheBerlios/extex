@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register;
 
 import de.dante.extex.interpreter.Flags;
@@ -34,9 +35,12 @@ import de.dante.util.UnicodeChar;
  * This class provides an implementation for ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class CharCode extends AbstractCode implements ExpandableCode, CountConvertible {
+public class CharCode extends AbstractCode
+        implements
+            ExpandableCode,
+            CountConvertible {
 
     /**
      * The field <tt>character</tt> contains the encapsulated Unicode character.
@@ -83,7 +87,7 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
 
         Catcode cc = context.getTokenizer().getCatcode(character);
         Token t = context.getTokenFactory().createToken(cc, character,
-                                                        context.getNamespace());
+                context.getNamespace());
         source.push(t);
     }
 
@@ -92,8 +96,8 @@ public class CharCode extends AbstractCode implements ExpandableCode, CountConve
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public long convertCount(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public long convertCount(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         return character.getCodePoint();
     }

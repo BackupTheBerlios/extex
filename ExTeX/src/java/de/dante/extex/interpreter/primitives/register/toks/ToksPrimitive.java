@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.toks;
 
 import de.dante.extex.interpreter.Flags;
@@ -39,7 +40,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ToksPrimitive extends AbstractToks implements Theable {
 
@@ -77,8 +78,8 @@ public class ToksPrimitive extends AbstractToks implements Theable {
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
-    public Tokens the(final Context context, final TokenSource source, Typesetter typesetter)
-            throws GeneralException {
+    public Tokens the(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
 
         return context.getToks(getKey(source, context.getNamespace()));
     }
@@ -97,7 +98,7 @@ public class ToksPrimitive extends AbstractToks implements Theable {
      * @throws GeneralException in case of an error
      */
     protected void expand(final Flags prefix, final Context context,
-        final TokenSource source, final String key) throws GeneralException {
+            final TokenSource source, final String key) throws GeneralException {
 
         Tokens toks = source.getTokens();
         context.setToks(key, toks, prefix.isGlobal());
