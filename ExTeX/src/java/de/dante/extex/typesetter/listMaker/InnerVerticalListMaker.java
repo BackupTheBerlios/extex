@@ -17,24 +17,25 @@
  *
  */
 
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 
 /**
- * This is the derived class for a list maker in restricted horizontal mode.
+ * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
-public class RestrictedHorizontalListMaker extends HorizontalListMaker {
+public class InnerVerticalListMaker extends VerticalListMaker {
 
     /**
      * Creates a new object.
      *
      * @param manager the manager to ask for global changes
      */
-    public RestrictedHorizontalListMaker(final Manager manager) {
+    public InnerVerticalListMaker(final ListManager manager) {
 
         super(manager);
     }
@@ -44,7 +45,7 @@ public class RestrictedHorizontalListMaker extends HorizontalListMaker {
      */
     public Mode getMode() {
 
-        return Mode.RESTRICTED_HORIZONTAL;
+        return Mode.INNER_VERTICAL;
     }
 
 }

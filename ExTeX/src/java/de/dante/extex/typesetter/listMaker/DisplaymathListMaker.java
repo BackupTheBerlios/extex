@@ -17,21 +17,22 @@
  *
  */
 
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -39,9 +40,21 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.1 $
  */
-public class DisplaymathListMaker extends AbstractListMaker {
+public class DisplaymathListMaker extends AbstractListMaker
+        implements
+            NoadConsumer {
+
+    /**
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+     *      de.dante.extex.typesetter.type.noad.Noad)
+     */
+    public void add(final Noad noad) throws GeneralException {
+
+        // TODO unimplemented
+
+    }
 
     /**
      * The field <tt>nodes</tt> contains the horizontal node list.
@@ -53,7 +66,7 @@ public class DisplaymathListMaker extends AbstractListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public DisplaymathListMaker(final Manager manager) {
+    public DisplaymathListMaker(final ListManager manager) {
 
         super(manager);
     }
@@ -148,11 +161,11 @@ public class DisplaymathListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
-     *      de.dante.extex.scanner.Token, TokenSource)
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
      * @see "TeX -- The Program [1197]"
      */
-    public void treatMathShift(final Token t, final TokenSource source)
+    public void mathShift(Context context, final TokenSource source, final Token t)
             throws GeneralException {
 
         Token next = source.getToken();
@@ -160,7 +173,7 @@ public class DisplaymathListMaker extends AbstractListMaker {
         if (next == null) {
             throw new MathHelpingException(t.toString());
         } else if (!next.isa(Catcode.MATHSHIFT)) {
-            throw new HelpingException(getLocalizer(),"TTP.DisplayMathEnd");
+            throw new HelpingException(getLocalizer(), "TTP.DisplayMathEnd");
         }
 
         getManager().endParagraph();
@@ -168,11 +181,11 @@ public class DisplaymathListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatSubMark(
+     * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSubMark(final TypesettingContext context, final Token token)
+    public void subscriptMark(final TypesettingContext context, final Token token)
             throws GeneralException {
 
         //TODO _ unimplemented
@@ -180,14 +193,14 @@ public class DisplaymathListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatSupMark(
+     * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSupMark(final TypesettingContext context, final Token token)
+    public void superscriptMark(final TypesettingContext context, final Token token)
             throws GeneralException {
 
-        //TODO _ unimplemented
+        //TODO ^ unimplemented
         throw new RuntimeException("unimplemented");
     }
 

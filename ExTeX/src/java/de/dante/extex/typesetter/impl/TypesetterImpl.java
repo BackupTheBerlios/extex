@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.logging.Logger;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -41,6 +42,9 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
+import de.dante.extex.typesetter.listMaker.ListManager;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.listMaker.VerticalListMaker;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.type.noad.Noad;
@@ -56,12 +60,12 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @version $Revision: 1.41 $
  */
 public class TypesetterImpl
         implements
             Typesetter,
-            Manager,
+            ListManager,
             Localizable,
             LogEnabled {
 
@@ -138,7 +142,11 @@ public class TypesetterImpl
      */
     public void add(final Noad noad) throws GeneralException {
 
-        listMaker.add(noad);
+        if (listMaker instanceof NoadConsumer) {
+            ((NoadConsumer) listMaker).add(noad);
+        } else {
+            throw new MathHelpingException("???");
+        }
     }
 
     /**
@@ -212,7 +220,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#endParagraph()
+     * @see de.dante.extex.typesetter.listMaker.ListManager#endParagraph()
      */
     public void endParagraph() throws GeneralException {
 
@@ -250,7 +258,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
+     * @see de.dante.extex.typesetter.listMaker.ListManager#getDocumentWriter()
      */
     public DocumentWriter getDocumentWriter() {
 
@@ -266,7 +274,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#getLigatureBuilder()
+     * @see de.dante.extex.typesetter.listMaker.ListManager#getLigatureBuilder()
      */
     public LigatureBuilder getLigatureBuilder() {
 
@@ -289,7 +297,7 @@ public class TypesetterImpl
      *
      * @see de.dante.extex.typesetter.Typesetter#getManager()
      */
-    public Manager getManager() {
+    public ListManager getManager() {
 
         return this;
     }
@@ -303,7 +311,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#getOptions()
+     * @see de.dante.extex.typesetter.listMaker.ListManager#getOptions()
      */
     public TypesetterOptions getOptions() {
 
@@ -311,7 +319,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#getParagraphBuilder()
+     * @see de.dante.extex.typesetter.listMaker.ListManager#getParagraphBuilder()
      */
     public ParagraphBuilder getParagraphBuilder() {
 
@@ -327,7 +335,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#pop()
+     * @see de.dante.extex.typesetter.listMaker.ListManager#pop()
      */
     public void pop() throws GeneralException {
 
@@ -339,7 +347,7 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#push(
+     * @see de.dante.extex.typesetter.listMaker.ListManager#push(
      *      de.dante.extex.typesetter.ListMaker)
      */
     public void push(final ListMaker list) {
@@ -455,9 +463,9 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#treatLetter(
+     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
      *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
+     *      de.dante.util.UnicodeChar)
      */
     public void treatLetter(final TypesettingContext context,
             final UnicodeChar uc) throws GeneralException {
@@ -466,35 +474,35 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
-     *      de.dante.extex.scanner.Token, TokenSource)
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void treatMathShift(final Token t, final TokenSource source)
+    public void mathShift(Context context, final TokenSource source, final Token t)
             throws GeneralException {
 
-        listMaker.treatMathShift(t, source);
+        listMaker.mathShift(context, source, t);
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#treatSubMark(
+     * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSubMark(final TypesettingContext context, final Token t)
+    public void subscriptMark(final TypesettingContext context, final Token t)
             throws GeneralException {
 
-        listMaker.treatSubMark(context, t);
+        listMaker.subscriptMark(context, t);
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#treatSupMark(
+     * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSupMark(final TypesettingContext context, final Token t)
+    public void superscriptMark(final TypesettingContext context, final Token t)
             throws GeneralException {
 
-        listMaker.treatSupMark(context, t);
+        listMaker.superscriptMark(context, t);
     }
 
     /**

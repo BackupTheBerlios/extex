@@ -17,10 +17,11 @@
  *
  */
 
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -39,9 +40,9 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.1 $
  */
-public class MathListMaker extends AbstractListMaker {
+public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
@@ -54,7 +55,7 @@ public class MathListMaker extends AbstractListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public MathListMaker(final Manager manager) {
+    public MathListMaker(final ListManager manager) {
 
         super(manager);
     }
@@ -106,9 +107,10 @@ public class MathListMaker extends AbstractListMaker {
 
     /**
      * Close the node list.
-     * In the course of the closing the Noad listis transfered into a Node list.
+     * In the course of the closing the Noad list is translated into a Node
+     * list.
      *
-     * @return the node list enclosed in this instance.
+     * @return the node list enclosed in this instance
      *
      * @see de.dante.extex.typesetter.ListMaker#close()
      * @see "TeX -- The Program [719]"
@@ -198,36 +200,36 @@ public class MathListMaker extends AbstractListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
-     *      de.dante.extex.scanner.Token, TokenSource)
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void treatMathShift(final Token t, final TokenSource source)
-            throws GeneralException {
+    public void mathShift(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
         getManager().endParagraph();
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatSubMark(
+     * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSubMark(final TypesettingContext context, final Token token)
-            throws GeneralException {
+    public void subscriptMark(final TypesettingContext context,
+            final Token token) throws GeneralException {
 
         //TODO _ unimplemented
         throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatSupMark(
+     * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSupMark(final TypesettingContext context, final Token token)
-            throws GeneralException {
+    public void superscriptMark(final TypesettingContext context,
+            final Token token) throws GeneralException {
 
-        //TODO _ unimplemented
+        //TODO ^ unimplemented
         throw new RuntimeException("unimplemented");
     }
 

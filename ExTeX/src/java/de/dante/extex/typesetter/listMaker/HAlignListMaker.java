@@ -17,7 +17,7 @@
  *
  */
 
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,10 +39,12 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class provides a list maker for horizontal alignments.
+ *
+ * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.1 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -52,7 +54,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.6 $
+     * @version $Revision: 1.1 $
      */
     protected class Cell {
 
@@ -140,38 +142,51 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     private List rows = new ArrayList();
 
     /**
+     * The field <tt>spread</tt> contains the indicator that the width should
+     * be interpreted relative to the natural width.
+     */
+    private boolean spread;
+
+    /**
+     * The field <tt>wd</tt> contains the maximal width of each column.
+     */
+    private Dimen[] wd;
+
+    /**
      * The field <tt>width</tt> contains the target width or <code>null</code>
      * to indicate that the natural width sould be used.
      */
     private FixedDimen width;
 
     /**
-     * The field <tt>spread</tt> contains the ...
-     */
-    private boolean spread;
-
-    /**
      * Creates a new object.
+     *
      * @param manager the manager
      * @param context the interpreter context
      * @param source the token source
      * @param thePreamble the list of preamble items
-     * @param theWidth the target width or <code>null</code> if the natural width
-     *  should be used
-     * @param spread indicator that the width should be interpreted relative
+     * @param theWidth the target width or <code>null</code> if the natural
+     *  width should be used
+     * @param theSpread indicator that the width should be interpreted relative
      *
      * @throws GeneralException in case of an error
      */
-    public HAlignListMaker(final Manager manager, final Context context,
+    public HAlignListMaker(final ListManager manager, final Context context,
             final TokenSource source, final List thePreamble,
-            final FixedDimen theWidth, final boolean spread)
+            final FixedDimen theWidth, final boolean theSpread)
             throws GeneralException {
 
         super(manager);
         preamble = thePreamble;
         width = theWidth;
-        this.spread = spread;
+        spread = theSpread;
         clearLine(context, source);
+
+        wd = new Dimen[line.length];
+
+        for (int i = 0; i < line.length; i++) {
+            wd[i] = new Dimen(0);
+        }
     }
 
     /**
@@ -185,9 +200,8 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     private void clearLine(final Context context, final TokenSource source)
             throws GeneralException {
 
-        line = new Cell[preamble.size()];
         col = 0;
-
+        line = new Cell[preamble.size()];
         startCell(context, source);
     }
 
@@ -195,18 +209,6 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * @see de.dante.extex.typesetter.ListMaker#close()
      */
     public NodeList close() throws GeneralException {
-
-        Dimen[] wd = computeNaturalWidth();
-        Dimen w = sum(wd);
-
-        if (width != null) {
-            if (spread) {
-                w.add(width);
-            } else {
-                w.set(width);
-            }
-            //TODO
-        }
 
         NodeList result = new VerticalListNode();
         NodeList nl;
@@ -226,54 +228,23 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
 
         }
 
+        Dimen w = sum(wd);
+
+        if (width != null) {
+            if (spread) {
+                w.add(width);
+            } else {
+                w.set(width);
+            }
+        }
+
+        result.setWidth(w);
+
         return result;
     }
 
     /**
-     * ...
-     *
-     * @param d ...
-     *
-     * @return ...
-     */
-    private Dimen sum(final Dimen[] d) {
-
-        Dimen sum = new Dimen();
-
-        for (int i = 0; i < line.length; i++) {
-            sum.add(d[i]);
-        }
-        return sum;
-    }
-
-    /**
-     * ...
-     *
-     * @return an array with the maximal natural widths of each column
-     */
-    private Dimen[] computeNaturalWidth() {
-
-        Dimen[] wd = new Dimen[line.length];
-        NodeList nl;
-
-        for (int i = 0; i < line.length; i++) {
-            wd[i] = new Dimen(0);
-        }
-
-        for (int j = rows.size() - 1; j > 0; j--) {
-            line = (Cell[]) rows.get(j);
-            for (int i = 0; i < line.length; i++) {
-                nl = line[i].getList();
-                if (nl != null) {
-                    wd[i].max(nl.getWidth());
-                }
-            }
-        }
-        return wd;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.impl.AlignmentList#cr(Context, TokenSource)
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#cr(Context, TokenSource)
      */
     public void cr(final Context context, final TokenSource source)
             throws GeneralException {
@@ -283,7 +254,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.AlignmentList#crcr(Context, TokenSource)
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#crcr(Context, TokenSource)
      */
     public void crcr(final Context context, final TokenSource source)
             throws GeneralException {
@@ -294,14 +265,14 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.AlignmentList#omit()
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#omit()
      */
     public void omit() throws GeneralException {
 
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.AlignmentList#span(Context, TokenSource)
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#span(Context, TokenSource)
      */
     public void span(final Context context, final TokenSource source)
             throws GeneralException {
@@ -340,6 +311,23 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
+     * Compute the sum os an array of dimens.
+     *
+     * @param d the dimen array
+     *
+     * @return the sum in a new Dimen
+     */
+    private Dimen sum(final Dimen[] d) {
+
+        Dimen sum = new Dimen();
+
+        for (int i = 0; i < line.length; i++) {
+            sum.add(d[i]);
+        }
+        return sum;
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#tab(
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
@@ -348,11 +336,15 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
             final Token token) throws GeneralException {
 
         if (col >= line.length) {
-            new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", "???");
+            new HelpingException(getLocalizer(), "TTP.ExtraAlignTab", token
+                    .toString());
         }
 
-        source.push(format.getPost()); //TODO wrong?
+        source.push(format.getPost()); //TODO wrong! process the tokens before closing
+
+
         line[col] = new Cell(super.close());
+        wd[col].max(line[col].getList().getWidth());
         setNodes(new HorizontalListNode());
         col++;
         startCell(context, source);

@@ -17,11 +17,10 @@
  *
  */
 
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MathHelpingException;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
@@ -31,7 +30,6 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.framework.i18n.Localizer;
 import de.dante.util.framework.i18n.LocalizerFactory;
@@ -40,7 +38,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.1 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -48,26 +46,17 @@ public abstract class AbstractListMaker implements ListMaker {
      * The field <tt>manager</tt> contains the manager to ask for global
      * changes.
      */
-    private Manager manager;
+    private ListManager manager;
 
     /**
      * Creates a new object.
      *
      * @param theManager the manager to ask for global changes
      */
-    public AbstractListMaker(final Manager theManager) {
+    public AbstractListMaker(final ListManager theManager) {
 
         super();
         this.manager = theManager;
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.typesetter.type.noad.Noad)
-     */
-    public void add(final Noad noad) throws GeneralException {
-
-        throw new PanicException(getMyLocalizer(), "UnexpectedNoad");
     }
 
     /**
@@ -85,7 +74,7 @@ public abstract class AbstractListMaker implements ListMaker {
      *
      * @return the manager.
      */
-    public Manager getManager() {
+    public ListManager getManager() {
 
         return manager;
     }
@@ -124,11 +113,11 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatMathShift(
-     *      de.dante.extex.scanner.Token, TokenSource)
+     * @see de.dante.extex.typesetter.ListMaker#mathShift(
+     *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void treatMathShift(final Token t, final TokenSource source)
-            throws GeneralException {
+    public void mathShift(final Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
         Token next = source.getToken();
 
@@ -137,30 +126,31 @@ public abstract class AbstractListMaker implements ListMaker {
         } else if (!next.isa(Catcode.MATHSHIFT)) {
             source.push(next);
             manager.push(new MathListMaker(manager));
+            source.push(context.getToks("everymath"));
         } else {
             manager.push(new DisplaymathListMaker(manager));
+            source.push(context.getToks("everydisplay"));
         }
-        //TODO everymath
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatSubMark(
+     * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSubMark(final TypesettingContext context, final Token token)
-            throws GeneralException {
+    public void subscriptMark(final TypesettingContext context,
+            final Token token) throws GeneralException {
 
         throw new MathHelpingException(token.toString());
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#treatSupMark(
+     * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatSupMark(final TypesettingContext context, final Token token)
-            throws GeneralException {
+    public void superscriptMark(final TypesettingContext context,
+            final Token token) throws GeneralException {
 
         throw new MathHelpingException(token.toString());
     }
@@ -170,8 +160,8 @@ public abstract class AbstractListMaker implements ListMaker {
      *      Context,
      *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void tab(final Context context, final TokenSource source, final Token token)
-            throws GeneralException {
+    public void tab(final Context context, final TokenSource source,
+            final Token token) throws GeneralException {
 
         throw new HelpingException(getMyLocalizer(), "TTP.MisplacedTabMark",
                 token.toString());

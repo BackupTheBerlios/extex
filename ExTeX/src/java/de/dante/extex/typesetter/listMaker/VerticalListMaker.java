@@ -1,32 +1,29 @@
 /*
  * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
-import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
-import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
@@ -39,7 +36,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.1 $
  */
 public class VerticalListMaker extends AbstractListMaker {
 
@@ -51,7 +48,7 @@ public class VerticalListMaker extends AbstractListMaker {
     /**
      * This value contains the previous depth for baseline calculations. In
      * contrast to TeX the value null is used to indicate that the next box on
-     * the vertical list should be exempt from the baseline calculations.
+     * the vertical list should be extempt from the baseline calculations.
      *
      * @see "TeX -- The Program [212]"
      */
@@ -62,7 +59,7 @@ public class VerticalListMaker extends AbstractListMaker {
      *
      * @param manager the manager to ask for global changes
      */
-    public VerticalListMaker(final Manager manager) {
+    public VerticalListMaker(final ListManager manager) {
 
         super(manager);
     }
@@ -93,8 +90,6 @@ public class VerticalListMaker extends AbstractListMaker {
     public void addSpace(final TypesettingContext typesettingContext,
             final Count spacefactor) throws GeneralException {
 
-        // TODO unimplemented
-        //throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -149,22 +144,7 @@ public class VerticalListMaker extends AbstractListMaker {
     }
 
     /**
-     * ...
-     *
-     * @param context
-     * @param t
-     * @throws GeneralException
-     *
-     * @see de.dante.extex.typesetter.ListMaker#treatLetter(de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
-     */
-    public void treatLetter(final TypesettingContext context, final Token t)
-            throws GeneralException {
-
-        treatLetter(context, t.getChar());
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#add(
+     * @see de.dante.extex.typesetter.ListMaker#treatLetter(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
@@ -176,18 +156,4 @@ public class VerticalListMaker extends AbstractListMaker {
         getManager().push(hlist);
     }
 
-    /**
-     * ...
-     * @param t
-     *
-     * @throws GeneralException
-     *
-     * @see de.dante.extex.typesetter.ListMaker#tab(Context, TokenSource, de.dante.extex.scanner.Token)
-     */
-    public void tab(final Context context, final TokenSource source, Token t)
-            throws GeneralException {
-
-        // TODO unimplemented
-
-    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -16,36 +16,29 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+package de.dante.extex.typesetter.listMaker;
 
-package de.dante.extex.typesetter.impl;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.util.GeneralException;
 
-import de.dante.extex.typesetter.ListMaker;
-import de.dante.extex.typesetter.Mode;
 
 /**
- * This is the derived class for a list maker in inner vertical list mode.
+ * This interface describes list makers which are able to consume a Noad.
+ * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.1 $
  */
-public class InnerVerticalListMaker extends VerticalListMaker {
+public interface NoadConsumer {
 
     /**
-     * Creates a new object.
+     * Add an arbitrary Noad to the internal list if it is prepared to hold one.
+     * This is usually the case in math modes.
      *
-     * @param manager the manager to ask for global changes
+     * @param noad the noad to add
+     *
+     * @throws GeneralException in case of an error
      */
-    public InnerVerticalListMaker(final Manager manager) {
-
-        super(manager);
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#getMode()
-     */
-    public Mode getMode() {
-
-        return Mode.INNER_VERTICAL;
-    }
+    void add(Noad noad) throws GeneralException;
 
 }

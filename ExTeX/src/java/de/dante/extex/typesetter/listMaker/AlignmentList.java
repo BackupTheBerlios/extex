@@ -16,7 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.typesetter.impl;
+package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -24,10 +24,10 @@ import de.dante.util.GeneralException;
 
 
 /**
- * ...
+ * This interface describes a list for alignments with the associated methods.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
 public interface AlignmentList {
 
@@ -41,25 +41,37 @@ public interface AlignmentList {
     void omit() throws GeneralException;
 
     /**
-     * ...
-     * @param context TODO
-     * @param source TODO
+     * This method is invoked when a row in the alignment is complete and the
+     * cells can be integrated. If some cells are not filled jet then they
+     * are treated as empty.
+     *
+     * @param context the interpreter context
+     * @param source the token source
+     *
      * @throws GeneralException in case of an error
      */
     void cr(Context context, TokenSource source) throws GeneralException;
 
     /**
-     * ...
-     * @param context TODO
-     * @param source TODO
+     * This method is invoked when a row in the alignment is complete and the
+     * cells can be integrated. If some cells are not filled jet then they
+     * are treated as empty.
+     * In contrast to the method cr() this method is a noop when the
+     * alignment is at the beginning of a row.
+     *
+     * @param context the interpreter context
+     * @param source the token source
+     *
      * @throws GeneralException in case of an error
      */
     void crcr(Context context, TokenSource source) throws GeneralException;
 
     /**
-     * ...
-     * @param context TODO
-     * @param source TODO
+     * This method is invoked when a cell is complete which should be
+     * continued in the next cell.
+     *
+     * @param context the interpreter context
+     * @param source the token source
      *
      * @throws GeneralException in case of an error
      */
