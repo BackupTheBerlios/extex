@@ -18,14 +18,16 @@
  */
 package de.dante.extex.interpreter.context;
 
+import java.io.Serializable;
+
 /**
  * This interface declares some methods to access the color with an alpha
  * channel.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public interface Color {
+public interface Color extends Serializable {
 
     /**
      * Getter for the alpha channel.

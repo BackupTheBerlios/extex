@@ -22,6 +22,7 @@ package de.dante.extex.interpreter;
 import de.dante.extex.main.exception.MainUnknownInteractionException;
 import de.dante.util.GeneralException;
 
+import java.io.ObjectStreamException;
 import java.io.Serializable;
 
 /**
@@ -29,7 +30,7 @@ import java.io.Serializable;
  * ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class Interaction implements Serializable {
 
@@ -150,7 +151,7 @@ public abstract class Interaction implements Serializable {
      * This inner class is use to represent the batch mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class BatchMode extends Interaction {
 
@@ -166,13 +167,26 @@ public abstract class Interaction implements Serializable {
             return visitor.visitBatchmode(arg1, arg2, arg3);
         }
 
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.BATCHMODE;
+        }
+
     }
 
     /**
      * This inner class is use to represent the nonstop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class NonstopMode extends Interaction {
 
@@ -188,13 +202,26 @@ public abstract class Interaction implements Serializable {
             return visitor.visitNonstopmode(arg1, arg2, arg3);
         }
 
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.NONSTOPMODE;
+        }
+
     }
 
     /**
      * This inner class is use to represent the scroll mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class ScrollMode extends Interaction {
 
@@ -210,13 +237,26 @@ public abstract class Interaction implements Serializable {
             return visitor.visitScrollmode(arg1, arg2, arg3);
         }
 
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.SCROLLMODE;
+        }
+
     }
 
     /**
      * This inner class is use to represent the error stop mode.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.10 $
+     * @version $Revision: 1.11 $
      */
     private static class ErrorstopMode extends Interaction {
 
@@ -230,6 +270,19 @@ public abstract class Interaction implements Serializable {
                 throws GeneralException {
 
             return visitor.visitErrorstopmode(arg1, arg2, arg3);
+        }
+
+        /**
+         * Return the singleton constant object after the serialized instance
+         * has been read back in.
+         *
+         * @return the one and only instance of this object
+         *
+         * @throws ObjectStreamException never
+         */
+        protected Object readResolve() throws ObjectStreamException {
+
+            return Interaction.ERRORSTOPMODE;
         }
 
     }

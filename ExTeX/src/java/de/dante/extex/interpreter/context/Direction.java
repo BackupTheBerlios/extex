@@ -16,8 +16,11 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.context;
 
+import java.io.ObjectStreamException;
+import java.io.Serializable;
 
 /**
  * This class provides a limited set of writing directions. The writing
@@ -25,29 +28,50 @@ package de.dante.extex.interpreter.context;
  * that additional directions are defined.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public final class Direction {
+public final class Direction implements Serializable {
 
     /**
      * The constant <tt>LR</tt> contains the direction for left-to-right
      * languages.
      */
-    public static final Direction LR = new Direction();
+    public static final Direction LR = new Direction(true);
 
     /**
      * The constant <tt>RL</tt> contains the direction for right-to-left
      * languages.
      */
-    public static final Direction RL = new Direction();
+    public static final Direction RL = new Direction(false);
+
+    /**
+     * The field <tt>lr</tt> contains the indicator which constant this
+     * direction corresponds to.
+     */
+    private boolean lr;
 
     /**
      * Creates a new object.
      * This constructor is private since only a very limited set of instances
      * of this class is allowed. Those are provided as constants.
      */
-    private Direction() {
+    private Direction(final boolean isLR) {
+
         super();
+        this.lr = isLR;
+    }
+
+    /**
+     * Return the singleton constant object after the serialized instance
+     * has been read back in.
+     *
+     * @return the one and only instance of this object
+     *
+     * @throws ObjectStreamException never
+     */
+    protected Object readResolve() throws ObjectStreamException {
+
+        return (lr ? LR : RL);
     }
 
 }

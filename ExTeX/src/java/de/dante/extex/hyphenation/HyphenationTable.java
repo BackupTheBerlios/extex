@@ -19,6 +19,8 @@
 
 package de.dante.extex.hyphenation;
 
+import java.io.Serializable;
+
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
@@ -31,9 +33,9 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public interface HyphenationTable {
+public interface HyphenationTable extends Serializable {
 
     /**
      * Add a pattern

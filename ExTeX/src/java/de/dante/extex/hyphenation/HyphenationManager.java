@@ -19,14 +19,16 @@
 
 package de.dante.extex.hyphenation;
 
+import java.io.Serializable;
+
 /**
  * Interface for a <code>HyphernationManager</code>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public interface HyphenationManager {
+public interface HyphenationManager extends Serializable {
 
     /**
      * Return the <code>HyphernationTable</code> with the index.
