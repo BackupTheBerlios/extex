@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -34,7 +34,7 @@ import de.dante.util.GeneralException;
  * This class holds an input file from which tokens can be read.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class InFile implements Serializable {
 
@@ -100,7 +100,7 @@ public class InFile implements Serializable {
      * @param factory the factory to request new tokens from
      * @param tokenizer the tokenizer to use
      *
-     * @return the tokens read
+     * @return the tokens read or <code>null</code> in case of eof
      *
      * @throws GeneralException in case of an error
      */

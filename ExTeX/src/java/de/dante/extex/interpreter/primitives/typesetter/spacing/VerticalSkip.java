@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,21 +25,22 @@ import de.dante.util.GeneralException;
 
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interfac describes macros which produce a vertical glue.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface VerticalSkip {
 
     /**
-     * TODO gene: missing JavaDoc
+     * This method acquires a vertical glue.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
      * @return the amount of vertical skip
-     * @throws GeneralException TODO
+     *
+     * @throws GeneralException in case of an error
      */
     Glue verticalSkip(Context context, TokenSource source) throws GeneralException;
 
