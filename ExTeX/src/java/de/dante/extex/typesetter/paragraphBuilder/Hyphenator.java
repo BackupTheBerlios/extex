@@ -25,14 +25,14 @@ import de.dante.extex.typesetter.NodeList;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Hyphenator {
 
     /**
      * ...
      *
-     * @param nodes ...
+     * @param nodes the nodes to hyphenate
      *
      * @return <code>true</code> iff some hyphenation points have been inserted
      */
