@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.scanner;
 
 import de.dante.util.UnicodeChar;
@@ -27,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface TokenFactory {
 
@@ -41,7 +42,7 @@ public interface TokenFactory {
      *
      * @throws CatcodeException in case of an error
      *
-     * @deprecated use newInstance(Catcode,String,String) instead.
+     * @deprecated use newInstance(Catcode,UnicodeChar,String,String) instead.
      */
     Token createToken(Catcode code, String value) throws CatcodeException;
 
@@ -56,14 +57,33 @@ public interface TokenFactory {
      * @return the appropriate token
      *
      * @throws CatcodeException in case of an error
+     *
+     * @deprecated use newInstance(Catcode,UnicodeChar,String,String) instead.
      */
     Token createToken(Catcode code, String value, String namespace)
             throws CatcodeException;
 
     /**
+     * Get an instance of a token with a given Catcode and value.
+     *
+     * @param code the catcode
+     * @param esc the Unicode character value of the escape character
+     * @param value the value
+     * @param namespace the namespace for the token. This is relevant for
+     *  ACTIVE and ESCAPE catcodes only.
+     *
+     * @return the appropriate token
+     *
+     * @throws CatcodeException in case of an error
+     */
+    Token createToken(Catcode code, UnicodeChar esc, String value,
+            String namespace) throws CatcodeException;
+
+    /**
      * Create a new {@link de.dante.extex.scanner.Token Token} of the
      * appropriate kind. Tokens are immutable (no setters) thus the factory
      * pattern can be applied.
+     *
      * @param code the category code
      * @param c the character value
      * @param namespace the namespace to use
@@ -73,7 +93,7 @@ public interface TokenFactory {
      * @throws CatcodeException in case of an error
      */
     Token createToken(Catcode code, char c, String namespace)
-        throws CatcodeException;
+            throws CatcodeException;
 
     /**
      * Get an instance of a token with a given Catcode and Unicode character

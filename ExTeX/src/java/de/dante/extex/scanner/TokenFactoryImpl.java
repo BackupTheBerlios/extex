@@ -52,7 +52,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
 
@@ -184,8 +184,21 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     public Token createToken(final Catcode code, final String value,
             final String namespace) throws CatcodeException {
 
+        return createToken(code, null, value, namespace);
+    }
+
+    /**
+     * @see de.dante.extex.scanner.TokenFactory#createToken(
+     *      de.dante.extex.scanner.Catcode,
+     *      de.dante.util.UnicodeChar,
+     *      java.lang.String,
+     *      java.lang.String)
+     */
+    public Token createToken(final Catcode code, final UnicodeChar esc,
+            final String value, final String namespace) throws CatcodeException {
+
         try {
-            return (Token) code.visit(this, value, null, namespace);
+            return (Token) code.visit(this, value, esc, namespace);
         } catch (CatcodeException e) {
             throw e;
         } catch (Exception e) {
@@ -324,7 +337,8 @@ public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
             token = ((WeakReference) token).get();
         }
         if (token == null) {
-            token = new ControlSequenceToken(value, (String) oNamespace);
+            token = new ControlSequenceToken((UnicodeChar) oChar, value,
+                    (String) oNamespace);
             map.put(value, new WeakReference(token));
         }
 

@@ -30,8 +30,14 @@ import de.dante.util.UnicodeChar;
  * to get an instance of this class.
  * </p>
  *
+ * <p>
+ *  Note that in contrast to TeX the escape character leading to this control
+ *  sequence token is stord in the character code of the abstract base class.
+ * </p>
+ *
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -53,15 +59,17 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
     /**
      * Creates a new object from the first character of a String.
-     * If the string is empty then a space character is used iun stead.
+     * If the string is empty then a space character is used instead.
      *
+     * @param esc the escape character
      * @param name the name of the control sequence -- without the leading
      *  escape character token
      * @param namespace the namespace
      */
-    protected ControlSequenceToken(final String name, final String namespace) {
+    protected ControlSequenceToken(final UnicodeChar esc, final String name,
+            final String namespace) {
 
-        super(new UnicodeChar(name.length() > 0 ? name.charAt(0) : ' '));
+        super(esc);
         this.namespace = namespace;
         this.name = name;
     }
@@ -79,7 +87,8 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
         if (Namespace.DEFAULT_NAMESPACE.equals(namespace)) {
             return this;
         }
-        return new ControlSequenceToken(name, Namespace.DEFAULT_NAMESPACE);
+        return new ControlSequenceToken(getChar(), name,
+                Namespace.DEFAULT_NAMESPACE);
     }
 
     /**
@@ -97,7 +106,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
         if (theNamespace == null || namespace.equals(theNamespace)) {
             return this;
         }
-        return new ControlSequenceToken(name, theNamespace);
+        return new ControlSequenceToken(getChar(), name, theNamespace);
     }
 
     /**
@@ -173,8 +182,7 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer()
-                .format("ControlSequenceToken.Text", name));
+        sb.append(getLocalizer().format("ControlSequenceToken.Text", name));
     }
 
     /**
