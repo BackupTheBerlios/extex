@@ -55,7 +55,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
@@ -72,7 +72,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
     private static final int EJECT_PENALTY = -10000;
 
     /**
-     * The constant <tt>INF_BAD</tt> contains the ...
+     * The constant <tt>INF_BAD</tt> contains the value for infinite penalty.
      * This is an equivalent to &infin;.
      */
     private static final int INF_PENALTY = 10000;
@@ -140,6 +140,7 @@ public class TrivialBuilder implements ParagraphBuilder, LogEnabled {
 
     /**
      * ...
+     *
      * @param start the index of the first node to consider
      * @param len the length of nodes
      * @param nodes the node list to take the nodes from

@@ -31,9 +31,10 @@ import de.dante.util.framework.logger.LogEnabled;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class WhatsItCloseNode extends WhatsItNode implements LogEnabled {
+
     /**
      * The field <tt>key</tt> contains the key of the outfile to close.
      */

@@ -33,10 +33,10 @@ import de.dante.util.configuration.ConfigurationNoSuchMethodException;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * ...
+ * This class provides a factory for ResourceFinders.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ResourceFinderFactory {
 
@@ -55,7 +55,7 @@ public class ResourceFinderFactory {
      * @param logger the logger to pass to the Resource finder elements
      * @param properties the properties topass to tjhe resource finder elements
      *
-     * @return ...
+     * @return the resource finder
      *
      * @throws ConfigurationException in cse of an error in the configuration
      *  or during instantiation

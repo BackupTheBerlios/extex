@@ -139,7 +139,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, HyphenationEnabled {
 
@@ -161,7 +161,7 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, Hyphe
     private static final int EJECT_PENALTY = -10000;
 
     /**
-     * The constant <tt>INF_BAD</tt> contains the ...
+     * The constant <tt>INF_BAD</tt> contains the value for infinite penalty.
      * This is an equivalent to &infin;.
      */
     private static final int INF_PENALTY = 10000;

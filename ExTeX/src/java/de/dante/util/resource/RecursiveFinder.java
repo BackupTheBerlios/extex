@@ -23,14 +23,14 @@ package de.dante.util.resource;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface RecursiveFinder {
 
     /**
-     * ...
+     * Setter for the parent finder.
      *
-     * @param parent ...
+     * @param parent the parent finder
      */
     void setParent(ResourceFinder parent);
 }

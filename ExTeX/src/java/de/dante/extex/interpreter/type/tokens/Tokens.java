@@ -37,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Tokens implements Serializable, FixedTokens {
 
@@ -181,7 +181,8 @@ public class Tokens implements Serializable, FixedTokens {
     }
 
     /**
-     * ...
+     * Remove the last token from the list and return it. If the list is empty
+     * then <code>null</code> is returned.
      *
      * @return the last token or <code>null</code>
      */

@@ -31,7 +31,7 @@ import de.dante.util.configuration.ConfigurationException;
  * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
 
@@ -42,7 +42,7 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
     private List list = new ArrayList();
 
     /**
-     * The field <tt>parent</tt> contains the ...
+     * The field <tt>parent</tt> contains the parent resource finder.
      */
     private ResourceFinder parent = null;
 
@@ -53,7 +53,7 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
     public ResourceFinderList() {
 
         super();
-        parent = this;
+        this.parent = this;
     }
 
     /**
@@ -101,19 +101,20 @@ public class ResourceFinderList implements ResourceFinder, RecursiveFinder {
     }
 
     /**
-     * ...
+     * Setter for th parent resource finder.
      *
-     * @param parent the parent finder for recursive invocation
+     * @param theParent the parent finder for recursive invocation
      *
-     * @see de.dante.util.resource.RecursiveFinder#setParent(de.dante.util.resource.ResourceFinder)
+     * @see de.dante.util.resource.RecursiveFinder#setParent(
+     *      de.dante.util.resource.ResourceFinder)
      */
-    public void setParent(final ResourceFinder parent) {
+    public void setParent(final ResourceFinder theParent) {
 
         Iterator iterator = list.iterator();
         while (iterator.hasNext()) {
             ResourceFinder finder = (ResourceFinder) iterator.next();
             if (finder instanceof RecursiveFinder) {
-                ((RecursiveFinder) finder).setParent(parent);
+                ((RecursiveFinder) finder).setParent(theParent);
             }
         }
     }

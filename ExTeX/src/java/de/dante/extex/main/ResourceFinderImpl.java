@@ -36,7 +36,7 @@ import de.dante.util.resource.ResourceFinder;
  * tries to find it via its super class.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ResourceFinderImpl
         implements
@@ -45,50 +45,55 @@ public class ResourceFinderImpl
             LogEnabled {
 
     /**
-     * The field <tt>configuration</tt> contains the ...
+     * The field <tt>configuration</tt> contains the currently used
+     * configuration.
      */
     private Configuration configuration;
 
     /**
-     * The field <tt>logger</tt> contains the ...
+     * The field <tt>logger</tt> contains the current logger or
+     * <code>null</code> if none has been set yet.
      */
     private Logger logger = null;
 
     /**
-     * The field <tt>parent</tt> contains the ...
+     * The field <tt>parent</tt> contains the parent resource finder or
+     * <code>null</code> if none has been set yet.
      */
     private ResourceFinder parent = null;
 
     /**
      * Creates a new object.
      *
-     * @param configuration the configuration to use
+     * @param theConfiguration the configuration to use
      *
      * @throws ConfigurationException in case of an errorin the configuration
      */
-    public ResourceFinderImpl(final Configuration configuration)
+    public ResourceFinderImpl(final Configuration theConfiguration)
             throws ConfigurationException {
 
         super();
-        this.configuration = configuration;
+        this.configuration = theConfiguration;
     }
 
     /**
-     * ...
+     * Setter for the logger.
      *
-     * @param logger
+     * @param theLogger the logger to use
      *
-     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(java.util.logging.Logger)
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger theLogger) {
 
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
-     * ...
+     * Setter for the trace flag.
+     * The trace flag is currently ignored.
      *
-     * @param flag
+     * @param flag the trace flag
      *
      * @see de.dante.util.resource.ResourceFinder#enableTrace(boolean)
      */
@@ -163,16 +168,16 @@ public class ResourceFinderImpl
     }
 
     /**
-     * ...
+     * Setter for the parent resource finder.
      *
-     * @param parent ...
+     * @param theParent the parent resource finder
      *
      * @see de.dante.util.resource.RecursiveFinder#setParent(
      *      de.dante.util.resource.ResourceFinder)
      */
-    public void setParent(final ResourceFinder parent) {
+    public void setParent(final ResourceFinder theParent) {
 
-        this.parent = parent;
+        this.parent = theParent;
     }
 
 }

@@ -20,10 +20,10 @@ package de.dante.extex.main;
 
 
 /**
- * ...
+ * This class provides access to a version number.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Version {
 

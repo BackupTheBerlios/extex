@@ -53,7 +53,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class TypesetterImpl
         implements
@@ -87,7 +87,7 @@ public class TypesetterImpl
     private ListMaker listMaker;
 
     /**
-     * The field <tt>localizer</tt> contains the ...
+     * The field <tt>localizer</tt> contains the localizer.
      */
     private Localizer localizer;
 
@@ -189,15 +189,16 @@ public class TypesetterImpl
     }
 
     /**
-     * ...
+     * Setter for the localizer.
      *
-     * @param localizer
+     * @param theLocalizer the new localizer
      *
-     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(de.dante.util.framework.i18n.Localizer)
+     * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
+     *      de.dante.util.framework.i18n.Localizer)
      */
-    public void enableLocalization(final Localizer localizer) {
+    public void enableLocalization(final Localizer theLocalizer) {
 
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**

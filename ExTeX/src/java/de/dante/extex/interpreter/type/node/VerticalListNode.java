@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [137]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class VerticalListNode extends AbstractNodeList implements NodeList {
 
@@ -60,14 +60,11 @@ public class VerticalListNode extends AbstractNodeList implements NodeList {
     /**
      * ...
      *
-     * @param size ...
-     *
-     * @see de.dante.extex.typesetter.NodeList#spread(de.dante.extex.interpreter.type.dimen.FixedDimen)
+     * @param size the target size
      */
     public void spread(final FixedDimen size) {
 
         // TODO unimplemented
-
     }
 
     /**

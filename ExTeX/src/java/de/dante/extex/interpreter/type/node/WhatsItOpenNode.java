@@ -27,17 +27,17 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class WhatsItOpenNode extends WhatsItNode {
 
     /**
-     * The field <tt>file</tt> contains the ...
+     * The field <tt>file</tt> contains the output file.
      */
     private OutFile file;
 
     /**
-     * The field <tt>key</tt> contains the ...
+     * The field <tt>key</tt> contains the reference key
      */
     private String key;
 
@@ -59,6 +59,8 @@ public class WhatsItOpenNode extends WhatsItNode {
      * time of shipping the node to the DocumentWriter.
      *
      * @param context the interpreter context
+     *
+     * @throws GeneralException in case of an error
      *
      * @see de.dante.extex.typesetter.Node#atShipping(
      *      de.dante.extex.interpreter.context.Context)
