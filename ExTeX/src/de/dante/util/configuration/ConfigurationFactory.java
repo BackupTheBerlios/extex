@@ -18,15 +18,25 @@
  */
 package de.dante.util.configuration;
 
+import java.lang.reflect.InvocationTargetException;
+
 import de.dante.extex.i18n.Messages;
 
 /**
  * This is the factory for configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ConfigurationFactory {
+    
+    /**
+     * The constant <tt>DEFAULT_CONFIG_CLASS</tt> contains the name of the
+     * class to be delivered as implementation for Configuration if anything
+     * else fails.
+     */
+    private static final String DEFAULT_CONFIG_CLASS = "de.dante.util.configuration.ConfigurationXMLImpl";
+
     /**
      * Creates a new object.
      */
@@ -39,7 +49,7 @@ public class ConfigurationFactory {
      * {@link de.dante.extex.util.configuration.Configuration Configuration}
      * object which is initialized from a named source. This source is usually
      * a file name but can be anything else, like a URL or a reference to a
-     * database -- depending on the underlying implemnetation.
+     * database -- depending on the underlying implementation.
      *
      * @param source the source of the confugration
      *
@@ -57,6 +67,38 @@ public class ConfigurationFactory {
                 .format("ConfigurationFactory.EmptySourceMessage"));
         }
 
-        return new ConfigurationXMLImpl(source);
+        //return new ConfigurationXMLImpl(source);
+        
+        String classname = System.getProperty("Util.Configuration.class");
+        if ( classname == null ) {
+            classname = DEFAULT_CONFIG_CLASS;
+        }
+        Configuration config = null;
+
+        try {
+            config = (Configuration) (Class.forName(classname)
+                .getConstructor(new Class[]{String.class})
+                .newInstance(new Object[]{source}));
+        } catch (IllegalArgumentException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (SecurityException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InstantiationException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (IllegalAccessException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (InvocationTargetException e) {
+            Throwable c = e.getCause();
+            if (c != null && c instanceof ConfigurationException) {
+                throw (ConfigurationException) c;
+            }
+            throw new ConfigurationInstantiationException(e);
+        } catch (NoSuchMethodException e) {
+            throw new ConfigurationInstantiationException(e);
+        } catch (ClassNotFoundException e) {
+            throw new ConfigurationClassNotFoundException(classname);
+        }
+        
+        return config;
     }
 }
