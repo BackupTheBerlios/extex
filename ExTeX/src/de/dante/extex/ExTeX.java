@@ -52,6 +52,7 @@ import de.dante.extex.main.MainMissingArgumentException;
 import de.dante.extex.main.MainUnknownOptionException;
 import de.dante.extex.main.MessageObserver;
 import de.dante.extex.main.TokenObserver;
+import de.dante.extex.main.TraceObserver;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -82,9 +83,27 @@ import de.dante.util.file.OutputFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.19 $
+ * @version $Revision: 1.20 $
  */
 public class ExTeX {
+    private static final String PROP_JOBNAME_MASTER = "extex.jobnameMaster";
+    private static final String PROP_LOGGER_TEMPLATE = "extex.loggerTemplate";
+    private static final String PROP_INI = "extex.ini";
+    private static final String PROP_FILE = "extex.file";
+    private static final String PROP_NOBANNER = "extex.nobanner";
+    private static final String PROP_LOGGER = "extex.logger";
+    private static final String PROP_CONFIG = "extex.config";
+    private static final String PROP_ENCODING = "extex.encoding";
+    private static final String PROP_CODE = "extex.code";
+    private static final String PROP_PROGNAME = "extex.progname";
+    private static final String PROP_OUTPUTDIR = "extex.outputdir";
+    private static final String PROP_TEXINPUTS = "extex.texinputs";
+    private static final String PROP_INTERACTION = "extex.interaction";
+    private static final String PROP_TRACE_MACROS = "extex.traceMacros";
+    private static final String PROP_TRACE_TOKENIZER = "extex.traceTokenizer";
+    private static final String PROP_FMT = "extex.fmt";
+    private static final String PROP_JOBNAME = "extex.jobname";
+
     /**
      * The constant <tt>COPYRIGHT_YEAR</tt> contains the stating year of
      * development for the copyright message.
@@ -111,7 +130,7 @@ public class ExTeX {
     /**
      * The field <tt>calendar</tt> contains the time and date when ExTeX has
      * been started. There is another instance in
-     * {@link de.dante.extex.interpreterMax Max}. Those two instances might be
+     * {@link de.dante.extex.interpreter.Max Max}. Those two instances might be
      * different up to a few milliseconds. I guess I can live with that.
      */
     private Calendar calendar = Calendar.getInstance();
@@ -217,23 +236,24 @@ public class ExTeX {
     public ExTeX(final Properties parameterProperties) throws MainException {
         super();
         this.properties = parameterProperties;
-        propertyDefault("extex.progname", "ExTeX");
-        propertyDefault("extex.file", "");
-        propertyDefault("extex.code", "");
-        propertyDefault("extex.interaction", "3");
-        propertyDefault("extex.jobname", "texput");
-        propertyDefault("extex.jobname2", "");
-        propertyDefault("extex.ini", "");
-        propertyDefault("extex.fmt", "");
-        propertyDefault("extex.outputdir", ".");
-        propertyDefault("extex.texinputs", "");
-        propertyDefault("extex.encoding", "ISO-8859-1");
-        propertyDefault("extex.config", "config/extex.xml");
-        propertyDefault("extex.logger", "de.dante.extex.logging.LoggerImpl");
-        propertyDefault("extex.loggerTemplate", "config/logger");
-        propertyDefault("extex.nobanner", "");
-        propertyDefault("extex.traceTokenizer", "");
-
+        propertyDefault(PROP_PROGNAME, "ExTeX");
+        propertyDefault(PROP_FILE, "");
+        propertyDefault(PROP_CODE, "");
+        propertyDefault(PROP_INTERACTION, "3");
+        propertyDefault(PROP_JOBNAME, "texput");
+        propertyDefault(PROP_JOBNAME_MASTER, "");
+        propertyDefault(PROP_INI, "");
+        propertyDefault(PROP_FMT, "");
+        propertyDefault(PROP_OUTPUTDIR, ".");
+        propertyDefault(PROP_TEXINPUTS, "");
+        propertyDefault(PROP_ENCODING, "ISO-8859-1");
+        propertyDefault(PROP_CONFIG, "config/extex.xml");
+        propertyDefault(PROP_LOGGER, "de.dante.extex.logging.LoggerImpl");
+        propertyDefault(PROP_LOGGER_TEMPLATE, "config/logger");
+        propertyDefault(PROP_NOBANNER, "");
+        propertyDefault(PROP_TRACE_TOKENIZER, "");
+        propertyDefault(PROP_TRACE_MACROS, "");
+        
         useLogger("extex.initial.log", "");
     }
 
@@ -284,7 +304,7 @@ public class ExTeX {
                         runWithFile(args, i + 1);
                         onceMore = false;
                     } else if ("-configuration".startsWith(arg)) {
-                        useArg("extex.config", args, ++i);
+                        useArg(PROP_CONFIG, args, ++i);
                     } else if ("-copyright".startsWith(arg)) {
                         int year = calendar.get(Calendar.YEAR);
                         System.err.println(Messages
@@ -299,41 +319,41 @@ public class ExTeX {
                             .format("ExTeX.Usage", "extex"));
                         onceMore = false;
                     } else if ("-fmt".startsWith(arg)) {
-                        useArg("extex.fmt", args, ++i);
+                        useArg(PROP_FMT, args, ++i);
                     } else if (arg.startsWith("-fmt=")) {
-                        properties.setProperty("extex.fmt", arg
+                        properties.setProperty(PROP_FMT, arg
                             .substring("-fmt=".length()));
                     } else if ("-halt-on-error".startsWith(arg)) {
                         properties.setProperty("halt-on-error", "true");
                     } else if ("-interaction".startsWith(arg)) {
-                        useArg("extex.interaction", args, ++i);
+                        useArg(PROP_INTERACTION, args, ++i);
                     } else if ("-ini".startsWith(arg)) {
-                        properties.setProperty("extex.ini", "true");
+                        properties.setProperty(PROP_INI, "true");
                     } else if (arg.startsWith("-interaction=")) {
-                        properties.setProperty("extex.interaction", arg
+                        properties.setProperty(PROP_INTERACTION, arg
                             .substring("-interaction=".length()));
                     } else if ("-job-name".startsWith(arg)) {
-                        useArg("extex.jobname2", args, ++i);
+                        useArg(PROP_JOBNAME_MASTER, args, ++i);
                     } else if (arg.startsWith("-job-name=")) {
-                        properties.setProperty("extex.jobname2", arg
+                        properties.setProperty(PROP_JOBNAME_MASTER, arg
                             .substring("-job-name=".length()));
                     } else if ("-progname".startsWith(arg)) {
-                        useArg("extex.progname", args, ++i);
+                        useArg(PROP_PROGNAME, args, ++i);
                     } else if (arg.startsWith("-progname=")) {
-                        properties.setProperty("extex.progname", arg
+                        properties.setProperty(PROP_PROGNAME, arg
                             .substring("-progname=".length()));
                     } else if ("-version".startsWith(arg)) {
                         System.err.println(Messages
                             .format("ExTeX.Version", properties
-                                .getProperty("extex.progname"), VERSION,
+                                .getProperty(PROP_PROGNAME), VERSION,
                                     properties.getProperty("java.version")));
                         onceMore = false;
                     } else if ("-texinputs".startsWith(arg)
                                && arg.length() > 4) {
-                        useArg("extex.texinputs", args, ++i);
+                        useArg(PROP_TEXINPUTS, args, ++i);
                     } else if ("-texoutputs".startsWith(arg)
                                && arg.length() > 4) {
-                        useArg("extex.outputdir", args, ++i);
+                        useArg(PROP_OUTPUTDIR, args, ++i);
                     } else if ("-texmfoutputs".startsWith(arg)
                                && arg.length() > 4) {
                         useArg("extex.fallbackOutputdir", args, ++i);
@@ -343,7 +363,7 @@ public class ExTeX {
                         throw new MainUnknownOptionException(arg);
                     }
                 } else if (arg.startsWith("&")) {
-                    properties.setProperty("extex.fmt", arg.substring(1));
+                    properties.setProperty(PROP_FMT, arg.substring(1));
                     runWithFile(args, i + 1);
                     onceMore = false;
                 } else if (arg.startsWith("\\")) {
@@ -364,7 +384,7 @@ public class ExTeX {
         } catch (Throwable e) {
             if (showBanner) {
                 logger.info(Messages.format("ExTeX.Version", properties
-                    .getProperty("extex.progname"), VERSION, properties
+                    .getProperty(PROP_PROGNAME), VERSION, properties
                     .getProperty("java.version")));
             }
 
@@ -383,7 +403,7 @@ public class ExTeX {
             logger.config(os.toString());
 
             logger.info(Messages.format("ExTeX.Logfile", properties
-                .getProperty("extex.jobname")));
+                .getProperty(PROP_JOBNAME)));
 
             returnCode = EXIT_INTERNAL_ERROR;
         }
@@ -397,34 +417,34 @@ public class ExTeX {
      * @throws MainException in case of an error
      */
     public void run() throws MainException {
-        String jobname = properties.getProperty("extex.jobname2");
+        String jobname = properties.getProperty(PROP_JOBNAME_MASTER);
 
         if (jobname == null || jobname.equals("")) {
-            jobname = properties.getProperty("extex.jobname");
+            jobname = properties.getProperty(PROP_JOBNAME);
         }
-        showBanner = !Boolean.valueOf(properties.getProperty("extex.nobanner"))
+        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NOBANNER))
             .booleanValue();
 
-        useLogger("extex.log", properties.getProperty("extex.interaction"));
+        useLogger("extex.log", properties.getProperty(PROP_INTERACTION));
         if (showBanner) {
             logger.info(Messages.format("ExTeX.Version", properties
-                .getProperty("extex.progname"), VERSION, properties
+                .getProperty(PROP_PROGNAME), VERSION, properties
                 .getProperty("java.version")));
             showBanner = false;
         }
 
         try {
             Configuration config = new ConfigurationFactory()
-                .newInstance(properties.getProperty("extex.config"));
+                .newInstance(properties.getProperty(PROP_CONFIG));
 
             OutputFactory outFactory = new OutputFactory(config
                 .getConfiguration("Output"), new String[]{
-                    properties.getProperty("extex.outputdir"),
+                    properties.getProperty(PROP_OUTPUTDIR),
                     properties.getProperty("extex.FallbackOutputdir")});
 
             FileFinderList finder = new FileFinderList(new FileFinderDirect(
                 new StringList(":tex", ":")));
-            String path = properties.getProperty("extex.texinputs", "");
+            String path = properties.getProperty(PROP_TEXINPUTS, "");
             if (!path.equals("")) {
                 finder.add(new FileFinderPathImpl(new StringList(path, System
                     .getProperty("path.separator")),
@@ -442,19 +462,24 @@ public class ExTeX {
                 .registerObserver("close", new FileCloseObserver(logger));
             interpreter
                 .registerObserver("message", new MessageObserver(logger));
-            if (Boolean.valueOf(properties.getProperty("extex.traceTokenizer"))
+            if (Boolean.valueOf(properties.getProperty(PROP_TRACE_TOKENIZER))
                 .booleanValue()) {
                 interpreter.registerObserver("pop", new TokenObserver(logger));
             }
-
+            if (Boolean.valueOf(properties.getProperty(PROP_TRACE_MACROS))
+                .booleanValue()) {
+                interpreter.registerObserver("macro", new TraceObserver(logger));
+            }
+            
             TokenStreamFactory factory = new TokenStreamFactory(config
                 .getConfiguration("Reader"));
 
             factory.setFileFinder(finder);
             factory.registerObserver("file", new FileOpenObserver(logger));
             interpreter.setTokenStreamFactory(factory);
+
             interpreter.setInteraction(Interaction.get(properties
-                .getProperty("extex.interaction")));
+                .getProperty(PROP_INTERACTION)));
 
             initializeStreams(interpreter);
 
@@ -465,12 +490,12 @@ public class ExTeX {
                 .getConfiguration("DocumentWriter")).newInstance();
 
             Writer writer = outFactory.newInstance(properties
-                .getProperty("extex.jobname"), docWriter.getExtension(), null);
+                .getProperty(PROP_JOBNAME), docWriter.getExtension(), null);
             docWriter.setWriter(writer);
             typesetter.setDocumentWriter(docWriter);
 
             interpreter.setTypesetter(typesetter);
-            loadFormat(interpreter, properties.getProperty("extex.fmt"));
+            loadFormat(interpreter, properties.getProperty(PROP_FMT));
             interpreter.setJobname(jobname);
 
             interpreter.run();
@@ -478,22 +503,22 @@ public class ExTeX {
             writer.close();
 
             int pages = docWriter.getPages(); // todo: this might change
-            String outname = properties.getProperty("extex.jobname") + "."
+            String outname = properties.getProperty(PROP_JOBNAME) + "."
                              + docWriter.getExtension();
             logger.info(Messages.format((pages == 0 ? "ExTeX.NoPages"
                 : pages == 1 ? "ExTeX.Page" : "ExTeX.Pages"), outname, Integer
                 .toString(pages)));
         } catch (ConfigurationException e) {
-            logger.throwing("de.dante.extex.ExTeX", "run", e);
+            logger.throwing(this.getClass().getName(), "run", e);
             throw new MainConfigurationException(e);
         } catch (CharacterCodingException e) {
-            logger.throwing("de.dante.extex.ExTeX", "run", e);
+            logger.throwing(this.getClass().getName(), "run", e);
             throw new MainCodingException(e);
         } catch (IOException e) {
-            logger.throwing("de.dante.extex.ExTeX", "run", e);
+            logger.throwing(this.getClass().getName(), "run", e);
             throw new MainIOException(e);
         } catch (GeneralException e) {
-            logger.throwing("de.dante.extex.ExTeX", "run", e);
+            logger.throwing(this.getClass().getName(), "run", e);
             throw new MainException(e);
         }
 
@@ -501,7 +526,7 @@ public class ExTeX {
          * see "TeX -- The Program [1333]"
          */
         logger.info(Messages.format("ExTeX.Logfile", properties
-            .getProperty("extex.jobname")));
+            .getProperty(PROP_JOBNAME)));
     }
 
     /**
@@ -524,14 +549,14 @@ public class ExTeX {
             MainIOException {
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
-        String filename = properties.getProperty("extex.file");
+        String filename = properties.getProperty(PROP_FILE);
 
         if (filename != null && !filename.equals("")) {
 
             try {
                 TokenStream stream = factory
                         .newInstance(filename, "tex", properties
-                                .getProperty("extex.encoding"));
+                                .getProperty(PROP_ENCODING));
                 interpreter.addStream(stream);
                 notInitialized = false;
             } catch (FileNotFoundException e) {
@@ -541,11 +566,11 @@ public class ExTeX {
             }
         }
 
-        String post = properties.getProperty("extex.code");
+        String post = properties.getProperty(PROP_CODE);
 
         if (post != null && !post.equals("")) {
             TokenStream stream = factory.newInstance(post, properties
-                    .getProperty("extex.encoding"));
+                    .getProperty(PROP_ENCODING));
             interpreter.addStream(stream);
             notInitialized = false;
         }
@@ -553,7 +578,7 @@ public class ExTeX {
         if (notInitialized) {
             try {
                 TokenStream stream = factory.newInstance(new InputStreamReader(
-                        System.in), properties.getProperty("extex.encoding"));
+                        System.in), properties.getProperty(PROP_ENCODING));
                 interpreter.addStream(stream);
             } catch (IOException e) {
                 throw new MainIOException(e);
@@ -614,7 +639,7 @@ public class ExTeX {
                 in.append(arg[i]);
             }
 
-            properties.setProperty("extex.code", in.toString());
+            properties.setProperty(PROP_CODE, in.toString());
         }
 
         run();
@@ -638,10 +663,10 @@ public class ExTeX {
         }
 
         String name = arg[idx];
-        properties.setProperty("extex.jobname", (name
+        properties.setProperty(PROP_JOBNAME, (name
                 .matches(".*\\.[a-zA-Z0-9]*") ? name.substring(0, name
                 .lastIndexOf(".")) : name));
-        properties.setProperty("extex.file", arg[idx]);
+        properties.setProperty(PROP_FILE, arg[idx]);
 
         runWithArgs(arg, idx + 1);
     }
@@ -674,18 +699,22 @@ public class ExTeX {
      * @throws MainException in case of an index overflow
      */
     private void useDebug(final String[] arg, final int idx)
-            throws MainException {
+        throws MainException {
         if (idx >= arg.length) {
             throw new MainMissingArgumentException("debug");
         }
         String s = arg[idx];
         for (int i = 0; i < s.length(); i++) {
             switch (s.charAt(i)) {
+            case 'M':
+                properties.setProperty(PROP_TRACE_MACROS, "true");
+                break;
             case 'T':
-                properties.setProperty("extex.traceTokenizer", "true");
+                properties.setProperty(PROP_TRACE_TOKENIZER, "true");
                 break;
             default:
-            // silently ignore everything else
+                throw new MainUnknownOptionException(Integer.toString(s
+                    .charAt(i)));
             }
         }
     }
@@ -700,14 +729,14 @@ public class ExTeX {
      */
     private void useLogger(final String loggerName, final String interaction)
             throws MainException {
-        File logfile = new File(properties.getProperty("extex.outputdir"),
-                properties.getProperty("extex.jobname"));
-        String template = properties.getProperty("extex.loggerTemplate")
+        File logfile = new File(properties.getProperty(PROP_OUTPUTDIR),
+                properties.getProperty(PROP_JOBNAME));
+        String template = properties.getProperty(PROP_LOGGER_TEMPLATE)
                           + (interaction.equals("") ? "" : "-") + interaction
                           + ".properties";
 
         try {
-            logger = (new LoggerFactory(properties.getProperty("extex.logger")))
+            logger = (new LoggerFactory(properties.getProperty(PROP_LOGGER)))
                     .getInstance(loggerName, logfile, template);
         } catch (ConfigurationException e) {
             throw new MainConfigurationException(e);
