@@ -27,6 +27,7 @@ import org.jdom.Element;
 
 import de.dante.extex.font.type.ttf.cff.T2CharString;
 import de.dante.extex.font.type.ttf.cff.T2Operator;
+import de.dante.extex.font.type.ttf.cff.T2StandardStrings;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessInputArray;
 import de.dante.util.file.random.RandomAccessR;
@@ -85,7 +86,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFTableCFF extends AbstractTTFTable
         implements
@@ -115,6 +116,9 @@ public class TTFTableCFF extends AbstractTTFTable
         // index
         nameindex = new NameINDEX(de.getOffset() + hdrSize, rar);
         topdictindex = new TopDictINDEX(-1, rar);
+
+        System.out.println("pointer: " + Long.toHexString(rar.getPointer()));
+
         stringindex = new StringIndex(-1, rar);
 
         // incomplete
@@ -278,8 +282,6 @@ public class TTFTableCFF extends AbstractTTFTable
                 rar.seek(offset);
             }
 
-            System.out
-                    .println("pointer: " + Long.toHexString(rar.getPointer()));
             count = rar.readUnsignedShort();
             if (count > 0) {
                 int ioffSize = rar.readUnsignedByte();
@@ -289,14 +291,12 @@ public class TTFTableCFF extends AbstractTTFTable
                 // read all offsets
                 for (int offs = 0; offs < offsetarray.length; offs++) {
                     offsetarray[offs] = readOffset(ioffSize, rar);
-                    System.out.println("offset [" + offs + "]="
-                            + offsetarray[offs]);
+                    //                    System.out.println("offset [" + offs + "]="
+                    //                            + offsetarray[offs]);
                 }
 
                 // get data
                 for (int i = 0; i < count; i++) {
-                    System.out.println("data pointer: "
-                            + Long.toHexString(rar.getPointer()));
                     datas[i] = readData(offsetarray[i], offsetarray[i + 1], rar);
                 }
             }
@@ -495,6 +495,39 @@ public class TTFTableCFF extends AbstractTTFTable
 
     }
 
+    /**
+     * String INDEX
+     *
+     * <p>
+     * All the strings, with the exception of the FontName
+     * and CIDFontName strings which appear in the Name INDEX,
+     * used by different fonts within the FontSet are collected
+     * together into an INDEX structure and are referenced by
+     * a 2-byte unsigned number called a string identifier or SID.
+     * Only unique strings are stored in the table thereby removing
+     * duplication across fonts. Further space saving is obtained by
+     * allocating commonly occurring strings to predefined SIDs.
+     * These strings, known as the standard strings, describe all
+     * the names used in the ISOAdobe and Expert character sets along
+     * with a few other strings common to Type 1 fonts.
+     * </p>
+     * <p>
+     * The client program will contain an array of standard strings
+     * with nStdStrings elements. Thus, the standard strings take
+     * SIDs in the range 0 to (nStdStrings  1). The first string
+     * in the String INDEX corresponds to the SID whose value is
+     * equal to nStdStrings, the first non-standard string, and so on.
+     * When the client needs to determine the string that corresponds
+     * to a particular SID it performs the following: test if SID
+     * is in standard range then fetch from internal table, otherwise,
+     * fetch string from the String INDEX using a value of
+     * (SID  nStdStrings) as the index. An SID is defined as a 2-byte
+     * unsigned number but only takes values in the range 0 64999,
+     * inclusive. SID values 65000 and above are available for
+     * implementation use. A FontSet with zero non-standard strings
+     * is represented by an empty INDEX.
+     * </p>
+     */
     class StringIndex extends INDEX {
 
         /**
@@ -509,11 +542,59 @@ public class TTFTableCFF extends AbstractTTFTable
 
             super(offset, rar);
 
-            for (int i=0; i<getDatas().length; i++) {
-                short[] tmp = (short[])getDatas()[i];
+            values = new String[getDatas().length];
+
+            for (int i = 0; i < getDatas().length; i++) {
+                short[] tmp = (short[]) getDatas()[i];
                 System.out.print(" array[" + i + "] ");
                 tmp_print(tmp);
+                values[i] = convert(tmp);
             }
+        }
+
+        /**
+         * Convert the array to a string.
+         * @param data  the data-array
+         * @return Returns the String.
+         * @throws IOException if an IO-error occurs.
+         */
+        private String convert(final short[] data) throws IOException {
+
+            RandomAccessInputArray arar = new RandomAccessInputArray(data);
+
+            int sid = arar.readUnsignedShort();
+
+            System.out.println("sid = " + sid);
+
+            return "";
+        }
+
+        /**
+         * the values
+         */
+        private String[] values;
+
+        /**
+         * Returns the values.
+         * @return Returns the values.
+         */
+        public String[] getValues() {
+
+            return values;
+        }
+
+        /**
+         * Returns the String.
+         * @param sid   the SID for the string.
+         * @return Returns the String.
+         */
+        public String getString(final int sid) {
+
+            if (sid < T2StandardStrings.getHighestSID()) {
+                return T2StandardStrings.getString(sid);
+            }
+            // incomplete
+            return null;
         }
 
         /**
@@ -535,6 +616,12 @@ public class TTFTableCFF extends AbstractTTFTable
 
         for (int i = 0; i < data.length; i++) {
             System.out.print("0x" + Integer.toHexString(data[i]) + " ");
+            System.out.print("[");
+            char c = (char) data[i];
+            if (Character.isLetterOrDigit(c)) {
+                System.out.print(c);
+            }
+            System.out.print("]  ");
         }
         System.out.println();
     }

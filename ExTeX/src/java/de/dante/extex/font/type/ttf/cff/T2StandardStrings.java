@@ -26,7 +26,7 @@ package de.dante.extex.font.type.ttf.cff;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public final class T2StandardStrings {
@@ -433,6 +433,15 @@ public final class T2StandardStrings {
             "Roman", // 389
             "Semibold" // 390
     };
+
+    /**
+     * Returns the highest sid.
+     * @return Returns the highest sid.
+     */
+    public static int getHighestSID() {
+
+        return DATA.length - 1;
+    }
 
     /**
      * Returns the StandardString or '.notdef' if number out of range.

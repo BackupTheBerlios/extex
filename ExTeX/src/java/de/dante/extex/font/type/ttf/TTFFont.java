@@ -41,7 +41,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class TTFFont implements XMLConvertible {
 
@@ -416,6 +416,7 @@ public class TTFFont implements XMLConvertible {
     public TTFFont(final RandomAccessR rar) throws IOException {
 
         super();
+        type = TTF;
         tablemap = new TableMap();
         read(rar);
     }
@@ -919,7 +920,6 @@ public class TTFFont implements XMLConvertible {
      * seconds from 1904 to 1971
      */
     //private static final long SECONDS1904TO1971 = 60 * 60 * 24 * (365 * (1971 - 1904) + 17);
-
     /**
      * Convert a int value in a binary string
      * @param value the int value
@@ -941,29 +941,8 @@ public class TTFFont implements XMLConvertible {
 
         StringBuffer buf = new StringBuffer("00000000");
         buf.append(Integer.toHexString(value));
-        return "0x" + buf.substring(buf.length() - TTFConstants.SHIFT8).toString();
-
-    }
-
-    /**
-     * Returns the info for this class
-     * @return Returns the info for this class
-     */
-    public String toString() {
-
-        StringBuffer buf = new StringBuffer();
-
-        buf.append(tableDirectory.toString());
-
-        int[] keys = tablemap.getKeys();
-        for (int i = 0; i < keys.length; i++) {
-            TTFTable t = tablemap.get(keys[i]);
-            if (t != null) {
-                buf.append(t.toString());
-            }
-        }
-
-        return buf.toString();
+        return "0x"
+                + buf.substring(buf.length() - TTFConstants.SHIFT8).toString();
 
     }
 
@@ -1027,4 +1006,43 @@ public class TTFFont implements XMLConvertible {
         }
         return font;
     }
+
+    /**
+     * the type
+     */
+    private Type type;
+
+    /**
+     * Returns the fonttype.
+     * @return Returns the fonttype
+     */
+    public Type getType() {
+
+        return type;
+    }
+
+    /**
+     * TTF
+     */
+    public static final Type TTF = new Type();
+
+    /**
+     * OTF
+     */
+    public static final Type OTF = new Type();
+
+    /**
+     * Font-Type
+     */
+    private static class Type {
+
+        /**
+         * Create a new object.
+         */
+        public Type() {
+
+            super();
+        }
+    }
+
 }

@@ -21,7 +21,6 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
-import org.apache.batik.bridge.BaseScriptingEnvironment;
 import org.jdom.Comment;
 import org.jdom.Element;
 
@@ -53,7 +52,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class TTFTableBASE extends AbstractTTFTable
         implements
