@@ -16,41 +16,359 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.paragraphBuilder.impl;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.node.AfterMathNode;
+import de.dante.extex.interpreter.type.node.BeforeMathNode;
+import de.dante.extex.interpreter.type.node.DiscretionaryNode;
+import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
+import de.dante.extex.interpreter.type.node.KernNode;
+import de.dante.extex.interpreter.type.node.PenaltyNode;
+import de.dante.extex.interpreter.type.node.VerticalListNode;
+import de.dante.extex.typesetter.Discartable;
+import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.impl.Manager;
+import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.paragraphBuilder.Hyphenator;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.configuration.Configuration;
-
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * ...
  *
+ *
+ * <h3>Extension</h3>
+ * 
+ * Treat segments of a paragraph separated by forced breakes separately.
+ *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class ParagraphBuilderImpl implements ParagraphBuilder {
+public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
+
+    /**
+     * The constant <tt>EJECT_PENALTY</tt> contains the penalty which forces
+     * a line break. This is an equivalent to -&infin;.
+     */
+    private static final int EJECT_PENALTY = -10000;
+
+    /**
+     * The constant <tt>INF_BAD</tt> contains the ...
+     * This is an equivalent to &infin;.
+     */
+    private static final int INF_PENALTY = 10000;
+
+    /**
+     * The field <tt>hyphenator</tt> contains the ...
+     */
+    private Hyphenator hyphenator = null;
+
+    /**
+     * The field <tt>logger</tt> contains the ...
+     */
+    private Logger logger = null;
+
+    /**
+     * The field <tt>logger</tt> contains the ...
+     */
+    private Logger tracer = null;
+
+    /**
+     * The field <tt>options</tt> contains the reference to the options object.
+     */
+    private TypesetterOptions options = null;
 
     /**
      * Creates a new object.
      *
      * @param config the configuration
      */
-    public ParagraphBuilderImpl(Configuration config) {
+    public ParagraphBuilderImpl(final Configuration config) {
 
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
-     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#breakList(de.dante.extex.interpreter.type.node.HorizontalListNode, de.dante.extex.typesetter.impl.Manager)
+     * @see de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder#build(
+     *      de.dante.extex.interpreter.type.node.HorizontalListNode)
      */
-    public NodeList breakList(HorizontalListNode nodes, Manager manager) {
+    public NodeList build(final HorizontalListNode nodes) {
 
-        // TODO Auto-generated method stub
-        return null;
+        tracer = (options.getCountOption("tracingparagraphs").getValue() > 0
+                ? logger
+                : null);
+
+        int hyphenpenalty = (int) options.getCountOption("hyphenpenalty")
+                .getValue();
+        int exhyphenpenalty = (int) options.getCountOption("exhyphenpenalty")
+                .getValue();
+
+        // remove final node if it is glue; [TTB p99--100]
+        Node node = (nodes.empty() ? null : nodes.get(nodes.size() - 1));
+        if (node != null && node instanceof GlueNode) {
+            nodes.remove(nodes.size() - 1);
+        }
+
+        // [TTB p100]
+        nodes.add(new PenaltyNode(INF_PENALTY));
+        nodes.add(new GlueNode(options.getGlueOption("parfillskip")));
+        nodes.add(new PenaltyNode(EJECT_PENALTY));
+
+        int pretolerance = (int) options.getCountOption("pretolerance")
+                .getValue();
+        if (pretolerance > 0) {
+            if (tracer != null) {
+                tracer.log(Level.FINE, "@@pass one\n");
+            }
+            BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
+                    exhyphenpenalty);
+            //paragraph breaking without additional hyphenation points
+            Breaks breaks = findOptimalBreakPoints(breakPoints, 0,
+                    pretolerance, 0, 0);
+            if (breaks != null) {
+                return splitNodeList(nodes, breaks);
+            }
+        }
+
+        // insert optional hyphenation positions
+        if (hyphenator != null) {
+            if (tracer != null) {
+                tracer.log(Level.FINE, "@@hyphenating\n");
+            }
+            hyphenator.hyphenate(nodes);
+        }
+
+        if (tracer != null) {
+            tracer.log(Level.FINE, "@@pass two\n");
+        }
+        int tolerance = (int) options.getCountOption("tolerance").getValue();
+        BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
+                exhyphenpenalty);
+        //paragraph breaking second pass
+        Breaks breaks = findOptimalBreakPoints(breakPoints, 0, tolerance, 0, 0);
+        if (breaks != null) {
+            return splitNodeList(nodes, breaks);
+        }
+
+        if (tracer != null) {
+            tracer.log(Level.FINE, "@@pass three\n");
+        }
+        //TODO: paragraph breaking third pass
+        FixedDimen emergencystretch = options
+                .getDimenOption("emergencystretch");
+
+        return nodes;
     }
 
+    /**
+     * ...
+     *
+     * @param breakPoint the list of possible break points
+     *
+     * @return a breaks container
+     */
+    private Breaks collect(final BreakPoint[] breakPoint, final int depth) {
+
+        int[] a = new int[depth + 1];
+        int xi = 0;
+        for (int i = 0; i < breakPoint.length; i++) {
+            if (breakPoint[i].isActive()) {
+                a[xi++] = breakPoint[i].getPosition();
+            }
+        }
+        return new Breaks(999, a);
+    }
+
+    /**
+     * ...
+     *
+     * @param breakPoint the list of possible break points
+     * @param pi ...
+     *
+     * @return ...
+     */
+    private int computePenalty(BreakPoint[] breakPoint, int pi) {
+
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    /**
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
+     *      java.util.logging.Logger)
+     */
+    public void enableLogging(final Logger logger) {
+
+        this.logger = logger;
+    }
+
+    /**
+     * ...
+     *
+     * @param breakPoint the list of possible break points
+     * @param line the starting line number
+     * @param threshold the threshold for the penalties of a single line
+     * @param depth ...
+     * @param pi ...
+     *
+     * @return the container with the breaks or <code>null</code> if none is
+     *  found.
+     */
+    Breaks findOptimalBreakPoints(final BreakPoint[] breakPoint,
+            final int line, final int threshold, final int depth, final int pi) {
+
+        Breaks b = null;
+        int pen = 0;
+
+        for (int i = pi; i < breakPoint.length; i++) {
+            breakPoint[i].setActive();
+            pen = computePenalty(breakPoint, pi);
+            if (pen <= EJECT_PENALTY || pen <= threshold) {
+                if (i + 1 < breakPoint.length) {
+                    Breaks b2 = findOptimalBreakPoints(breakPoint, line,
+                            threshold, depth + 1, i + 1);
+                    if (b2 != null
+                            && (b == null || b.getPenalty() > b2.getPenalty())) {
+                        b = b2;
+                    }
+                } else {
+                    b = collect(breakPoint, depth);
+                }
+            }
+            breakPoint[i].setPassive();
+        }
+
+        return b;
+    }
+
+    /**
+     * ...
+     *
+     * @param nodes ...
+     * @param hyphenpenalty penalty for a discretionary node with non-empty
+     *  pre-text
+     * @param exhyphenpenalty penalty for a discretionary node with empty
+     *  pre-text
+     *
+     * @return a complete list of admissible break points
+     */
+    private BreakPoint[] makeBreakPoints(final HorizontalListNode nodes,
+            final int hyphenpenalty, final int exhyphenpenalty) {
+
+        //System.err.println();
+
+        List bp = new ArrayList();
+        //bp.add(new BreakPoint(0, new Glue(0)));
+        int len = nodes.size();
+        Glue w = new Glue(0);
+        boolean math = false;
+
+        for (int i = 0; i < len; i++) {
+            Node node = nodes.get(i);
+
+            //System.err.println(node.toString());
+
+            if (node instanceof GlueNode && i > 0
+                    && !(nodes.get(i - 1) instanceof Discartable)) {
+                bp.add(new BreakPoint(i, w, 0));
+                w = new Glue(0);
+            } else if (node instanceof KernNode && !math
+                    && nodes.get(i + 1) instanceof GlueNode) {
+                bp.add(new BreakPoint(i, w, 0));
+                w = new Glue(0);
+            } else if (node instanceof BeforeMathNode) {
+                math = true;
+            } else if (node instanceof AfterMathNode) {
+                if (nodes.get(i + 1) instanceof GlueNode) {
+                    bp.add(new BreakPoint(i, w, 0));
+                    w = new Glue(0);
+                }
+                math = false;
+            } else if (node instanceof PenaltyNode) {
+                int penalty = (int) ((PenaltyNode) node).getPenalty();
+                if (penalty < INF_PENALTY) {
+                    bp.add(new BreakPoint(i, w, penalty));
+                    w = new Glue(0);
+                }
+            } else if (node instanceof DiscretionaryNode) {
+                bp.add(new BreakPoint(i, w, (((DiscretionaryNode) node)
+                        .getPreBreak().length() != 0
+                        ? hyphenpenalty
+                        : exhyphenpenalty)));
+                w = new Glue(0);
+            } else {
+                node.addWidthTo(w);
+            }
+        }
+
+        BreakPoint[] a = new BreakPoint[bp.size()];
+        bp.toArray(a);
+
+        /*
+         System.err.println();
+         for (int i = 0; i < a.length; i++) {
+         System.err.println(a[i]);
+         }
+         */
+
+        return a;
+    }
+
+    /**
+     * Setter for hyphenator.
+     *
+     * @param hyphenator the hyphenator to set.
+     */
+    public void setHyphenator(Hyphenator hyphenator) {
+
+        this.hyphenator = hyphenator;
+    }
+
+    /**
+     * Setter for options.
+     *
+     * @param options the options to set.
+     */
+    public void setOptions(final TypesetterOptions options) {
+
+        this.options = options;
+    }
+
+    /**
+     * ...
+     * @param nodes ...
+     * @param breaks TODO
+     *
+     * @return ...
+     */
+    private NodeList splitNodeList(final NodeList nodes, final Breaks breaks) {
+
+        VerticalListNode vlist = new VerticalListNode();
+        int[] a = breaks.getPoints();
+        if (a.length == 1) {
+            vlist.add(nodes);
+        } else {
+            int hi = 0;
+            for (int i = 0; i < a.length; i++) {
+                HorizontalListNode hlist = new HorizontalListNode();
+                while (hi < a[i]) {
+                    hlist.add(nodes.get(hi++));
+                }
+                //System.err.println(a[i]);
+                vlist.add(hlist);
+            }
+        }
+
+        return vlist;
+    }
 }

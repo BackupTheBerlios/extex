@@ -25,15 +25,12 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.CharNode;
-import de.dante.extex.interpreter.type.node.GlueNode;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
-import de.dante.extex.interpreter.type.node.PenaltyNode;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
-import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
@@ -46,7 +43,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class HorizontalListMaker extends AbstractListMaker implements ListMaker {
 
@@ -170,29 +167,9 @@ public class HorizontalListMaker extends AbstractListMaker implements ListMaker 
      */
     public NodeList close() throws GeneralException {
 
-        getManager().getLigatureBuilder().insertLigatures(nodes);
-        ParagraphBuilder builder = getManager().getParagraphBuilder();
-
-        // remove final node if it is glue; [TTB p99--100]
-        Node node = getLastNode();
-        if (node != null && node instanceof GlueNode) {
-            nodes.remove(nodes.size() - 1);
-        }
-
-        // [TTB p100]
-        nodes.add(new PenaltyNode(10000));
-        nodes.add(new GlueNode(getManager().getOptions().getGlueOption(
-                "parfillskip")));
-        nodes.add(new PenaltyNode(-10000));
-
-        long pretolerance = getManager().getOptions().getCountOption(
-                "pretolerance").getValue();
-        if (pretolerance > 0) {
-            //TODO: paragraph breaking without additional hyphenation points
-        }
-        //TODO: insert optional hyphenation positions
-        //TODO: paragraph breaking second pass
-        //TODO: paragraph breaking third pass
+        Manager manager = getManager();
+        manager.getLigatureBuilder().insertLigatures(nodes);
+        manager.getParagraphBuilder().build(nodes);
 
         return nodes;
     }
