@@ -45,111 +45,115 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DefFont extends AbstractCode {
 
-    /**
-     * Creates a new object.
-     * 
-     * @param name the name for debugging
-     */
-    public DefFont(String name) {
-        super(name);
-    }
+	/**
+	 * Creates a new object.
+	 * 
+	 * @param name the name for debugging
+	 */
+	public DefFont(String name) {
+		super(name);
+	}
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(Flags prefix, Context context, TokenSource source,
-            Typesetter typesetter) throws GeneralException {
+	/**
+	 * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+	 *      de.dante.extex.interpreter.context.Context,
+	 *      de.dante.extex.interpreter.TokenSource,
+	 *      de.dante.extex.typesetter.Typesetter)
+	 */
+	public void execute(Flags prefix, Context context, TokenSource source, Typesetter typesetter) throws GeneralException {
 
-    	Token tok = source.getNonSpace();
-    	source.scanOptionalEquals();
-    	String filename = scanFileName(source);
-    	int size = getFontSize(filename);
-    	if (size <0) {
-    		size=10;
-    	}
-    	Dimen fontsize = new Dimen(Dimen.ONE * size);
-    	
-    	if (source.scanKeyword("at",true)) {
-    		// \font\myfont=cmr12 at 15pt
-    		// \font\second=cmr10 at 12truept
-    		source.skipSpace();
-    		fontsize = new Dimen(context,source);
-    	} else if (source.scanKeyword("scaled",true)) {
-    		// \font\magnifiedfiverm=cmr5 scaled 2000
-    		source.skipSpace();
-    		long scale = source.scanInteger();
-    		fontsize = new Dimen(Dimen.ONE * size * scale/1000);
-    	}
-    	
-    	FontFactory ff = context.getFontFactory();
-    	Font font;
-    	try {
-    		font = ff.getInstance(filename,fontsize);
-    	} catch (ConfigurationException e) {
-			throw new GeneralException(e);
+		Token tok = source.getNonSpace();
+		source.scanOptionalEquals();
+		String filename = scanFileName(source);
+		int size = getFontSize(filename);
+		if (size < 0) {
+			size = 10;
 		}
-    	
-    	// create new primitive
-    	Code code = context.getMacro(tok.getValue());
-    	if (code != null) {
-    		throw new GeneralException("name " + tok.getValue() + " exists");// TODO change
-    	}
-    	code = new FontCode(tok.getValue(),font);
-    	context.setMacro(tok.getValue(),code);
-    	prefix.clear();
-    }
-    
-    /**
-     * Return the size of a font with a fontname. If no number in the
-     * filename exits, -1 is returned.
-     * 
-     * @param filename	the filename (e.g. <tt>cmr12</tt>)
-     * @return	the fontsize or -1, if no digits are found
-     */
-    private int getFontSize(String filename) {
-    	StringBuffer sb = new StringBuffer();
-    	for (int i=0; i<filename.length(); i++) {
-    		UnicodeChar uc = new UnicodeChar(filename,i);
-    		if (uc.isDigit()) {
-    			sb.append(uc.toString());
-    		}
-    	}
-    	int rt = -1;
+		Dimen fontsize = new Dimen(Dimen.ONE * size);
+
+		// optional parameters
 		try {
-			rt = Integer.parseInt(sb.toString());
-		}catch (NumberFormatException e) {
+			if (source.scanKeyword("at", true)) {
+				// \font\myfont=cmr12 at 15pt
+				// \font\second=cmr10 at 12truept
+				source.skipSpace();
+				fontsize = new Dimen(context, source);
+			} else if (source.scanKeyword("scaled", true)) {
+				// \font\magnifiedfiverm=cmr5 scaled 2000
+				source.skipSpace();
+				long scale = source.scanInteger();
+				fontsize = new Dimen(Dimen.ONE * size * scale / 1000);
+			}
+		} catch (Exception e) {
 			// do nothing, use default
 		}
-    	return rt;
-    }
-    
-    /**
-     * scan the filename until a <code>SpaceToken</code>.
-     * 
-     * @param source the source for new tokens
-     * @return the file name as string
-     * @throws GeneralException in case of an error
-     */
-    private String scanFileName(TokenSource source) throws GeneralException {
-    	Token t = source.scanNonSpace();
 
-    	if (t == null) {
-    		throw new GeneralHelpingException("EOF"); //TODO
-    	}
+		FontFactory ff = context.getFontFactory();
+		Font font;
+		try {
+			font = ff.getInstance(filename, fontsize);
+		} catch (ConfigurationException e) {
+			throw new GeneralException(e);
+		}
 
-    	StringBuffer sb = new StringBuffer(t.getValue());
+		// create new primitive
+		Code code = context.getMacro(tok.getValue());
+		if (code != null) {
+			throw new GeneralHelpingException("FONT.fontprimitiveexists", code.getName());
+		}
+		code = new FontCode(tok.getValue(), font);
+		context.setMacro(tok.getValue(), code);
+		prefix.clear();
+	}
 
-    	for (t = source.scanToken(); t != null && !(t instanceof SpaceToken); t = source.scanToken()) {
-    		sb.append(t.getValue());
-    	}
+	/**
+	 * Return the size of a font with a fontname. If no number in the
+	 * filename exits, -1 is returned.
+	 * 
+	 * @param filename	the filename (e.g. <tt>cmr12</tt>)
+	 * @return	the fontsize or -1, if no digits are found
+	 */
+	private int getFontSize(String filename) {
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < filename.length(); i++) {
+			UnicodeChar uc = new UnicodeChar(filename, i);
+			if (uc.isDigit()) {
+				sb.append(uc.toString());
+			}
+		}
+		int rt = -1;
+		try {
+			rt = Integer.parseInt(sb.toString());
+		} catch (NumberFormatException e) {
+			// do nothing, use default
+		}
+		return rt;
+	}
 
-    	return sb.toString();
-    }
+	/**
+	 * scan the filename until a <code>SpaceToken</code>.
+	 * 
+	 * @param source the source for new tokens
+	 * @return the file name as string
+	 * @throws GeneralException in case of an error
+	 */
+	private String scanFileName(TokenSource source) throws GeneralException {
+		Token t = source.scanNonSpace();
+
+		if (t == null) {
+			throw new GeneralHelpingException("TTP.EOFinDef", "font");
+		}
+
+		StringBuffer sb = new StringBuffer(t.getValue());
+
+		for (t = source.scanToken(); t != null && !(t instanceof SpaceToken); t = source.scanToken()) {
+			sb.append(t.getValue());
+		}
+
+		return sb.toString();
+	}
 }
