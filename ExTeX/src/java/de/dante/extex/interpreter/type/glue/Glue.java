@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.glue;
 
 import java.io.Serializable;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -166,6 +167,7 @@ public class Glue implements Serializable, FixedGlue {
      * @return the natural length
      */
     public Dimen getLength() {
+
         return new Dimen(length.getValue());
     }
 
@@ -196,11 +198,13 @@ public class Glue implements Serializable, FixedGlue {
     /**
      * ...
      *
-     * @param x ..
+     * @param x the value to compare to
      *
-     * @return ..
+     * @return <code>true</code> iff the current length is greater than the
+     *  given one
      */
     public boolean gt(final FixedGlueComponent x) {
+
         return this.length.gt(x);
     }
 
@@ -247,13 +251,15 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Set the glue value to a non-stretchable and non-shrinkable length
      *
-     * @param theLength ...
+     * @param theLength the new length
      */
     public void set(final FixedDimen theLength) {
 
         this.length = theLength.copy();
+        this.shrink = new GlueComponent();
+        this.stretch = new GlueComponent();
     }
 
     /**
