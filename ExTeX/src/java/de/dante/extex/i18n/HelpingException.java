@@ -83,7 +83,7 @@ import de.dante.util.framework.i18n.Localizer;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class HelpingException extends GeneralException {
 
@@ -239,7 +239,7 @@ public class HelpingException extends GeneralException {
      *
      * @param messageTag the message
      *
-     * @deprecated use the method with the explicit localizer instead.
+     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
      */
     public HelpingException(final String messageTag) {
 
@@ -254,7 +254,7 @@ public class HelpingException extends GeneralException {
      * @param messageTag the message
      * @param a1 the first argument
      *
-     * @deprecated use the method with the explicit resource bundle instead.
+     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
      */
     public HelpingException(final String messageTag, final String a1) {
 
@@ -271,7 +271,7 @@ public class HelpingException extends GeneralException {
      * @param a1 the first argument
      * @param a2 the second argument
      *
-     * @deprecated use the method with the explicit resource bundle instead.
+     * @deprecated use the method with the explicit localizer instead: add getLocalizer() as first argument in primitives
      */
     public HelpingException(final String messageTag, final String a1,
             final String a2) {
@@ -280,28 +280,6 @@ public class HelpingException extends GeneralException {
         this.tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
-        this.bundle = defaultBundle;
-    }
-
-    /**
-     * Creates a new object with three variable arguments.
-     *
-     * @param messageTag the message
-     * @param a1 the first argument
-     * @param a2 the second argument
-     * @param a3 the third argument
-     *
-     * @deprecated use the method with the explicit resource bundle instead.
-     */
-
-    public HelpingException(final String messageTag, final String a1,
-            final String a2, final String a3) {
-
-        super();
-        this.tag = messageTag;
-        this.arg1 = a1;
-        this.arg2 = a2;
-        this.arg3 = a3;
         this.bundle = defaultBundle;
     }
 

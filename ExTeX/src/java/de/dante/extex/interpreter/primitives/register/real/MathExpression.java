@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathExpression extends AbstractMath
         implements
@@ -110,7 +110,8 @@ public class MathExpression extends AbstractMath
             }
             buf.append('^');
 
-            throw new HelpingException("TTP.MathExpr", ce.getMessage()
+            throw new HelpingException(getLocalizer(), "TTP.MathExpr", ce
+                    .getMessage()
                     + " (at column " + String.valueOf(col) + ")", expr, buf
                     .toString());
         }
@@ -121,8 +122,8 @@ public class MathExpression extends AbstractMath
             try {
                 result = compileexpr.evaluate(null);
             } catch (Throwable e) {
-                throw new HelpingException("TTP.MathExprError", e
-                        .getMessage());
+                throw new HelpingException(getLocalizer(), "TTP.MathExprError",
+                        e.getMessage());
             }
 
             System.err.println("\nresult = " + result);
