@@ -19,6 +19,8 @@
 
 package de.dante.extex.i18n;
 
+import java.text.MessageFormat;
+import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import de.dante.util.GeneralException;
@@ -53,22 +55,23 @@ import de.dante.util.GeneralException;
  * {0}, {1}, and {2}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class HelpingException extends GeneralException {
 
     /**
-     * The field <tt>bundle</tt> contains the ...
+     * The field <tt>defaultBundle</tt> contains the default resource bundle.
      */
-    private static ResourceBundle bundle = null;
+    private static ResourceBundle defaultBundle = null;
 
     /**
      * ...
      *
      * @param resource the ResourceBundle to use
      */
-    public static void configure(final ResourceBundle resource) {
-        bundle = resource;
+    public static void setResource(final ResourceBundle resource) {
+
+        defaultBundle = resource;
     }
 
     /**
@@ -87,42 +90,83 @@ public class HelpingException extends GeneralException {
     private String arg3 = "?";
 
     /**
+     * The field <tt>bundle</tt> contains the ...
+     */
+    private ResourceBundle bundle = null;
+
+    /**
      * The field <tt>tag</tt> contains the name of the message to show.
-     *
-     * @see de.dante.extex.i18n.Messages
      */
     private String tag = "GeneralDetailedException.help";
 
     /**
-     * Creates a new object.
+     * Creates a new object without variable arguments.
      *
      * @param messageTag the message
+     *
+     * deprecated use the method with the explicit resource bundle instead.
      */
     public HelpingException(final String messageTag) {
 
         super();
         tag = messageTag;
+        bundle = defaultBundle;
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object without variable arguments.
+     *
+     * @param messageTag the message
+     * @param resource the resource bundle to use
+     */
+    public HelpingException(final ResourceBundle resource,
+            final String messageTag) {
+
+        super();
+        tag = messageTag;
+        bundle = resource;
+    }
+
+    /**
+     * Creates a new object with one variable argument.
      *
      * @param messageTag the message
      * @param a1 the first argument
+     *
+     * deprecated use the method with the explicit resource bundle instead.
      */
     public HelpingException(final String messageTag, final String a1) {
 
         super();
         tag = messageTag;
         this.arg1 = a1;
+        bundle = defaultBundle;
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with one variable argument.
+     *
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param resource the resource bundle to use
+     */
+    public HelpingException(final ResourceBundle resource,
+            final String messageTag, final String a1) {
+
+        super();
+        tag = messageTag;
+        this.arg1 = a1;
+        bundle = resource;
+    }
+
+    /**
+     * Creates a new object with two variable arguments.
      *
      * @param messageTag the message
      * @param a1 the first argument
      * @param a2 the second argument
+     *
+     * deprecated use the method with the explicit resource bundle instead.
      */
     public HelpingException(final String messageTag, final String a1,
             final String a2) {
@@ -131,16 +175,38 @@ public class HelpingException extends GeneralException {
         tag = messageTag;
         this.arg1 = a1;
         this.arg2 = a2;
+        bundle = defaultBundle;
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with two variable arguments.
+     *
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param a2 the second argument
+     * @param resource the resource bundle to use
+     */
+    public HelpingException(final ResourceBundle resource,
+            final String messageTag, final String a1, final String a2) {
+
+        super();
+        tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        bundle = resource;
+    }
+
+    /**
+     * Creates a new object with three variable arguments.
      *
      * @param messageTag the message
      * @param a1 the first argument
      * @param a2 the second argument
      * @param a3 the third argument
+     *
+     * deprecated use the method with the explicit resource bundle instead.
      */
+
     public HelpingException(final String messageTag, final String a1,
             final String a2, final String a3) {
 
@@ -149,16 +215,28 @@ public class HelpingException extends GeneralException {
         this.arg1 = a1;
         this.arg2 = a2;
         this.arg3 = a3;
+        bundle = defaultBundle;
     }
 
     /**
-     * Creates a new object.
+     * Creates a new object with three variable arguments.
      *
-     * @param e the cause
+     * @param messageTag the message
+     * @param a1 the first argument
+     * @param a2 the second argument
+     * @param a3 the third argument
+     * @param resource the resource bundle to use
      */
-    public HelpingException(final Throwable e) {
+    public HelpingException(final ResourceBundle resource,
+            final String messageTag, final String a1, final String a2,
+            final String a3) {
 
         super();
+        tag = messageTag;
+        this.arg1 = a1;
+        this.arg2 = a2;
+        this.arg3 = a3;
+        bundle = resource;
     }
 
     /**
@@ -168,7 +246,8 @@ public class HelpingException extends GeneralException {
      */
     public String getHelp() {
 
-        return Messages.format(tag + ".help", arg1, arg2, arg3);
+        return MessageFormat.format(determineFormat(tag + ".help"),
+                new Object[]{arg1, arg2, arg3});
     }
 
     /**
@@ -178,7 +257,28 @@ public class HelpingException extends GeneralException {
      */
     public String getMessage() {
 
-        return Messages.format(tag, arg1, arg2, arg3);
+        return MessageFormat.format(determineFormat(tag), new Object[]{arg1,
+                arg2, arg3});
+    }
+
+    /**
+     * ...
+     *
+     * @param name ...
+     *
+     * @return ...
+     */
+    protected String determineFormat(final String name) {
+
+        String format;
+        try {
+            format = bundle.getString(name);
+        } catch (MissingResourceException e) {
+            format = "???" + name + "???";
+        } catch (NullPointerException e) {
+            format = "???" + name + "???";
+        }
+        return format;
     }
 
 }
