@@ -47,8 +47,8 @@ import de.dante.util.observer.NotObservableException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.40 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.41 $
  */
 public interface TokenSource {
 
@@ -166,11 +166,6 @@ public interface TokenSource {
     Font getFont(Context context) throws GeneralException;
 
     /**
-     * @deprecated use getKeyword(Context, String) instead
-     */
-    boolean getKeyword(String keyword) throws GeneralException;
-
-    /**
      * Get tokens from the token stream searching for a sequence of letter
      * tokens. If all tokens are found then they are removed from the input
      * stream and <code>true</code> is returned. Otherwise all tokens are left
@@ -194,11 +189,6 @@ public interface TokenSource {
     boolean getKeyword(Context context, String keyword) throws GeneralException;
 
     /**
-     * @deprecated use getKeyword(Context, String) instead
-     */
-    boolean getKeyword(String s, boolean space) throws GeneralException;
-
-    /**
      * Getter for the locator.
      * The locator provides a means to get the information where something is
      * coming from. Usually it points to a line in a file.
@@ -206,11 +196,6 @@ public interface TokenSource {
      * @return the current locator
      */
     Locator getLocator();
-
-    /**
-     * @deprecated use getNonSpace(Context) instead
-     */
-    Token getNonSpace() throws GeneralException;
 
     /**
      * Get the next token which has not the catcode
@@ -223,11 +208,6 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     Token getNonSpace(Context context) throws GeneralException;
-
-    /**
-     * @deprecated use getOptionalEquals(Context) instead
-     */
-    void getOptionalEquals() throws GeneralException;
 
     /**
      * Skip spaces and if the next non-space character is an equal sign skip it
@@ -247,11 +227,6 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     void getOptionalEquals(Context context) throws GeneralException;
-
-    /**
-     * @deprecated use getToken(Context) instead
-     */
-    Token getToken() throws GeneralException;
 
     /**
      * Get the next token form the input streams. If the current input stream
@@ -281,11 +256,6 @@ public interface TokenSource {
      * @see "TeX -- The Program [332]"
      */
     Token getToken(Context context) throws GeneralException;
-
-    /**
-     * @deprecated use getToken(Context) instead
-     */
-    Tokens getTokens() throws GeneralException;
 
     /**
      * Get the next tokens form the input streams between <code>{</code> and
@@ -393,11 +363,6 @@ public interface TokenSource {
                 MissingNumberException;
 
     /**
-     * @deprecated use scanNonSpace(Context) instead
-     */
-    Token scanNonSpace() throws GeneralException;
-
-    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @param context the interpreter contex
@@ -459,11 +424,6 @@ public interface TokenSource {
                 MissingNumberException;
 
     /**
-     * @deprecated use scanNumber(Context, Token) instead
-     */
-    long scanNumber(Token token) throws GeneralException;
-
-    /**
      * Scan the input streams for an entity to denote a register name.
      * Upon EOF <code>null</code> is returned.
      *
@@ -510,11 +470,6 @@ public interface TokenSource {
      * @throws GeneralException in case of an error
      */
     Tokens scanTokens(Context context) throws GeneralException;
-
-    /**
-     * @deprecated use scanTokensAsString(Context) instead
-     */
-    String scanTokensAsString() throws GeneralException;
 
     /**
      * Get the next expanded token form the input streams between a leftbace

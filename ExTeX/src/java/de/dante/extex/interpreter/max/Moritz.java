@@ -77,7 +77,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.53 $
+ * @version $Revision: 1.54 $
  */
 public abstract class Moritz
         implements
@@ -366,14 +366,6 @@ public abstract class Moritz
     }
 
     /**
-     * @deprecated use getKeyword(Context, String) instead
-     */
-    public boolean getKeyword(final String s) throws GeneralException {
-
-        return getKeyword(getContext(), s);
-    }
-
-    /**
      * Scan the expanded token stream for a sequence of letter tokens. If all
      * tokens are found then they are removed from the input stream and
      * <code>true</code> is returned. Otherwise all tokens are left in the
@@ -399,17 +391,6 @@ public abstract class Moritz
         } else {
             return false;
         }
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#getKeyword(java.lang.String,
-     *      boolean)
-     */
-    public boolean getKeyword(final String s, final boolean space)
-            throws GeneralException {
-
-        skipSpaces |= space;
-        return getKeyword(getContext(), s);
     }
 
     /**
@@ -610,15 +591,6 @@ public abstract class Moritz
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#getOptionalEquals()
-     * @deprecated use getOptionalEquals(Context) instead
-     */
-    public void getOptionalEquals() throws GeneralException {
-
-        getOptionalEquals(getContext());
-    }
-
-    /**
      * Skip spaces and if the next non-space character is an equal sign skip it
      * as well and all spaces afterwards.
      *
@@ -641,14 +613,6 @@ public abstract class Moritz
         } else {
             stream.put(t);
         }
-    }
-
-    /**
-     * @deprecated use getToken(Context) instead
-     */
-    public Token getToken() throws GeneralException {
-
-        return getToken(getContext());
     }
 
     /**
@@ -705,14 +669,6 @@ public abstract class Moritz
 
         observersEOF.update(this, null);
         return null;
-    }
-
-    /**
-     * @deprecated use getTokens(Context) instead
-     */
-    public Tokens getTokens() throws GeneralException {
-
-        return getTokens(getContext());
     }
 
     /**
@@ -935,15 +891,6 @@ public abstract class Moritz
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanNonSpace()
-     * @deprecated use scanNonSpace(Context) instead
-     */
-    public Token scanNonSpace() throws GeneralException {
-
-        return scanNonSpace(getContext());
-    }
-
-    /**
      * Scan the input for the next token which has not the catcode SPACE.
      *
      * @param context the interpreter contex
@@ -992,15 +939,6 @@ public abstract class Moritz
     public long scanNumber(final Context context) throws GeneralException {
 
         return scanNumber(context, getNonSpace(context));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanNumber(de.dante.extex.scanner.Token)
-     * @deprecated use scanNumber(Context, Token) instead
-     */
-    public long scanNumber(final Token token) throws GeneralException {
-
-        return scanNumber(getContext(), token);
     }
 
     /**
@@ -1220,15 +1158,6 @@ public abstract class Moritz
         }
 
         return toks;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.TokenSource#scanTokensAsString()
-     * @deprecated use scanTokensAsString(Context) instead
-     */
-    public String scanTokensAsString() throws GeneralException {
-
-        return scanTokensAsString(getContext());
     }
 
     /**
