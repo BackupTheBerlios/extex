@@ -20,39 +20,38 @@
 package de.dante.extex.typesetter.impl;
 
 import de.dante.extex.i18n.HelpingException;
-import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.i18n.Messages;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
-import de.dante.extex.typesetter.Node;
-import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
     /**
-     * The manager to ask for global changes.
+     * The field <tt>manager</tt> contains the manager to ask for global
+     * changes.
      */
     private Manager manager;
 
     /**
      * Creates a new object.
      *
-     * @param aManager the manager to ask for global changes
+     * @param theManager the manager to ask for global changes
      */
-    public AbstractListMaker(final Manager aManager) {
+    public AbstractListMaker(final Manager theManager) {
 
         super();
-        this.manager = aManager;
+        this.manager = theManager;
     }
 
     /**
@@ -80,49 +79,22 @@ public abstract class AbstractListMaker implements ListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#add(de.dante.extex.typesetter.Node)
-     */
-    public abstract void add(final Node node) throws GeneralException;
-
-    /**
      * @see de.dante.extex.typesetter.ListMaker#add(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     *      de.dante.extex.typesetter.type.noad.Noad)
      */
-    public abstract void add(final TypesettingContext font,
-            final UnicodeChar symbol) throws GeneralException;
+    public void add(final Noad noad) throws GeneralException {
 
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#addGlue(
-     *      de.dante.extex.interpreter.type.glue.Glue)
-     */
-    public abstract void addGlue(final Glue g) throws GeneralException;
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#addSpace(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.interpreter.type.count.Count)
-     */
-    public abstract void addSpace(final TypesettingContext typesettingContext,
-            final Count spacefactor) throws GeneralException;
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#close()
-     */
-    public abstract NodeList close() throws GeneralException;
-
-    /**
-     * @see de.dante.extex.typesetter.ListMaker#par()
-     */
-    public abstract void par() throws GeneralException;
+        throw new PanicException("TTP.Confusion", //
+                Messages.format("ListMaker.Noad.unexpected"));
+    }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#toggleDisplaymath()
      */
     public void toggleDisplaymath() throws GeneralException {
 
-        ListMaker hlist = new DisplaymathListMaker(manager);
-        manager.push(hlist);
+        ListMaker mathList = new DisplaymathListMaker(manager);
+        manager.push(mathList);
     }
 
     /**
@@ -130,8 +102,8 @@ public abstract class AbstractListMaker implements ListMaker {
      */
     public void toggleMath() throws GeneralException {
 
-        ListMaker hlist = new MathListMaker(manager);
-        manager.push(hlist);
+        ListMaker mathList = new MathListMaker(manager);
+        manager.push(mathList);
     }
 
     /**
