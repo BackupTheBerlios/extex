@@ -35,9 +35,8 @@ import de.dante.util.configuration.Configuration;
 /**
  * This is a text dummy implementation of a document writer (very simple).
  *
- *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.3 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.4 $
  */
 public class TextDocumentWriter implements DocumentWriter, NodeVisitor {
 

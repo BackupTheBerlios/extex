@@ -38,8 +38,8 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
- * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair </a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.6 $
  */
 public class TFMReader implements FontMetric {
 
@@ -688,7 +688,7 @@ public class TFMReader implements FontMetric {
     private TFMFixWord[] depthTable;
 
     /**
-     * The italic corrections of characters in <code>charAuxTab<code>
+     * The italic corrections of characters in <code>charAuxTab</code>
      */
     private TFMFixWord[] italicTable;
 
