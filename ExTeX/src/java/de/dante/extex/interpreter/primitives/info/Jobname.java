@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    &lang;ifnum&rang;
+ *    &lang;jobname&rang;
  *      &rarr; <tt>\jobname</tt>  </pre>
  * </p>
  * <p>
@@ -50,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Jobname extends AbstractCode implements ExpandableCode {
 
