@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * Test for the register <tt>count</tt>.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CountTest extends TestCase {
 
@@ -43,8 +43,8 @@ public class CountTest extends TestCase {
      */
     public void testCount01() {
 
-        assertTrue(TestTeX.test("testdata/jucount01",
-                "testdata/jucount01.testtxt"));
+        assertTrue(TestTeX.test("jucount01",
+                                "src/test/data/jucount01.testtxt"));
     }
 
 }

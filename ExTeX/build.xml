@@ -176,6 +176,7 @@
             <classpath>
                 <pathelement path="${classes}"/>
             </classpath>
+            <classpath refid="test.class.path"/>
             <formatter type="plain"/>
             <batchtest fork="yes" todir="${tmp.tests}">
                 <fileset dir="${src.tests}">

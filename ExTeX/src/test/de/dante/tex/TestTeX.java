@@ -29,7 +29,7 @@ import de.dante.extex.ExTeX;
  * Test for ExTeX.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public final class TestTeX {
 
@@ -54,7 +54,7 @@ public final class TestTeX {
 
             // run ExTeX
             Properties pro = System.getProperties();
-            ExTeX extex = new ExTeX(pro);
+            ExTeX extex = new ExTeX(pro, ".extex");
             pro.setProperty("extex.output", "text");
             pro.setProperty("extex.file", texfile);
             pro.setProperty("extex.jobname", texfile);
