@@ -304,7 +304,7 @@
     <define name="kern" class="de.dante.extex.interpreter.primitives.box.Kern"/>
     <define name="language" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="lastbox" class="de.dante.extex.interpreter.primitives.box.Lastbox"/>
-    <Define name="lastkern" class=""/>
+    <define name="lastkern" class="de.dante.extex.interpreter.primitives.register.dimen.Lastkern"/>
     <define name="lastpenalty" class="de.dante.extex.interpreter.primitives.register.count.Lastpenalty"/>
     <define name="lastskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="lccode" class="de.dante.extex.interpreter.primitives.string.Lccode"/>
@@ -322,7 +322,7 @@
     <define name="looseness" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="lower" class="de.dante.extex.interpreter.primitives.box.Lower"/>
     <define name="lowercase" class="de.dante.extex.interpreter.primitives.string.Lowercase"/>
-    <define name="mag" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">1000</define>
+    <define name="mag" class="de.dante.extex.interpreter.primitives.register.count.Mag">1000</define>
     <Define name="mark" class=""/>
     <Define name="mathaccent" class=""/>
     <Define name="mathbin" class=""/>

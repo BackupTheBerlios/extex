@@ -17,7 +17,7 @@
   -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
   -
   -->
-<ExTeX>
+<ExTeX >
   <banner>TeX compatibility mode</banner>
 
   <!-- 
@@ -187,7 +187,7 @@
     <define name="catcode" class="de.dante.extex.interpreter.primitives.register.CatcodePrimitive"/>
     <define name="char" class="de.dante.extex.interpreter.primitives.string.Char"/>
     <define name="chardef" class="de.dante.extex.interpreter.primitives.register.Chardef"/>
-    <Define name="cleaders" class=""/>
+    <define name="cleaders" class="de.dante.extex.interpreter.primitives.leaders.Cleaders"/>
     <define name="closein" class="de.dante.extex.interpreter.primitives.file.Closein"/>
     <define name="closeout" class="de.dante.extex.interpreter.primitives.file.Closeout"/>
     <define name="clubpenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
@@ -301,11 +301,11 @@
     <define name="kern" class="de.dante.extex.interpreter.primitives.box.Kern"/>
     <define name="language" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="lastbox" class="de.dante.extex.interpreter.primitives.box.Lastbox"/>
-    <Define name="lastkern" class=""/>
+    <define name="lastkern" class="de.dante.extex.interpreter.primitives.register.dimen.Lastkern"/>
     <define name="lastpenalty" class="de.dante.extex.interpreter.primitives.register.count.Lastpenalty"/>
     <define name="lastskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="lccode" class="de.dante.extex.interpreter.primitives.string.Lccode"/>
-    <Define name="leaders" class=""/>
+    <define name="leaders" class="de.dante.extex.interpreter.primitives.leaders.Leaders"/>
     <Define name="left" class=""/>
     <define name="lefthyphenmin" class="de.dante.extex.interpreter.primitives.hyphen.LeftHyphenmin"/>
     <define name="leftskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
@@ -319,7 +319,7 @@
     <define name="looseness" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="lower" class="de.dante.extex.interpreter.primitives.box.Lower"/>
     <define name="lowercase" class="de.dante.extex.interpreter.primitives.string.Lowercase"/>
-    <define name="mag" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">1000</define>
+    <define name="mag" class="de.dante.extex.interpreter.primitives.register.count.Mag">1000</define>
     <Define name="mark" class=""/>
     <Define name="mathaccent" class=""/>
     <Define name="mathbin" class=""/>
@@ -481,7 +481,7 @@
     <define name="widowpenalty" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
     <define name="write" class="de.dante.extex.interpreter.primitives.file.Write"/>
     <define name="xdef" class="de.dante.extex.interpreter.primitives.macro.Xdef"/>
-    <Define name="xleaders" class=""/>
+    <define name="xleaders" class="de.dante.extex.interpreter.primitives.leaders.Xleaders"/>
     <define name="xspaceskip" class="de.dante.extex.interpreter.primitives.register.skip.SkipParameter"/>
     <define name="year" class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter">1970</define>
 
