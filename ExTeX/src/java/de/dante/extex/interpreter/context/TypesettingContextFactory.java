@@ -34,7 +34,7 @@ import de.dante.util.framework.AbstractFactory;
  *  TypesettingContext}.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TypesettingContextFactory extends AbstractFactory {
 
@@ -65,18 +65,23 @@ public class TypesettingContextFactory extends AbstractFactory {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Configure the factory according to a given Configuration.
      *
      * @param configuration the configuration for this factory
      *
      * @throws ConfigurationException in case of an error
-     * @throws ConfigurationMissingAttributeException in case that the
+     * <ul>
+     * <li>ConfigurationMissingAttributeException in case that the
      *      attribute <tt>CLASS_ATTRIBUTE</tt> is not set for the given
-     *      configuration.
-     * @throws ConfigurationInstantiationException in case that the
-     *      instantiation of the given class causes a SecurityException.
-     * @throws ConfigurationClassNotFoundException in case that the named class
-     *      could not be loaded.
+     *      configuration.</li>
+     * <li>ConfigurationInstantiationException in case that the
+     *      instantiation of the given class causes a SecurityException.</li>
+     * <li>ConfigurationClassNotFoundException in case that the named class
+     *      could not be loaded.</li>
+     * </ul>
+     *
+     * @see de.dante.util.framework.configuration.Configurable#configure(
+     *      de.dante.util.configuration.Configuration)
      */
     public void configure(final Configuration configuration)
             throws ConfigurationException {
@@ -188,7 +193,8 @@ public class TypesettingContextFactory extends AbstractFactory {
     }
 
     /**
-     * Factory method to acquire an instance of the TypesettingContext.
+     * Factory method to acquire an instance of the TypesettingContext with a
+     * new value for the language. The laguage might be loaded if neccesary.
      *
      * @param context the typesetting context to clone
      * @param language the new value for the hyphenation table
@@ -202,7 +208,7 @@ public class TypesettingContextFactory extends AbstractFactory {
 
         TypesettingContext c = newInstance();
         c.set(context);
-        c.setLanguage(hyphenationManager.getHyphenationTable(language));
+        c.setLanguage(hyphenationManager.useHyphenationTable(language));
 
         return c;
     }
