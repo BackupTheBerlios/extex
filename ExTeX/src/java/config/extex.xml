@@ -158,6 +158,7 @@
     <Define name="indent" class=""/>
     <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
     <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>
+    <define name="inputfileencoding" class="de.dante.extex.interpreter.primitives.file.InputFileEncoding"/>
     <Define name="inputlineno" class=""/>
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>

@@ -30,11 +30,8 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
-import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.typesetter.Typesetter;
-
 import de.dante.util.GeneralException;
 
 /**
@@ -50,7 +47,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class NamedCount extends AbstractCode implements Advanceable,
                                                         Multiplyable,
@@ -190,15 +187,8 @@ public class NamedCount extends AbstractCode implements Advanceable,
     public Tokens the(Context context, TokenSource source)
                throws GeneralException {
         String key = getKey(source);
-        String s   = context.getCount(key)
-                            .toString();
-        TokenFactory factory = context.getTokenFactory();
-        Tokens toks          = new Tokens();
-
-        for (int i = 0; i < s.length(); i++) {
-            toks.add(factory.newInstance(Catcode.OTHER, s.charAt(i)));
-        }
-
+        String s   = context.getCount(key).toString();
+        Tokens toks          = new Tokens(context,s);
         return toks;
     }
 
