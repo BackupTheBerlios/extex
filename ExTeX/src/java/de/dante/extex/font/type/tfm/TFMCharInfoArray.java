@@ -55,7 +55,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable {
@@ -170,16 +170,16 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
                                 .getRemainder()];
                         ciw.setTop((er.getTop() != 0)
                                 ? er.getTop()
-                                : TFMCharInfo.NOCHARCODE);
+                                : TFMCharInfoWord.NOCHARCODE);
                         ciw.setMid((er.getMid() != 0)
                                 ? er.getMid()
-                                : TFMCharInfo.NOCHARCODE);
+                                : TFMCharInfoWord.NOCHARCODE);
                         ciw.setBot((er.getBot() != 0)
                                 ? er.getBot()
-                                : TFMCharInfo.NOCHARCODE);
+                                : TFMCharInfoWord.NOCHARCODE);
                         ciw.setRep((er.getRep() != 0)
                                 ? er.getRep()
-                                : TFMCharInfo.NOCHARCODE);
+                                : TFMCharInfoWord.NOCHARCODE);
                     }
                 }
             }
@@ -281,9 +281,9 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
 
                 // ligature
                 int ligstart = ci.getLigkernstart();
-                if (ligstart != TFMCharInfo.NOINDEX) {
+                if (ligstart != TFMCharInfoWord.NOINDEX) {
 
-                    for (int k = ligstart; k != TFMCharInfo.NOINDEX; k = ligKernTable[k]
+                    for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
                             .nextIndex(k)) {
                         TFMLigKern lk = ligKernTable[k];
 

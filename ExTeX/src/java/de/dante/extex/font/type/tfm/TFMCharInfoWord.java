@@ -79,7 +79,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
@@ -650,6 +650,70 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
                 }
             }
             out.plclose();
+        }
+    }
+
+    /**
+     * Add glyph to the element
+     * @param glyph   the element
+     */
+    public void addGlyph(final Element glyph) {
+
+        glyph.setAttribute("width", getWidth().toStringComma());
+        glyph.setAttribute("height", getHeight().toStringComma());
+        glyph.setAttribute("depth", getDepth().toStringComma());
+        glyph.setAttribute("italic", getItalic().toStringComma());
+        glyph.setAttribute("width-fw", String.valueOf(getWidth().getValue()));
+        glyph.setAttribute("height-fw", String.valueOf(getHeight().getValue()));
+        glyph.setAttribute("depth-fw", String.valueOf(getDepth().getValue()));
+        glyph.setAttribute("italic-fw", String.valueOf(getItalic().getValue()));
+
+        // ligature
+        int ligstart = getLigkernstart();
+        if (ligstart != TFMCharInfoWord.NOINDEX) {
+
+            for (int k = ligstart; k != TFMCharInfoWord.NOINDEX; k = ligKernTable[k]
+                    .nextIndex(k)) {
+                TFMLigKern lk = ligKernTable[k];
+
+                if (lk instanceof TFMLigature) {
+                    TFMLigature lig = (TFMLigature) lk;
+
+                    Element ligature = new Element("ligature");
+
+                    ligature.setAttribute("letter-id", String.valueOf(lig
+                            .getNextChar()));
+                    String sl = Character.toString((char) lig.getNextChar());
+                    if (sl != null && sl.trim().length() > 0) {
+                        ligature.setAttribute("letter", sl.trim());
+                    }
+
+                    ligature.setAttribute("lig-id", String.valueOf(lig
+                            .getAddingChar()));
+                    String slig = Character
+                            .toString((char) lig.getAddingChar());
+                    if (slig != null && slig.trim().length() > 0) {
+                        ligature.setAttribute("lig", slig.trim());
+                    }
+                    glyph.addContent(ligature);
+                } else if (lk instanceof TFMKerning) {
+                    TFMKerning kern = (TFMKerning) lk;
+
+                    Element kerning = new Element("kerning");
+
+                    kerning.setAttribute("glyph-id", String.valueOf(kern
+                            .getNextChar()));
+                    String sk = Character.toString((char) kern.getNextChar());
+                    if (sk != null && sk.trim().length() > 0) {
+                        kerning.setAttribute("char", sk.trim());
+                    }
+                    kerning
+                            .setAttribute("size", kern.getKern()
+                                    .toStringComma());
+
+                    glyph.addContent(kerning);
+                }
+            }
         }
     }
 

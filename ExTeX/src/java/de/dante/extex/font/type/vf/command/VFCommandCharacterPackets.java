@@ -99,7 +99,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
@@ -299,5 +299,32 @@ public class VFCommandCharacterPackets extends VFCommand implements PlFormat {
         }
         out.plclose();
         out.plclose();
+    }
+
+    /**
+     * Add glyph to the element
+     * @param element   the element
+     */
+    public void addGlyph(final Element element) {
+
+        // read the char from ther master-tfm
+        int bc = mastertfm.getLengths().getBc();
+        TFMCharInfoWord ciw = mastertfm.getCharinfo().getCharInfoWord(
+                charactercode - bc);
+
+        // create glyph
+        Element glyph = new Element("glyph");
+
+        glyph.setAttribute("ID", String.valueOf(charactercode));
+        glyph.setAttribute("glyph-number", String.valueOf(charactercode - bc));
+        String c = Character.toString((char) (charactercode - bc));
+        if (c != null && c.trim().length() > 0) {
+            glyph.setAttribute("char", c);
+        }
+        if (ciw.getGlyphname() != null) {
+            element.setAttribute("glyph-name", ciw.getGlyphname().substring(1));
+        }
+        ciw.addGlyph(glyph);
+        element.addContent(glyph);
     }
 }

@@ -32,9 +32,6 @@ import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
-import de.dante.extex.font.type.tfm.TFMCharInfo;
-import de.dante.extex.font.type.tfm.TFMCharInfoArray;
-import de.dante.extex.font.type.tfm.TFMCharInfoWord;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.vf.command.VFCommand;
 import de.dante.extex.font.type.vf.command.VFCommandCharacterPackets;
@@ -58,7 +55,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#VFformat">VF-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class VFFont
         implements
@@ -111,7 +108,7 @@ public class VFFont
             throw new VFMasterTFMNotFoundException(fontname);
         }
 
-        // read ...
+        // read
         try {
 
             while (true) {
@@ -139,14 +136,6 @@ public class VFFont
     public String getFontname() {
 
         return fontname;
-    }
-
-    /**
-     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
-     */
-    public Element getFontMetric() {
-
-        return null;
     }
 
     /**
@@ -201,4 +190,42 @@ public class VFFont
         }
     }
 
+    /**
+     * @see de.dante.extex.font.type.FontMetric#getFontMetric()
+     */
+    public Element getFontMetric() {
+
+        // create efm-file
+        Element root = new Element("fontgroup");
+        root.setAttribute("name", getFontname());
+        root.setAttribute("id", getFontname());
+        root.setAttribute("default-size", String.valueOf(mastertfm
+                .getDesignSize()));
+        root.setAttribute("empr", "100");
+        root.setAttribute("type", "vf");
+        root.setAttribute("virtual", "true");
+
+        Element fontdimen = new Element("fontdimen");
+        root.addContent(fontdimen);
+
+        Element font = new Element("font");
+        root.addContent(font);
+
+        font.setAttribute("font-name", getFontname());
+        font.setAttribute("font-family", getFontname());
+        root.setAttribute("units-per-em", "1000");
+        font.setAttribute("checksum", String.valueOf(mastertfm.getChecksum()));
+        font.setAttribute("type", mastertfm.getFontType().toTFMString());
+        mastertfm.getParam().addParam(fontdimen);
+
+        // character
+        for (int i = 0; i < cmds.size(); i++) {
+            VFCommand command = (VFCommand) cmds.get(i);
+            if (command instanceof VFCommandCharacterPackets) {
+                VFCommandCharacterPackets ch = (VFCommandCharacterPackets) command;
+                ch.addGlyph(font);
+            }
+        }
+        return root;
+    }
 }

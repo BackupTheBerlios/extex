@@ -47,6 +47,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontImpl;
+import de.dante.extex.interpreter.type.font.VirtualFontImpl;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
@@ -62,7 +63,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class FontFactory implements Serializable {
 
@@ -190,7 +191,11 @@ public class FontFactory implements Serializable {
             // store fount
             fountmap.put(key, fount);
         }
-
+        if (fount instanceof EFMFount) {
+            if (((EFMFount) fount).isVirtual()) {
+                return new VirtualFontImpl(fount);
+            }
+        }
         return new FontImpl(fount);
     }
 
@@ -297,31 +302,31 @@ public class FontFactory implements Serializable {
      * @throws ConfigurationException from the resourcefinder.
      * @throws FontException if a font-error occured.
      */
-        public Font getInstance(final VFFont vf, final Dimen size,
-                final Count scale, final Glue letterspaced,
-                final boolean ligatures, final boolean kerning)
-                throws ConfigurationException, FontException {
-    
-            if (vf == null) {
-                return new NullFont();
-            }
-    
-            FountKey key = new FountKey(vf.getFontname(), size, scale,
-                    letterspaced, ligatures, kerning);
-            ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
-            if (fount == null) {
-    
-//                Document doc = new Document(vf.getFontMetric());
-//    
-//                fount = loadFontClass(vf.getFontname(), size, scale, letterspaced,
-//                        ligatures, kerning, doc);
-//    
-//                // store fount
-//                fountmap.put(key, fount);
-            }
-    
-            return new FontImpl(fount);
+    public Font getInstance(final VFFont vf, final Dimen size,
+            final Count scale, final Glue letterspaced,
+            final boolean ligatures, final boolean kerning)
+            throws ConfigurationException, FontException {
+
+        if (vf == null) {
+            return new NullFont();
         }
+
+        FountKey key = new FountKey(vf.getFontname(), size, scale,
+                letterspaced, ligatures, kerning);
+        ModifiableFount fount = (ModifiableFount) (fountmap.get(key));
+        if (fount == null) {
+
+            //                Document doc = new Document(vf.getFontMetric());
+            //    
+            //                fount = loadFontClass(vf.getFontname(), size, scale, letterspaced,
+            //                        ligatures, kerning, doc);
+            //    
+            //                // store fount
+            //                fountmap.put(key, fount);
+        }
+        return new VirtualFontImpl(fount);
+    }
+
     /**
      * Return the font-class for a font
      * @param doc   the efm-document
@@ -579,70 +584,5 @@ public class FontFactory implements Serializable {
             throw new FontNotFoundException(name);
         }
         return doc;
-    }
-
-    /**
-     * Font-key-class for the <code>HashMap</code>.
-     */
-    private static class FountKey implements Serializable {
-
-        /**
-         * The name of the font
-         */
-        private final String name;
-
-        /**
-         * The size of the font
-         */
-        private final Dimen size;
-
-        /**
-         * The scale factor of the font.
-         */
-        private final Count scale;
-
-        /**
-         * The glue for letterspace
-         */
-        private Glue letterspaced;
-
-        /**
-         * ligature on/off
-         */
-        private boolean ligatures;
-
-        /**
-         * kerning on/off
-         */
-        private boolean kerning;
-
-        /**
-         * Create a new object.
-         * @param n     the name
-         * @param s     the size
-         * @param sf    the scale factor
-         * @param ls    the letterspace
-         * @param lig   the ligature
-         * @param kern  the kerning
-         */
-        public FountKey(final String n, final Dimen s, final Count sf,
-                final Glue ls, final boolean lig, final boolean kern) {
-
-            name = n;
-            size = s;
-            scale = sf;
-            letterspaced = ls;
-            ligatures = lig;
-            kerning = kern;
-        }
-
-        /**
-         * @see java.lang.Object#toString()
-         */
-        public String toString() {
-
-            return name + size + scale + letterspaced
-                    + String.valueOf(ligatures) + String.valueOf(kerning);
-        }
     }
 }

@@ -28,6 +28,7 @@ import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.UnicodeChar;
 
 /**
@@ -35,7 +36,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -200,5 +201,21 @@ public class NullFont implements Font, Serializable {
     public Dimen getDesignSize() {
 
         return Dimen.ZERO_PT;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#isVirtualFont()
+     */
+    public boolean isVirtualFont() {
+
+        return false;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getNodeList(de.dante.util.UnicodeChar)
+     */
+    public HorizontalListNode getNodeList(final UnicodeChar uc) {
+
+        return null;
     }
 }

@@ -22,22 +22,27 @@ package de.dante.extex.typesetter.type.node;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.font.type.VirtualFount;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.typesetter.type.Node;
 import de.dante.util.UnicodeChar;
 
 /**
  * This is the factory for
- * {@link de.dante.extex.typesetter.type.node.CharNode CharNode}s.
+ * {@link de.dante.extex.typesetter.type.node.CharNode CharNode}s
+ * and virtual chars.
  *
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CharNodeFactory {
 
     /**
      * The field <tt>cache</tt> contains the cache for previously created nodes.
      */
-    private Map cache = new HashMap();
+    private Map cache;
 
     /**
      * Creates a new object.
@@ -45,17 +50,18 @@ public class CharNodeFactory {
     public CharNodeFactory() {
 
         super();
+        cache = new HashMap();
     }
 
     /**
-     * Create a new instance for the character node.
+     * Create a new instance for the node.
      *
      * @param typesettingContext the typographic context for the node
      * @param uc the Unicode character
      *
      * @return the new character node
      */
-    public CharNode newInstance(final TypesettingContext typesettingContext,
+    public Node newInstance(final TypesettingContext typesettingContext,
             final UnicodeChar uc) {
 
         Map map = (Map) cache.get(typesettingContext);
@@ -64,14 +70,18 @@ public class CharNodeFactory {
             cache.put(typesettingContext, map);
         }
 
-        CharNode node = (CharNode) map.get(uc);
+        Node node = (Node) map.get(uc);
 
         if (node == null) {
-            node = new CharNode(typesettingContext, uc);
+            Font font = typesettingContext.getFont();
+            if (font instanceof VirtualFount) {
+                VirtualFount vf = (VirtualFount) font;
+                node = vf.getNodeList(typesettingContext, uc);
+            } else {
+                node = new CharNode(typesettingContext, uc);
+            }
             map.put(uc, node);
         }
-
         return node;
     }
-
 }

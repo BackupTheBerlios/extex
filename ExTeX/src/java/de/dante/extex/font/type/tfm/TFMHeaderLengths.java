@@ -24,6 +24,7 @@ import java.io.Serializable;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.type.tfm.exception.TFMReadFileException;
 import de.dante.util.XMLConvertible;
 import de.dante.util.file.random.RandomAccessR;
 
@@ -61,7 +62,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TFMHeaderLengths implements XMLConvertible, Serializable {
 

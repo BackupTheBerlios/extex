@@ -30,7 +30,7 @@ import java.io.Serializable;
  * @see <a href="package-summary.html#lig_kern">lig_kern</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class TFMLigKern implements Serializable {
 
@@ -78,7 +78,7 @@ public abstract class TFMLigKern implements Serializable {
      */
     public int nextIndex(final int pos) {
 
-        return (skip < 0) ? TFMCharInfo.NOINDEX : pos + skip + 1;
+        return (skip < 0) ? TFMCharInfoWord.NOINDEX : pos + skip + 1;
     }
 
     /**

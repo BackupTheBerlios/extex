@@ -17,47 +17,37 @@
  *
  */
 
-package de.dante.extex.font.type.tfm;
+package de.dante.extex.font.type.tfm.exception;
+
+import java.io.IOException;
 
 /**
- * TFM-ListCharInfo
+ * IOException (reading a TFM file).
+ *
  * <p>
- * Character information for character which has next larger
- * character associated.
+ * Wrong data in the file!
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class TFMListCharInfo extends TFMCharInfo {
+
+public class TFMReadFileException extends IOException {
 
     /**
      * Create a new object
-     *
-     * @param w character width.
-     * @param h character height.
-     * @param d character depth.
-     * @param i character italic correction.
-     * @param n character code of the next larger character.
      */
-    public TFMListCharInfo(final TFMFixWord w, final TFMFixWord h,
-            final TFMFixWord d, final TFMFixWord i, final short n) {
+    public TFMReadFileException() {
 
-        super(w, h, d, i);
-        next = n;
+        super();
     }
 
     /**
-     * Next larger character code
+     * Create a new object
+     * @param s the string
      */
-    private short next;
+    public TFMReadFileException(final String s) {
 
-    /**
-     * @return next larger character code.
-     */
-    public short nextChar() {
-
-        return next;
+        super(s);
     }
-
 }
