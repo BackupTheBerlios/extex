@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Accent extends AbstractCode {
 
@@ -112,12 +112,13 @@ public class Accent extends AbstractCode {
         TypesettingContext tc = context.getTypesettingContext();
         Font currentFont = tc.getFont();
         long a = -1;
+        long s = 0;
         Glyph glyph = currentFont.getGlyph(accent);
         if (glyph != null) {
             a = glyph.getWidth().getValue();
+            s = glyph.getItalicCorrection().getValue(); // TODO gene: correct?
         }
         long x = currentFont.getEx().getValue();
-        long s = 0; // TODO gene: currentFont.getSlant();
 
         if (token == null) {
 
@@ -129,7 +130,7 @@ public class Accent extends AbstractCode {
 
             if (glyph != null) {
                 if (g == null) {
-                    typesetter.treatLetter(context, tc, accent);
+                    typesetter.letter(context, tc, accent);
                 } else {
                     Node node = typesetter.getCharNodeFactory().newInstance(tc,
                             accent);
@@ -149,10 +150,10 @@ public class Accent extends AbstractCode {
                     typesetter.add(node);
                     d.set(-a - delta);
                     typesetter.add(new AccentKernNode(d));
-                    typesetter.treatLetter(context, tc, c);
+                    typesetter.letter(context, tc, c);
                 }
             } else if (g != null) {
-                typesetter.treatLetter(context, tc, c);
+                typesetter.letter(context, tc, c);
             } else {
                 //TODO gene: letter and accent are undefined
                 throw new RuntimeException("unimplemented");
