@@ -23,7 +23,6 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.jdom.Comment;
 import org.jdom.Document;
 import org.jdom.Element;
 import org.jdom.output.XMLOutputter;
@@ -31,7 +30,6 @@ import org.jdom.output.XMLOutputter;
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.interpreter.type.dimen.Dimen;
-import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.AdjustNode;
 import de.dante.extex.interpreter.type.node.AfterMathNode;
 import de.dante.extex.interpreter.type.node.AlignedLeadersNode;
@@ -62,7 +60,7 @@ import de.dante.util.configuration.Configuration;
  * This is a xml implementation of a document writer.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
 
@@ -92,6 +90,16 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
     private DocumentWriterOptions docoptions;
 
     /**
+     * Default encoding
+     */
+    private static final String DEFAULTENCODING = "ISO-8859-1";
+
+    /**
+     * encdoing
+     */
+    private String encoding = DEFAULTENCODING;
+
+    /**
      * Creates a new object.
      * @param cfg       the configuration
      * @param options   the options
@@ -102,6 +110,13 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         super();
         root = new Element("root");
         docoptions = options;
+
+        if (cfg != null) {
+            String enc = cfg.getAttribute("encoding");
+            if (enc != null && !enc.equals("")) {
+                encoding = enc;
+            }
+        }
     }
 
     /**
@@ -112,13 +127,13 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         if (out != null) {
             // write to xml-file
             XMLOutputter xmlout = new XMLOutputter();
-            xmlout.setEncoding("ISO-8859-1"); // TODO change (config)
+            xmlout.setEncoding(encoding);
             xmlout.setIndent("   ");
             xmlout.setNewlines(true);
             xmlout.setTrimAllWhite(true);
             BufferedOutputStream bout = new BufferedOutputStream(out);
             Document doc = new Document(root);
-            doc.addContent(new Comment("all units in sp"));
+            //doc.addContent(new Comment("all units in sp"));
             xmlout.output(doc, bout);
             bout.close();
         }
@@ -228,9 +243,10 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
     private void addNodeAttributes(final Element element, final Node node) {
 
         if (node != null) {
-            element.setAttribute("width", getDimenAsString(node.getWidth()));
-            element.setAttribute("height", getDimenAsString(node.getHeight()));
-            element.setAttribute("depth", getDimenAsString(node.getDepth()));
+            element.setAttribute("width_sp", getDimenAsString(node.getWidth()));
+            element.setAttribute("height_sp",
+                    getDimenAsString(node.getHeight()));
+            element.setAttribute("depth_sp", getDimenAsString(node.getDepth()));
         }
     }
 
@@ -250,31 +266,31 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         return s;
     }
 
-    /**
-     * Return the Glue as String.
-     * If the Glue equals null, then a empty string is returned.
-     *
-     * @param glue  the Glue
-     * @return Returns the String for the Glue
-     */
-    private String getGlueAsString(final Glue glue) {
-
-        String s = "0";
-        if (glue != null) {
-            StringBuffer sb = new StringBuffer(getDimenAsString(glue
-                    .getLength()));
-            if (glue.getStretch().getValue() != 0) {
-                sb.append(" plus ");
-                sb.append(String.valueOf(glue.getStretch().getValue()));
-            }
-            if (glue.getShrink().getValue() != 0) {
-                sb.append(" minus ");
-                sb.append(String.valueOf(glue.getShrink().getValue()));
-            }
-            s = sb.toString();
-        }
-        return s;
-    }
+    //    /**
+    //     * Return the Glue as String.
+    //     * If the Glue equals null, then a empty string is returned.
+    //     *
+    //     * @param glue  the Glue
+    //     * @return Returns the String for the Glue
+    //     */
+    //    private String getGlueAsString(final Glue glue) {
+    //
+    //        String s = "0";
+    //        if (glue != null) {
+    //            StringBuffer sb = new StringBuffer(getDimenAsString(glue
+    //                    .getLength()));
+    //            if (glue.getStretch().getValue() != 0) {
+    //                sb.append(" plus ");
+    //                sb.append(String.valueOf(glue.getStretch().getValue()));
+    //            }
+    //            if (glue.getShrink().getValue() != 0) {
+    //                sb.append(" minus ");
+    //                sb.append(String.valueOf(glue.getShrink().getValue()));
+    //            }
+    //            s = sb.toString();
+    //        }
+    //        return s;
+    //    }
 
     // ----------------------------------------------
     // ----------------------------------------------
@@ -415,13 +431,13 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         Element element = new Element("horizontallist");
         HorizontalListNode node = (HorizontalListNode) value;
         addNodeAttributes(element, node);
-        element.setAttribute("move", getDimenAsString(node.getMove()));
-        element.setAttribute("shift", getDimenAsString(node.getShift()));
-        element.setAttribute("targetwidth", getDimenAsString(node
+        element.setAttribute("move_sp", getDimenAsString(node.getMove()));
+        element.setAttribute("shift_sp", getDimenAsString(node.getShift()));
+        element.setAttribute("targetwidth_sp", getDimenAsString(node
                 .getTargetWidth()));
-        element.setAttribute("targetheight", getDimenAsString(node
+        element.setAttribute("targetheight_sp", getDimenAsString(node
                 .getTargetHeight()));
-        element.setAttribute("targetdepth", getDimenAsString(node
+        element.setAttribute("targetdepth_sp", getDimenAsString(node
                 .getTargetDepth()));
         element.setAttribute("size", String.valueOf(node.size()));
         return element;
@@ -528,7 +544,7 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         Element element = new Element("space");
         SpaceNode node = (SpaceNode) value;
         addNodeAttributes(element, node);
-        element.setAttribute("gluewidth", getGlueAsString(node.getGlueWidth()));
+        //element.setAttribute("gluewidth", getGlueAsString(node.getGlueWidth()));
         return element;
     }
 
@@ -541,13 +557,13 @@ public class XMLDocumentWriter implements DocumentWriter, NodeVisitor {
         Element element = new Element("verticallist");
         VerticalListNode node = (VerticalListNode) value;
         addNodeAttributes(element, node);
-        element.setAttribute("move", getDimenAsString(node.getMove()));
-        element.setAttribute("shift", getDimenAsString(node.getShift()));
-        element.setAttribute("targetwidth", getDimenAsString(node
+        element.setAttribute("move_sp", getDimenAsString(node.getMove()));
+        element.setAttribute("shift_sp", getDimenAsString(node.getShift()));
+        element.setAttribute("targetwidth_sp", getDimenAsString(node
                 .getTargetWidth()));
-        element.setAttribute("targetheight", getDimenAsString(node
+        element.setAttribute("targetheight_sp", getDimenAsString(node
                 .getTargetHeight()));
-        element.setAttribute("targetdepth", getDimenAsString(node
+        element.setAttribute("targetdepth_sp", getDimenAsString(node
                 .getTargetDepth()));
         element.setAttribute("size", String.valueOf(node.size()));
         return element;
