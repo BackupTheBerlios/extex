@@ -34,7 +34,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
@@ -74,11 +74,11 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
     }
 
     /**
-     * ...
+     * Create a new instance of the token where the namespace is the given one.
      *
-     * @param theNamespace ...
+     * @param theNamespace the namespace to use
      *
-     * @return ...
+     * @return the new token
      *
      * @see de.dante.extex.scanner.CodeToken#cloneInNamespace(java.lang.String)
      */

@@ -31,7 +31,7 @@ import de.dante.extex.interpreter.Namespace;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class ControlSequenceToken extends AbstractToken implements CodeToken {
 
@@ -60,6 +60,11 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
+     * Create a new instance of the token where the namespace is the default
+     * namespace and the other attributes are the same as for the current token.
+     *
+     * @return the new token
+     *
      * @see de.dante.extex.scanner.CodeToken#cloneInDefaultNamespace()
      */
     public CodeToken cloneInDefaultNamespace() {
@@ -71,11 +76,12 @@ public class ControlSequenceToken extends AbstractToken implements CodeToken {
     }
 
     /**
-     * ...
+     * Create a new instance of the token where the namespace is the given one
+     * and the other attributes are the same as for the current token.
      *
-     * @param theNamespace ...
+     * @param namespace the namespace to use
      *
-     * @return ...
+     * @return the new token
      *
      * @see de.dante.extex.scanner.CodeToken#cloneInNamespace(java.lang.String)
      */
