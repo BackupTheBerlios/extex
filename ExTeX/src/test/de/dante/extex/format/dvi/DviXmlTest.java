@@ -53,7 +53,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 
 public class DviXmlTest extends TestCase {
@@ -115,7 +115,7 @@ public class DviXmlTest extends TestCase {
      */
     public void testlistings() throws Exception {
 
-        Element root = readXML(1);
+        /*Element root = */readXML(1);
 
     }
 
