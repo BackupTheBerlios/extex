@@ -31,7 +31,7 @@ import de.dante.util.file.FileFinder;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontFactoryImpl implements FontFactory {
 
@@ -41,7 +41,7 @@ public class FontFactoryImpl implements FontFactory {
 	private Map fontmap = new HashMap();
 
 	/**
-	 * the filefinder
+	 * the file finder
 	 */
 	private FileFinder finder;
 	
@@ -56,7 +56,7 @@ public class FontFactoryImpl implements FontFactory {
 	/**
 	 * @see de.dante.extex.font.FontFactory#getInstance(java.lang.String)
 	 */
-	// TODO the name ist not only the key for the font!
+	// TODO the name is not only the key for the font!
 	public Font getInstance(String name) throws GeneralException, ConfigurationException {
 		Font font = (Font) (fontmap.get(name));
 		if (font == null) {

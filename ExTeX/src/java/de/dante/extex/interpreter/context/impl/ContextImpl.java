@@ -21,6 +21,7 @@ package de.dante.extex.interpreter.context.impl;
 import java.io.Serializable;
 import java.util.Stack;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationManagerImpl;
 import de.dante.extex.hyphenation.HyphenationTable;
@@ -31,6 +32,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.TypesettingContextFactory;
 import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
@@ -41,9 +43,16 @@ import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
+import de.dante.util.StringList;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.configuration.ConfigurationInstantiationException;
+import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.file.FileFinder;
+import de.dante.util.file.FileFinderConfigImpl;
+import de.dante.util.file.FileFinderDirect;
+import de.dante.util.file.FileFinderList;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -79,67 +88,104 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ContextImpl implements Context, Serializable {
 
 	/**
 	 * The saved configuration
 	 */
-	protected Configuration config = null;
+	private Configuration config = null;
 
 	/**
 	 * This is the entry to the linked list of groups. The current group is the
 	 * first one.
 	 */
-	protected Group group = null;
+	private Group group = null;
 
 	/**
 	 * The factory to acquire a new group
 	 */
-	protected transient GroupFactory groupFactory;
+	private transient GroupFactory groupFactory;
 
 	/**
 	 * ...
 	 */
-	protected HyphenationManager hyphenationManager = new HyphenationManagerImpl();
+	private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
 	/**
 	 * The interaction mode to use
 	 */
-	protected Interaction interaction = null;
+	private Interaction interaction = null;
 
 	/**
 	 * The stack for conditionals
 	 */
-	protected Stack ifStack = new Stack();
+	private Stack ifStack = new Stack();
 
 	/**
 	 * The token factory implementation to use
 	 */
-	protected TokenFactory tokenFactory = new TokenFactoryImpl();
+	private TokenFactory tokenFactory = new TokenFactoryImpl();
 
 	/**
 	 * This boolean is used to determine whether the magnification has already
 	 * been set to a new value. It it is <code>true</code> then it is not
 	 * desirable to change the value of <i>magnification</i>.
 	 */
-	protected boolean magnificationLock = false;
+	private boolean magnificationLock = false;
 
 	/**
 	 * The magnification for the whole document in permille
 	 */
-	protected long magnification = 1000;
+	private long magnification = 1000;
 
-	/**
-	 * Creates a new object.
-	 */
-	public ContextImpl(Configuration config) throws ConfigurationException {
-		super();
-		this.config = config;
-		groupFactory = new GroupFactory(config.getConfiguration("Group"));
-		group = groupFactory.newInstance(group);
-	}
+	private TypesettingContextFactory tcFactory;
+	
+	private FontFactory fontFactory;
+	
+    /**
+     * Creates a new object.
+     */
+    public ContextImpl(Configuration config) throws ConfigurationException,
+            GeneralException {
+        super();
+        this.config = config;
+        groupFactory = new GroupFactory(config.getConfiguration("Group"));
+        group = groupFactory.newInstance(group);
+
+        Configuration fontConfiguration = config.getConfiguration("Font");
+        String fontClass = fontConfiguration.getAttribute("class");
+
+        if (fontClass == null || fontClass.equals("")) {
+            throw new ConfigurationMissingAttributeException("classname");
+        }
+
+        try {
+            FileFinderList finder = new FileFinderList(new FileFinderDirect(
+                    new StringList("", ":")));
+            finder.add(new FileFinderConfigImpl(fontConfiguration
+                    .getConfiguration("File")));
+            fontFactory = (FontFactory) (Class.forName(fontClass)
+                    .getConstructor(new Class[]{FileFinder.class})
+                    .newInstance(new Object[]{finder}));
+        } catch (Exception e) {
+            throw new ConfigurationInstantiationException(e);
+        }
+        String defaultFont = fontConfiguration.getAttribute("default");
+
+        if (defaultFont == null || defaultFont.equals("")) {
+            throw new ConfigurationMissingAttributeException("default");
+        }
+
+        tcFactory = new TypesettingContextFactory(config
+                .getConfiguration("TypesettingContext"));
+        TypesettingContext typesettingContext = tcFactory.newInstance();
+        typesettingContext.setFont(fontFactory.getInstance(defaultFont));
+        //typesettingContext.setLanguage(config.getValue("Language"));
+        setTypesettingContext(typesettingContext);
+
+    }
 
 	/**
 	 * @see de.dante.extex.interpreter.context.Context#setActive(java.lang.String,
@@ -277,6 +323,19 @@ public class ContextImpl implements Context, Serializable {
 		return group.getDimen(name);
 	}
 
+	/**
+	 * @see de.dante.extex.interpreter.context.Context#getFontFactory()
+	 */
+	public FontFactory getFontFactory() {
+	    return fontFactory;
+	}
+	/**
+     * @see de.dante.extex.interpreter.context.Context#setFontFactory(de.dante.extex.font.FontFactory)
+     */
+	public void setFontFactory(FontFactory fontFactory) {
+	    this.fontFactory = fontFactory;
+	}
+	
 	/**
 	 * @see de.dante.extex.interpreter.context.Context#isGlobalGroup()
 	 */
@@ -497,4 +556,13 @@ public class ContextImpl implements Context, Serializable {
 	public void setToks(String name, Tokens toks) {
 		group.setToks(name, toks);
 	}
+	
+    /**
+     * Getter for group.
+     *
+     * @return the group.
+     */
+    protected Group getGroup() {
+        return group;
+    }
 }

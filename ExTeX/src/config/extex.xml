@@ -355,28 +355,33 @@
     <define name="year" class="de.dante.extex.interpreter.primitives.register.NamedCount">1970</define>
 
     <Context class="de.dante.extex.interpreter.context.impl.extension.ContextExtensionImpl">
+
       <Group class="de.dante.extex.interpreter.context.impl.extension.GroupExtensionImpl"/>
+
+      <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+
+      <Font class="de.dante.extex.font.FontFactoryImpl"
+                   default="CMR12">
+        <File>
+          <efm>
+            <extension>.efm</extension>
+            <path>./font</path>
+   	      </efm>
+        </File>
+      </Font>
+
+      <Language></Language>
+
     </Context>
 
-	<Font class="de.dante.extex.font.FontFactoryImpl">
-		CMR12
-	</Font>
-	
-    <Language></Language>
   </Interpreter>
 
+	
   <Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl"/>
 
   <DocumentWriter class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
 
-  <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl">
-    <tex>
-      <extension></extension>
-      <extension>.tex</extension>
-      <path></path>
-      <path>./</path>
-    </tex>
-  </Reader>
+  <Reader class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"/>
 
   <File>
     <tex>
@@ -385,10 +390,6 @@
       <path></path>
       <path>./</path>
     </tex>
-    <efm>
-      <extension>.efm</extension>
-      <path>./font</path>
-   	</efm>
   </File>
 
  

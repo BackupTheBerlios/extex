@@ -43,7 +43,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Max1 extends TestCase {
 
@@ -116,7 +116,7 @@ public class Max1 extends TestCase {
 
         // TODO FileFinder 
         Interpreter interpreter = new InterpreterFactory(config
-                .getConfiguration("Interpreter"),null).newInstance();
+                .getConfiguration("Interpreter")).newInstance();
         TokenStreamFactory factory = new TokenStreamFactory(config
                 .getConfiguration("Reader"));
         interpreter.setTokenStreamFactory(factory);

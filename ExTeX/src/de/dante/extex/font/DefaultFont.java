@@ -33,7 +33,7 @@ import de.dante.util.file.FileFinder;
  * This class implements a default font.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class DefaultFont implements Font {
 
@@ -58,6 +58,9 @@ public class DefaultFont implements Font {
 	 * load the Font
 	 * @throws GeneralException, if a error is thrown.
 	 */
+	//TODO: gene: loadFont should take an input stream to read from
+	// finding a font and opening should be done uniformly by the factory
+	//TODO: gene: Main*Exceptions are for the main program only!
 	private void loadFont(FileFinder finder) throws GeneralException, ConfigurationException {
 		if (name != null) {
 

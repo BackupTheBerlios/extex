@@ -45,7 +45,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Input extends AbstractCode {
 
@@ -73,7 +73,7 @@ public class Input extends AbstractCode {
 		String encoding = getEncoding(context);
 
 		try {
-			source.addStream(factory.newInstance(factory.findFile(name, "tex"), encoding));
+			source.addStream(factory.newInstance(name, "tex", encoding));
 		} catch (FileNotFoundException e) {
 			throw new GeneralException(e);
 		} catch (ConfigurationException e) {

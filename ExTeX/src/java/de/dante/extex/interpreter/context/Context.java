@@ -20,6 +20,7 @@ package de.dante.extex.interpreter.context;
 
 import java.io.Serializable;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.hyphenation.HyphenationTable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.Code;
@@ -43,7 +44,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Context extends Serializable {
 
@@ -171,6 +172,20 @@ public interface Context extends Serializable {
      */
     public abstract Count getCount(String name);
 
+    /**
+     * Getter for the font factory.
+     *
+     * @return the fontFactory.
+     */
+    public FontFactory getFontFactory();
+
+    /**
+     * Setter for the font factory.
+     *
+     * @param fontFactory the fontFactory to set.
+     */
+    public void setFontFactory(FontFactory fontFactory);
+    
     /**
      * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
      * register in the current group. Tokens registers are named, either with a

@@ -43,7 +43,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class InputFileEncoding extends InputFile {
 
@@ -57,9 +57,9 @@ public class InputFileEncoding extends InputFile {
 	}
 
     /**
-     * Scan the encoding and filename and open the file 
-     * in the tokenizerstream.
-     *  
+     * Scan the encoding and file name and open the file in the tokenizer
+     * stream.
+     * 
      * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
@@ -73,10 +73,9 @@ public class InputFileEncoding extends InputFile {
         TokenStreamFactory factory = source.getTokenStreamFactory();
 
         try {
-            source.addStream(factory.newInstance(factory.findFile(name, "tex"),
-                                                 encoding));
+            source.addStream(factory.newInstance(name, "tex", encoding));
         } catch (FileNotFoundException e) {
-            throw new GeneralException(e);
+            throw new GeneralException(e); // TODO: use Helping and i18n
         } catch (ConfigurationException e) {
             throw new GeneralException(e);
         } catch (IOException e) {

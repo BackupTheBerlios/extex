@@ -30,7 +30,7 @@ import de.dante.util.file.FileFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class InterpreterFactory {
 
@@ -43,17 +43,17 @@ public class InterpreterFactory {
 	/**
 	 * filefinder
 	 */
-	private FileFinder finder;
+	private FileFinder finder = null;
 
-	/**
-	 * Creates a new object.
-	 */
-	public InterpreterFactory(Configuration config, FileFinder fileFinder) throws ConfigurationException {
-		super();
-		this.config = config;
-		classname = config.getAttribute("class");
-		finder = fileFinder;
-	}
+    /**
+     * Creates a new object.
+     */
+    public InterpreterFactory(Configuration config)
+            throws ConfigurationException {
+        super();
+        this.config = config;
+        classname = config.getAttribute("class");
+    }
 
 	/**
 	 * Get a instance for the interface Interpreter.
@@ -67,8 +67,8 @@ public class InterpreterFactory {
 			interpreter =
 				(Interpreter) (Class
 					.forName(classname)
-					.getConstructor(new Class[] { Configuration.class, FileFinder.class })
-					.newInstance(new Object[] { config, finder }));
+					.getConstructor(new Class[] { Configuration.class })
+					.newInstance(new Object[] { config }));
 		} catch (IllegalArgumentException e) {
 			throw new ConfigurationInstantiationException(e);
 		} catch (SecurityException e) {
@@ -78,7 +78,7 @@ public class InterpreterFactory {
 		} catch (IllegalAccessException e) {
 			throw new ConfigurationInstantiationException(e);
 		} catch (InvocationTargetException e) {
-			throw new ConfigurationInstantiationException(e);
+			throw new ConfigurationInstantiationException(classname,e);
 		} catch (NoSuchMethodException e) {
 			throw new ConfigurationInstantiationException(e);
 		} catch (ClassNotFoundException e) {

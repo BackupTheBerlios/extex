@@ -50,7 +50,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -61,9 +61,9 @@ public abstract class Moritz implements TokenSource, Observable {
 	private static final long MAX_CHAR_CODE = Integer.MAX_VALUE; //TODO: find a good value
 
 	/**
-	 * The interpreter context. well, the two of them are more closely linked
-	 * than I like it.
-	 */
+     * The interpreter context. well, the two of them (max and Moritz) are more
+     * closely linked than I like it.
+     */
 	private Context context;
 
 	/** The observer list is used for the observers which are registered to

@@ -27,9 +27,19 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface FontFactory {
 
-    public abstract Font getInstance(String name) throws GeneralException, ConfigurationException;
+    /**
+     * ...
+     * 
+     * @param name ...
+     * @return ...
+     * @throws GeneralException ...
+     * @throws ConfigurationException ...
+     */
+    public abstract Font getInstance(String name) throws GeneralException,
+            ConfigurationException;
+    
 }

@@ -83,7 +83,7 @@ import de.dante.util.file.FileFinderPathImpl;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class ExTeX {
 	/**
@@ -97,8 +97,9 @@ public class ExTeX {
 	private static final int EXIT_INTERNAL_ERROR = -666;
 
 	/**
-	 * The manually incremented version string
-	 */
+     * The constant <tt>VERSION</tt> contains the manually incremented version
+     * string.
+     */
 	private static final String VERSION = "0.4";
 
 	/**
@@ -252,14 +253,14 @@ public class ExTeX {
 	}
 
 	/**
-	 * This class provides access to the whole functionality of ExTeX on the
-	 * command line. The exception is that this method does not call <code>{@link System#exit(int) System.exit()}</code>
-	 * but returns the exit status as result.
-	 * 
-	 * @param args the list of command line arguments
-	 * 
-	 * @return the exit status
-	 */
+     * This class provides access to the whole functionality of ExTeX on the
+     * command line. The exception is that this method does not call <code>{@link System#exit(int) System.exit()}</code>
+     * but returns the exit status as result.
+     * 
+     * @param args the list of command line arguments
+     * 
+     * @return the exit status
+     */
 	public int run(String[] args) {
 		boolean onceMore = true;
 		int returnCode = EXIT_OK;
@@ -398,9 +399,9 @@ public class ExTeX {
 			finder.add(new FileFinderConfigImpl(config.getConfiguration("File")));
 			finder.add(new FileFinderImpl(logger));
 
-			// the interpreter must get the filefinder (for the fontFactroy to init: see configure())
-			Interpreter interpreter = new InterpreterFactory(config.getConfiguration("Interpreter"), finder).newInstance();
+			Interpreter interpreter = new InterpreterFactory(config.getConfiguration("Interpreter")).newInstance();
 			interpreter.setErrorHandler(new ErrorHandlerImpl(logger));
+			interpreter.setFileFinder(finder);
 			interpreter.registerObserver("close", new FileCloseObserver(logger));
 			interpreter.registerObserver("message", new MessageObserver(logger));
 			if (Boolean.valueOf(properties.getProperty("extex.traceTokenizer")).booleanValue()) {
@@ -451,53 +452,58 @@ public class ExTeX {
 		logger.info(Messages.format("ExTeX.Logfile", properties.getProperty("extex.jobname")));
 	}
 
-	/**
-	 * Initialize the input streams. If the property <i>extex.file</i> is set
-	 * and not the empty string, (e.g. from the command line) then this value
-	 * is used as file name to read from. If the property <i>
-	 * extex.code</i> is set and not the empty string (e.g. from the
-	 * command line) then this value is used as initial input after the input
-	 * file has been processed. Finally, if everything before failed then read
-	 * input from the stdin stream.
-	 * 
-	 * @param interpreter the interpreter context
-	 */
-	private void initializeStreams(Interpreter interpreter) throws CharacterCodingException, ConfigurationException, MainIOException {
-		TokenStreamFactory factory = interpreter.getTokenStreamFactory();
-		boolean notInitialized = true;
-		String filename = properties.getProperty("extex.file");
+    /**
+     * Initialize the input streams. If the property <i>extex.file</i> is set
+     * and not the empty string, (e.g. from the command line) then this value
+     * is used as file name to read from. If the property <i>extex.code</i>
+     * is set and not the empty string (e.g. from the command line) then this
+     * value is used as initial input after the input file has been processed.
+     * Finally, if everything before failed then read input from the stdin
+     * stream.
+     * 
+     * @param interpreter the interpreter context
+     */
+    private void initializeStreams(Interpreter interpreter)
+            throws CharacterCodingException, ConfigurationException,
+            MainIOException {
+        TokenStreamFactory factory = interpreter.getTokenStreamFactory();
+        boolean notInitialized = true;
+        String filename = properties.getProperty("extex.file");
 
-		if (filename != null && !filename.equals("")) {
-			File file = factory.getFileFinder().findFile(filename, "tex");
+        if (filename != null && !filename.equals("")) {
 
-			try {
-				TokenStream stream = factory.newInstance(file, properties.getProperty("extex.encoding"));
-				interpreter.addStream(stream);
-				notInitialized = false;
-			} catch (FileNotFoundException e) {
-				logger.severe(Messages.format("CLI.FileNotFound", file));
-			} catch (IOException e) {
-				throw new MainIOException(e);
-			}
-		}
+            try {
+                TokenStream stream = factory
+                        .newInstance(filename, "tex", properties
+                                .getProperty("extex.encoding"));
+                interpreter.addStream(stream);
+                notInitialized = false;
+            } catch (FileNotFoundException e) {
+                logger.severe(Messages.format("CLI.FileNotFound", filename));
+            } catch (IOException e) {
+                throw new MainIOException(e);
+            }
+        }
 
-		String post = properties.getProperty("extex.code");
+        String post = properties.getProperty("extex.code");
 
-		if (post != null && !post.equals("")) {
-			TokenStream stream = factory.newInstance(post, properties.getProperty("extex.encoding"));
-			interpreter.addStream(stream);
-			notInitialized = false;
-		}
+        if (post != null && !post.equals("")) {
+            TokenStream stream = factory.newInstance(post, properties
+                    .getProperty("extex.encoding"));
+            interpreter.addStream(stream);
+            notInitialized = false;
+        }
 
-		if (notInitialized) {
-			try {
-				TokenStream stream = factory.newInstance(new InputStreamReader(System.in), properties.getProperty("extex.encoding"));
-				interpreter.addStream(stream);
-			} catch (IOException e) {
-				throw new MainIOException(e);
-			}
-		}
-	}
+        if (notInitialized) {
+            try {
+                TokenStream stream = factory.newInstance(new InputStreamReader(
+                        System.in), properties.getProperty("extex.encoding"));
+                interpreter.addStream(stream);
+            } catch (IOException e) {
+                throw new MainIOException(e);
+            }
+        }
+    }
 
 	/**
 	 * Load a format if a name of a format is given
