@@ -28,20 +28,20 @@ import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.util.GeneralException;
 
 /**
- * Math. the trigonometric cosine of an angle.
+ * Math. the closest long to the argument, returned as real.
  *
  * <p>Example</p>
  * <pre>
- * \the\mathcos 0.234
- * \real7=\mathcos 0.56
- * \real8=\mathcos\real7
- * \count99=\mathcos 1.34
+ * \the\mathround 0.234
+ * \real7=\mathround 0.56
+ * \real8=\mathround\real7
+ * \count99=\mathround 1.34
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MathCos extends AbstractMath
+public class MathRound extends AbstractMath
         implements
             Theable,
             RealConvertible,
@@ -53,7 +53,7 @@ public class MathCos extends AbstractMath
      * @param name the name for debugging
      * @throws GeneralException ...
      */
-    public MathCos(final String name) throws GeneralException {
+    public MathRound(final String name) throws GeneralException {
 
         super(name);
 
@@ -70,7 +70,7 @@ public class MathCos extends AbstractMath
             throws GeneralException {
 
         Real real = new Real(context, source);
-        return new Real(Math.cos(real.getValue()));
+        return new Real(Math.round(real.getValue()));
     }
 
 }

@@ -19,20 +19,16 @@
 
 package de.dante.extex.interpreter.primitives.register.real;
 
-import de.dante.extex.interpreter.AbstractCode;
-import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.Real;
 import de.dante.extex.interpreter.type.real.RealConvertible;
-import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * Math. cosinus.
+ * Math. the trigonometric cosine of an angle.
  *
  * <p>Example</p>
  * <pre>
@@ -43,9 +39,9 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class MathCos extends AbstractCode
+public class MathCos extends AbstractMath
         implements
             Theable,
             RealConvertible,
@@ -64,67 +60,17 @@ public class MathCos extends AbstractCode
     }
 
     /**
-     * execute
-     *
-     * @see de.dante.extex.interpreter.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void execute(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
-
-        Real real = calculate(context, source);
-        source.push(new Tokens(context, real.toString()));
-    }
-
-    /**
      * Calculate
      * @param context   the context
      * @param source    the tokensource
      * @return  the real-value
      * @throws GeneralException if a error occoured
      */
-    private Real calculate(final Context context, final TokenSource source)
+    protected Real calculate(final Context context, final TokenSource source)
             throws GeneralException {
 
         Real real = new Real(context, source);
         return new Real(Math.cos(real.getValue()));
     }
 
-    /**
-     * @see de.dante.extex.interpreter.Theable#the(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Tokens the(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        Real real = calculate(context, source);
-        return new Tokens(context, real.toString());
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.RealConvertible#convertReal(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Real convertReal(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        return calculate(context, source);
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.CountConvertible#convertCount(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public long convertCount(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        return calculate(context, source).getLong();
-    }
 }

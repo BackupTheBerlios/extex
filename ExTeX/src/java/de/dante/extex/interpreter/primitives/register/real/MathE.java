@@ -28,20 +28,18 @@ import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.util.GeneralException;
 
 /**
- * Math. the trigonometric cosine of an angle.
+ * Math. e, the base of the natural logarithms.
  *
  * <p>Example</p>
  * <pre>
- * \the\mathcos 0.234
- * \real7=\mathcos 0.56
- * \real8=\mathcos\real7
- * \count99=\mathcos 1.34
+ * \the\mathe
+ * \real7=\mathe
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MathCos extends AbstractMath
+public class MathE extends AbstractMath
         implements
             Theable,
             RealConvertible,
@@ -53,7 +51,7 @@ public class MathCos extends AbstractMath
      * @param name the name for debugging
      * @throws GeneralException ...
      */
-    public MathCos(final String name) throws GeneralException {
+    public MathE(final String name) throws GeneralException {
 
         super(name);
 
@@ -69,8 +67,6 @@ public class MathCos extends AbstractMath
     protected Real calculate(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Real real = new Real(context, source);
-        return new Real(Math.cos(real.getValue()));
+        return new Real(Math.E);
     }
-
 }

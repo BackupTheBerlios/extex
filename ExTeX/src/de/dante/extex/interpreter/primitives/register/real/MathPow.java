@@ -28,20 +28,21 @@ import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.util.GeneralException;
 
 /**
- * Math. the trigonometric cosine of an angle.
+ * Math. the value of the first argument raised
+ * to the power of the second argument.
  *
  * <p>Example</p>
  * <pre>
- * \the\mathcos 0.234
- * \real7=\mathcos 0.56
- * \real8=\mathcos\real7
- * \count99=\mathcos 1.34
+ * \the\mathpow 0.234 0.34
+ * \real7=\mathpow 0.56 0.34
+ * \real8=\mathpow\real7\real8
+ * \count99=\mathpow 1.34 0.34
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class MathCos extends AbstractMath
+public class MathPow extends AbstractMath
         implements
             Theable,
             RealConvertible,
@@ -53,7 +54,7 @@ public class MathCos extends AbstractMath
      * @param name the name for debugging
      * @throws GeneralException ...
      */
-    public MathCos(final String name) throws GeneralException {
+    public MathPow(final String name) throws GeneralException {
 
         super(name);
 
@@ -69,8 +70,8 @@ public class MathCos extends AbstractMath
     protected Real calculate(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Real real = new Real(context, source);
-        return new Real(Math.cos(real.getValue()));
+        Real real1 = new Real(context, source);
+        Real real2 = new Real(context, source);
+        return new Real(Math.pow(real1.getValue(), real2.getValue()));
     }
-
 }
