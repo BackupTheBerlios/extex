@@ -45,7 +45,7 @@ import de.dante.util.file.FileFinder;
  * TODO at the moment only one font per fontgroup
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class EFMFont extends XMLFont implements Font {
 
@@ -500,14 +500,13 @@ public class EFMFont extends XMLFont implements Font {
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getItalic(de.dante.util.UnicodeChar)
 	 */
-	public Dimen getItalic(UnicodeChar c) {
-		Dimen rt = Dimen.ZERO_PT;
+	public float getItalic(UnicodeChar c) {
+		float rt = 0.0f;
 
 		GlyphValues gv = (GlyphValues) glyph.get(String.valueOf(c.getCodePoint()));
 		if (gv != null) {
 			try {
-				float f = Float.parseFloat(gv.italic);
-				rt = new Dimen((long)(f * em.getValue() / units_per_em));
+				rt = Float.parseFloat(gv.italic);// TODO devide with em or units_em... ???
 			} catch (Exception e) {
 				// do nothing, return ZERO_PT
 			}

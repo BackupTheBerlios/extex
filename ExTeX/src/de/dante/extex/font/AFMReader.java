@@ -36,7 +36,7 @@ import de.dante.extex.font.FontMetric;
  * This class read a AFM-file.
  * 
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 // TODO incomplete
 public class AFMReader implements FontMetric {
@@ -526,13 +526,6 @@ public class AFMReader implements FontMetric {
 			rt = rt.substring(i + 1);
 		}
 		return rt;
-	}
-
-	/**
-	 * Add the kerning-pais for the glyph
-	 */
-	private void addKerning(Element glyph) {
-
 	}
 
 	/**

@@ -30,7 +30,7 @@ import de.dante.util.UnicodeChar;
  * 
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class NullFont implements Font {
 
@@ -143,8 +143,8 @@ public class NullFont implements Font {
 	/**
 	 * @see de.dante.extex.interpreter.type.Font#getItalic(de.dante.util.UnicodeChar)
 	 */
-	public Dimen getItalic(UnicodeChar c) {
-		return null;
+	public float getItalic(UnicodeChar c) {
+		return 0.0f;
 	}
 
 }
