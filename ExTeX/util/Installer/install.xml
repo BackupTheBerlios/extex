@@ -12,7 +12,11 @@
     <url>http://www.extex.org/</url>
     <javaversion>1.4</javaversion>
   </info>
-  
+
+  <variables>
+    <variable name="basedir" value="../.."/>
+  </variables>
+
   <guiprefs width="720" height="440" resizable="yes"/>
 
   <locale>
@@ -21,7 +25,7 @@
   </locale>
 
   <resources>
-    <res id="LicencePanel.licence" src="../../LICENSE.txt"/>
+    <res id="LicencePanel.licence" src="$basedir/LICENSE.txt"/>
     <res id="HTMLInfoPanel.info_eng" src="README.en"/>
     <res id="HTMLInfoPanel.info_deu" src="README.de"/>
     <res id="installer.langsel.img" src="ExTeX-splash.png" />
@@ -46,24 +50,27 @@
   <packs>
     <pack name="Core" id="core" required="yes">
       <description/>
-      <file src="../../LICENSE.txt" targetdir="$INSTALL_PATH"/>
+      <file src="$basedir/LICENSE.txt" targetdir="$INSTALL_PATH"/>
       <file src="extex" targetdir="$INSTALL_PATH"/>
       <parsable targetfile="$INSTALL_PATH/extex"/>
       <executable targetfile="$INSTALL_PATH/extex" stage="never"/>
-      <file src="../../target/lib/extex.jar" targetdir="$INSTALL_PATH/lib"/>
+      <file src="$basedir/target/lib/extex.jar" targetdir="$INSTALL_PATH/lib"/>
       <file src=".extex" targetdir="$INSTALL_PATH"/>
     </pack>
+
     <pack name="Libraries" id="libs" required="yes">
       <description/>
-      <fileset dir="../../lib" targetdir="$INSTALL_PATH/lib">
+      <fileset dir="$basedir/lib" targetdir="$INSTALL_PATH/lib">
         <exclude name="js.jar"/>
       </fileset>
     </pack>
+
     <pack name="Fonts" id="fonts" required="yes">
       <description/>
-      <fileset dir="../../src/font" targetdir="$INSTALL_PATH/font">
+      <fileset dir="$basedir/src/font" targetdir="$INSTALL_PATH/font">
       </fileset>
     </pack>
+
     <pack name="User Settings" id="settings" required="no">
       <description/>
       <file src=".extex" targetdir="$USER_HOME" overwrite="askfalse"/>
@@ -73,7 +80,7 @@
       <description>The JavaDoc pack contains the documentation
       of the classes and interfaces in the extex.jar file.
       </description>
-      <file src="../../target/javadoc" targetdir="$INSTALL_PATH"/>
+      <file src="$basedir/target/javadoc" targetdir="$INSTALL_PATH"/>
     </pack>
 -->
   </packs>
