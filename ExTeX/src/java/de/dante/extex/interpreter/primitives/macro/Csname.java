@@ -23,7 +23,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.EofException;
+import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.exception.helping.UndefinedControlSequenceException;
+import de.dante.extex.interpreter.primitives.Relax;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.CsConvertible;
@@ -46,6 +48,14 @@ import de.dante.util.UnicodeChar;
  * <p>
  *  TODO missing documentation
  * </p>
+ * <p class="TeXbook">
+ *  When TeX expands <tt>\csname</tt> it reads to the matching
+ *  <tt>\endcsname</tt>, expanding tokens as it goes;
+ *  only character tokens should remain after this expansion has taken place.
+ *  Then the ``expansion'' of the entire <tt>\csname...\endcsname</tt> text
+ *  will be a single control sequence token, defined to be like <tt>\relax</tt>
+ *  if its meaning is currently undefined.
+ * </p>
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
@@ -60,7 +70,7 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Csname extends AbstractCode
         implements
@@ -108,10 +118,11 @@ public class Csname extends AbstractCode
             throws InterpreterException {
 
         Tokens toks = scanToEndCsname(context, source, null);
+        String s = toks.toText();
 
         try {
             source.push(context.getTokenFactory().createToken(Catcode.ESCAPE,
-                    new UnicodeChar(context.escapechar()), toks.toString(),
+                    new UnicodeChar(context.escapechar()), s,
                     context.getNamespace()));
         } catch (CatcodeException e) {
             throw new InterpreterException(e);
@@ -155,7 +166,7 @@ public class Csname extends AbstractCode
      * @throws InterpreterException in case of an error
      */
     private Tokens scanToEndCsname(final Context context,
-            final TokenSource source, Typesetter typesetter)
+            final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
         Tokens toks = new Tokens();
@@ -165,17 +176,28 @@ public class Csname extends AbstractCode
             if (t instanceof CodeToken) {
                 Code code = context.getCode((CodeToken) t);
 
-                if (code == null) {
-                    throw new EofException(printableControlSequence(context));
-                } else if (code instanceof Endcsname) {
+                if (code instanceof Endcsname) {
+
                     return toks;
+
                 } else if (code instanceof ExpandableCode) {
+
                     ((ExpandableCode) code).expand(Flags.NONE, context, source,
                             typesetter);
-                    //TODO gene: handle expansion???
+
+                } else if (code == null) {
+
+                    throw new UndefinedControlSequenceException(context.esc(t));
+
+                } else if (!(code instanceof Relax)) {
+
+                    throw new HelpingException(getLocalizer(),
+                            "TTP.MissingEndcsname", context.esc("endcsname"),
+                            context.esc(t));
                 }
 
             } else if (!(t instanceof SpaceToken)) {
+
                 toks.add(t);
             }
         }
