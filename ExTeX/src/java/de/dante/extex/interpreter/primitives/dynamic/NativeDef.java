@@ -37,10 +37,48 @@ import de.dante.util.framework.configuration.Configurable;
 import de.dante.util.framework.logger.LogEnabled;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This primitive provides a binding of a macro or active character to
+ * code in some programming language.
+ * This code implements the primitive <tt>\nativedef</tt>.
+ *
+ * <doc name="nativedef">
+ * <h3>The Primitive <tt>\nativedef</tt></h3>
+ * <p>
+ * The primitive <tt>\nativedef</tt> attaches a definition to a macro or
+ * active character. This is done in a similar way as <tt>\def</tt>
+ * works. The difference is that the definition has to be provided in
+ * form of a Java class which glues in native code.
+ * </p>
+ * <p>
+ * The general form of this primitive is
+ * <pre class="syntax">
+ *   &lang;nativedef&rang;
+ *       &rarr; <tt>\nativedef</tt> {@linkplain
+ *       de.dante.extex.interpreter.TokenSource#getControlSequence(Context)
+ *       &lang;control sequence&rang;} &lang;<i>name</i>&rang; </pre>
+ * </p>
+ * <p>
+ * The &lang;<i>control sequence</i>&rang; is any macro or active
+ * character. If this token is missing or of the wrong type then an
+ * error is raised.
+ * </p>
+ * <p>
+ * The &lang;<i>name</i>&rang; is any specification of a list of
+ * tokens like a constant list enclosed in braces or a toks register.
+ * The value of these tokens are taken and resolved via the configuration.
+ * This appropriate class is loaded if needed and instantiated. The
+ * instance is bound as code to the &lang;<i>control sequence</i>&rang;.
+ * </p>
+ * <p>
+ * The primitive <tt>\javadef</tt> is local to the enclosing group as
+ * is <tt>\def</tt>. And similar to <tt>\def</tt> the modifier
+ * <tt>\global</tt> can be used to make the definition in all groups
+ * instead of the current group only.
+ * </p>
+ * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class NativeDef extends AbstractCode
         implements
@@ -53,7 +91,7 @@ public class NativeDef extends AbstractCode
      * inheritance in Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     protected class Factory extends AbstractFactory {
 
@@ -72,12 +110,13 @@ public class NativeDef extends AbstractCode
     }
 
     /**
-     * The field <tt>logger</tt> contains the ...
+     * The field <tt>logger</tt> contains the logger to use.
      */
     private Logger logger = null;
 
     /**
-     * The field <tt>map</tt> contains the ...
+     * The field <tt>map</tt> contains the mapping from a symbolic name to a
+     * configuration.
      */
     private Map map = new HashMap();
 
@@ -109,9 +148,9 @@ public class NativeDef extends AbstractCode
      * @see de.dante.util.framework.logger.LogEnabled#enableLogging(
      *      java.util.logging.Logger)
      */
-    public void enableLogging(final Logger logger) {
+    public void enableLogging(final Logger theLogger) {
 
-        this.logger = logger;
+        this.logger = theLogger;
     }
 
     /**
