@@ -19,6 +19,8 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.typesetter.type.MathGlyph;
+
 /**
  * This interface describes a visitor for Noads.
  * With the help of this interface the visitor pattern can be implemented.
@@ -40,7 +42,7 @@ package de.dante.extex.typesetter.type.noad;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface NoadVisitor {
 
@@ -87,6 +89,13 @@ public interface NoadVisitor {
     void visitFraction(FractionNoad noad);
 
     /**
+     * Visitor method for a vertical center noad.
+     *
+     * @param noad the visited noad
+     */
+    void visitGlyph(MathGlyph noad);
+
+    /**
      * Visitor method for an inner noad.
      *
      * @param noad the visited noad
@@ -98,7 +107,7 @@ public interface NoadVisitor {
      *
      * @param noad the visited noad
      */
-    void visitMathLst(MathList noad);
+    void visitMathList(MathList noad);
 
     /**
      * Visitor method for an open noad.
@@ -169,4 +178,5 @@ public interface NoadVisitor {
      * @param noad the visited noad
      */
     void visitVCenter(VCenterNoad noad);
+
 }
