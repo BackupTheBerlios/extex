@@ -35,18 +35,20 @@ import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This class exposes itself as character node but contains an hlist internally.
+ * This class is used to represent composed characters from virtual fonts.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VirtualCharNode extends CharNode implements NodeList {
 
     /**
-     * TODO gene: missing JavaDoc.
+     * This inner class provides the means to store nodes in a list.
+     * It is here to compensate the missing multiple inheritance of Java.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.2 $
+     * @version $Revision: 1.3 $
      */
     private class NL extends AbstractNodeList {
 
@@ -67,7 +69,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.NodeList#addSkip(de.dante.extex.interpreter.type.glue.FixedGlue)
+         * @see de.dante.extex.typesetter.type.NodeList#addSkip(
+         *      de.dante.extex.interpreter.type.glue.FixedGlue)
          */
         public void addSkip(final FixedGlue glue) {
 
@@ -75,16 +78,19 @@ public class VirtualCharNode extends CharNode implements NodeList {
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(de.dante.extex.typesetter.type.Node)
+         * @see de.dante.extex.typesetter.type.node.AbstractNodeList#updateDimensions(
+         *      de.dante.extex.typesetter.type.Node)
          */
-        protected void updateDimensions(final Node node) {
+        protected void updateDimensions(final Node n) {
 
             //TODO gene: unimplemented; this should not be needed
             throw new RuntimeException("unimplemented");
         }
 
         /**
-         * @see de.dante.extex.typesetter.type.Node#visit(de.dante.extex.typesetter.type.NodeVisitor, java.lang.Object)
+         * @see de.dante.extex.typesetter.type.Node#visit(
+         *      de.dante.extex.typesetter.type.NodeVisitor,
+         *      java.lang.Object)
          */
         public Object visit(final NodeVisitor visitor, final Object value)
                 throws GeneralException {
@@ -94,7 +100,7 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * The field <tt>nodes</tt> contains the ...
+     * The field <tt>nodes</tt> contains the encapsulated node list.
      */
     private NodeList nodes;
 
@@ -104,14 +110,16 @@ public class VirtualCharNode extends CharNode implements NodeList {
      * @param context the typesetting context
      * @param uc the character represented by this node
      */
-    public VirtualCharNode(final TypesettingContext context, final UnicodeChar uc) {
+    public VirtualCharNode(final TypesettingContext context,
+            final UnicodeChar uc) {
 
         super(context, uc);
         nodes = new NL(this);
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#add(int, de.dante.extex.typesetter.type.Node)
+     * @see de.dante.extex.typesetter.type.NodeList#add(int,
+     *      de.dante.extex.typesetter.type.Node)
      */
     public void add(final int index, final Node node) {
 
@@ -119,7 +127,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#add(de.dante.extex.typesetter.type.Node)
+     * @see de.dante.extex.typesetter.type.NodeList#add(
+     *      de.dante.extex.typesetter.type.Node)
      */
     public void add(final Node node) {
 
@@ -127,7 +136,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#addGlyph(de.dante.extex.typesetter.type.node.CharNode)
+     * @see de.dante.extex.typesetter.type.NodeList#addGlyph(
+     *      de.dante.extex.typesetter.type.node.CharNode)
      */
     public void addGlyph(final CharNode node) {
 
@@ -135,7 +145,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#addSkip(de.dante.extex.interpreter.type.glue.FixedGlue)
+     * @see de.dante.extex.typesetter.type.NodeList#addSkip(
+     *      de.dante.extex.interpreter.type.glue.FixedGlue)
      */
     public void addSkip(final FixedGlue glue) {
 
@@ -143,7 +154,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#addWidthTo(de.dante.extex.interpreter.type.glue.Glue)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#addWidthTo(
+     *      de.dante.extex.interpreter.type.glue.Glue)
      */
     public void addWidthTo(final Glue glue) {
 
@@ -151,7 +163,9 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#atShipping(de.dante.extex.interpreter.context.Context, de.dante.extex.typesetter.Typesetter)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#atShipping(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.typesetter.Typesetter)
      */
     public void atShipping(final Context context, final Typesetter typesetter)
             throws GeneralException {
@@ -248,7 +262,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setDepth(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#setDepth(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setDepth(final Dimen depth) {
 
@@ -256,7 +271,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setHeight(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#setHeight(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setHeight(final Dimen height) {
 
@@ -264,7 +280,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#setMove(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.NodeList#setMove(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setMove(final Dimen d) {
 
@@ -272,7 +289,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.NodeList#setShift(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.typesetter.type.NodeList#setShift(
+     *      de.dante.extex.interpreter.type.dimen.Dimen)
      */
     public void setShift(final Dimen d) {
 
@@ -280,7 +298,8 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#setWidth(de.dante.extex.interpreter.type.dimen.FixedDimen)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#setWidth(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen)
      */
     public void setWidth(final FixedDimen width) {
 
@@ -296,7 +315,9 @@ public class VirtualCharNode extends CharNode implements NodeList {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.node.AbstractNode#spread(de.dante.extex.interpreter.type.dimen.FixedDimen, de.dante.extex.interpreter.type.glue.FixedGlueComponent)
+     * @see de.dante.extex.typesetter.type.node.AbstractNode#spread(
+     *      de.dante.extex.interpreter.type.dimen.FixedDimen,
+     *      de.dante.extex.interpreter.type.glue.FixedGlueComponent)
      */
     public void spread(final FixedDimen width, final FixedGlueComponent sum) {
 

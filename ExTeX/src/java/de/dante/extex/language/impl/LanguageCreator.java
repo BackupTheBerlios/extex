@@ -23,26 +23,34 @@ import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.exception.HyphenationException;
 
 /**
- * TODO gene: missing JavaDoc.
+ * This interface describes the features of an object which is able to provide
+ * a language instance either by loading it from an external source or by
+ * creating a new one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface LanguageCreator {
 
     /**
-     * TODO gene: missing JavaDoc
+     * Create a new instance for the given index if required.
      *
-     * @param index
-     * @return
+     * @param index the symbolic name of the language
+     *
+     * @return the new instance
+     *
+     * @throws HyphenationException in case of an error
      */
     Language createLanguageInstance(String index) throws HyphenationException;
 
     /**
-     * TODO gene: missing JavaDoc
+     * Load or create a new instance for the given index if required.
      *
-     * @param index
-     * @return
+     * @param index the symbolic name of the language
+     *
+     * @return the new instance
+     *
+     * @throws HyphenationException in case of an error
      */
     Language loadLanguageInstance(String index) throws HyphenationException;
 
