@@ -1,4 +1,5 @@
-<!-- #########################################################################
+<!-- 
+  ############################################################################
   # This is the Ant build file for ExTeX
   ############################################################################
   # Copyright (C) 2004 The ExTeX Group
@@ -272,12 +273,14 @@
         <delete dir="${deploy}"/>
         <delete dir="${tmp.tests}"/>
         <delete dir="${javadoc}"/>
-        <delete>
-        <fileset dir="testdata">   
-            <include name="*.log*" />  
-            <include name="*.out" />  
-        </fileset>
-        </delete>
+    	<delete>
+    		<fileset dir="src/test/data">   
+    	    	<include name="*.log*" />  
+    	        <include name="*.out" />  
+    	    </fileset>
+    	</delete>
+		<delete dir="${target.lib}" />
+    	<delete file="${target}/ExTeX-setup.jar"/>
         </target>
 
     <target name="javadoc"
