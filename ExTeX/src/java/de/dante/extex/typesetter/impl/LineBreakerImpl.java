@@ -31,7 +31,7 @@ import de.dante.extex.typesetter.NodeList;
  * Implementation for a <code>LineBreaker</code>.
  * 
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LineBreakerImpl implements LineBreaker {
 
@@ -46,21 +46,26 @@ public class LineBreakerImpl implements LineBreaker {
 	 * @see de.dante.extex.typesetter.LineBreaker#breakLines(de.dante.extex.interpreter.type.node.HorizontalListNode, de.dante.extex.interpreter.context.Context)
 	 */
 	// TODO incomplete (very simple solution, only for test)
-	public NodeList breakLines(HorizontalListNode nodes, Manager manager) {
+	public NodeList breakLines(HorizontalListNode nodes, final Manager manager) {
 
 		VerticalListNode vlnode = new VerticalListNode();
 
 		// linebreak already done?
 		if (!nodes.isLineBreak()) {
 
-			Dimen hsize = manager.getContext().getDimen("hsize");
+			int linenumber = 1;
+
+			addParSkipBefore(vlnode, manager);
+			addIndent(nodes, manager);
+
+			Dimen hsize = calculateLineWidth(manager, linenumber);
 			if (nodes.getWidth().lt(hsize)) {
-				vlnode.addSkip(new Glue(Dimen.ONE * 12));
+				addLineSkip(vlnode, manager);
 				nodes.setLineBreak(true);
 				vlnode.add(nodes);
 				return vlnode;
 			} else {
-				// break lines TODO change
+				// break lines
 				NodeIterator it = nodes.iterator();
 				Dimen line = Dimen.ZERO_PT;
 				HorizontalListNode hnode = new HorizontalListNode();
@@ -70,22 +75,79 @@ public class LineBreakerImpl implements LineBreaker {
 					if (line.lt(hsize)) {
 						hnode.add(node);
 					} else {
-						vlnode.addSkip(new Glue(Dimen.ONE * 12));
+						addLineSkip(vlnode, manager);
 						vlnode.add(hnode);
 						hnode = new HorizontalListNode();
 						hnode.add(node);
 						line = node.getWidth();
 					}
+					hsize = calculateLineWidth(manager, ++linenumber);
 				}
 				if (!hnode.empty()) {
-					vlnode.addSkip(new Glue(Dimen.ONE * 12));
+					addLineSkip(vlnode, manager);
 					vlnode.add(hnode);
 				}
 			}
 		} else {
-			vlnode.addSkip(new Glue(Dimen.ONE * 12));
+			addLineSkip(vlnode, manager);
 			vlnode.add(nodes);
 		}
+
+		addParSkipAfter(vlnode, manager);
+		restoreParameter(manager);
 		return vlnode;
+	}
+
+	/**
+	 * Add a paragraph-indent if necessary
+	 * @param hln	the <code>HorizontalListNode</code>
+	 */
+	private void addIndent(HorizontalListNode hln, Manager manager) {
+		// TODO incomplete
+	}
+
+	/**
+	 * Add a skip before a paragraph
+	 * @param vln		the vertical list
+	 * @param manager	the manager
+	 */
+	private void addParSkipBefore(VerticalListNode vln, Manager manager) {
+		vln.addSkip(new Glue(Dimen.ONE * 20)); // TODO change
+	}
+
+	/**
+	 * Add a skip after a paragraph
+	 * @param vln		the vertical list
+	 * @param manager	the manager
+	 */
+	private void addParSkipAfter(VerticalListNode vln, Manager manager) {
+		vln.addSkip(new Glue(Dimen.ONE * 20)); // TODO change
+	}
+
+	/**
+	 * Add a skip between lines
+	 * @param vln		the vertical list
+	 * @param manager	the manager
+	 */
+	private void addLineSkip(VerticalListNode vln, final Manager manager) {
+		vln.addSkip(new Glue(Dimen.ONE * 12)); // TODO change
+	}
+
+	/**
+	 * Restore all paramter after the paragraph
+	 * @param manager	the manager
+	 */
+	private void restoreParameter(final Manager manager) {
+		// TODO incomplete
+	}
+
+	/**
+	 * Calculate the width of the line.
+	 * @param manager		the manager
+	 * @param linenumber	the linenumber
+	 * @return	the width of the line
+	 */
+	private Dimen calculateLineWidth(final Manager manager, final int linenumber) {
+		return manager.getContext().getDimen("hsize"); // TODO incomplete
 	}
 }
