@@ -612,7 +612,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.75 $
+ * @version $Revision: 1.76 $
  */
 public class ExTeX {
 
@@ -1465,7 +1465,7 @@ public class ExTeX {
 
         interpreter.registerObserver("close", new FileCloseObserver(logger));
         interpreter.registerObserver("message", new MessageObserver(logger));
-        interpreter.registerObserver("log", new LogMessageObserver(logger));
+        //interpreter.registerObserver("log", new LogMessageObserver(logger));
         if (Boolean.valueOf(properties.getProperty(PROP_TRACE_TOKENIZER))
                 .booleanValue()) {
             interpreter.registerObserver("pop", new TokenObserver(logger));

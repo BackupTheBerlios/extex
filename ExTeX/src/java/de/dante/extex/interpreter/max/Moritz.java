@@ -73,7 +73,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.45 $
+ * @version $Revision: 1.46 $
  */
 public abstract class Moritz
         implements
@@ -115,7 +115,7 @@ public abstract class Moritz
      * a log message is send from another component. This message shuld be made
      * accessible to the user in some way, e.g. in the log file.
      */
-    private ObserverList observersLogMessage = new ObserverList();
+    //private ObserverList observersLogMessage = new ObserverList();
 
     /**
      * The field <tt>observersPop</tt> contains the observer list is used for
@@ -767,10 +767,6 @@ public abstract class Moritz
      *   <td>close</td>
      *   <td>...</td>
      *  </tr>
-     *  <tr>
-     *   <td>log</td>
-     *   <td>...</td>
-     *  </tr>
      * </table>
      *
      * @see de.dante.util.observer.Observable#registerObserver(java.lang.String,
@@ -787,8 +783,8 @@ public abstract class Moritz
             observersEOF.add(observer);
         } else if ("close".equals(name)) {
             observersCloseStream.add(observer);
-        } else if ("log".equals(name)) {
-            observersLogMessage.add(observer);
+        //} else if ("log".equals(name)) {
+        //    observersLogMessage.add(observer);
         } else {
             throw new NotObservableException(name);
         }
