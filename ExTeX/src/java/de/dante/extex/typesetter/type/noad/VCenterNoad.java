@@ -16,11 +16,11 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
-
 
 /**
  * ...
@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class VCenterNoad extends AbstractNoad {
 
@@ -38,6 +38,19 @@ public class VCenterNoad extends AbstractNoad {
     public VCenterNoad() {
 
         super();
+    }
+
+    /**
+     * ...
+     *
+     * @return
+     *
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     */
+    protected String stringName() {
+
+        // TODO unimplemented
+        return "vcenter";
     }
 
     /**

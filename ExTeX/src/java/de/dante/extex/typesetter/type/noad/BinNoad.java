@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class BinNoad extends AbstractNoad {
     /**
@@ -55,6 +55,19 @@ public class BinNoad extends AbstractNoad {
 
         // TODO unimplemented
         return null;
+    }
+
+    /**
+     * ...
+     *
+     * @return
+     *
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     */
+    protected String stringName() {
+
+        // TODO unimplemented
+        return "mathbin";
     }
 
 }

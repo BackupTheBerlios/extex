@@ -27,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
     /**
@@ -90,6 +90,19 @@ public class CharNoad extends AbstractNoad implements Noad {
 
         // TODO unimplemented
         return null;
+    }
+
+    /**
+     * ...
+     *
+     * @return
+     *
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     */
+    protected String stringName() {
+
+        // TODO unimplemented
+        return "mathchar";
     }
 
 }

@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UnderlinedNoad extends AbstractNoad {
 
@@ -40,6 +40,19 @@ public class UnderlinedNoad extends AbstractNoad {
     public UnderlinedNoad(final Noad nucleus) {
 
         super(nucleus);
+    }
+
+    /**
+     * ...
+     *
+     * @return
+     *
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     */
+    protected String stringName() {
+
+        // TODO unimplemented
+        return "underline";
     }
 
     /**
