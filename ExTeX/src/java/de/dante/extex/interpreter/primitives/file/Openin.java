@@ -19,7 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.file;
 
-import java.io.File;
+import java.io.FileNotFoundException;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
+import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This class provides an implementation for the primitive <code>\openin</code>.
@@ -44,7 +45,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class Openin extends AbstractFileCode {
 
@@ -76,13 +77,15 @@ public class Openin extends AbstractFileCode {
         source.getOptionalEquals();
         String name = scanFileName(source, context);
 
-        InFile file = new InFile(new File(name));
-
-        if (prefix.isImmediate()) {
-            file.isOpen();
+        InFile file;
+        try {
+            file = new InFile(source.getTokenStreamFactory()
+                    .newInstance(name, "tex", "iso-8859-1")); //TODO encoding?
             context.setInFile(key, file, prefix.isGlobal());
-        } else {
-            //TODO what?
+        } catch (FileNotFoundException e) {
+            //ignored on purpose
+        } catch (ConfigurationException e) {
+            throw new GeneralException(e);
         }
 
         return true;
