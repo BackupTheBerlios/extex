@@ -20,13 +20,14 @@
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.typesetter.Node;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ExtensionNode extends WhatsItNode implements Node {
 
@@ -87,11 +88,12 @@ public class ExtensionNode extends WhatsItNode implements Node {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.node.AbstractNode#setWidth(de.dante.extex.interpreter.type.dimen.Dimen)
+     * @see de.dante.extex.interpreter.type.node.AbstractNode#setWidth(FixedDimen)
      */
-    public void setWidth(final Dimen width) {
+    public void setWidth(final FixedDimen width) {
 
-        this.extension.setWidth(width);
+        //TODO correct
+        //this.extension.setWidth(width);
     }
 
     /**
