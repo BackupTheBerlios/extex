@@ -21,13 +21,13 @@ package de.dante.extex.interpreter.max;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.InvalidClassException;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.logging.Logger;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.hyphenation.HyphenationManagerFactory;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.FlagsImpl;
@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public class Max extends Moritz
         implements
@@ -93,6 +93,11 @@ public class Max extends Moritz
             LogEnabled,
             Observable,
             TokenVisitor {
+
+    /**
+     * The field <tt>HYPHENATION_TAG</tt> contains the ...
+     */
+    private static final String HYPHENATION_TAG = "Hyphenation";
 
     /**
      * The constant <tt>MAX_ERRORS_DEFAULT</tt> contains the default value for
@@ -213,6 +218,16 @@ public class Max extends Moritz
         context = contextFactory.newInstance(null);
         context.setTokenFactory(tokenFactory);
 
+        HyphenationManagerFactory factory = new HyphenationManagerFactory();
+        factory.enableLogging(logger);
+        Configuration cfg = configuration.findConfiguration(HYPHENATION_TAG);
+        if (cfg == null) {
+            throw new ConfigurationMissingException(HYPHENATION_TAG,
+                    configuration.toString());
+        }
+        factory.configure(cfg);
+        context.setHyphenationManager(factory.newInstance(""));
+
         try {
             context.setInteraction(Interaction.ERRORSTOPMODE, true);
         } catch (GeneralException e) {
@@ -231,11 +246,19 @@ public class Max extends Moritz
             throw new ConfigurationWrapperException(e);
         }
 
-        context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-        context.setCount("month", calendar.get(Calendar.MONTH), true);
-        context.setCount("year", calendar.get(Calendar.YEAR), true);
-        context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
-                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+        try {
+            context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+            context.setCount("month", calendar.get(Calendar.MONTH), true);
+            context.setCount("year", calendar.get(Calendar.YEAR), true);
+            context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+                    * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+        } catch (InterpreterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationWrapperException(e);
+        }
 
         everyRun = configuration.findConfiguration("everyjob");
     }
@@ -425,11 +448,20 @@ public class Max extends Moritz
                     "ClassLoaderIncompatibility", fmt, e.getMessage()));
         }
 
-        newContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-        newContext.setCount("month", calendar.get(Calendar.MONTH), true);
-        newContext.setCount("year", calendar.get(Calendar.YEAR), true);
-        newContext.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
-                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+        try {
+            newContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH),
+                    true);
+            newContext.setCount("month", calendar.get(Calendar.MONTH), true);
+            newContext.setCount("year", calendar.get(Calendar.YEAR), true);
+            newContext.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+                    * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+        } catch (InterpreterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw new LoaderException(cause);
+            }
+            throw new LoaderException(e);
+        }
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
         // TODO gene: loadFormat() incomplete
@@ -608,8 +640,8 @@ public class Max extends Moritz
             throws ConfigurationException {
 
         super.setTokenStreamFactory(factory);
-//        context.setStandardTokenStream(factory
-//                .newInstance(new InputStreamReader(System.in)));
+        //        context.setStandardTokenStream(factory
+        //                .newInstance(new InputStreamReader(System.in)));
     }
 
     /**

@@ -19,7 +19,12 @@
 
 package de.dante.extex.hyphenation;
 
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.framework.AbstractFactory;
 
 /**
  * This class manages the <code>HyphenationTable</code>s. It is a container
@@ -37,9 +42,18 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.1 $
  */
-public interface HyphenationManager {
+public class BaseHyphenationManager extends AbstractFactory
+        implements
+            HyphenationManager,
+            Serializable {
+
+    /**
+     * The field <tt>tables</tt> contains the mapping from index to
+     * hyphenation table.
+     */
+    private Map tables = new HashMap();
 
     /**
      * Return the <code>HyphernationTable</code> for a given name.
@@ -57,7 +71,7 @@ public interface HyphenationManager {
      *  ISO language codes otherwise.
      * </p>
      *
-     * @param index the name for which the hyphenation table is requested
+     * @param name the name for which the hyphenation table is requested
      *
      * @return the hyphenation table for the given name
      *
@@ -66,36 +80,40 @@ public interface HyphenationManager {
      * @see de.dante.extex.hyphenation.HyphenationManager#getHyphenationTable(
      *      java.lang.String)
      */
-    HyphenationTable getHyphenationTable(String index)
-            throws ConfigurationException;
+    public HyphenationTable getHyphenationTable(final String name)
+            throws ConfigurationException {
+
+        Object table = tables.get(name);
+        if (table == null) {
+            table = createInstance(name, HyphenationTable.class);
+            tables.put(name, table);
+        }
+        return (HyphenationTable) table;
+    }
 
     /**
-     * Return the <code>HyphernationTable</code> for a given name.
-     * <p>
-     *  If there is no table present with the given name then
-     *  an attempt is made to load one. As a last resort an empty hyphenation
-     *  table is created.
-     * </p>
-     * <p>
-     *  The index in TeX is the language number as <code>String</code>. This
-     *  implementation does not have this restriction. The name can be any
-     *  string.
-     * </p>
-     * <p>
-     *  The proposal is to use a natural number for backward compatibility and
-     *  ISO language codes otherwise.
-     * </p>
-     *
-     * @param index the name for which the hyphenation table is requested
-     *
-     * @return the hyphenation table for the given name
-     *
-     * @throws ConfigurationException in case of an error in the configuration
-     *
-     * @see de.dante.extex.hyphenation.HyphenationManager#getHyphenationTable(
+     * @see de.dante.extex.hyphenation.HyphenationManager#useHyphenationTable(
      *      java.lang.String)
      */
-    HyphenationTable useHyphenationTable(String index)
-            throws ConfigurationException;
+    public HyphenationTable useHyphenationTable(final String name)
+            throws ConfigurationException {
+
+        Object table = tables.get(name);
+        if (table == null) {
+            //TODO gene: try to load the table
+            table = createInstance(name, HyphenationTable.class);
+            tables.put(name, table);
+        }
+        return (HyphenationTable) table;
+    }
+    /**
+     * Getter for the tables.
+     *
+     * @return the tables map
+     */
+    protected Map getTables() {
+
+        return tables;
+    }
 
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -31,21 +31,14 @@ import de.dante.util.GeneralException;
  * Interface for the <code>HyphenationTable</code>.
  * <p>
  * In the table the hyphenation patterns (see <code>\patterns</code>
- * and the user-hyphenations (see <code>\hyphenation</code>) are stored.
+ * and the user hyphenations (see <code>\hyphenation</code>) are stored.
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface HyphenationTable extends Serializable {
-
-    /**
-     * Add a pattern
-     * @param pattern   the pattern-word with numbers
-     * @throws HyphenationException TODO
-     */
-    void addPattern(Tokens pattern) throws HyphenationException;
 
     /**
      * Add a user hyphenation.
@@ -55,13 +48,17 @@ public interface HyphenationTable extends Serializable {
      *
      * @throws HyphenationException in case of an error
      */
-    void addHyphenation(Tokens word, Context context) throws HyphenationException;
+    void addHyphenation(Tokens word, Context context)
+            throws HyphenationException;
 
     /**
-     * Set hte value for lefthyphenmin
-     * @param left  the new value
+     * Add a pattern to the hyphenation table.
+     *
+     * @param pattern the pattern word with numbers
+     *
+     * @throws HyphenationException in case of an error
      */
-    void setLeftHyphenmin(long left);
+    void addPattern(Tokens pattern) throws HyphenationException;
 
     /**
      * Return the value for lefthyphenmin
@@ -70,22 +67,23 @@ public interface HyphenationTable extends Serializable {
     long getLeftHyphenmin();
 
     /**
-     * Set hte value for righthyphenmin
-     * @param   right   the new value
-     */
-    void setRightHyphenmin(long right);
-
-    /**
      * Return the value for righthyphenmin
      * @return  righthyphenmin
      */
     long getRightHyphenmin();
 
     /**
-     * Set hte value for hyphenactive
-     * @param active the new value
+     * Insert the hyphenation marks for a horizontal list of nodes.
+     * @param nodelist the horizonzal nodelist
+     * @param context the context
+     * @param hyphen the tokens to be inserted for hyphens
+     *
+     * @return a nodelist with hyphenation marks inserted
+     *
+     * @throws GeneralException in case of an error
      */
-    void setHyphenActive(boolean active);
+    HorizontalListNode hyphenate(HorizontalListNode nodelist, Context context,
+            Tokens hyphen) throws GeneralException;
 
     /**
      * Return <code>true</code>, if hyphenation is active,
@@ -96,15 +94,21 @@ public interface HyphenationTable extends Serializable {
     boolean isHyphenActive();
 
     /**
-     * Insert the hyphenation marks for a horizontal list of nodes.
-     * @param nodelist the horizonzal nodelist
-     * @param context the context
-     * @param hyphen TODO
-     * @return a nodelist with hyphenation marks inserted
-     *
-     * @throws GeneralException in case of an error
+     * Set hte value for hyphenactive
+     * @param active the new value
      */
-    HorizontalListNode hyphenate(HorizontalListNode nodelist, Context context, Tokens hyphen)
-            throws GeneralException;
+    void setHyphenActive(boolean active);
+
+    /**
+     * Set hte value for lefthyphenmin
+     * @param left  the new value
+     */
+    void setLeftHyphenmin(long left);
+
+    /**
+     * Set hte value for righthyphenmin
+     * @param   right   the new value
+     */
+    void setRightHyphenmin(long right);
 
 }
