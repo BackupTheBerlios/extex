@@ -16,6 +16,7 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.dynamic.java;
 
 import de.dante.extex.interpreter.Flags;
@@ -23,10 +24,10 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.primitives.dynamic.Loader;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-
 
 /**
  * This primitive initiates the loading of Java code and implements the
@@ -91,9 +92,9 @@ import de.dante.extex.typesetter.Typesetter;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
-public class JavaLoad extends AbstractCode {
+public class JavaLoad extends AbstractCode implements Loader {
 
     /**
      * Creates a new object.
@@ -116,10 +117,23 @@ public class JavaLoad extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        load(context, source, typesetter);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.dynamic.Loader#load(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void load(final Context context, final TokenSource source,
+            final Typesetter typesetter)
+            throws InterpreterException {
+
         Tokens name = source.getTokens(context);
         String classname = name.toText();
         if ("".equals(classname)) {
-            throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
+            throw new HelpingException(getLocalizer(), "ClassNotFound",
                     classname);
         }
         Loadable component;
@@ -128,7 +142,7 @@ public class JavaLoad extends AbstractCode {
             component = (Loadable) (Class.forName(classname).newInstance());
             component.init(context, typesetter);
         } catch (ClassNotFoundException e) {
-            throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
+            throw new HelpingException(getLocalizer(), "ClassNotFound",
                     classname);
         } catch (InterpreterException e) {
             throw e;

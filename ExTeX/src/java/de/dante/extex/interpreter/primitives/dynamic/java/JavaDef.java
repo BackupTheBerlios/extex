@@ -26,12 +26,12 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.primitives.dynamic.Definer;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This primitive provides a binding of a macro or active character to
@@ -122,9 +122,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
-public class JavaDef extends AbstractCode {
+public class JavaDef extends AbstractCode implements Definer {
 
     /**
      * Creates a new object.
@@ -147,11 +147,24 @@ public class JavaDef extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws InterpreterException {
 
+        define(prefix, context, source);
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.dynamic.Definer#define(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public void define(final Flags prefix, final Context context,
+            final TokenSource source)
+            throws InterpreterException {
+
         CodeToken cs = source.getControlSequence(context);
         Tokens name = source.getTokens(context);
         String classname = name.toText();
         if ("".equals(classname)) {
-            throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
+            throw new HelpingException(getLocalizer(), "ClassNotFound",
                     classname);
         }
         Code code;
@@ -173,7 +186,7 @@ public class JavaDef extends AbstractCode {
         } catch (NoSuchMethodException e) {
             throw new InterpreterException(e);
         } catch (ClassNotFoundException e) {
-            throw new HelpingException(getLocalizer(), "JavaDef.ClassNotFound",
+            throw new HelpingException(getLocalizer(), "ClassNotFound",
                     classname);
         }
         context.setCode(cs, code, prefix.isGlobal());
