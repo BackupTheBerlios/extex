@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Logger;
 
 import de.dante.extex.hyphenation.exception.DuplicateHyphenationException;
 import de.dante.util.UnicodeChar;
@@ -46,7 +47,7 @@ import de.dante.util.UnicodeChar;
  * or right word boundary.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 class HyphenTree implements Serializable {
 
@@ -82,6 +83,26 @@ class HyphenTree implements Serializable {
                 }
                 j++;
             }
+        }
+    }
+
+    /**
+     * This method dumps a hyphenation tree to a logger.
+     *
+     * @param logger the target logger
+     * @param prefix the initial string prepended before any line of output
+     */
+    public void dump(final Logger logger, final String prefix) {
+
+        String p = prefix + "  ";
+        Iterator iter = nextTree.keySet().iterator();
+
+        while (iter.hasNext()) {
+            UnicodeChar key = (UnicodeChar) iter.next();
+            HyphenTree t = (HyphenTree) nextTree.get(key);
+            logger.info(prefix + "'" + key + "' "
+                    + t.getHyphenationCode().toString() + "\n");
+            t.dump(logger, p);
         }
     }
 
@@ -124,11 +145,11 @@ class HyphenTree implements Serializable {
         char[] hyph = null;
 
         if (chars.length == 0) {
-            return tree.getHc();
+            return tree.getHyphenationCode();
         }
 
         for (int i = start; i < chars.length; i++) {
-            char[] code = tree.getHc();
+            char[] code = tree.getHyphenationCode();
             if (code != null) {
                 hyph = code;
             }
@@ -146,7 +167,7 @@ class HyphenTree implements Serializable {
      *
      * @return the hyphenation code
      */
-    public char[] getHc() {
+    public char[] getHyphenationCode() {
 
         return this.hc;
     }
@@ -186,7 +207,7 @@ class HyphenTree implements Serializable {
         }
         HyphenTree tree = (HyphenTree) nextTree.get(uc);
         if (tree != null) {
-            tree.setHc(hyph);
+            tree.setHyphenationCode(hyph);
         } else {
             tree = new HyphenTree(hyph);
             nextTree.put(uc, tree);
@@ -195,20 +216,41 @@ class HyphenTree implements Serializable {
     }
 
     /**
+     * Getter for the iterator for the children.
+     *
+     * @return the iterator for the children
+     */
+    public Iterator iterator() {
+
+        return nextTree.values().iterator();
+    }
+
+    /**
      * Setter for hc.
      *
-     * @param hc the hc to set
+     * @param code the hc to set
+     */
+    public void setCode(final char[] code) {
+
+        this.hc = code;
+    }
+
+    /**
+     * Setter for hc.
+     *
+     * @param code the hc to set
      *
      * @throws DuplicateHyphenationException in case that the hyphen code
      *  is already set
      */
-    public void setHc(final char[] hc) throws DuplicateHyphenationException {
+    public void setHyphenationCode(final char[] code)
+            throws DuplicateHyphenationException {
 
-        if (hc != null) {
+        if (code != null) {
             if (this.hc != null) {
                 throw new DuplicateHyphenationException(null);
             }
-            this.hc = hc;
+            this.hc = code;
         }
     }
 
