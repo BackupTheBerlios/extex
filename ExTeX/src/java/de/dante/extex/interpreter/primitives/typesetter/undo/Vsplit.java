@@ -23,14 +23,18 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.interpreter.type.box.Boxable;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\\</code>.
+ * This class provides an implementation for the primitive <code>\vsplit</code>.
  *
- * <doc name="\\">
- * <h3>The Primitive <tt>\\</tt></h3>
+ * <doc name="\vsplit">
+ * <h3>The Primitive <tt>\vsplit</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -38,19 +42,19 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;vsplit&rang;
- *       &rarr; <tt>\\</tt>  </pre>
+ *       &rarr; <tt>\vsplit</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \\  </pre>
+ *    \vsplit ...  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Vsplit extends AbstractBox {
+public class Vsplit extends AbstractBox implements Boxable {
 
     /**
      * Creates a new object.
@@ -73,9 +77,43 @@ public class Vsplit extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        NodeList nl = vsplit(context, source, typesetter);
+        typesetter.add(nl);
+        return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.box.Boxable#getBox(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public Box getBox(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        return new Box(vsplit(context, source, typesetter));
+    }
+
+    /**
+     * Perform the operation of the primitive <tt>\vsplit</tt> and return the
+     * result as a NodeList.
+     *
+     * @param context the interpreter context
+     * @param source the source for new tokens
+     * @param typesetter the typesetter
+     *
+     * @return the nodes of the vlist cut off
+     *
+     * @throws GeneralException in case of an error
+     */
+    private NodeList vsplit(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        String key = getKey(source, context);
+        source.getKeyword("to", true);
+        Dimen ht = new Dimen(context, source);
+        Box b = context.getBox(key);
+        return b.vsplit(ht);
     }
 
 }

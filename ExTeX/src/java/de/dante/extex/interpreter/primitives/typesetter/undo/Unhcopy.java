@@ -19,18 +19,22 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.undo;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.register.box.AbstractBox;
+import de.dante.extex.interpreter.type.box.Box;
+import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\\</code>.
+ * This class provides an implementation for the primitive
+ * <code>&#x5c;unhcopy</code>.
  *
- * <doc name="\\">
- * <h3>The Primitive <tt>\\</tt></h3>
+ * <doc name="&#x5c;unhcopy">
+ * <h3>The Primitive <tt>&#x5c;unhcopy</tt></h3>
  * <p>
  *  TODO missing documentation
  * </p>
@@ -38,17 +42,19 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;unhcopy&rang;
- *       &rarr; <tt>\\</tt>  </pre>
+ *       &rarr; <tt>&#x5c;unhcopy</tt> {@linkplain
+ *          de.dante.extex.interpreter.TokenSource#scanNumber()
+ *          &lang;8-bit&nbsp;number&rang;} </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \\  </pre>
+ *    &#x5c;unhcopy42  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Unhcopy extends AbstractBox {
 
@@ -73,9 +79,19 @@ public class Unhcopy extends AbstractBox {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        String key = getKey(source, context);
+        Box b = context.getBox(key);
+        if (b.isVoid()) {
+            // nothing to do
+        } else if (!b.isHbox()) {
+            throw new HelpingException(getLocalizer(), "TTP.IncompatibleUnbox");
+        } else {
+            NodeList nl = b.getNodes();
+            for (int i = 0; i < nl.size(); i++) {
+                typesetter.add(nl.get(i));
+            }
+        }
+        return true;
     }
 
 }
