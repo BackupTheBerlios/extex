@@ -32,7 +32,7 @@ import de.dante.util.Locator;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface TokenSource {
 
@@ -69,6 +69,16 @@ public interface TokenSource {
 	 * @see "TeX -- The Program [332]"
 	 */
 	public abstract Token getNextToken() throws GeneralException;
+	
+	/**
+	 * Get the next tokens form the input streams between <code>{</code> and
+	 * <code>}</code>. If the current inputstream is at its end then the
+	 * next one on the streamStack is used until a token could be read. If all
+	 * stream are at the end then <code>null</code> is returned.
+	 * 
+	 * @return the next tokens or <code>null</code>
+	 */
+	public abstract Tokens getNextTokens() throws GeneralException;
 
 	/**
 	 * Get the next expanded token form the input streams. If the current input
@@ -86,7 +96,7 @@ public interface TokenSource {
 	 * next one on the streamStack is used until a token could be read. If all
 	 * stream are at the end then <code>null</code> is returned.
 	 * 
-	 * @return the next token or <code>null</code>
+	 * @return the next tokens or <code>null</code>
 	 */
 	public abstract Tokens scanNextTokens() throws GeneralException;
 

@@ -302,6 +302,7 @@
     <Define name="thinmuskip" class=""/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
     <Define name="toks" class=""/>
+    <define name="inputencoding" class="de.dante.extex.interpreter.primitives.register.NamedToks">ISO8859-1</define>
     <Define name="toksdef" class=""/>
     <define name="tolerance" class="de.dante.extex.interpreter.primitives.register.NamedCount">10000</define>
     <Define name="topmark" class=""/>

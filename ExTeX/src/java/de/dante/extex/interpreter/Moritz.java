@@ -50,7 +50,7 @@ import de.dante.util.configuration.Configuration;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Moritz implements TokenSource, Observable {
 
@@ -164,6 +164,32 @@ public class Moritz implements TokenSource, Observable {
 	}
 
 	/**
+	 * @see de.dante.extex.interpreter.TokenSource#getNextTokens()
+	 */
+	public Tokens getNextTokens() throws GeneralException {
+
+		Tokens toks = new Tokens();
+		if (!scanLeftBrace()) {
+			throw new GeneralException("missing leftbrace"); // MGN
+			// TODO auf configfile umstellen
+		}
+
+		Token tok;
+		for (int balance = 1;;) {
+			tok = getNextToken();
+			if (tok != null) {
+				if (tok.getCatcode() == Catcode.LEFTBRACE) {
+					++balance;
+				} else if (tok.getCatcode() == Catcode.RIGTHBRACE && --balance == 0) {
+					break;
+				}
+				toks.add(tok);
+			}
+		}
+		return toks;
+	}
+
+	/**
 	 * Setter for the token stream factory.
 	 * 
 	 * @param factory
@@ -227,7 +253,7 @@ public class Moritz implements TokenSource, Observable {
 	 *                 the tokens to push
 	 */
 	public void push(Token[] tokens) {
-		for (int i = 0; i < tokens.length; i++) {
+		for (int i = tokens.length-1; i >= 0; i--) {
 			observersPush.update(this, tokens[i]);
 			stream.put(tokens[i]);
 		}
@@ -240,7 +266,7 @@ public class Moritz implements TokenSource, Observable {
 	 *                 the tokens to push
 	 */
 	public void push(Tokens tokens) {
-		for (int i = 0; i < tokens.length(); i++) {
+		for (int i = tokens.length()-1; i >= 0; i--) {
 			observersPush.update(this, tokens.get(i));
 			stream.put(tokens.get(i));
 		}

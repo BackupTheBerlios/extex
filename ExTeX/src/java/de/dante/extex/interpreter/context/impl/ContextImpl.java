@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003 Gerd Neugebauer
+ * Copyright (C) 2003 Gerd Neugebauer, Michael Niedermair
  * 
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -18,6 +18,9 @@
  */
 package de.dante.extex.interpreter.context.impl;
 
+import java.io.Serializable;
+import java.util.Stack;
+
 import de.dante.extex.hyphenation.HyphenationManager;
 import de.dante.extex.hyphenation.HyphenationManagerImpl;
 import de.dante.extex.hyphenation.HyphenationTable;
@@ -35,15 +38,10 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.TokenFactoryImpl;
-
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
-
-import java.io.Serializable;
-
-import java.util.Stack;
 
 /**
  * This is a reference implementation for an interpreter context.
@@ -78,10 +76,14 @@ import java.util.Stack;
  * </ul>
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.5 $
  */
 public class ContextImpl implements Context, Serializable {
-	/** The saved configuration */
+
+	/**
+	 * The saved configuration
+	 */
 	private Configuration config = null;
 
 	/**
@@ -90,16 +92,24 @@ public class ContextImpl implements Context, Serializable {
 	 */
 	private Group group = null;
 
-	/** The factory to acquire a new group */
+	/**
+	 * The factory to acquire a new group
+	 */
 	private transient GroupFactory groupFactory;
 
-	/** ... */
+	/**
+	 * ...
+	 */
 	private HyphenationManager hyphenationManager = new HyphenationManagerImpl();
 
-	/** The interaction mode to use */
+	/**
+	 * The interaction mode to use
+	 */
 	private Interaction interaction = null;
 
-	/** The stack for conditionals */
+	/**
+	 * The stack for conditionals
+	 */
 	private Stack ifStack = new Stack();
 
 	/**
@@ -114,7 +124,9 @@ public class ContextImpl implements Context, Serializable {
 	 */
 	private boolean magnificationLock = false;
 
-	/** the magnification for the whole document in permille */
+	/**
+	 * the magnification for the whole document in permille
+	 */
 	private long magnification = 1000;
 
 	/**
@@ -442,5 +454,28 @@ public class ContextImpl implements Context, Serializable {
 	 */
 	public void openGroup() throws ConfigurationException {
 		group = groupFactory.newInstance(group);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Context#getToks(java.lang.String)
+	 */
+	public Tokens getToks(String name) {
+		return group.getToks(name);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
+	 *         de.dante.extex.interpreter.type.Tokens, boolean)
+	 */
+	public void setToks(String name, Tokens toks, boolean global) {
+		group.setToks(name, toks, global);
+	}
+
+	/**
+	 * @see de.dante.extex.interpreter.context.Context#setToks(java.lang.String,
+	 *         de.dante.extex.interpreter.type.Tokens)
+	 */
+	public void setToks(String name, Tokens toks) {
+		group.setToks(name, toks);
 	}
 }

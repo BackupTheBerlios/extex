@@ -27,6 +27,7 @@ import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Tokenizer;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
+import de.dante.extex.interpreter.type.Tokens;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
@@ -41,7 +42,7 @@ import de.dante.util.configuration.ConfigurationException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Context extends Configurable, Serializable {
 
@@ -149,6 +150,48 @@ public interface Context extends Configurable, Serializable {
 	 * @return the count register or <code>null</code> if it is not defined
 	 */
 	public abstract Count getCount(String name);
+
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+	 * register in the current group. Tokens registers are named, either with a
+	 * number or an arbitrary string. The numbered registers where limited to
+	 * 256 in TeX. This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name
+	 *                 the name or the number of the register
+	 * @param toks
+	 *                 the new value of the register
+	 */
+	public abstract void setToks(String name, Tokens toks);
+
+	/**
+	 * Setter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+	 * register in the current group. Tokens registers are named, either with a
+	 * number or an arbitrary string. The numbered registers where limited to
+	 * 256 in TeX. This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name
+	 *                 the name or the number of the register
+	 * @param toks
+	 *                 the new value of the register
+	 * @param global
+	 *                 the indicator for the scope; <code>true</code> means all
+	 *                 groups; otherwise the current group is affected only
+	 */
+	public abstract void setToks(String name, Tokens toks, boolean global);
+
+	/**
+	 * Getter for the {@link de.dante.extex.interpreter.type.Tokens toks}
+	 * register. Tokens registers are named, either with a number or an
+	 * arbitrary string. The numbered registers where limited to 256 in TeX.
+	 * This restriction does no longer hold for ExTeX.
+	 * 
+	 * @param name
+	 *                 the name or number of the token register
+	 * 
+	 * @return the token register or <code>null</code> if it is not defined
+	 */
+	public abstract Tokens getToks(String name);
 
 	/**
 	 * ...

@@ -42,7 +42,7 @@ import de.dante.extex.scanner.Token;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GroupImpl implements Tokenizer, Group, Serializable {
 
@@ -168,8 +168,8 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 */
 	public void setCatcode(char c, Catcode code) {
 		catcodeMap.put(new Character(c), code); // TODO auf
-																 // UnicodeChar
-																 // umstellen
+		// UnicodeChar
+		// umstellen
 	}
 
 	/**
@@ -192,9 +192,9 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	public Catcode getCatcode(char c) {
 
 		Catcode value = (Catcode) catcodeMap.get(new Character(c)); // TODO
-																							  // auf
-																							  // UnicodeChar
-																							  // umstellen
+		// auf
+		// UnicodeChar
+		// umstellen
 
 		if (value != null) {
 			return value;
@@ -462,7 +462,7 @@ public class GroupImpl implements Tokenizer, Group, Serializable {
 	 *         de.dante.extex.interpreter.type.Tokens, boolean)
 	 */
 	public void setToks(String name, Tokens value, boolean global) {
-		toksMap.put(name, value);
+		setToks(name, value);
 
 		if (global && next != null) {
 			next.setToks(name, value, global);
