@@ -110,7 +110,7 @@
   <define name="delcode"
           class="de.dante.extex.interpreter.primitives.parameter.Delcode"/>
   <define name="delimiter"
-          class="de.dante.extex.interpreter.primitives.math.delimiter.MathDelimiter"/>
+          class="de.dante.extex.interpreter.primitives.math.delimiter.Delimiter"/>
   <define name="delimiterfactor"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="delimitershortfall"
@@ -489,7 +489,7 @@
   <define name="prevdepth"
           class="de.dante.extex.interpreter.primitives.parameter.Prevdepth"/>
   <define name="prevgraf"
-          class="de.dante.extex.interpreter.primitives.parameter.Prevgraf"/>
+          class="de.dante.extex.interpreter.primitives.register.count.Prevgraf"/>
   <define name="radical"
           class="de.dante.extex.interpreter.primitives.math.Radical"/>
   <define name="raise"
