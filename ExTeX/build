@@ -47,8 +47,8 @@ fi
 LIBDIR=lib
 
 LOCALCLASSPATH=.
-#LOCALCLASSPATH=$JAVA_HOME/lib/tools.jar
-#LOCALCLASSPATH=$LOCALCLASSPATH:$JAVA_HOME/lib/classes.zip
+LOCALCLASSPATH=$JAVA_HOME/lib/tools.jar
+LOCALCLASSPATH=$LOCALCLASSPATH:$JAVA_HOME/lib/classes.zip
 
 # jar-Dateien
 #for i in $LIBDIR/*.jar ; do
@@ -75,6 +75,7 @@ if $cygwin; then
 fi
 
 echo
+echo $JAVA_HOME
 echo Building with classpath $LOCALCLASSPATH
 echo Starting Ant...
 echo
