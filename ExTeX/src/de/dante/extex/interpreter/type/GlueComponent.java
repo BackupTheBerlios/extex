@@ -42,7 +42,7 @@ import java.io.Serializable;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlueComponent implements Serializable {
     /** This constant contains the internal representation for 1pt
@@ -179,7 +179,7 @@ public class GlueComponent implements Serializable {
         value = source.scanFloat();
 
         {
-            Token t = source.scanNextNonSpace();
+            Token t = source.scanNonSpace();
 
             if (t == null) {
                 throw new GeneralHelpingException("xxx"); //TODO
@@ -192,7 +192,7 @@ public class GlueComponent implements Serializable {
 
         if (source.scanKeyword("true")) { // cf. TTP[453], TTP[457]
             mag = context.getMagnification();
-            source.push(source.scanNextNonSpace());
+            source.push(source.scanNonSpace());
         }
 
         // cf. TTP[458]
@@ -222,9 +222,9 @@ public class GlueComponent implements Serializable {
 
             Token t;
 
-            for (t = source.getNextToken();
+            for (t = source.getToken();
                      (t != null && (t.equals('l') || t.equals('L')));
-                     t = source.getNextToken()) {
+                     t = source.getToken()) {
                 order++;
             }
 
