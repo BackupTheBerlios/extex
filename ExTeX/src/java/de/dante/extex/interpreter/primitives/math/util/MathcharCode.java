@@ -16,21 +16,22 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package de.dante.extex.interpreter.primitives.math;
+package de.dante.extex.interpreter.primitives.math.util;
 
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.primitives.math.Mathchar;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class is used to dynamically define mathematical characters.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.1 $
  */
 public class MathcharCode extends Mathchar {
 
@@ -63,7 +64,7 @@ public class MathcharCode extends Mathchar {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        NoadConsumer nc = getListMaker(typesetter);
+        NoadConsumer nc = getListMaker(context, typesetter);
         insert(nc, mathchar);
         return true;
     }
