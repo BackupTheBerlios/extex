@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -25,12 +25,14 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
+import de.dante.extex.typesetter.type.MathDelimiter;
+import de.dante.extex.typesetter.type.noad.LeftNoad;
 import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\left</code>.
  *
- * <doc name="span">
+ * <doc name="left">
  * <h3>The Primitive <tt>\left</tt></h3>
  * <p>
  *  TODO missing documentation
@@ -49,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Left extends AbstractMathCode {
 
@@ -75,10 +77,10 @@ public class Left extends AbstractMathCode {
             throws GeneralException {
 
         NoadConsumer nc = getListMaker(context, typesetter);
-
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        MathDelimiter del = new MathDelimiter(context, source);
+        nc.left(del);
+        typesetter.add(new LeftNoad(del));
+        return true;
     }
 
 }

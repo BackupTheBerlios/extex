@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.primitives.math.AbstractMathCode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.math.NoadConsumer;
 import de.dante.extex.typesetter.type.MathDelimiter;
+import de.dante.extex.typesetter.type.noad.MiddleNoad;
 import de.dante.util.GeneralException;
 
 /**
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Middle extends AbstractMathCode {
 
@@ -78,10 +79,8 @@ public class Middle extends AbstractMathCode {
         NoadConsumer nc = getListMaker(context, typesetter);
         MathDelimiter del = new MathDelimiter(context, source);
         nc.left(del);
-        
-        //TODO gene: execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        typesetter.add(new MiddleNoad(del));
+        return true;
     }
 
 }
