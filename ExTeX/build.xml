@@ -1,3 +1,24 @@
+<!-- #########################################################################
+  # This is the Ant build file for ExTeX
+  ############################################################################
+  # Copyright (C) 2004 The ExTeX Group
+  #
+  # This library is free software; you can redistribute it and/or modify it
+  # under the terms of the GNU Lesser General Public License as published by
+  # the Free Software Foundation; either version 2.1 of the License, or (at
+  # your option) any later version.
+  #
+  # This library is distributed in the hope that it will be useful, but
+  # WITHOUT ANY WARRANTY; without even the implied warranty of
+  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser
+  # General Public License for more details.
+  #
+  # You should have received a copy of the GNU Lesser General Public License
+  # along with this library; if not, write to the Free Software Foundation,
+  # Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  #
+  ######################################################################### -->
+
 <project name="ExTeX" default="help" basedir=".">
 
     <description>ExTeX - build file</description>
@@ -33,7 +54,9 @@
     <property name="tmp" location="tmp"/>
     <property name="tmp.tests" location="tmp/tests"/>
     <property name="deploy" location="deploy"/>
-    <property name="deploy.lib" location="deploy/lib"/>
+    <property name="installer.dir" location="util/Installer"/>
+    <property name="target" location="target"/>
+    <property name="target.lib" location="target/lib"/>
     <!-- classpath for the application -->
     <path id="main.class.path">
         <fileset dir="lib">
@@ -55,6 +78,9 @@
 
     <taskdef resource="checkstyletask.properties"
              classpath="lib.develop/checkstyle-all-3.4.jar"/>
+    <taskdef name="izpack"
+             classpath="util/Installer/IzPack/lib/compiler.jar"
+             classname="com.izforge.izpack.ant.IzPackTask"/>
 
     <target name="compile"
             description="Compile the Java files (without tests)">
@@ -99,8 +125,8 @@
             depends="compile"
             description="Create ExTeX jar file containing all compiled classes except test cases.">
     <!-- make a jar from the classes not matching magic testcase identifiers-->
-        <mkdir dir="${deploy.lib}"/>
-        <jar jarfile="${deploy.lib}/${extexjarfile}.jar">
+        <mkdir dir="${target.lib}"/>
+        <jar jarfile="${target.lib}/${extexjarfile}.jar">
             <fileset dir="${classes}">
                 <patternset>
                     <exclude name="**/*Test.class"/>
@@ -118,8 +144,8 @@
     <target name="jar.tests"
             depends="compile.tests"
             description="Create test suite jar file">
-        <mkdir dir="${deploy.lib}"/>
-        <jar jarfile="${deploy.lib}/${testsuitejarfile}.jar">
+        <mkdir dir="${target.lib}"/>
+        <jar jarfile="${target.lib}/${testsuitejarfile}.jar">
             <fileset dir="${classes}">
                 <patternset>
                     <include name="**/*Test.class"/>
@@ -170,7 +196,7 @@
     <target name="deploy"
             depends="jar"
             description="Create jar file with the compiled classes">
-        <copy todir="${deploy.lib}">
+        <copy todir="${target.lib}">
             <fileset dir="lib">
                 <include name="**/*.jar"/>
                 <exclude name="**/ant.jar"/>
@@ -212,7 +238,7 @@
             <fileset dir="lib">
                 <include name="**/*.jar"/>
             </fileset>
-            <fileset dir="${deploy.lib}">
+            <fileset dir="${target.lib}">
                 <include name="${extexjarfile}.jar"/>
             </fileset>
         </copy>
@@ -223,6 +249,16 @@
             </fileset>
         </copy>
         <echo>ExTeX has been installed in ${installdir}</echo>
+    </target>
+
+    <target name="installer"
+            depends="jar"
+            description="Create a standalone installer for ExTeX.">
+        <izpack input="${installer.dir}/install.xml"
+                output="${target}/ExTeX-setup.jar"
+                installerType="standard"
+                basedir="${installer.dir}"
+                izPackDir="${installer.dir}/IzPack/"/>
     </target>
 
     <target name="clean"
