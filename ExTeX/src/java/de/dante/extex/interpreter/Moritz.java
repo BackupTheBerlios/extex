@@ -18,17 +18,16 @@
  */
 package de.dante.extex.interpreter;
 
+import java.util.Stack;
+
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Tokens;
-import de.dante.extex.scanner.ActiveCharacterToken;
 import de.dante.extex.scanner.Catcode;
-import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
-
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
 import de.dante.util.NotObservableException;
@@ -36,8 +35,6 @@ import de.dante.util.Observable;
 import de.dante.util.Observer;
 import de.dante.util.ObserverList;
 import de.dante.util.configuration.Configuration;
-
-import java.util.Stack;
 
 /**
  * This class provides the layer above the input streams and the tokenizer. It
@@ -51,10 +48,12 @@ import java.util.Stack;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class Moritz implements TokenSource, Observable {
-    /** ... */
+    /** This is the maximum value for a character code. In original TeX this
+     *  value would be 255.
+     */
     private static final long MAX_CHAR_CODE = Integer.MAX_VALUE; //TODO: find a good value
 
     /**
@@ -131,8 +130,8 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @return the next non-space token or <code>null</code> at EOF
      */
-    public Token getNextNonSpace() throws GeneralException {
-        for (Token t = getNextToken(); t != null; t = getNextToken()) {
+    public Token getNonSpace() throws GeneralException {
+        for (Token t = getToken(); t != null; t = getToken()) {
             if (!(t.isa(Catcode.SPACE))) {
                 return t;
             }
@@ -149,7 +148,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @return the next token or <code>null</code>
      */
-    public Token getNextToken() throws GeneralException {
+    public Token getToken() throws GeneralException {
         TokenFactory factory = context.getTokenFactory();
         Tokenizer tokenizer  = context.getTokenizer();
         Token t;
@@ -172,9 +171,9 @@ public abstract class Moritz implements TokenSource, Observable {
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#getNextTokens()
+     * @see de.dante.extex.interpreter.TokenSource#getTokens()
      */
-    public Tokens getNextTokens() throws GeneralException {
+    public Tokens getTokens() throws GeneralException {
         Tokens toks = new Tokens();
 
         if (!scanLeftBrace()) {
@@ -186,8 +185,10 @@ public abstract class Moritz implements TokenSource, Observable {
         Token tok;
 
         for (int balance = 1;;) {
-            tok = getNextToken();
+            tok = getToken();
 
+            //TODO: ERROR this code loops forever at EOF
+            // cf. scanTokens for a sane implementation
             if (tok != null) {
                 if (tok.getCatcode() == Catcode.LEFTBRACE) {
                     ++balance;
@@ -359,21 +360,21 @@ public abstract class Moritz implements TokenSource, Observable {
         long value  = 0;
         boolean neg = false;
         int post    = 0;
-        Token t     = scanNextNonSpace();
+        Token t     = scanNonSpace();
 
         if (t == null) {
         } else if (t.equals(Catcode.OTHER, "-")) {
             neg = true;
-            t   = scanNextNonSpace();
+            t   = scanNonSpace();
         } else if (t.equals(Catcode.OTHER, "+")) {
-            t = scanNextNonSpace();
+            t = scanNonSpace();
         }
 
         if (t != null &&
                 !t.equals(Catcode.OTHER, ".") &&
                 !t.equals(Catcode.OTHER, ",")) {
             value = scanNumber(t);
-            t     = getNextToken();
+            t     = getToken();
         }
 
         if (t != null &&
@@ -383,10 +384,10 @@ public abstract class Moritz implements TokenSource, Observable {
             int[] dig = new int[17];
             int k     = 0;
 
-            for (t = getNextToken();
+            for (t = getToken();
                      t != null && t.isa(Catcode.OTHER) &&
                      t.getValue()
-                          .matches("[0-9]"); t = scanNextToken()) {
+                          .matches("[0-9]"); t = scanToken()) {
                 if (k < 17) {
                     dig[k++] = t.getValue()
                                 .charAt(0) - '0';
@@ -428,7 +429,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *                 integer could be acquired
      */
     public long scanInteger() throws GeneralException {
-        Token t = scanNextNonSpace();
+        Token t = scanNonSpace();
 
         if (t == null) {
             throw new GeneralHelpingException("TTP.MissingNumber");
@@ -463,8 +464,8 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @return the next non-space token or <code>null</code> at EOF
      */
-    public Token scanNextNonSpace() throws GeneralException {
-        return scanNextNonSpace(scanNextToken());
+    public Token scanNonSpace() throws GeneralException {
+        return scanNonSpace(scanToken());
     }
 
     /**
@@ -474,8 +475,8 @@ public abstract class Moritz implements TokenSource, Observable {
      * 
      * @return the next non-space token or <code>null</code> at EOF
      */
-    public Token scanNextNonSpace(Token t) throws GeneralException {
-        for (; t != null; t = scanNextToken()) {
+    public Token scanNonSpace(Token t) throws GeneralException {
+        for (; t != null; t = scanToken()) {
             if (!(t.isa(Catcode.SPACE))) {
                 return t;
             }
@@ -492,48 +493,33 @@ public abstract class Moritz implements TokenSource, Observable {
      *
      * @throws GeneralException in case of an error
      */
-    public Token scanNextToken() throws GeneralException {
-        Token t = getNextToken();
-
-        if (t == null) {
-        } else if (t instanceof ControlSequenceToken) {
-            t = expand(t, context.getMacro(t.getValue()));
-        } else if (t instanceof ActiveCharacterToken) {
-            t = expand(t, context.getActive(t.getValue()));
-        } else {
-            return t;
-        }
-
-        return t;
+    public Token scanToken() throws GeneralException {
+        return expand(getToken());
     }
 
     /**
-     * @see de.dante.extex.interpreter.TokenSource#scanNextTokens()
+     * @see de.dante.extex.interpreter.TokenSource#scanTokens()
      */
-    public Tokens scanNextTokens() throws GeneralException {
+    public Tokens scanTokens() throws GeneralException {
         Tokens toks = new Tokens();
 
-        if (!scanLeftBrace()) {
-            throw new GeneralException("missing leftbrace"); // MGN
+        if (!scanLeftBrace()) { throw new GeneralException("missing leftbrace"); // MGN
 
-            // TODO auf configfile umstellen
+        // TODO auf configfile umstellen
         }
 
         Token tok;
+        int balance = 1;
 
-        for (int balance = 1;;) {
-            tok = scanNextToken();
+        for (tok = scanToken(); tok != null; tok = scanToken()) {
 
-            if (tok != null) {
-                if (tok.getCatcode() == Catcode.LEFTBRACE) {
-                    ++balance;
-                } else if (tok.getCatcode() == Catcode.RIGTHBRACE &&
-                               --balance == 0) {
-                    break;
-                }
-
-                toks.add(tok);
+            if (tok.isa(Catcode.LEFTBRACE)) {
+                ++balance;
+            } else if (tok.isa(Catcode.RIGTHBRACE) && --balance <= 0) {
+                break;
             }
+
+            toks.add(tok);
         }
 
         return toks;
@@ -543,7 +529,7 @@ public abstract class Moritz implements TokenSource, Observable {
      * @see de.dante.extex.interpreter.TokenSource#scanNextTokensAsString()
      */
     public String scanNextTokensAsString() throws GeneralException {
-        return scanNextTokens()
+        return scanTokens()
                    .toText();
     }
 
@@ -561,7 +547,7 @@ public abstract class Moritz implements TokenSource, Observable {
      *                 integer could be acquired
      */
     public long scanNumber() throws GeneralException {
-        return scanNumber(scanNextNonSpace());
+        return scanNumber(scanNonSpace());
     }
 
     /**
@@ -589,7 +575,7 @@ public abstract class Moritz implements TokenSource, Observable {
             do {
                 n = n * 10 + t.getValue()
                               .charAt(0) - '0';
-                t = scanNextToken();
+                t = scanToken();
             } while (t != null &&
                          t.isa(Catcode.OTHER) &&
                          t.getValue()
@@ -604,13 +590,13 @@ public abstract class Moritz implements TokenSource, Observable {
                             .matches("[0-7]")) {
                 n = n * 8 + t.getValue()
                              .charAt(0) - '0';
-                t = scanNextToken();
+                t = scanToken();
             }
 
             stream.put(t);
         } else if (t.isa(Catcode.OTHER) && t.getValue()
                                                 .equals("`")) {
-            t = getNextToken();
+            t = getToken();
 
             if (t == null) {
                 throw new GeneralHelpingException("TTP.MissingNumber");
@@ -634,12 +620,12 @@ public abstract class Moritz implements TokenSource, Observable {
      * as well and all spaces afterwards.
      */
     public void scanOptionalEquals() throws GeneralException {
-        Token t = scanNextNonSpace();
+        Token t = scanNonSpace();
 
         if (t == null) {
             throw new GeneralHelpingException("TTP.MissingNumber");
         } else if (t.equals(Catcode.OTHER, "=")) {
-            stream.put(scanNextNonSpace());
+            stream.put(scanNonSpace());
         } else {
             stream.put(t);
         }
@@ -662,13 +648,12 @@ public abstract class Moritz implements TokenSource, Observable {
      * ...
      *
      * @param token ...
-     * @param code ...
      *
      * @return ...
      *
      * @throws GeneralException ...
      */
-    protected abstract Token expand(Token token, Code code)
+    protected abstract Token expand(Token token)
                              throws GeneralException;
 
     /**
@@ -683,16 +668,17 @@ public abstract class Moritz implements TokenSource, Observable {
 
     /**
      * Scan for a <code>LeftBraceToken</code> and skip all <code>SpaceToken</code>.
-     *
+     * In case of success the brace is eaten up and <code>true</code> is
+     * returned. In case of failure the first non-space token is left on the
+     * input stream and <code>false</code> is returned.
+     * 
      * @return <code>true</code>, if the <code>LeftBraceToken</code> is
-     *            found, otherwise <code>false</code>
+     *         found, otherwise <code>false</code>
      */
     protected boolean scanLeftBrace() throws GeneralException {
-        Token tok = scanNextNonSpace();
-
-        if (tok.getCatcode() == Catcode.LEFTBRACE) {
-            return true;
-        }
+        Token tok = scanNonSpace();
+        
+        if (tok.isa(Catcode.LEFTBRACE)) { return true; }
 
         push(tok);
         return false;
@@ -713,7 +699,7 @@ public abstract class Moritz implements TokenSource, Observable {
     private boolean scanKeyword(String s, int i)
                          throws GeneralException {
         if (i < s.length()) {
-            Token t = scanNextToken();
+            Token t = scanToken();
 
             if (t == null) {
                 return false;
@@ -727,13 +713,5 @@ public abstract class Moritz implements TokenSource, Observable {
 
         return true;
     }
-    
-	/**
-	 * @see de.dante.extex.interpreter.TokenSource#scanGroup()
-	 */
-	public Tokens scanGroup() throws GeneralException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 }
