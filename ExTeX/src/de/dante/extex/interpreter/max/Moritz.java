@@ -61,7 +61,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class Moritz implements TokenSource, Observable {
 
@@ -250,27 +250,38 @@ public abstract class Moritz implements TokenSource, Observable {
         Token t = getToken();
 
         if (t == null) {
+
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        } else if (t instanceof ActiveCharacterToken) {
-            return t;
         } else if (t instanceof ControlSequenceToken) {
 
-            if (!t.getValue().equals("csname")) {
-                Tokens toks = new Tokens();
-                //scanToEndcsname();
-
-                //TODO incomplete
-                return null;
+            if (t.getValue().equals("csname")) {
+                Tokens toks = scanToEndCsname();
+                t = context.getTokenFactory().newInstance(Catcode.ESCAPE,
+                                                          toks.toString());
             }
-            return t;
 
-        } else {
+        } else if (!(t instanceof ActiveCharacterToken)) {
+
             throw new GeneralHelpingException("TTP.MissingCtrlSeq");
         }
+
+        return t;
     }
 
+    /**
+     * ...
+     *
+     * @return ...
+     */
     abstract public Typesetter getTypesetter();
 
+    /**
+     * ...
+     * 
+     * @return ...
+     *
+     * @throws GeneralException in case of an error
+     */
     private Tokens scanToEndCsname() throws GeneralException {
 
         Tokens toks = new Tokens();
@@ -695,8 +706,9 @@ public abstract class Moritz implements TokenSource, Observable {
 
                     if (t != null) {
                         return t.getValue().charAt(0);
+                        //TODO: this might fail for empty cs
                     }
-                // fall through to error handling
+                    // fall through to error handling
                     break;
 
                 case '\'' :
@@ -749,7 +761,7 @@ public abstract class Moritz implements TokenSource, Observable {
                                 break;
                             default :
                                 throw new GeneralPanicException(
-                                        "this can't happen");
+                                        "TTP.Confusion");
                         }
                     }
 
