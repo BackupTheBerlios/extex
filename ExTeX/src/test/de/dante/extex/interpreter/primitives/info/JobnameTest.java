@@ -27,12 +27,12 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\jobname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class JobnameTest extends ExTeXLauncher {
 
     /**
-     * Constructor for RelaxTest.
+     * Constructor for JobnameTest.
      *
      * @param arg the name
      */
@@ -48,15 +48,14 @@ public class JobnameTest extends ExTeXLauncher {
      */
     public void testJobname1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\jobname"
                 + "\\end ",
+                //--- log message ---
                 "",
+                //--- output chanel ---
                 "\n\\nullFont t\\nullFont e\\nullFont x"
                 + "\\nullFont p\\nullFont u\\nullFont t\n");
     }
@@ -69,15 +68,17 @@ public class JobnameTest extends ExTeXLauncher {
     public void testJobname2() throws Exception {
 
         Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "extex");
         properties.setProperty("extex.jobname", "job");
 
         runCode(properties,
+                //--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\jobname"
                 + "\\end ",
+                //--- log message ---
                 "",
+                //--- output chanel ---
                 "\n\\nullFont j\\nullFont o\\nullFont b\n");
     }
 }

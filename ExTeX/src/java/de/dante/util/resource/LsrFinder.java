@@ -69,9 +69,9 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class LsrFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
+public class LsrFinder implements ResourceFinder, LogEnabled, PropertyConfigurable {
 
     /**
      * The field <tt>INITIAL_LIST_SIZE</tt> contains the initial size of the
@@ -342,7 +342,7 @@ public class LsrFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
      *
      * @param prop the new properties
      *
-     * @see de.dante.util.resource.PropertiesTaker#setProperties(
+     * @see de.dante.util.resource.PropertyConfigurable#setProperties(
      *      java.util.Properties)
      */
     public void setProperties(final Properties prop) {

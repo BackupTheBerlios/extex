@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class RelaxTest extends ExTeXLauncher {
 
@@ -55,7 +55,12 @@ public class RelaxTest extends ExTeXLauncher {
      */
     public void test1() throws Exception {
 
-        runCode("\\relax", "", "\n");
+        runCode(//--- input code ---
+                "\\relax",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "\n");
     }
 
     /**
@@ -65,7 +70,12 @@ public class RelaxTest extends ExTeXLauncher {
      */
     public void test10() throws Exception {
 
-        runCode("abc\\relax def", "", "\nabcdef \n");
+        runCode(//--- input code ---
+                "abc\\relax def",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "\nabcdef \n");
     }
 
     /**
@@ -74,7 +84,12 @@ public class RelaxTest extends ExTeXLauncher {
      */
     public void test2() throws Exception {
 
-        runCode("\\relax ", "", "\n");
+        runCode(//--- input code ---
+                "\\relax ",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "\n");
     }
 
     /**
@@ -83,7 +98,12 @@ public class RelaxTest extends ExTeXLauncher {
      */
     public void test4() throws Exception {
 
-        runCode("\\relax         ", "", "\n");
+        runCode(//--- input code ---
+                "\\relax         ",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "\n");
     }
 
     /**
@@ -92,7 +112,12 @@ public class RelaxTest extends ExTeXLauncher {
      */
     public void test5() throws Exception {
 
-        runCode("\\relax %1234 ", "", "\n");
+        runCode(//--- input code ---
+                "\\relax %1234 ",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "\n");
     }
 
 }

@@ -19,20 +19,18 @@
 
 package de.dante.extex.interpreter.primitives.table;
 
-import java.util.Properties;
-
 import de.dante.test.ExTeXLauncher;
 
 /**
  * This is a test suite for the primitive <tt>\cr</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CrcrTest extends ExTeXLauncher {
 
     /**
-     * Constructor for RelaxTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
@@ -49,10 +47,7 @@ public class CrcrTest extends ExTeXLauncher {
      */
     public void testLonelyCr() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -60,7 +55,9 @@ public class CrcrTest extends ExTeXLauncher {
                 + ""
                 + "\\crcr"
                 + "\\end ",
+                //--- log message ---
                 "Misplaced \\crcr",
+                //--- output chanel ---
                 null);
     }
 

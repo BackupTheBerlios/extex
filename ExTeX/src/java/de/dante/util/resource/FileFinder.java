@@ -68,9 +68,9 @@ import de.dante.util.framework.logger.LogEnabled;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
-public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
+public class FileFinder implements ResourceFinder, LogEnabled, PropertyConfigurable {
 
     /**
      * The constant <tt>EXTENSION_TAG</tt> contains the name of the tag to get
@@ -83,15 +83,6 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
      * path information.
      */
     private static final String PATH_TAG = "path";
-    /**
-     * Getter for pATH_TAG.
-     *
-     * @return the pATH_TAG.
-     */
-    protected static String getPATH_TAG() {
-
-        return PATH_TAG;
-    }
 
     /**
      * The field <tt>config</tt> contains the configuration object on which this
@@ -267,6 +258,7 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
 
         return stream;
     }
+
     /**
      * Getter for configuration.
      *
@@ -288,7 +280,7 @@ public class FileFinder implements ResourceFinder, LogEnabled, PropertiesTaker {
     }
 
     /**
-     * @see de.dante.util.resource.PropertiesTaker#setProperties(java.util.Properties)
+     * @see de.dante.util.resource.PropertyConfigurable#setProperties(java.util.Properties)
      */
     public void setProperties(final Properties properties) {
 

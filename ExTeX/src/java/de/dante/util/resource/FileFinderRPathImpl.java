@@ -36,13 +36,13 @@ import de.dante.util.configuration.ConfigurationMissingAttributeException;
  * This file finder search recuriv in a directory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FileFinderRPathImpl
         implements
             ResourceFinder,
             LoggerTaker,
-            PropertiesTaker {
+            PropertyConfigurable {
 
     /**
      * The field <tt>logger</tt> contains the logger to be used for tracing.
@@ -206,7 +206,7 @@ public class FileFinderRPathImpl
     }
 
     /**
-     * @see de.dante.util.resource.PropertiesTaker#setProperties(java.util.Properties)
+     * @see de.dante.util.resource.PropertyConfigurable#setProperties(java.util.Properties)
      */
     public void setProperties(final Properties prop) {
 

@@ -36,7 +36,7 @@ import de.dante.util.framework.logger.LogEnabled;
  * This class provides a factory for ResourceFinders.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ResourceFinderFactory {
 
@@ -103,8 +103,8 @@ public class ResourceFinderFactory {
             if (finder instanceof LogEnabled) {
                 ((LogEnabled) finder).enableLogging(logger);
             }
-            if (finder instanceof PropertiesTaker) {
-                ((PropertiesTaker) finder).setProperties(properties);
+            if (finder instanceof PropertyConfigurable) {
+                ((PropertyConfigurable) finder).setProperties(properties);
             }
             list.add(finder);
         }

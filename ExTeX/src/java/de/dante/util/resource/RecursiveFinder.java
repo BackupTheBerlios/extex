@@ -20,10 +20,12 @@ package de.dante.util.resource;
 
 
 /**
- * ...
+ * This interface describes the capabilty to act as a recursive finder.
+ * In this case it is necessary to restart the search process for a modified
+ * input name. This is done by delegating the request to the parent finder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface RecursiveFinder {
 

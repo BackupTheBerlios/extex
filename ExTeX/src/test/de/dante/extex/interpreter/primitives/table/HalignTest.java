@@ -27,12 +27,12 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\halign</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HalignTest extends ExTeXLauncher {
 
     /**
-     * Constructor for RelaxTest.
+     * Creates a new object.
      *
      * @param arg the name
      */
@@ -48,10 +48,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testMissingBrace1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -59,7 +56,9 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign a"
                 + "\\end ",
+                //--- log message ---
                 "Missing `{' inserted",
+                //--- output chanel ---
                 null);
     }
 
@@ -70,17 +69,16 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testEof1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
                 + "\\catcode`#=6"
                 + ""
                 + "\\halign",
+                //--- log message ---
                 "Unexpected end of file while processing \\halign",
+                //--- output chanel ---
                 null);
     }
 
@@ -91,10 +89,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testOuter1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -103,7 +98,9 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign{\\x#&\\cr}"
                 + "\\end ",
+                //--- log message ---
                 "Forbidden control sequence found while scanning preamble of \\halign",
+                //--- output chanel ---
                 null);
     }
 
@@ -114,10 +111,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testOuter2() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -126,7 +120,9 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign{a#\\x&\\cr}"
                 + "\\end ",
+                //--- log message ---
                 "Forbidden control sequence found while scanning preamble of \\halign",
+                //--- output chanel ---
                 null);
     }
 
@@ -137,10 +133,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testOuter3() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -149,7 +142,9 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign{a#b&a#\\x&\\cr}"
                 + "\\end ",
+                //--- log message ---
                 "Forbidden control sequence found while scanning preamble of \\halign",
+                //--- output chanel ---
                 null);
     }
 
@@ -160,10 +155,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testMissingSharp1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -171,7 +163,9 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign{a&#\\cr}"
                 + "\\end ",
+                //--- log message ---
                 "Missing # inserted in alignment preamble",
+                //--- output chanel ---
                 null);
     }
 
@@ -182,10 +176,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testMissingSharp2() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -193,7 +184,9 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign{#a&abc\\cr}"
                 + "\\end ",
+                //--- log message ---
                 "Missing # inserted in alignment preamble",
+                //--- output chanel ---
                 null);
     }
 
@@ -204,10 +197,7 @@ public class HalignTest extends ExTeXLauncher {
      */
     public void testSharp1() throws Exception {
 
-        Properties properties = System.getProperties();
-        properties.setProperty("extex.config", "nextex");
-
-        runCode(properties,
+        runCode(//--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\catcode`&=4"
@@ -215,8 +205,35 @@ public class HalignTest extends ExTeXLauncher {
                 + ""
                 + "\\halign{#a#\\cr}"
                 + "\\end ",
+                //--- log message ---
                 "Only one # is allowed per tab",
+                //--- output chanel ---
                 null);
+    }
+
+    /**
+     * Test case checking that ...
+     *
+     * @throws Exception in case of an error
+     */
+    public void testHalign1() throws Exception {
+
+        Properties properties = System.getProperties();
+        properties.setProperty("extex.output", "dump");
+
+        runCode(properties,
+                //--- input code ---
+                "\\catcode`{=1"
+                + "\\catcode`}=2"
+                + "\\catcode`&=4"
+                + "\\catcode`#=6"
+                + ""
+                + "\\halign{a#b&c#d\\cr1&2\\cr}"
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "???");
     }
 
 }

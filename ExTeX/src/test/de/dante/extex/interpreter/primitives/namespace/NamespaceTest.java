@@ -27,12 +27,12 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\namespace</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class NamespaceTest extends ExTeXLauncher {
 
     /**
-     * Constructor for RelaxTest.
+     * Constructor for NamespaceTest.
      *
      * @param arg the name
      */
@@ -52,6 +52,7 @@ public class NamespaceTest extends ExTeXLauncher {
         properties.setProperty("extex.config", "nextex");
 
         runCode(properties,
+                //--- input code ---
                 "\\catcode`{=1"
                 + "\\catcode`}=2"
                 + "\\escapechar=`\\\\"
@@ -63,7 +64,11 @@ public class NamespaceTest extends ExTeXLauncher {
                 + "\\showthe\namespace"
                 + "\\showthe\\count1"
                 + ""
-                + "\\end ", "", "\n");
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output chanel ---
+                "\n");
     }
 
 }
