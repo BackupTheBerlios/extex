@@ -29,12 +29,14 @@ import de.dante.extex.hyphenation.exception.IllegalValueHyphenationException;
 import de.dante.extex.hyphenation.exception.ImmutableHyphenationException;
 import de.dante.extex.hyphenation.util.NodeTraverser;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.LetterToken;
 import de.dante.extex.scanner.type.OtherToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.type.Node;
+import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.util.GeneralException;
@@ -112,7 +114,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LiangsHyphenationTable extends BaseHyphenationTable {
 
@@ -221,10 +223,10 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
      * @see de.dante.extex.hyphenation.HyphenationTable#hyphenate(
      *      de.dante.extex.interpreter.type.node.HorizontalListNode,
      *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.type.tokens.Tokens)
+     *      Token)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final Context context, final Tokens hyphen) throws GeneralException {
+            final Context context, final Token hyphen) throws GeneralException {
 
         if (!isHyphenActive()) {
             return nodelist;
@@ -284,26 +286,30 @@ public class LiangsHyphenationTable extends BaseHyphenationTable {
         }
 
         nodes = new HorizontalListNode();
+        CharNodeFactory cnf = new CharNodeFactory();
         NV nv = null;
         Count index = new Count(0);
+        TypesettingContext tc = context.getTypesettingContext(); //TODO gene: is this correct?
 
         for (int i = 0; i < nodelist.size(); i++) {
             Node node = nodelist.get(i);
             switch (node.countChars()) {
-                case 0: // just in case; for non-character nodes
+                case 0: // for non-character nodes
                     nodes.add(node);
                     break;
                 case 1:
                     if (isHyph[(int) index.getValue()]) {
-                        nodes.add(new DiscretionaryNode(Tokens.EMPTY, hyphen,
-                                Tokens.EMPTY));
+                        nodes.add(new DiscretionaryNode(null,
+                                new HorizontalListNode(cnf.newInstance(//
+                                        tc, //
+                                        hyphen.getChar())), null));
                     }
                     nodes.add(node);
                     index.add(1);
                     break;
                 default:
                     if (nv == null) {
-                        nv = new NV(nodes, hyphen, isHyph);
+                        nv = new NV(nodes, hyphen, tc, isHyph);
                     }
                     try {
                         node.visit(nv, index);

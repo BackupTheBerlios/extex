@@ -32,6 +32,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.typesetter.type.Node;
 import de.dante.extex.typesetter.type.node.CharNode;
+import de.dante.extex.typesetter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.type.node.LigatureNode;
@@ -44,7 +45,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BaseHyphenationTable implements HyphenationTable {
 
@@ -152,10 +153,10 @@ public class BaseHyphenationTable implements HyphenationTable {
     /**
      * @see de.dante.extex.hyphenation.HyphenationTable#hyphenate(
      *      de.dante.extex.interpreter.type.node.HorizontalListNode,
-     *      de.dante.extex.interpreter.context.Context, Tokens)
+     *      de.dante.extex.interpreter.context.Context, Token)
      */
     public HorizontalListNode hyphenate(final HorizontalListNode nodelist,
-            final Context context, final Tokens hyphen) throws GeneralException {
+            final Context context, final Token hyphen) throws GeneralException {
 
         if (!hyphenactive || nodelist.size() == 0) {
             return nodelist;
@@ -202,13 +203,14 @@ public class BaseHyphenationTable implements HyphenationTable {
         }
 
         HorizontalListNode nodes = new HorizontalListNode();
-
+        CharNodeFactory cnf = new CharNodeFactory();
         int i = 0;
         for (int j = 0; j < word.length(); j++) {
             Token t = word.get(j);
             if (t.equals(Catcode.OTHER, '-')) {
-                nodes.add(new DiscretionaryNode(hyphen, Tokens.EMPTY,
-                        Tokens.EMPTY));
+                nodes.add(new DiscretionaryNode(null,new HorizontalListNode(cnf
+                        .newInstance(context.getTypesettingContext(), hyphen
+                                .getChar())), null));
             } else {
                 nodes.add(nodelist.get(i++));
             }
