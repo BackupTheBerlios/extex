@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * Fount Interface (only getter)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Fount {
 
@@ -84,6 +84,20 @@ public interface Fount {
      * @return the fontname
      */
     String getFontName();
+
+    /**
+     * Returns the checksum
+     *
+     * @return Returns the checksum
+     */
+    int getCheckSum();
+
+    /**
+     * Returns the BoundingBox
+     *
+     * @return Returns the BoundingBox, or <code>null</code>, if not exists.
+     */
+    BoundingBox getBoundingBox();
 
     /**
      * Return the letterspacing

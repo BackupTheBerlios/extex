@@ -34,6 +34,7 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.GlyphImpl;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
+import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -47,7 +48,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public abstract class EFMFount implements ModifiableFount {
 
@@ -150,25 +151,7 @@ public abstract class EFMFount implements ModifiableFount {
                     empr = DEFAULTEMPR;
                 }
             }
-            // use design-size if emsize equlas sero
-            if (emsize.getValue() == 0) {
-
-                // default-size
-                Attribute defaultsize = fontgroup.getAttribute(ATTRDEFAULTSIZE);
-
-                if (defaultsize != null) {
-                    try {
-                        float f = defaultsize.getFloatValue();
-                        if (f > 0) {
-                            emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
-                        }
-                    } catch (Exception e) {
-                        emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
-                    }
-                } else {
-                    emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
-                }
-            }
+            getSize(fontgroup);
 
             // calculate em
             em = new Dimen((long) (emsize.getValue() * empr / PROZ100));
@@ -185,23 +168,19 @@ public abstract class EFMFount implements ModifiableFount {
                 ex = attr.getIntValue();
             }
 
-            // fontdimen-key-values
-            Element efontdimen = fontgroup.getChild("fontdimen");
-            if (efontdimen != null) {
-                List list = efontdimen.getAttributes();
-                for (int i = 0; i < list.size(); i++) {
-                    attr = (Attribute) list.get(i);
-                    String key = attr.getName();
-                    String val = attr.getValue();
-                    if (val != null && val.trim().length() > 0) {
-                        fontdimen.put(key, val);
-                    }
-                }
-            }
+            getFontDimenValues(fontgroup);
 
             // get glyph-list
             Element font = scanForElement(fontgroup, "font");
             if (font != null) {
+
+                attr = font.getAttribute("checksum");
+                if (attr != null) {
+                    chechSum = attr.getIntValue();
+                }
+                // boundingbox
+                // TODO boundingbox incomplete
+                boundingBox = null;
 
                 // exernal fontfile
                 String efile = font.getAttributeValue("filename");
@@ -281,6 +260,55 @@ public abstract class EFMFount implements ModifiableFount {
 
         } catch (JDOMException e) {
             throw new HelpingException("EFM.jdomerror", e.getMessage());
+        }
+    }
+
+    /**
+     * Gets the font dimen values
+     * @param fontgroup the fountgroup element
+     */
+    private void getFontDimenValues(final Element fontgroup) {
+
+        Attribute attr;
+        // fontdimen-key-values
+        Element efontdimen = fontgroup.getChild("fontdimen");
+        if (efontdimen != null) {
+            List list = efontdimen.getAttributes();
+            for (int i = 0; i < list.size(); i++) {
+                attr = (Attribute) list.get(i);
+                String key = attr.getName();
+                String val = attr.getValue();
+                if (val != null && val.trim().length() > 0) {
+                    fontdimen.put(key, val);
+                }
+            }
+        }
+    }
+
+    /**
+     * Calculate the size for a font
+     * @param fontgroup the fontgroup element
+     */
+    private void getSize(final Element fontgroup) {
+
+        // use design-size if emsize equlas sero
+        if (emsize.getValue() == 0) {
+
+            // default-size
+            Attribute defaultsize = fontgroup.getAttribute(ATTRDEFAULTSIZE);
+
+            if (defaultsize != null) {
+                try {
+                    float f = defaultsize.getFloatValue();
+                    if (f > 0) {
+                        emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                    }
+                } catch (Exception e) {
+                    emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                }
+            } else {
+                emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+            }
         }
     }
 
@@ -542,4 +570,31 @@ public abstract class EFMFount implements ModifiableFount {
 
         property.put(key, value);
     }
+
+    /**
+     * the checksum
+     */
+    private int chechSum = -1;
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getCheckSum()
+     */
+    public int getCheckSum() {
+
+        return chechSum;
+    }
+
+    /**
+     * the BoundingBox
+     */
+    private BoundingBox boundingBox = null;
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getBoundingBox()
+     */
+    public BoundingBox getBoundingBox() {
+
+        return boundingBox;
+    }
+
 }
