@@ -22,6 +22,7 @@ package de.dante.util.font;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +31,11 @@ import java.util.Properties;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
@@ -45,7 +47,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a XML-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class TFM2XML {
 
@@ -64,12 +66,12 @@ public final class TFM2XML {
     /**
      * main
      * @param args      the comandlinearguments
-     * @throws IOException ...
-     * @throws HelpingException ...
-     * @throws ConfigurationException ...
+     * @throws IOException if a IO-error occured.
+     * @throws Fontxception if a font-error occured.
+     * @throws ConfigurationException from the resourcefinder.
      */
     public static void main(final String[] args) throws IOException,
-            HelpingException, ConfigurationException {
+            FontException, ConfigurationException {
 
         if (args.length != PARAMETER) {
             System.err
@@ -103,16 +105,14 @@ public final class TFM2XML {
         InputStream tfmin = finder.findResource(args[0], "");
 
         if (tfmin == null) {
-            System.err.println(args[0] + " not found!");
-            System.exit(1);
+            throw new FileNotFoundException(args[0]);
         }
 
         // psfonts.map
         InputStream psin = finder.findResource("psfonts.map", "");
 
         if (psin == null) {
-            System.err.println("psfonts.map not found!");
-            System.exit(1);
+            throw new FontMapNotFoundException();
         }
         PSFontsMapReader psfm = new PSFontsMapReader(psin);
 

@@ -25,13 +25,13 @@ import java.io.Serializable;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.FontMetric;
 import de.dante.extex.font.type.PlFormat;
 import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontEncoding;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.XMLConvertible;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TFMFont
         implements
@@ -149,6 +149,159 @@ public class TFMFont
     private TFMParamArray param;
 
     /**
+     * Returns the charinfo.
+     * @return Returns the charinfo.
+     */
+    public TFMCharInfoArray getCharinfo() {
+
+        return charinfo;
+    }
+
+    /**
+     * Returns the depth.
+     * @return Returns the depth.
+     */
+    public TFMDepthArray getDepth() {
+
+        return depth;
+    }
+
+    /**
+     * Returns the encfactory.
+     * @return Returns the encfactory.
+     */
+    public EncFactory getEncfactory() {
+
+        return encfactory;
+    }
+
+    /**
+     * Returns the enctable.
+     * @return Returns the enctable.
+     */
+    public String[] getEnctable() {
+
+        return enctable;
+    }
+
+    /**
+     * Returns the exten.
+     * @return Returns the exten.
+     */
+    public TFMExtenArray getExten() {
+
+        return exten;
+    }
+
+    /**
+     * Returns the fontname.
+     * @return Returns the fontname.
+     */
+    public String getFontname() {
+
+        return fontname;
+    }
+
+    /**
+     * Returns the header.
+     * @return Returns the header.
+     */
+    public TFMHeaderArray getHeader() {
+
+        return header;
+    }
+
+    /**
+     * Returns the height.
+     * @return Returns the height.
+     */
+    public TFMHeightArray getHeight() {
+
+        return height;
+    }
+
+    /**
+     * Returns the italic.
+     * @return Returns the italic.
+     */
+    public TFMItalicArray getItalic() {
+
+        return italic;
+    }
+
+    /**
+     * Returns the kern.
+     * @return Returns the kern.
+     */
+    public TFMKernArray getKern() {
+
+        return kern;
+    }
+
+    /**
+     * Returns the lengths.
+     * @return Returns the lengths.
+     */
+    public TFMHeaderLengths getLengths() {
+
+        return lengths;
+    }
+
+    /**
+     * Returns the ligkern.
+     * @return Returns the ligkern.
+     */
+    public TFMLigKernArray getLigkern() {
+
+        return ligkern;
+    }
+
+    /**
+     * Returns the param.
+     * @return Returns the param.
+     */
+    public TFMParamArray getParam() {
+
+        return param;
+    }
+
+    /**
+     * Returns the pfbfilename.
+     * @return Returns the pfbfilename.
+     */
+    public String getPfbfilename() {
+
+        return pfbfilename;
+    }
+
+    /**
+     * Returns the psfenc.
+     * @return Returns the psfenc.
+     */
+    public PSFontEncoding getPsfenc() {
+
+        return psfenc;
+    }
+
+    /**
+     * Returns the psfontmap.
+     * @return Returns the psfontmap.
+     */
+    public PSFontsMapReader getPsfontmap() {
+
+        return psfontmap;
+    }
+
+    /**
+     * Returns the width.
+     * @return Returns the width.
+     */
+    public TFMWidthArray getWidth() {
+
+        return width;
+    }
+
+    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
@@ -208,8 +361,7 @@ public class TFMFont
     /**
      * @see de.dante.extex.font.type.FontMetric#getFontMetric()
      */
-    public Element getFontMetric() throws IOException, ConfigurationException,
-            HelpingException {
+    public Element getFontMetric() {
 
         // create efm-file
         Element root = new Element("fontgroup");
@@ -269,11 +421,11 @@ public class TFMFont
      * Set the fontmap reader an d the encoding factory
      * @param apsfontmap    the psfonts.map reader
      * @param encf          the encoding factory
-     * @throws IOException if an IO-erorr occured
-     * @throws ConfigurationException ...
+     * @throws FontException if a font-erorr occured
+     * @throws ConfigurationException from the resourcefinder
      */
     public void setFontMapEncoding(final PSFontsMapReader apsfontmap,
-            final EncFactory encf) throws IOException, ConfigurationException {
+            final EncFactory encf) throws FontException, ConfigurationException {
 
         psfontmap = apsfontmap;
         encfactory = encf;

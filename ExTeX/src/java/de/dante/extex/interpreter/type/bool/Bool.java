@@ -24,20 +24,19 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.bool.exception.InterpreterNoBoolValueException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.real.RealConvertible;
 import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.Token;
-import de.dante.util.GeneralException;
 
 /**
  * Bool
  *
  * @author <a href="mailto:m.g.sn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Bool implements Serializable {
 
@@ -70,7 +69,7 @@ public class Bool implements Serializable {
      * Scan the <code>TokenSource</code> for a <code>Bool</code>.
      * @param context   the context
      * @param source    the token source
-     * @throws InterpreterException ...
+     * @throws InterpreterException in case of an error.
      */
     public Bool(final Context context, final TokenSource source)
             throws InterpreterException {
@@ -93,7 +92,7 @@ public class Bool implements Serializable {
         Token tok = source.scanNonSpace(context);
 
         if (tok == null) {
-            throw new HelpingException("TTP.NoBoolValue");
+            throw new InterpreterNoBoolValueException();
         } else if (tok instanceof ControlSequenceToken) {
             Code code = context.getCode((ControlSequenceToken) tok);
             if (code instanceof CountConvertible) {
@@ -102,14 +101,14 @@ public class Bool implements Serializable {
             } else if (code instanceof RealConvertible) {
                 return (new Bool(((((RealConvertible) code).convertReal(
                         context, source)).getLong()))).getValue();
-            } else {
-                throw new HelpingException("TTP.NoBoolValue");
             }
+            throw new InterpreterNoBoolValueException();
         }
 
         source.push(tok);
         if (tok.getChar().isDigit()) {
-            return (new Bool(Count.scanCount(context, source, null))).getValue();
+            return (new Bool(Count.scanCount(context, source, null)))
+                    .getValue();
         }
 
         if (source.getKeyword(context, "true")) {
@@ -121,8 +120,7 @@ public class Bool implements Serializable {
         } else if (source.getKeyword(context, "off")) {
             return false;
         }
-        throw new HelpingException("TTP.NoBoolValue");
-
+        throw new InterpreterNoBoolValueException();
     }
 
     /**
@@ -147,30 +145,26 @@ public class Bool implements Serializable {
      * <tt>on</tt>, <tt>off</tt> or
      * <tt>!0</tt>, <tt>0</tt>
      * @param s     the value as String
-     * @throws GeneralException if no boolean-value are found
+     * @throws InterpreterException if no boolean-value are found
      */
-    public Bool(final String s) throws GeneralException {
+    public Bool(final String s) throws InterpreterException {
 
-        try {
-            if ("true".equalsIgnoreCase(s)) {
-                value = true;
-            } else if ("on".equalsIgnoreCase(s)) {
-                value = true;
-            } else if ("off".equalsIgnoreCase(s)) {
-                value = false;
-            } else if ("false".equalsIgnoreCase(s)) {
-                value = false;
-            } else if (s.trim().length() == 0) {
-                value = false;
-            } else if (Integer.parseInt(s) == 0) {
-                value = false;
-            } else if (Integer.parseInt(s) != 0) {
-                value = true;
-            } else {
-                throw new HelpingException("TTP.NoBoolValue", s);
-            }
-        } catch (Exception e) {
-            throw new HelpingException("TTP.NoBoolValue", s);
+        if ("true".equalsIgnoreCase(s)) {
+            value = true;
+        } else if ("on".equalsIgnoreCase(s)) {
+            value = true;
+        } else if ("off".equalsIgnoreCase(s)) {
+            value = false;
+        } else if ("false".equalsIgnoreCase(s)) {
+            value = false;
+        } else if (s.trim().length() == 0) {
+            value = false;
+        } else if (Integer.parseInt(s) == 0) {
+            value = false;
+        } else if (Integer.parseInt(s) != 0) {
+            value = true;
+        } else {
+            throw new InterpreterNoBoolValueException(s);
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,29 +19,20 @@
 
 package de.dante.extex.font.type;
 
-import java.io.IOException;
-
 import org.jdom.Element;
-
-import de.dante.extex.interpreter.exception.helping.HelpingException;
-import de.dante.util.configuration.ConfigurationException;
 
 /**
  * This interface get the EFM-<code>Element</code>
  * from some other fontsmetric-classes.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface FontMetric {
 
     /**
      * Return the FontMetrix-Element for this font.
      * @return the fontmetrix as XML-Element
-     * @throws IOException if an IO-error occured
-     * @throws ConfigurationException if an config-error occured
-     * @throws HelpingException if an error occured
      */
-    Element getFontMetric() throws IOException, ConfigurationException,
-            HelpingException;
+    Element getFontMetric();
 }

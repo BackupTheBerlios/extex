@@ -27,7 +27,6 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
@@ -44,7 +43,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </pre>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class InputFileEncoding extends InputFile {
 
@@ -79,7 +78,7 @@ public class InputFileEncoding extends InputFile {
         try {
             source.addStream(factory.newInstance(name, "tex", encoding));
         } catch (FileNotFoundException e) {
-            throw new InterpreterException(e); // TODO: use Helping and i18n
+            throw new InterpreterException(e);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
         }

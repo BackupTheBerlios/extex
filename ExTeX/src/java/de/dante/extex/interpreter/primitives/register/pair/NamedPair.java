@@ -31,7 +31,6 @@ import de.dante.extex.interpreter.type.pair.Pair;
 import de.dante.extex.interpreter.type.pair.PairConvertible;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the pair valued primitives.
@@ -44,7 +43,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class NamedPair extends AbstractAssignment
         implements
@@ -75,7 +74,7 @@ public class NamedPair extends AbstractAssignment
 
             ContextExtension contextextex = (ContextExtension) context;
 
-            String key = getKey(source);
+            String key = getKey(context, source);
             source.getOptionalEquals(context);
             Pair value = new Pair(context, source);
             contextextex.setPair(key, value, prefix.isGlobal());
@@ -90,7 +89,7 @@ public class NamedPair extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value
-     * @throws InterpreterException ...
+     * @throws InterpreterException if no extension is configured.
      */
     public void set(final Context context, final Pair value)
             throws InterpreterException {
@@ -108,10 +107,10 @@ public class NamedPair extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value as String
-     * @throws GeneralException ...
+     * @throws InterpreterException if no extension is configured
      */
     public void set(final Context context, final String value)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -127,27 +126,26 @@ public class NamedPair extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             String s = contextextex.getPair(key).toString();
             return new Tokens(context, s);
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 
     /**
      * Return the key (the name of the primitive) for the register.
      *
+     * @param context the context
      * @param source  the source
      * @return the key
-     * @throws InterpreterException ...
+     * @throws InterpreterException in case of an error.
      */
-    protected String getKey(final TokenSource source)
+    protected String getKey(final Context context, final TokenSource source)
             throws InterpreterException {
 
         return getName();
@@ -159,15 +157,14 @@ public class NamedPair extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource)
      */
     public Pair convertPair(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             Pair val = contextextex.getPair(key);
             return (val != null ? val : new Pair());
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 }

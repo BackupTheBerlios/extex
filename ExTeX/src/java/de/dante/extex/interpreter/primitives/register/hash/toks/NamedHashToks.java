@@ -43,7 +43,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NamedHashToks extends AbstractAssignment implements Theable {
 
@@ -71,7 +71,7 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
 
             ContextExtension contextextex = (ContextExtension) context;
 
-            String key = getKey(source);
+            String key = getKey(context, source);
             source.getOptionalEquals(context);
 
             HashToks value = new HashToks(context, source);
@@ -88,30 +88,28 @@ public class NamedHashToks extends AbstractAssignment implements Theable {
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             String s = contextextex.getHashToks(key).toString();
             return new Tokens(context, s);
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source  the source
+     * @param context   the context
+     * @param source    the source
      * @return the key
-     * @throws GeneralException ...
+     * @throws InterpreterException in case of an error.
      */
-    protected String getKey(final TokenSource source)
+    protected String getKey(final Context context, final TokenSource source)
             throws InterpreterException {
 
         return getName();
     }
-
 }

@@ -25,11 +25,11 @@ import org.jdom.Document;
 
 import de.dante.extex.font.FontFile;
 import de.dante.extex.font.PfbFontFile;
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.resource.ResourceFinder;
 
@@ -38,7 +38,7 @@ import de.dante.util.resource.ResourceFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class EFMType1TFMNOFount extends EFMFount implements ModifiableFount {
 
@@ -58,13 +58,13 @@ public class EFMType1TFMNOFount extends EFMFount implements ModifiableFount {
      * @param   lig         ligature on/off
      * @param   kern        kerning on/off
      * @param   filefinder  the fileFinder-object
-     * @throws GeneralException ...
-     * @throws ConfigurationException ...
+     * @throws FontException if a font-error occurs.
+     * @throws ConfigurationException from the config system.
      */
     public EFMType1TFMNOFount(final Document doc, final String fontname,
             final Dimen size, final Count sf, final Glue ls, final Boolean lig,
             final Boolean kern, final ResourceFinder filefinder)
-            throws GeneralException, ConfigurationException {
+            throws FontException, ConfigurationException {
 
         super(doc, fontname, size, sf, ls, lig, kern, filefinder);
     }
@@ -117,12 +117,18 @@ public class EFMType1TFMNOFount extends EFMFount implements ModifiableFount {
      */
     public String toString() {
 
-        return "<fontname (EFMType1TFMNO): " + getFontName() + " with size "
-                + getEmsize().toString() + " unitsperem = " + getUnitsperem()
-                + " ex = " + getEx() + " em = " + getEm().toString()
-                + " (with " + getEmpr() + "%)" + " letterspaced "
-                + getLetterSpacing().toString() + " : number of glyphs = "
-                + getGylphMapSize() + " >";
+        StringBuffer buf = new StringBuffer();
+        buf.append("<fontname (EFMType1TFMNO): ").append(getFontName());
+        buf.append(" with size ").append(getEmsize().toString());
+        buf.append(" unitsperem = ").append(getUnitsperem());
+        buf.append(" ex = ").append(getEx());
+        buf.append(" em = ").append(getEm().toString());
+        buf.append(" (with ").append(getEmpr()).append("%)");
+        buf.append(" letterspaced ");
+        buf.append(getLetterSpacing().toString());
+        buf.append(" : number of glyphs = ").append(getGylphMapSize());
+        buf.append(" >");
+        return buf.toString();
     }
 
     /**
@@ -132,5 +138,4 @@ public class EFMType1TFMNOFount extends EFMFount implements ModifiableFount {
 
         return new PfbFontFile(file);
     }
-
 }

@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NamedBool extends AbstractAssignment
         implements
@@ -81,7 +81,7 @@ public class NamedBool extends AbstractAssignment
 
             ContextExtension contextextex = (ContextExtension) context;
 
-            String key = getKey(source);
+            String key = getKey(context, source);
             source.getOptionalEquals(context);
             Bool value = new Bool(context, source);
             contextextex.setBool(key, value, prefix.isGlobal());
@@ -96,10 +96,10 @@ public class NamedBool extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value
-     * @throws GeneralException ...
+     * @throws InterpreterException if the extension is not configured
      */
     public void set(final Context context, final Bool value)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -114,10 +114,10 @@ public class NamedBool extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value as String
-     * @throws GeneralException ...
+     * @throws InterpreterException if the extension is not configured
      */
     public void set(final Context context, final String value)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -133,27 +133,26 @@ public class NamedBool extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             String s = contextextex.getBool(key).toString();
             return new Tokens(context, s);
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source ...
+     * @param context   the context
+     * @param source    the tokensource
      * @return the key
-     * @throws GeneralException ...
+     * @throws InterpreterException in case of an error
      */
-    protected String getKey(final TokenSource source)
+    protected String getKey(final Context context, final TokenSource source)
             throws InterpreterException {
 
         return getName();
@@ -165,17 +164,16 @@ public class NamedBool extends AbstractAssignment
      *     de.dante.extex.interpreter.TokenSource)
      */
     public Bool convertBool(final Context context, final TokenSource source)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
 
-            String key = getKey(source);
+            String key = getKey(context, source);
             Bool value = contextextex.getBool(key);
             return (value != null ? value : new Bool());
 
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
  */
 
 package de.dante.extex.font.type.tfm.enc;
@@ -25,13 +24,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.type.tfm.enc.exception.FontEncodingIOException;
+import de.dante.extex.font.type.tfm.enc.exception.FontEncodingWrongRangeException;
+
 /**
- * Reasder for encoding-files.
+ * Reader for encoding-files.
  *
  * @see <a href="package-summary.html#font-enc">font encoding file</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class EncReader implements Serializable {
@@ -40,41 +43,36 @@ public class EncReader implements Serializable {
      * Create a new object.
      *
      * @param in    inputstream for reading
-     * @throws IOException if an IO-error occured
+     * @throws FontException if an IO-error occured
      */
-    public EncReader(final InputStream in) throws IOException {
+    public EncReader(final InputStream in) throws FontException {
 
-        read(in);
-        in.close();
-    }
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(in));
 
-    /**
-     * Read the psfonts.map-stream
-     *
-     * @param in        inputstream for reading
-     * @throws IOException if an IO-error occured
-     */
-    private void read(final InputStream in) throws IOException {
-
-        BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-        StringBuffer buf = new StringBuffer();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            line = line.trim();
-            if (!(line.startsWith("%") || line.equals(""))) {
-                buf.append(line + " ");
+            StringBuffer buf = new StringBuffer();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                line = line.trim();
+                if (!(line.startsWith("%") || line.equals(""))) {
+                    buf.append(line).append(" ");
+                }
             }
-        }
-        reader.close();
+            reader.close();
+            in.close();
 
-        int first = buf.indexOf("[");
-        int last = buf.lastIndexOf("]");
-        if (first < 0 || last < 0) {
-            throw new IOException("ENC.wrongrange"); // TODO CHANGE
+            int first = buf.indexOf("[");
+            int last = buf.lastIndexOf("]");
+            if (first < 0 || last < 0) {
+                throw new FontEncodingWrongRangeException();
+            }
+            String tablestring = buf.substring(first + 1, last).trim();
+            table = tablestring.split("\\s");
+
+        } catch (IOException e) {
+            throw new FontEncodingIOException(e.getMessage());
         }
-        String tablestring = buf.substring(first + 1, last).trim();
-        table = tablestring.split("\\s");
     }
 
     /**

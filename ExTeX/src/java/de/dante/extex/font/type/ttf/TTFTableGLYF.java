@@ -51,7 +51,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TTFTableGLYF extends AbstractTTFTable
         implements
@@ -937,14 +937,14 @@ public class TTFTableGLYF extends AbstractTTFTable
         /**
          * The table is stored as relative values,
          * but we store them as absolutes
-         * @param   count       count
+         * @param   cnt         count
          * @param   bais        the input
          */
-        private void readCoords(final int count, final ByteArrayInputStream bais) {
+        private void readCoords(final int cnt, final ByteArrayInputStream bais) {
 
             short x = 0;
             short y = 0;
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < cnt; i++) {
                 if ((flags[i] & XDUAL) != 0) {
                     if ((flags[i] & XSHORTVECTOR) != 0) {
                         x += (short) bais.read();
@@ -959,7 +959,7 @@ public class TTFTableGLYF extends AbstractTTFTable
                 xCoordinates[i] = x;
             }
 
-            for (int i = 0; i < count; i++) {
+            for (int i = 0; i < cnt; i++) {
                 if ((flags[i] & YDUAL) != 0) {
                     if ((flags[i] & YSHORTVECTOR) != 0) {
                         y += (short) bais.read();

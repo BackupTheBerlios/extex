@@ -35,13 +35,15 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.GlyphImpl;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.ModifiableFount;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.font.type.efm.exception.FontConfigReadException;
+import de.dante.extex.font.type.efm.exception.FontNoFontGroupException;
+import de.dante.extex.font.type.efm.exception.FontWrongFileExtensionException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.resource.ResourceFinder;
@@ -50,7 +52,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -99,13 +101,13 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      * @param   lig         ligature on/off
      * @param   kern        kerning on/off
      * @param   filefinder  the fileFinder-object
-     * @throws GeneralException ...
-     * @throws ConfigurationException ...
+     * @throws FontException if an error occurs.
+     * @throws ConfigurationException from the configsystem.
      */
     public EFMFount(final Document doc, final String fontname,
             final Dimen size, final Count sf, final Glue ls, final Boolean lig,
             final Boolean kern, final ResourceFinder filefinder)
-            throws GeneralException, ConfigurationException {
+            throws FontException, ConfigurationException {
 
         super();
         if (fontname != null) {
@@ -139,11 +141,11 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      * @param   fileFinder  the fileFinder
      * @param   size        the fontsize
      * @param   sf          the scale factor
-     * @throws GeneralException if a error is thrown.
-     * @throws ConfigurationException ...
+     * @throws FontException if a error is thrown.
+     * @throws ConfigurationException from the configsystem.
      */
     private void loadFont(final Document doc, final ResourceFinder fileFinder,
-            final Dimen size, final Count sf) throws GeneralException,
+            final Dimen size, final Count sf) throws FontException,
             ConfigurationException {
 
         try {
@@ -152,7 +154,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
             Element fontgroup = doc.getRootElement();
 
             if (fontgroup == null) {
-                throw new HelpingException("EFM.nofontgroup");
+                throw new FontNoFontGroupException();
             }
 
             // empr
@@ -229,8 +231,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                         efile = efile.replaceAll(".pfb", "");
                         //  externalfile = getFontFile(fileFinder.findFile(efile,"pfb"));
                     } else {
-                        throw new HelpingException("EFM.wrongfileextension",
-                                efile);
+                        throw new FontWrongFileExtensionException(efile);
                     }
                 }
 
@@ -295,7 +296,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
             }
 
         } catch (JDOMException e) {
-            throw new HelpingException("EFM.jdomerror", e.getMessage());
+            throw new FontConfigReadException(e.getMessage());
         }
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
- *
  */
 
 package de.dante.extex.font;
@@ -43,13 +42,11 @@ import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontImpl;
 import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
@@ -64,7 +61,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class FontFactory implements Serializable {
 
@@ -104,7 +101,7 @@ public class FontFactory implements Serializable {
      *
      * @param config    the config-object
      * @param resourceFinder the filefinder
-     * @throws ConfigurationException in case of an error
+     * @throws ConfigurationException from the resourcefinder
      */
     public FontFactory(final Configuration config,
             final ResourceFinder resourceFinder) throws ConfigurationException {
@@ -121,12 +118,10 @@ public class FontFactory implements Serializable {
      * Return a new instance.
      *
      * @return Returns the new font instance.
-     * @throws GeneralException if a gernal exception occurs.
-     * @throws ConfigurationException if a configuration exception occurs.
-     * @throws FontException ...
+     * @throws ConfigurationException from the resoucefinder.
+     * @throws FontException if an font-error occured.
      */
-    public Font getInstance() throws GeneralException, ConfigurationException,
-            FontException {
+    public Font getInstance() throws ConfigurationException, FontException {
 
         return getInstance(null, null, null, null, false, false);
     }
@@ -136,12 +131,11 @@ public class FontFactory implements Serializable {
      *
      * @param name          the anme of the font
      * @return Returns the new font instance.
-     * @throws GeneralException if a gernal exception occurs.
-     * @throws ConfigurationException if a configuration exception occurs.
-     * @throws FontException ...
+     * @throws ConfigurationException from the resourcefinder
+     * @throws FontException if a font-error occured
      */
-    public Font getInstance(final String name) throws GeneralException,
-            ConfigurationException, FontException {
+    public Font getInstance(final String name) throws ConfigurationException,
+            FontException {
 
         return getInstance(name, null, null, new Glue(0), false, false);
     }
@@ -152,12 +146,11 @@ public class FontFactory implements Serializable {
      * @param name          the anme of the font
      * @param size          the size
      * @return Returns the new font instance.
-     * @throws GeneralException if a gernal exception occurs.
-     * @throws ConfigurationException if a configuration exception occurs.
-     * @throws FontException ...
+     * @throws ConfigurationException from the resoucefinder.
+     * @throws FontException if a font-error occured.
      */
     public Font getInstance(final String name, final Dimen size)
-            throws GeneralException, ConfigurationException, FontException {
+            throws ConfigurationException, FontException {
 
         return getInstance(name, size, null, new Glue(0), false, false);
     }
@@ -175,14 +168,13 @@ public class FontFactory implements Serializable {
      * @param ligatures     ligatures on/off
      * @param kerning       lerning on/off
      * @return Returns the new font instance.
-     * @throws GeneralException if a gernal exception occurs.
-     * @throws ConfigurationException if a configuration exception occurs.
-     * @throws FontException ...
+     * @throws ConfigurationException from the resourcefinder.
+     * @throws FontException if a font-error occured.
      */
     public Font getInstance(final String name, final Dimen size,
             final Count scale, final Glue letterspaced,
             final boolean ligatures, final boolean kerning)
-            throws GeneralException, ConfigurationException, FontException {
+            throws ConfigurationException, FontException {
 
         if (name == null || name.trim().length() == 0) {
             return new NullFont();
@@ -293,12 +285,11 @@ public class FontFactory implements Serializable {
      * Load the efm-Font
      * @param name  the name of the efm-file
      * @return  the efm as Document or <code>null</code>, if not found
-     * @throws ConfigurationException in case of an error in the configuration
+     * @throws ConfigurationException from the resourcefinder
      * @throws FontException in case of an font-error
-     * @throws HelpingException ...
      */
     private Document loadEFMDocument(final String name)
-            throws ConfigurationException, FontException, HelpingException {
+            throws ConfigurationException, FontException {
 
         Document doc = null;
         if (name != null) {

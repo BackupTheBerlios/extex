@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -26,7 +26,10 @@ import java.util.Iterator;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
+import de.dante.extex.interpreter.type.hash.toks.exception.InterpreterMissingHashKeyException;
+import de.dante.extex.interpreter.type.hash.toks.exception.InterpreterMissingHashValueException;
+import de.dante.extex.interpreter.type.hash.toks.exception.InterpreterMissingLeftBraceException;
+import de.dante.extex.interpreter.type.hash.toks.exception.InterpreterMissingRightBraceException;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.type.Catcode;
 import de.dante.extex.scanner.type.Token;
@@ -35,7 +38,7 @@ import de.dante.extex.scanner.type.Token;
  * A Hash for Tokens.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class HashToks implements Serializable {
 
@@ -58,7 +61,7 @@ public class HashToks implements Serializable {
      * get the <code>TokenSource</code> for a <code>HashToks</code> (noexpand).
      * @param context   the context
      * @param source    the token source
-     * @throws InterpreterException ...
+     * @throws InterpreterException if an error occurs.
      */
     public HashToks(final Context context, final TokenSource source)
             throws InterpreterException {
@@ -70,29 +73,26 @@ public class HashToks implements Serializable {
         Token token = source.getNonSpace(context);
 
         if (token == null) {
-            throw new HelpingException("TTP.MissingLeftBrace");
-            //TODO: handle EOF
+            throw new InterpreterMissingLeftBraceException();
         } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new HelpingException("TTP.MissingLeftBrace");
-            //TODO call the error handler
+            throw new InterpreterMissingLeftBraceException();
         }
 
         while (true) {
             String key = source.scanTokensAsString(context);
             if (key.trim().length() == 0) {
-                throw new HelpingException("TTP.hasherrorKey");
+                throw new InterpreterMissingHashKeyException();
             }
             Tokens toks = source.getTokens(context);
             if (toks == null) {
-                throw new HelpingException("TTP.hasherrorvalue");
+                throw new InterpreterMissingHashValueException();
             }
             put(key, toks);
 
             // next ?
             token = source.getNonSpace(context);
             if (token == null) {
-                throw new HelpingException("TTP.MissingRightBrace");
-                //TODO: handle EOF
+                throw new InterpreterMissingRightBraceException();
             } else if (token.isa(Catcode.RIGHTBRACE)) {
                 break;
             }

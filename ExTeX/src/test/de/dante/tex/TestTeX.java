@@ -33,7 +33,6 @@ import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.exception.InterpreterException;
 import de.dante.extex.main.errorHandler.editHandler.EditHandler;
 import de.dante.extex.scanner.type.Token;
 import de.dante.util.GeneralException;
@@ -45,7 +44,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public final class TestTeX {
 

@@ -20,9 +20,8 @@
 package de.dante.extex.interpreter.primitives.register.bool;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.extex.interpreter.exception.InterpreterExtensionException;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\bool</code>.
@@ -42,7 +41,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NumberedBool extends NamedBool {
 
@@ -58,14 +57,12 @@ public class NumberedBool extends NamedBool {
 
     /**
      * @see de.dante.extex.interpreter.primitives.register.bool.NamedBool#getKey(
+     *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final TokenSource source) throws InterpreterException {
+    protected String getKey(final Context context, final TokenSource source)
+            throws InterpreterException {
 
-        try {
-            return getName() + "#" + Long.toString(source.scanNumber());
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        return getName() + "#" + Long.toString(source.scanNumber(context));
     }
 }

@@ -38,7 +38,6 @@ import de.dante.extex.scanner.type.ControlSequenceToken;
 import de.dante.extex.scanner.type.SpaceToken;
 import de.dante.extex.scanner.type.Token;
 import de.dante.extex.typesetter.Typesetter;
-import de.dante.util.GeneralException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
 
@@ -80,7 +79,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -159,8 +158,8 @@ public class FontPrimitive extends AbstractAssignment
                     context.esc(fontId), fontname);
         } catch (ConfigurationException e) {
             throw new InterpreterException(e);
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
+//        } catch (GeneralException e) { TODO delete
+//            throw new InterpreterException(e);
         }
 
         Code code = new FontCode(fontId.getName(), font);

@@ -19,7 +19,6 @@
 
 package de.dante.extex.font.type.vf.command;
 
-import java.io.EOFException;
 import java.io.IOException;
 
 import org.jdom.Element;
@@ -90,7 +89,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand {

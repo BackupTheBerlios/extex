@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -14,28 +14,26 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with this library; if not, write to the Free Software Foundation,
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
- *
  */
 
 package de.dante.extex.font.type.tfm.enc;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.type.tfm.enc.exception.FontEncodingFileNotFoundException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.resource.ResourceFinder;
 
 /**
- * Factory for enc-files
+ * Factory for enc-files.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-
 public class EncFactory implements Serializable {
 
     /**
@@ -62,18 +60,18 @@ public class EncFactory implements Serializable {
      * Returns the encodingtable
      * @param filename  the filename
      * @return Returns the encodingtable
-     * @throws IOException if an IO-erorr occured
-     * @throws ConfigurationException ...
+     * @throws FontException if an font-erorr occured.
+     * @throws ConfigurationException from the resourcefinder.
      */
-    public String[] getEncodingTable(final String filename) throws IOException,
-            ConfigurationException {
+    public String[] getEncodingTable(final String filename)
+            throws FontException, ConfigurationException {
 
         String[] table = (String[]) data.get(filename);
 
         if (table == null) {
             InputStream in = finder.findResource(filename, "enc");
             if (in == null) {
-                throw new FileNotFoundException(filename);
+                throw new FontEncodingFileNotFoundException(filename);
             }
             EncReader er = new EncReader(in);
             table = er.getTable();

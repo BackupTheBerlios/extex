@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -56,7 +56,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
 
@@ -319,9 +319,9 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      * @see de.dante.extex.typesetter.type.NodeVisitor#visitAfterMath(
      *      AfterMathNode, java.lang.Object)
      */
-    public Object visitAfterMath(final AfterMathNode value, final Object value2) {
+    public Object visitAfterMath(final AfterMathNode node, final Object value2) {
 
-        Node node = (Node) value;
+        
         HyphValues hv = (HyphValues) value2;
         hv.setState(NORMAL);
         hv.getParent().add(node);
@@ -366,15 +366,14 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      */
     public Object visitChar(final CharNode node, final Object value) {
 
-        CharNode cnode = (CharNode) node;
         HyphValues hv = (HyphValues) value;
 
         if (hv.getState() == NORMAL) {
             hv.setState(WORD);
             hv.newWord();
-            hv.addWordChar(cnode);
+            hv.addWordChar(node);
         } else if (hv.getState() == WORD) {
-            hv.addWordChar(cnode);
+            hv.addWordChar(node);
         }
         return null;
     }
@@ -412,10 +411,9 @@ public class HyphenationTableImpl implements HyphenationTable, NodeVisitor {
      */
     public Object visitHorizontalList(final HorizontalListNode node, final Object value) {
 
-        HorizontalListNode nodeList = (HorizontalListNode) node;
         HyphValues hv = (HyphValues) value;
 
-        NodeIterator it = nodeList.iterator();
+        NodeIterator it = node.iterator();
         while (it.hasNext()) {
             Node anode = it.next();
             try {

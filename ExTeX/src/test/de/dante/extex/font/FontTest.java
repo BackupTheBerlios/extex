@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,9 +19,11 @@
 
 package de.dante.extex.font;
 
-import de.dante.extex.interpreter.Interpreter;
-import de.dante.extex.interpreter.InterpreterFactory;
-import de.dante.extex.interpreter.context.Context;
+import java.io.FileInputStream;
+import java.util.Properties;
+import java.util.logging.Logger;
+
+import junit.framework.TestCase;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
@@ -29,16 +31,12 @@ import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationFactory;
 import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
-import java.io.FileInputStream;
-import java.util.Properties;
-import java.util.logging.Logger;
-import junit.framework.TestCase;
 
 /**
  * Test the font-system
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class FontTest extends TestCase {
 

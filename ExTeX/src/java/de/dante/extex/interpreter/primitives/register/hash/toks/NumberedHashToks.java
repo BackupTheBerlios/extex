@@ -20,8 +20,8 @@
 package de.dante.extex.interpreter.primitives.register.hash.toks;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
-import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\hashtoks</code>.
@@ -42,7 +42,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NumberedHashToks extends NamedHashToks {
 
@@ -56,21 +56,13 @@ public class NumberedHashToks extends NamedHashToks {
     }
 
     /**
-     * Return the key (the number) for the register.
-     *
-     * @param source    the tokensource
-     * @return Return the key
-     * @throws InterpreterException if an exception has occurred
+     * @see de.dante.extex.interpreter.primitives.register.hash.toks.NamedHashToks#getKey(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
-    protected String getKey(final TokenSource source)
+    protected String getKey(final Context context, final TokenSource source)
             throws InterpreterException {
 
-        try {
-            return getName() + "#" + Long.toString(source.scanNumber());
-        } catch (InterpreterException e) {
-            throw e;
-        } catch (GeneralException e) {
-            throw new InterpreterException(e);
-        }
+        return getName() + "#" + Long.toString(source.scanNumber(context));
     }
 }

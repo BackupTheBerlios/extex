@@ -39,7 +39,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class TTFTableCMAP extends AbstractTTFTable
         implements
@@ -1038,7 +1038,7 @@ public class TTFTableCMAP extends AbstractTTFTable
         /**
          * version
          */
-        private int version;
+        private int fversion;
 
         /**
          * Create a new object.
@@ -1051,7 +1051,7 @@ public class TTFTableCMAP extends AbstractTTFTable
 
             format = form;
             length = rar.readUnsignedShort();
-            version = rar.readUnsignedShort();
+            fversion = rar.readUnsignedShort();
         }
 
         /**
@@ -1078,7 +1078,7 @@ public class TTFTableCMAP extends AbstractTTFTable
          */
         public int getVersion() {
 
-            return version;
+            return fversion;
         }
 
         /**
@@ -1096,7 +1096,7 @@ public class TTFTableCMAP extends AbstractTTFTable
 
             StringBuffer buf = new StringBuffer();
             buf.append("Cmap format\n");
-            buf.append("   Version      : " + String.valueOf(version) + '\n');
+            buf.append("   Version      : " + String.valueOf(fversion) + '\n');
             buf.append("   format       : " + String.valueOf(format) + '\n');
             buf.append("   length       : " + String.valueOf(length) + '\n');
             return buf.toString();

@@ -20,9 +20,14 @@
 package de.dante.extex.format.dvi;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Stack;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.FontFactory;
+import de.dante.extex.format.dvi.exception.DviBopEopException;
 import de.dante.extex.format.dvi.exception.DviException;
 import de.dante.extex.format.dvi.exception.DviUndefinedOpcodeException;
 import de.dante.util.file.random.RandomAccessR;
@@ -34,43 +39,69 @@ import de.dante.util.file.random.RandomAccessR;
  * Commands are taken from DVItype 3.4.
  * </p>
  *
+ * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
+ *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class DviXml implements DviInterpreter {
 
     /**
-     * the root element
+     * the parent element (change from some commands to nested other elements)
      */
-    private Element root;
+    private Element parent;
 
+    /**
+     * Stack for the parents.
+     * <p>
+     * Each <code>bop</code> push the current parent element to the stack,
+     * create a new Element and add it to the last parent.
+     * Each <code>eop</code> pop the top element to parent.
+     * </p>
+     * <p>
+     * The fntdef-Element are also stored in the post element, so post calls push
+     * ans postpost calls pop before execute.
+     * </p>
+     */
+    private Stack parentstack;
+
+    /**
+     * page counter
+     */
+    private int page = 0;
+
+    /**
+     * the fontfactory
+     */
+    private FontFactory fontfactory;
+
+    /**
+     * the map for all sub fonts.
+     */
+    private Map font;
+    
     /**
      * Create a new object.
      *
      * @param element   the root element
+     * @param ff        the fontfactroy
      */
-    public DviXml(final Element element) {
+    public DviXml(final Element element, final FontFactory ff) {
 
-        root = element;
+        parent = element;
+        fontfactory = ff;
+        parentstack = new Stack();
+        font = new HashMap();
     }
 
     /**
-     * bob length
+     * The length of <code>c</code> elements of the bob command.
      */
     public static final int BOP_LENGTH = 10;
 
     /**
-     * the unit
-     */
-    private static final int UNIT = 1000;
-
-    /**
-     * Interpreter step for setchar
-     *
-     * set_char_1 through set_char_127 (opcodes 1 to 127):
-     * Do the operations of <code>set_char_0</code>; but use the character whose
-     * number matches the opcode, instead of character 0.
+     * Interpreter step for characters
      */
     private DviInterpreterStep setchar = new DviInterpreterStep() {
 
@@ -84,7 +115,7 @@ public class DviXml implements DviInterpreter {
             Element element = new Element("setchar");
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("char", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     };
 
@@ -95,9 +126,6 @@ public class DviXml implements DviInterpreter {
 
     /**
      * Interpreter step for fontnum
-     *
-     * fnt_num_1 through fnt_num_63  (opcodes 172 to 234):
-     * Set <code>f = 1</code>, ..., <code>f = 63</code>, respectively.
      */
     private DviInterpreterStep fntnum = new DviInterpreterStep() {
 
@@ -111,7 +139,7 @@ public class DviXml implements DviInterpreter {
             int fn = opcode - MIN_FONTNUM + 1;
             Element element = new Element("fntnum" + String.valueOf(fn));
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     };
 
@@ -278,7 +306,6 @@ public class DviXml implements DviInterpreter {
     setchar, /* 125 */
     setchar, /* 126 */
     setchar, /* 127 */
-
     /**
      * set1 128, c[1]:
      * Same as <code>set_char_0</code>, except that character number
@@ -294,12 +321,11 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            // 8 bit
-            int ch = rar.readByteAsInt();
+            int c = rar.readByteAsInt();
             Element element = new Element("set1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(ch));
-            root.addContent(element);
+            element.setAttribute("char", String.valueOf(c));
+            parent.addContent(element);
         }
     },
 
@@ -321,12 +347,11 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            // 16 bit
-            int ch = rar.readShort();
+            int c = rar.readShort();
             Element element = new Element("set2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(ch));
-            root.addContent(element);
+            element.setAttribute("char", String.valueOf(c));
+            parent.addContent(element);
         }
     },
 
@@ -344,12 +369,11 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            // 24 bit
-            int ch = rar.readInt24();
+            int c = rar.readInt24();
             Element element = new Element("set3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(ch));
-            root.addContent(element);
+            element.setAttribute("char", String.valueOf(c));
+            parent.addContent(element);
         }
     },
 
@@ -367,12 +391,11 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            // 32 bit
-            int ch = rar.readInt();
+            int c = rar.readInt();
             Element element = new Element("set4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(ch));
-            root.addContent(element);
+            element.setAttribute("char", String.valueOf(c));
+            parent.addContent(element);
         }
     },
 
@@ -404,7 +427,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("height", String.valueOf(a));
             element.setAttribute("width", String.valueOf(b));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -430,7 +453,7 @@ public class DviXml implements DviInterpreter {
             Element element = new Element("put1");
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("char", String.valueOf(c));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -452,7 +475,7 @@ public class DviXml implements DviInterpreter {
             Element element = new Element("put2");
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("char", String.valueOf(c));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -474,7 +497,7 @@ public class DviXml implements DviInterpreter {
             Element element = new Element("put3");
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("char", String.valueOf(c));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -496,7 +519,7 @@ public class DviXml implements DviInterpreter {
             Element element = new Element("put4");
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("char", String.valueOf(c));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -520,7 +543,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("height", String.valueOf(a));
             element.setAttribute("width", String.valueOf(b));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -541,7 +564,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("nop");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -566,14 +589,25 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            page++;
+
+            int[] c = new int[BOP_LENGTH];
+            for (int i = 0; i < BOP_LENGTH; i++) {
+                c[i] = rar.readInt();
+            }
+            int p = rar.readInt();
+
             Element element = new Element("bop");
             element.setAttribute("opcode", String.valueOf(opcode));
             for (int i = 0; i < BOP_LENGTH; i++) {
                 element.setAttribute("c" + String.valueOf(i), String
-                        .valueOf(rar.readInt()));
+                        .valueOf(c[i]));
             }
-            element.setAttribute("p", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("p", String.valueOf(p));
+            element.setAttribute("page", String.valueOf(page));
+            parent.addContent(element);
+            parentstack.push(parent);
+            parent = element;
         }
     },
 
@@ -593,7 +627,11 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("eop");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
+            if (parentstack.empty()) {
+                throw new DviBopEopException();
+            }
+            parent = (Element) parentstack.pop();
         }
     },
 
@@ -614,7 +652,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("push");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -636,7 +674,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("pop");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -656,10 +694,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readByteAsInt();
+
             Element element = new Element("right1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -677,10 +717,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readShort();
+
             Element element = new Element("right2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -698,10 +740,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readInt24();
+
             Element element = new Element("right3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -719,10 +763,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readInt();
+
             Element element = new Element("right4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -744,7 +790,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("w0");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -764,10 +810,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readByteAsInt();
+
             Element element = new Element("w1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -785,10 +833,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readShort();
+
             Element element = new Element("w2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -806,10 +856,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readInt24();
+
             Element element = new Element("w3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -827,10 +879,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readInt();
+
             Element element = new Element("w4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -851,7 +905,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("x0");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -871,10 +925,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readByteAsInt();
+
             Element element = new Element("x1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -892,10 +948,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readShort();
+
             Element element = new Element("x2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -913,10 +971,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readInt24();
+
             Element element = new Element("x3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -934,10 +994,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int b = rar.readInt();
+
             Element element = new Element("x4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(b));
+            parent.addContent(element);
         }
     },
 
@@ -956,10 +1018,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readByteAsInt();
+
             Element element = new Element("down1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -977,10 +1041,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readShort();
+
             Element element = new Element("down2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -998,10 +1064,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readInt24();
+
             Element element = new Element("down3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1019,10 +1087,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readInt();
+
             Element element = new Element("down4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1044,7 +1114,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("y0");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1065,10 +1135,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readByteAsInt();
+
             Element element = new Element("y1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1086,10 +1158,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readShort();
+
             Element element = new Element("y2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1107,10 +1181,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readInt24();
+
             Element element = new Element("y3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1128,10 +1204,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readInt();
+
             Element element = new Element("y4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1152,7 +1230,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("z0");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1172,10 +1250,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readByteAsInt();
+
             Element element = new Element("z1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1193,10 +1273,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readShort();
+
             Element element = new Element("z2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1214,10 +1296,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readInt24();
+
             Element element = new Element("z3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1235,10 +1319,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int a = rar.readInt();
+
             Element element = new Element("z4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(a));
+            parent.addContent(element);
         }
     },
 
@@ -1258,7 +1344,7 @@ public class DviXml implements DviInterpreter {
 
             Element element = new Element("fntnum0");
             element.setAttribute("opcode", String.valueOf(opcode));
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1266,69 +1352,22 @@ public class DviXml implements DviInterpreter {
      * fnt_num_1 through fnt_num_63  (opcodes 172 to 234):
      * Set <code>f = 1</code>, ..., <code>f = 63</code>, respectively.
      */
-    fntnum, /* 1 */
-    fntnum, /* 2 */
-    fntnum, /* 3 */
-    fntnum, /* 4 */
-    fntnum, /* 5 */
-    fntnum, /* 6 */
-    fntnum, /* 7 */
-    fntnum, /* 8 */
-    fntnum, /* 9 */
-    fntnum, /* 10 */
-    fntnum, /* 11 */
-    fntnum, /* 12 */
-    fntnum, /* 13 */
-    fntnum, /* 14 */
-    fntnum, /* 15 */
-    fntnum, /* 16 */
-    fntnum, /* 17 */
-    fntnum, /* 18 */
-    fntnum, /* 19 */
-    fntnum, /* 20 */
-    fntnum, /* 21 */
-    fntnum, /* 22 */
-    fntnum, /* 23 */
-    fntnum, /* 24 */
-    fntnum, /* 25 */
-    fntnum, /* 26 */
-    fntnum, /* 27 */
-    fntnum, /* 28 */
-    fntnum, /* 29 */
-    fntnum, /* 30 */
-    fntnum, /* 31 */
-    fntnum, /* 32 */
-    fntnum, /* 33 */
-    fntnum, /* 34 */
-    fntnum, /* 35 */
-    fntnum, /* 36 */
-    fntnum, /* 37 */
-    fntnum, /* 38 */
-    fntnum, /* 39 */
-    fntnum, /* 40 */
-    fntnum, /* 41 */
-    fntnum, /* 42 */
-    fntnum, /* 43 */
-    fntnum, /* 44 */
-    fntnum, /* 45 */
-    fntnum, /* 46 */
-    fntnum, /* 47 */
-    fntnum, /* 48 */
-    fntnum, /* 49 */
-    fntnum, /* 50 */
-    fntnum, /* 51 */
-    fntnum, /* 52 */
-    fntnum, /* 53 */
-    fntnum, /* 54 */
-    fntnum, /* 55 */
-    fntnum, /* 56 */
-    fntnum, /* 57 */
-    fntnum, /* 58 */
-    fntnum, /* 59 */
-    fntnum, /* 60 */
-    fntnum, /* 61 */
-    fntnum, /* 62 */
-    fntnum, /* 63 */
+    fntnum, /* 1 */fntnum, /* 2 */fntnum, /* 3 */fntnum, /* 4 */
+    fntnum, /* 5 */fntnum, /* 6 */fntnum, /* 7 */fntnum, /* 8 */
+    fntnum, /* 9 */fntnum, /* 10 */fntnum, /* 11 */fntnum, /* 12 */
+    fntnum, /* 13 */fntnum, /* 14 */fntnum, /* 15 */fntnum, /* 16 */
+    fntnum, /* 17 */fntnum, /* 18 */fntnum, /* 19 */fntnum, /* 20 */
+    fntnum, /* 21 */fntnum, /* 22 */fntnum, /* 23 */fntnum, /* 24 */
+    fntnum, /* 25 */fntnum, /* 26 */fntnum, /* 27 */fntnum, /* 28 */
+    fntnum, /* 29 */fntnum, /* 30 */fntnum, /* 31 */fntnum, /* 32 */
+    fntnum, /* 33 */fntnum, /* 34 */fntnum, /* 35 */fntnum, /* 36 */
+    fntnum, /* 37 */fntnum, /* 38 */fntnum, /* 39 */fntnum, /* 40 */
+    fntnum, /* 41 */fntnum, /* 42 */fntnum, /* 43 */fntnum, /* 44 */
+    fntnum, /* 45 */fntnum, /* 46 */fntnum, /* 47 */fntnum, /* 48 */
+    fntnum, /* 49 */fntnum, /* 50 */fntnum, /* 51 */fntnum, /* 52 */
+    fntnum, /* 53 */fntnum, /* 54 */fntnum, /* 55 */fntnum, /* 56 */
+    fntnum, /* 57 */fntnum, /* 58 */fntnum, /* 59 */fntnum, /* 60 */
+    fntnum, /* 61 */fntnum, /* 62 */fntnum, /* 63 */
 
     /**
      * fnt1  235, k[1]:
@@ -1344,10 +1383,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readByteAsInt();
+
             Element element = new Element("fnt1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readByteAsInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(k));
+            parent.addContent(element);
         }
     },
 
@@ -1368,10 +1409,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readShort();
+
             Element element = new Element("fnt2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(k));
+            parent.addContent(element);
         }
     },
 
@@ -1389,10 +1432,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readInt24();
+
             Element element = new Element("fnt3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt24()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(k));
+            parent.addContent(element);
         }
     },
 
@@ -1410,10 +1455,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readInt();
+
             Element element = new Element("fnt4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(rar.readInt()));
-            root.addContent(element);
+            element.setAttribute("value", String.valueOf(k));
+            parent.addContent(element);
         }
     },
 
@@ -1436,16 +1483,17 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readByteAsInt();
+
             Element element = new Element("xxx1");
             element.setAttribute("opcode", String.valueOf(opcode));
-            int k = rar.readByteAsInt();
             element.setAttribute("k", String.valueOf(k));
             StringBuffer buf = new StringBuffer();
             for (int i = 0; i < k; i++) {
                 buf.append("0x").append(rar.readByteAsInt()).append(" ");
             }
             element.setText(buf.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1462,16 +1510,17 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readShort();
+
             Element element = new Element("xxx2");
             element.setAttribute("opcode", String.valueOf(opcode));
-            int k = rar.readShort();
             element.setAttribute("k", String.valueOf(k));
             StringBuffer buf = new StringBuffer();
             for (int i = 0; i < k; i++) {
                 buf.append("0x").append(rar.readByteAsInt()).append(" ");
             }
             element.setText(buf.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1488,16 +1537,17 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readInt24();
+
             Element element = new Element("xxx3");
             element.setAttribute("opcode", String.valueOf(opcode));
-            int k = rar.readInt24();
             element.setAttribute("k", String.valueOf(k));
             StringBuffer buf = new StringBuffer();
             for (int i = 0; i < k; i++) {
                 buf.append("0x").append(rar.readByteAsInt()).append(" ");
             }
             element.setText(buf.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1515,16 +1565,17 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int k = rar.readInt();
+
             Element element = new Element("xxx4");
             element.setAttribute("opcode", String.valueOf(opcode));
-            int k = rar.readInt();
             element.setAttribute("k", String.valueOf(k));
             StringBuffer buf = new StringBuffer();
             for (int i = 0; i < k; i++) {
                 buf.append("0x").append(rar.readByteAsInt()).append(" ");
             }
             element.setText(buf.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1566,8 +1617,6 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            Element element = new Element("fntdef1");
-            element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readByteAsInt();
             int c = rar.readInt();
             int s = rar.readInt();
@@ -1582,6 +1631,8 @@ public class DviXml implements DviInterpreter {
             for (int i = 0; i < l; i++) {
                 bufl.append((char) rar.readByteAsInt());
             }
+            Element element = new Element("fntdef1");
+            element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
@@ -1589,7 +1640,8 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
-            root.addContent(element);
+            parent.addContent(element);
+            loadFont(bufl.toString(),c,s,d);
         }
     },
 
@@ -1606,15 +1658,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            Element element = new Element("fntdef2");
-            element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readShort();
             int c = rar.readInt();
             int s = rar.readInt();
             int d = rar.readInt();
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
-
             StringBuffer bufa = new StringBuffer();
             StringBuffer bufl = new StringBuffer();
             for (int i = 0; i < a; i++) {
@@ -1623,6 +1672,8 @@ public class DviXml implements DviInterpreter {
             for (int i = 0; i < l; i++) {
                 bufl.append((char) rar.readByteAsInt());
             }
+            Element element = new Element("fntdef2");
+            element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
@@ -1630,7 +1681,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1647,15 +1698,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            Element element = new Element("fntdef3");
-            element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readInt24();
             int c = rar.readInt();
             int s = rar.readInt();
             int d = rar.readInt();
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
-
             StringBuffer bufa = new StringBuffer();
             StringBuffer bufl = new StringBuffer();
             for (int i = 0; i < a; i++) {
@@ -1664,6 +1712,8 @@ public class DviXml implements DviInterpreter {
             for (int i = 0; i < l; i++) {
                 bufl.append((char) rar.readByteAsInt());
             }
+            Element element = new Element("fntdef3");
+            element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
@@ -1671,7 +1721,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1688,15 +1738,12 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            Element element = new Element("fntdef4");
-            element.setAttribute("opcode", String.valueOf(opcode));
             int k = rar.readInt();
             int c = rar.readInt();
             int s = rar.readInt();
             int d = rar.readInt();
             int a = rar.readByteAsInt();
             int l = rar.readByteAsInt();
-
             StringBuffer bufa = new StringBuffer();
             StringBuffer bufl = new StringBuffer();
             for (int i = 0; i < a; i++) {
@@ -1705,6 +1752,8 @@ public class DviXml implements DviInterpreter {
             for (int i = 0; i < l; i++) {
                 bufl.append((char) rar.readByteAsInt());
             }
+            Element element = new Element("fntdef4");
+            element.setAttribute("opcode", String.valueOf(opcode));
             element.setAttribute("font", String.valueOf(k));
             element.setAttribute("checksum", String.valueOf(c));
             element.setAttribute("scalefactor", String.valueOf(s));
@@ -1712,7 +1761,7 @@ public class DviXml implements DviInterpreter {
             element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
             element.setAttribute("area", bufa.toString());
             element.setAttribute("name", bufl.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1753,19 +1802,20 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
-            Element element = new Element("pre");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("identifies", String.valueOf(rar
-                    .readByteAsInt()));
+            int i = rar.readByteAsInt();
             int num = rar.readInt();
             int den = rar.readInt();
             mag = rar.readInt();
+            int k = rar.readByteAsInt();
+
+            Element element = new Element("pre");
+            element.setAttribute("opcode", String.valueOf(opcode));
+            element.setAttribute("identifies", String.valueOf(i));
             element.setAttribute("num", String.valueOf(num));
             element.setAttribute("den", String.valueOf(den));
             element.setAttribute("mag", String.valueOf(mag));
-            int k = rar.readByteAsInt();
             StringBuffer buf = new StringBuffer();
-            for (int i = 0; i < k; i++) {
+            for (int x = 0; x < k; x++) {
                 buf.append((char) rar.readByteAsInt());
             }
             if (buf.length() > 0) {
@@ -1773,7 +1823,7 @@ public class DviXml implements DviInterpreter {
                 comment.setText(buf.toString());
                 element.addContent(comment);
             }
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1822,18 +1872,28 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            int p = rar.readInt();
+            int n = rar.readInt();
+            int d = rar.readInt();
+            int m = rar.readInt();
+            int l = rar.readInt();
+            int u = rar.readInt();
+            int s = rar.readShort();
+            int t = rar.readShort();
+
             Element element = new Element("post");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("p", String.valueOf(rar.readInt()));
-            element.setAttribute("num", String.valueOf(rar.readInt()));
-            element.setAttribute("den", String.valueOf(rar.readInt()));
-            element.setAttribute("mag", String.valueOf(rar.readInt()));
-            element.setAttribute("heightplusdepth", String.valueOf(rar
-                    .readInt()));
-            element.setAttribute("widthwidest", String.valueOf(rar.readInt()));
-            element.setAttribute("stackdepth", String.valueOf(rar.readShort()));
-            element.setAttribute("totalpage", String.valueOf(rar.readShort()));
-            root.addContent(element);
+            element.setAttribute("p", String.valueOf(p));
+            element.setAttribute("num", String.valueOf(n));
+            element.setAttribute("den", String.valueOf(d));
+            element.setAttribute("mag", String.valueOf(m));
+            element.setAttribute("heightplusdepth", String.valueOf(l));
+            element.setAttribute("widthwidest", String.valueOf(u));
+            element.setAttribute("stackdepth", String.valueOf(s));
+            element.setAttribute("totalpage", String.valueOf(t));
+            parent.addContent(element);
+            parentstack.push(parent);
+            parent = element;
         }
     },
 
@@ -1866,18 +1926,25 @@ public class DviXml implements DviInterpreter {
         public void interpret(final RandomAccessR rar, final int opcode)
                 throws IOException, DviException {
 
+            if (parentstack.empty()) {
+                throw new DviBopEopException();
+            }
+            parent = (Element) parentstack.pop();
+
+            int q = rar.readInt();
+            int i = rar.readByteAsInt();
+
             Element element = new Element("postpost");
             element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("q", String.valueOf(rar.readInt()));
-            element.setAttribute("identifies", String.valueOf(rar
-                    .readByteAsInt()));
+            element.setAttribute("q", String.valueOf(q));
+            element.setAttribute("identifies", String.valueOf(i));
             // read 223 until EOF
             StringBuffer buf = new StringBuffer();
             while (rar.getPointer() < rar.length()) {
                 buf.append(rar.readByteAsInt()).append(" ");
             }
             element.setText(buf.toString());
-            root.addContent(element);
+            parent.addContent(element);
         }
     },
 
@@ -1907,7 +1974,21 @@ public class DviXml implements DviInterpreter {
      */
     private int getScaled(final int s, final int d) {
 
-        return (int) ((double) mag * s * UNIT / (UNIT * (double) d) + 0.5);
+        return (int) ((double) mag * s / d + 0.5);
+    }
+
+    /**
+     * load the font
+     * @param fn    the fontname
+     * @param c     the checksum
+     * @param s     the scalefactor
+     * @param d     the designsize
+     */
+    private void loadFont(final String fn, final int c, final int s, final int d) {
+        System.out.print("font: " + fn);
+        System.out.print(" s = " + s);
+        System.out.print(" d = " + d);
+        System.out.println();
     }
 
     /**

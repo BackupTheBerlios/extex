@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -14,7 +14,6 @@
  * You should have received a copy of the GNU Lesser General Public
  * License along with this library; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
- *
  */
 
 package de.dante.util.font;
@@ -22,6 +21,7 @@ package de.dante.util.font;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +30,11 @@ import java.util.Properties;
 import org.jdom.Document;
 import org.jdom.output.XMLOutputter;
 
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
@@ -45,7 +46,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public final class TFM2EFM {
 
@@ -65,11 +66,11 @@ public final class TFM2EFM {
      * main
      * @param args      the comandlinearguments
      * @throws IOException ...
-     * @throws HelpingException ...
+     * @throws FontException ...
      * @throws ConfigurationException ...
      */
     public static void main(final String[] args) throws IOException,
-            HelpingException, ConfigurationException {
+            FontException, ConfigurationException {
 
         if (args.length != PARAMETER) {
             System.err
@@ -103,21 +104,16 @@ public final class TFM2EFM {
         InputStream tfmin = finder.findResource(args[0], "");
 
         if (tfmin == null) {
-            System.err.println(args[0] + " not found!");
-            System.exit(1);
+            throw new FileNotFoundException(args[0]);
         }
 
         // psfonts.map
         InputStream psin = finder.findResource("psfonts.map", "");
 
         if (psin == null) {
-            System.err.println("psfonts.map not found!");
-            System.exit(1);
+            throw new FontMapNotFoundException();
         }
         PSFontsMapReader psfm = new PSFontsMapReader(psin);
-
-        //        // TFM-Reader
-        //        TFMReader tfmr = new TFMReader(tfmin, fontname, psfm, ef);
 
         TFMFont font = new TFMFont(new RandomAccessInputStream(tfmin), fontname);
 

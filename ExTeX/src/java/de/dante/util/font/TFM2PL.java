@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,16 +22,18 @@ package de.dante.util.font;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.exception.FontMapNotFoundException;
 import de.dante.extex.font.type.PlWriter;
 import de.dante.extex.font.type.tfm.TFMFont;
 import de.dante.extex.font.type.tfm.enc.EncFactory;
 import de.dante.extex.font.type.tfm.psfontsmap.PSFontsMapReader;
-import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationFactory;
@@ -43,7 +45,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TFM-file to a PL-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class TFM2PL {
 
@@ -62,12 +64,12 @@ public final class TFM2PL {
     /**
      * main
      * @param args      the comandlinearguments
-     * @throws IOException ...
-     * @throws HelpingException ...
-     * @throws ConfigurationException ...
+     * @throws FontException if a font error occured.
+     * @throws IOException if an IO-error occured.
+     * @throws ConfigurationException from the resourcefinder.
      */
-    public static void main(final String[] args) throws IOException,
-            HelpingException, ConfigurationException {
+    public static void main(final String[] args) throws FontException,
+            IOException, ConfigurationException {
 
         if (args.length != PARAMETER) {
             System.err
@@ -101,16 +103,14 @@ public final class TFM2PL {
         InputStream tfmin = finder.findResource(args[0], "");
 
         if (tfmin == null) {
-            System.err.println(args[0] + " not found!");
-            System.exit(1);
+            throw new FileNotFoundException(args[0]);
         }
 
         // psfonts.map
         InputStream psin = finder.findResource("psfonts.map", "");
 
         if (psin == null) {
-            System.err.println("psfonts.map not found!");
-            System.exit(1);
+            throw new FontMapNotFoundException();
         }
         PSFontsMapReader psfm = new PSFontsMapReader(psin);
 

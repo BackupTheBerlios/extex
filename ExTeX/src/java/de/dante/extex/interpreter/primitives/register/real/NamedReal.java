@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NamedReal extends AbstractAssignment
         implements
@@ -84,7 +84,7 @@ public class NamedReal extends AbstractAssignment
 
             ContextExtension contextextex = (ContextExtension) context;
 
-            String key = getKey(source);
+            String key = getKey(context, source);
             source.getOptionalEquals(context);
             Real value = new Real(context, source);
             contextextex.setReal(key, value, prefix.isGlobal());
@@ -99,10 +99,10 @@ public class NamedReal extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value as Real
-     * @throws GeneralException ...
+     * @throws InterpreterException if no extension is configured
      */
     public void set(final Context context, final Real value)
-            throws GeneralException {
+            throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
@@ -117,7 +117,7 @@ public class NamedReal extends AbstractAssignment
      *
      * @param context    the interpreter context
      * @param value      the new value as String
-     * @throws GeneralException ...
+     * @throws InterpreterException if no extension is configured
      */
     public void set(final Context context, final String value)
             throws GeneralException {
@@ -136,27 +136,26 @@ public class NamedReal extends AbstractAssignment
      *      de.dante.extex.interpreter.TokenSource, Typesetter)
      */
     public Tokens the(final Context context, final TokenSource source,
-            final Typesetter typesetter)
-            throws InterpreterException {
+            final Typesetter typesetter) throws InterpreterException {
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             String s = contextextex.getReal(key).toString();
             return new Tokens(context, s);
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 
     /**
      * Return the key (the name of the primitive) for the register.
      *
-     * @param source ...
+     * @param context   the context
+     * @param source    the tokensource
      * @return the key
-     * @throws InterpreterException ...
+     * @throws InterpreterException in case of an error.
      */
-    protected String getKey(final TokenSource source)
+    protected String getKey(final Context context, final TokenSource source)
             throws InterpreterException {
 
         return getName();
@@ -174,7 +173,7 @@ public class NamedReal extends AbstractAssignment
         if (context instanceof ContextExtension) {
 
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             Real real = contextextex.getReal(key);
             source.getKeyword(context, "by");
             Real value = new Real(context, source);
@@ -199,7 +198,7 @@ public class NamedReal extends AbstractAssignment
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
 
-            String key = getKey(source);
+            String key = getKey(context, source);
             Real real = contextextex.getReal(key);
             source.getKeyword(context, "by");
             Real value = new Real(context, source);
@@ -223,7 +222,7 @@ public class NamedReal extends AbstractAssignment
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             Real real = contextextex.getReal(key);
             source.getKeyword(context, "by");
             Real value = new Real(context, source);
@@ -246,12 +245,11 @@ public class NamedReal extends AbstractAssignment
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             Real r = contextextex.getReal(key);
             return (r != null ? r : Real.ZERO);
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 
     /**
@@ -265,11 +263,10 @@ public class NamedReal extends AbstractAssignment
 
         if (context instanceof ContextExtension) {
             ContextExtension contextextex = (ContextExtension) context;
-            String key = getKey(source);
+            String key = getKey(context, source);
             Real r = contextextex.getReal(key);
             return (r != null ? r.getLong() : 0);
-        } else {
-            throw new InterpreterExtensionException();
         }
+        throw new InterpreterExtensionException();
     }
 }
