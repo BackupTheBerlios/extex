@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.primitives.macro.MacroCode;
+import de.dante.extex.interpreter.primitives.macro.MacroPattern;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -48,7 +49,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Read extends AbstractCode {
 
@@ -86,8 +87,8 @@ public class Read extends AbstractCode {
         }
 
         toks = file.read(context.getTokenFactory(), context.getTokenizer(), cs);
-        context.setCode(cs, new MacroCode(cs.getValue(), prefix, Tokens.EMPTY,
-                toks), prefix.isGlobal());
+        context.setCode(cs, new MacroCode(cs.getValue(), prefix,
+                MacroPattern.EMPTY, toks), prefix.isGlobal());
 
         return true;
     }

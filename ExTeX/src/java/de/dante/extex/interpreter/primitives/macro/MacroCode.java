@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class MacroCode extends AbstractCode
         implements
@@ -70,11 +70,6 @@ public class MacroCode extends AbstractCode
     private boolean notLong;
 
     /**
-     * The field <tt>numberOfParams</tt> contains the number of parameters used.
-     */
-    private int numberOfParams = 10; //TODO: adjust to the correct value
-
-    /**
      * The field <tt>outerP</tt> contains the indicator for outer definitions.
      */
     private boolean outerP;
@@ -83,7 +78,7 @@ public class MacroCode extends AbstractCode
      * The field <tt>pattern</tt> contains the specification for the argument
      * matching.
      */
-    private Tokens pattern;
+    private MacroPattern pattern;
 
     /**
      * The field <tt>protectedP</tt> contains the protected flag.
@@ -99,7 +94,7 @@ public class MacroCode extends AbstractCode
      * @param theBody the expansion text
      */
     public MacroCode(final String name, final Flags flags,
-            final Tokens thePattern, final Tokens theBody) {
+            final MacroPattern thePattern, final Tokens theBody) {
 
         super(name);
         this.body = theBody;
@@ -283,7 +278,7 @@ public class MacroCode extends AbstractCode
     private Tokens[] matchPattern(final Context context,
             final TokenSource source) throws GeneralException {
 
-        Tokens[] args = new Tokens[numberOfParams];
+        Tokens[] args = new Tokens[pattern.getArity()];
         Token ti;
         Token t;
         int len = pattern.length();

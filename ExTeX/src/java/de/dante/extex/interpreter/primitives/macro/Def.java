@@ -63,7 +63,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public class Def extends AbstractAssignment {
 
@@ -88,7 +88,7 @@ public class Def extends AbstractAssignment {
             throws GeneralException {
 
         CodeToken cs = source.getControlSequence();
-        Tokens pattern = getPattern(context, source);
+        MacroPattern pattern = getPattern(context, source);
         Tokens body = (prefix.isExpanded() //
                 ? expandedBody(context, source, typesetter)//
                 : source.getTokens());
@@ -128,17 +128,18 @@ public class Def extends AbstractAssignment {
      *
      * @throws GeneralException in case of an error
      */
-    protected Tokens getPattern(final Context context, final TokenSource source)
+    protected MacroPattern getPattern(final Context context, final TokenSource source)
             throws GeneralException {
 
-        Tokens toks = new Tokens();
+        MacroPattern pattern = new MacroPattern();
         int no = 1;
         boolean afterHash = false;
 
         for (Token t = source.getToken(); t != null; t = source.getToken()) {
             if (t instanceof LeftBraceToken) {
                 source.push(t);
-                return toks;
+                pattern.setArity(no);
+                return pattern;
             }
 
             if (afterHash) {
@@ -156,7 +157,7 @@ public class Def extends AbstractAssignment {
             } else {
                 afterHash = (t instanceof MacroParamToken);
             }
-            toks.add(t);
+            pattern.add(t);
         }
 
         throw new HelpingException("TTP.EOFinDef",
