@@ -54,11 +54,13 @@ import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.Messages;
+import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Interpreter;
 import de.dante.extex.interpreter.InterpreterFactory;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.logging.LogFormatter;
@@ -624,7 +626,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.63 $
+ * @version $Revision: 1.64 $
  */
 public class ExTeX {
 
@@ -1228,15 +1230,32 @@ public class ExTeX {
      *
      * @throws GeneralException in case of some error
      * @throws IOException in case, well, you guess it
+     * @throws ConfigurationException ...
      */
-    private void loadFormat(final Interpreter interpreter, final String fmt,
-            final String jobname) throws IOException, GeneralException {
+    private void loadFormat(final Interpreter interpreter,
+            final ResourceFinder finder, final String fmt, final String jobname)
+            throws IOException,
+                GeneralException,
+                ConfigurationException {
 
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
                 DateFormat.SHORT, Locale.ENGLISH).format(new Date());
 
         if (fmt != null && !fmt.equals("")) {
-            interpreter.loadFormat(fmt);
+            InputStream stream = finder.findResource(fmt, "fmt");
+
+            if (stream == null && !fmt.equals("tex")) {
+                logger.info(Messages.format("xxxxxx", fmt)); //TODO
+                stream = finder.findResource("tex", "fmt");
+            }
+            if (stream == null) {
+                throw new PanicException("file not found"); //TODO
+            }
+            try {
+                interpreter.loadFormat(stream);
+            } catch (LoaderException e) {
+                throw new PanicException("TTP.FormatFileError");
+            }
             logger.config(Messages.format("ExTeX.FormatDate", fmt, time));
         } else {
             logger.config(Messages.format("ExTeX.NoFormatDate", time));
@@ -1602,7 +1621,8 @@ public class ExTeX {
             }
             interpreter.setTypesetter(typesetter);
 
-            loadFormat(interpreter, properties.getProperty(PROP_FMT), jobname);
+            loadFormat(interpreter, finder, properties.getProperty(PROP_FMT),
+                    jobname);
 
             interpreter.run();
 
