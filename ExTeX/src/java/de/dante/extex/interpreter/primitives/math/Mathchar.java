@@ -31,7 +31,6 @@ import de.dante.extex.typesetter.listMaker.NoadConsumer;
 import de.dante.extex.typesetter.type.MathClass;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
@@ -55,9 +54,14 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Mathchar extends AbstractMathCode {
+
+    /**
+     * The constant <tt>GLYPH_MASK</tt> contains the mask for a math glyph.
+     */
+    private static final int GLYPH_MASK = 0xfff;
 
     /**
      * Creates a new object.
@@ -80,13 +84,13 @@ public class Mathchar extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        NoadConsumer nc = getListMaker(typesetter);
+        NoadConsumer nc = getListMaker(context, typesetter);
 
         Token t = source.getToken();
         if (t == null) {
             throw new EofHelpingException(printableControlSequence(context));
         } else if (t.isa(Catcode.LEFTBRACE)) {
-            //TODO extension unimplemented
+            //TODO gene: extension unimplemented
             throw new RuntimeException("unimplemented");
         } else {
             source.push(t);
@@ -96,10 +100,11 @@ public class Mathchar extends AbstractMathCode {
     }
 
     /**
-     * ...
+     * Insert a mathemtical character into the noad list of the current
+     * list maker.
      *
-     * @param nc ...
-     * @param mathchar ...
+     * @param nc the interface to the list maker
+     * @param mathchar the mathematical character
      *
      * @throws GeneralException in case of an error
      */
@@ -108,8 +113,7 @@ public class Mathchar extends AbstractMathCode {
 
         long mc = mathchar.getValue();
         nc.add(MathClass.getMathClass((int) ((mc >> 12) & 0xf)), //
-                new MathGlyph((int) ((mc >> 8) & 0xf), //
-                        new UnicodeChar((int) (mc & 0xff))));
+                new MathGlyph((int) (mc & GLYPH_MASK)));
     }
 
 }
