@@ -1,0 +1,32 @@
+#!/bin/bash
+#
+# mgn: $Revision: 1.3 $ $Date: 2003/09/22 07:41:41 $
+#
+# create the docapi for ExTeX (in Entwicklung)
+# 
+cd src
+find . -type d -not -regex ".*CVS" | \
+	sed -e "s/\//./g" | \
+	sed -e "s/^\.\.//g" | \
+	sed -e "1,3s/\(.*\)//" | \
+	sed -e "s/^config//g" \
+	>pack.txt
+cd ..
+#java -Xmx128m ext.tools.CreateDoc pack.txt
+#javadoc -d doc/ -J-Xmx128m \
+#	-taglet ext.tools.doclet.taglet.PrimitiveTaglet \
+#	-taglet ext.tools.doclet.taglet.AuthorTaglet \
+#	-taglet ext.tools.doclet.taglet.VersionTaglet \
+#	-taglet ext.tools.doclet.taglet.CfgPropertiesTaglet \
+#	-taglet ext.tools.doclet.taglet.MsgPropertiesTaglet \
+#	-taglet ext.tools.doclet.taglet.GlobalvarTaglet \
+#	-taglet ext.tools.doclet.taglet.FileTaglet \
+#	-taglet ext.tools.doclet.taglet.JarTaglet \
+#	-splitindex -use -version -author -private -windowtitle EXTEX @pack.txt
+javadoc -outdir tmp/ -J-Xmx128m \
+	-doclet de.dante.util.doclet.XMLDoclet1 \
+	-sourcepath src/ \
+	@src/pack.txt
+rm -f src/pack.txt
+#cd doc
+#pdflatex maintest.tex && xpdf maintest.pdf
