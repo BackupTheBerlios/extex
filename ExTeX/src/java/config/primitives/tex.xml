@@ -665,7 +665,8 @@
   <define name="widowpenalty"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="write"
-          class="de.dante.extex.interpreter.primitives.file.Write"/>
+          class="de.dante.extex.interpreter.primitives.file.Write"
+          write18="false"/>
   <define name="xdef"
           class="de.dante.extex.interpreter.primitives.macro.Xdef"/>
   <define name="xleaders"
