@@ -28,11 +28,12 @@ import de.dante.util.StringList;
  * Container for several {@link de.dante.util.configuration.Configuration Configuration} objects.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class MultiConfiguration implements Configuration {
-    /** the interanl array of configs */
+    /** The internal array of configs */
     private Configuration[] configs;
+    
     /**
      * Creates a new object.
      *
@@ -46,7 +47,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfig(java.lang.String)
+     * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String)
      */
     public Configuration getConfiguration(String key) throws ConfigurationException {
         List v = new ArrayList();
@@ -55,7 +56,7 @@ public class MultiConfiguration implements Configuration {
             try {
                 v.add(configs[i].getConfiguration(key));
             } catch (ConfigurationNotFoundException e) {
-                // ignored
+                // ignored during the search
             }
         }
 
@@ -71,7 +72,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getConfig(java.lang.String, java.lang.String)
+     * @see de.dante.util.configuration.Configuration#getConfiguration(java.lang.String, java.lang.String)
      */
     public Configuration getConfiguration(String key, String attribute)
                      throws ConfigurationException {
@@ -97,7 +98,7 @@ public class MultiConfiguration implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getIntValue(java.lang.String, int)
+     * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String, int)
      */
     public int getValueAsInteger(String key, int defaultValue)
                     throws ConfigurationException {

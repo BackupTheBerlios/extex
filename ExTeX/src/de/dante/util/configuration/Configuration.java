@@ -51,7 +51,7 @@ import java.util.Iterator;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Configuration {
     /**
@@ -93,7 +93,7 @@ public interface Configuration {
      * If there are no tags with the given name then an exception is thrown.
      * </p>
      *
-     * @param name the tag name of the sub-configuration
+     * @param key the tag name of the sub-configuration
      *
      * @return the sub-configuration
      *
@@ -133,7 +133,7 @@ public interface Configuration {
      * If there are no tags with the given name then an exception is thrown.
      * </p>
      *
-     * @param name the tag name of the sub-configuration
+     * @param key the tag name of the sub-configuration
      * @param attribute the value of the attribute name
      *
      * @return the sub-configuration
@@ -202,7 +202,7 @@ public interface Configuration {
      * Get the list of all values with the given tag name in the current
      * configuration.
      *
-     * @param tag the name of the tags
+     * @param key the name of the tags
      *
      * @return the list of values
      *

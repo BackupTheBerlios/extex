@@ -24,13 +24,11 @@ import de.dante.extex.i18n.Messages;
  * This is the factory for configurations.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationFactory {
     /**
      * Creates a new object.
-     *
-     * @param source the name of the file to read from
      *
      * @throws ConfigException in case that something went wrong
      */

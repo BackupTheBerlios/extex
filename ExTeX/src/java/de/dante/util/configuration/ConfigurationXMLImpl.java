@@ -39,19 +39,19 @@ import javax.xml.parsers.FactoryConfigurationError;
  * This class provides means to deal with configurations stored as XML files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ConfigurationXMLImpl implements Configuration {
     /** The root element for this configuration */
     private Element root = null;
 
-    /** the base of the resource name; i.e. the resource p up to the last /
-     * or the empty string if no / was contained.
+    /** The base of the resource name; i.e. the resource p up to the last /
+     *  or the empty string if no / was contained.
      */
     private String base = "";
 
     /** This variable contains the extensions to use when searching for
-     * configuration files.
+     *  configuration files.
      */
     private String[] ext = {
                                "",
@@ -59,7 +59,7 @@ public class ConfigurationXMLImpl implements Configuration {
                            };
 
     /** This variable contains the path to use when searching for
-     * configuration files.
+     *  configuration files.
      */
     private String[] path = {
                                 "",
@@ -239,7 +239,7 @@ public class ConfigurationXMLImpl implements Configuration {
      * If there are no tags with the given name then an exception is thrown.
      * </p>
      *
-     * @param name the tag name of the sub-configuration
+     * @param key the tag name of the sub-configuration
      * @param attribute the value of the attribute name
      *
      * @return the sub-configuration
@@ -333,7 +333,7 @@ public class ConfigurationXMLImpl implements Configuration {
     }
 
     /**
-     * @see de.dante.util.configuration.Configuration#getIntValue(java.lang.String, int)
+     * @see de.dante.util.configuration.Configuration#getValueAsInteger(java.lang.String, int)
      */
     public int getValueAsInteger(String key, int defaultValue)
                           throws ConfigurationException {
