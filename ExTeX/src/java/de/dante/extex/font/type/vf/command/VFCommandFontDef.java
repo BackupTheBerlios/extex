@@ -20,12 +20,19 @@
 package de.dante.extex.font.type.vf.command;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
+import de.dante.extex.font.exception.FontNotFoundException;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -96,7 +103,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class VFCommandFontDef extends VFCommand {
 
@@ -128,12 +135,15 @@ public class VFCommandFontDef extends VFCommand {
     /**
      * Create e new object.
      *
-     * @param rar       the input
-     * @param ccode     the command code
+     * @param rar           the input
+     * @param ccode         the command code
+     * @param fontfactory   the fontfactory
+     * @param fontmap   the fontmap
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
      */
-    public VFCommandFontDef(final RandomAccessR rar, final int ccode)
+    public VFCommandFontDef(final RandomAccessR rar, final int ccode,
+            final FontFactory fontfactory, final Map fontmap)
             throws IOException, FontException {
 
         super(ccode);
@@ -166,6 +176,18 @@ public class VFCommandFontDef extends VFCommand {
                 TFMFixWord.FIXWORDDENOMINATOR);
 
         fontname = readFontName(rar);
+        try {
+            Dimen fds = new Dimen(Dimen.ONE_PT);
+            fds.setValue((long) (fds.getValue() * Double.parseDouble(designsize
+                    .toString())));
+            Count scale = new Count((long) (Double.parseDouble(scalefactor
+                    .toStringComma())));
+            Font f = fontfactory.getInstance(fontname, fds, scale, new Glue(0),
+                    true, true);
+            fontmap.put(new Integer(fontnumbers), f);
+        } catch (Exception e) {
+            throw new FontNotFoundException(fontname);
+        }
     }
 
     /**

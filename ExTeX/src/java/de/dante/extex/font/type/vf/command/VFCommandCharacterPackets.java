@@ -20,12 +20,16 @@
 package de.dante.extex.font.type.vf.command;
 
 import java.io.IOException;
+import java.util.Map;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
+import de.dante.extex.format.dvi.DviXml;
+import de.dante.util.file.random.RandomAccessInputArray;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -89,7 +93,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand {
@@ -115,17 +119,33 @@ public class VFCommandCharacterPackets extends VFCommand {
     private short[] dvi;
 
     /**
+     * the font factory
+     */
+    private FontFactory fontfactory;
+
+    /**
+     * the font map
+     */
+    private Map fontmap;
+
+    /**
      * Create e new object.
      *
-     * @param rar       the input
-     * @param ccode     the command code
+     * @param rar           the input
+     * @param ccode         the command code
+     * @param fontfac       the font factory
+     * qparam fontm         the fontmap
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
      */
-    public VFCommandCharacterPackets(final RandomAccessR rar, final int ccode)
-            throws IOException, FontException {
+    public VFCommandCharacterPackets(final RandomAccessR rar, final int ccode,
+            final FontFactory fontfac, final Map fontm) throws IOException,
+            FontException {
 
         super(ccode);
+
+        fontfactory = fontfac;
+        fontmap = fontm;
 
         // check range
         if (ccode < MIN_CHARACTER || ccode > MAX_CHARACTER) {
@@ -142,7 +162,8 @@ public class VFCommandCharacterPackets extends VFCommand {
             packetlength = ccode;
             charactercode = rar.readByteAsInt();
             // 24 bit
-            width = new TFMFixWord(rar.readInt24(), TFMFixWord.FIXWORDDENOMINATOR);
+            width = new TFMFixWord(rar.readInt24(),
+                    TFMFixWord.FIXWORDDENOMINATOR);
         }
         dvi = new short[packetlength];
         for (int i = 0; i < packetlength; i++) {
@@ -196,11 +217,31 @@ public class VFCommandCharacterPackets extends VFCommand {
         element.setAttribute("charactercode", String.valueOf(charactercode));
         element.setAttribute("packetlength", String.valueOf(packetlength));
         element.setAttribute("width", width.toString());
+
         for (int i = 0; i < dvi.length; i++) {
             Element d = new Element("dvi");
             d.setAttribute("id", String.valueOf(i));
             d.setAttribute("value", String.valueOf(dvi[i]));
             element.addContent(d);
+        }
+
+        Element d = new Element("dvi");
+        element.addContent(d);
+
+        try {
+            RandomAccessR arar = new RandomAccessInputArray(dvi);
+
+            DviXml dvixml = new DviXml(d, fontfactory);
+            dvixml.setShowPT(true);
+            dvixml.setFontmap(fontmap);
+
+            dvixml.interpret(arar);
+            arar.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Element err = new Element("error");
+            err.setText(e.getMessage());
+            d.addContent(err);
         }
         return element;
     }

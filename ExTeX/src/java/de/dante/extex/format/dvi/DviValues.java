@@ -56,7 +56,7 @@ package de.dante.extex.format.dvi;
  * <p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviValues {
@@ -135,6 +135,14 @@ public class DviValues {
     }
 
     /**
+     * @param ah The h to add.
+     */
+    public void addH(final int ah) {
+
+        h += ah;
+    }
+
+    /**
      * Returns the v.
      * @return Returns the v.
      */
@@ -149,6 +157,14 @@ public class DviValues {
     public void setV(final int av) {
 
         v = av;
+    }
+
+    /**
+     * @param av The v to add.
+     */
+    public void addV(final int av) {
+
+        v += av;
     }
 
     /**

@@ -21,7 +21,9 @@ package de.dante.extex.font.type.vf.command;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Map;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.vf.exception.VFWrongCodeException;
 import de.dante.util.XMLConvertible;
@@ -31,7 +33,7 @@ import de.dante.util.file.random.RandomAccessR;
  * Abstract class for all vf commands.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class VFCommand implements XMLConvertible, Serializable {
 
@@ -105,22 +107,27 @@ public abstract class VFCommand implements XMLConvertible, Serializable {
      * Return the new instance of the command.
      * The command read itself the data from the input.
      *
-     * @param rar       the input
+     * @param rar           the input
+     * @param fontfactory   the font factory
+     * @param fontmap       the fontmap
      * @return Returns the new instance, or <code>null</code>, if
      *         no more data exists.
      * @throws IOException  if a IO-error occurs
      * @throws FontException if a font-error occurs
      */
-    public static VFCommand getInstance(final RandomAccessR rar)
+    public static VFCommand getInstance(final RandomAccessR rar,
+            final FontFactory fontfactory, final Map fontmap)
             throws IOException, FontException {
 
-        int c = rar.readByteAsInt();
-        if (c < 0) {
+        // EOF ?
+        if (rar.getPointer() >= rar.length()) {
             return null;
         }
+        int c = rar.readByteAsInt();
+
         // characters
         if (c >= MIN_CHARACTER && c <= MAX_CHARACTER) {
-            return new VFCommandCharacterPackets(rar, c);
+            return new VFCommandCharacterPackets(rar, c, fontfactory, fontmap);
         }
         switch (c) {
             case PRE :
@@ -129,7 +136,7 @@ public abstract class VFCommand implements XMLConvertible, Serializable {
             case FNT_DEF_2 :
             case FNT_DEF_3 :
             case FNT_DEF_4 :
-                return new VFCommandFontDef(rar, c);
+                return new VFCommandFontDef(rar, c, fontfactory, fontmap);
             case POST :
                 return new VFCommandPost(rar, c);
             default :

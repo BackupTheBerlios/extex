@@ -26,7 +26,7 @@ import java.io.IOException;
  * Interface for random access (read only)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface RandomAccessR extends DataInput {
 
@@ -67,4 +67,42 @@ public interface RandomAccessR extends DataInput {
      * @throws IOException if an IO-error occurs.
      */
     int readInt24() throws IOException;
+
+    /**
+     * get bit 24
+     */
+    int X24 = 0x800000;
+
+    /**
+     * get low 23 bit
+     */
+    int L24 = 0x7f0000;
+
+    /**
+     * Reads a sign int with 24 bit (3x8).
+     * @return  Returns a int value.
+     * @throws IOException if an IO-error occurs.
+     */
+    int readSignInt24() throws IOException;
+
+    /**
+     * Reads a int with 16 bit (2x8).
+     * @return  Returns a int value.
+     * @throws IOException if an IO-error occurs.
+     */
+    int readInt16() throws IOException;
+
+    /**
+     * Reads a int with 8 bit (1x8).
+     * @return  Returns a int value.
+     * @throws IOException if an IO-error occurs.
+     */
+    int readInt8() throws IOException;
+
+    /**
+     * Check, if EOF is reaged.
+     * @return Returns <code>true</code>, if EOF is reaged.
+     * @throws IOException if an IO-erorr occurs.
+     */
+    boolean isEOF() throws IOException;
 }

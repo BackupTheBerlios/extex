@@ -25,7 +25,7 @@ import java.util.Stack;
  * DVI stack.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviStack {
@@ -79,5 +79,14 @@ public class DviStack {
     public void clear() {
 
         stack.removeAllElements();
+    }
+
+    /**
+     * Returns the size (depth) of the stack.
+     * @return Returns the size (depth) of the stack.
+     */
+    public int size() {
+
+        return stack.size();
     }
 }

@@ -17,31 +17,32 @@
  *
  */
 
-package de.dante.extex.format.dvi;
-
-import java.io.IOException;
-
-import de.dante.extex.font.exception.FontException;
-import de.dante.extex.format.dvi.exception.DviException;
-import de.dante.util.configuration.ConfigurationException;
-import de.dante.util.file.random.RandomAccessR;
+package de.dante.extex.format.dvi.command;
 
 /**
- * Interface for a DVI interpreter.
+ * DVI: nop
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public interface DviInterpreter {
+
+public class DviNOP extends DviCommand {
 
     /**
-     * Interpreter for DVI
-     * @param rar   the input
-     * @throws IOException in case of a IO-error.
-     * @throws DVIException in case of a DVI-error.
-     * @throws FontException in case of a font-error.
-     * @throws ConfigurationException from the config-system.
+     * Create a new object.
+     * @param oc        the opcode
+     * @param sp        the start pointer
      */
-    void interpret(RandomAccessR rar) throws IOException, DviException,
-            FontException, ConfigurationException;
+    public DviNOP(final int oc, final int sp) {
+
+        super(oc, sp);
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviCommand#getName()
+     */
+    public String getName() {
+
+        return "nop";
+    }
 }

@@ -27,9 +27,40 @@ import java.util.Stack;
 import org.jdom.Element;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.Glyph;
+import de.dante.extex.font.exception.FontException;
+import de.dante.extex.format.dvi.command.DviBOP;
+import de.dante.extex.format.dvi.command.DviChar;
+import de.dante.extex.format.dvi.command.DviCommand;
+import de.dante.extex.format.dvi.command.DviDown;
+import de.dante.extex.format.dvi.command.DviEOP;
+import de.dante.extex.format.dvi.command.DviExecuteCommand;
+import de.dante.extex.format.dvi.command.DviFntDef;
+import de.dante.extex.format.dvi.command.DviFntNum;
+import de.dante.extex.format.dvi.command.DviNOP;
+import de.dante.extex.format.dvi.command.DviPOP;
+import de.dante.extex.format.dvi.command.DviPush;
+import de.dante.extex.format.dvi.command.DviPost;
+import de.dante.extex.format.dvi.command.DviPostPost;
+import de.dante.extex.format.dvi.command.DviPre;
+import de.dante.extex.format.dvi.command.DviRight;
+import de.dante.extex.format.dvi.command.DviRule;
+import de.dante.extex.format.dvi.command.DviW;
+import de.dante.extex.format.dvi.command.DviX;
+import de.dante.extex.format.dvi.command.DviXXX;
+import de.dante.extex.format.dvi.command.DviY;
+import de.dante.extex.format.dvi.command.DviZ;
 import de.dante.extex.format.dvi.exception.DviBopEopException;
 import de.dante.extex.format.dvi.exception.DviException;
-import de.dante.extex.format.dvi.exception.DviUndefinedOpcodeException;
+import de.dante.extex.format.dvi.exception.DviFontNotFoundException;
+import de.dante.extex.format.dvi.exception.DviMissingFontException;
+import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.util.UnicodeChar;
+import de.dante.util.Unit;
+import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.file.random.RandomAccessR;
 
 /**
@@ -42,10 +73,10 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
-public class DviXml implements DviInterpreter {
+public class DviXml implements DviInterpreter, DviExecuteCommand {
 
     /**
      * the parent element (change from some commands to nested other elements)
@@ -79,8 +110,18 @@ public class DviXml implements DviInterpreter {
     /**
      * the map for all sub fonts.
      */
-    private Map font;
-    
+    private Map fontmap;
+
+    /**
+     * the dvi stack
+     */
+    private DviStack stack;
+
+    /**
+     * the dvi values;
+     */
+    private DviValues val;
+
     /**
      * Create a new object.
      *
@@ -92,1873 +133,15 @@ public class DviXml implements DviInterpreter {
         parent = element;
         fontfactory = ff;
         parentstack = new Stack();
-        font = new HashMap();
+        fontmap = new HashMap();
+        val = new DviValues();
+        stack = new DviStack();
     }
 
     /**
-     * The length of <code>c</code> elements of the bob command.
+     * show pt-values in elements
      */
-    public static final int BOP_LENGTH = 10;
-
-    /**
-     * Interpreter step for characters
-     */
-    private DviInterpreterStep setchar = new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("setchar");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    };
-
-    /**
-     * the min fontnum
-     */
-    private static final int MIN_FONTNUM = 172;
-
-    /**
-     * Interpreter step for fontnum
-     */
-    private DviInterpreterStep fntnum = new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int fn = opcode - MIN_FONTNUM + 1;
-            Element element = new Element("fntnum" + String.valueOf(fn));
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    };
-
-    /**
-     * Interpreter step for undefined opcode
-     */
-    private DviInterpreterStep undef = new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            throw new DviUndefinedOpcodeException();
-        }
-    };
-
-    /**
-     * the interpreter steps
-     */
-    private DviInterpreterStep[] opcodearray = {//
-    /**
-     * set_char_0:
-     * Typeset character number 0 from font <code>f</code> such that the reference
-     * point of the character is at <code>(h,v)</code>.
-     * Then increase <code>h</code> by the width
-     * of that character. Note that a character may have zero or negative
-     * width, so one cannot be sure that <code>h</code> will advance after this
-     * command; but <code>h</code> usually does increase.
-     */
-    setchar, /* 0 */
-
-    /**
-     * set_char_1 through set_char_127 (opcodes 1 to 127):
-     * Do the operations of <code>set_char_0</code>; but use the character whose
-     * number matches the opcode, instead of character 0.
-     */
-    setchar, /* 1 */
-    setchar, /* 2 */
-    setchar, /* 3 */
-    setchar, /* 4 */
-    setchar, /* 5 */
-    setchar, /* 6 */
-    setchar, /* 7 */
-    setchar, /* 8 */
-    setchar, /* 9 */
-    setchar, /* 10 */
-    setchar, /* 11 */
-    setchar, /* 12 */
-    setchar, /* 13 */
-    setchar, /* 14 */
-    setchar, /* 15 */
-    setchar, /* 16 */
-    setchar, /* 17 */
-    setchar, /* 18 */
-    setchar, /* 19 */
-    setchar, /* 20 */
-    setchar, /* 21 */
-    setchar, /* 22 */
-    setchar, /* 23 */
-    setchar, /* 24 */
-    setchar, /* 25 */
-    setchar, /* 26 */
-    setchar, /* 27 */
-    setchar, /* 28 */
-    setchar, /* 29 */
-    setchar, /* 30 */
-    setchar, /* 31 */
-    setchar, /* 32 */
-    setchar, /* 33 */
-    setchar, /* 34 */
-    setchar, /* 35 */
-    setchar, /* 36 */
-    setchar, /* 37 */
-    setchar, /* 38 */
-    setchar, /* 39 */
-    setchar, /* 40 */
-    setchar, /* 41 */
-    setchar, /* 42 */
-    setchar, /* 43 */
-    setchar, /* 44 */
-    setchar, /* 45 */
-    setchar, /* 46 */
-    setchar, /* 47 */
-    setchar, /* 48 */
-    setchar, /* 49 */
-    setchar, /* 50 */
-    setchar, /* 51 */
-    setchar, /* 52 */
-    setchar, /* 53 */
-    setchar, /* 54 */
-    setchar, /* 55 */
-    setchar, /* 56 */
-    setchar, /* 57 */
-    setchar, /* 58 */
-    setchar, /* 59 */
-    setchar, /* 60 */
-    setchar, /* 61 */
-    setchar, /* 62 */
-    setchar, /* 63 */
-    setchar, /* 64 */
-    setchar, /* 65 */
-    setchar, /* 66 */
-    setchar, /* 67 */
-    setchar, /* 68 */
-    setchar, /* 69 */
-    setchar, /* 70 */
-    setchar, /* 71 */
-    setchar, /* 72 */
-    setchar, /* 73 */
-    setchar, /* 74 */
-    setchar, /* 75 */
-    setchar, /* 76 */
-    setchar, /* 77 */
-    setchar, /* 78 */
-    setchar, /* 79 */
-    setchar, /* 80 */
-    setchar, /* 81 */
-    setchar, /* 82 */
-    setchar, /* 83 */
-    setchar, /* 84 */
-    setchar, /* 85 */
-    setchar, /* 86 */
-    setchar, /* 87 */
-    setchar, /* 88 */
-    setchar, /* 89 */
-    setchar, /* 90 */
-    setchar, /* 91 */
-    setchar, /* 92 */
-    setchar, /* 93 */
-    setchar, /* 94 */
-    setchar, /* 95 */
-    setchar, /* 96 */
-    setchar, /* 97 */
-    setchar, /* 98 */
-    setchar, /* 99 */
-    setchar, /* 100 */
-    setchar, /* 101 */
-    setchar, /* 102 */
-    setchar, /* 103 */
-    setchar, /* 104 */
-    setchar, /* 105 */
-    setchar, /* 106 */
-    setchar, /* 107 */
-    setchar, /* 108 */
-    setchar, /* 109 */
-    setchar, /* 110 */
-    setchar, /* 111 */
-    setchar, /* 112 */
-    setchar, /* 113 */
-    setchar, /* 114 */
-    setchar, /* 115 */
-    setchar, /* 116 */
-    setchar, /* 117 */
-    setchar, /* 118 */
-    setchar, /* 119 */
-    setchar, /* 120 */
-    setchar, /* 121 */
-    setchar, /* 122 */
-    setchar, /* 123 */
-    setchar, /* 124 */
-    setchar, /* 125 */
-    setchar, /* 126 */
-    setchar, /* 127 */
-    /**
-     * set1 128, c[1]:
-     * Same as <code>set_char_0</code>, except that character number
-     * <code>c</code> is typeset. TeX82 uses this command for
-     * characters in the range 128 &lt;= c &lt; 256.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readByteAsInt();
-            Element element = new Element("set1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * set2 129, c[2]:
-     * Same as <code>set1</code>, except that <code>c</code> is two bytes long,
-     * so it is in the range 0 &lt;= c &lt; 65536. TeX82 never uses this command,
-     * which is intended for processors that deal with oriental languages; but a
-     * DVI processor should allow character codes greater than 255.
-     * The processor may then assume that these characters have the same width
-     * as the character whose respective codes are c mod 256.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readShort();
-            Element element = new Element("set2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * set3  130, c[3]:
-     * Same as set1, except that <code>c</code> is three bytes long, so it can be
-     * as large as 2^24-1.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readInt24();
-            Element element = new Element("set3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * set4  131, c[+4]:
-     * Same as <code>set1</code>, except that <code>c</code> is four bytes long,
-     * possibly even negative. Imagine that.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readInt();
-            Element element = new Element("set4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * set_rule  132, a[+4] b[+4]:
-     * Typeset a solid black rectangle of height <code>a</code> and
-     * width <code>b</code>, with its bottom left corner at <code>(h,v)</code>.
-     * Then set <code>h = h + b</code>. If either a &lt;= 0 or
-     * b &lt;= 0, nothing should be typeset.
-     * Note that if b &lt; 0, the value of <code>h</code> will decrease even
-     * though nothing else happens. Programs that typeset from DVI files
-     * should be careful to make the rules line up carefully with digitized
-     * characters, as explained in connection with the <code>rule_pixels</code>
-     * subroutine below.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt();
-            int b = rar.readInt();
-
-            Element element = new Element("setrule");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("height", String.valueOf(a));
-            element.setAttribute("width", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * put1  133, c[1]:
-     * Typeset character number <code>c</code> from font <code>f</code> such
-     * that the reference point of the character is at <code>(h,v)</code>.
-     * (The 'put' commands are exactly like the 'set' commands,
-     * except that they simply put out a character or a rule without moving
-     * the reference point afterwards.)
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readByteAsInt();
-
-            Element element = new Element("put1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * put2  134, c[2]:
-     * Same as <code>set2</code>, except that <code>h</code> is not changed.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readShort();
-
-            Element element = new Element("put2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * put3  135, c[3]:
-     * Same as <code>set3</code>, except that <code>h</code> is not changed.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readInt24();
-
-            Element element = new Element("put3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * put4  136, c[+4]:
-     * Same as <code>set4</code>, except that <code>h</code> is not changed.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int c = rar.readInt();
-
-            Element element = new Element("put4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("char", String.valueOf(c));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * put_rule  137, a[+4] b[+4]:
-     * Same as <code>set_rule</code>, except that <code>h</code> is not changed.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt();
-            int b = rar.readInt();
-
-            Element element = new Element("putrule");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("height", String.valueOf(a));
-            element.setAttribute("width", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * nop  138:
-     * No operation, do nothing. Any number of <code>nop</code>'s may occur between
-     * DVI commands, but a <code>nop</code> cannot be inserted between a
-     * command and its parameters or between two parameters.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("nop");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * bop 139, c_0[+4] c_1[+4] ... c_9[+4] p[+4]:
-     * Beginning of a page: Set <code>(h,v,w,x,y,z) = (0,0,0,0,0,0)</code>
-     * and set the stack empty. Set the current font <code>f</code> to an
-     * undefined value. The ten <code>c_i</code> parameters can be used
-     * to identify pages, if a user wants to print only part of a DVI file;
-     * TeX82 gives them the values of <code>count0</code> ... <code>count9</code>
-     * at the time <code>shipout</code> was invoked for this page.
-     * The parameter <code>p</code> points to the previous <code>bop</code>
-     * command in the file, where the first <code>bop</code>
-     * has <code>p=-1</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            page++;
-
-            int[] c = new int[BOP_LENGTH];
-            for (int i = 0; i < BOP_LENGTH; i++) {
-                c[i] = rar.readInt();
-            }
-            int p = rar.readInt();
-
-            Element element = new Element("bop");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            for (int i = 0; i < BOP_LENGTH; i++) {
-                element.setAttribute("c" + String.valueOf(i), String
-                        .valueOf(c[i]));
-            }
-            element.setAttribute("p", String.valueOf(p));
-            element.setAttribute("page", String.valueOf(page));
-            parent.addContent(element);
-            parentstack.push(parent);
-            parent = element;
-        }
-    },
-
-    /**
-     * eop  140:
-     * End of page: Print what you have read since the previous <code>bop</code>.
-     * At this point the stack should be empty.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("eop");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-            if (parentstack.empty()) {
-                throw new DviBopEopException();
-            }
-            parent = (Element) parentstack.pop();
-        }
-    },
-
-    /**
-     * push  141:
-     * Push the current values of <code>(h,v,w,x,y,z)</code> onto the top
-     * of the stack; do not change any of these values.
-     * Note that <code>f</code> is not pushed.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("push");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * pop  142:
-     * Pop the top six values off of the stack and assign them to
-     * <code>(h,v,w,x,y,z)</code>. The number of pops should never
-     * exceed the number of pushes, since it would be highly embarrassing
-     * if the stack were empty at the time of a <code>pop</code> command.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("pop");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * right1  143, b[+1]:
-     * Set <code>h = h + b</code>, i.e., move right <code>b</code> units.
-     * The parameter is a signed number in two's complement notation,
-     * -128 &lt;= b &lt; 128; if b &lt; 0, the reference point actually
-     * moves left.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readByteAsInt();
-
-            Element element = new Element("right1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * right2:  144, b[+2]:
-     * Same as <code>right1</code>, except that <code>b</code> is a two-byte
-     * quantity in the range -32768 &lt;= b &lt; 32768.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readShort();
-
-            Element element = new Element("right2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * right3  145, b[+3]:
-     * Same as <code>right1</code>, except that <code>b</code> is a three-byte
-     * quantity in the range -2^23 &lt;= b &lt; 2^23.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readInt24();
-
-            Element element = new Element("right3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * right4  146, b[+4]:
-     * Same as <code>right1</code>, except that <code>b</code> is a four-byte
-     * quantity in the range -2^31 &lt;= b &lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readInt();
-
-            Element element = new Element("right4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * w0  147:
-     * Set <code>h = h + w</code>; i.e., move right <code>w</code> units.
-     * With luck, this parameterless command will usually suffice,
-     * because the same kind of motion will occur several times in succession;
-     * the following commands explain how <code>w</code> gets particular values.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("w0");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * w1  148, b[+1]:
-     * Set <code>w = b</code> and <code>h = h + b</code>. The value of
-     * <code>b</code> is a signed quantity in two's complement notation,
-     * -128 &lt;= b /lt; 128. This command changes the current
-     * <code>w</code> spacing and moves right by <code>b</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readByteAsInt();
-
-            Element element = new Element("w1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * w2  149, b[+2]:
-     * Same as <code>w1</code>, but <code>b</code> is a two-byte-long parameter,
-     * -32768 &lt;= b &lt; 32768.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readShort();
-
-            Element element = new Element("w2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * w3  150, b[+3]:
-     * Same as <code>w1</code>, but <code>b</code> is a three-byte-long parameter,
-     * -2^23 &lt;= b &lt; 2^23.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readInt24();
-
-            Element element = new Element("w3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * w4  151, b[+4]:
-     * Same as <code>w1</code>, but <code>b</code> is a four-byte-long parameter,
-     * -2^31 &lt;= b &lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readInt();
-
-            Element element = new Element("w4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * x0  152:
-     * Set <code>h = h + x</code>; i.e., move right <code>x</code> units.
-     * The <code>x</code> commands are like the <code>w</code> commands
-     * except that they involve <code>x</code> instead of <code>w</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("x0");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * x1  153, b[+1]:
-     * Set <code>x = b</code> and <code>h =  h + b</code>.
-     * The value of <code>b</code> is a signed quantity in two's complement
-     * notation, -128 &lt;= b &lt; 128. This command changes the current
-     * <code>x</code> spacing and moves right by <code>b</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readByteAsInt();
-
-            Element element = new Element("x1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * x2  154, b[+2]:
-     * Same as <code>x1</code>, but <code>b</code> is a two-byte-long parameter,
-     * -32768 &lt;= b &lt; 32768.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readShort();
-
-            Element element = new Element("x2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * x3  155, b[+3]:
-     * Same as <code>x1</code>, but <code>b</code> is a three-byte-long parameter,
-     * -2^23 &lt;= b &lt; 2^23.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readInt24();
-
-            Element element = new Element("x3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * x4  156, b[+4]:
-     * Same as <code>x1</code>, but <code>b</code> is a four-byte-long parameter,
-     * -2^31 &lt;= b /lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int b = rar.readInt();
-
-            Element element = new Element("x4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(b));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * down1  157, a[+1]:
-     * Set <code>v = v + a</code>, i.e., move down <code>a</code> units.
-     * The parameter is a signed number in two's complement notation,
-     * -128 &lt;=  a &lt; 128; if a &lt; 0, the reference point actually moves up.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readByteAsInt();
-
-            Element element = new Element("down1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * down2  158, a[+2]:
-     * Same as <code>down1</code>, except that <code>a</code> is a two-byte
-     * quantity in the range -32768 &lt;=  a &lt; 32768.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readShort();
-
-            Element element = new Element("down2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * down3  159, a[+3]:
-     * Same as <code>down1</code>, except that <code>a</code> is a three-byte
-     * quantity in the range -2^23 &lt;=  a &lt; 2^23.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt24();
-
-            Element element = new Element("down3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * down4  160, a[+4]:
-     * Same as <code>down1</code>, except that <code>a</code> is a four-byte
-     * quantity in the range -2^31 &lt;= a &lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt();
-
-            Element element = new Element("down4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * y0  161:
-     * Set <code>v = v + y</code>; i.e., move down <code>y</code> units.
-     * With luck, this parameterless command will usually suffice,
-     * because the same kind of motion will occur several times in succession;
-     * the following commands explain how <code>y</code> gets particular values.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("y0");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * y1  162, a[+1]:
-     * Set <code>y = a</code> and <code>v = v + a</code>.
-     * The value of <code>a</code> is a signed quantity in two's complement
-     * notation, -128 &lt;= a &lt; 128.
-     * This command changes the current <code>y</code> spacing and
-     * moves down by <code>a</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readByteAsInt();
-
-            Element element = new Element("y1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * y2  163, a[+2]:
-     * Same as <code>y1</code>, but <code>a</code> is a two-byte-long parameter,
-     * -32768 &lt;= a &lt; 32768.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readShort();
-
-            Element element = new Element("y2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * y3  164, a[+3]:
-     * Same as <code>y1</code>, but <code>a</code> is a three-byte-long
-     * parameter, -2^23 &lt;= a &lt; 2^23.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt24();
-
-            Element element = new Element("y3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * y4  165, a[+4]:
-     * Same as <code>y1</code>, but <code>a</code> is a four-byte-long parameter,
-     * -2^31 &lt;= a &lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt();
-
-            Element element = new Element("y4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * z0  166:
-     * Set <code>v = v + z</code>; i.e., move down <code>z</code> units.
-     * The <code>z</code> commands are like the <code>y</code> commands
-     * except that they involve <code>z</code> instead of <code>y</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("z0");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * z1  167, a[+1]:
-     * Set <code>z = a</code> and <code>v = v + a</code>.
-     * The value of <code>a</code> is a signed quantity in two's complement
-     * notation, -128 &lt;= a &lt; 128. This command changes the current
-     * <code>z</code> spacing and moves down by <code>a</code>.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readByteAsInt();
-
-            Element element = new Element("z1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * z2  168, a[+2]:
-     * Same as <code>z1</code>, but <code>a</code> is a two-byte-long parameter,
-     * -32768 &lt;= a &lt; 32768.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readShort();
-
-            Element element = new Element("z2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * z3  169, a[+3]:
-     * Same as <code>z1</code>, but <code>a</code> is a three-byte-long parameter,
-     * -2^23 &lt;= a &lt; 2^23.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt24();
-
-            Element element = new Element("z3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * z4  170, a[+4]:
-     * Same as <code>z1</code>, but <code>a</code> is a four-byte-long parameter,
-     * -2^31 &lt;= a &lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int a = rar.readInt();
-
-            Element element = new Element("z4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(a));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt_num_0  171:
-     * Set <code>f = 0</code>. Font 0 must previously have been defined by a
-     * <code>fnt_def</code> instruction.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            Element element = new Element("fntnum0");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt_num_1 through fnt_num_63  (opcodes 172 to 234):
-     * Set <code>f = 1</code>, ..., <code>f = 63</code>, respectively.
-     */
-    fntnum, /* 1 */fntnum, /* 2 */fntnum, /* 3 */fntnum, /* 4 */
-    fntnum, /* 5 */fntnum, /* 6 */fntnum, /* 7 */fntnum, /* 8 */
-    fntnum, /* 9 */fntnum, /* 10 */fntnum, /* 11 */fntnum, /* 12 */
-    fntnum, /* 13 */fntnum, /* 14 */fntnum, /* 15 */fntnum, /* 16 */
-    fntnum, /* 17 */fntnum, /* 18 */fntnum, /* 19 */fntnum, /* 20 */
-    fntnum, /* 21 */fntnum, /* 22 */fntnum, /* 23 */fntnum, /* 24 */
-    fntnum, /* 25 */fntnum, /* 26 */fntnum, /* 27 */fntnum, /* 28 */
-    fntnum, /* 29 */fntnum, /* 30 */fntnum, /* 31 */fntnum, /* 32 */
-    fntnum, /* 33 */fntnum, /* 34 */fntnum, /* 35 */fntnum, /* 36 */
-    fntnum, /* 37 */fntnum, /* 38 */fntnum, /* 39 */fntnum, /* 40 */
-    fntnum, /* 41 */fntnum, /* 42 */fntnum, /* 43 */fntnum, /* 44 */
-    fntnum, /* 45 */fntnum, /* 46 */fntnum, /* 47 */fntnum, /* 48 */
-    fntnum, /* 49 */fntnum, /* 50 */fntnum, /* 51 */fntnum, /* 52 */
-    fntnum, /* 53 */fntnum, /* 54 */fntnum, /* 55 */fntnum, /* 56 */
-    fntnum, /* 57 */fntnum, /* 58 */fntnum, /* 59 */fntnum, /* 60 */
-    fntnum, /* 61 */fntnum, /* 62 */fntnum, /* 63 */
-
-    /**
-     * fnt1  235, k[1]:
-     * Set <code>f = k</code>. TeX82 uses this command for font numbers in the
-     * range 64 &lt;=  k &lt; 256.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readByteAsInt();
-
-            Element element = new Element("fnt1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(k));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt2  236, k[2]:
-     * Same as <code>fnt1</code>, except that <code>k</code> is two bytes long,
-     * so it is in the range 0 &lt;= k &lt; 65536. TeX82 never generates this
-     * command, but large font numbers may prove useful for specifications
-     * of color or texture, or they may be used for special fonts that have fixed
-     * numbers in some external coding scheme.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readShort();
-
-            Element element = new Element("fnt2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(k));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt3  237, k[3]:
-     * Same as <code>fnt1</code>, except that <code>k</code> is three bytes long,
-     * so it can be as large as 2^24-1.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readInt24();
-
-            Element element = new Element("fnt3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(k));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt4  238, k[+4]:
-     * Same as <code>fnt1</code>, except that <code>k</code> is four bytes long;
-     * this is for the really big font numbers (and for the negative ones).
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readInt();
-
-            Element element = new Element("fnt4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("value", String.valueOf(k));
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * xxx1  239, k[1] x[k]:
-     * This command is undefined in general; it functions as a
-     * <code>(k+2)</code>-byte <code>nop</code> unless special DVI-reading
-     * programs are being used. TeX82 generates <code>xxx1</code>
-     * when a short enough <code>special</code>
-     * appears, setting <code>k</code> to the number of bytes being sent. It is
-     * recommended that $x$ be a string having the form of a keyword
-     * followed by possible parameters relevant to that keyword.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readByteAsInt();
-
-            Element element = new Element("xxx1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("k", String.valueOf(k));
-            StringBuffer buf = new StringBuffer();
-            for (int i = 0; i < k; i++) {
-                buf.append("0x").append(rar.readByteAsInt()).append(" ");
-            }
-            element.setText(buf.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * xxx2  240, k[2] x[k]:
-     * Like <code>xxx1</code>, but 0 &lt;= k &lt; 65536.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readShort();
-
-            Element element = new Element("xxx2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("k", String.valueOf(k));
-            StringBuffer buf = new StringBuffer();
-            for (int i = 0; i < k; i++) {
-                buf.append("0x").append(rar.readByteAsInt()).append(" ");
-            }
-            element.setText(buf.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * xxx3  241, k[3] x[k]:
-     * Like <code>xxx1</code>, but 0 &lt;= k &lt; 2^24.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readInt24();
-
-            Element element = new Element("xxx3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("k", String.valueOf(k));
-            StringBuffer buf = new StringBuffer();
-            for (int i = 0; i < k; i++) {
-                buf.append("0x").append(rar.readByteAsInt()).append(" ");
-            }
-            element.setText(buf.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * xxx4  242, k[4] x[k]:
-     * Like <code>xxx1</code>, but <code>k</code> can be ridiculously large.
-     * TeX82 uses <code>xxx4</code> when <code>xxx1</code> would be incorrect.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readInt();
-
-            Element element = new Element("xxx4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("k", String.valueOf(k));
-            StringBuffer buf = new StringBuffer();
-            for (int i = 0; i < k; i++) {
-                buf.append("0x").append(rar.readByteAsInt()).append(" ");
-            }
-            element.setText(buf.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt_def1  243, k[1] c[4] s[4] d[4] a[1] l[1] n[a+l]:
-     * Define font <code>k</code>, where 0 &lt;= k &lt; 256;
-     * font definitions will be explained shortly.
-     * <p>
-     * The four-byte value <code>c</code> is the check sum.
-     *
-     * Parameter <code>s</code> contains a fixed-point scale factor that is
-     * applied to the character widths in font <code>k</code>; font dimensions
-     * in TFM files and other font files are relative to this
-     * quantity, which is always positive and less than 227. It
-     * is given in the same units as the other dimensions of the
-     * DVI file.
-     *
-     * Parameter <code>d</code> is similar to <code>s</code>;
-     * it is the design size, and (like <code>s</code>) it is given in DVI units.
-     * Thus, font <code>k</code> is to be used at <code>mag * s / (1000 * d)</code>
-     * times its normal size.
-     *
-     * The remaining part of a font definition gives the external
-     * name of the font, which is an ASCII string of length
-     * <code>a</code> + <code>l</code>. The number a is the length
-     * of the area or directory,
-     * and <code>l</code> is the length of the font name itself; the
-     * standard local system font area is supposed to be used
-     * when a = 0. The n field contains the area in its first a
-     * bytes.
-     * </p>
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readByteAsInt();
-            int c = rar.readInt();
-            int s = rar.readInt();
-            int d = rar.readInt();
-            int a = rar.readByteAsInt();
-            int l = rar.readByteAsInt();
-            StringBuffer bufa = new StringBuffer();
-            StringBuffer bufl = new StringBuffer();
-            for (int i = 0; i < a; i++) {
-                bufa.append((char) rar.readByteAsInt());
-            }
-            for (int i = 0; i < l; i++) {
-                bufl.append((char) rar.readByteAsInt());
-            }
-            Element element = new Element("fntdef1");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("font", String.valueOf(k));
-            element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", String.valueOf(s));
-            element.setAttribute("designsize", String.valueOf(d));
-            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
-            element.setAttribute("area", bufa.toString());
-            element.setAttribute("name", bufl.toString());
-            parent.addContent(element);
-            loadFont(bufl.toString(),c,s,d);
-        }
-    },
-
-    /**
-     * fnt_def2  244, k[2] c[4] s[4] d[4] a[1] l[1] n[a+l]:
-     * Define font <code>k</code>, where 0 &lt;= k &lt; 65536.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readShort();
-            int c = rar.readInt();
-            int s = rar.readInt();
-            int d = rar.readInt();
-            int a = rar.readByteAsInt();
-            int l = rar.readByteAsInt();
-            StringBuffer bufa = new StringBuffer();
-            StringBuffer bufl = new StringBuffer();
-            for (int i = 0; i < a; i++) {
-                bufa.append((char) rar.readByteAsInt());
-            }
-            for (int i = 0; i < l; i++) {
-                bufl.append((char) rar.readByteAsInt());
-            }
-            Element element = new Element("fntdef2");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("font", String.valueOf(k));
-            element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", String.valueOf(s));
-            element.setAttribute("designsize", String.valueOf(d));
-            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
-            element.setAttribute("area", bufa.toString());
-            element.setAttribute("name", bufl.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt_def3  245, k[3] c[4] s[4] d[4] a[1] l[1] n[a+l]:
-     * Define font <code>k</code>, where 0 &lt;= k &lt; 2^24.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readInt24();
-            int c = rar.readInt();
-            int s = rar.readInt();
-            int d = rar.readInt();
-            int a = rar.readByteAsInt();
-            int l = rar.readByteAsInt();
-            StringBuffer bufa = new StringBuffer();
-            StringBuffer bufl = new StringBuffer();
-            for (int i = 0; i < a; i++) {
-                bufa.append((char) rar.readByteAsInt());
-            }
-            for (int i = 0; i < l; i++) {
-                bufl.append((char) rar.readByteAsInt());
-            }
-            Element element = new Element("fntdef3");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("font", String.valueOf(k));
-            element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", String.valueOf(s));
-            element.setAttribute("designsize", String.valueOf(d));
-            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
-            element.setAttribute("area", bufa.toString());
-            element.setAttribute("name", bufl.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * fnt_def4  246, k[+4] c[4] s[4] d[4] a[1] l[1] n[a+l]:
-     * Define font <code>k</code>, where -2^31 &lt;= k &lt; 2^31.
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int k = rar.readInt();
-            int c = rar.readInt();
-            int s = rar.readInt();
-            int d = rar.readInt();
-            int a = rar.readByteAsInt();
-            int l = rar.readByteAsInt();
-            StringBuffer bufa = new StringBuffer();
-            StringBuffer bufl = new StringBuffer();
-            for (int i = 0; i < a; i++) {
-                bufa.append((char) rar.readByteAsInt());
-            }
-            for (int i = 0; i < l; i++) {
-                bufl.append((char) rar.readByteAsInt());
-            }
-            Element element = new Element("fntdef4");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("font", String.valueOf(k));
-            element.setAttribute("checksum", String.valueOf(c));
-            element.setAttribute("scalefactor", String.valueOf(s));
-            element.setAttribute("designsize", String.valueOf(d));
-            element.setAttribute("scaled", String.valueOf(getScaled(s, d)));
-            element.setAttribute("area", bufa.toString());
-            element.setAttribute("name", bufl.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * pre  247, i[1] num[4] den[4] mag[4] k[1] x[k]:
-     * Beginning of the preamble; this must come at the very beginning of
-     * the file.
-     * <p>
-     * The <code>i</code> byte identifies DVI format.
-     * The next two parameters, <code>num</code> and <code>den</code>,
-     * are positive integers that define the units of measurement;
-     * they are the numerator and denominator of a fraction by which
-     * all dimensions in the DVI file could be multiplied in order to get
-     * lengths in units of 10^-7 meters.
-     * (For example, there are exactly 7227 TeX points in 254 centimeters,
-     * and TeX82 works with scaled points where there are 2^16 sp in a point,
-     * so TeX82 sets num=25400000 and den= 7227 * 2^16 =473628672.)
-     * The <code>mag</code> parameter is what TeX82 calls <code>mag</code>,
-     * i.e., 1000 times the desired magnification. The actual fraction by which
-     * dimensions are multiplied is therefore mn/1000d. Note that if a
-     * TeX source document does not call for any <code>true</code> dimensions,
-     * and if you change it only by specifying a different <code>mag</code>
-     * setting, the DVI file that TeX creates will be completely
-     * unchanged except for the value of mag in the preamble and
-     * postamble. (Fancy DVI-reading programs allow users to override
-     * the <code>mag</code> setting when a DVI file is being printed.)
-     * Finally, <code>k</code> and <code>x</code> allow the DVI writer
-     * to include a comment, which is not interpreted further.
-     * The length of comment <code>x</code> is <code>k</code>,
-     * where 0 &lt;=  k &lt; 256.</p>
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int i = rar.readByteAsInt();
-            int num = rar.readInt();
-            int den = rar.readInt();
-            mag = rar.readInt();
-            int k = rar.readByteAsInt();
-
-            Element element = new Element("pre");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("identifies", String.valueOf(i));
-            element.setAttribute("num", String.valueOf(num));
-            element.setAttribute("den", String.valueOf(den));
-            element.setAttribute("mag", String.valueOf(mag));
-            StringBuffer buf = new StringBuffer();
-            for (int x = 0; x < k; x++) {
-                buf.append((char) rar.readByteAsInt());
-            }
-            if (buf.length() > 0) {
-                Element comment = new Element("comment");
-                comment.setText(buf.toString());
-                element.addContent(comment);
-            }
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * post  248:
-     * Beginning of the postamble.
-     * <pre>
-     * post p[4] num[4] den[4] mag[4] l[4] u[4] s[2] t[2]
-     * </pre>
-     * <p>
-     * Here <code>p</code> is a pointer to the final <code>bop</code> in the file.
-     * The next three parameters, <code>num</code>, <code>den</code>, and
-     * <code>mag</code>, are duplicates of the quantities that appeared in
-     * the preamble.
-     * Parameters <code>l</code> and <code>u</code> give respectively
-     * the height-plus-depth of the tallest page and the width of the widest
-     * page, in the same units as other dimensions of the file. These numbers
-     * might be used by a DVI-reading program to position individual 'pages'
-     * on large sheets of film or paper; however, the standard convention
-     * for output on normal size paper is to position each page so that the
-     * upper left-hand corner is exactly one inch from the left and the top.
-     * Experience has shown that it is unwise to design DVI-to-printer
-     * software that attempts cleverly to center the output; a fixed
-     * position of the upper left corner is easiest for users to understand
-     * and to work with. Therefore <code>l</code> and <code>u</code> are
-     * often ignored.
-     * Parameter <code>s</code> is the maximum stack depth (i.e., the
-     * largest excess of <code>push</code> commands over <code>pop</code>
-     * commands) needed to process this file. Then comes <code>t</code>,
-     * the total number of pages (<code>bop</code> commands) present.
-     * </p>
-     * <p>
-     * The postamble continues with font definitions, which are any number
-     * of <code>fnt_def</code> commands as described above, possibly interspersed
-     * with <code>nop</code> commands. Each font number that is used in the
-     * DVI file must be defined exactly twice: Once before it is first
-     * selected by a <code>fnt</code> command, and once in the postamble.
-     * </p>
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            int p = rar.readInt();
-            int n = rar.readInt();
-            int d = rar.readInt();
-            int m = rar.readInt();
-            int l = rar.readInt();
-            int u = rar.readInt();
-            int s = rar.readShort();
-            int t = rar.readShort();
-
-            Element element = new Element("post");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("p", String.valueOf(p));
-            element.setAttribute("num", String.valueOf(n));
-            element.setAttribute("den", String.valueOf(d));
-            element.setAttribute("mag", String.valueOf(m));
-            element.setAttribute("heightplusdepth", String.valueOf(l));
-            element.setAttribute("widthwidest", String.valueOf(u));
-            element.setAttribute("stackdepth", String.valueOf(s));
-            element.setAttribute("totalpage", String.valueOf(t));
-            parent.addContent(element);
-            parentstack.push(parent);
-            parent = element;
-        }
-    },
-
-    /**
-     * post_post  249:
-     * Ending of the postamble.
-     * <p>
-     * The last part of the postamble, following the <code>post_post</code> byte
-     * that signifies the end of the font definitions, contains <code>q</code>, a
-     * pointer to the <code>post</code> command that started the postamble.
-     * An identification byte, <code>i</code>, comes next; this currently
-     * equals 2, as in the preamble.
-     * </p>
-     * <p>
-     * The <code>i</code> byte is followed by four or more bytes that are all
-     * equal to the decimal number 223 (i.e., 337 in octal). TeX puts out four
-     * to seven of these trailing bytes, until the total length of the file
-     * is a multiple of four bytes, since this works out best on machines
-     * that pack four bytes per word; but any number of 223's is allowed, as
-     * long as there are at least four of them. In effect, 223 is a sort of
-     * signature that is added at the very end.
-     * </p>
-     */
-    new DviInterpreterStep() {
-
-        /**
-         * @see de.dante.extex.format.dvi.DviInterpreterStep#interpret(
-         *      de.dante.util.file.random.RandomAccessR, int)
-         */
-        public void interpret(final RandomAccessR rar, final int opcode)
-                throws IOException, DviException {
-
-            if (parentstack.empty()) {
-                throw new DviBopEopException();
-            }
-            parent = (Element) parentstack.pop();
-
-            int q = rar.readInt();
-            int i = rar.readByteAsInt();
-
-            Element element = new Element("postpost");
-            element.setAttribute("opcode", String.valueOf(opcode));
-            element.setAttribute("q", String.valueOf(q));
-            element.setAttribute("identifies", String.valueOf(i));
-            // read 223 until EOF
-            StringBuffer buf = new StringBuffer();
-            while (rar.getPointer() < rar.length()) {
-                buf.append(rar.readByteAsInt()).append(" ");
-            }
-            element.setText(buf.toString());
-            parent.addContent(element);
-        }
-    },
-
-    /**
-     * Commands 250--255 are undefined at the present time.
-     */
-    undef, /* 250 */
-    undef, /* 251 */
-    undef, /* 252 */
-    undef, /* 253 */
-    undef, /* 254 */
-    undef /* 255 */
-
-    };
+    private boolean showPT;
 
     /**
      * the mag
@@ -1970,25 +153,60 @@ public class DviXml implements DviInterpreter {
      *
      * @param s the scalefactor
      * @param d the desigsize
-     * @return Return the scaled.
+     * @return Returns the scaled.
      */
     private int getScaled(final int s, final int d) {
 
-        return (int) ((double) mag * s / d + 0.5);
+        return (int) ((double) mag * s / d + 0.5d);
     }
 
     /**
-     * load the font
-     * @param fn    the fontname
-     * @param c     the checksum
-     * @param s     the scalefactor
-     * @param d     the designsize
+     * Load the font.
+     *
+     * @param command   the command
+     * @throws DviException if a font not found.
+     * @throws FontException if an font-error occured.
+     * @throws ConfigurationException from the config-system.
      */
-    private void loadFont(final String fn, final int c, final int s, final int d) {
-        System.out.print("font: " + fn);
-        System.out.print(" s = " + s);
-        System.out.print(" d = " + d);
-        System.out.println();
+    private void loadFont(final DviFntDef command) throws DviException,
+            FontException, ConfigurationException {
+
+        Integer key = new Integer(command.getFont());
+        Dimen designsize = new Dimen(command.getScale());
+        Count scale = new Count(getScaled(command.getScale(), command
+                .getDesignsize()));
+        String name = command.getFName();
+
+        Font f = fontfactory.getInstance(name, designsize, scale, new Glue(0),
+                true, true);
+        if (f == null) {
+            throw new DviFontNotFoundException(name);
+        }
+        fontmap.put(key, f);
+    }
+
+    /**
+     * @param command   the command
+     * @param element   the element
+     */
+    private void addFontAttributes(final DviFntDef command,
+            final Element element) {
+
+        element.setAttribute("font", String.valueOf(command.getFont()));
+        element.setAttribute("checksum", String.valueOf(command.getChecksum()));
+        element.setAttribute("scalefactor", String.valueOf(command.getScale()));
+        element.setAttribute("designsize", String.valueOf(command
+                .getDesignsize()));
+        if (showPT) {
+            element.setAttribute("scalefactor_pt", Unit
+                    .getDimenAsPTString(new Dimen(command.getScale())));
+            element.setAttribute("designsize_pt", Unit
+                    .getDimenAsPTString(new Dimen(command.getDesignsize())));
+        }
+        element.setAttribute("scaled", String.valueOf(getScaled(command
+                .getScale(), command.getDesignsize())));
+        element.setAttribute("area", command.getArea());
+        element.setAttribute("name", command.getFName());
     }
 
     /**
@@ -1996,11 +214,531 @@ public class DviXml implements DviInterpreter {
      *      de.dante.util.file.random.RandomAccessR)
      */
     public void interpret(final RandomAccessR rar) throws IOException,
-            DviException {
+            DviException, FontException, ConfigurationException {
 
-        while (rar.getPointer() < rar.length()) {
-            int opcode = rar.readByteAsInt();
-            opcodearray[opcode].interpret(rar, opcode);
+        while (!rar.isEOF()) {
+            DviCommand command = DviCommand.getNextCommand(rar);
+
+            if (command instanceof DviChar) {
+                DviChar cc = (DviChar) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviRight) {
+                DviRight cc = (DviRight) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviDown) {
+                DviDown cc = (DviDown) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviW) {
+                DviW cc = (DviW) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviX) {
+                DviX cc = (DviX) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviY) {
+                DviY cc = (DviY) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviZ) {
+                DviZ cc = (DviZ) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviBOP) {
+                DviBOP cc = (DviBOP) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviEOP) {
+                DviEOP cc = (DviEOP) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPOP) {
+                DviPOP cc = (DviPOP) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPush) {
+                DviPush cc = (DviPush) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviRule) {
+                DviRule cc = (DviRule) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviXXX) {
+                DviXXX cc = (DviXXX) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviFntDef) {
+                DviFntDef cc = (DviFntDef) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviFntNum) {
+                DviFntNum cc = (DviFntNum) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPost) {
+                DviPost cc = (DviPost) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPostPost) {
+                DviPostPost cc = (DviPostPost) command;
+                execute(cc);
+                continue;
+            } else if (command instanceof DviPre) {
+                DviPre cc = (DviPre) command;
+                execute(cc);
+                continue;
+            }
+            System.out.println("mist, einen vergessen opcode:"
+                    + command.getOpcode());
+
         }
+    }
+
+    /**
+     * Returns the font from the fontmap.
+     * @return Returns the font from the fontmap.
+     * @throws DviMissingFontException if the font is not found.
+     */
+    private Font getFont() throws DviMissingFontException {
+
+        if (val.getF() == -1) {
+            return null;
+        }
+        Font font = (Font) fontmap.get(new Integer(val.getF()));
+        if (font == null) {
+            throw new DviMissingFontException(String.valueOf(val.getF()));
+        }
+        return font;
+    }
+
+    /**
+     * Set the values in the xml-element.
+     * @param element   the element
+     */
+    private void setValues(final Element element) {
+
+        element.setAttribute("h", String.valueOf(val.getH()));
+        element.setAttribute("v", String.valueOf(val.getV()));
+        element.setAttribute("w", String.valueOf(val.getW()));
+        element.setAttribute("x", String.valueOf(val.getX()));
+        element.setAttribute("y", String.valueOf(val.getY()));
+        element.setAttribute("z", String.valueOf(val.getZ()));
+        if (showPT) {
+            element.setAttribute("h_pt", Unit.getDimenAsPTString(new Dimen(val
+                    .getH())));
+            element.setAttribute("v_pt", Unit.getDimenAsPTString(new Dimen(val
+                    .getV())));
+            element.setAttribute("w_pt", Unit.getDimenAsPTString(new Dimen(val
+                    .getW())));
+            element.setAttribute("x_pt", Unit.getDimenAsPTString(new Dimen(val
+                    .getX())));
+            element.setAttribute("y_pt", Unit.getDimenAsPTString(new Dimen(val
+                    .getY())));
+            element.setAttribute("z_pt", Unit.getDimenAsPTString(new Dimen(val
+                    .getZ())));
+        }
+    }
+
+    /**
+     * Set the Font and Glyph-Info.
+     * @param opcode    the opcode (cahr-id)
+     * @param element   the element
+     * @throws DviMissingFontException  if the font is missinbg.
+     */
+    private void setFontGlyphInfo(final int opcode, final Element element)
+            throws DviMissingFontException {
+
+        Font font = getFont();
+        if (font != null) {
+            element.setAttribute("font", font.getFontName());
+            Glyph glyph = font.getGlyph(new UnicodeChar(opcode));
+            Dimen h = glyph.getHeight();
+            Dimen d = glyph.getDepth();
+            Dimen w = glyph.getWidth();
+            element.setAttribute("height", String.valueOf(h.getValue()));
+            element.setAttribute("depth", String.valueOf(d.getValue()));
+            element.setAttribute("width", String.valueOf(w.getValue()));
+            if (showPT) {
+                element.setAttribute("height_pt", Unit.getDimenAsPTString(h));
+                element.setAttribute("depth_pt", Unit.getDimenAsPTString(d));
+                element.setAttribute("width_pt", Unit.getDimenAsPTString(w));
+            }
+            val.addH((int) w.getValue());
+        }
+    }
+
+    /**
+     * Set the value for showPT.
+     * @param show The showPT to set.
+     */
+    public void setShowPT(final boolean show) {
+
+        showPT = show;
+    }
+
+    /**
+     * Set the fontmap.
+     * @param fontm The fontmap to set.
+     */
+    public void setFontmap(Map fontm) {
+
+        fontmap = fontm;
+    }
+
+    /**
+     * get bit 24
+     */
+    private static final int X24 = 0x800000;
+
+    /**
+     * get low 23 bit
+     */
+    private static final int L24 = 0x7f0000;
+
+    /**
+     * Convert int to sign 24 bit
+     * @param i32   the int-value
+     * @return Returns a 24 bit sign value
+     */
+    private int convInt24toSign(final int i32) {
+
+        int v = i32;
+        if ((i32 & X24) > 0) {
+            v = -(v & L24);
+        }
+        return v;
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviBOP)
+     */
+    public void execute(final DviBOP command) throws DviException,
+            FontException, ConfigurationException {
+
+        page++;
+
+        Element element = createElement(command);
+        int[] c = command.getC();
+        for (int i = 0; i < c.length; i++) {
+            element.setAttribute("c" + String.valueOf(i), String.valueOf(c[i]));
+        }
+        element.setAttribute("p", String.valueOf(command.getP()));
+        element.setAttribute("page", String.valueOf(page));
+        parent.addContent(element);
+        parentstack.push(parent);
+        parent = element;
+        val.clear();
+
+    }
+
+    /**
+     * set_char_0:
+     * Typeset character number 0 from font <code>f</code> such that the
+     * reference point of the character is at <code>(h,v)</code>.
+     * Then increase <code>h</code> by the width
+     * of that character. Note that a character may have zero or negative
+     * width, so one cannot be sure that <code>h</code> will advance after
+     * this command; but <code>h</code> usually does increase.
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviChar)
+     */
+    public void execute(final DviChar command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("char", String.valueOf(command.getCh()));
+        setValues(element);
+        setFontGlyphInfo(command.getOpcode(), element);
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviDown)
+     */
+    public void execute(final DviDown command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("value", String.valueOf(command.getValue()));
+        setValues(element);
+        val.addV(command.getValue());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviEOP)
+     */
+    public void execute(final DviEOP command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        parent.addContent(element);
+        if (parentstack.empty()) {
+            throw new DviBopEopException();
+        }
+        parent = (Element) parentstack.pop();
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviFntDef)
+     */
+    public void execute(final DviFntDef command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        addFontAttributes(command, element);
+        loadFont(command);
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviFntNum)
+     */
+    public void execute(final DviFntNum command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("id", String.valueOf(command.getFont()));
+        parent.addContent(element);
+        val.setF(command.getFont());
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviPOP)
+     */
+    public void execute(final DviPOP command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        DviValues v = stack.pop();
+        val.setValues(v);
+        setValues(element);
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviNOP)
+     */
+    public void execute(final DviNOP command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviPost)
+     */
+    public void execute(final DviPost command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("p", String.valueOf(command.getPointer()));
+        element.setAttribute("num", String.valueOf(command.getNum()));
+        element.setAttribute("den", String.valueOf(command.getDen()));
+        element.setAttribute("mag", String.valueOf(command.getMag()));
+        element.setAttribute("heightplusdepth", String.valueOf(command
+                .getHeigthdepth()));
+        element.setAttribute("widthwidest", String.valueOf(command.getWidth()));
+        element.setAttribute("stackdepth", String.valueOf(command
+                .getStackdepth()));
+        element.setAttribute("totalpage", String
+                .valueOf(command.getTotalpage()));
+        parent.addContent(element);
+        parentstack.push(parent);
+        parent = element;
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviPostPost)
+     */
+    public void execute(final DviPostPost command) throws DviException,
+            FontException, ConfigurationException {
+
+        if (parentstack.empty()) {
+            throw new DviBopEopException();
+        }
+        parent = (Element) parentstack.pop();
+
+        Element element = createElement(command);
+        element.setAttribute("q", String.valueOf(command.getPointer()));
+        element.setAttribute("identifies", String.valueOf(command
+                .getIdentification()));
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviPre)
+     */
+    public void execute(final DviPre command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("identifies", String.valueOf(command
+                .getIdentifier()));
+        element.setAttribute("num", String.valueOf(command.getNum()));
+        element.setAttribute("den", String.valueOf(command.getDen()));
+        element.setAttribute("mag", String.valueOf(command.getMag()));
+        if (command.getComment().length() > 0) {
+            Element comment = new Element("comment");
+            comment.setText(command.getComment());
+            element.addContent(comment);
+        }
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviPUSH)
+     */
+    public void execute(final DviPush command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        setValues(element);
+        parent.addContent(element);
+        stack.push(val);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviRight)
+     */
+    public void execute(final DviRight command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("value", String.valueOf(command.getValue()));
+        setValues(element);
+        val.addH(command.getValue());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviRule)
+     */
+    public void execute(final DviRule command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        element.setAttribute("height", String.valueOf(command.getHeight()));
+        element.setAttribute("width", String.valueOf(command.getWidth()));
+        setValues(element);
+        val.addH(command.getWidth());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviW)
+     */
+    public void execute(final DviW command) throws DviException, FontException,
+            ConfigurationException {
+
+        Element element = createElement(command);
+        setValues(element);
+        val.addH(val.getW());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviX)
+     */
+    public void execute(final DviX command) throws DviException, FontException,
+            ConfigurationException {
+
+        Element element = createElement(command);
+        setValues(element);
+        val.addH(val.getX());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviXXX)
+     */
+    public void execute(final DviXXX command) throws DviException,
+            FontException, ConfigurationException {
+
+        Element element = createElement(command);
+        StringBuffer buf = new StringBuffer();
+        int[] x = command.getValues();
+        for (int i = 0; i < x.length; i++) {
+            buf.append("0x").append(x[i]).append(" ");
+        }
+        element.setText(buf.toString());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviY)
+     */
+    public void execute(final DviY command) throws DviException, FontException,
+            ConfigurationException {
+
+        Element element = createElement(command);
+        setValues(element);
+        val.addV(val.getY());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
+     *      de.dante.extex.format.dvi.command.DviZ)
+     */
+    public void execute(final DviZ command) throws DviException, FontException,
+            ConfigurationException {
+
+        Element element = createElement(command);
+        setValues(element);
+        val.addV(val.getZ());
+        parent.addContent(element);
+
+    }
+
+    /**
+     * Create the element from a dvicommand.
+     * @param command   the command
+     * @return Returns the element.
+     */
+    private Element createElement(final DviCommand command) {
+
+        Element e = new Element(command.getName());
+        e.setAttribute("opcode", String.valueOf(command.getOpcode()));
+        return e;
     }
 }

@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.glue.GlueComponent;
  * This class implements a converter e.g for dimen values.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public final class Unit {
 
@@ -72,9 +72,9 @@ public final class Unit {
     private static final int SHIFT = 16;
 
     /**
-     * Return the <code>Dimen</code>-value as BP (big point)
+     * Returns the <code>Dimen</code>-value as BP (big point)
      * @param value the <code>Dimen</code>
-     * @return the <code>Dimen</code>-value as BP
+     * @return Returns the <code>Dimen</code>-value as BP
      */
     public static double getDimenAsBP(final Dimen value) {
 
@@ -84,7 +84,7 @@ public final class Unit {
     /**
      * Return the <code>Dimen</code>-value as PT (point)
      * @param value the <code>Dimen</code>
-     * @return the <code>Dimen</code>-value as PT
+     * @return Returns the <code>Dimen</code>-value as PT
      */
     public static double getDimenAsPT(final Dimen value) {
 
@@ -92,9 +92,19 @@ public final class Unit {
     }
 
     /**
-     * Return the <code>Dimen</code>-value as MM (milimeter)
+     * Return the <code>Dimen</code>-value (round) as PT (point) as  String.
      * @param value the <code>Dimen</code>
-     * @return the <code>Dimen</code>-value as MM
+     * @return Returns the <code>Dimen</code>-value (round) as PT as String
+     */
+    public static String getDimenAsPTString(final Dimen value) {
+
+        return String.valueOf(round(getDimenAsPT(value), 2));
+    }
+
+    /**
+     * Returns the <code>Dimen</code>-value as MM (milimeter)
+     * @param value the <code>Dimen</code>
+     * @return Returns the <code>Dimen</code>-value as MM
      */
     public static double getDimenAsMM(final Dimen value) {
 
@@ -102,9 +112,9 @@ public final class Unit {
     }
 
     /**
-     * Return the <code>Dimen</code>-value as CM (centimeter)
+     * Returns the <code>Dimen</code>-value as CM (centimeter)
      * @param value the <code>Dimen</code>
-     * @return the <code>Dimen</code>-value as CM
+     * @return Returns the <code>Dimen</code>-value as CM
      */
     public static double getDimenAsCM(final Dimen value) {
 
@@ -112,9 +122,9 @@ public final class Unit {
     }
 
     /**
-     * Return the <code>Dimen</code>-value as IN (inch)
+     * Returns the <code>Dimen</code>-value as IN (inch)
      * @param value the <code>Dimen</code>
-     * @return the <code>Dimen</code>-value as IN
+     * @return Returns the <code>Dimen</code>-value as IN
      */
     public static double getDimenAsIN(final Dimen value) {
 
@@ -135,7 +145,7 @@ public final class Unit {
      * Round the double-value to a number of decimals.
      * @param value the double-value
      * @param round the number of decimals to round (not round: negative value)
-     * @return the rounded double-value
+     * @return Returns the rounded double-value
      */
     public static double round(final double value, final int round) {
 

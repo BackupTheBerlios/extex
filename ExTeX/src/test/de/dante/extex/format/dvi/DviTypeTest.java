@@ -22,19 +22,18 @@ package de.dante.extex.format.dvi;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
+import java.io.PrintWriter;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Properties;
+import java.util.TreeMap;
 
 import junit.framework.TestCase;
-
-import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.output.XMLOutputter;
-
 import de.dante.extex.font.FontFactory;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationClassNotFoundException;
@@ -48,129 +47,92 @@ import de.dante.util.resource.ResourceFinder;
 import de.dante.util.resource.ResourceFinderFactory;
 
 /**
- * Test the DviXml class.
+ * Test the DviType class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
 
-public class DviXmlTest extends TestCase {
+public class DviTypeTest extends TestCase {
 
     /**
-     * write xml file
+     * path
      */
-    private static final boolean WRITEXML = true;
+    private static final String PATH = "src/test/data/dvi/";
 
     /**
-     * the root
+     * file
      */
-    private Element root;
+    private static final String FILE = "lettrine";
 
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
 
-        String file = "src/test/data/lettrine.dvi";
-
-        root = new Element("dvi");
+        String file = PATH + FILE + ".dvi";
         RandomAccessInputFile rar = new RandomAccessInputFile(file);
 
-        DviXml dvixml = new DviXml(root, makeFontFactory());
-        dvixml.setShowPT(true);
+        PrintWriter writer = new PrintWriter(new BufferedOutputStream(
+                new FileOutputStream(PATH + FILE + ".tmp")));
+        DviType dvitype = new DviType(writer, makeFontFactory());
 
-        dvixml.interpret(rar);
+        dvitype.interpret(rar);
         rar.close();
+        writer.close();
+    }
 
-        // write to efm-file
-        if (WRITEXML) {
-            XMLOutputter xmlout = new XMLOutputter("   ", true);
-            BufferedOutputStream out = new BufferedOutputStream(
-                    new FileOutputStream("dvi.xml.tmp"));
-            Document doc = new Document(root);
-            xmlout.output(doc, out);
-            out.close();
+    /**
+     * test the dviXml interpreter
+     * @throws IOException if a IO-error occurs
+     */
+    public void test01() throws IOException {
+
+        LineNumberReader inorg = new LineNumberReader(new FileReader(PATH
+                + FILE + ".dvitype"));
+        LineNumberReader innew = new LineNumberReader(new FileReader(PATH
+                + FILE + ".tmp"));
+
+        Map maporg = new TreeMap();
+        Map mapnew = new TreeMap();
+
+        readFile(inorg, maporg);
+        readFile(innew, mapnew);
+
+        inorg.close();
+        innew.close();
+
+        Iterator it = maporg.keySet().iterator();
+        while (it.hasNext()) {
+            Integer key = (Integer) it.next();
+            String lineorg = (String) maporg.get(key);
+            String linenew = (String) mapnew.get(key);
+            assertEquals(lineorg, linenew);
         }
     }
 
-    /**
-     * test the dviXml interpreter
-     */
-    public void testInterpretpre() {
-
-        assertEquals("2", findAttrElement("pre", "identifies"));
-        assertEquals("25400000", findAttrElement("pre", "num"));
-        assertEquals("473628672", findAttrElement("pre", "den"));
-        assertEquals("1000", findAttrElement("pre", "mag"));
-    }
+    // --------------------------------------
+    // --------------------------------------
+    // --------------------------------------
 
     /**
-     * test the dviXml interpreter
+     * @param in    the input
+     * @param map   the map
+     * @throws IOException
      */
-    public void testInterpretpostpost() {
+    private void readFile(final LineNumberReader in, final Map map)
+            throws IOException {
 
-        assertEquals("20510", findAttrElement("post_post", "q"));
-        assertEquals("2", findAttrElement("post_post", "identifies"));
-    }
-
-    /**
-     * test the dviXml interpreter
-     */
-    public void testInterpretfont() {
-
-        assertEquals("15", findAttrElementNr("bop", "fntdef1", "font", 0));
-        assertEquals("cmbx12", findAttrElementNr("bop", "fntdef1", "name", 0));
-        assertEquals("-1026142560", findAttrElementNr("bop", "fntdef1",
-                "checksum", 0));
-        assertEquals("943718", findAttrElementNr("bop", "fntdef1",
-                "scalefactor", 0));
-        assertEquals("1200", findAttrElementNr("bop", "fntdef1", "scaled", 0));
-    }
-
-    /**
-     * find a Attribute in the first element with the name
-     * @param ename the element name
-     * @param attrname  the attribute name
-     * @return Returns the value
-     */
-    private String findAttrElement(final String ename, final String attrname) {
-
-        String rt = null;
-        Element e = root.getChild(ename);
-        if (e != null) {
-            rt = e.getAttributeValue(attrname);
-        }
-        return rt;
-    }
-
-    /**
-     * find a Attribute in the element i with the name
-     * @param pname     the parent element
-     * @param ename     the element name
-     * @param attrname  the attribute name
-     * @param i         the index
-     * @return Returns the value
-     */
-    private String findAttrElementNr(final String pname, final String ename,
-            final String attrname, final int i) {
-
-        String rt = null;
-
-        Element parent = root.getChild(pname);
-        if (parent != null) {
-
-            List list = parent.getChildren(ename);
-            Element e = (Element) list.get(i);
-            if (e != null) {
-                rt = e.getAttributeValue(attrname);
+        // read all line with start with a number "111:..."
+        String line;
+        while ((line = in.readLine()) != null) {
+            if (line.matches("^[0-9]*:.*")) {
+                int pos = line.indexOf(":");
+                Integer key = new Integer(line.substring(0, pos));
+                map.put(key, line.trim());
             }
         }
-        return rt;
     }
-
-    // --------------------------------------
-    // --------------------------------------
-    // --------------------------------------
 
     /**
      * The field <tt>props</tt> contains the merged properties from the
@@ -264,10 +226,9 @@ public class DviXmlTest extends TestCase {
                     FileInputStream inputStream = new FileInputStream(file);
                     props.load(inputStream);
                     inputStream.close();
-                } catch (FileNotFoundException e) {
+                } catch (Exception e) {
                     // ignored on purpose
-                } catch (IOException e) {
-                    // ignored on purpose
+                    e.printStackTrace();
                 }
             }
         }

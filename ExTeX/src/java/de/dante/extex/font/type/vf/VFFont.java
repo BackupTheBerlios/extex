@@ -22,9 +22,12 @@ package de.dante.extex.font.type.vf;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.jdom.Element;
 
+import de.dante.extex.font.FontFactory;
 import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.vf.command.VFCommand;
 import de.dante.util.XMLConvertible;
@@ -45,7 +48,7 @@ import de.dante.util.file.random.RandomAccessR;
  * are adopted here to define VF format.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VFFont implements XMLConvertible, Serializable {
 
@@ -60,24 +63,32 @@ public class VFFont implements XMLConvertible, Serializable {
     private ArrayList cmds;
 
     /**
+     * the map for the fonts
+     */
+    private Map fontmap;
+
+    /**
      * Create e new object.
      *
      * @param rar       the input
      * @param afontname the fontname
+     * @param fontfac   the font factory
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
      */
-    public VFFont(final RandomAccessR rar, final String afontname)
-            throws IOException, FontException {
+    public VFFont(final RandomAccessR rar, final String afontname,
+            final FontFactory fontfac) throws IOException, FontException {
 
         fontname = afontname;
         cmds = new ArrayList();
+        fontmap = new HashMap();
 
         // read ...
         try {
 
             while (true) {
-                VFCommand command = VFCommand.getInstance(rar);
+                VFCommand command = VFCommand
+                        .getInstance(rar, fontfac, fontmap);
                 if (command == null) {
                     break;
                 }
@@ -87,19 +98,6 @@ public class VFFont implements XMLConvertible, Serializable {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //        int c;
-        //        int i = 0;
-        //        DecimalFormat format = new DecimalFormat("000");
-        //        while ((c = rar.read()) >= 0) {
-        //            System.out.print(format.format(c) + " (0x" + Integer.toHexString(c)
-        //                    + ")  ");
-        //            i++;
-        //            if (i == 8) {
-        //                System.out.println();
-        //                i = 0;
-        //            }
-        //        }
 
         // close input
         rar.close();

@@ -52,7 +52,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -115,7 +115,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
         }
         Count scalefactor = sf;
         // scale factor = 0 -> 1000
-        if (sf == null) {
+        if (sf == null || sf.getValue() == 0) {
             scalefactor = new Count(PERMILLE_FACTOR);
         }
         letterspaced = ls;

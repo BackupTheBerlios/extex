@@ -27,7 +27,7 @@ import java.io.IOException;
  * RandomAccess for a Array
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RandomAccessInputArray implements RandomAccessR {
 
@@ -460,4 +460,47 @@ public class RandomAccessInputArray implements RandomAccessR {
 
         return pointer;
     }
+
+    /**
+     * @see de.dante.util.file.random.RandomAccessR#isEOF()
+     */
+    public boolean isEOF() throws IOException {
+
+        return (getPointer() >= length());
+    }
+
+    /**
+     * @see de.dante.util.file.random.RandomAccessR#readInt16()
+     */
+    public int readInt16() throws IOException {
+
+        int ch1 = this.read();
+        int ch2 = this.read();
+        if ((ch1 | ch2) < 0) {
+            throw new EOFException();
+        }
+        return ((ch1 << SHIFT8) + (ch2 << 0));
+    }
+
+    /**
+     * @see de.dante.util.file.random.RandomAccessR#readInt8()
+     */
+    public int readInt8() throws IOException {
+
+        return this.read();
+    }
+
+    /**
+     * @see de.dante.util.file.random.RandomAccessR#readSignInt24()
+     */
+    public int readSignInt24() throws IOException {
+
+        int i32 = readInt24();
+        int v = i32;
+        if ((i32 & X24) > 0) {
+            v = -(v & L24);
+        }
+        return v;
+    }
+
 }

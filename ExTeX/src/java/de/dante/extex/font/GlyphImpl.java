@@ -29,7 +29,7 @@ import de.dante.util.UnicodeChar;
  * GlyphImplementation
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GlyphImpl implements Glyph, Serializable {
 
@@ -138,7 +138,7 @@ public class GlyphImpl implements Glyph, Serializable {
 
         try {
             float fsize = Float.parseFloat(gsize);
-            depth = new Dimen((long) (fsize * em.getValue() / unitsperem));
+            depth = new Dimen(round(fsize * em.getValue() / unitsperem));
         } catch (Exception e) {
             // use default
             depth = new Dimen(0);
@@ -171,7 +171,7 @@ public class GlyphImpl implements Glyph, Serializable {
 
         try {
             float fsize = Float.parseFloat(gsize);
-            height = new Dimen((long) (fsize * em.getValue() / unitsperem));
+            height = new Dimen(round(fsize * em.getValue() / unitsperem));
         } catch (Exception e) {
             // use default
             height = new Dimen(0);
@@ -204,7 +204,7 @@ public class GlyphImpl implements Glyph, Serializable {
 
         try {
             float fsize = Float.parseFloat(gsize);
-            italic = new Dimen((long) (fsize * em.getValue() / unitsperem));
+            italic = new Dimen(round(fsize * em.getValue() / unitsperem));
         } catch (Exception e) {
             // use default
             italic = new Dimen(0);
@@ -230,18 +230,44 @@ public class GlyphImpl implements Glyph, Serializable {
     /**
      * @param gsize         The size to set as <code>String</code>.
      * @param em            The em-size.
-     * @param unitsperem    The unit per em.
+     * @param unitsperem    The unit per em. (default 1000)
      */
     public void setWidth(final String gsize, final Dimen em,
             final int unitsperem) {
 
         try {
             float fsize = Float.parseFloat(gsize);
-            width = new Dimen((long) (fsize * em.getValue() / unitsperem));
+            width = new Dimen(round(fsize * em.getValue() / unitsperem));
+            // TODO rounding problem
+//            if (gsize.equals("782.407")) {
+//                System.out.println("hier");
+//                System.out.println("782.407");
+//                System.out.println("size  " + em + "   -> sp : "
+//                        + em.getValue());
+//                System.out.println("val = "
+//                        + (fsize * em.getValue() / unitsperem));
+//                System.out.println("val (sp) = " + width + "  -> sp : "
+//                        + width.getValue());
+//            }
         } catch (Exception e) {
             // use default
             width = new Dimen(0);
         }
+    }
+
+    /**
+     * round
+     */
+    private static final double ROUND = 0.5d;
+
+    /**
+     * round the double
+     * @param d the double
+     * @return Returns the rounded value
+     */
+    private long round(final double d) {
+
+        return (long) (d + ROUND);
     }
 
     /**
