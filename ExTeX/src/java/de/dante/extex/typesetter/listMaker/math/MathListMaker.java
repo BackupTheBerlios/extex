@@ -47,11 +47,14 @@ import de.dante.extex.typesetter.type.MathDelimiter;
 import de.dante.extex.typesetter.type.noad.FractionNoad;
 import de.dante.extex.typesetter.type.noad.GlueNoad;
 import de.dante.extex.typesetter.type.noad.KernNoad;
+import de.dante.extex.typesetter.type.noad.LeftNoad;
 import de.dante.extex.typesetter.type.noad.MathGlyph;
 import de.dante.extex.typesetter.type.noad.MathList;
+import de.dante.extex.typesetter.type.noad.MiddleNoad;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.NoadFactory;
 import de.dante.extex.typesetter.type.noad.NodeNoad;
+import de.dante.extex.typesetter.type.noad.RightNoad;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 import de.dante.util.GeneralException;
@@ -61,7 +64,7 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
@@ -70,7 +73,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      * It is used to store to the stack and restore the state from the stack.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.5 $
+     * @version $Revision: 1.6 $
      */
     private class MathMemento {
 
@@ -261,6 +264,26 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
+     * Getter for the contents of the insertion point. If the insertion point
+     * does not contain an element then <code>null</code> is returned. If it
+     * contains only one element then this element is returned. Otherwiese the
+     * complete list is returned.
+     *
+     * @return the contents of the insertion point
+     */
+    protected Noad getIp() {
+
+        switch (insertionPoint.size()) {
+            case 0:
+                return null;
+            case 1:
+                return insertionPoint.get(0);
+            default:
+                return insertionPoint;
+        }
+    }
+
+    /**
      * @see de.dante.extex.typesetter.listMaker.math.NoadConsumer#getLastNoad()
      */
     public Noad getLastNoad() throws GeneralException {
@@ -300,8 +323,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void left(final MathDelimiter delimiter) throws GeneralException {
 
-        // TODO gene: left unimplemented
-
+        add(new LeftNoad(delimiter));
     }
 
     /**
@@ -353,8 +375,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void middle(final MathDelimiter delimiter) throws GeneralException {
 
-        // TODO gene: middle unimplemented
-
+        add(new MiddleNoad(delimiter));
     }
 
     /**
@@ -386,8 +407,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      */
     public void right(final MathDelimiter delimiter) throws GeneralException {
 
-        // TODO gene: right unimplemented
-
+        add(new RightNoad(delimiter));
     }
 
     /**
@@ -423,17 +443,7 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
         } else {
             source.execute(t);
         }
-        MathListMaker ml = (MathListMaker) getManager().pop();
-
-        switch (ml.insertionPoint.size()) { //TODO gene: accessing the attribute directly is horrible
-            case 0:
-                //TODO gene: error unimplemented
-                throw new RuntimeException("unimplemented");
-            case 1:
-                return ml.insertionPoint.get(0);
-            default:
-                return ml.insertionPoint;
-        }
+        return (((MathListMaker) getManager().pop())).getIp();
     }
 
     /**
