@@ -19,21 +19,20 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.listMaker.NoadConsumer;
-import de.dante.extex.typesetter.type.Delimiter;
 import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.AccentNoad;
 import de.dante.extex.typesetter.type.noad.Noad;
-import de.dante.extex.typesetter.type.noad.RadicalNoad;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 
 /**
- * This class provides an implementation for the primitive <code>\mathaccent</code>.
+ * This class provides an implementation for the primitive
+ * <code>\mathaccent</code>.
  *
  * <doc name="mathaccent">
  * <h3>The Primitive <tt>\mathaccent</tt></h3>
@@ -54,12 +53,13 @@ import de.dante.util.UnicodeChar;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Mathaccent extends AbstractMathCode {
 
     /**
-     * The field <tt>CHARCODE_MAX</tt> contains the ...
+     * The field <tt>CHARCODE_MAX</tt> contains the maximum of the character
+     * code. If this value is exceeded then an error should be raised.
      */
     private static final int CHARCODE_MAX = 0xfff;
 
@@ -84,11 +84,11 @@ public class Mathaccent extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        NoadConsumer nc = getListMaker(typesetter);
+        NoadConsumer nc = getListMaker(context, typesetter);
         long accent = source.scanNumber();
         if (accent > CHARCODE_MAX) {
-            //TODO error unimplemneted
-            throw new RuntimeException("unmplemented");
+            throw new HelpingException(getLocalizer(), "TTP.BadMathCharCode",
+                    Long.toHexString(accent));
         }
         Noad noad = nc.scanNoad(context, source);
         nc.add(new AccentNoad(new MathGlyph((int) accent), noad));
