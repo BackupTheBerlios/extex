@@ -20,8 +20,8 @@
 package de.dante.extex.font.type.tfm;
 
 import java.io.Serializable;
-
-import com.ibm.icu.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 /**
  * TFM-FixWord
@@ -31,7 +31,7 @@ import com.ibm.icu.text.DecimalFormat;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TFMFixWord implements Serializable {
 
@@ -66,6 +66,16 @@ public class TFMFixWord implements Serializable {
     public static final int FIXWORDDENOMINATOR = 0x100000;
 
     /**
+     * tfmconf
+     */
+    public static final int TFMCONV = 0x10;
+
+    /**
+     * conf
+     */
+    public static final int CONV = 0x10000;
+
+    /**
      * Create a new object
      *
      * @param val the values as int
@@ -73,6 +83,21 @@ public class TFMFixWord implements Serializable {
     public TFMFixWord(final int val) {
 
         value = val << POINTSHIFT;
+    }
+
+    /**
+     * Create a new object
+     *
+     * @param val the values as String
+     */
+    public TFMFixWord(final String val) {
+
+        try {
+            value = Integer.parseInt(val);
+        } catch (NumberFormatException e) {
+            // use default
+            value = 0;
+        }
     }
 
     /**
@@ -144,18 +169,21 @@ public class TFMFixWord implements Serializable {
     }
 
     /**
-     * format
+     * FRACTIONDIGITS
      */
-    private static final DecimalFormat FORMAT = new DecimalFormat("0.0#####");
+    private static final int FRACTIONDIGITS = 6;
 
     /**
-     * Returns the value as Sting in untis with comma (0.00000).
+     * Returns the value as Sting in untis with comma (0.00000...).
      * @return Returns the value as Sting in untis with comma.
      */
     public String toStringComma() {
 
-        double d = Double.parseDouble(toString()) * TFMConstants.CONST_1000;
-        return FORMAT.format(d).replace(',', '.');
+        NumberFormat nf = NumberFormat.getInstance(Locale.US);
+        nf.setMaximumFractionDigits(FRACTIONDIGITS);
+        nf.setGroupingUsed(false);
+        return nf.format((double) value * TFMConstants.CONST_1000
+                / FIXWORDDENOMINATOR);
     }
 
     /**

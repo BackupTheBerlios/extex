@@ -61,7 +61,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class FontFactory implements Serializable {
 
@@ -277,6 +277,11 @@ public class FontFactory implements Serializable {
     private static final String TFMEXTENSION = "tfm";
 
     /**
+     * VF-Extension
+     */
+    private static final String VFEXTENSION = "vf";
+
+    /**
      * AFM-Extension
      */
     private static final String AFMEXTENSION = "afm";
@@ -307,58 +312,73 @@ public class FontFactory implements Serializable {
                 }
             } else {
 
-                // try tfm
-                InputStream tfmfile = finder.findResource(name /* + ".tfm"*/,
-                        TFMEXTENSION);
+                // try vf
+                InputStream vffile = finder.findResource(name /* + ".vf"*/,
+                        VFEXTENSION);
 
-                if (tfmfile != null) {
+                if (vffile != null) {
 
-                    EncFactory ef = new EncFactory(finder);
-
-                    // psfonts.map
-                    InputStream psin = finder.findResource("psfonts.map", "");
-
-                    if (psin == null) {
-                        throw new FontMapNotFoundException();
-                    }
-
-                    try {
-                        PSFontsMapReader psfm = new PSFontsMapReader(psin);
-                        String fontname = name.replaceAll("\\.tfm|\\.TFM", "");
-
-                        // // TFM-Reader
-                        // TFMReader tfmr = new TFMReader(tfmfile, fontname, psfm,
-                        // ef);
-                        // TFM-font
-                        TFMFont font = new TFMFont(new RandomAccessInputStream(
-                                tfmfile), fontname);
-
-                        font.setFontMapEncoding(psfm, ef);
-
-                        doc = new Document(font.getFontMetric());
-
-                    } catch (IOException e) {
-                        throw new FontIOException(e.getMessage());
-                    }
+                    // TODO incomplete
+                    
+                    
                 } else {
+                    // try tfm
+                    InputStream tfmfile = finder.findResource(
+                            name /* + ".tfm"*/, TFMEXTENSION);
 
-                    // try afm
-                    InputStream afmfile = finder.findResource(
-                            name /*+ ".afm"*/, AFMEXTENSION);
+                    if (tfmfile != null) {
 
-                    if (afmfile != null) {
+                        EncFactory ef = new EncFactory(finder);
+
+                        // psfonts.map
+                        InputStream psin = finder.findResource("psfonts.map",
+                                "");
+
+                        if (psin == null) {
+                            throw new FontMapNotFoundException();
+                        }
 
                         try {
-                            AFMReader afmreader = new AFMReader(afmfile, name
-                            /*+ ".pfb"*/, "10");
+                            PSFontsMapReader psfm = new PSFontsMapReader(psin);
+                            String fontname = name.replaceAll("\\.tfm|\\.TFM",
+                                    "");
 
-                            doc = new Document(afmreader.getFontMetric());
+                            // // TFM-Reader
+                            // TFMReader tfmr = new TFMReader(tfmfile, fontname, psfm,
+                            // ef);
+                            // TFM-font
+                            TFMFont font = new TFMFont(
+                                    new RandomAccessInputStream(tfmfile),
+                                    fontname);
+
+                            font.setFontMapEncoding(psfm, ef);
+
+                            doc = new Document(font.getFontMetric());
+
                         } catch (IOException e) {
                             throw new FontIOException(e.getMessage());
                         }
-
                     } else {
-                        throw new FontNotFoundException();
+
+                        // try afm
+                        InputStream afmfile = finder.findResource(
+                                name /*+ ".afm"*/, AFMEXTENSION);
+
+                        if (afmfile != null) {
+
+                            try {
+                                AFMReader afmreader = new AFMReader(afmfile,
+                                        name
+                                        /*+ ".pfb"*/, "10");
+
+                                doc = new Document(afmreader.getFontMetric());
+                            } catch (IOException e) {
+                                throw new FontIOException(e.getMessage());
+                            }
+
+                        } else {
+                            throw new FontNotFoundException();
+                        }
                     }
                 }
             }

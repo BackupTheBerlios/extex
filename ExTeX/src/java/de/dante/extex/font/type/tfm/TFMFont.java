@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TFMFont
         implements
@@ -369,6 +369,7 @@ public class TFMFont
         root.setAttribute("id", getFontFamily());
         root.setAttribute("default-size", String.valueOf(getDesignSize()));
         root.setAttribute("empr", "100");
+        root.setAttribute("type","tfm");
 
         Element fontdimen = new Element("fontdimen");
         root.addContent(fontdimen);
@@ -465,7 +466,7 @@ public class TFMFont
     }
 
     /**
-     * @see de.dante.extex.font.type.PlFormat#toPL(java.io.OutputStream)
+     * @see de.dante.extex.font.type.PlFormat#toPL(de.dante.extex.font.type.PlWriter)
      */
     public void toPL(final PlWriter out) throws IOException {
 

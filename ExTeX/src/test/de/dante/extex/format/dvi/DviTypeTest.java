@@ -48,9 +48,12 @@ import de.dante.util.resource.ResourceFinderFactory;
 
 /**
  * Test the DviType class.
+ * <p>
+ * needs -Xms64m -Xmx127m
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviTypeTest extends TestCase {
@@ -61,37 +64,67 @@ public class DviTypeTest extends TestCase {
     private static final String PATH = "src/test/data/dvi/";
 
     /**
-     * file
+     * files
      */
-    private static final String FILE = "lettrine";
+    private static final String[] FILES = {"lettrine", "listings", "andre"};
 
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
 
-        String file = PATH + FILE + ".dvi";
-        RandomAccessInputFile rar = new RandomAccessInputFile(file);
+        for (int i = 0; i < FILES.length; i++) {
 
-        PrintWriter writer = new PrintWriter(new BufferedOutputStream(
-                new FileOutputStream(PATH + FILE + ".tmp")));
-        DviType dvitype = new DviType(writer, makeFontFactory());
+            String file = PATH + FILES[i] + ".dvi";
+            RandomAccessInputFile rar = new RandomAccessInputFile(file);
 
-        dvitype.interpret(rar);
-        rar.close();
-        writer.close();
+            PrintWriter writer = new PrintWriter(new BufferedOutputStream(
+                    new FileOutputStream(PATH + FILES[i] + ".tmp")));
+            DviType dvitype = new DviType(writer, makeFontFactory());
+
+            dvitype.interpret(rar);
+            rar.close();
+            writer.close();
+        }
     }
 
     /**
      * test the dviXml interpreter
      * @throws IOException if a IO-error occurs
      */
-    public void test01() throws IOException {
+    public void testlettrine() throws IOException {
+
+        checkFile(FILES[0]);
+    }
+
+    /**
+     * test the dviXml interpreter
+     * @throws IOException if a IO-error occurs
+     */
+    public void testlistings() throws IOException {
+
+        checkFile(FILES[1]);
+    }
+
+    /**
+     * test the dviXml interpreter
+     * @throws IOException if a IO-error occurs
+     */
+    public void testandre() throws IOException {
+
+        checkFile(FILES[2]);
+    }
+
+    /**
+     * @param file  the file to test
+     * @throws IOException if an io-error occurs
+     */
+    private void checkFile(final String file) throws IOException {
 
         LineNumberReader inorg = new LineNumberReader(new FileReader(PATH
-                + FILE + ".dvitype"));
+                + file + ".dvitype"));
         LineNumberReader innew = new LineNumberReader(new FileReader(PATH
-                + FILE + ".tmp"));
+                + file + ".tmp"));
 
         Map maporg = new TreeMap();
         Map mapnew = new TreeMap();
@@ -105,10 +138,30 @@ public class DviTypeTest extends TestCase {
         Iterator it = maporg.keySet().iterator();
         while (it.hasNext()) {
             Integer key = (Integer) it.next();
-            String lineorg = (String) maporg.get(key);
-            String linenew = (String) mapnew.get(key);
+            String lineorg = killVVHH((String) maporg.get(key));
+            String linenew = killVVHH((String) mapnew.get(key));
+            // String lineorg = (String) maporg.get(key);
+            // String linenew = (String) mapnew.get(key);
             assertEquals(lineorg, linenew);
         }
+    }
+
+    /**
+     * remove the vv- or hh-value
+     * @param s the String
+     * @return Returns the String witout vv.. / hh..
+     */
+    private String killVVHH(final String s) {
+
+        int i = s.indexOf("vv");
+        if (i >= 0) {
+            return s.substring(0, i);
+        }
+        i = s.indexOf("hh");
+        if (i >= 0) {
+            return s.substring(0, i);
+        }
+        return s;
     }
 
     // --------------------------------------
@@ -118,7 +171,7 @@ public class DviTypeTest extends TestCase {
     /**
      * @param in    the input
      * @param map   the map
-     * @throws IOException
+     * @throws IOException if an io-error occurs
      */
     private void readFile(final LineNumberReader in, final Map map)
             throws IOException {
@@ -241,6 +294,6 @@ public class DviTypeTest extends TestCase {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DviXmlTest.class);
+        junit.textui.TestRunner.run(DviTypeTest.class);
     }
 }

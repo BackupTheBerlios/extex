@@ -79,7 +79,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
@@ -725,6 +725,7 @@ public class TFMCharInfoWord implements XMLConvertible, PlFormat, Serializable {
         element.setAttribute("tag", s);
         element.setAttribute("remainder", String.valueOf(remainder));
         element.setAttribute("width", getWidth().toStringComma());
+        // element.setAttribute("width_fw", String.valueOf(getWidth().getValue()));
         element.setAttribute("height", getHeight().toStringComma());
         element.setAttribute("depth", getDepth().toStringComma());
         element.setAttribute("italic", getItalic().toStringComma());

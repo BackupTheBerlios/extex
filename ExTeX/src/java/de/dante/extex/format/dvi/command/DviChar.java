@@ -23,7 +23,7 @@ package de.dante.extex.format.dvi.command;
  * DVI: character
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviChar extends DviCommand {
@@ -85,6 +85,19 @@ public class DviChar extends DviCommand {
     }
 
     /**
+     * Returns <code>true</code>, if the command ist setx oder putx.
+     * @return Returns <code>true</code>, if the command ist setx oder putx.
+     */
+    public boolean isSetPut() {
+
+        if ((getOpcode() >= MIN_SET && getOpcode() <= MAX_SET)
+                || (getOpcode() >= MIN_PUT && getOpcode() <= MAX_PUT)) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * MIN_SET_CHAR
      */
     private static final int MIN_SET_CHAR = 0;
@@ -108,6 +121,11 @@ public class DviChar extends DviCommand {
      * MIN_PUT
      */
     private static final int MIN_PUT = 133;
+
+    /**
+     * MAX_PUT
+     */
+    private static final int MAX_PUT = 136;
 
     /**
      * @see de.dante.extex.format.dvi.command.DviCommand#getName()

@@ -53,6 +53,7 @@ import de.dante.extex.format.dvi.command.DviZ;
 import de.dante.extex.format.dvi.exception.DviBopEopException;
 import de.dante.extex.format.dvi.exception.DviException;
 import de.dante.extex.format.dvi.exception.DviFontNotFoundException;
+import de.dante.extex.format.dvi.exception.DviGlyphNotFoundException;
 import de.dante.extex.format.dvi.exception.DviMissingFontException;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -73,7 +74,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#DVIformat">DVI-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 
 public class DviXml implements DviInterpreter, DviExecuteCommand {
@@ -124,6 +125,10 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
     /**
      * Create a new object.
+     * <p>
+     * It is only usefull for small dvi-files
+     * (or you have a lot of memory)
+     * </p>
      *
      * @param element   the root element
      * @param ff        the fontfactroy
@@ -385,6 +390,8 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         page++;
+        val.clear();
+        stack.clear();
 
         Element element = createElement(command);
         int[] c = command.getC();
@@ -407,11 +414,26 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviChar command) throws DviException,
             FontException, ConfigurationException {
 
+        Integer key = new Integer(val.getF());
+        Font f = (Font) fontmap.get(key);
+        if (f == null) {
+            throw new DviFontNotFoundException(command.getName());
+        }
+        Glyph g = f.getGlyph(new UnicodeChar(command.getCh()));
+        if (g == null) {
+            throw new DviGlyphNotFoundException(String.valueOf(command.getCh()));
+        }
+        Dimen width = g.getWidth();
+
         Element element = createElement(command);
         element.setAttribute("char", String.valueOf(command.getCh()));
         setValues(element);
         setFontGlyphInfo(command.getOpcode(), element);
         parent.addContent(element);
+
+        if (!command.isPut()) {
+            val.addH((int) width.getValue());
+        }
 
     }
 
@@ -571,7 +593,7 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
     /**
      * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
-     *      de.dante.extex.format.dvi.command.DviPUSH)
+     *      de.dante.extex.format.dvi.command.DviPush)
      */
     public void execute(final DviPush command) throws DviException,
             FontException, ConfigurationException {
@@ -609,7 +631,9 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
         element.setAttribute("height", String.valueOf(command.getHeight()));
         element.setAttribute("width", String.valueOf(command.getWidth()));
         setValues(element);
-        val.addH(command.getWidth());
+        if (!command.isPut()) {
+            val.addH(command.getWidth());
+        }
         parent.addContent(element);
 
     }
@@ -623,6 +647,10 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         setValues(element);
+        if (!command.isW0()) {
+            val.setW(command.getValue());
+            element.setAttribute("value", String.valueOf(command.getValue()));
+        }
         val.addH(val.getW());
         parent.addContent(element);
 
@@ -637,6 +665,10 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         setValues(element);
+        if (!command.isX0()) {
+            val.setX(command.getValue());
+            element.setAttribute("value", String.valueOf(command.getValue()));
+        }
         val.addH(val.getX());
         parent.addContent(element);
 
@@ -650,12 +682,7 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
             FontException, ConfigurationException {
 
         Element element = createElement(command);
-        StringBuffer buf = new StringBuffer();
-        int[] x = command.getValues();
-        for (int i = 0; i < x.length; i++) {
-            buf.append("0x").append(x[i]).append(" ");
-        }
-        element.setText(buf.toString());
+        element.setText(command.getXXXString());
         parent.addContent(element);
 
     }
@@ -669,6 +696,10 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         setValues(element);
+        if (!command.isY0()) {
+            val.setY(command.getValue());
+            element.setAttribute("value", String.valueOf(command.getValue()));
+        }
         val.addV(val.getY());
         parent.addContent(element);
 
@@ -683,6 +714,10 @@ public class DviXml implements DviInterpreter, DviExecuteCommand {
 
         Element element = createElement(command);
         setValues(element);
+        if (!command.isZ0()) {
+            val.setZ(command.getValue());
+            element.setAttribute("value", String.valueOf(command.getValue()));
+        }
         val.addV(val.getZ());
         parent.addContent(element);
 

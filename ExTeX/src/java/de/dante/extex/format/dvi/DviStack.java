@@ -25,7 +25,7 @@ import java.util.Stack;
  * DVI stack.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviStack {
@@ -70,7 +70,7 @@ public class DviStack {
      */
     public DviValues push(final DviValues item) {
 
-        return (DviValues) stack.push(item);
+        return (DviValues) stack.push(new DviValues(item));
     }
 
     /**

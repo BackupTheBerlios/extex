@@ -25,7 +25,7 @@ import de.dante.util.UnicodeChar;
  * DVI: xxx
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviXXX extends DviCommand {
@@ -89,15 +89,15 @@ public class DviXXX extends DviCommand {
     /**
      * xxx1
      */
-    private static final int XXX1 = 239;
-
+    // private static final int XXX1 = 239;
     /**
      * @see de.dante.extex.format.dvi.command.DviCommand#getName()
      */
     public String getName() {
 
-        StringBuffer buf = new StringBuffer();
-        buf.append("xxx").append(getOpcode() - XXX1 + 1);
-        return buf.toString();
+        //        StringBuffer buf = new StringBuffer();
+        //        buf.append("xxx").append(getOpcode() - XXX1 + 1);
+        //        return buf.toString();
+        return "xxx";
     }
 }

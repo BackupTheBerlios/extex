@@ -26,7 +26,7 @@ import java.io.IOException;
  * Interface for random access (read only)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface RandomAccessR extends DataInput {
 
@@ -74,12 +74,13 @@ public interface RandomAccessR extends DataInput {
     int X24 = 0x800000;
 
     /**
-     * get low 23 bit
+     * kill the higest 8 bit (by a 32 bit int)
      */
-    int L24 = 0x7f0000;
+    int KILL32 = 0xff000000;
 
     /**
      * Reads a sign int with 24 bit (3x8).
+     * The sign is calculated with the b-komplement.
      * @return  Returns a int value.
      * @throws IOException if an IO-error occurs.
      */

@@ -93,7 +93,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
 public class VFCommandCharacterPackets extends VFCommand {
@@ -134,7 +134,7 @@ public class VFCommandCharacterPackets extends VFCommand {
      * @param rar           the input
      * @param ccode         the command code
      * @param fontfac       the font factory
-     * qparam fontm         the fontmap
+     * @param fontm         the fontmap
      * @throws IOException if a IO-error occured
      * @throws FontException if a error reading the font.
      */
@@ -212,14 +212,14 @@ public class VFCommandCharacterPackets extends VFCommand {
      */
     public Element toXML() {
 
-        Element element = new Element("character");
-        element.setAttribute("ccode", String.valueOf(getCommandCode()));
-        element.setAttribute("charactercode", String.valueOf(charactercode));
+        Element element = new Element("char");
+        element.setAttribute("opcode", String.valueOf(getCommandCode()));
+        element.setAttribute("char", String.valueOf(charactercode));
         element.setAttribute("packetlength", String.valueOf(packetlength));
         element.setAttribute("width", width.toString());
 
         for (int i = 0; i < dvi.length; i++) {
-            Element d = new Element("dvi");
+            Element d = new Element("dvi-org");
             d.setAttribute("id", String.valueOf(i));
             d.setAttribute("value", String.valueOf(dvi[i]));
             element.addContent(d);
@@ -232,7 +232,7 @@ public class VFCommandCharacterPackets extends VFCommand {
             RandomAccessR arar = new RandomAccessInputArray(dvi);
 
             DviXml dvixml = new DviXml(d, fontfactory);
-            dvixml.setShowPT(true);
+            //dvixml.setShowPT(true);
             dvixml.setFontmap(fontmap);
 
             dvixml.interpret(arar);

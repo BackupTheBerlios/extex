@@ -19,6 +19,7 @@
 
 package de.dante.extex.font;
 
+import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.util.UnicodeChar;
 
@@ -26,7 +27,7 @@ import de.dante.util.UnicodeChar;
  * Interface for a Glyph
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface Glyph {
 
@@ -49,6 +50,12 @@ public interface Glyph {
     void setDepth(String gsize, Dimen em, int unitsperem);
 
     /**
+     * @param size          The size as fix word.
+     * @param em            The em-size.
+     */
+    void setDepth(TFMFixWord size, Dimen em);
+
+    /**
      * @return Returns the height.
      */
     Dimen getHeight();
@@ -64,6 +71,12 @@ public interface Glyph {
      * @param unitsperem    The unit per em.
      */
     void setHeight(String gsize, Dimen em, int unitsperem);
+
+    /**
+     * @param size          The size as fix word.
+     * @param em            The em-size.
+     */
+    void setHeight(TFMFixWord size, Dimen em);
 
     /**
      * @return the italic correction.
@@ -83,6 +96,12 @@ public interface Glyph {
     void setItalicCorrection(String gsize, Dimen em, int unitsperem);
 
     /**
+     * @param size          The size as fix word.
+     * @param em            The em-size.
+     */
+    void setItalicCorrection(TFMFixWord size, Dimen em);
+
+    /**
      * @return Returns the width.
      */
     Dimen getWidth();
@@ -98,6 +117,12 @@ public interface Glyph {
      * @param unitsperem    The unit per em.
      */
     void setWidth(String gsize, Dimen em, int unitsperem);
+
+    /**
+     * @param size          The size as fix word.
+     * @param em            The em-size.
+     */
+    void setWidth(TFMFixWord size, Dimen em);
 
     /**
      * @return Returns the name.

@@ -48,7 +48,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Test the tftopl class.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class TftoPlTest extends TestCase {
@@ -259,6 +259,6 @@ public class TftoPlTest extends TestCase {
      */
     public static void main(final String[] args) {
 
-        junit.textui.TestRunner.run(DviXmlTest.class);
+        junit.textui.TestRunner.run(TftoPlTest.class);
     }
 }

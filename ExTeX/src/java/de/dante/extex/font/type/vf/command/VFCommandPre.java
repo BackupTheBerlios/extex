@@ -49,7 +49,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class VFCommandPre extends VFCommand {
@@ -157,7 +157,7 @@ public class VFCommandPre extends VFCommand {
     public Element toXML() {
 
         Element element = new Element("preamble");
-        element.setAttribute("ccode", String.valueOf(getCommandCode()));
+        element.setAttribute("opcode", String.valueOf(getCommandCode()));
         element.setAttribute("identification", String.valueOf(identification));
         element.setAttribute("checksum", String.valueOf(checksum));
         element.setAttribute("designsize", designsize.toString());

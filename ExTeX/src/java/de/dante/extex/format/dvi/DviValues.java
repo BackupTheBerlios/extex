@@ -56,7 +56,7 @@ package de.dante.extex.format.dvi;
  * <p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class DviValues {
@@ -67,6 +67,20 @@ public class DviValues {
     public DviValues() {
 
         clear();
+    }
+
+    /**
+     * Create a new object.
+     * @param val   the new values.
+     */
+    public DviValues(final DviValues val) {
+
+        h = val.h;
+        v = val.v;
+        w = val.w;
+        x = val.x;
+        y = val.y;
+        z = val.z;
     }
 
     /**

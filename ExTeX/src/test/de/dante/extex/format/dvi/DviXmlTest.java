@@ -22,16 +22,13 @@ package de.dante.extex.format.dvi;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.List;
 import java.util.Properties;
 
 import junit.framework.TestCase;
 
-import org.jaxen.JaxenException;
 import org.jaxen.jdom.JDOMXPath;
 import org.jdom.Document;
 import org.jdom.Element;
@@ -51,12 +48,25 @@ import de.dante.util.resource.ResourceFinderFactory;
 
 /**
  * Test the DviXml class.
+ * <p>
+ * needs -Xms64m -Xmx512m
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 
 public class DviXmlTest extends TestCase {
+
+    /**
+     * path
+     */
+    private static final String PATH = "src/test/data/dvi/";
+
+    /**
+     * files
+     */
+    private static final String[] FILES = {"lettrine", "listings"};
 
     /**
      * write xml file
@@ -64,22 +74,66 @@ public class DviXmlTest extends TestCase {
     private static final boolean WRITEXML = true;
 
     /**
-     * the root
+     * test the dviXml interpreter
+     * @throws Exception if an error occurs
      */
-    private Element root;
+    public void testlettrine() throws Exception {
+
+        Element root = readXML(0);
+
+        // -----------------------------------------
+        JDOMXPath path = new JDOMXPath("/dvi/pre");
+        Element el = (Element) path.selectSingleNode(root);
+
+        assertEquals("2", el.getAttributeValue("identifies"));
+        assertEquals("25400000", el.getAttributeValue("num"));
+        assertEquals("473628672", el.getAttributeValue("den"));
+        assertEquals("1000", el.getAttributeValue("mag"));
+
+        // -----------------------------------------
+        path = new JDOMXPath("/dvi/post_post");
+        el = (Element) path.selectSingleNode(root);
+
+        assertEquals("20510", el.getAttributeValue("q"));
+        assertEquals("2", el.getAttributeValue("identifies"));
+
+        // -----------------------------------------
+        path = new JDOMXPath("/dvi/post/fntdef1[@font='15']");
+        el = (Element) path.selectSingleNode(root);
+
+        assertEquals("15", el.getAttributeValue("font"));
+        assertEquals("cmbx12", el.getAttributeValue("name"));
+        assertEquals("-1026142560", el.getAttributeValue("checksum"));
+        assertEquals("943718", el.getAttributeValue("scalefactor"));
+        assertEquals("1200", el.getAttributeValue("scaled"));
+
+    }
 
     /**
-     * @see junit.framework.TestCase#setUp()
+     * test the dviXml interpreter
+     * @throws Exception if an error occurs
      */
-    protected void setUp() throws Exception {
+    public void testlistings() throws Exception {
 
-        String file = "src/test/data/dvi/lettrine.dvi";
+        Element root = readXML(1);
 
-        root = new Element("dvi");
+    }
+
+    /**
+     * read the xml
+     * @param nr    the file-nr
+     * @return Return the root element
+     * @throws Exception if an error occurs
+     */
+    private Element readXML(final int nr) throws Exception {
+
+        String file = PATH + FILES[nr] + ".dvi";
         RandomAccessInputFile rar = new RandomAccessInputFile(file);
 
+        Element root = new Element("dvi");
+
         DviXml dvixml = new DviXml(root, makeFontFactory());
-        dvixml.setShowPT(true);
+        // dvixml.setShowPT(true);
 
         dvixml.interpret(rar);
         rar.close();
@@ -88,96 +142,13 @@ public class DviXmlTest extends TestCase {
         if (WRITEXML) {
             XMLOutputter xmlout = new XMLOutputter("   ", true);
             BufferedOutputStream out = new BufferedOutputStream(
-                    new FileOutputStream("dvi.xml.tmp"));
+                    new FileOutputStream(PATH + FILES[nr] + ".xml.tmp"));
             Document doc = new Document(root);
             xmlout.output(doc, out);
             out.close();
         }
-    }
 
-    /**
-     * test the dviXml interpreter
-     * @throws JaxenException if a jaxen error is occured
-     */
-    public void testInterpretpre() throws JaxenException {
-
-        JDOMXPath path = new JDOMXPath("/dvi/pre");
-        Element el = (Element) path.selectSingleNode(root);
-
-        assertEquals("2", el.getAttributeValue("identifies"));
-        assertEquals("25400000", el.getAttributeValue("num"));
-        assertEquals("473628672", el.getAttributeValue("den"));
-        assertEquals("1000", el.getAttributeValue("mag"));
-    }
-
-    /**
-     * test the dviXml interpreter
-     * @throws JaxenException if a jaxen error is occured
-     */
-    public void testInterpretpostpost() throws JaxenException {
-
-        JDOMXPath path = new JDOMXPath("/dvi/post_post");
-        Element el = (Element) path.selectSingleNode(root);
-
-        assertEquals("20510", el.getAttributeValue("q"));
-        assertEquals("2", el.getAttributeValue("identifies"));
-    }
-
-    /**
-     * test the dviXml interpreter
-     * @throws JaxenException if a jaxen error is occured
-     */
-    public void testInterpretfont() throws JaxenException {
-
-        JDOMXPath path = new JDOMXPath("/dvi/post/fntdef1[@font='15']");
-        Element el = (Element) path.selectSingleNode(root);
-
-        assertEquals("15", el.getAttributeValue("font"));
-        assertEquals("cmbx12", el.getAttributeValue("name"));
-        assertEquals("-1026142560", el.getAttributeValue("checksum"));
-        assertEquals("943718", el.getAttributeValue("scalefactor"));
-        assertEquals("1200", el.getAttributeValue("scaled"));
-    }
-
-    /**
-     * find a Attribute in the first element with the name
-     * @param ename the element name
-     * @param attrname  the attribute name
-     * @return Returns the value
-     */
-    private String findAttrElement(final String ename, final String attrname) {
-
-        String rt = null;
-        Element e = root.getChild(ename);
-        if (e != null) {
-            rt = e.getAttributeValue(attrname);
-        }
-        return rt;
-    }
-
-    /**
-     * find a Attribute in the element i with the name
-     * @param pname     the parent element
-     * @param ename     the element name
-     * @param attrname  the attribute name
-     * @param i         the index
-     * @return Returns the value
-     */
-    private String findAttrElementNr(final String pname, final String ename,
-            final String attrname, final int i) {
-
-        String rt = null;
-
-        Element parent = root.getChild(pname);
-        if (parent != null) {
-
-            List list = parent.getChildren(ename);
-            Element e = (Element) list.get(i);
-            if (e != null) {
-                rt = e.getAttributeValue(attrname);
-            }
-        }
-        return rt;
+        return root;
     }
 
     // --------------------------------------
@@ -276,8 +247,6 @@ public class DviXmlTest extends TestCase {
                     FileInputStream inputStream = new FileInputStream(file);
                     props.load(inputStream);
                     inputStream.close();
-                } catch (FileNotFoundException e) {
-                    // ignored on purpose
                 } catch (IOException e) {
                     // ignored on purpose
                 }

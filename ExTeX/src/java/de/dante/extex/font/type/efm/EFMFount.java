@@ -41,6 +41,7 @@ import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.font.type.efm.exception.FontConfigReadException;
 import de.dante.extex.font.type.efm.exception.FontNoFontGroupException;
 import de.dante.extex.font.type.efm.exception.FontWrongFileExtensionException;
+import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
@@ -52,7 +53,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -85,6 +86,11 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      * the design-size for the font
      */
     private Dimen designsize;
+
+    /**
+     * the font type e.g tfm
+     */
+    private String type;
 
     /**
      * permille factor for scale factor
@@ -206,6 +212,12 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                 ex = attr.getIntValue();
             }
 
+            // type
+            attr = fontgroup.getAttribute("type");
+            if (attr != null) {
+                type = attr.getValue();
+            }
+
             getFontDimenValues(fontgroup);
 
             // get glyph-list
@@ -246,15 +258,31 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                         gv.setNumber(e.getAttributeValue("glyph-number"));
                         gv.setName(e.getAttributeValue("glyph-name"));
                         gv.setExternalFile(externalfile);
-                        gv.setWidth(e.getAttributeValue("width"), actualsize,
-                                unitsperem);
-                        gv.setDepth(e.getAttributeValue("depth"), actualsize,
-                                unitsperem);
-                        gv.setHeight(e.getAttributeValue("height"), actualsize,
-                                unitsperem);
-                        gv.setItalicCorrection(e.getAttributeValue("italic"),
-                                actualsize, unitsperem);
+                        if ("tfm".equals(type)) {
+                            gv.setWidth(new TFMFixWord(e
+                                    .getAttributeValue("width-fw")),
+                                    actualsize);
+                            gv.setDepth(new TFMFixWord(e
+                                    .getAttributeValue("depth-fw")),
+                                    actualsize);
+                            gv.setHeight(new TFMFixWord(e
+                                    .getAttributeValue("height-fw")),
+                                    actualsize);
+                            gv.setItalicCorrection(new TFMFixWord(e
+                                    .getAttributeValue("italic-fw")),
+                                    actualsize);
 
+                        } else {
+                            gv.setWidth(e.getAttributeValue("width"),
+                                    actualsize, unitsperem);
+                            gv.setDepth(e.getAttributeValue("depth"),
+                                    actualsize, unitsperem);
+                            gv.setHeight(e.getAttributeValue("height"),
+                                    actualsize, unitsperem);
+                            gv.setItalicCorrection(e
+                                    .getAttributeValue("italic"), actualsize,
+                                    unitsperem);
+                        }
                         // kerning
                         if (kerning) {
                             List kerninglist = e.getChildren("kerning");

@@ -29,7 +29,7 @@ import java.io.RandomAccessFile;
  * RandomAccess for a File (Input) DEBUG-VERSION
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RandomAccessInputFileDebug implements RandomAccessR {
 
@@ -392,10 +392,9 @@ public class RandomAccessInputFileDebug implements RandomAccessR {
      */
     public int readSignInt24() throws IOException {
 
-        int i32 = readInt24();
-        int v = i32;
-        if ((i32 & X24) > 0) {
-            v = -(v & L24);
+        int v = readInt24();
+        if ((v & X24) > 0) {
+            v = -((~(v | KILL32)) + 1);
         }
         return v;
     }

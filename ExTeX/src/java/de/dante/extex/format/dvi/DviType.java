@@ -66,7 +66,7 @@ import de.dante.util.file.random.RandomAccessR;
  * DviType.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 
 public class DviType implements DviInterpreter, DviExecuteCommand {
@@ -302,12 +302,26 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
 
     /**
      * round the pixel
-     * @param v thje value
+     * @param v the value
      * @return Returns the rounded value
      */
     private int pixelround(final int v) {
 
         return (int) Math.round(v * conv);
+    }
+
+    /**
+     * It computes the number of pixels in the height or width of a rule.
+     * @param v the value
+     * @return Returns the number of pixels.
+     */
+    private int rulepixels(final int v) {
+
+        int n = (int) (conv * v);
+        if (n < conv * v) {
+            return n + 1;
+        }
+        return n;
     }
 
     /**
@@ -353,6 +367,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
     private void printHeader() {
 
         NumberFormat nf = NumberFormat.getInstance(Locale.ENGLISH);
+        nf.setGroupingUsed(false);
         nf.setMinimumFractionDigits(FORM8);
         w.println("This is DVItype, Version ExTeX");
         w.print("Resolution = ");
@@ -388,11 +403,12 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
 
     /**
      * Print the values.
+     * @param level the level
      */
-    private void printValues() {
+    private void printValues(final int level) {
 
         w.print("level ");
-        w.print(stack.size() - 1);
+        w.print(level);
         w.print(":(h=");
         w.print(val.getH());
         w.print(",v=");
@@ -455,10 +471,13 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         if (!command.isPut()) {
             val.addH((int) width.getValue());
         }
-        // TODO incomplete put...
         w.print(command.getStartPointer());
         w.print(": ");
         w.print(command.getName());
+        if (command.isSetPut()) {
+            w.print(" ");
+            w.print(command.getCh());
+        }
         w.print(" h:=");
         w.print(oldh);
         w.print(width.getValue() >= 0 ? "+" : "");
@@ -551,12 +570,12 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
     public void execute(final DviPOP command) throws DviException,
             FontException, ConfigurationException {
 
+        DviValues newval = stack.pop();
+        val.setValues(newval);
         w.print(command.getStartPointer());
         w.print(": ");
         w.println(command.getName());
-        printValues();
-        DviValues newval = stack.pop();
-        val.setValues(newval);
+        printValues(stack.size());
     }
 
     /**
@@ -609,7 +628,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
 
     /**
      * @see de.dante.extex.format.dvi.command.DviExecuteCommand#execute(
-     *      de.dante.extex.format.dvi.command.DviPUSH)
+     *      de.dante.extex.format.dvi.command.DviPush)
      */
     public void execute(final DviPush command) throws DviException,
             FontException, ConfigurationException {
@@ -618,7 +637,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         w.print(command.getStartPointer());
         w.print(": ");
         w.println(command.getName());
-        printValues();
+        printValues(stack.size() - 1);
     }
 
     /**
@@ -658,13 +677,15 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         w.print(" height ");
         w.print(command.getHeight());
         w.print(", width ");
-        w.println(command.getWidth());
-        // TODO incomplete
+        w.print(command.getWidth());
+        w.print(" (");
+        w.print(rulepixels(command.getHeight()));
+        w.print("x");
+        w.print(rulepixels(command.getWidth()));
+        w.println(" pixels)");
         if (!command.isPut()) {
             val.addH(command.getWidth());
         }
-        //        3274: putrule height 26214, width 9305970 (2x590 pixels) 
-
     }
 
     /**
@@ -686,7 +707,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         w.print(val.getW());
         w.print(" h:=");
         w.print(oldh);
-        w.print(val.getW() >= 0 ? "+" : "-");
+        w.print(val.getW() >= 0 ? "+" : "");
         w.print(val.getW());
         w.print("=");
         w.print(val.getH());
@@ -705,7 +726,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         if (!command.isX0()) {
             val.setX(command.getValue());
         }
-        val.addH(command.getValue());
+        val.addH(val.getX());
         w.print(command.getStartPointer());
         w.print(": ");
         w.print(command.getName());
@@ -755,7 +776,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         w.print(val.getY());
         w.print(" v:=");
         w.print(oldv);
-        w.print(val.getY() >= 0 ? "+" : "-");
+        w.print(val.getY() >= 0 ? "+" : "");
         w.print(val.getY());
         w.print("=");
         w.print(val.getV());
@@ -783,7 +804,7 @@ public class DviType implements DviInterpreter, DviExecuteCommand {
         w.print(val.getZ());
         w.print(" v:=");
         w.print(oldv);
-        w.print(val.getZ() >= 0 ? "+" : "-");
+        w.print(val.getZ() >= 0 ? "+" : "");
         w.print(val.getZ());
         w.print("=");
         w.print(val.getV());

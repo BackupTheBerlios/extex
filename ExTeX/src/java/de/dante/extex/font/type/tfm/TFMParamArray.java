@@ -41,7 +41,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TFMParamArray implements XMLConvertible, PlFormat, Serializable {
@@ -145,7 +145,7 @@ public class TFMParamArray implements XMLConvertible, PlFormat, Serializable {
     }
 
     /**
-     * @see de.dante.extex.font.type.PlFormat#toPL(java.io.OutputStream)
+     * @see de.dante.extex.font.type.PlFormat#toPL(de.dante.extex.font.type.PlWriter)
      */
     public void toPL(final PlWriter out) throws IOException {
 
