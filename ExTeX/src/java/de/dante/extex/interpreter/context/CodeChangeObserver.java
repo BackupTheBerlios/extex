@@ -27,12 +27,12 @@ import de.dante.extex.scanner.Token;
  * change of a code assignment for a macro or an  active character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface CodeChangeObserver {
 
     /**
-     * ...
+     * Receive a notification on a code change.
      *
      * @param name the token containing the name of the changed entity.
      *  This is a macro or an active character.

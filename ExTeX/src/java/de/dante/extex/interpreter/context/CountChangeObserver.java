@@ -26,12 +26,12 @@ import de.dante.extex.interpreter.type.count.Count;
  * change of a count register.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface CountChangeObserver {
 
     /**
-     * ...
+     * Receive a notification on a count change.
      *
      * @param name the token containing the name of the changed Count.
      * @param value the new value assigned to the name. In case of
