@@ -55,7 +55,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable {
@@ -266,10 +266,10 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
                     element.setAttribute("glyph-name", ci.getGlyphname()
                             .substring(1));
                 }
-                glyph.setAttribute("width", ci.getWidth().toStringUnits());
-                glyph.setAttribute("height", ci.getHeight().toStringUnits());
-                glyph.setAttribute("depth", ci.getDepth().toStringUnits());
-                glyph.setAttribute("italic", ci.getItalic().toStringUnits());
+                glyph.setAttribute("width", ci.getWidth().toStringComma());
+                glyph.setAttribute("height", ci.getHeight().toStringComma());
+                glyph.setAttribute("depth", ci.getDepth().toStringComma());
+                glyph.setAttribute("italic", ci.getItalic().toStringComma());
 
                 // ligature
                 int ligstart = ci.getLigkernstart();
@@ -313,7 +313,7 @@ public class TFMCharInfoArray implements XMLConvertible, PlFormat, Serializable 
                                 kerning.setAttribute("char", sk.trim());
                             }
                             kerning.setAttribute("size", kern.getKern()
-                                    .toStringUnits());
+                                    .toStringComma());
 
                             glyph.addContent(kerning);
                         }

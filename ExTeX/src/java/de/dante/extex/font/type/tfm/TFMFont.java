@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TFMFont
         implements
@@ -154,6 +154,7 @@ public class TFMFont
     public Element toXML() {
 
         Element tfm = new Element("tfm");
+        tfm.setAttribute("name", fontname);
         tfm.addContent(lengths.toXML());
         tfm.addContent(header.toXML());
         tfm.addContent(charinfo.toXML());
