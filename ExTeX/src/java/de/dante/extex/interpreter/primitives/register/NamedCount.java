@@ -48,7 +48,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class NamedCount extends AbstractAssignment implements
     Advanceable, Multiplyable, Divideable, Theable, CountConvertable {
@@ -74,14 +74,9 @@ public class NamedCount extends AbstractAssignment implements
         source.scanKeyword("by");
 
         long value = Count.scanCount(context, source);
+        value += context.getCount(key).getValue();
 
-        Count count = context.getCount(key);
-        count.add(value);
-
-        if (prefix.isGlobal()) {
-            value = count.getValue();
-            context.setCount(key, value, true);
-        }
+        context.setCount(key, value, prefix.isGlobal());
     }
 
     /**
@@ -130,13 +125,8 @@ public class NamedCount extends AbstractAssignment implements
             throw new GeneralHelpingException("TTP.ArithOverflow");
         }
 
-        Count count = context.getCount(key);
-        count.divide(value);
-
-        if (prefix.isGlobal()) {
-            value = count.getValue();
-            context.setCount(key, value, true);
-        }
+        value = context.getCount(key).getValue() / value;
+        context.setCount(key, value, prefix.isGlobal());
     }
 
     /**
@@ -151,14 +141,8 @@ public class NamedCount extends AbstractAssignment implements
         source.scanKeyword("by");
 
         long value = Count.scanCount(context, source);
-
-        Count count = context.getCount(key);
-        count.setValue(count.getValue() * value);
-
-        if (prefix.isGlobal()) {
-            value = count.getValue();
-            context.setCount(key, value, true);
-        }
+        value *= context.getCount(key).getValue();
+        context.setCount(key, value, prefix.isGlobal());
     }
 
     /**

@@ -18,6 +18,7 @@
  */
 package de.dante.extex.interpreter.primitives.register;
 
+import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Advanceable;
 import de.dante.extex.interpreter.CountConvertable;
@@ -45,7 +46,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class NamedDimen extends AbstractAssignment implements Advanceable,
         CountConvertable, DimenConvertable, Multiplyable, Divideable, Theable {
@@ -85,14 +86,10 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
         String key = getKey(source);
         source.scanKeyword("by");
 
-        Dimen add = new Dimen(context, source);
-        Dimen dimen = context.getDimen(key);
-        add.add(dimen);
-        dimen.set(add);
+        Dimen d = new Dimen(context, source);
+        d.add(context.getDimen(key));
+        context.setDimen(key, d, prefix.isGlobal());
 
-        if (prefix.isGlobal()) {
-            context.setDimen(key, add, true);
-        }
         prefix.clear();
     }
 
@@ -149,19 +146,19 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
 
         return convertCount(context, source);
     }
+
     /**
      * @see de.dante.extex.interpreter.Multiplyable#multiply(de.dante.extex.interpreter.Flags, de.dante.extex.interpreter.context.Context, de.dante.extex.interpreter.TokenSource)
      */
-    public void multiply(final Flags prefix, final Context context, final TokenSource source)
-            throws GeneralException {
+    public void multiply(final Flags prefix, final Context context,
+            final TokenSource source) throws GeneralException {
 
         String key = getKey(source);
         source.scanKeyword("by");
-        long factor = Count.scanCount(context, source);
-        Dimen dimen = context.getDimen(key);
-        Dimen val = new Dimen(factor * dimen.getValue());
+        long value = Count.scanCount(context, source);
+        Dimen d = new Dimen(context.getDimen(key).getValue() * value);
+        context.setDimen(key, d, prefix.isGlobal());
 
-        context.setDimen(key, val, prefix.isGlobal());
         prefix.clear();
     }
 
@@ -174,11 +171,15 @@ public class NamedDimen extends AbstractAssignment implements Advanceable,
 
         String key = getKey(source);
         source.scanKeyword("by");
-        long factor = Count.scanCount(context, source);
-        Dimen dimen = context.getDimen(key);
-        Dimen val = new Dimen(dimen.getValue() / factor);
+        long value = Count.scanCount(context, source);
 
-        context.setDimen(key, val, prefix.isGlobal());
+        if (value == 0) {
+            throw new GeneralHelpingException("TTP.ArithOverflow");
+        }
+
+        Dimen d = new Dimen(context.getDimen(key).getValue() / value);
+        context.setDimen(key, d, prefix.isGlobal());
+
         prefix.clear();
     }
     /**
