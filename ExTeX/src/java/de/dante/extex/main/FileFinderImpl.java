@@ -19,9 +19,9 @@
 package de.dante.extex.main;
 
 import de.dante.util.configuration.ConfigurationException;
+import de.dante.util.file.FileFinder;
 import de.dante.extex.i18n.Messages;
 import de.dante.extex.logging.Logger;
-import de.dante.extex.scanner.stream.FileFinder;
 
 import java.io.File;
 import java.io.IOException;
@@ -30,11 +30,9 @@ import java.io.IOException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileFinderImpl implements FileFinder {
-    /** ... */
-    private FileFinder parent = null;
 
     /** ... */
     private Logger logger;
@@ -42,18 +40,17 @@ public class FileFinderImpl implements FileFinder {
     /**
      * Creates a new object.
      */
-    public FileFinderImpl(FileFinder parent, Logger logger) {
+    public FileFinderImpl(Logger logger) {
         super();
-        this.parent = parent;
         this.logger = logger;
     }
 
     /**
-     * @see de.dante.extex.scanner.stream.FileFinder#findFile(java.lang.String, java.lang.String)
+     * @see de.dante.util.file.FileFinder#findFile(java.lang.String, java.lang.String)
      */
     public File findFile(String name, String type)
                   throws ConfigurationException {
-        File file = (parent == null ? null : parent.findFile(name, type));
+        File file = null;
 
         try {
             while (file == null) {
@@ -69,9 +66,6 @@ public class FileFinderImpl implements FileFinder {
                 } else if (name.charAt(0) == '\\') {
                     //TODO make use of the line read
                     return null;
-                } else {
-                    file = (parent == null ? null
-                            : parent.findFile(name, type));
                 }
             }
         } catch (IOException e) {
