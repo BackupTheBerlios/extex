@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.primitives.file;
 
 import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.exception.InterpreterException;
@@ -40,6 +41,12 @@ import de.dante.extex.typesetter.Typesetter;
  * <p>
  *  TODO missing documentation
  * </p>
+ * <p>
+ *  The formal description of this primitive is the following:
+ *  <pre class="syntax">
+ *    &lang;read&rang;
+ *       &rarr; <tt>\read</tt> &lang;read&rang; <tt>to</tt> &lang;control sequence&rang;</pre>
+ * </p>
  * </doc>
  *
  * Example
@@ -48,7 +55,7 @@ import de.dante.extex.typesetter.Typesetter;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public class Read extends AbstractCode {
 
@@ -79,6 +86,11 @@ public class Read extends AbstractCode {
             throw new HelpingException(getLocalizer(), "TTP.MissingToForRead");
         }
         CodeToken cs = source.getControlSequence(context);
+
+        Interaction interaction = context.getInteraction();
+        if (interaction != Interaction.ERRORSTOPMODE) {
+            throw new HelpingException(getLocalizer(), "TTP.NoTermRead");
+        }
         InFile file = context.getInFile(key);
 
         Tokens toks = file.read(context.getTokenFactory(), context
