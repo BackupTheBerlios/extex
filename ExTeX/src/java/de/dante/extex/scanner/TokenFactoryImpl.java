@@ -24,19 +24,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is a implementation of a token factory.
- * This means that the factory pattern is applied here. This pattern opens the
- * possibility to cache the instances for Tokens to reduce the number of
- * objects present in the system.
+ * This is a implementation of a token factory. This means that the factory
+ * pattern is applied here. This pattern opens the possibility to cache the
+ * instances for Tokens to reduce the number of objects present in the system.
  * <p>
  * In addition the visitor pattern is used to select the appropriate
  * instanciation method.
- *
+ * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class TokenFactoryImpl implements TokenFactory,
-                                         CatcodeVisitor {
+public class TokenFactoryImpl implements TokenFactory, CatcodeVisitor {
     /** cache for active character tokens */
     private Map activeCache = new HashMap();
 
@@ -58,19 +56,16 @@ public class TokenFactoryImpl implements TokenFactory,
     /** cache for other tokens */
     private Map otherCache = new HashMap();
 
-    /** ... */
+    /** cache for right brace tokens */
     private Map rightBraceCache = new HashMap();
 
-    /** ... */
-    private Map spaceCache   = new HashMap();
-
-    /** ... */
+    /** cache for sub mark tokens */
     private Map subMarkCache = new HashMap();
 
-    /** ... */
+    /** cache for super mark tokens */
     private Map supMarkCache = new HashMap();
 
-    /** ... */
+    /** cache for tab mark tokens */
     private Map tabMarkCache = new HashMap();
 
     /**
@@ -82,45 +77,42 @@ public class TokenFactoryImpl implements TokenFactory,
 
     /**
      * Create a new {@link de.dante.extex.scanner.Token Token} of the
-     * appropriate kind.
-     * Tokens are immutable (no setters) thus the factory pattern can be
-     * applied.
-     *
+     * appropriate kind. Tokens are immutable (no setters) thus the factory
+     * pattern can be applied.
+     * 
      * @param code the category code
      * @param value the value
-     *
+     * 
      * @return the new token
-     *
+     * 
      * @throws GeneralException in case of an error
      */
     public Token newInstance(Catcode code, String value)
-                      throws GeneralException {
+            throws GeneralException {
         return (Token) code.visit((CatcodeVisitor) this, value, null);
     }
 
     /**
      * Create a new {@link de.dante.extex.scanner.Token Token} of the
-     * appropriate kind.
-     * Tokens are immutable (no setters) thus the factory pattern can be
-     * applied.
-     *
+     * appropriate kind. Tokens are immutable (no setters) thus the factory
+     * pattern can be applied.
+     * 
      * @param code the category code
      * @param c the character value
-     *
+     * 
      * @return the new token
-     *
+     * 
      * @throws GeneralException in case of an error
      */
-    public Token newInstance(Catcode code, char c)
-                      throws GeneralException {
-        return (Token) code.visit((CatcodeVisitor) this,
-                                  Character.toString(c), null);
+    public Token newInstance(Catcode code, char c) throws GeneralException {
+        return (Token) code.visit((CatcodeVisitor) this, Character.toString(c),
+                                  null);
     }
 
     /**
      * Active characters are cached. Thus a lookup in the cache preceeds the
      * creation of a new token
-     *
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitActive(java.lang.Object,java.lang.Object)
      */
     public Object visitActive(Object value, Object ignore) {
@@ -136,7 +128,7 @@ public class TokenFactoryImpl implements TokenFactory,
 
     /**
      * Comments are ignored thus <code>null</code> is returned in any case.
-     *
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitComment(java.lang.Object,java.lang.Object)
      */
     public Object visitComment(Object value, Object ignore) {
@@ -262,18 +254,16 @@ public class TokenFactoryImpl implements TokenFactory,
         return token;
     }
 
+    private Token spaceToken = new SpaceToken(" ");
+
     /**
+     * There is only one space token. It has the character code 32.
+     * 
      * @see de.dante.extex.scanner.CatcodeVisitor#visitSpace(java.lang.Object,java.lang.Object)
+     * @see "The TeXbook [Chapter 8, p. 47]"
      */
     public Object visitSpace(Object value, Object ignore) {
-        Object token = spaceCache.get(value);
-
-        if (token == null) {
-            token = new SpaceToken((String) value);
-            spaceCache.put(value, token);
-        }
-
-        return token;
+        return spaceToken;
     }
 
     /**

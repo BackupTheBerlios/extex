@@ -30,16 +30,18 @@ import de.dante.extex.i18n.Messages;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class SpaceToken extends AbstractToken implements Token {
     /**
      * Creates a new object.
      *
      * @param value the actual value
+     * 
+     * @see "The TeXbook [Chapter 8; p.47]"
      */
     protected SpaceToken(String value) {
-        super(value);
+        super(" ");
     }
 
     /**
