@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.info;
 
 import de.dante.extex.i18n.HelpingException;
@@ -25,7 +26,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.Theable;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.ControlSequenceToken;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -43,7 +44,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Showthe extends The {
 
@@ -53,6 +54,7 @@ public class Showthe extends The {
      * @param name the name for tracing and debugging
      */
     public Showthe(final String name) {
+
         super(name);
     }
 
@@ -72,9 +74,9 @@ public class Showthe extends The {
 
         Token cs = source.getToken();
 
-        if (cs instanceof ControlSequenceToken) {
+        if (cs instanceof CodeToken) {
 
-            Code code = context.getCode(cs);
+            Code code = context.getCode((CodeToken) cs);
 
             if (code != null && code instanceof Theable) {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
@@ -83,8 +85,8 @@ public class Showthe extends The {
             }
         }
 
-        throw new HelpingException("TTP.CantUseAfter",
-                cs.toString(), printableControlSequence(context));
+        throw new HelpingException("TTP.CantUseAfter", cs.toString(),
+                printableControlSequence(context));
     }
 
 }

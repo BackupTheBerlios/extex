@@ -68,7 +68,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.31 $
+ * @version $Revision: 1.32 $
  */
 public abstract class Moritz implements TokenSource, Configurable, Observable {
 
@@ -237,7 +237,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
         if (t == null || !(t instanceof CodeToken)) {
             throw new HelpingException("TTP.BoxExpected");
         }
-        Code code = context.getCode(t);
+        Code code = context.getCode((CodeToken) t);
         if (code == null || !(code instanceof Boxable)) {
             throw new HelpingException("TTP.BoxExpected");
         }
@@ -274,7 +274,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
 
             throw new HelpingException("TTP.MissingCtrlSeq");
         } else if (t instanceof CodeToken) {
-            Code code = context.getCode(t);
+            Code code = context.getCode((CodeToken) t);
             if (code != null && code instanceof CsConvertible) {
                 t = ((CsConvertible) code).convertCs(context, this);
             }
@@ -298,7 +298,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
         if (t == null || !(t instanceof CodeToken)) {
             throw new HelpingException("TTP.MissingFontIdent");
         }
-        Code code = context.getCode(t);
+        Code code = context.getCode((CodeToken) t);
         if (code == null || !(code instanceof FontConvertible)) {
             throw new HelpingException("TTP.MissingFontIdent");
         }
@@ -962,7 +962,7 @@ public abstract class Moritz implements TokenSource, Configurable, Observable {
                         throw new HelpingException("TTP.MissingNumber");
                 }
             } else if (t instanceof CodeToken) {
-                Code code = context.getCode(t);
+                Code code = context.getCode((CodeToken) t);
                 if (code == null) {
                     throw new HelpingException("TTP.MissingNumber");
                 } else if (code instanceof CountConvertible) {

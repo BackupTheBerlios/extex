@@ -73,7 +73,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Let extends AbstractAssignment implements TokenVisitor {
 
@@ -140,12 +140,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public Object visitActive(final ActiveCharacterToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         Context context = (Context) oContext;
         Code code = context.getCode(token);
@@ -162,12 +163,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
-    public final Object visitCr(final CrToken token, final Object oContext,
-            final Object ignore) throws GeneralException {
+    public final Object visitCr(final CrToken token, final Object oContext)
+            throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -177,12 +179,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitEscape(final ControlSequenceToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         Context context = (Context) oContext;
         Code code = context.getCode(token);
@@ -199,12 +202,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitLeftBrace(final LeftBraceToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -214,12 +218,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitLetter(final LetterToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -229,12 +234,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitMacroParam(final MacroParamToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -244,12 +250,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitMathShift(final MathShiftToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -259,12 +266,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
-    public final Object visitOther(final OtherToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+    public final Object visitOther(final OtherToken token, final Object oContext)
+            throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -274,12 +282,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitRightBrace(final RightBraceToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -289,12 +298,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
-    public final Object visitSpace(final SpaceToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+    public final Object visitSpace(final SpaceToken token, final Object oContext)
+            throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -304,12 +314,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitSubMark(final SubMarkToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -319,12 +330,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitSupMark(final SupMarkToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -334,12 +346,13 @@ public class Let extends AbstractAssignment implements TokenVisitor {
      *
      * @param token the token to find the code for
      * @param oContext the interpreter context
-     * @param ignore this parameter is ignored
+     *
      * @return the code associated to the token
+     *
      * @throws GeneralException in case of an error
      */
     public final Object visitTabMark(final TabMarkToken token,
-            final Object oContext, final Object ignore) throws GeneralException {
+            final Object oContext) throws GeneralException {
 
         throw new RuntimeException("unimplemented");
     }

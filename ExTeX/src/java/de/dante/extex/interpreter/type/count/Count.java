@@ -26,6 +26,7 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -36,7 +37,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class Count implements Serializable, FixedCount {
 
@@ -118,16 +119,17 @@ public class Count implements Serializable, FixedCount {
         Token t = source.getNonSpace();
 
         if (t == null) {
-            // TODO
+            // TODO eof
             return 0;
         }
 
-        Code code = context.getCode(t);
-        if (code != null && code instanceof CountConvertible) {
-            return ((CountConvertible) code).convertCount(context, source,
-                    typesetter);
+        if (t instanceof CodeToken) {
+            Code code = context.getCode((CodeToken) t);
+            if (code != null && code instanceof CountConvertible) {
+                return ((CountConvertible) code).convertCount(context, source,
+                        typesetter);
+            }
         }
-
         source.push(t);
 
         return source.scanInteger();

@@ -43,7 +43,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Ifcase extends AbstractIf {
 
@@ -122,19 +122,20 @@ public class Ifcase extends AbstractIf {
     public void expand(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
+
         execute(prefix, context, source, typesetter);
     }
 
     /**
-     * Skip to the next matching <tt>\fi</tt> or <tT>\or</tt> Token
+     * Skip to the next matching <tt>\fi</tt> or <tt>\or</tt> Token
      * counting the intermediate <tt>\if</tt> s and <tt>\fi</tt>s.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
-     * @return <code>true</code> if a matching \or has been found;
-     *         otherwise return <code>false</code> if a matching \fi has been
-     *         found.
+     * @return <code>true</code> if a matching <tt>\or</tt> has been found;
+     *  otherwise return <code>false</code> if a matching <tt>\fi</tt> has been
+     *  found.
      *
      * @throws GeneralException in case of en error
      */
@@ -145,7 +146,8 @@ public class Ifcase extends AbstractIf {
         int n = 0;
 
         for (Token t = source.getToken(); t != null; t = source.getToken()) {
-            if (t instanceof CodeToken && (code = context.getCode(t)) != null) {
+            if (t instanceof CodeToken
+                    && (code = context.getCode((CodeToken) t)) != null) {
                 if (code instanceof Fi) {
                     if (--n < 0) {
                         return FI;
@@ -184,7 +186,7 @@ public class Ifcase extends AbstractIf {
      * This is an internal class for typesafe values.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     protected static final class Tag {
 

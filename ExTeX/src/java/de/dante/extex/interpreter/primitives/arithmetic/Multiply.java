@@ -25,6 +25,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.arithmetic.Multiplyable;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
@@ -77,7 +78,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Multiplyable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Multiply extends AbstractAssignment {
     /**
@@ -107,7 +108,7 @@ public class Multiply extends AbstractAssignment {
                     cs.toString(), printableControlSequence(context));
         }
 
-        Code code = context.getCode(cs);
+        Code code = context.getCode((CodeToken) cs);
 
         if (code == null) {
             throw new HelpingException("TTP.UndefinedToken", cs

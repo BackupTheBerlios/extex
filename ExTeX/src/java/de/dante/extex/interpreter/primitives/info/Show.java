@@ -19,6 +19,7 @@
 
 package de.dante.extex.interpreter.primitives.info;
 
+import de.dante.extex.i18n.Messages;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -56,7 +57,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Show extends AbstractCode {
 
@@ -85,7 +86,7 @@ public class Show extends AbstractCode {
         if (t == null) {
             throw new RuntimeException("unimplemented");
         }
-        source.update("message", meaning(t, context).toText());
+        source.update("message", "\n> " + meaning(t, context).toText() + ".\n");
         return true;
     }
 
@@ -115,9 +116,9 @@ public class Show extends AbstractCode {
         }
         toks.add(new Tokens(context, t.getValue()));
         toks.add(new Tokens(context, "="));
-        Code code = context.getCode(t);
+        Code code = context.getCode((CodeToken) t);
         if (code == null) {
-            toks.add(new Tokens(context, "undefined")); // TODO: i18n?
+            toks.add(new Tokens(context, Messages.format("TTP.Undefined")));
         } else if ((code instanceof Showable)) {
             toks.add(((Showable) code).show(context));
         } else {

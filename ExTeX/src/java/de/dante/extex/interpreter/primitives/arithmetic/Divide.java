@@ -76,7 +76,7 @@ import de.dante.util.GeneralException;
  *
  * @see de.dante.extex.interpreter.type.arithmetic.Divideable
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Divide extends AbstractAssignment {
     /**
@@ -106,7 +106,7 @@ public class Divide extends AbstractAssignment {
                     cs.toString(), printableControlSequence(context));
         }
 
-        Code code = context.getCode(cs);
+        Code code = context.getCode((CodeToken) cs);
 
         if (code == null) {
             throw new HelpingException("TTP.UndefinedToken", cs

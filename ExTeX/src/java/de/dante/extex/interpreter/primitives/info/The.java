@@ -45,7 +45,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class The extends AbstractCode implements ExpandableCode {
 
@@ -77,7 +77,7 @@ public class The extends AbstractCode implements ExpandableCode {
 
         if (cs instanceof CodeToken) {
 
-            Code code = context.getCode(cs);
+            Code code = context.getCode((CodeToken) cs);
 
             if (code != null && code instanceof Theable) {
                 Tokens toks = ((Theable) code).the(context, source, typesetter);
