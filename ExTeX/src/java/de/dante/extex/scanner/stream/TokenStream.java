@@ -26,8 +26,9 @@ import de.dante.util.Locator;
 
 /**
  * This interface describes the features of a stream capable of delivering
- * {@link Token Token}s. In fact it is a pushback stream since Tokens already
- * read can be pushed back onto the stream for further reading.
+ * {@link de.dante.extex.scanner.Token Token}s. In fact it is a pushback stream
+ * since Tokens already read can be pushed back onto the stream for further
+ * reading.
  * <p>
  * Nevertheless you should be aware that characters once coined into tokens are
  * not changed -- even if the tokenizer might produce another result in the
@@ -35,9 +36,10 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public interface TokenStream {
+
     /**
      * Getter for the locator.
      * The locator describes the place the tokens have been read from in terms
@@ -49,7 +51,7 @@ public interface TokenStream {
     Locator getLocator();
 
     /**
-     * ...
+     * Close this stream if it is a file stream.
      *
      * @return <code>true</code> if the closing was successful
      */
@@ -61,7 +63,6 @@ public interface TokenStream {
      * @return <code>true</code> if the stream is a file stream
      */
     boolean isFileStream();
-
 
     /**
      * Get the next token from the token stream.
