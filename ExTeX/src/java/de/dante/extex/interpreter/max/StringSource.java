@@ -20,6 +20,7 @@
 package de.dante.extex.interpreter.max;
 
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.typesetter.Typesetter;
@@ -30,7 +31,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This class provides a token source which is fed from a sting.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class StringSource extends Moritz implements TokenSource {
 
@@ -75,4 +76,12 @@ public class StringSource extends Moritz implements TokenSource {
         throw new RuntimeException("unimplemented");
     }
 
+    /**
+     * @see de.dante.extex.interpreter.max.Moritz#getContext()
+     */
+    public Context getContext() {
+
+        // TODO unimplemented
+        throw new RuntimeException("unimplemented");
+    }
 }
