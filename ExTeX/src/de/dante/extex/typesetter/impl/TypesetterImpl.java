@@ -22,6 +22,7 @@ import java.util.Stack;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.Count;
 import de.dante.extex.interpreter.type.Dimen;
 import de.dante.extex.interpreter.type.Glue;
@@ -40,7 +41,7 @@ import de.dante.util.configuration.ConfigurationException;
  * This is a reference implementation of the Typesetter interface.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
     /** the factory to produce glyph nodes */
@@ -229,13 +230,22 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * ...
+     * Setter for the previous depth.
      * 
-     * @param pd
-     * @throws GeneralException
+     * @param pd the value for previous depth
+     * @throws GeneralException in case of an error
      */
     public void setPrevDepth(Dimen pd) throws GeneralException {
         listMaker.setPrevDepth(pd);
     }
 
+    /**
+     * This is the entry point for the document writer. Here it receives a
+     * complete node list to be sent to the output writer.
+     * 
+     * @param nodes the nodes to send
+     */
+    public void shipout(Box nodes) {
+        documentWriter.shipout(nodes);
+    }
 }

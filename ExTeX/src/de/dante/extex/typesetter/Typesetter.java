@@ -20,6 +20,7 @@ package de.dante.extex.typesetter;
 
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.type.Box;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.util.GeneralException;
 import de.dante.util.configuration.Configurable;
@@ -30,7 +31,7 @@ import de.dante.util.configuration.Configurable;
  * 
  * @see "TeX -- The Program [211]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Typesetter extends ListMaker, Configurable {
     
@@ -38,6 +39,8 @@ public interface Typesetter extends ListMaker, Configurable {
 
     public abstract CharNodeFactory getCharNodeFactory();
 
-    public void finish() throws GeneralException;
+    public abstract void finish() throws GeneralException;
+    
+    public abstract void shipout(Box nodes) throws GeneralException;
     
 }
