@@ -26,15 +26,17 @@ import java.util.List;
 import de.dante.util.configuration.ConfigurationException;
 
 /**
- * ...
+ * This class provides a means to combine several file finders to be queried
+ * as one.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FileFinderList implements FileFinder {
 
     /**
-     * The field <tt>list</tt> ...
+     * The field <tt>list</tt> the internal list of file finders which are
+     * elements in this container.
      */
     private List list = new ArrayList();
 
@@ -50,7 +52,7 @@ public class FileFinderList implements FileFinder {
      * Creates a new object.
      * Initially the list contans the one file finder given as argument.
      *
-     * @param finder ...
+     * @param finder the file finder to store in initially
      */
     public FileFinderList(final FileFinder finder) {
         super();
@@ -61,8 +63,8 @@ public class FileFinderList implements FileFinder {
      * Creates a new object.
      * Initially the list contans the two file finders given as argument.
      *
-     * @param finder1 ...
-     * @param finder2 ...
+     * @param finder1 the first file finder to store in initially
+     * @param finder2 the second file finder to store in initially
      */
     public FileFinderList(final FileFinder finder1, final FileFinder finder2) {
         super();
@@ -74,9 +76,9 @@ public class FileFinderList implements FileFinder {
      * Creates a new object.
      * Initially the list contans the three file finders given as argument.
      *
-     * @param finder1 ...
-     * @param finder2 ...
-     * @param finder3 ...
+     * @param finder1 the first file finder to store in initially
+     * @param finder2 the second file finder to store in initially
+     * @param finder3 the third file finder to store in initially
      */
     public FileFinderList(final FileFinder finder1, final FileFinder finder2,
             final FileFinder finder3) {
@@ -87,9 +89,9 @@ public class FileFinderList implements FileFinder {
     }
 
     /**
-     * ...
+     * Append an additional file finder to list of file finders contained. 
      *
-     * @param finder ...
+     * @param finder the file finder to add
      */
     public void add(final FileFinder finder) {
         list.add(finder);
