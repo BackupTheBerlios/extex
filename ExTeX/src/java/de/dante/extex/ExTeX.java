@@ -26,7 +26,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
@@ -63,6 +62,7 @@ import de.dante.extex.interpreter.loader.LoaderException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.main.Version;
+import de.dante.extex.main.InputHandler.TeXInputReader;
 import de.dante.extex.main.exception.MainCodingException;
 import de.dante.extex.main.exception.MainConfigurationException;
 import de.dante.extex.main.exception.MainException;
@@ -77,6 +77,8 @@ import de.dante.extex.main.observer.InteractionObserver;
 import de.dante.extex.main.observer.TokenObserver;
 import de.dante.extex.main.observer.TokenPushObserver;
 import de.dante.extex.main.observer.TraceObserver;
+import de.dante.extex.main.queryFile.QueryFileHandler;
+import de.dante.extex.main.queryFile.QueryFileHandlerTeXImpl;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamFactory;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
@@ -611,7 +613,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.90 $
+ * @version $Revision: 1.91 $
  */
 public class ExTeX {
 
@@ -646,6 +648,13 @@ public class ExTeX {
      * string.
      */
     private static final String EXTEX_VERSION = new Version().toString();
+
+    /**
+     * The field <tt>FORMAT_FALLBACK</tt> contains the fallback to be tried if
+     * the specified format can not be loaded. If it is <code>null</code> then
+     * none is tried.
+     */
+    private static final String FORMAT_FALLBACK = "tex";
 
     /**
      * The field <tt>PROP_CODE</tt> contains the name of the
@@ -929,6 +938,11 @@ public class ExTeX {
     private Properties properties;
 
     /**
+     * The field <tt>queryFileHandler</tt> contains the ...
+     */
+    private QueryFileHandler queryFileHandler = new QueryFileHandlerTeXImpl();
+
+    /**
      * The field <tt>showBanner</tt> is a boolean indicating that it is
      * necessary to display the banner. This information is needed for the
      * cases where errors show up before the normal banner has been printed.
@@ -1102,6 +1116,16 @@ public class ExTeX {
     }
 
     /**
+     * Getter for queryFileHandler.
+     *
+     * @return the queryFileHandler
+     */
+    public QueryFileHandler getQueryFileHandler() {
+
+        return this.queryFileHandler;
+    }
+
+    /**
      * Initialize the input streams. If the property <i>extex.file</i> is set
      * and not the empty string, (e.g. from the command line) then this value
      * is used as file name to read from. If the property <i>extex.code</i>
@@ -1132,7 +1156,7 @@ public class ExTeX {
                 interpreter.addStream(stream);
                 notInitialized = false;
             } catch (FileNotFoundException e) {
-                logger.severe(localizer.format("CLI.FileNotFound", filename));
+                logger.severe(localizer.format("TTP.FileNotFound", filename));
             }
         }
 
@@ -1146,8 +1170,8 @@ public class ExTeX {
 
         if (notInitialized) {
             try {
-                TokenStream stream = factory.newInstance(new InputStreamReader(
-                        System.in, properties.getProperty(PROP_ENCODING)));
+                TokenStream stream = factory.newInstance(new TeXInputReader(
+                        logger, properties.getProperty(PROP_ENCODING)));
                 interpreter.addStream(stream);
             } catch (UnsupportedEncodingException e) {
                 throw new ConfigurationUnsupportedEncodingException(properties
@@ -1182,13 +1206,6 @@ public class ExTeX {
 
         return true;
     }
-
-    /**
-     * The field <tt>FORMAT_FALLBACK</tt> contains the fallback to be tried if
-     * the specified format can not be loaded. If it is <code>null</code> then
-     * none is tried.
-     */
-    private static final String FORMAT_FALLBACK = "tex";
 
     /**
      * Load a format if a non-empty name of a format is given.
@@ -1505,6 +1522,7 @@ public class ExTeX {
 
     /**
      * Create a TokenStreamFactory.
+     *
      * @param config the configuration object for the token stream factory
      * @param finder the file finder for the token stream factory
      *
@@ -1579,21 +1597,23 @@ public class ExTeX {
         final String logFile = new File(properties.getProperty(PROP_OUTPUTDIR),
                 jobname + ".log").getPath();
 
-        showBanner = !Boolean.valueOf(properties.getProperty(PROP_NO_BANNER))
-                .booleanValue();
+        if (showBanner) {
+            showBanner = !Boolean.valueOf(
+                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
+        }
 
         Handler fileHandler = makeLogFileHandler(logFile);
 
         try {
             Configuration config = new ConfigurationFactory()
                     .newInstance(properties.getProperty(PROP_CONFIG));
+            showBanner(config, (showBanner?Level.INFO:Level.FINE));
 
             OutputFactory outFactory = new OutputFactory(//
                     config.getConfiguration("Output"), //
                     new String[]{properties.getProperty(PROP_OUTPUTDIR),
                             properties.getProperty(PROP_OUTPUTDIR_FALLBACK)});
 
-            showBanner(config);
             ResourceFinder finder = (new ResourceFinderFactory())
                     .createResourceFinder(config.getConfiguration("Resource"),
                             logger, properties);
@@ -1697,6 +1717,7 @@ public class ExTeX {
                         onceMore = false;
                     } else if ("-fmt".startsWith(arg)) {
                         useArg(PROP_FMT, args, ++i);
+                        i++;
                     } else if (arg.startsWith("-fmt=")) {
                         properties.setProperty(PROP_FMT, arg.substring("-fmt="
                                 .length()));
@@ -1759,11 +1780,11 @@ public class ExTeX {
             }
 
             if (onceMore) {
-                run();
+                runWithoutFile();
             }
         } catch (MainException e) {
             try {
-                showBanner(null);
+                showBanner(null, Level.INFO);
             } catch (MainException e1) {
                 logException(logger, e1.getLocalizedMessage(), e1);
             }
@@ -1771,7 +1792,7 @@ public class ExTeX {
             returnCode = e.getCode();
         } catch (Throwable e) {
             try {
-                showBanner(null);
+                showBanner(null, Level.INFO);
             } catch (MainException e1) {
                 logException(logger, e1.getLocalizedMessage(), e1);
             }
@@ -1826,27 +1847,34 @@ public class ExTeX {
             throws MainException {
 
         if (position >= arguments.length) {
-            run();
-            return;
+            runWithoutFile();
+        } else {
+            setInputFileName(arguments[position]);
+            runWithArgs(arguments, position + 1);
         }
-
-        String name = arguments[position];
-        properties.setProperty(PROP_JOBNAME, //
-                (name.matches(".*\\.[a-zA-Z0-9_]*") //
-                        ? name.substring(0, name.lastIndexOf(".")) : name));
-        properties.setProperty(PROP_FILE, arguments[position]);
-
-        runWithArgs(arguments, position + 1);
     }
 
     /**
-     * Setter for logger.
+     * Ask the query file handler to provide a file name and use it.
      *
-     * @param aLogger the logger to set.
+     * @throws MainException in case of an error
      */
-    public void setLogger(final Logger aLogger) {
+    private void runWithoutFile() throws MainException {
 
-        this.logger = aLogger;
+        if (showBanner) {
+            showBanner = !Boolean.valueOf(
+                    properties.getProperty(PROP_NO_BANNER)).booleanValue();
+            try {
+                showBanner(new ConfigurationFactory().newInstance(properties
+                        .getProperty(PROP_CONFIG)), Level.INFO);
+            } catch (ConfigurationException e) {
+                // ignored on purpose. It will be checked again later
+            }
+        }
+
+        setInputFileName((queryFileHandler != null ? queryFileHandler
+                .query(getLogger()) : null));
+        run();
     }
 
     /**
@@ -1860,6 +1888,35 @@ public class ExTeX {
     }
 
     /**
+     * Setter for the input file name.
+     *
+     * @param name the name of the input file. If it is <code>null</code> then
+     *  the values are reset to the initial state
+     */
+    private void setInputFileName(final String name) {
+
+        if (name != null) {
+            properties.setProperty(PROP_JOBNAME, //
+                    (name.matches(".*\\.[a-zA-Z0-9_]*") //
+                            ? name.substring(0, name.lastIndexOf(".")) : name));
+            properties.setProperty(PROP_FILE, name);
+        } else {
+            properties.setProperty(PROP_JOBNAME, "texput");
+            properties.setProperty(PROP_FILE, "");
+        }
+    }
+
+    /**
+     * Setter for logger.
+     *
+     * @param aLogger the logger to set.
+     */
+    public void setLogger(final Logger aLogger) {
+
+        this.logger = aLogger;
+    }
+
+    /**
      * Setter for outStream.
      *
      * @param outputStream the outStream to set.
@@ -1870,18 +1927,29 @@ public class ExTeX {
     }
 
     /**
+     * Setter for queryFileHandler.
+     *
+     * @param queryFileHandler the queryFileHandler to set
+     */
+    public void setQueryFileHandler(QueryFileHandler queryFileHandler) {
+
+        this.queryFileHandler = queryFileHandler;
+    }
+
+    /**
      * Print the program banner to the logger stream and remember that this has
      * been done already to avoid repeating.
      *
      * @param configuration the configuration to use
+     * @param priority TODO
      *
      * @throws MainException in case of an error
      */
-    protected void showBanner(final Configuration configuration)
-            throws MainException {
+    protected void showBanner(final Configuration configuration,
+            final Level priority) throws MainException {
 
         if (showBanner) {
-            String banner = "";
+            String banner;
             if (configuration != null) {
                 try {
                     banner = configuration.getConfiguration("banner")
@@ -1892,8 +1960,10 @@ public class ExTeX {
             } else {
                 banner = properties.getProperty("java.version");
             }
-            logger.info(localizer.format("ExTeX.Version", //
-                    properties.getProperty(PROP_PROGNAME), EXTEX_VERSION, //
+
+            logger.log(priority, localizer.format("ExTeX.Version", //
+                    properties.getProperty(PROP_PROGNAME), //
+                    EXTEX_VERSION, //
                     banner));
             showBanner = false;
         }
