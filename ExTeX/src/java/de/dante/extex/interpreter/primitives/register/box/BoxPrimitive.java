@@ -24,7 +24,6 @@ import java.io.Serializable;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.typesetter.Typesetter;
@@ -54,9 +53,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class BoxPrimitive extends AbstractCode implements Boxable, Serializable {
+public class BoxPrimitive extends AbstractBox implements Boxable, Serializable {
 
     /**
      * Creates a new object.
@@ -83,22 +82,6 @@ public class BoxPrimitive extends AbstractCode implements Boxable, Serializable 
         Box box = context.getBox(key);
         context.setBox(key, box, prefix.isGlobal());
         return true;
-    }
-
-    /**
-     * Return the key (the number) for the box register.
-     *
-     * @param source the source for new tokens
-     * @param namespace the namespace to use
-     *
-     * @return the key of the box register
-     *
-     * @throws GeneralException in case of an error
-     */
-    protected String getKey(final TokenSource source, final String namespace)
-            throws GeneralException {
-
-        return namespace + "box#" + Long.toString(source.scanNumber());
     }
 
     /**
