@@ -17,73 +17,88 @@
  *
  */
 
-package de.dante.extex.typesetter.type.noad;
+package de.dante.extex.typesetter.type;
 
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.extex.typesetter.type.noad.NoadVisitor;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
+import de.dante.util.UnicodeChar;
 
 /**
- * This Noad indicates a change in the style to be used for the further
- * processing.
+ * This class provides a container for a mathematical glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.1 $
  */
-public final class StyleNoad implements Noad {
+public class MathGlyph implements Noad {
 
     /**
-     * The constant <tt>DISPLAYSTYLE</tt> contains the value for the display
-     * style.
+     * The constant <tt>FAMILY_MASK</tt> contains the mask for the family in the
+     * TeX encoding.
      */
-    public static final StyleNoad DISPLAYSTYLE = new StyleNoad("textstyle");
+    private static final int FAMILY_MASK = 0xf;
 
     /**
-     * The constant <tt>SCRIPTSCRIPTSTYLE</tt> contains the value for the
-     * scriptscript style.
+     * The constan <tt>CHARACTER_MASK</tt> contains the mask for the character
+     * value in the TeX encoding.
      */
-    public static final StyleNoad SCRIPTSCRIPTSTYLE = new StyleNoad(
-            "scriptscriptstyle");
+    private static final int CHARACTER_MASK = 0xff;
 
     /**
-     * The constant <tt>SCRIPTSTYLE</tt> contains the value for the script
-     * style.
+     * The field <tt>character</tt> contains the character of this glyph.
      */
-    public static final StyleNoad SCRIPTSTYLE = new StyleNoad("scriptstlye");
+    private UnicodeChar character;
 
     /**
-     * The constant <tt>TEXTSTYLE</tt> contains the value for the text
-     * style.
+     * The field <tt>family</tt> contains the math family.
      */
-    public static final StyleNoad TEXTSTYLE = new StyleNoad("textstyle");
+    private int family;
 
     /**
-     * The field <tt>style</tt> contains the ...
-     */
-    private String style;
-
-    /**
-     * Creates a new object.
-     * This constructor is private since nobody is supposed to use it to create
-     * new instances. The constants defined in this class should be usesd
-     * instead.
+     * Creates a new object from a TeX encoded number.
      *
-     * @param style the style
+     * @param code the TeX code
      */
-    private StyleNoad(final String style) {
+    public MathGlyph(final int code) {
 
-        super();
-        this.style = style;
+        this((code >> 8) & FAMILY_MASK, new UnicodeChar(
+                (int) (code & CHARACTER_MASK)));
     }
 
     /**
-     * Getter for style.
+     * Creates a new object.
      *
-     * @return the style
+     * @param family the math family of the glyph
+     * @param character the character in the font
      */
-    public String getStyleName() {
+    public MathGlyph(final int family, final UnicodeChar character) {
 
-        return this.style;
+        super();
+        this.family = family;
+        this.character = character;
+
+    }
+
+    /**
+     * Getter for character.
+     *
+     * @return the character.
+     */
+    public UnicodeChar getCharacter() {
+
+        return this.character;
+    }
+
+    /**
+     * Getter for family.
+     *
+     * @return the family.
+     */
+    public int getFamily() {
+
+        return this.family;
     }
 
     /**
@@ -104,28 +119,29 @@ public final class StyleNoad implements Noad {
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#setSubscript(
-     *      de.dante.extex.typesetter.type.noad.Noad)
+     *       de.dante.extex.typesetter.type.noad.Noad)
      */
     public void setSubscript(final Noad subscript) {
 
+        throw new RuntimeException("error");
     }
 
     /**
      * @see de.dante.extex.typesetter.type.noad.Noad#setSuperscript(
-     *      de.dante.extex.typesetter.type.noad.Noad)
+     *       de.dante.extex.typesetter.type.noad.Noad)
      */
     public void setSuperscript(final Noad superscript) {
 
+        throw new RuntimeException("error");
     }
 
     /**
-     * @see "TTP [694]"
      * @see de.dante.extex.typesetter.type.noad.Noad#toString(
-     *      java.lang.StringBuffer)
+     *       java.lang.StringBuffer)
      */
     public void toString(final StringBuffer sb) {
 
-        //TODO gene: unimplemented
+        toString(sb, 1);
     }
 
     /**
@@ -134,7 +150,8 @@ public final class StyleNoad implements Noad {
      */
     public void toString(final StringBuffer sb, final int depth) {
 
-        toString(sb);
+        // TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
@@ -146,15 +163,22 @@ public final class StyleNoad implements Noad {
     public void typeset(final NodeList list, final MathContext mathContext,
             final TypesetterOptions context) {
 
-        mathContext.setStyle(this);
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
+     * This is the entry point for the visitor pattern.
+     *
+     * @param visitor the visitor to invoke
+     *
      * @see de.dante.extex.typesetter.type.noad.Noad#visit(
-     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
+     *       de.dante.extex.typesetter.type.noad.NoadVisitor)
      */
     public void visit(final NoadVisitor visitor) {
 
-        visitor.visitStyle(this);
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
+
 }

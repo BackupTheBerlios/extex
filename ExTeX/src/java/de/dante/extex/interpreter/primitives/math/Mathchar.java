@@ -19,13 +19,19 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
+import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive
@@ -49,9 +55,9 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
-public class Mathchar extends AbstractCode {
+public class Mathchar extends AbstractMathCode {
 
     /**
      * Creates a new object.
@@ -74,21 +80,36 @@ public class Mathchar extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Count mathchar = new Count(context, source);
-        insert(typesetter, mathchar);
+        NoadConsumer nc = getListMaker(typesetter);
+
+        Token t = source.getToken();
+        if (t == null) {
+            throw new EofHelpingException(printableControlSequence(context));
+        } else if (t.isa(Catcode.LEFTBRACE)) {
+            //TODO extension unimplemented
+            throw new RuntimeException("unimplemented");
+        } else {
+            source.push(t);
+            insert(nc, new Count(context, source));
+        }
         return true;
     }
 
     /**
      * ...
      *
-     * @param typesetter the typesetter
-     * @param mathchar the math char value
+     * @param nc ...
+     * @param mathchar ...
+     *
+     * @throws GeneralException in case of an error
      */
-    protected void insert(final Typesetter typesetter, final Count mathchar) {
+    protected void insert(final NoadConsumer nc, final Count mathchar)
+            throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
+        long mc = mathchar.getValue();
+        nc.add(MathClass.getMathClass((int) ((mc >> 12) & 0xf)), //
+                new MathGlyph((int) ((mc >> 8) & 0xf), //
+                        new UnicodeChar((int) (mc & 0xff))));
     }
 
 }

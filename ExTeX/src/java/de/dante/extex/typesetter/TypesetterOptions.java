@@ -16,20 +16,22 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
-
 
 /**
  * This interface describes the possibilities of the typesetter to access its
  * options.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TypesetterOptions {
 
@@ -52,6 +54,15 @@ public interface TypesetterOptions {
     FixedDimen getDimenOption(String name);
 
     /**
+     * Getter for a current font register.
+     *
+     * @param name the name or the number of the register
+     *
+     * @return the named font register or <code>null</code> if none is set
+     */
+    Font getFont(String name);
+
+    /**
      * Getter for a glue register.
      *
      * @param name the name of the register
@@ -61,12 +72,26 @@ public interface TypesetterOptions {
     FixedGlue getGlueOption(String name);
 
     /**
+     * Getter for the current name space.
+     *
+     * @return the current namespace
+     */
+    String getNamespace();
+
+    /**
      * Getter fot the paragraph shape.
      *
      * @return the paragraph shape or <code>null</code> if no special shape
      *   is present
      */
     ParagraphShape getParshape();
+
+    /**
+     * Getter for the typesetting context.
+     *
+     * @return the typesetting context
+     */
+    TypesettingContext getTypesettingContext();
 
     /**
      * Setter for the paragraph shape.

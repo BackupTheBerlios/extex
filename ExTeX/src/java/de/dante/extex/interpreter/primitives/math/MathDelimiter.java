@@ -23,10 +23,12 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.type.Delimiter;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\delimiter</code>.
+ * This class provides an implementation for the primitive
+ * <code>\delimiter</code>.
  *
  * <doc name="delimiter">
  * <h3>The Primitive <tt>\delimiter</tt></h3>
@@ -47,16 +49,16 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class Delimiter extends AbstractMathCode {
+public class MathDelimiter extends AbstractMathCode {
 
     /**
      * Creates a new object.
      *
      * @param name the name for tracing and debugging
      */
-    public Delimiter(final String name) {
+    public MathDelimiter(final String name) {
 
         super(name);
     }
@@ -71,6 +73,9 @@ public class Delimiter extends AbstractMathCode {
     public boolean execute(final Flags prefix, final Context context,
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
+
+        long delcode = source.scanNumber();
+        Delimiter del = new Delimiter(delcode);
 
         //TODO execute() unimplemented
         throw new RuntimeException("unimplemented");

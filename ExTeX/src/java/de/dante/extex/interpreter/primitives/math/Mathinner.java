@@ -23,6 +23,9 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.type.noad.InnerNoad;
+import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
 /**
@@ -37,17 +40,17 @@ import de.dante.util.GeneralException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;mathinner&rang;
- *       &rarr; <tt>\mathinner</tt>  </pre>
+ *       &rarr; <tt>\mathinner</tt> &lang;math block&rang; </pre>
  * </p>
  * <p>
  *  Examples:
  *  <pre class="TeXSample">
- *    \mathinner  </pre>
+ *    \mathinner { ... }  </pre>
  * </p>
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Mathinner extends AbstractMathCode {
 
@@ -72,9 +75,10 @@ public class Mathinner extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        NoadConsumer nc = getListMaker(typesetter);
+        Noad noad = nc.scanNoad(context, source);
+        nc.add(new InnerNoad(noad));
+        return true;
     }
 
 }

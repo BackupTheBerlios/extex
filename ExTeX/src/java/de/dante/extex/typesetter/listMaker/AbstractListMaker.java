@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * This abstract class provides some methods common to all ListMakers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class AbstractListMaker implements ListMaker {
 
@@ -112,7 +112,7 @@ public abstract class AbstractListMaker implements ListMaker {
             manager.push(new DisplaymathListMaker(manager));
             source.push(context.getToks("everydisplay"));
         }
-        //TODO ??? context.setCount("fam", -1, false);
+        //TODO gene: ??? context.setCount("fam", -1, false);
     }
 
     /**
@@ -135,30 +135,34 @@ public abstract class AbstractListMaker implements ListMaker {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.Token)
      */
-    public void subscriptMark(Context context,
-            TokenSource source, final Token token) throws GeneralException {
+    public void subscriptMark(final Context context, final TokenSource source,
+            final Token token) throws GeneralException {
 
         throw new MathHelpingException(token.toString());
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.Token)
      */
-    public void superscriptMark(Context context,
-            TokenSource source, final Token token) throws GeneralException {
+    public void superscriptMark(final Context context,
+            final TokenSource source, final Token token)
+            throws GeneralException {
 
         throw new MathHelpingException(token.toString());
     }
 
     /**
-     * @see de.dante.extex.typesetter.Typesetter#tab(
-     *      Context,
-     *      TokenSource, de.dante.extex.scanner.Token)
+     * @see de.dante.extex.typesetter.ListMaker#tab(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.scanner.Token)
      */
     public void tab(final Context context, final TokenSource source,
             final Token token) throws GeneralException {

@@ -36,6 +36,7 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
 
 /**
@@ -44,7 +45,7 @@ import de.dante.util.GeneralException;
  * @see "TTP [770]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -54,7 +55,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
      * This inner class is a container for the cell information in an alignment.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     protected class Cell {
 
@@ -206,9 +207,10 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close()
+     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
      */
-    public NodeList close() throws GeneralException {
+    public NodeList close(final TypesetterOptions context)
+            throws GeneralException {
 
         NodeList result = new VerticalListNode();
         NodeList nl;
@@ -221,7 +223,7 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
                 Cell cell = line[i];
                 if (cell != null) {
                     nl = cell.getList();
-                    nl.spread(wd[i], wd[i]); //TODO check
+                    nl.spread(wd[i], wd[i]); //TODO genen: check
                     row.add(nl);
                 }
             }
@@ -244,7 +246,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.AlignmentList#cr(Context, TokenSource)
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#cr(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public void cr(final Context context, final TokenSource source)
             throws GeneralException {
@@ -254,7 +258,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.AlignmentList#crcr(Context, TokenSource)
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#crcr(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public void crcr(final Context context, final TokenSource source)
             throws GeneralException {
@@ -272,7 +278,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.AlignmentList#span(Context, TokenSource)
+     * @see de.dante.extex.typesetter.listMaker.AlignmentList#span(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
      */
     public void span(final Context context, final TokenSource source)
             throws GeneralException {
@@ -340,10 +348,9 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
                     .toString());
         }
 
-        source.push(format.getPost()); //TODO wrong! process the tokens before closing
+        source.push(format.getPost()); //TODO gene: wrong! process the tokens before closing
 
-
-        line[col] = new Cell(super.close());
+        line[col] = new Cell(super.close((TypesetterOptions) context));
         wd[col].max(line[col].getList().getWidth());
         setNodes(new HorizontalListNode());
         col++;

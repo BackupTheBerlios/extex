@@ -16,21 +16,60 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
-
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NumberedFont extends NamedFont {
+
+    /**
+     * Construct the reference key for a numbered font.
+     *
+     * @param context the interpreter context
+     * @param theName ...
+     * @param theNumber ...
+     *
+     * @return the key
+     */
+    public static String key(final Context context, final String theName,
+            final String theNumber) {
+
+        if (Namespace.SUPPORT_NAMESPACE_FONT) {
+            return context.getNamespace() + "\b" + theName + "#" + theNumber;
+        } else {
+            return theName + "#" + theNumber;
+        }
+    }
+
+    /**
+     * Construct the reference key for a numbered font.
+     *
+     * @param context the interpreter context
+     * @param theName ...
+     * @param theNumber ...
+     *
+     * @return the key
+     */
+    public static String key(final TypesetterOptions context,
+            final String theName, final String theNumber) {
+
+        if (Namespace.SUPPORT_NAMESPACE_FONT) {
+            return context.getNamespace() + "\b" + theName + "#" + theNumber;
+        } else {
+            return theName + "#" + theNumber;
+        }
+    }
 
     /**
      * Creates a new object.
@@ -57,13 +96,7 @@ public class NumberedFont extends NamedFont {
     protected String getKey(final TokenSource source, final Context context)
             throws GeneralException {
 
-        String number = Long.toString(source.scanNumber());
-
-        if (Namespace.SUPPORT_NAMESPACE_DIMEN) {
-            return context.getNamespace() + "\b" + getName() + "#" + number;
-        } else {
-            return getName() + "#" + number;
-        }
+        return key(context, getName(), Long.toString(source.scanNumber()));
     }
 
 }

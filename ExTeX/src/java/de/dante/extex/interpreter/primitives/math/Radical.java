@@ -23,6 +23,10 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.type.Delimiter;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.extex.typesetter.type.noad.RadicalNoad;
 import de.dante.util.GeneralException;
 
 /**
@@ -47,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Radical extends AbstractMathCode {
 
@@ -72,9 +76,11 @@ public class Radical extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        NoadConsumer nc = getListMaker(typesetter);
+        Delimiter delcode = new Delimiter(source);
+        Noad noad = nc.scanNoad(context, source);
+        nc.add(new RadicalNoad(delcode, noad));
+        return true;
     }
 
 }

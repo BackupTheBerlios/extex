@@ -19,14 +19,13 @@
 
 package de.dante.extex.typesetter.listMaker;
 
-import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Mode;
 
 /**
  * This is the derived class for a list maker in inner vertical list mode.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InnerVerticalListMaker extends VerticalListMaker {
 

@@ -20,56 +20,56 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
- * ...
+ * This Noad represents an open delimiter.
  *
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class OpenNoad extends AbstractNoad {
+public class OpenNoad extends AbstractNucleusNoad {
 
     /**
      * Creates a new object.
      *
+     * @param nucleus the nucleaus of inner noads
      */
-    public OpenNoad() {
+    public OpenNoad(final Noad nucleus) {
 
-        super();
-    }
+        super(nucleus);
+   }
 
     /**
-     * ...
-     *
-     * @return
-     *
      * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
      */
     protected String stringName() {
 
-        // TODO unimplemented
         return "mathopen";
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    public void toString(final StringBuffer sb) {
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
 
-        // TODO unimplemented
-
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
+     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
      */
-    public NodeList typeset(final MathContext mathContext) {
+    public void visit(final NoadVisitor visitor) {
 
-        // TODO unimplemented
-        return null;
+        visitor.visitOpen(this);
     }
-
 }

@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.22 $
+ * @version $Revision: 1.23 $
  */
 public interface ListMaker {
 
@@ -74,12 +74,13 @@ public interface ListMaker {
 
     /**
      * Close the node list.
+     * @param context TODO
      *
      * @return the node list enclosed in this instance.
      *
      * @throws GeneralException in case of an error
      */
-    NodeList close() throws GeneralException;
+    NodeList close(TypesetterOptions context) throws GeneralException;
 
     /**
      * Access the last node on the list.

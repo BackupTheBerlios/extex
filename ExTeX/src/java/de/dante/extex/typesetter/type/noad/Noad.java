@@ -16,30 +16,50 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.Knot;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
-
 
 /**
  * The interface Noad is a type of data structure which represents mathematical
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface Noad extends Knot {
 
     /**
-     * Translate a Noad into a NodeList.
+     * Getter for the subscript.
      *
-     * @param mathContext the context to consider
-     *
-     * @return the typeset instance
+     * @return the subscript.
      */
-    NodeList typeset(MathContext mathContext);
+    Noad getSubscript();
+
+    /**
+     * Getter for the superscript.
+     *
+     * @return the superscript.
+     */
+    Noad getSuperscript();
+
+    /**
+     * Setter for the subscript.
+     *
+     * @param subscript the subscript to set.
+     */
+    void setSubscript(final Noad subscript);
+
+    /**
+     * Setter for the superscript.
+     *
+     * @param superscript the superscript to set.
+     */
+    void setSuperscript(final Noad superscript);
 
     /**
      * Produce a printable representation of the noad in a StringBuffer.
@@ -48,4 +68,26 @@ public interface Noad extends Knot {
      */
     void toString(StringBuffer sb);
 
+    /**
+     * Produce a printable representation to a certain depth of the noad.
+     *
+     * @param sb the string buffer
+     * @param depth the depth to which the full information should be given
+     */
+    void toString(StringBuffer sb, int depth);
+
+    /**
+     * Translate a Noad into a NodeList.
+     * @param list the list to add the nodes to
+     * @param mathContext the context to consider
+     * @param context TODO
+     */
+    void typeset(NodeList list, MathContext mathContext, TypesetterOptions context);
+
+    /**
+     * Visit a noad acording to its type.
+     *
+     * @param visitor the visitor insance to call-back
+     */
+    void visit(NoadVisitor visitor);
 }

@@ -29,7 +29,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -50,7 +50,7 @@ public class TypesettingContextImpl implements TypesettingContext {
      * The field <tt>direction</tt> contains the direction for advancing the
      * cursor. This is one of the constants in {@link Direction Direction}.
      */
-    private Direction direction = Direction.LR;
+    private Direction direction;
 
     /**
      * The field <tt>font</tt> contains the font to use.
@@ -64,14 +64,29 @@ public class TypesettingContextImpl implements TypesettingContext {
     private HyphenationTable hyphenation;
 
     /**
-     * Creates a new object.
+     * Creates a new object filled with default values.
      */
     public TypesettingContextImpl() {
 
         super();
         this.font = null;
         this.color = RgbColor.BLACK;
+        this.direction = Direction.LR;
         this.hyphenation = null;
+    }
+
+    /**
+     * Creates a new object (copy constructor).
+     *
+     * @param tc the typesetting context to copy
+     */
+    public TypesettingContextImpl(final TypesettingContext tc) {
+
+        super();
+        this.font = tc.getFont();
+        this.color = tc.getColor();
+        this.direction = tc.getDirection();
+        this.hyphenation = tc.getHyphenation();
     }
 
     /**
@@ -85,6 +100,7 @@ public class TypesettingContextImpl implements TypesettingContext {
         super();
         this.font = theFont;
         this.color = RgbColor.BLACK;
+        this.direction = Direction.LR;
         this.hyphenation = null;
     }
 
@@ -96,7 +112,8 @@ public class TypesettingContextImpl implements TypesettingContext {
 
         this.font = context.getFont();
         this.color = context.getColor();
-        this.hyphenation = context.getLanguage();
+        this.direction = Direction.LR;
+        this.hyphenation = context.getHyphenation();
     }
 
     /**
@@ -160,9 +177,9 @@ public class TypesettingContextImpl implements TypesettingContext {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#getLanguage()
+     * @see de.dante.extex.interpreter.context.TypesettingContext#getHyphenation()
      */
-    public HyphenationTable getLanguage() {
+    public HyphenationTable getHyphenation() {
 
         return this.hyphenation;
     }

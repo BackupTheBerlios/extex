@@ -19,16 +19,17 @@
 
 package de.dante.extex.typesetter.listMaker;
 
+import de.dante.extex.interpreter.type.node.HorizontalListNode;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
-
 
 /**
  * This is the list maker for the display math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class DisplaymathListMaker extends MathListMaker {
 
@@ -43,10 +44,14 @@ public class DisplaymathListMaker extends MathListMaker {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close()
+     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
      */
-    public NodeList close() {
+    public NodeList close(final TypesetterOptions context) {
 
-        return getNoades().typeset(new MathContext(StyleNoad.DISPLAYSTYLE));
+        HorizontalListNode list = new HorizontalListNode();
+
+        getNoades().typeset(list, new MathContext(StyleNoad.DISPLAYSTYLE),
+                context); //TODO genen: ???
+        return list;
     }
 }

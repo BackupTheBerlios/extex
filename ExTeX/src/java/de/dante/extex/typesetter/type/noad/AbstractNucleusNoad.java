@@ -19,35 +19,47 @@
 
 package de.dante.extex.typesetter.type.noad;
 
-import de.dante.util.UnicodeChar;
-
 /**
- * ...
+ * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @version $Revision: 1.1 $
  */
-public class CharNoadFactory {
+public abstract class AbstractNucleusNoad extends AbstractNoad {
+
+    /**
+     * The field <tt>nucleus</tt> contains the nucleus.
+     */
+    private Noad nucleus;
 
     /**
      * Creates a new object.
      *
+     * @param nucleus the nucleaus of inner noads
      */
-    public CharNoadFactory() {
+    public AbstractNucleusNoad(final Noad nucleus) {
 
         super();
+        this.nucleus = nucleus;
     }
 
     /**
-     * ...
+     * Getter for nucleus.
      *
-     * @param fam the family
-     * @param symbol the character
-     *
-     * @return ...
+     * @return the nucleus
      */
-    public CharNoad getCharNoad(final int fam, final UnicodeChar symbol) {
+    public Noad getNucleus() {
 
-        return new CharNoad(fam, symbol);
+        return this.nucleus;
     }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
 }

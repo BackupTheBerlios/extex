@@ -20,9 +20,11 @@
 package de.dante.extex.typesetter.paragraphBuilder.impl;
 
 import junit.framework.TestCase;
+import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.FixedDimen;
+import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.node.HorizontalListNode;
@@ -34,17 +36,18 @@ import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ParagraphBuilderImplTest extends TestCase {
 
     /**
-     * ...
+     * Inner class for the typesetter options.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.3 $
+     * @version $Revision: 1.4 $
      */
     private class MockOptions implements TypesetterOptions {
+
         /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(java.lang.String)
          */
@@ -74,6 +77,14 @@ public class ParagraphBuilderImplTest extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getFont(java.lang.String)
+         */
+        public Font getFont(String name) {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(java.lang.String)
          */
         public FixedGlue getGlueOption(final String name) {
@@ -85,6 +96,14 @@ public class ParagraphBuilderImplTest extends TestCase {
         }
 
         /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#getNamespace()
+         */
+        public String getNamespace() {
+
+            return null;
+        }
+
+        /**
          * @see de.dante.extex.typesetter.TypesetterOptions#getParshape()
          */
         public ParagraphShape getParshape() {
@@ -92,10 +111,21 @@ public class ParagraphBuilderImplTest extends TestCase {
             // TODO Auto-generated method stub
             return null;
         }
+
         /**
-         * @see de.dante.extex.typesetter.TypesetterOptions#setParshape(de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
+         * @see de.dante.extex.typesetter.TypesetterOptions#getTypesettingContext()
          */
-        public void setParshape(ParagraphShape shape) {
+        public TypesettingContext getTypesettingContext() {
+
+            // TODO getTypesettingContext unimplemented
+            return null;
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.TypesetterOptions#setParshape(
+         *      de.dante.extex.typesetter.paragraphBuilder.ParagraphShape)
+         */
+        public void setParshape(final ParagraphShape shape) {
 
             // TODO Auto-generated method stub
 

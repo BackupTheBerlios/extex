@@ -16,58 +16,61 @@
  * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
+
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
-
 /**
- * ...
+ * This Noad represents a binary operator.
  *
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
-public class BinNoad extends AbstractNoad {
+public class BinNoad extends AbstractNucleusNoad {
+
     /**
      * Creates a new object.
-     */
-    public BinNoad() {
-
-        super();
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
-     */
-    public void toString(final StringBuffer sb) {
-
-        // TODO unimplemented
-
-    }
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
-     */
-    public NodeList typeset(final MathContext mathContext) {
-
-        // TODO unimplemented
-        return null;
-    }
-
-    /**
-     * ...
      *
-     * @return
-     *
+     * @param nucleus the nucleus
+     */
+    public BinNoad(final Noad nucleus) {
+
+        super(nucleus);
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
      */
     protected String stringName() {
 
-        // TODO unimplemented
         return "mathbin";
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
+
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
+     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
+     */
+    public void visit(final NoadVisitor visitor) {
+
+        visitor.visitBin(this);
     }
 
 }

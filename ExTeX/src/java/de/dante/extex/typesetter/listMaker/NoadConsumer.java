@@ -20,6 +20,8 @@ package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 
@@ -29,7 +31,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface NoadConsumer {
 
@@ -44,14 +46,25 @@ public interface NoadConsumer {
     void add(Noad noad) throws GeneralException;
 
     /**
-     * ...
+     * Process the input until a Noad is completed. A Noad is either a single
+     * Noad or a list of Noades resulting from the processing of a block.
      *
      * @param context the interpreter context
      * @param source the source for new tokens
      *
-     * @return ...
+     * @return the Noad read
      *
      * @throws GeneralException in case of an error
      */
     Noad scanNoad(Context context, TokenSource source) throws GeneralException;
+
+    /**
+     * Add a mathematical glyph.
+     *
+     * @param mclass the class
+     * @param mg the glyph.
+     *
+     * @throws GeneralException in case of an error
+     */
+    void add(MathClass mclass, MathGlyph mg) throws GeneralException;
 }

@@ -23,6 +23,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import de.dante.extex.font.type.other.NullFont;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.Namespace;
 import de.dante.extex.interpreter.Tokenizer;
@@ -57,7 +58,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.34 $
+ * @version $Revision: 1.35 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -423,7 +424,7 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
             font = next.getFont(name);
         }
 
-        return font;
+        return new NullFont(); //TODO gene: is a distinction of "not found" needed?
     }
 
     /**

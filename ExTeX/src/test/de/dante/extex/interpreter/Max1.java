@@ -43,6 +43,8 @@ import de.dante.extex.typesetter.listMaker.ListManager;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphBuilder;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
+import de.dante.extex.typesetter.type.MathClass;
+import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -51,7 +53,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.38 $
+ * @version $Revision: 1.39 $
  */
 public class Max1 extends TestCase {
 
@@ -63,6 +65,16 @@ public class Max1 extends TestCase {
         /**
          */
         private StringBuffer sb = new StringBuffer();
+
+        /**
+         * @see de.dante.extex.typesetter.listMaker.NoadConsumer#add(
+         *      de.dante.extex.typesetter.type.MathClass,
+         *      de.dante.extex.typesetter.type.MathGlyph)
+         */
+        public void add(final MathClass mclass, final MathGlyph mg)
+                throws GeneralException {
+
+        }
 
         /**
          * @see de.dante.extex.typesetter.ListMaker#add(
@@ -103,9 +115,9 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#close()
+         * @see de.dante.extex.typesetter.Typesetter#close(TypesetterOptions)
          */
-        public NodeList close() {
+        public NodeList close(TypesetterOptions context) {
 
             return null;
         }
@@ -349,21 +361,21 @@ public class Max1 extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.typesetter.Typesetter#treatLetter(
-         *      Context,
-         *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
-         */
-        public void treatLetter(final TypesettingContext context, final Token t)
-                throws GeneralException {
-
-        }
-
-        /**
          * @see de.dante.extex.typesetter.ListMaker#treatLetter(
          *      Context,
          *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
          */
         public void treatLetter(Context context, TypesettingContext tc, UnicodeChar uc)
+                throws GeneralException {
+
+        }
+
+        /**
+         * @see de.dante.extex.typesetter.Typesetter#treatLetter(
+         *      Context,
+         *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.extex.scanner.Token)
+         */
+        public void treatLetter(final TypesettingContext context, final Token t)
                 throws GeneralException {
 
         }

@@ -33,6 +33,7 @@ import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.listMaker.InnerVerticalListMaker;
 import de.dante.extex.typesetter.listMaker.RestrictedHorizontalListMaker;
 import de.dante.util.GeneralException;
@@ -46,7 +47,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class Box implements Serializable {
 
@@ -102,7 +103,7 @@ public class Box implements Serializable {
         }
 
         source.executeGroup();
-        nodes = typesetter.close();
+        nodes = typesetter.close((TypesetterOptions) context);
     }
 
     /**

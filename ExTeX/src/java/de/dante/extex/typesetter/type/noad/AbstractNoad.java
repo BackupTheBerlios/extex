@@ -27,14 +27,9 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public abstract class AbstractNoad implements Noad, NSSNoad {
-
-    /**
-     * The field <tt>nucleus</tt> contains the nuclues noad.
-     */
-    private Noad nucleus = null;
+public abstract class AbstractNoad implements Noad {
 
     /**
      * The field <tt>subscript</tt> contains the subscript noad.
@@ -53,27 +48,6 @@ public abstract class AbstractNoad implements Noad, NSSNoad {
     public AbstractNoad() {
 
         super();
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param theNucleus the nucleus
-     */
-    public AbstractNoad(final Noad theNucleus) {
-
-        super();
-        nucleus = theNucleus;
-    }
-
-    /**
-     * Getter for the nucleus.
-     *
-     * @return the nucleus.
-     */
-    public Noad getNucleus() {
-
-        return this.nucleus;
     }
 
     /**
@@ -96,7 +70,13 @@ public abstract class AbstractNoad implements Noad, NSSNoad {
         return this.superscript;
     }
 
-    protected abstract String stringName();
+    /**
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     */
+    protected String stringName() {
+
+        return null;
+    }
 
     /**
      * @see "TTP [696]"
@@ -106,17 +86,21 @@ public abstract class AbstractNoad implements Noad, NSSNoad {
 
         sb.append("\\");
         sb.append(stringName());
-        // TODO unimplemented
-
+        // TODO gene: unimplemented
     }
-    /**
-     * Setter for the nucleus.
-     *
-     * @param nucleus the nucleus to set.
-     */
-    public void setNucleus(final Noad nucleus) {
 
-        this.nucleus = nucleus;
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer, int)
+     */
+    public void toString(final StringBuffer sb, final int depth) {
+
+        // TODO gene: unimplemented
+    }
+
+    protected void printNoad(final StringBuffer sb) {
+        
+        // TODO gene: unimplemented
     }
 
     /**

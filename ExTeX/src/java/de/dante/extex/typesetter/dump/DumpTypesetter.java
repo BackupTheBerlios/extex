@@ -24,6 +24,7 @@ import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.impl.TypesetterImpl;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.util.GeneralException;
@@ -33,7 +34,7 @@ import de.dante.util.GeneralException;
  * received.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class DumpTypesetter extends TypesetterImpl {
 
@@ -84,11 +85,11 @@ public class DumpTypesetter extends TypesetterImpl {
     }
 
     /**
-     * @see de.dante.extex.typesetter.ListMaker#close()
+     * @see de.dante.extex.typesetter.ListMaker#close(TypesetterOptions)
      */
-    public NodeList close() throws GeneralException {
+    public NodeList close(TypesetterOptions context) throws GeneralException {
 
-        return super.close();
+        return super.close(context);
     }
 
     /**

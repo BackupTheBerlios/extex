@@ -19,38 +19,38 @@
 
 package de.dante.extex.typesetter.type.noad;
 
+import de.dante.extex.interpreter.context.TypesettingContext;
+import de.dante.extex.interpreter.context.TypesettingContextImpl;
+import de.dante.extex.interpreter.primitives.register.font.NumberedFont;
+import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.node.CharNode;
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.MathGlyph;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
-import de.dante.util.UnicodeChar;
 
 /**
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
-    /**
-     * The field <tt>family</tt> contains the font family for this character.
-     */
-    private int family;
 
     /**
-     * The field <tt>uc</tt> contains the Unicode character representation.
+     * The field <tt>uc</tt> contains the character representation.
      */
-    private UnicodeChar uc;
+    private MathGlyph mg;
 
     /**
      * Creates a new object.
      *
-     * @param fam the font family for the character
-     * @param character the Unicode character representation
+     * @param character the character representation
      */
-    public CharNoad(final int fam, final UnicodeChar character) {
+    protected CharNoad(final MathGlyph character) {
 
         super();
-        family = fam;
-        uc = character;
+        this.mg = character;
     }
 
     /**
@@ -58,19 +58,17 @@ public class CharNoad extends AbstractNoad implements Noad {
      *
      * @return the character.
      */
-    public UnicodeChar getChar() {
+    public MathGlyph getChar() {
 
-        return this.uc;
+        return this.mg;
     }
 
     /**
-     * Getter for family.
-     *
-     * @return the family.
+     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
      */
-    public int getFamily() {
+    protected String stringName() {
 
-        return this.family;
+        return "mathchar";
     }
 
     /**
@@ -78,31 +76,40 @@ public class CharNoad extends AbstractNoad implements Noad {
      */
     public void toString(final StringBuffer sb) {
 
-        // TODO unimplemented
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
 
-    }
-
-
-    /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
-     */
-    public NodeList typeset(final MathContext mathContext) {
-
-        // TODO unimplemented
-        return null;
     }
 
     /**
-     * ...
-     *
-     * @return
-     *
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    protected String stringName() {
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
 
-        // TODO unimplemented
-        return "mathchar";
+        String type = mathContext.getStyle().getStyleName();
+        Font font = context.getFont(NumberedFont.key(context, //
+                type, Integer.toString(mg.getFamily())));
+        if (font == null) {
+            //TODO gene: impossible
+            throw new RuntimeException("this should not happen");
+        }
+        //TODO gene: use factory?
+        TypesettingContext tc = new TypesettingContextImpl(context
+                .getTypesettingContext());
+        tc.setFont(font);
+        list.addGlyph(new CharNode(tc, mg.getCharacter()));
     }
 
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
+     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
+     */
+    public void visit(final NoadVisitor visitor) {
+
+        visitor.visitChar(this);
+    }
 }

@@ -19,12 +19,8 @@
 
 package de.dante.extex.typesetter.type.noad;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.type.Knot;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
@@ -33,15 +29,15 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
-public class MathList extends AbstractNoad implements Noad, NSSNoad {
+public class MathList extends AbstractNoad implements Noad {
 
     /**
      * The field <tt>list</tt> is the container for the elements of this node
      * list.
      */
-    private List list = new ArrayList();
+    private NoadList nucleus = new NoadList();
 
     /**
      * Creates a new object without any items.
@@ -58,7 +54,7 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
      */
     public void add(final Noad noad) {
 
-        list.add(noad);
+        nucleus.add(noad);
     }
 
     /**
@@ -69,11 +65,11 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
      */
     public boolean empty() {
 
-        return list.size() == 0;
+        return nucleus.size() == 0;
     }
 
     /**
-     * Getter for a node at a given posotion.
+     * Getter for a node at a given position.
      *
      * @param index the position
      *
@@ -82,7 +78,7 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
      */
     public Noad get(final int index) {
 
-        return (Noad) list.get(index);
+        return (Noad) nucleus.get(index);
     }
 
     /**
@@ -92,9 +88,9 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
      *
      * @return the element previously located at position <i>index</i>
      */
-    public Knot remove(final int index) {
+    public Noad remove(final int index) {
 
-        return (Node) this.list.remove(index);
+        return (Noad) this.nucleus.remove(index);
     }
 
     /**
@@ -104,20 +100,7 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
      */
     public int size() {
 
-        return list.size();
-    }
-
-    /**
-     * ...
-     *
-     * @return
-     *
-     * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
-     */
-    protected String stringName() {
-
-        // TODO unimplemented
-        return null;
+        return nucleus.size();
     }
 
     /**
@@ -131,21 +114,53 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer)
      */
     public void toString(final StringBuffer sb) {
 
-        for (int i = 0; i < list.size(); i++) {
-            ((Noad) list.get(i)).toString(sb);
+        for (int i = 0; i < nucleus.size(); i++) {
+            nucleus.get(i).toString(sb);
         }
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(
+     *      java.lang.StringBuffer, int)
      */
-    public NodeList typeset(final MathContext mathContext) {
+    public void toString(final StringBuffer sb, final int depth) {
 
-        // TODO unimplemented
-        return null;
+        if (depth < 0) {
+            sb.append("{}");
+        } else {
+            for (int i = 0; i < nucleus.size(); i++) {
+                nucleus.get(i).toString(sb, depth - 1);
+            }
+        }
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
+     */
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
+
+        for (int i = 0; i < nucleus.size(); i++) {
+            Noad noad = nucleus.get(i);
+            noad.typeset(list, mathContext, context);
+        }
+        //TODO gene: subscript and superscript unimplemented ???
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
+     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
+     */
+    public void visit(final NoadVisitor visitor) {
+
+        visitor.visitMathLst(this);
     }
 }

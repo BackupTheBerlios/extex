@@ -110,7 +110,7 @@
   <define name="delcode"
           class="de.dante.extex.interpreter.primitives.parameter.Delcode"/>
   <define name="delimiter"
-          class="de.dante.extex.interpreter.primitives.math.Delimiter"/>
+          class="de.dante.extex.interpreter.primitives.math.MathDelimiter"/>
   <define name="delimiterfactor"
           class="de.dante.extex.interpreter.primitives.register.count.IntegerParameter"/>
   <define name="delimitershortfall"

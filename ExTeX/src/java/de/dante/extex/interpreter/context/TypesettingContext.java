@@ -28,7 +28,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * appearance of glyphs or other nodes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public interface TypesettingContext extends Serializable {
 
@@ -79,7 +79,7 @@ public interface TypesettingContext extends Serializable {
      *
      * @return the hyphenation table
      */
-    HyphenationTable getLanguage();
+    HyphenationTable getHyphenation();
 
     /**
      * Setter for the color.

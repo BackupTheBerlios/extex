@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
@@ -28,9 +29,9 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class OverlinedNoad extends AbstractNoad {
+public class OverlinedNoad extends AbstractNucleusNoad {
 
     /**
      * Creates a new object.
@@ -43,15 +44,10 @@ public class OverlinedNoad extends AbstractNoad {
     }
 
     /**
-     * ...
-     *
-     * @return
-     *
      * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
      */
     protected String stringName() {
 
-        // TODO unimplemented
         return "overline";
     }
 
@@ -60,17 +56,28 @@ public class OverlinedNoad extends AbstractNoad {
      */
     public void toString(final StringBuffer sb) {
 
-        // TODO unimplemented
-
+        // TODO gene: unimplemented
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    public NodeList typeset(final MathContext mathContext) {
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
 
-        // TODO unimplemented
-        return null;
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
+     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
+     */
+    public void visit(final NoadVisitor visitor) {
+
+        visitor.visitOverlined(this);
+    }
 }

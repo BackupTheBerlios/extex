@@ -23,7 +23,14 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.type.Delimiter;
+import de.dante.extex.typesetter.type.MathGlyph;
+import de.dante.extex.typesetter.type.noad.AccentNoad;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.extex.typesetter.type.noad.RadicalNoad;
 import de.dante.util.GeneralException;
+import de.dante.util.UnicodeChar;
 
 /**
  * This class provides an implementation for the primitive <code>\mathaccent</code>.
@@ -47,9 +54,14 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Mathaccent extends AbstractMathCode {
+
+    /**
+     * The field <tt>CHARCODE_MAX</tt> contains the ...
+     */
+    private static final int CHARCODE_MAX = 0xfff;
 
     /**
      * Creates a new object.
@@ -72,9 +84,15 @@ public class Mathaccent extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        NoadConsumer nc = getListMaker(typesetter);
+        long accent = source.scanNumber();
+        if (accent > CHARCODE_MAX) {
+            //TODO error unimplemneted
+            throw new RuntimeException("unmplemented");
+        }
+        Noad noad = nc.scanNoad(context, source);
+        nc.add(new AccentNoad(new MathGlyph((int) accent), noad));
+        return true;
     }
 
 }

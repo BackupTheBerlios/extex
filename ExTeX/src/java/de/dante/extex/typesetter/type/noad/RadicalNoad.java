@@ -20,54 +20,66 @@
 package de.dante.extex.typesetter.type.noad;
 
 import de.dante.extex.typesetter.NodeList;
+import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.type.Delimiter;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class RadicalNoad extends AbstractNoad {
+public class RadicalNoad extends AbstractNucleusNoad {
+
+    /**
+     * The field <tt>leftDelimiter</tt> contains the delimiter for the left
+     * side. This should normally be the radical sign.
+     *
+     * @see "TTP [683]"
+     */
+    private Delimiter leftDelimiter;
 
     /**
      * Creates a new object.
      *
+     * @param leftDelimiter the left delimiter; normally soemthing like the
+     *  square root symbol
+     * @param nucleus the nucleus under the radical
      */
-    public RadicalNoad() {
+    public RadicalNoad(final Delimiter leftDelimiter, final Noad nucleus) {
 
-        super();
+        super(nucleus);
+        this.leftDelimiter = leftDelimiter;
     }
 
     /**
-     * ...
-     *
-     * @return
-     *
      * @see de.dante.extex.typesetter.type.noad.AbstractNoad#stringName()
      */
     protected String stringName() {
 
-        // TODO unimplemented
-        return "mathradical";
+        return "radical";
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(
+     *      de.dante.extex.typesetter.NodeList,
+     *      de.dante.extex.typesetter.type.noad.util.MathContext,
+     *      de.dante.extex.typesetter.TypesetterOptions)
      */
-    public void toString(final StringBuffer sb) {
+    public void typeset(final NodeList list, final MathContext mathContext,
+            final TypesetterOptions context) {
 
-        // TODO unimplemented
-
+        //TODO gene: unimplemented
+        throw new RuntimeException("unimplemented");
     }
 
     /**
-     * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
+     * @see de.dante.extex.typesetter.type.noad.Noad#visit(
+     *      de.dante.extex.typesetter.type.noad.NoadVisitor)
      */
-    public NodeList typeset(final MathContext mathContext) {
+    public void visit(final NoadVisitor visitor) {
 
-        // TODO unimplemented
-        return null;
+        visitor.visitRadical(this);
     }
-
 }

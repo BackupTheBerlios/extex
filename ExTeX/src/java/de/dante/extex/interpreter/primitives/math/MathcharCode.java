@@ -23,13 +23,14 @@ import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
 import de.dante.util.GeneralException;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class MathcharCode extends Mathchar {
 
@@ -62,7 +63,8 @@ public class MathcharCode extends Mathchar {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        insert(typesetter, mathchar);
+        NoadConsumer nc = getListMaker(typesetter);
+        insert(nc, mathchar);
         return true;
     }
 

@@ -64,7 +64,6 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.scanner.TokenFactory;
 import de.dante.extex.scanner.stream.TokenStream;
 import de.dante.extex.scanner.stream.TokenStreamOptions;
-import de.dante.extex.scanner.stream.impl.TokenStreamBaseImpl;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
@@ -115,7 +114,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.55 $
+ * @version $Revision: 1.56 $
  */
 public class ContextImpl
         implements
@@ -356,20 +355,20 @@ public class ContextImpl
     /**
      * Setter for the localizer.
      *
-     * @param localizer the localizer to use
+     * @param theLocalizer the localizer to use
      *
      * @see de.dante.util.framework.i18n.Localizable#enableLocalization(
      *      de.dante.util.framework.i18n.Localizer)
      */
-    public void enableLocalization(final Localizer localizer) {
+    public void enableLocalization(final Localizer theLocalizer) {
 
-        this.localizer = localizer;
+        this.localizer = theLocalizer;
     }
 
     /**
      * @see de.dante.extex.interpreter.context.Context#esc(java.lang.String)
      */
-    public String esc(String name) {
+    public String esc(final String name) {
 
         char esc = (char) (getCount("escapechar").getValue());
         return Character.toString(esc) + name;
@@ -382,11 +381,11 @@ public class ContextImpl
     public Tokens expand(final Tokens tokens, final Typesetter typesetter)
             throws GeneralException {
 
+        /*
         Tokens result = new Tokens();
         //TODO use interface instead of implementation
         TokenStreamBaseImpl stream = new TokenStreamBaseImpl(false, tokens);
 
-        /*
          while (!stream.isEof()) {
          Token t = stream.get(null, null);
 
