@@ -46,8 +46,8 @@
 
   <versions>
     <version>
-      <id>v0_8</id>
-      <name>0.8</name>
+      <id>v0_0</id>
+      <name>0.0</name>
       <tag>HEAD</tag>
     </version>
   </versions>
