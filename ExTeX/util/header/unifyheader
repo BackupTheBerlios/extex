@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# author: Sebastian Waschik
+# created: 2005-03-15
+# RCS-ID: $Id: unifyheader,v 1.1 2005/03/15 20:38:56 plaicy Exp $
+
+
+sedfile=$(mktemp)
+tmpfile=$(mktemp)
+HEADERFILE=util/header/header.java
+
+function deleteFiles()
+{
+    rm -f "$sedfile" "$tmpfile"
+}
+
+# delete file on signal or quit
+for i in SIGQUIT SIGTERM EXIT
+do
+  trap deleteFiles $i
+done
+
+
+test -r "$HEADERFILE" || {
+    echo "could not read headfile \"$HEADERFILE\""
+    exit
+}
+
+
+cat >"$sedfile" <<EOF
+1,/^package /{
+  /^package /!d
+}
+EOF
+
+for i in $*
+do
+  sed -f "$sedfile" <"$i" >"$tmpfile" && \
+      cat "$HEADERFILE" "$tmpfile" >"$i"
+done
