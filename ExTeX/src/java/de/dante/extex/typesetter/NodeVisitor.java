@@ -138,7 +138,7 @@ import de.dante.util.GeneralException;
  * with the method <tt>visit()</tt> of the Node. The signature allows us to
  * provide two additional arguments and receive a return value. Since we want
  * to do something with the node itself, we use the first free argument for the
- * node and <code>null</codeXS> as the second argument.
+ * node and <code>null</code> as the second argument.
  * </p>
  * <p>
  * In the <tt>visit</tt> methods we can now savely assume that the node is of
@@ -183,7 +183,7 @@ import de.dante.util.GeneralException;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface NodeVisitor {
 
