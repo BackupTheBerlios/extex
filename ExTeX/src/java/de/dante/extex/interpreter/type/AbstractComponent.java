@@ -36,7 +36,7 @@ import de.dante.util.GeneralException;
  * Abstract class for all components e.g. <code>Count</code>, <code>Dimen</code>, ...
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class AbstractComponent implements Serializable {
 
@@ -72,10 +72,12 @@ public abstract class AbstractComponent implements Serializable {
 			return -source.scanNumber();
 		} else if (t.equals(Catcode.OTHER, "+")) {
 			return source.scanNumber();
-		} else if (t instanceof ControlSequenceToken){
+		} else if (t instanceof ControlSequenceToken) {
 			Code code = context.getMacro(t.getValue());
 			if (code != null && code instanceof CountConvertable) {
-				return ((CountConvertable)code).convertCount(context, source);
+				return ((CountConvertable) code).convertCount(context, source);
+			} else if (code != null && code instanceof DimenConvertable) {
+				return ((DimenConvertable) code).convertDimen(context, source);
 			}
 		}
 		source.push(t);
@@ -164,16 +166,16 @@ public abstract class AbstractComponent implements Serializable {
 	 * @throws GeneralException in case that no number is found
 	 */
 	public long scanFloatAsLong(final String s) throws GeneralException {
-		String svalue = s.trim().replaceAll("," , ".").replaceAll(" ", "");
-		long value=0;
+		String svalue = s.trim().replaceAll(",", ".").replaceAll(" ", "");
+		long value = 0;
 		try {
-			value = (long)Double.parseDouble(svalue)*ONE;
+			value = (long) Double.parseDouble(svalue) * ONE;
 		} catch (NumberFormatException e) {
-			throw new GeneralHelpingException("TTP.NumberFormatError",svalue);
+			throw new GeneralHelpingException("TTP.NumberFormatError", svalue);
 		}
 		return value;
 	}
-	
+
 	/**
 	 * Scan the input stream for tokens making up an <code>Dimen</code>.
 	 * 
@@ -183,14 +185,33 @@ public abstract class AbstractComponent implements Serializable {
 	 *             file has been reached before an integer could be acquired
 	 */
 	public Dimen scanDimen(final TokenSource source, final Context context, final boolean fixed) throws GeneralException {
-		long value = scanFloatAsLong(source);
-		int order = 0;
+		long value = 0;
+		boolean numberfound = false;
 
+		// get number
 		Token t = source.scanNonSpace();
 		if (t == null) {
+			throw new GeneralHelpingException("TTP.MissingNumber");
+		} else if (t instanceof ControlSequenceToken) {
+			Code code = context.getMacro(t.getValue());
+			if (code != null && code instanceof DimenConvertable) {
+				return new Dimen(((DimenConvertable) code).convertDimen(context, source));
+			} else if (code != null && code instanceof CountConvertable) {
+				numberfound = true;
+				value = ((CountConvertable) code).convertCount(context, source)*ONE;
+			}
+		}
+		if (!numberfound) {
+			source.push(t);
+			value = scanFloatAsLong(source);
+		}
+
+		// get unit
+		int order = 0;
+
+		t = source.scanNonSpace();
+		if (t == null) {
 			throw new GeneralHelpingException("TTP.GlueUnitnotFound");
-		}	else if (t instanceof CountConvertable) {// TODO incomplete, see getCount
-			return new Dimen(((DimenConvertable) t).convertDimen(context, source));
 		}
 		source.push(t);
 
@@ -221,9 +242,11 @@ public abstract class AbstractComponent implements Serializable {
 		} else if (source.scanKeyword("cc")) {
 			value = value * 14856 / 1157;
 		} else if (source.scanKeyword("ex")) {
-			//TODO ex unimplemented
+			Dimen ex = context.getTypesettingContext().getFont().getEx();
+			value = value * ex.getValue() / ONE; // TODO test
 		} else if (source.scanKeyword("em")) {
-			//TODO em unimplemented
+			Dimen em = context.getTypesettingContext().getFont().getEm();
+			value = value * em.getValue() / ONE; // TODO test
 		} else if (fixed && source.scanKeyword("fil")) {
 			order = 1;
 			for (t = source.getToken();(t != null && (t.equals('l') || t.equals('L'))); t = source.getToken()) {
@@ -246,12 +269,12 @@ public abstract class AbstractComponent implements Serializable {
 	 * @throws GeneralException in case that no number is found
 	 */
 	public Dimen scanDimen(Context context, final String s, final boolean fixed) throws GeneralException {
-		
+
 		StringBuffer sb = new StringBuffer();
-		int idx=0;
-		while (idx <s.length()) {
+		int idx = 0;
+		while (idx < s.length()) {
 			char c = s.charAt(idx);
-			if (c=='-' || c =='+' || Character.isDigit(c) || c == ' ' || c =='.' || c==',') {
+			if (c == '-' || c == '+' || Character.isDigit(c) || c == ' ' || c == '.' || c == ',') {
 				sb.append(c);
 				idx++;
 			} else {
@@ -261,14 +284,14 @@ public abstract class AbstractComponent implements Serializable {
 		long value = scanFloatAsLong(sb.toString());
 		int order = 0;
 		String unit = s.substring(idx).trim();
-		
+
 		if (unit.length() == 0) {
 			throw new GeneralHelpingException("TTP.GlueUnitnotFound");
 		}
 
 		long mag = 1000;
 
-		if (unit.startsWith("true")) { 
+		if (unit.startsWith("true")) {
 			mag = context.getMagnification();
 			unit = unit.substring(4).trim();
 		}
@@ -292,13 +315,15 @@ public abstract class AbstractComponent implements Serializable {
 		} else if (unit.startsWith("cc")) {
 			value = value * 14856 / 1157;
 		} else if (unit.startsWith("ex")) {
-			//TODO ex unimplemented
+			Dimen ex = context.getTypesettingContext().getFont().getEx();
+			value = value * ex.getValue() / ONE; // TODO test
 		} else if (unit.startsWith("em")) {
-			//TODO em unimplemented
+			Dimen em = context.getTypesettingContext().getFont().getEm();
+			value = value * em.getValue() / ONE; // TODO test
 		} else if (fixed && unit.startsWith("fil")) { // fil, fill, filll, ...
 			order = 1;
 			for (int i = 3; i < unit.length(); i++) {
-				if (unit.charAt(i)== 'l' || unit.charAt(i)== 'L') {
+				if (unit.charAt(i) == 'l' || unit.charAt(i) == 'L') {
 					order++;
 				}
 			}
@@ -311,8 +336,7 @@ public abstract class AbstractComponent implements Serializable {
 		}
 		return new Dimen(value, order);
 	}
-	
-	
+
 	/** 
 	 * Rounds a floating-point number to nearest whole number.
 	 * It uses exactly the same algorithm as web2c implementation of TeX.
@@ -350,7 +374,7 @@ public abstract class AbstractComponent implements Serializable {
 	 * @return	the <code>Real</code>-value
 	 * @throws GeneralException, in case of an error
 	 */
-	public Real scanReal(Context context,TokenSource source) throws GeneralException {
+	public Real scanReal(Context context, TokenSource source) throws GeneralException {
 		StringBuffer sb = new StringBuffer(32);
 		long value = 0;
 		boolean neg = false;
@@ -358,7 +382,7 @@ public abstract class AbstractComponent implements Serializable {
 
 		if (t == null) {
 			throw new GeneralHelpingException("TTP.MissingNumber");
-		} else if (t instanceof RealConvertable) {// TODO incomplete, see getCount
+		} else if (t instanceof RealConvertable) { // TODO incomplete, see getCount
 			return ((RealConvertable) t).convertReal(context, source);
 		} else if (t.equals(Catcode.OTHER, "-")) {
 			neg = true;
@@ -371,8 +395,7 @@ public abstract class AbstractComponent implements Serializable {
 			sb.append('-');
 		}
 
-		if (t != null && !t.equals(Catcode.OTHER, ".")
-				&& !t.equals(Catcode.OTHER, ",")) {
+		if (t != null && !t.equals(Catcode.OTHER, ".") && !t.equals(Catcode.OTHER, ",")) {
 			value = source.scanNumber(t);
 			t = source.getToken();
 		}
@@ -381,8 +404,7 @@ public abstract class AbstractComponent implements Serializable {
 		sb.append('.');
 		value = 0;
 
-		if (t != null
-				&& (t.equals(Catcode.OTHER, ".") || t.equals(Catcode.OTHER, ","))) {
+		if (t != null && (t.equals(Catcode.OTHER, ".") || t.equals(Catcode.OTHER, ","))) {
 			value = source.scanNumber();
 		}
 		sb.append(Long.toString(value));

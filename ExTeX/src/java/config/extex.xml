@@ -73,7 +73,7 @@
     <Define name="delimiterfactor" class=""/>
     <Define name="delimitershortfall" class=""/>
     <define name="dimen" class="de.dante.extex.interpreter.primitives.register.NumberedDimen"/>
-    <Define name="dimendef" class=""/>
+    <define name="dimendef" class="de.dante.extex.interpreter.primitives.register.DimenDef"/>
     <Define name="discretionary" class=""/>
     <Define name="displayindent" class=""/>
     <Define name="displaylimits" class=""/>
@@ -304,6 +304,7 @@
     <Define name="textfont" class=""/>
     <Define name="textstyle" class=""/>
     <define name="the" class="de.dante.extex.interpreter.primitives.debugging.The"/>
+    <define name="topt" class="de.dante.extex.interpreter.primitives.debugging.ToPT"/>
     <Define name="thickmuskip" class=""/>
     <Define name="thinmuskip" class=""/>
     <define name="time" class="de.dante.extex.interpreter.primitives.register.NamedCount"/>
