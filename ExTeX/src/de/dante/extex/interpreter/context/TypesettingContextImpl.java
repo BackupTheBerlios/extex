@@ -20,13 +20,14 @@
 package de.dante.extex.interpreter.context;
 
 import de.dante.extex.hyphenation.HyphenationTable;
+import de.dante.extex.interpreter.context.color.RgbColor;
 import de.dante.extex.interpreter.type.font.Font;
 
 /**
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class TypesettingContextImpl implements TypesettingContext {
 
@@ -61,19 +62,13 @@ public class TypesettingContextImpl implements TypesettingContext {
     private HyphenationTable hyphenation;
 
     /**
-     * The field <tt>angle</tt> contains the angle for the glyphs.
-     */
-    private int angle;
-
-    /**
      * Creates a new object.
      */
     public TypesettingContextImpl() {
 
         super();
         this.font = null;
-        this.color = ColorImpl.BLACK;
-        this.angle = 0;
+        this.color = RgbColor.BLACK;
         this.hyphenation = null;
     }
 
@@ -85,24 +80,7 @@ public class TypesettingContextImpl implements TypesettingContext {
 
         this.font = context.getFont();
         this.color = context.getColor();
-        this.angle = context.getAngle();
         this.hyphenation = context.getLanguage();
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#setAngle(int)
-     */
-    public void setAngle(final int theAngle) {
-
-        this.angle = theAngle;
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.context.TypesettingContext#getAngle()
-     */
-    public int getAngle() {
-
-        return this.angle;
     }
 
     /**

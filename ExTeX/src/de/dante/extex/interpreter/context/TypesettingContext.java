@@ -25,7 +25,7 @@ import de.dante.extex.interpreter.type.font.Font;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public interface TypesettingContext {
 
@@ -91,19 +91,5 @@ public interface TypesettingContext {
      * @return the current color
      */
     Color getColor();
-
-    /**
-     * Setter for the angle.
-     *
-     * @param angle the new angle
-     */
-    void setAngle(int angle);
-
-    /**
-     * Getter for the angle.
-     *
-     * @return the current angle
-     */
-    int getAngle();
 
 }
