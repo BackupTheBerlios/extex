@@ -29,6 +29,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.box.Boxable;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.scanner.Catcode;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.NodeList;
@@ -49,7 +50,22 @@ import de.dante.util.configuration.ConfigurationException;
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
  *    &lang;halign&rang;
- *       &rarr; <tt>\halign</tt>  </pre>
+ *       &rarr; <tt>\halign</tt> &lang;box specification&rang; <tt>{</tt> &lang;preamble&rang; <tt>\cr</tt> &lang;rows&rang; <tt>}</tt>
+ *
+ *    &lang;box specification&rang;
+ *        &rarr;
+ *         | <tt>to</tt> &lang;rule dimension&rang;
+ *         | <tt>spread</tt> &lang;rule dimension&rang;  </pre>
+ *
+ *    &lang;preamble&rang;
+ *       &rarr; ...
+ *
+ *    &lang;rows&rang;
+ *       &rarr;
+ *       | &lang;row&rang; &lang;rows&rang;
+ *
+ *    &lang;preamble&rang;
+ *       &rarr; ...   </pre>
  * </p>
  * <p>
  *  Examples:
@@ -59,7 +75,7 @@ import de.dante.util.configuration.ConfigurationException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class Halign extends AbstractAlign implements Boxable {
 
@@ -90,13 +106,13 @@ public class Halign extends AbstractAlign implements Boxable {
     }
 
     /**
-     * ...
+     * Getter for the box representation.
      *
      * @param context the interpreter context
      * @param source the token source
      * @param typesetter the typesetter
      *
-     * @return ...
+     * @return a box containing the nodes generated
      *
      * @throws GeneralException in case of an error
      *
@@ -112,7 +128,7 @@ public class Halign extends AbstractAlign implements Boxable {
     }
 
     /**
-     * ...
+     * Getter for the nodes.
      *
      * @param context the interpreter context
      * @param source the token source
@@ -128,10 +144,14 @@ public class Halign extends AbstractAlign implements Boxable {
     private NodeList getNodes(final Context context, final TokenSource source,
             final Typesetter typesetter) throws GeneralException {
 
-        Dimen width = null;
+        FixedDimen width = null;
+        boolean spread = false;
 
         if (source.getKeyword("to")) {
             width = new Dimen(context, source);
+        } else if (source.getKeyword("spread")) {
+            width = new Dimen(context, source);
+            spread = true;
         }
         Token t = source.getToken();
         if (t == null) {
@@ -139,7 +159,7 @@ public class Halign extends AbstractAlign implements Boxable {
         } else if (t.isa(Catcode.LEFTBRACE)) {
             List preamble = getPreamble(context, source);
             typesetter.push(new HAlignListMaker(typesetter.getManager(),
-                    context, source, preamble, width));
+                    context, source, preamble, width, spread));
         } else {
             throw new MissingLeftBraceHelpingException(
                     printableControlSequence(context));
