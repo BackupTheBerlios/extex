@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.glue.FixedGlue;
@@ -43,7 +44,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class HorizontalListMaker extends AbstractListMaker {
 
@@ -220,8 +221,7 @@ public class HorizontalListMaker extends AbstractListMaker {
 
     /**
      * Add a character node to the list.
-     *
-     * @param context the typesetting context for the symbol
+     * @param tc the typesetting context for the symbol
      * @param symbol the symbol to add
      *
      * @see de.dante.extex.typesetter.ListMaker#add(
@@ -229,10 +229,10 @@ public class HorizontalListMaker extends AbstractListMaker {
      *      de.dante.util.UnicodeChar)
      * @see "The TeXbook [p.76]"
      */
-    public void treatLetter(final TypesettingContext context,
-            final UnicodeChar symbol) {
+    public void treatLetter(Context context,
+            final TypesettingContext tc, final UnicodeChar symbol) {
 
-        CharNode c = getManager().getCharNodeFactory().newInstance(context,
+        CharNode c = getManager().getCharNodeFactory().newInstance(tc,
                 symbol);
         nodes.add(c);
 

@@ -20,6 +20,7 @@
 package de.dante.extex.typesetter.listMaker;
 
 import de.dante.extex.i18n.EofHelpingException;
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
@@ -31,8 +32,9 @@ import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
-import de.dante.extex.typesetter.type.noad.CharNoad;
+import de.dante.extex.typesetter.type.noad.CharNoadFactory;
 import de.dante.extex.typesetter.type.noad.MathList;
+import de.dante.extex.typesetter.type.noad.NSSNoad;
 import de.dante.extex.typesetter.type.noad.Noad;
 import de.dante.extex.typesetter.type.noad.StyleNoad;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
@@ -43,9 +45,14 @@ import de.dante.util.UnicodeChar;
  * This is the list maker for the inline math formulae.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class MathListMaker extends AbstractListMaker implements NoadConsumer {
+
+    /**
+     * The field <tt>cnf</tt> contains the char noad factory.
+     */
+    private CharNoadFactory cnf = new CharNoadFactory();
 
     /**
      * The field <tt>nodes</tt> contains the list of nodes encapsulated in this
@@ -183,11 +190,11 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoads(
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoad(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Noad scanNoads(final Context context, final TokenSource source)
+    public Noad scanNoad(final Context context, final TokenSource source)
             throws GeneralException {
 
         Token t = source.getToken();
@@ -215,36 +222,59 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#subscriptMark(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
+     *      Context,
+     *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void subscriptMark(final TypesettingContext context,
+    public void subscriptMark(final Context context, final TokenSource source,
             final Token token) throws GeneralException {
 
+        Noad sub = scanNoad(context, source);
         if (noads.size() == 0) {
             add(new MathList());
         }
         Noad n = noads.get(noads.size() - 1);
+        if (!(n instanceof NSSNoad)) {
+            //TODO error unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+        NSSNoad noad = (NSSNoad) n;
+        if (noad.getSubscript() != null) {
+            throw new HelpingException(getLocalizer(), "TTP.DoubleSubscript");
+        }
 
-        //TODO _ unimplemented
-        throw new RuntimeException("unimplemented");
+        noad.setSubscript(sub);
     }
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#superscriptMark(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
+     *      Context,
+     *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void superscriptMark(final TypesettingContext context,
-            final Token token) throws GeneralException {
+    public void superscriptMark(final Context context,
+            final TokenSource source, final Token token)
+            throws GeneralException {
 
-        //TODO ^ unimplemented
-        throw new RuntimeException("unimplemented");
+        Noad sup = scanNoad(context, source);
+        if (noads.size() == 0) {
+            add(new MathList());
+        }
+        Noad n = noads.get(noads.size() - 1);
+        if (!(n instanceof NSSNoad)) {
+            //TODO error unimplemented
+            throw new RuntimeException("unimplemented");
+        }
+        NSSNoad noad = (NSSNoad) n;
+        if (noad.getSuperscript() != null) {
+            throw new HelpingException(getLocalizer(), "TTP.DoubleSuperscript");
+        }
+
+        noad.setSubscript(sup);
     }
 
     /**
      * Add a math character node to the list.
      *
+     * @param context the interpreter context
      * @param tc the typesetting context for the symbol. This parameter is
      *  ignored in math mode.
      * @param symbol the symbol to add
@@ -253,12 +283,10 @@ public class MathListMaker extends AbstractListMaker implements NoadConsumer {
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.util.UnicodeChar)
      */
-    public void treatLetter(final TypesettingContext tc,
+    public void treatLetter(final Context context, final TypesettingContext tc,
             final UnicodeChar symbol) {
 
         int fam = 0; //TODO determine the correct family
-        //TODO: use a factory for math chars
-        noads.add(new CharNoad(fam, symbol));
+        noads.add(cnf.getCharNoad(fam, symbol));
     }
-
 }

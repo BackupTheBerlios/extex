@@ -60,7 +60,7 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public class TypesetterImpl
         implements
@@ -68,6 +68,7 @@ public class TypesetterImpl
             ListManager,
             Localizable,
             LogEnabled {
+
     /**
      * The field <tt>charNodeFactory</tt> contains the factory to produce glyph
      * nodes.
@@ -329,8 +330,8 @@ public class TypesetterImpl
      * @see de.dante.extex.typesetter.ListMaker#mathShift(
      *      Context, TokenSource, de.dante.extex.scanner.Token)
      */
-    public void mathShift(Context context, final TokenSource source, final Token t)
-            throws GeneralException {
+    public void mathShift(Context context, final TokenSource source,
+            final Token t) throws GeneralException {
 
         listMaker.mathShift(context, source, t);
     }
@@ -377,15 +378,15 @@ public class TypesetterImpl
     }
 
     /**
-     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoads(
+     * @see de.dante.extex.typesetter.listMaker.NoadConsumer#scanNoad(
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource)
      */
-    public Noad scanNoads(final Context context, final TokenSource source)
+    public Noad scanNoad(final Context context, final TokenSource source)
             throws GeneralException {
 
         if (listMaker instanceof NoadConsumer) {
-            return ((NoadConsumer) listMaker).scanNoads(context, source);
+            return ((NoadConsumer) listMaker).scanNoad(context, source);
         } else {
             throw new MathHelpingException("???");
         }
@@ -489,24 +490,24 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#subscriptMark(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
+     *      Context,
+     *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void subscriptMark(final TypesettingContext context, final Token t)
+    public void subscriptMark(Context context, TokenSource source, final Token t)
             throws GeneralException {
 
-        listMaker.subscriptMark(context, t);
+        listMaker.subscriptMark(context, source, t);
     }
 
     /**
      * @see de.dante.extex.typesetter.Typesetter#superscriptMark(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.extex.scanner.Token)
+     *      Context,
+     *      TokenSource, de.dante.extex.scanner.Token)
      */
-    public void superscriptMark(final TypesettingContext context, final Token t)
+    public void superscriptMark(Context context, TokenSource source, final Token t)
             throws GeneralException {
 
-        listMaker.superscriptMark(context, t);
+        listMaker.superscriptMark(context, source, t);
     }
 
     /**
@@ -522,13 +523,13 @@ public class TypesetterImpl
 
     /**
      * @see de.dante.extex.typesetter.ListMaker#treatLetter(
-     *      de.dante.extex.interpreter.context.TypesettingContext,
-     *      de.dante.util.UnicodeChar)
+     *      Context,
+     *      de.dante.extex.interpreter.context.TypesettingContext, de.dante.util.UnicodeChar)
      */
-    public void treatLetter(final TypesettingContext context,
+    public void treatLetter(final Context context, final TypesettingContext tc,
             final UnicodeChar uc) throws GeneralException {
 
-        listMaker.treatLetter(context, uc);
+        listMaker.treatLetter(context, tc, uc);
     }
 
 }

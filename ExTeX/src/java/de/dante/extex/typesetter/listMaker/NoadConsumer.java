@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * This is usually the case for math list makers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface NoadConsumer {
 
@@ -53,5 +53,5 @@ public interface NoadConsumer {
      *
      * @throws GeneralException in case of an error
      */
-    Noad scanNoads(Context context, TokenSource source) throws GeneralException;
+    Noad scanNoad(Context context, TokenSource source) throws GeneralException;
 }

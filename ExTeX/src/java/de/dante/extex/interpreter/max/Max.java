@@ -83,7 +83,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.47 $
+ * @version $Revision: 1.48 $
  */
 public class Max extends Moritz
         implements
@@ -294,8 +294,12 @@ public class Max extends Moritz
         }
     }
 
+    /**
+     * @see de.dante.extex.interpreter.TokenSource#execute(
+     *      de.dante.extex.scanner.Token)
+     */
     public void execute(final Token token) throws GeneralException {
-        
+
         observersExpand.update(this, token);
         try {
             token.visit(this, null, null);
@@ -712,7 +716,8 @@ public class Max extends Moritz
     public Object visitLetter(final LetterToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.treatLetter(context.getTypesettingContext(), token.getChar());
+        typesetter
+                .treatLetter(context, context.getTypesettingContext(), token.getChar());
         return null;
     }
 
@@ -786,7 +791,8 @@ public class Max extends Moritz
     public Object visitOther(final OtherToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.treatLetter(context.getTypesettingContext(), token.getChar());
+        typesetter
+                .treatLetter(context, context.getTypesettingContext(), token.getChar());
         return null;
     }
 
@@ -848,7 +854,7 @@ public class Max extends Moritz
     public Object visitSubMark(final SubMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.subscriptMark(context.getTypesettingContext(), token);
+        typesetter.subscriptMark(context, this, token);
         return null;
     }
 
@@ -869,7 +875,7 @@ public class Max extends Moritz
     public Object visitSupMark(final SupMarkToken token, final Object ignore)
             throws GeneralException {
 
-        typesetter.superscriptMark(context.getTypesettingContext(), token);
+        typesetter.superscriptMark(context, this, token);
         return null;
     }
 
