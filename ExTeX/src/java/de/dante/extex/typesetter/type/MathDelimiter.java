@@ -19,18 +19,23 @@
 
 package de.dante.extex.typesetter.type;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
+import de.dante.util.framework.i18n.Localizer;
+import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a container for a delimiter consisting of a class, a
  * large and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class Delimiter {
+public class MathDelimiter {
+
+    private static final int CHAR_MASK = 0xff;
 
     /**
      * The field <tt>largeChar</tt> contains the code of the large character.
@@ -67,15 +72,23 @@ public class Delimiter {
      * </p>
      *
      * @param delcode the TeX encoding for the delimiter
+     *
+     * @throws GeneralException in case of a parameter out of range
      */
-    public Delimiter(final long delcode) {
+    protected MathDelimiter(final long delcode) throws GeneralException {
 
         super();
-        mathClass = MathClass.getMathClass((int) ((delcode >> 24) & 0xf));
+        int classCode = (int) ((delcode >> 24));
+        if (classCode > 0xf) {
+            throw new HelpingException(LocalizerFactory
+                    .getLocalizer(MathDelimiter.class.getName()),
+                    "TTP.BadDelimiterCode", "\"" + Long.toHexString(delcode));
+        }
+        mathClass = MathClass.getMathClass(classCode);
         smallChar = new MathGlyph((int) ((delcode >> 20) & 0xf),
-                new UnicodeChar((int) ((delcode >> 12) & 0xff)));
+                new UnicodeChar((int) ((delcode >> 12) & CHAR_MASK)));
         largeChar = new MathGlyph((int) ((delcode >> 8) & 0xf),
-                new UnicodeChar((int) (delcode & 0xff)));
+                new UnicodeChar((int) (delcode & CHAR_MASK)));
     }
 
     /**
@@ -85,7 +98,7 @@ public class Delimiter {
      *
      * @throws GeneralException in case of an error
      */
-    public Delimiter(final TokenSource source) throws GeneralException {
+    public MathDelimiter(final TokenSource source) throws GeneralException {
 
         this(source.scanNumber());
     }
