@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class HAlignListMaker extends RestrictedHorizontalListMaker
         implements
@@ -45,11 +45,38 @@ public class HAlignListMaker extends RestrictedHorizontalListMaker
     }
 
     /**
+     * @see de.dante.extex.typesetter.impl.AlignmentList#cr()
+     */
+    public void cr() {
+
+        // TODO unimplemented
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.AlignmentList#crcr()
+     */
+    public void crcr() {
+
+        // TODO unimplemented
+
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.AlignmentList#omit()
+     */
+    public void omit() {
+
+        // TODO unimplemented
+
+    }
+
+    /**
      * @see de.dante.extex.typesetter.ListMaker#treatTabMark(
      *      de.dante.extex.interpreter.context.TypesettingContext,
      *      de.dante.extex.scanner.Token)
      */
-    public void treatTabMark(TypesettingContext context, Token token)
+    public void treatTabMark(final TypesettingContext context, final Token token)
             throws GeneralException {
 
         // TODO unimplemented
