@@ -30,13 +30,23 @@ import de.dante.util.UnicodeChar;
 /**
  * <h2>Data Structures for Liangs Algorithm</h2>
  *
- * TODO gene: missing JavaDoc.
+ * <p>
+ *  The basic data structure to store hyphenation patterns is a tree with
+ *  arbitrary branching factor. The path from the root to a node determines the
+ *  word under which a hyphenation code ist stored.
+ * </p>
+ * <p>
+ *  The hyphenation code is a vector of characters. They are used as a means to
+ *  store short numbers.
+ * </p>
  *
- * The value <code>null</code> as character is interpretes as the left
+ * TODO gene: missing JavaDoc (incomplete).
+ *
+ * The value <code>null</code> as character is interpreted as the left
  * or right word boundary.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 class HyphenTree implements Serializable {
 
@@ -98,12 +108,15 @@ class HyphenTree implements Serializable {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Traverse the tree and return the appropriate hyphenation code vector.
+     * If none is found then <code>null</code> is returned.
+     * The hyphenation code vector returned is the longest vector stored for
+     * any sequence of characters starting with the given word.
      *
      * @param chars the array of characters to analyze
      * @param start the start index in chars to begin with
      *
-     * @return ...
+     * @return the hyphenation code found or <code>null</code>
      */
     public char[] get(final UnicodeChar[] chars, final int start) {
 
@@ -200,20 +213,24 @@ class HyphenTree implements Serializable {
     }
 
     /**
-     * TODO gene: missing JavaDoc
+     * Superimpose a hyphenation code vector onto the current node and all
+     * descendants.
      *
-     * @param code ...
+     * @param code the hyphenation code vector to superimpose
      */
     public void superimposeAll(final char[] code) {
 
+        if (nextTree == null) {
+            return;
+        }
+        //TODO gene: check for off by one error
         Iterator iterator = nextTree.values().iterator();
         while (iterator.hasNext()) {
             HyphenTree t = (HyphenTree) iterator.next();
             if (t.hc != null) {
-                superimpose(t.hc, 0 , code);
+                superimpose(t.hc, 0, code);
             }
             t.superimposeAll(code);
         }
     }
-
 }
