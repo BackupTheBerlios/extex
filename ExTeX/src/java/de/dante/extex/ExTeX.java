@@ -78,7 +78,7 @@ import de.dante.util.configuration.ConfigurationFactory;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ExTeX {
     /**
@@ -315,6 +315,8 @@ public class ExTeX {
                     } else if ("-texmfoutputs".startsWith(arg)
                                && arg.length() > 4) {
                         useArg("extex.fallbackOutputdir", args, ++i);
+                    } else if ("-debug".startsWith(arg)) {
+                        useDebug(args, ++i);
                     } else {
                         throw new MainUnknownOptionException(arg);
                     }
@@ -641,6 +643,11 @@ public class ExTeX {
         properties.setProperty(name, arg[i]);
     }
 
+    private void useDebug(String[] arg, int i) throws MainException {
+        if (i >= arg.length) { throw new MainMissingArgumentException("debug"); }
+        
+    }
+    
     /**
      * Initialize or re-initialize the logger.
      * 
