@@ -59,7 +59,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.37 $
+ * @version $Revision: 1.38 $
  */
 public class GroupImpl implements Group, Tokenizer, Serializable {
 
@@ -473,7 +473,13 @@ public class GroupImpl implements Group, Tokenizer, Serializable {
      */
     public Interaction getInteraction() {
 
-        return interaction;
+        if (null != interaction) {
+            return interaction;
+        }
+
+        return (next != null
+                ? next.getInteraction()
+                : Interaction.ERRORSTOPMODE);
     }
 
     /**
