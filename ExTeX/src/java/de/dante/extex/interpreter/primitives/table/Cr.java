@@ -19,11 +19,14 @@
 
 package de.dante.extex.interpreter.primitives.table;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.impl.AlignmentList;
 import de.dante.util.GeneralException;
 
 /**
@@ -48,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Cr extends AbstractCode {
 
@@ -73,9 +76,15 @@ public class Cr extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        ListMaker maker = typesetter.getListMaker();
+        if (maker instanceof AlignmentList) {
+            ((AlignmentList) maker).cr();
+        } else {
+            throw new HelpingException(getLocalizer(), "TTP.MisplacedCrSpan",
+                    printableControlSequence(context));
+        }
+
+        return true;
     }
 
 }
