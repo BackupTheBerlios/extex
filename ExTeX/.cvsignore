@@ -8,7 +8,6 @@
 *.pdf
 .xvpics
 build.properties
-prj.el
 target
 tmp
 work
