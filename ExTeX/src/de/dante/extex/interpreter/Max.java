@@ -54,7 +54,7 @@ import java.util.Iterator;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Max extends Moritz implements CatcodeVisitor,
                                            Interpreter,
@@ -342,8 +342,6 @@ public class Max extends Moritz implements CatcodeVisitor,
     public Object visitCr(Object oToken, Object ignore)
                    throws GeneralException {
         Token token = (Token) oToken;
-        System.err.println(token.toString());
-
         //TODO unimplemented
         return null;
     }
@@ -470,7 +468,6 @@ public class Max extends Moritz implements CatcodeVisitor,
     public Object visitSubMark(Object oToken, Object ignore)
                         throws GeneralException {
         Token token = (Token) oToken;
-        System.err.println(token.toString());
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
@@ -482,7 +479,6 @@ public class Max extends Moritz implements CatcodeVisitor,
     public Object visitSupMark(Object oToken, Object ignore)
                         throws GeneralException {
         Token token = (Token) oToken;
-        System.err.println(token.toString());
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
@@ -494,7 +490,6 @@ public class Max extends Moritz implements CatcodeVisitor,
     public Object visitTabMark(Object oToken, Object ignore)
                         throws GeneralException {
         Token token = (Token) oToken;
-        System.err.println(token.toString());
 
         //TODO unimplemented
         throw new GeneralException("unimplemented");
@@ -568,9 +563,9 @@ public class Max extends Moritz implements CatcodeVisitor,
                          calendar.get(Calendar.HOUR_OF_DAY) * 60 +
                          calendar.get(Calendar.MINUTE));
 
-        System.err.println("init: " +
-                           Long.toString(System.currentTimeMillis() -
-                                         t) + "ms");
+//        System.err.println("init: " +
+//                           Long.toString(System.currentTimeMillis() -
+//                                         t) + "ms");
     }
 
     /**
