@@ -36,7 +36,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface TokenStream {
 
@@ -96,4 +96,10 @@ public interface TokenStream {
      */
     void put(Token token);
 
+    /**
+     * Check to see if a further token can be acquired from the token stream.
+     *
+     * @return <code>true</code> if the stream is at its end
+     */
+    //TODO boolean isEof();
 }
