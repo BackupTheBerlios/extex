@@ -390,10 +390,10 @@
   </Interpreter>
 
 	
-	<Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
-  		<LineBreaker name="default" class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
-  		<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
- 	</Typesetter>
+  <Typesetter class="de.dante.extex.typesetter.impl.TypesetterImpl">
+    <LineBreaker name="default" class="de.dante.extex.typesetter.impl.LineBreakerImpl"/>
+  	<LineBreaker name="XXX" class="de.dante.extex.typesetter.impl.LineBreakerXXXImpl"/>
+  </Typesetter>
 
   <DocumentWriter default="out">
     <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
