@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * @see "TeX -- The Program [149]"
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class AlignedLeadersNode extends GlueNode implements Node {
 
@@ -39,7 +39,7 @@ public class AlignedLeadersNode extends GlueNode implements Node {
      */
     public AlignedLeadersNode() {
 
-        super();
+        super(null);
     }
 
     /**

@@ -19,6 +19,7 @@
 package de.dante.extex.typesetter;
 
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
 
 /**
@@ -28,7 +29,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface Node {
 
@@ -73,6 +74,13 @@ public interface Node {
      * @param depth the nde depth
      */
     void setDepth(Dimen depth);
+
+    /**
+     * Add the flexible width of the current node to the given glue.
+     *
+     * @param glue the glue to add to.
+     */
+    void addWidthTo(Glue glue);
 
     /**
      * This method puts the printable representation into the string buffer.

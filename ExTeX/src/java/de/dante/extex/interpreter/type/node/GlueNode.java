@@ -33,23 +33,14 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class GlueNode extends AbstractNode implements Node, Discartable {
 
     /**
-     * The field <tt>theSize</tt> ...
+     * The field <tt>size</tt> ...
      */
-    private FixedGlue theSize;
-
-    /**
-     * Creates a new object.
-     */
-    public GlueNode() {
-
-        super();
-        theSize = null;
-    }
+    private FixedGlue size;
 
     /**
      * Creates a new object.
@@ -58,8 +49,17 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
      */
     public GlueNode(final FixedGlue size) {
 
-        super();
-        theSize = size;
+        super(size.getLength());
+        this.size = new Glue(size);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.Node#addWidthTo(
+     *      de.dante.extex.interpreter.type.glue.Glue)
+     */
+    public void addWidthTo(final Glue glue) {
+
+        glue.add(size);
     }
 
     /**
@@ -100,7 +100,7 @@ public class GlueNode extends AbstractNode implements Node, Discartable {
     public void toString(final StringBuffer sb, final String prefix) {
 
         sb.append("\\skip ");
-        sb.append(theSize.toString());
+        sb.append(size.toString());
     }
 
     /**
