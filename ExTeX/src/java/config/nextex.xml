@@ -1,0 +1,188 @@
+<?xml version="1.0"?>
+<!--
+  -  Copyright (C) 2004 The ExTeX Group
+  -
+  -  This library is free software; you can redistribute it and/or modify it
+  -  under the terms of the GNU Lesser General Public License as published by
+  -  the Free Software Foundation; either version 2.1 of the License, or (at
+  -  your option) any later version.
+  -
+  -  This library is distributed in the hope that it will be useful, but
+  -  WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+  -  or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public
+  -  License for more details.
+  -
+  -  You should have received a copy of the GNU Lesser General Public License
+  -  along with this library; if not, write to the Free Software Foundation,
+  -  Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+  -
+  -->
+<ExTeX >
+  <banner>Namespace extension</banner>
+
+  <!-- 
+    -  The section "Resource" contains the search specification for input files.
+    -->
+  <Resource>
+    <Finder class="de.dante.util.resource.FileFinder"
+            default="default"
+            trace="false">
+      <tex>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+        <extension>.tex</extension>
+      </tex>
+      <default>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+      </default>
+    </Finder>
+    <Finder class="de.dante.extex.main.ResourceFinderImpl" default="default">
+      <tex>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension></extension>
+        <extension>.tex</extension>
+      </tex>
+      <default>
+        <path property="extex.texinputs"/>
+        <path property="texinputs"/>
+        <path>.</path>
+        <extension/>
+      </default>
+    </Finder>
+  </Resource>
+
+  <!-- 
+    -  The section "Fonts" contains the search specification for font files.
+    -  Note that font files are also sought in TEXINPUTS but NOT requested from
+    -  the user.
+    -->
+  <Fonts class="de.dante.extex.font.FontFactoryImpl">
+    <Type default="type1">
+        <type1 class="de.dante.extex.font.type.efm.EFMType1AFMFount"/>        
+        <ttf class="de.dante.extex.font.type.efm.EFMTTFFount"/>        
+        <tfm-mathsyml class="de.dante.extex.font.type.efm.EFMType1TFMMathsymlFount"/>        
+        <tfm-mathext class="de.dante.extex.font.type.efm.EFMType1TFMMathextFount"/>
+        <tfm-normal class="de.dante.extex.font.type.efm.EFMType1TFMNOFount"/>
+    </Type>
+    <Resource>
+      <Finder class="de.dante.util.resource.FileFinder"
+            default="default"
+            trace="false">
+        <efm>
+          <extension>.efm</extension>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </efm>
+        <pfb>
+          <extension>.pfb</extension>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </pfb>
+        <ttf>
+          <extension>.ttf</extension>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </ttf>
+        <default>
+          <extension/>
+          <path>.</path>
+          <path property="extex.fonts"/>
+        </default>
+      </Finder>
+    </Resource>
+  </Fonts>
+
+  <!-- 
+    -  The section "Output" contains the specification for the output file.
+    -->
+  <Output encoding="ISO-8859-1"/>
+ 
+  <!-- 
+    -  The section "Scanner" contains the specification for the scanner, i.e. the
+    -  token stream.
+    -->
+  <Scanner default="base">
+    <base class="de.dante.extex.scanner.stream.impl.TokenStreamImpl"
+          buffersize=""/>
+    <base32 class="de.dante.extex.scanner.stream.impl32.TokenStreamImpl"
+            buffersize=""/>
+  </Scanner>
+
+  <!-- 
+    -  The section "Interpreter" contains the specification for the core
+    -  interpreter.
+    -->
+  <Interpreter class="de.dante.extex.interpreter.max.Max">
+
+    <!-- The maximum number of errors before an abort is forced.
+      -->
+    <maxErrors>100</maxErrors>
+
+    <!-- Tokens to be inserted at every job.
+      -->
+    <everyjob></everyjob>
+
+    <!-- The default font if nothing else is done.
+      -->
+    <Font default="cmr12" size="12"/>
+
+    <!-- The configuration of the context implementation to use.
+      -->
+    <Context default="ExTeX">
+	  <ExTeX class="de.dante.extex.interpreter.context.impl.ContextImpl">
+        <!-- The implementation of the group to use.
+          -->
+        <Group class="de.dante.extex.interpreter.context.impl.GroupImpl"/>
+
+        <!-- The implementation of the typesetting context to use.
+          -->
+        <TypesettingContext class="de.dante.extex.interpreter.context.TypesettingContextImpl"/>
+
+        <Language></Language>
+      </ExTeX>
+
+    </Context>
+
+    <!-- The implementation of the error handler to use.
+      -->
+	<ErrorHandler default="ExTeX">
+	 <ExTeX class="de.dante.extex.main.ErrorHandlerImpl"/>
+	 <TeX class="de.dante.extex.main.ErrorHandlerTeXImpl"/>
+	</ErrorHandler>
+
+    <primitives src="primitives/tex.xml"/>
+    <primitives src="primitives/etex.xml"/>
+    <primitives src="primitives/namespace.xml"/>
+
+  </Interpreter>
+
+  <!-- 
+    -  The section "Typesetter" contains the specification for the typesetter.
+    -  Here another level of indirection is introduced which allows us to select
+    -  one of several typesetters programatically.
+    -->
+  <Typesetter default="TeX">
+	<TeX class="de.dante.extex.typesetter.impl.TypesetterImpl"/> 
+  </Typesetter>
+
+  <!-- 
+    -  The section "DocumentWriter" contains the specification for the backend.
+    -  Here another level of indirection is introduced which allows us to select
+    -  one of several backends programatically.
+    -->
+  <DocumentWriter default="out">
+    <pdf class="de.dante.extex.documentWriter.pdf.PdfDocumentWriter"/>
+    <dvi class="de.dante.extex.documentWriter.dvi.DviDocumentWriter"/>
+    <out class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <dump class="de.dante.extex.documentWriter.dump.DumpDocumentWriter"/>
+    <text class="de.dante.extex.documentWriter.text.TextDocumentWriter"/>
+  </DocumentWriter>
+
+</ExTeX>
