@@ -28,6 +28,7 @@ import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.hyphenation.HyphenationTable;
+import de.dante.extex.hyphenation.base.BaseHyphenationTable;
 import de.dante.extex.interpreter.Conditional;
 import de.dante.extex.interpreter.Interaction;
 import de.dante.extex.interpreter.TokenSource;
@@ -71,7 +72,7 @@ import de.dante.util.observer.Observer;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -79,7 +80,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockContext implements Context {
 
@@ -681,7 +682,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockGlyph implements Glyph {
 
@@ -827,7 +828,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockFont implements Font {
 
@@ -1033,7 +1034,7 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test1() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist(""), context);
+        HorizontalListNode nodes = table.hyphenate(hlist(""), context, null);
         assertEquals(0, nodes.size());
     }
 
@@ -1044,7 +1045,7 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test2() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("abc"), context);
+        HorizontalListNode nodes = table.hyphenate(hlist("abc"), context, null);
         assertEquals(3, nodes.size());
     }
 
@@ -1055,7 +1056,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test3() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("abcdef"), context);
+        HorizontalListNode nodes = table.hyphenate(hlist("abcdef"), context,
+                null);
         assertEquals(7, nodes.size());
         assertTrue(nodes.get(3) instanceof DiscretionaryNode);
     }
@@ -1067,7 +1069,8 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test4() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("abcdefgh"), context);
+        HorizontalListNode nodes = table.hyphenate(hlist("abcdefgh"), context,
+                null);
         assertEquals(8, nodes.size());
     }
 
@@ -1078,7 +1081,7 @@ public class BaseHyphenationTableTest extends TestCase {
      */
     public void test5() throws Exception {
 
-        HorizontalListNode nodes = table.hyphenate(hlist("def"), context);
+        HorizontalListNode nodes = table.hyphenate(hlist("def"), context, null);
         assertEquals(5, nodes.size());
         assertTrue(nodes.get(1) instanceof DiscretionaryNode);
         assertTrue(nodes.get(3) instanceof DiscretionaryNode);
