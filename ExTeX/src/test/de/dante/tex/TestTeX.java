@@ -25,11 +25,14 @@ import java.util.Properties;
 
 import de.dante.extex.ExTeX;
 
+import junit.framework.Assert;
+
+
 /**
  * Test for ExTeX.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public final class TestTeX {
 
@@ -44,44 +47,32 @@ public final class TestTeX {
      * Run ExTeX with a special File and compare the output with a output-test-file.
      * @param texfile   the tx-file
      * @param outfile   the output-test-file
-     * @return <code>true</code>, if the two files are equals, otherwise <code>false</code>.
+     * @exception Exception iff an error occurs; iff the two files are
+     *     not equals AssertionFailedError
      */
-    public static boolean test(final String texfile, final String outfile) {
+    public static void test(final String texfile, final String outfile)
+        throws Exception {
 
-        boolean test = true;
+        // run ExTeX
+        Properties pro = System.getProperties();
+        ExTeX extex = new ExTeX(pro, ".extex");
+        pro.setProperty("extex.output", "text");
+        pro.setProperty("extex.file", texfile);
+        pro.setProperty("extex.jobname", texfile);
+        extex.run();
 
-        try {
+        // compare
+        BufferedReader intxt = new BufferedReader(new FileReader(texfile
+            + ".txt"));
+        BufferedReader intesttxt = new BufferedReader(new FileReader(
+            outfile));
 
-            // run ExTeX
-            Properties pro = System.getProperties();
-            ExTeX extex = new ExTeX(pro, ".extex");
-            pro.setProperty("extex.output", "text");
-            pro.setProperty("extex.file", texfile);
-            pro.setProperty("extex.jobname", texfile);
-            extex.run();
-
-            // compare
-            BufferedReader intxt = new BufferedReader(new FileReader(texfile
-                    + ".txt"));
-            BufferedReader intesttxt = new BufferedReader(new FileReader(
-                    outfile));
-
-            String linetxt, linetesttxt;
-            while ((linetxt = intxt.readLine()) != null) {
-                linetesttxt = intesttxt.readLine();
-                if (!linetxt.equals(linetesttxt)) {
-                    test = false;
-                    break;
-                }
-            }
-            intxt.close();
-            intesttxt.close();
-
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            // e.printStackTrace();
-            test = false;
+        String linetxt, linetesttxt;
+        while ((linetxt = intxt.readLine()) != null) {
+            linetesttxt = intesttxt.readLine();
+            Assert.assertEquals(linetxt, linetesttxt);
         }
-        return test;
+        intxt.close();
+        intesttxt.close();
     }
 }
