@@ -50,7 +50,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -178,13 +178,14 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
             if (attr != null) {
                 try {
                     float f = attr.getFloatValue();
-                    if (f <= 0) {
-                        designsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                    if (f > 0) {
+                        designsize = new Dimen((long) (f * Dimen.ONE));
                     }
                 } catch (Exception e) {
-                    designsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                    designsize = null;
                 }
-            } else {
+            }
+            if (designsize == null) {
                 designsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
             }
 
