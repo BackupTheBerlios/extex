@@ -19,10 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.math;
 
+import de.dante.extex.i18n.MathHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.listMaker.NoadConsumer;
+import de.dante.extex.typesetter.type.noad.Noad;
+import de.dante.extex.typesetter.type.noad.OverlinedNoad;
 import de.dante.util.GeneralException;
 
 /**
@@ -47,7 +52,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Overline extends AbstractMathCode {
 
@@ -72,9 +77,14 @@ public class Overline extends AbstractMathCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        //TODO execute() unimplemented
-        throw new RuntimeException("unimplemented");
-        //return true;
+        ListMaker maker = typesetter.getListMaker();
+        if (!(maker instanceof NoadConsumer)) {
+            throw new MathHelpingException(printableControlSequence(context));
+        }
+        NoadConsumer nc = (NoadConsumer) maker;
+        Noad noad = nc.scanNoads(context, source);
+        nc.add(new OverlinedNoad(noad));
+        return true;
     }
 
 }
