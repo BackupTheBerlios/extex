@@ -56,9 +56,9 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Vskip extends AbstractVerticalCode {
+public class Vskip extends AbstractVerticalCode implements VerticalSkip {
 
     /**
      * Creates a new object.
@@ -82,9 +82,19 @@ public class Vskip extends AbstractVerticalCode {
             throws GeneralException {
 
         ensureVerticalMode(typesetter);
-        Glue g = new Glue(source, context);
-        typesetter.addGlue(g);
+        typesetter.addGlue(new Glue(source, context));
         return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.typesetter.spacing.VerticalSkip#verticalSkip(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Glue verticalSkip(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        return new Glue(source, context);
     }
 
 }

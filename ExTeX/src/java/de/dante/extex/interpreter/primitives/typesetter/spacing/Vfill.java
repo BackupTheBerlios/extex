@@ -51,9 +51,9 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Vfill extends AbstractVerticalCode {
+public class Vfill extends AbstractVerticalCode implements VerticalSkip {
 
     /**
      * The field <tt>FILL</tt> contains the amount of 1 fill.
@@ -85,6 +85,16 @@ public class Vfill extends AbstractVerticalCode {
         ensureVerticalMode(typesetter);
         typesetter.addGlue(FILL);
         return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.primitives.typesetter.spacing.VerticalSkip#verticalSkip(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Glue verticalSkip(final Context context, final TokenSource source) throws GeneralException {
+
+        return FILL;
     }
 
 }
