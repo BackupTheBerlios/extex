@@ -25,7 +25,7 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\fontname</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class FontnameTest extends ExTeXLauncher {
 
@@ -99,6 +99,24 @@ public class FontnameTest extends ExTeXLauncher {
                 "",
                 //--- output channel ---
                 "cmtt12\n");
+    }
+
+    /**
+     * Test case checking that a correct value is produced.
+     * This test case needs an external font cmi10!
+     *
+     * @throws Exception in case of an error
+     */
+    public void testFontname2() throws Exception {
+
+        runCode(//--- input code ---
+                "\\font\\x=cmmi10"
+                + "\\fontname\\x "
+                + "\\end ",
+                //--- log message ---
+                "",
+                //--- output channel ---
+                "cmi10\n");
     }
 
 }
