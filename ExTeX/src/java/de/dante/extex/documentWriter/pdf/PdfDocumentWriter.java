@@ -59,7 +59,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:Rolf.Niepraschk@ptb.de">Rolf Niepraschk</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  * @see org.apache.fop.render.pdf.PDFRenderer
  * @see org.apache.fop.svg.PDFGraphics2D
  */
@@ -558,7 +558,7 @@ public class PdfDocumentWriter implements DocumentWriter, NodeVisitor {
                 FontReader reader = null;
                 int nb = i + 1;
                 try {
-                    reader = new FontReader("file:font/fop-" + name + ".xml");
+                    reader = new FontReader("file:src/font/fop-" + name + ".xml");
                 } catch (FOPException e) {
                     e.printStackTrace();
                 }
