@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 
 
-<!ELEMENT code (#PCDATA)>
 <!ELEMENT emph (#PCDATA)>
 <!ELEMENT strong (#PCDATA)>
+<!ELEMENT code (#PCDATA)>
+<!ELEMENT const (#PCDATA)>
 
-<!ELEMENT german (#PCDATA | code | emph | strong)*>
-<!ELEMENT english (#PCDATA | code | emph | strong)*>
+<!ELEMENT german (#PCDATA | emph | strong | code | const)*>
+<!ELEMENT english (#PCDATA | emph | strong | code | const)*>
 
 <!ELEMENT description (shortDesc,example,version)>
 <!ATTLIST description
