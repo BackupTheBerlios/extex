@@ -16,73 +16,65 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.primitives.register.skip;
 
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.TokenSource;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\skip</code>.
- * It sets the named skip register to the value given,
- * and as a side effect all prefixes are zeroed.
- *
- * <p>
- * All features are inherited from
- * {@link de.dante.extex.interpreter.primitives.register.skip.NamedSkip NamedSkip}.
- * Just the key has to be provided under which this Glue has to be stored.
- * This key is constructed from the name, a hash mark and the running number.
- * </p>
- *
- * <p>Example</p>
- * <pre>
- * \skip12=345pt plus 12em
- * </pre>
+ * This abstract base class provides the methods to compute the keys for
+ * numbered skip registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.1 $
  */
-public class NamedSkip extends NumberedSkip {
+public abstract class AbstractSkip extends AbstractAssignment {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NamedSkip(final String name) {
+    public AbstractSkip(final String name) {
+
         super(name);
     }
 
     /**
-     * ...
+     * Return the key (the name of the primitive) for the numbered skip
+     * register.
      *
-     * @param context the interpreter context
-     * @param value ...
+     * @param source the source for new tokens
+     * @param namespace the namespace to use
      *
-     * @throws GeneralException in case of an error
+     * @return the key for the current register
+     *
+     * @throws GeneralException in case that a derived class need to throw an
+     *             Exception this on e is declared.
      */
-    public void set(final Context context, final String value)
-             throws GeneralException {
+    protected String getKey(final TokenSource source, final String namespace)
+            throws GeneralException {
 
-        //TODO
-//        Glue g = new Glue(..., context);
-//        context.setGlue(getName(),
-//                         (value.equals("") ? 0 : g));
+        return "skip#" + Long.toString(source.scanNumber());
     }
 
     /**
-     * Return the key (the name of the primitive) for the register.
+     * Return the key (the name of the primitive) for the numbered skip
+     * register.
      *
      * @param source the source for new tokens
      *
      * @return the key for the current register
      *
      * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this one is declared.
+     *             Exception this on e is declared.
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
-        return getName();
-    }
+    protected String getKey(final TokenSource source)
+            throws GeneralException {
 
+        return "skip#" + Long.toString(source.scanNumber());
+    }
 
 }

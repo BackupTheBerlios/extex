@@ -18,30 +18,29 @@
  */
 package de.dante.extex.interpreter.primitives.register.skip;
 
+import de.dante.extex.interpreter.Flags;
+import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.interpreter.type.tokens.Tokens;
+import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\skip</code>.
- * It sets the named skip register to the value given,
+ * It sets the named dimen register to the value given,
  * and as a side effect all prefixes are zeroed.
- *
- * <p>
- * All features are inherited from
- * {@link de.dante.extex.interpreter.primitives.register.skip.NamedSkip NamedSkip}.
- * Just the key has to be provided under which this Glue has to be stored.
- * This key is constructed from the name, a hash mark and the running number.
- * </p>
  *
  * <p>Example</p>
  * <pre>
- * \skip12=345pt plus 12em
+ * \xxx=345pt plus 123em
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class NumberedSkip extends NamedSkip {
+public class NumberedSkip extends AbstractSkip implements Theable {
 
     /**
      * Creates a new object.
@@ -53,16 +52,45 @@ public class NumberedSkip extends NamedSkip {
     }
 
     /**
-     * Return the key (the number) for the register.
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public void assign(final Flags prefix, final Context context,
+        final TokenSource source, final Typesetter typesetter)
+        throws GeneralException {
+
+        String key = getKey(source);
+        source.scanOptionalEquals();
+        Glue g = new Glue(source, context);
+        context.setGlue(key, g, prefix.isGlobal());
+    }
+
+    /**
+     * ...
      *
-     * @param source the source for new tokens
-     *
-     * @return ...
+     * @param context the interpreter context
+     * @param value the string to get the value from
      *
      * @throws GeneralException in case of an error
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    public void set(final Context context, final String value)
+             throws GeneralException {
 
-        return getName() + "#" + Long.toString(source.scanNumber());
+        //TODO
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.Theable#the(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource)
+     */
+    public Tokens the(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        String key = getKey(source);
+        return context.getGlue(key).toToks(context.getTokenFactory());
     }
 }

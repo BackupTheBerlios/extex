@@ -19,13 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
-import de.dante.extex.i18n.GeneralHelpingException;
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.count.Count;
-import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -53,9 +49,9 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "dimen#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class Dimendef extends AbstractAssignment {
+public class Dimendef extends AbstractDimen {
 
     /**
      * Creates a new object.
@@ -78,18 +74,10 @@ public class Dimendef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.scanToken();
-
-        if (cs instanceof CodeToken) {
-            source.scanOptionalEquals();
-            //todo: unfortunately we have to know the internal format of the key:-(
-            String key = "dimen#"
-                         + Long.toString(Count.scanCount(context, source));
-            context.setCode(cs, new NamedDimen(key), prefix.isGlobal());
-        } else {
-
-            throw new GeneralHelpingException("TTP.MissingCtrlSeq");
-        }
+        Token cs = source.getControlSequence();
+        source.scanOptionalEquals();
+        String key = getKey(source, context.getNamespace());
+        context.setCode(cs, new NamedDimen(key), prefix.isGlobal());
     }
 
 }

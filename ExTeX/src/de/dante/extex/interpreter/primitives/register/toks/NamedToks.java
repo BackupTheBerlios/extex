@@ -18,31 +18,26 @@
  */
 package de.dante.extex.interpreter.primitives.register.toks;
 
-import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\toks</code>.
- * It sets the named toks register to the value given, and as a side effect all
- * prefixes are zeroed.
+ * It sets the numbered toks register to the value given, and as a side effect
+ * all prefixes are zeroed.
  *
- * Example
- *
+ * Example:
  * <pre>
- *  \encoding{UTF-8}
+ *  \toks12{123}
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
-public class NamedToks extends AbstractAssignment implements Theable {
+public class NamedToks extends NumberedToks {
 
     /**
      * Creates a new object.
@@ -50,41 +45,12 @@ public class NamedToks extends AbstractAssignment implements Theable {
      * @param name the name for debugging
      */
     public NamedToks(final String name) {
+
         super(name);
     }
 
     /**
-     * Return the register value as <code>Tokens</code> for <code>\the</code>.
-     *
-     * @see de.dante.extex.interpreter.Theable#the(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Tokens the(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        return context.getToks(getKey(source));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void assign(final Flags prefix, final Context context,
-            final TokenSource source, final Typesetter typesetter)
-            throws GeneralException {
-
-        String key = getKey(source);
-        source.scanOptionalEquals();
-        Tokens toks = source.getTokens();
-        context.setToks(key, toks, prefix.isGlobal());
-    }
-
-    /**
-     * Set the value for the register...
+     * Set the value for the register from a String.
      *
      * @param context the interpreter context
      * @param value the value for the tokens
@@ -94,43 +60,24 @@ public class NamedToks extends AbstractAssignment implements Theable {
     public void set(final Context context, final String value)
             throws GeneralException {
 
-        context.setToks(getKey(null), new Tokens(context, value), true); //TODO
+        context.setToks(getKey(null, context.getNamespace()), new Tokens(
+                context, value), true);
     }
 
     /**
-     * Expand
-     * <p>
-     * Scan the tokens between <code>{</code> and <code>}</code> and store
-     * it.
+     * Return the key (the number) for the toks register.
      *
-     * @param prefix the prefix flags
-     * @param context the interpreter context
-     * @param source the tokensource
-     * @param key the key
+     * @param source the source for the next tokens -- if required
+     * @param namespace the namespace to use
      *
-     * @throws GeneralException in case of an error
+     * @return the key for the toks register
+     *
+     * @throws GeneralException in case of an exception
      */
-    protected void expand(final Flags prefix, final Context context,
-        final TokenSource source, final String key) throws GeneralException {
+    protected String getKey(final TokenSource source, final String namespace)
+            throws GeneralException {
 
-        Tokens toks = source.getTokens();
-        context.setToks(key, toks, prefix.isGlobal());
-        prefix.clear();
-    }
-
-    /**
-     * Return the key (the name of the primitive) for the register.
-     *
-     * @param source the source for new tokens
-     *
-     * @return the key for the current register
-     *
-     * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this one is declared.
-     */
-    protected String getKey(final TokenSource source) throws GeneralException {
-
-        return getName();
+        return namespace + getName();
     }
 
 }

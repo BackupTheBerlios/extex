@@ -18,30 +18,31 @@
  */
 package de.dante.extex.interpreter.primitives.register.skip;
 
-import de.dante.extex.interpreter.AbstractAssignment;
-import de.dante.extex.interpreter.Flags;
-import de.dante.extex.interpreter.Theable;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.glue.Glue;
-import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
 /**
  * This class provides an implementation for the primitive <code>\skip</code>.
- * It sets the named dimen register to the value given,
+ * It sets the named skip register to the value given,
  * and as a side effect all prefixes are zeroed.
+ *
+ * <p>
+ * All features are inherited from
+ * {@link de.dante.extex.interpreter.primitives.register.skip.NamedSkip NamedSkip}.
+ * Just the key has to be provided under which this Glue has to be stored.
+ * This key is constructed from the name, a hash mark and the running number.
+ * </p>
  *
  * <p>Example</p>
  * <pre>
- * \xxx=345pt plus 123em
+ * \skip12=345pt plus 12em
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class NamedSkip extends AbstractAssignment implements Theable {
+public class NamedSkip extends NumberedSkip {
 
     /**
      * Creates a new object.
@@ -50,6 +51,23 @@ public class NamedSkip extends AbstractAssignment implements Theable {
      */
     public NamedSkip(final String name) {
         super(name);
+    }
+
+    /**
+     * ...
+     *
+     * @param context the interpreter context
+     * @param value ...
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void set(final Context context, final String value)
+             throws GeneralException {
+
+        //TODO
+//        Glue g = new Glue(..., context);
+//        context.setGlue(getName(),
+//                         (value.equals("") ? 0 : g));
     }
 
     /**
@@ -66,47 +84,5 @@ public class NamedSkip extends AbstractAssignment implements Theable {
         return getName();
     }
 
-    /**
-     * @see de.dante.extex.interpreter.Code#execute(
-     *      de.dante.extex.interpreter.Flags,
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource,
-     *      de.dante.extex.typesetter.Typesetter)
-     */
-    public void assign(final Flags prefix, final Context context,
-        final TokenSource source, final Typesetter typesetter)
-        throws GeneralException {
 
-        String key = getKey(source);
-        source.scanOptionalEquals();
-        Glue g = new Glue(source, context);
-        context.setGlue(key, g, prefix.isGlobal());
-    }
-
-    /**
-     * ...
-     *
-     * @param context the interpreter context
-     * @param value ...
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void set(final Context context, final String value)
-             throws GeneralException {
-                 //TODO
-//        context.setDimen(getName(),
-//                         (value.equals("") ? 0 : ...));
-    }
-
-    /**
-     * @see de.dante.extex.interpreter.Theable#the(
-     *      de.dante.extex.interpreter.context.Context,
-     *      de.dante.extex.interpreter.TokenSource)
-     */
-    public Tokens the(final Context context, final TokenSource source)
-            throws GeneralException {
-
-        String key = getKey(source);
-        return context.getGlue(key).toToks(context.getTokenFactory());
-    }
 }

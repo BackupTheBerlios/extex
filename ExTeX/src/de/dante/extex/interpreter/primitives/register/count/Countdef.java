@@ -19,11 +19,9 @@
 
 package de.dante.extex.interpreter.primitives.register.count;
 
-import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
-import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -55,9 +53,9 @@ import de.dante.util.GeneralException;
  * "#<i>name</i>" or "count#<i>name</i>".
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class Countdef extends AbstractAssignment {
+public class Countdef extends AbstractCount {
 
     /**
      * Creates a new object.
@@ -82,8 +80,7 @@ public class Countdef extends AbstractAssignment {
 
         Token cs = source.getControlSequence();
         source.scanOptionalEquals();
-        //todo: unfortunately we have to know the internal format of the key:-(
-        String key = "count#" + Long.toString(Count.scanCount(context, source));
+        String key = getKey(source);
         context.setCode(cs, new NamedCount(key), prefix.isGlobal());
     }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -19,47 +19,62 @@
 
 package de.dante.extex.interpreter.primitives.register.dimen;
 
+import de.dante.extex.interpreter.AbstractAssignment;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.util.GeneralException;
 
 /**
- * This class provides an implementation for the primitive <code>\dimen</code>.
- * It sets the named dimen register to the value given,
- * and as a side effect all prefixes are zeroed.
- *
- * <p>Example</p>
- * <pre>
- * \day=345
- * </pre>
+ * This abstract base class provides the methods to compute the keys for
+ * numbered dimen registers.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.1 $
  */
-public class NamedDimen extends NumberedDimen {
+public abstract class AbstractDimen extends AbstractAssignment {
 
     /**
      * Creates a new object.
      *
      * @param name the name for debugging
      */
-    public NamedDimen(final String name) {
+    public AbstractDimen(final String name) {
 
         super(name);
     }
-    
+
     /**
-     * Return the key (the name of the primitive) for the register.
+     * Return the key (the name of the primitive) for the numbered dimen
+     * register.
+     *
+     * @param source the source for new tokens
+     * @param namespace the namespace to use
+     *
+     * @return the key for the current register
+     *
+     * @throws GeneralException in case that a derived class need to throw an
+     *             Exception this on e is declared.
+     */
+    protected String getKey(final TokenSource source, final String namespace)
+            throws GeneralException {
+
+        return "dimen#" + Long.toString(source.scanNumber());
+    }
+
+    /**
+     * Return the key (the name of the primitive) for the numbered dimen
+     * register.
      *
      * @param source the source for new tokens
      *
      * @return the key for the current register
      *
      * @throws GeneralException in case that a derived class need to throw an
-     *             Exception this one is declared.
+     *             Exception this on e is declared.
      */
-    protected String getKey(final TokenSource source) throws GeneralException {
+    protected String getKey(final TokenSource source)
+            throws GeneralException {
 
-        return getName();
+        return "dimen#" + Long.toString(source.scanNumber());
     }
 
 }
