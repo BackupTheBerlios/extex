@@ -37,7 +37,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -75,7 +75,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * This method parses the following syntactic entity:
      * <pre class="syntax">
      *   &lang;dimen&rang; </pre>
-     *  TODO missing syntax documentation
+     *  TODO missing documentation
      * </doc>
      *
      *

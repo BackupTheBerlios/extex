@@ -22,10 +22,10 @@ import de.dante.extex.interpreter.type.tokens.Tokens;
 
 
 /**
- * ...
+ * This class provides a building block for the preamble of an alignment.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class PreambleItem {
 

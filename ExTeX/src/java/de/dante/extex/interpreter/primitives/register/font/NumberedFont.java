@@ -26,10 +26,11 @@ import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.util.GeneralException;
 
 /**
- * ...
+ * This class provides an implementation for a font stored under a name and a
+ * number in the context.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class NumberedFont extends NamedFont {
 
@@ -37,8 +38,8 @@ public class NumberedFont extends NamedFont {
      * Construct the reference key for a numbered font.
      *
      * @param context the interpreter context
-     * @param theName ...
-     * @param theNumber ...
+     * @param theName the base name of the font
+     * @param theNumber the number of the font
      *
      * @return the key
      */
@@ -56,8 +57,8 @@ public class NumberedFont extends NamedFont {
      * Construct the reference key for a numbered font.
      *
      * @param context the interpreter context
-     * @param theName ...
-     * @param theNumber ...
+     * @param theName the base name of the font
+     * @param theNumber the number of the font
      *
      * @return the key
      */

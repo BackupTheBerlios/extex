@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.23 $
+ * @version $Revision: 1.24 $
  */
 public interface ListMaker {
 
@@ -74,7 +74,9 @@ public interface ListMaker {
 
     /**
      * Close the node list.
-     * @param context TODO
+     *
+     * @param context the typesetter options mapping a fragment of the
+     *  interpreter context
      *
      * @return the node list enclosed in this instance.
      *

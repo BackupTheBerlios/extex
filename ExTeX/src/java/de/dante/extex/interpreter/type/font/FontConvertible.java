@@ -28,7 +28,7 @@ import de.dante.util.GeneralException;
  *
  * <doc type="syntax" name="font">
  * <p>
- *  TODO missing syntax documentation
+ *  TODO missing documentation
  * </p>
  * <p>
  *  The formal description is the following:
@@ -51,7 +51,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface FontConvertible {
 
