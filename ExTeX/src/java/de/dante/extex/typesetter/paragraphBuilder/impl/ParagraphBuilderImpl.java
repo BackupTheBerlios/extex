@@ -41,6 +41,7 @@ import de.dante.extex.interpreter.type.node.PenaltyNode;
 import de.dante.extex.interpreter.type.node.VerticalListNode;
 import de.dante.extex.logging.LogFormatter;
 import de.dante.extex.typesetter.Discartable;
+import de.dante.extex.typesetter.HyphenationEnabled;
 import de.dante.extex.typesetter.Node;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.TypesetterOptions;
@@ -135,12 +136,12 @@ import de.dante.util.framework.logger.LogEnabled;
  *
  * <h3>Extension</h3>
  *
- * Treat segments of a paragraph separated by forced breakes separately.
+ * Treat segments of a paragraph separated by forced breaks separately.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
-public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
+public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled, HyphenationEnabled {
 
     /**
      * The constant <tt>COMPLETE</tt> contains the ...
@@ -220,6 +221,16 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
     public ParagraphBuilderImpl() {
 
         super();
+
+        if (DEVELOP) {
+            tracer = Logger.getLogger("");
+            tracer.setUseParentHandlers(false);
+            Handler handler = new ConsoleHandler();
+            handler.setLevel(Level.ALL);
+            handler.setFormatter(new LogFormatter());
+            tracer.addHandler(handler);
+            tracer.setLevel(Level.ALL);
+        }
     }
 
     /**
@@ -260,21 +271,14 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
      */
     public NodeList build(final HorizontalListNode nodes) {
 
+        //TODO split into smaller methods
+
         if (!COMPLETE) {
             return nodes;
         }
 
-        tracer = (options.getCountOption("tracingparagraphs").getValue() > 0
-                ? logger
-                : null);
-
-        if (DEVELOP) {
-            tracer = Logger.getLogger("");
-            Handler handler = new ConsoleHandler();
-            handler.setLevel(Level.ALL);
-            handler.setFormatter(new LogFormatter());
-            tracer.addHandler(handler);
-            tracer.setLevel(Level.ALL);
+        if (options.getCountOption("tracingparagraphs").getValue() > 0) {
+            tracer = logger;
         }
 
         int hyphenpenalty = (int) options.getCountOption("hyphenpenalty")
@@ -297,20 +301,10 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
         nodes.add(new GlueNode(options.getGlueOption("parfillskip")));
         nodes.add(new PenaltyNode(EJECT_PENALTY));
 
-        int pretolerance = (int) options.getCountOption("pretolerance")
-                .getValue();
-        if (pretolerance > 0) {
-            if (tracer != null) {
-                tracer.log(Level.FINE, "@firstpass\n");
-            }
-            BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
-                    exhyphenpenalty);
-            Breaks breaks = findOptimalBreakPoints(breakPoints, 0,
-                    pretolerance, 0, 0, leftskip, rightskip, Dimen.ZERO_PT);
-            if (breaks != null) {
-                options.setParshape(null);
-                return splitNodeList(nodes, breaks, leftskip, rightskip);
-            }
+        NodeList nl;
+        nl = pass1(nodes, hyphenpenalty, exhyphenpenalty, leftskip, rightskip);
+        if (nl != null) {
+            return nl;
         }
 
         if (hyphenator != null) {
@@ -349,6 +343,39 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
 
         options.setParshape(null);
         return nodes;
+    }
+
+    /**
+     * ...
+     *
+     * @param nodes
+     * @param hyphenpenalty
+     * @param exhyphenpenalty
+     * @param leftskip
+     * @param rightskip
+     *
+     * @return ...
+     */
+    private NodeList pass1(final HorizontalListNode nodes,
+            final int hyphenpenalty, final int exhyphenpenalty,
+            final FixedGlue leftskip, final FixedGlue rightskip) {
+
+        int pretolerance = (int) options.getCountOption("pretolerance")
+                .getValue();
+        if (pretolerance > 0) {
+            if (tracer != null) {
+                tracer.log(Level.FINE, "@firstpass\n");
+            }
+            BreakPoint[] breakPoints = makeBreakPoints(nodes, hyphenpenalty,
+                    exhyphenpenalty);
+            Breaks breaks = findOptimalBreakPoints(breakPoints, 0,
+                    pretolerance, 0, 0, leftskip, rightskip, Dimen.ZERO_PT);
+            if (breaks != null) {
+                options.setParshape(null);
+                return splitNodeList(nodes, breaks, leftskip, rightskip);
+            }
+        }
+        return null;
     }
 
     /**
@@ -498,7 +525,8 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
             if (pen <= EJECT_PENALTY || pen <= threshold) {
                 if (i + 1 < breakPoint.length) {
                     Breaks b2 = findOptimalBreakPoints(breakPoint, line + 1,
-                            threshold, depth + 1, i + 1, leftskip, rightskip, emergencystretch);
+                            threshold, depth + 1, i + 1, leftskip, rightskip,
+                            emergencystretch);
                     if (b2 != null
                             && (b == null || b.getPenalty() > b2.getPenalty())) {
                         b = b2;
@@ -635,9 +663,9 @@ public class ParagraphBuilderImpl implements ParagraphBuilder, LogEnabled {
     /**
      * Setter for hyphenator.
      *
-     * @param hyphenator the hyphenator to set.
+     * @param hyphenator the hyphenator to set
      */
-    public void setHyphenator(final Hyphenator hyphenator) {
+    public void enableHyphenation(final Hyphenator hyphenator) {
 
         this.hyphenator = hyphenator;
     }
