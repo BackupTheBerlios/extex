@@ -1,0 +1,42 @@
+%
+% @version $Revision: 1.1 $ $Date: 2004/01/01 19:45:07 $
+%
+% Test für input etc.
+%
+\catcode`\{=1 % left brace is begin-group character
+\catcode`\}=2 % right brace is end-group character
+
+\input testdata/testinputold
+
+\inputfile{testdata/testinputnew}
+
+%\inputfile{test.reg.dot.tex}
+
+%\inputenc{UTF-8}
+%\inputenc{ISO-8859-1}
+
+%\message{xxxxxxxxxxxxxxxxxxxxxxxxxxxx}
+%\the\inputenc
+
+%%\inputfile{oho.tmp}% oho.tmp.tex wird geladen
+%% jetzt wird oho.tmp erzeugt!
+%%\inputfile{oho.tmp}% oho.tmp.tex wird geladen
+%% jetzt wird oho.tmp.tex gelöscht!
+%%\inputfile{oho.tmp}% oho.tmp wird geladen
+%%\inputfile{oho.tmp.tex}% Fehler wird geworfen
+
+%\endinput
+
+%\message{**************************************}
+%\input testreg
+
+%\message{**************************************}
+%\inputfile{testreg.tex}
+
+%\message{**** encoding ************************}
+%\inputfileencoding{testreg.tex}{ISO-8859-1}
+
+%\endinput \message{*** Text nach endinput ***}
+%\message{****** Diese Zeile dürfte nicht mehr kommen! *****************}
+
+

@@ -156,7 +156,8 @@
     <Define name="ignorespaces" class=""/>
     <define name="immediate" class="de.dante.extex.interpreter.primitives.prefix.Immediate"/>
     <Define name="indent" class=""/>
-    <Define name="input" class=""/>
+    <define name="input" class="de.dante.extex.interpreter.primitives.file.Input"/>
+    <define name="inputfile" class="de.dante.extex.interpreter.primitives.file.InputFile"/>
     <Define name="inputlineno" class=""/>
     <Define name="insert" class=""/>
     <Define name="insertpenalties" class=""/>

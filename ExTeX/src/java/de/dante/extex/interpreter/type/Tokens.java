@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * 
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Tokens implements Serializable {
 
@@ -120,6 +120,21 @@ public class Tokens implements Serializable {
 
 		for (int i = 0; i < tokens.size(); i++) {
 			sb.append(((Token) tokens.get(i)).toString());
+		}
+
+		return sb.toString();
+	}
+
+	/**
+	 * Return a String, which show all tokens (in textformat) in the list.
+	 * 
+	 * @return a String, which show all tokens (in textformat) in the list
+	 */
+	public String toText() {
+		StringBuffer sb = new StringBuffer();
+
+		for (int i = 0; i < tokens.size(); i++) {
+			sb.append(((Token) tokens.get(i)).getValue());
 		}
 
 		return sb.toString();

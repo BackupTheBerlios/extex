@@ -37,7 +37,7 @@ import de.dante.util.StringListIterator;
  * This is the factory to provide an instance of a TokenStream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TokenStreamFactory implements FileFinder, Observable {
     /** The configuration to use */
@@ -186,6 +186,7 @@ public class TokenStreamFactory implements FileFinder, Observable {
     
     /**
      * @see de.dante.extex.scanner.stream.FileFinder#findFile(java.lang.String, java.lang.String)
+     * TODO Aufrufparameter texinputs verwenden
      */
     public File findFile(String name, String type) throws ConfigurationException {
         File file = new File(name);
