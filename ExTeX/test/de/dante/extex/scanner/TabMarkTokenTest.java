@@ -22,23 +22,23 @@ import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for tab mark tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TabMarkTokenTest extends TestCase {
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(LeftBraceTokenTest.class);
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
     private static Token t = new TabMarkToken(new UnicodeChar('*'));
 

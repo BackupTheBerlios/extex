@@ -52,16 +52,16 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.18 $
+ * @version $Revision: 1.19 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
 
     /**
-     * This is a type-save class to represent state information.
+     * This is a type-safe class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.18 $
+     * @version $Revision: 1.19 $
      */
     private static final class State {
 
@@ -119,7 +119,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
     private String line = "";
 
     /**
-     * The field <tt>namespace</tt> contains the ...
+     * The field <tt>namespace</tt> contains the currently used namespace.
      */
     private String namespace = "";
 
@@ -571,7 +571,6 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
 
         if (tokenizer.getCatcode(uc) == Catcode.SUPMARK) {
 
-            int charCode = uc.getCodePoint();
             int savePointer = pointer;
             UnicodeChar c = getRawChar();
 

@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * This class contains the test cases for left brace tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LeftBraceTokenTest extends TestCase {
 
@@ -38,7 +38,7 @@ public class LeftBraceTokenTest extends TestCase {
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
     private static Token t = new LeftBraceToken(new UnicodeChar('<'));
 

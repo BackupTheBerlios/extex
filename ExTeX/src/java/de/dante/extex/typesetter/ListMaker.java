@@ -31,7 +31,7 @@ import de.dante.util.UnicodeChar;
  * @see "TeX -- The Program [211]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public interface ListMaker {
 
@@ -87,14 +87,14 @@ public interface ListMaker {
     void par() throws GeneralException;
 
     /**
-     * ...
+     * Toggle the math mode.
      *
      * @throws GeneralException in case of an error
      */
     void toggleMath() throws GeneralException;
 
     /**
-     * ...
+     * ZToggle the displaymath mode.
      *
      * @throws GeneralException in case of an error
      */
@@ -110,7 +110,7 @@ public interface ListMaker {
     void setSpacefactor(Count sf) throws GeneralException;
 
     /**
-     * ...
+     * Setter for the previous depth parameter.
      *
      * @param pd the prec depth parameter
      *
@@ -127,7 +127,7 @@ public interface ListMaker {
     Mode getMode();
 
     /**
-     * ...
+     * Close the node list.
      *
      * @return the node list enclosed in this instance.
      *

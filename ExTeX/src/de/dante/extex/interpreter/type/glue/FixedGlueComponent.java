@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface FixedGlueComponent {
 
@@ -39,6 +39,13 @@ public interface FixedGlueComponent {
      * @return the value in internal units of scaled points (sp)
      */
     long getValue();
+
+    /**
+     * Getter for order.
+     *
+     * @return the order.
+     */
+    int getOrder();
 
     /**
      * Create a copy of this instance with the same order and value.

@@ -29,17 +29,18 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class OutFile implements Serializable {
 
     /**
-     * The constant <tt>MAX_FILE_NO</tt> contains the ...
+     * The constant <tt>MAX_FILE_NO</tt> contains the maximal number of out
+     * files.
      */
     public static final int MAX_FILE_NO = 15;
 
     /**
-     * The field <tt>file</tt> contains the ...
+     * The field <tt>file</tt> contains the file assigned to this instance.
      */
     private File file = null;
 
@@ -51,7 +52,7 @@ public class OutFile implements Serializable {
     public OutFile(final File name) {
 
         super();
-        file = name;
+        this.file = name;
     }
 
     /**
@@ -61,7 +62,7 @@ public class OutFile implements Serializable {
      */
     public void open() throws GeneralException {
 
-        //TODO
+        //TODO unimplemented
     }
 
     /**
@@ -71,22 +72,22 @@ public class OutFile implements Serializable {
      */
     public void close() throws GeneralException {
 
-        //TODO
+        //TODO unimplemented
         file = null;
     }
 
     /**
-     * ...
+     * Check whether the out file is open.
      *
-     * @return ...
+     * @return <code>true</code> iff the instance is open
      */
     public boolean isOpen() {
 
-        return false; // TODO
+        return (null != file);
     }
 
     /**
-     * ...
+     * Write some tokens to the output stream.
      *
      * @param t tokens to write
      *

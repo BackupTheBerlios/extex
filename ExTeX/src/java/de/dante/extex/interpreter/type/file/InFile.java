@@ -33,7 +33,7 @@ import de.dante.util.GeneralException;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class InFile implements Serializable {
 
@@ -49,22 +49,24 @@ public class InFile implements Serializable {
     private File file;
 
     /**
-     * The field <tt>stream</tt> contains the ...
+     * The field <tt>stream</tt> contains the stream.
      */
     private TokenStream stream = null;
 
     /**
-     * The field <tt>factory</tt> contains the ...
+     * The field <tt>factory</tt> contains the token factory to use for making
+     * new tokens.
      */
     private TokenFactory factory = null;
 
     /**
-     * The field <tt>tokenizer</tt> contains the ...
+     * The field <tt>tokenizer</tt> contains the tokenizer for categorizing
+     * characters for new tokens.
      */
     private Tokenizer tokenizer = null;
 
     /**
-     * The field <tt>lookahead</tt> contains the ...
+     * The field <tt>lookahead</tt> contains the lokk-ahead token.
      */
     private Token lookahead = null;
 
@@ -110,9 +112,9 @@ public class InFile implements Serializable {
     }
 
     /**
-     * ...
+     * Read a line of characters into a tokens list.
      *
-     * @return ...
+     * @return the tokens read
      *
      * @throws GeneralException in case of an error
      */
@@ -120,10 +122,8 @@ public class InFile implements Serializable {
 
         if (stream == null) {
             if (file == null) {
-                //TODO: error
                 throw new RuntimeException("unimplemented");
             } else if (!isOpen()) {
-                //TODO: error
                 throw new RuntimeException("unimplemented");
             }
         }

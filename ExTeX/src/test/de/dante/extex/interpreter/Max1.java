@@ -38,7 +38,7 @@ import de.dante.util.configuration.ConfigurationFactory;
 
 /**
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Max1 extends TestCase {
 
@@ -110,8 +110,12 @@ public class Max1 extends TestCase {
     }
 
     /**
-     * @param in ...
-     * @return ...
+     * Perform a test.
+     *
+     * @param in the input string
+     *
+     * @return the result captured by the typesetter
+     *
      * @throws Exception in case of an error
      */
     private String doTest(final String in) throws Exception {
@@ -145,24 +149,18 @@ public class Max1 extends TestCase {
         private StringBuffer sb = new StringBuffer();
 
         /**
-         * @return ...
+         * @see java.lang.Object#toString()
          */
         public String toString() {
             return sb.toString();
         }
 
         /**
-         * @param g ...
+         * @see de.dante.extex.typesetter.ListMaker#addGlue(
+         *      de.dante.extex.interpreter.type.glue.Glue)
          */
         public void addGlue(final Glue g) {
             sb.append(g.toString());
-        }
-
-        /**
-         * @param g ...
-         */
-        public void addGlyph(final String g) {
-            sb.append(g);
         }
 
         /**

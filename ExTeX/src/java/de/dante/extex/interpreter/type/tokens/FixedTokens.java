@@ -29,7 +29,7 @@ import de.dante.util.GeneralException;
  * which do not modify the value.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface FixedTokens {
 
@@ -52,10 +52,11 @@ public interface FixedTokens {
     int length();
 
     /**
-     * ...
+     * Determine the printable representation of the object and append it to a
+     * list of Tokens.
      *
      * @param context  the processor context
-     * @param toks ...
+     * @param toks the tokens to add to
      *
      * @throws GeneralException in case of an error
      */

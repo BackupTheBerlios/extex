@@ -25,7 +25,7 @@ import junit.framework.TestCase;
  * This class provides the test cases for the letter tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class LetterTokenTest extends TestCase {
 
@@ -38,7 +38,7 @@ public class LetterTokenTest extends TestCase {
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
     private static Token t = new LetterToken(new UnicodeChar('x'));
 

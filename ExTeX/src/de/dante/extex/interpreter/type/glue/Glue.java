@@ -32,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Glue implements Serializable, FixedGlue {
 
@@ -156,7 +156,8 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Add another glue to this one.
+     * The addition is perfomred indepentently on the components.
      *
      * @param g the glue to add
      */
@@ -168,36 +169,45 @@ public class Glue implements Serializable, FixedGlue {
     }
 
     /**
-     * ...
+     * Multiply the normal size by an integer fraction.
+     * <p>
+     *  <i>length</i> = <i>length</i> * <i>nom</i> / <i>denom</i>
+     * </p>
      *
      * @param nom nominator
      * @param denom denominator
      */
     public void multiply(final long nom, final long denom) {
 
-        throw new RuntimeException("incomplete");
+        this.length.multiply(nom, denom);
     }
 
     /**
-     * ...
+     * Multiply the stretch component by an integer fraction.
+     * <p>
+     *  <i>stretch</i> = <i>stretch</i> * <i>nom</i> / <i>denom</i>
+     * </p>
      *
      * @param nom nominator
      * @param denom denominator
      */
     public void multiplyStretch(final long nom, final long denom) {
 
-        //TODO incomplete
+        this.length.multiply(nom, denom);
     }
 
     /**
-     * ...
+     * Multiply the shrink component by an integer fraction.
+     * <p>
+     *  <i>shrink</i> = <i>shrink</i> * <i>nom</i> / <i>denom</i>
+     * </p>
      *
      * @param nom nominator
      * @param denom denominator
      */
     public void multiplyShrink(final long nom, final long denom) {
 
-        //TODO incomplete
+        this.length.multiply(nom, denom);
     }
 
     /**

@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.box;
 
 import java.io.Serializable;
@@ -38,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Box implements Serializable {
 
@@ -93,12 +94,13 @@ public class Box implements Serializable {
         nodes = typesetter.close();
     }
 
-     /**
-      * Clear the contents of the box. Afterwards the box is void.
-      */
-     public void clear() {
-         nodes = null;
-     }
+    /**
+     * Clear the contents of the box. Afterwards the box is void.
+     */
+    public void clear() {
+
+        nodes = null;
+    }
 
     /**
      * Getter for the depth of this box.
@@ -165,32 +167,35 @@ public class Box implements Serializable {
         return (nodes == null ? new Dimen(0) : nodes.getWidth());
     }
 
-     /**
-      * Checks whether the box is a hbox.
-      *
-      * @return <tt>true</tt> iff the box is a hbox.
-      */
-     public boolean isHbox() {
-         return (nodes != null && nodes instanceof HorizontalListNode);
-     }
+    /**
+     * Checks whether the box is a hbox.
+     *
+     * @return <tt>true</tt> iff the box is a hbox.
+     */
+    public boolean isHbox() {
 
-     /**
-      * Checks whether the box is a vbox.
-      *
-      * @return <tt>true</tt> iff the box is a vbox.
-      */
-     public boolean isVbox() {
-         return (nodes != null && nodes instanceof VerticalListNode);
-     }
+        return (nodes != null && nodes instanceof HorizontalListNode);
+    }
 
-     /**
-      * Checks whether the box is void.
-      *
-      * @return <tt>true</tt> iff the box is void.
-      */
-     public boolean isVoid() {
-         return nodes == null;
-     }
+    /**
+     * Checks whether the box is a vbox.
+     *
+     * @return <tt>true</tt> iff the box is a vbox.
+     */
+    public boolean isVbox() {
+
+        return (nodes != null && nodes instanceof VerticalListNode);
+    }
+
+    /**
+     * Checks whether the box is void.
+     *
+     * @return <tt>true</tt> iff the box is void.
+     */
+    public boolean isVoid() {
+
+        return nodes == null;
+    }
 
     /**
      * Setter for the depth of the box.

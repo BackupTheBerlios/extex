@@ -23,6 +23,7 @@ import java.io.Serializable;
 import de.dante.extex.i18n.GeneralHelpingException;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.type.glue.FixedGlueComponent;
 import de.dante.extex.interpreter.type.glue.GlueComponent;
 import de.dante.util.GeneralException;
 
@@ -31,7 +32,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class Dimen extends GlueComponent implements Serializable, FixedDimen {
 
@@ -91,7 +92,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * @param value the value to imitate
      */
-    public Dimen(final Dimen value) {
+    public Dimen(final FixedDimen value) {
 
         super(value == null ? 0 : value.getValue());
     }
@@ -116,7 +117,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * @param d the new value
      */
-    public void set(final GlueComponent d) {
+    public void set(final FixedGlueComponent d) {
 
         set(d.getValue());
     }
@@ -149,7 +150,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * @param d the Dimen to add
      */
-    public void add(final Dimen d) {
+    public void add(final FixedDimen d) {
 
         setValue(getValue() + d.getValue());
     }
@@ -164,7 +165,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      *
      * @param d the Dimen to subtract
      */
-    public void subtract(final Dimen d) {
+    public void subtract(final FixedDimen d) {
 
         setValue(getValue() - d.getValue());
     }
@@ -216,7 +217,7 @@ public class Dimen extends GlueComponent implements Serializable, FixedDimen {
      * @throws NullPointerException in case that the argument is
      * <code>null</code>.
      */
-    public void max(final Dimen d) {
+    public void max(final FixedDimen d) {
 
         long val = d.getValue();
         if (val > getValue()) {

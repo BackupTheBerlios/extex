@@ -22,23 +22,23 @@ import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for space tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class SpaceTokenTest extends TestCase {
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(LeftBraceTokenTest.class);
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
     private static Token t = new SpaceToken("x");
 

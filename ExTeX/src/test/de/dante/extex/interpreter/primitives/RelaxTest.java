@@ -24,14 +24,14 @@ import de.dante.test.ExTeXLauncher;
  * This is a test suite for the primitive <tt>\relax</tt>.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class RelaxTest extends ExTeXLauncher {
 
     /**
      * Constructor for RelaxTest.
      *
-     * @param arg ...
+     * @param arg the name
      */
     public RelaxTest(final String arg) {
         super(arg);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 Gerd Neugebauer
+ * Copyright (C) 2004 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -22,23 +22,23 @@ import de.dante.util.UnicodeChar;
 import junit.framework.TestCase;
 
 /**
- * ...
+ * Test cases for other tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class OtherTokenTest extends TestCase {
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
         junit.textui.TestRunner.run(LeftBraceTokenTest.class);
     }
 
     /**
-     * The field <tt>t</tt> contains the ...
+     * The field <tt>t</tt> contains the reference token.
      */
     private static Token t = new OtherToken(new UnicodeChar(';'));
 

@@ -36,15 +36,16 @@ import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
 
 /**
+ * Test cases for the string implementation of atoken stream.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * Creates a new object.
-     * @param name ...
+     * @param name the name
      */
     public TokenStreamStringImplTest(final String name) {
 
@@ -52,8 +53,8 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * ...
-     * @param args ...
+     * Command line interface.
+     * @param args the arguments
      */
     public static void main(final String[] args) {
 
@@ -61,17 +62,18 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * The field <tt>fac</tt> contains the ...
+     * The field <tt>fac</tt> contains the token factory to use.
      */
     private static TokenFactory fac;
 
     /**
-     * The field <tt>context</tt> contains the ...
+     * The field <tt>context</tt> contains the context to use.
      */
     private static Context context;
 
     /**
-     * The field <tt>tokenizer</tt> contains the ...
+     * The field <tt>tokenizer</tt> contains the tokenizer to use for
+     * categorizing characters.
      */
     private static Tokenizer tokenizer;
 
@@ -96,7 +98,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * The empty string does not contain any characters
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testEmpty() throws Exception {
 
@@ -106,7 +108,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void test1() throws Exception {
 
@@ -117,7 +119,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void test12() throws Exception {
 
@@ -129,7 +131,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * A single space at the beginning of the processing is skipped
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testSpace() throws Exception {
 
@@ -139,7 +141,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testSpaces() throws Exception {
 
@@ -149,7 +151,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testSpace2() throws Exception {
 
@@ -161,7 +163,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testSpace3() throws Exception {
 
@@ -173,7 +175,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testIgnore() throws Exception {
 
@@ -183,7 +185,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testLetter() throws Exception {
 
@@ -194,7 +196,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCaretEnd() throws Exception {
 
@@ -207,7 +209,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCaret1() throws Exception {
 
@@ -221,7 +223,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCaretA() throws Exception {
 
@@ -233,7 +235,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCaretA2() throws Exception {
 
@@ -245,7 +247,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCaretA3() throws Exception {
 
@@ -258,7 +260,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testMixed() throws Exception {
 
@@ -273,7 +275,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCr1() throws Exception {
 
@@ -285,7 +287,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCr2() throws Exception {
 
@@ -297,7 +299,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCr3() throws Exception {
 
@@ -309,7 +311,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
     /**
      * ...
-     * @throws Exception ...
+     * @throws Exception in case of an error
      */
     public void testCr4() throws Exception {
 
@@ -323,8 +325,8 @@ public class TokenStreamStringImplTest extends TestCase {
      * ...
      *
      * @param line ...
-     * @return ...
-     * @throws IOException ...
+     * @return the new token stream
+     * @throws IOException in case of an error
      */
     private TokenStream makeStream(final String line) throws IOException {
 
@@ -333,15 +335,15 @@ public class TokenStreamStringImplTest extends TestCase {
     }
 
     /**
-     * ...
+     * Mock configuration class.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.9 $
+     * @version $Revision: 1.10 $
      */
     private static class MockConfiguration implements Configuration {
 
         /**
-         * The field <tt>classname</tt> contains the ...
+         * The field <tt>classname</tt> contains the name of the class to use.
          */
         private String classname =
             "de.dante.extex.interpreter.context.impl.ContextImpl";
@@ -356,7 +358,7 @@ public class TokenStreamStringImplTest extends TestCase {
 
         /**
          * Creates a new object.
-         * @param cn ...
+         * @param cn the class name
          */
         public MockConfiguration(final String cn) {
 

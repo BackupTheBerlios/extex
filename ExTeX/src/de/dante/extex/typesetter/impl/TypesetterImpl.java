@@ -24,7 +24,6 @@ import java.util.ArrayList;
 
 import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.i18n.GeneralPanicException;
-import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -48,7 +47,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.16 $
+ * @version $Revision: 1.17 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 

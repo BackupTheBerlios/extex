@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.glue;
 
 import java.io.Serializable;
@@ -50,14 +51,18 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GlueComponent implements Serializable, FixedGlueComponent {
 
     /**
-     * The field <tt>POINT_PER_100_IN</tt> contains the ...
+     * The constant <tt>FLOAT_DIGITS</tt> contains the number of digits to
+     * consider when producing a string representation of this type.
+     *
+     * Attention: Do not change this value unless you have read and understood
+     * TeX the program!
      */
-    private static final int POINT_PER_100_IN = 7227;
+    private static final int FLOAT_DIGITS = 17;
 
     /**
      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
@@ -66,12 +71,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public static final long ONE = 1 << 16;
 
     /**
-     * The constant <tt>FLOAT_DIGITS</tt> contains the ...
-     *
-     * Attention: Do not change this value unless you have read and understood
-     * TeX the program!
+     * The field <tt>POINT_PER_100_IN</tt> contains the conversion factor from
+     * inch to point. The value contained is the number of points in 100 inch.
      */
-    private static final int FLOAT_DIGITS = 17;
+    private static final int POINT_PER_100_IN = 7227;
 
     /**
      * The field <tt>order</tt> contains the order of infinity.
@@ -94,6 +97,22 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     public GlueComponent() {
 
         super();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param context the interpreter context
+     * @param source the source for the tokens to be read
+     * @param fixed if <code>true</code> then no glue order is allowed
+     *
+     * @throws GeneralException in case of an error
+     */
+    public GlueComponent(final Context context, final TokenSource source,
+            final boolean fixed) throws GeneralException {
+
+        super();
+        set(context, source, fixed);
     }
 
     /**
@@ -129,212 +148,9 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @throws GeneralException in case of an error
      */
     public GlueComponent(final TokenSource source, final Context context)
-                  throws GeneralException {
+            throws GeneralException {
 
         this(context, source, false);
-    }
-
-    /**
-     * Creates a new object.
-     *
-     * @param context the interpreter context
-     * @param source the source for the tokens to be read
-     * @param fixed if <code>true</code> then no glue order is allowed
-     *
-     * @throws GeneralException in case of an error
-     */
-    public GlueComponent(final Context context, final TokenSource source,
-        final boolean fixed) throws GeneralException {
-
-        super();
-        set(context, source, fixed);
-    }
-
-    /**
-     * Getter for the value in scaled points (sp).
-     *
-     * @return the value in internal units of scaled points (sp)
-     */
-    public long getValue() {
-
-        return value;
-    }
-
-    /**
-     * Setter for the value.
-     *
-     * @param val the new value
-     */
-    public void setValue(final long val) {
-
-        value = val;
-    }
-
-    /**
-     * Getter for order.
-     *
-     * @return the order.
-     */
-    private int getOrder() {
-
-        return order;
-    }
-
-    /**
-     * Create a copy of this instance with the same order and value.
-     *
-     * @return a new copy of this instance
-     */
-    public GlueComponent copy() {
-
-        return new GlueComponent(value, order);
-    }
-
-    /**
-     * Setter for the value in terms of the internal representation.
-     *
-     * @param theValue the new value
-     */
-    public void set(final long theValue) {
-
-        this.value = theValue;
-    }
-
-    /**
-     * Setter for the value and order.
-     *
-     * @param d the new value
-     */
-    public void set(final GlueComponent d) {
-
-        this.value = d.getValue();
-        this.order = d.getOrder();
-    }
-
-    /**
-     * Set the value and order from the data gathered by parsing a token source.
-     *
-     * @param context the interpreter context
-     * @param source the source for next tokens
-     *
-     * @throws GeneralException in case of an error
-     */
-    public void set(final Context context, final TokenSource source)
-             throws GeneralException {
-
-        set(context, source, true);
-    }
-
-    /**
-     * Set the value and order from the data gathered by parsing a token source.
-     *
-     * @param context the interpreter context
-     * @param source the source for next tokens
-     * @param fixed this argument indicates that no fil parts of the object
-     * should be filled. This means that the component is in fact a fixed
-     * Dimen value.
-     *
-     * @throws GeneralException in case of an error
-     */
-    protected void set(final Context context, final TokenSource source,
-            final boolean fixed) throws GeneralException {
-
-        Token t = source.scanNonSpace();
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.IllegalUnit");
-            //TODO incomplete
-        }
-
-        value = scanFloat(source, t);
-
-        t = source.getNonSpace();
-        if (t == null) {
-            throw new GeneralHelpingException("TTP.IllegalUnit");
-            //TODO incomplete
-        }
-
-        source.push(t);
-        long mag = 1000;
-        if (source.scanKeyword("true")) { // cf. TTP[453], TTP[457]
-            mag = context.getMagnification();
-            source.push(source.scanNonSpace());
-        }
-        // cf. TTP[458]
-        if (source.scanKeyword("pt")) {
-            // nothing to do
-        } else if (source.scanKeyword("sp")) {
-            value = value / ONE;
-        } else if (source.scanKeyword("mm")) {
-            value = value * POINT_PER_100_IN / 2540;
-        } else if (source.scanKeyword("cm")) {
-            value = value * POINT_PER_100_IN / 254;
-        } else if (source.scanKeyword("in")) {
-            value = value * POINT_PER_100_IN / 100;
-        } else if (source.scanKeyword("pc")) {
-            value = value * 12;
-        } else if (source.scanKeyword("bp")) {
-            value = value * POINT_PER_100_IN / 7200;
-        } else if (source.scanKeyword("dd")) {
-            value = value * 1238 / 1157;
-        } else if (source.scanKeyword("cc")) {
-            value = value * 14856 / 1157;
-        } else if (source.scanKeyword("ex")) {
-            Dimen ex = context.getTypesettingContext().getFont().getEm();
-            value = value * ex.getValue() / ONE;
-        } else if (source.scanKeyword("em")) {
-            Dimen em = context.getTypesettingContext().getFont().getEm();
-            value = value * em.getValue() / ONE;
-        } else if (fixed && source.scanKeyword("fil")) {
-            order = 1;
-            for (t = source.getToken(); //
-                    (t != null && (t.equals('l') || t.equals('L'))); //
-                    t = source.getToken()) {
-                order++;
-            }
-            source.push(t);
-        } else if ((t = source.getToken()) != null) {
-            if (t instanceof CodeToken) {
-                Code code = context.getCode(t);
-                if (code instanceof DimenConvertible) {
-                    value = value
-                            * ((DimenConvertible) code).convertDimen(context,
-                                                                     source)
-                            / ONE;
-                } else {
-                    throw new GeneralHelpingException("TTP.IllegalUnit");
-                }
-            } else {
-                throw new GeneralHelpingException("TTP.IllegalUnit");
-            }
-        } else { // cf. TTP [459]
-            throw new GeneralHelpingException("TTP.IllegalUnit");
-        }
-
-        if (mag != 1000) {
-            value = value * mag / 1000;
-        }
-    }
-
-    /**
-     * Add another GlueCoponent g to this instance.
-     * If the order of g is greater than the order of this instance then this
-     * operation does not change the value or order at all.
-     * If the order of g is less than the order of this instance then the value
-     * and order of g are stored in this instance.
-     * If the orders agree then the sum of both values is stored in this
-     * instance.
-     *
-     * @param g the GlueCoponent to add
-     */
-    public void add(final GlueComponent g) {
-
-        int o = g.getOrder();
-        if (order == o) {
-            value += g.getValue();
-        } else if (order < o) {
-            order = o;
-            value = g.getValue();
-        }
     }
 
     /**
@@ -395,6 +211,38 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
     }
 
     /**
+     * Add another GlueCoponent g to this instance.
+     * If the order of g is greater than the order of this instance then this
+     * operation does not change the value or order at all.
+     * If the order of g is less than the order of this instance then the value
+     * and order of g are stored in this instance.
+     * If the orders agree then the sum of both values is stored in this
+     * instance.
+     *
+     * @param g the GlueCoponent to add
+     */
+    public void add(final FixedGlueComponent g) {
+
+        int o = g.getOrder();
+        if (order == o) {
+            value += g.getValue();
+        } else if (order < o) {
+            order = o;
+            value = g.getValue();
+        }
+    }
+
+    /**
+     * Create a copy of this instance with the same order and value.
+     *
+     * @return a new copy of this instance
+     */
+    public GlueComponent copy() {
+
+        return new GlueComponent(value, order);
+    }
+
+    /**
      * Compares the current instance with another GlueComponent for equality.
      *
      * @param d the other GlueComponent to compare to. If this parameter is
@@ -402,11 +250,11 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @return <code>true</code> iff <i>|this| == |d| and ord(this) == ord(d)</i>
      */
-    public boolean eq(final GlueComponent d) {
+    public boolean eq(final FixedGlueComponent d) {
 
         return (d != null && //
                 value == d.getValue() && //
-                order == d.getOrder());
+        order == d.getOrder());
     }
 
     /**
@@ -414,16 +262,24 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param d the other GlueComponent to compare to
      *
-     * @return <code>true</code> iff <i>ord(this) == ord(d) && |this| &lt; |d|</i>
-     * or <i>ord(this) &lt; ord(d)</i>
+     * @return <code>true</code> iff this is greater or equal to d
      *
      * @throws NullPointerException in case that the argument is
      * <code>null</code>.
      */
-    public boolean lt(final GlueComponent d) {
+    public boolean ge(final FixedGlueComponent d) {
 
-        return ((order == d.getOrder() && value < d.getValue()) || //
-                order < d.getOrder());
+        return (!lt(d));
+    }
+
+    /**
+     * Getter for the value in scaled points (sp).
+     *
+     * @return the value in internal units of scaled points (sp)
+     */
+    public long getValue() {
+
+        return this.value;
     }
 
     /**
@@ -437,10 +293,10 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @throws NullPointerException in case that the argument is
      * <code>null</code>.
      */
-    public boolean gt(final GlueComponent d) {
+    public boolean gt(final FixedGlueComponent d) {
 
         return ((order == d.getOrder() && value > d.getValue()) || //
-                order > d.getOrder());
+        order > d.getOrder());
     }
 
     /**
@@ -453,7 +309,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @throws NullPointerException in case that the argument is
      * <code>null</code>.
      */
-    public boolean le(final GlueComponent d) {
+    public boolean le(final FixedGlueComponent d) {
 
         return (!gt(d));
     }
@@ -463,14 +319,75 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      *
      * @param d the other GlueComponent to compare to
      *
-     * @return <code>true</code> iff this is greater or equal to d
+     * @return <code>true</code> iff <i>ord(this) == ord(d) && |this| &lt; |d|</i>
+     * or <i>ord(this) &lt; ord(d)</i>
      *
      * @throws NullPointerException in case that the argument is
      * <code>null</code>.
      */
-    public boolean ge(final GlueComponent d) {
+    public boolean lt(final FixedGlueComponent d) {
 
-        return (!lt(d));
+        return ((order == d.getOrder() && value < d.getValue()) || //
+        order < d.getOrder());
+    }
+
+    /**
+     * Multiply the value by an integer fraction.
+     * <p>
+     *  <i>length</i> = <i>length</i> * <i>nom</i> / <i>denom</i>
+     * </p>
+     *
+     * @param nom nominator
+     * @param denom denominator
+     */
+    public void multiply(final long nom, final long denom) {
+
+        this.value = this.value * nom / denom;
+    }
+
+    /**
+     * Set the value and order from the data gathered by parsing a token source.
+     *
+     * @param context the interpreter context
+     * @param source the source for next tokens
+     *
+     * @throws GeneralException in case of an error
+     */
+    public void set(final Context context, final TokenSource source)
+            throws GeneralException {
+
+        set(context, source, true);
+    }
+
+    /**
+     * Setter for the value and order.
+     *
+     * @param d the new value
+     */
+    public void set(final FixedGlueComponent d) {
+
+        this.value = d.getValue();
+        this.order = d.getOrder();
+    }
+
+    /**
+     * Setter for the value in terms of the internal representation.
+     *
+     * @param theValue the new value
+     */
+    public void set(final long theValue) {
+
+        this.value = theValue;
+    }
+
+    /**
+     * Setter for the value.
+     *
+     * @param val the new value
+     */
+    public void setValue(final long val) {
+
+        this.value = val;
     }
 
     /**
@@ -497,6 +414,7 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
      * @see #toString()
      */
     public void toString(final StringBuffer sb) {
+
         long val = getValue();
 
         if (val < 0) {
@@ -642,6 +560,102 @@ public class GlueComponent implements Serializable, FixedGlueComponent {
             }
         } else {
             throw new GeneralPanicException("TTP.Confusion");
+        }
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.glue.FixedGlueComponent#getOrder()
+     */
+    public int getOrder() {
+
+        return order;
+    }
+
+    /**
+     * Set the value and order from the data gathered by parsing a token source.
+     *
+     * @param context the interpreter context
+     * @param source the source for next tokens
+     * @param fixed this argument indicates that no fil parts of the object
+     * should be filled. This means that the component is in fact a fixed
+     * Dimen value.
+     *
+     * @throws GeneralException in case of an error
+     */
+    protected void set(final Context context, final TokenSource source,
+            final boolean fixed) throws GeneralException {
+
+        Token t = source.scanNonSpace();
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.IllegalUnit");
+        }
+
+        value = scanFloat(source, t);
+
+        t = source.getNonSpace();
+        if (t == null) {
+            throw new GeneralHelpingException("TTP.IllegalUnit");
+        }
+
+        source.push(t);
+        long mag = 1000;
+        if (source.scanKeyword("true")) { // cf. TTP[453], TTP[457]
+            mag = context.getMagnification();
+            source.push(source.scanNonSpace());
+        }
+        // cf. TTP[458]
+        if (source.scanKeyword("pt")) {
+            // nothing to do
+        } else if (source.scanKeyword("sp")) {
+            value = value / ONE;
+        } else if (source.scanKeyword("mm")) {
+            value = value * POINT_PER_100_IN / 2540;
+        } else if (source.scanKeyword("cm")) {
+            value = value * POINT_PER_100_IN / 254;
+        } else if (source.scanKeyword("in")) {
+            value = value * POINT_PER_100_IN / 100;
+        } else if (source.scanKeyword("pc")) {
+            value = value * 12;
+        } else if (source.scanKeyword("bp")) {
+            value = value * POINT_PER_100_IN / 7200;
+        } else if (source.scanKeyword("dd")) {
+            value = value * 1238 / 1157;
+        } else if (source.scanKeyword("cc")) {
+            value = value * 14856 / 1157;
+        } else if (source.scanKeyword("ex")) {
+            Dimen ex = context.getTypesettingContext().getFont().getEm();
+            value = value * ex.getValue() / ONE;
+        } else if (source.scanKeyword("em")) {
+            Dimen em = context.getTypesettingContext().getFont().getEm();
+            value = value * em.getValue() / ONE;
+        } else if (fixed && source.scanKeyword("fil")) {
+            order = 1;
+            for (t = source.getToken(); //
+            (t != null && (t.equals('l') || t.equals('L'))); //
+            t = source.getToken()) {
+                order++;
+            }
+            source.push(t);
+        } else if ((t = source.getToken()) != null) {
+            if (t instanceof CodeToken) {
+                Code code = context.getCode(t);
+                if (code instanceof DimenConvertible) {
+                    value = value
+                            * ((DimenConvertible) code).convertDimen(context,
+                                                                     source)
+                            / ONE;
+                } else {
+                    throw new GeneralHelpingException("TTP.IllegalUnit");
+                }
+            } else {
+                throw new GeneralHelpingException("TTP.IllegalUnit");
+            }
+        } else { // cf. TTP [459]
+            throw new GeneralHelpingException("TTP.IllegalUnit");
+        }
+
+        if (mag != 1000) {
+            value = value * mag / 1000;
         }
     }
 

@@ -16,16 +16,17 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
  *
  */
+
 package de.dante.extex.interpreter.type.node;
 
 import de.dante.extex.typesetter.Node;
 
 /**
- * ...
+ * This node contains text which shoiuld be passed to the backend driver.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class SpecialNode extends WhatsItNode implements Node {
 
@@ -40,6 +41,7 @@ public class SpecialNode extends WhatsItNode implements Node {
      * @param theText the text to pass to the backend driver
      */
     public SpecialNode(final String theText) {
+
         super();
         this.text = theText;
     }
@@ -50,6 +52,7 @@ public class SpecialNode extends WhatsItNode implements Node {
      * @return the text.
      */
     public String getText() {
+
         return this.text;
     }
 
