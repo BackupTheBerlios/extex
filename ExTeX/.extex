@@ -5,5 +5,7 @@
 extex.output    = tmp
 extex.texinputs = src/test/data
 extex.fonts     = src/font
+extex.typesetter= gene
+texmf.path      = c:\\usr\\local\\share\\TeXlive7\\texmf
 #extex.token.stream=base32
 #
