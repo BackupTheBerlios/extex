@@ -27,7 +27,7 @@ import de.dante.util.GeneralException;
  * cache some of them and deliver the same token several times.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface TokenFactory {
     /**
@@ -51,4 +51,5 @@ public interface TokenFactory {
      */
     public abstract Token newInstance(Catcode code, char c)
                                throws GeneralException;
+
 }

@@ -39,7 +39,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class NamedDimen extends AbstractCode implements Advanceable {
     /**
@@ -110,6 +110,7 @@ public class NamedDimen extends AbstractCode implements Advanceable {
         Dimen dimen = new Dimen(source, context);
         context.setDimen(key, dimen, prefix.isGlobal());
         prefix.clear();
+        doAfterAssignment(context, source);
     }
     
     /**
