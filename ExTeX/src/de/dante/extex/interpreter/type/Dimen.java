@@ -32,31 +32,34 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public class Dimen extends GlueComponent implements Serializable {
 
-     /**
-      * The constant <tt>ZERO_PT</tt> contains the ...
+    /**
+     * The constant <tt>ONE</tt> contains the internal representation for 1pt.
+     *
+     * @see "TeX -- The Program [101]"
+     */
+    public static final long ONE = 1 << 16;
+
+    /**
+      * The constant <tt>ZERO_PT</tt> contains the immutable dimen register
+      * representing the length of 0pt.
       */
-     public static final Dimen ZERO_PT = new Dimen(0);
+     public static final Dimen ZERO_PT = new ImmutableDimen(0);
 
      /**
-      * The constant <tt>ONE_PT</tt> contains the ...
+      * The constant <tt>ONE_PT</tt> contains the immutable dimen register
+      * representing the length of 1pt.
       */
-     public static final Dimen ONE_PT = new Dimen(1 << 16);
+     public static final Dimen ONE_PT = new ImmutableDimen(ONE);
 
      /**
-      * The constant <tt>ONE_INCH</tt> contains the ...
+      * The constant <tt>ONE_INCH</tt> contains the immutable dimen register
+      * representing the length of 1in.
       */
-     public static final Dimen ONE_INCH = new Dimen((1 << 16) * 7227 / 100);
-
-     /**
-      * The constant <tt>ONE</tt> contains the internal representation for 1pt.
-      *
-      * @see "TeX -- The Program [101]"
-      */
-     public static final long ONE = 1 << 16;
+     public static final Dimen ONE_INCH = new ImmutableDimen(ONE * 7227 / 100);
 
      /**
       * Creates a new object.
@@ -215,28 +218,6 @@ public class Dimen extends GlueComponent implements Serializable {
      }
 
      /**
-      * Return a String with the Dimen value in pt
-      *
-      * @return a String with the Dimen value in pt
-      */
-     public String toPT() {
-          return String.valueOf(round((double)getValue() / ONE)) + "pt";
-     }
-
-     /**
-      * Rounds a floating-point number to nearest whole number.
-      * It uses exactly the same algorithm as web2c implementation of TeX.
-      *
-      * @param d number to be rounded
-      *
-      * @return rounded value
-      */
-     private long round(double d) {
-
-         return (long) ((d >= 0.0) ? d + 0.5 : d - 0.5);
-     }
-
-     /**
      * ...
      *
      * @param factory the token factory to get the required tokens from
@@ -250,21 +231,76 @@ public class Dimen extends GlueComponent implements Serializable {
     public Tokens toToks(final TokenFactory factory) throws GeneralException {
 
         Tokens toks = new Tokens();
-        String s = Long.toString(getValue() / ONE);
+        long val = getValue();
 
-        for (int i = 0; i < s.length(); i++) {
-            toks.add(factory.newInstance(Catcode.OTHER, s.substring(i, i + 1)));
+        if (val < 0) {
+            toks.add(factory.newInstance(Catcode.OTHER, '-'));
+            val = -val;
         }
 
-        //TODO: decimal places and rounding
+        long v = val / ONE;
+        if (v == 0) {
+            toks.add(factory.newInstance(Catcode.OTHER, '0'));
+        } else {
+            long m = 1;
+            while (m <= v) {
+                m *= 10;
+            }
+            m /= 10;
+            while (m > 0) {
+                toks.add(factory.newInstance(Catcode.OTHER,
+                                             (char) ('0' + (v / m))));
+                v = v % m;
+                m /= 10;
+            }
+        }
+
+        toks.add(factory.newInstance(Catcode.OTHER, '.'));
+
+        val = 10 * (val % ONE) + 5;
+        long delta = 10;
+        do {
+            if (delta > ONE) {
+                val = val + 100000 - 50000; // round the last digit
+            }
+            int i = (int) (val / ONE);
+            toks.add(factory.newInstance(Catcode.OTHER, (char) ('0' + i)));
+            val = 10 * (val % ONE);
+            delta *= 10;
+        } while (val > delta);
+
         toks.add(factory.newInstance(Catcode.LETTER, "p"));
         toks.add(factory.newInstance(Catcode.LETTER, "t"));
 
         return toks;
     }
 
+
+    /**
+     * Return a String with the Dimen value in pt
+     *
+     * @return a String with the Dimen value in pt
+     */
+    public String toPT() {
+         return String.valueOf(round((double)getValue() / ONE)) + "pt";
+    }
+
+    /**
+     * Rounds a floating-point number to nearest whole number.
+     * It uses exactly the same algorithm as web2c implementation of TeX.
+     *
+     * @param d number to be rounded
+     *
+     * @return rounded value
+     */
+    private long round(double d) {
+
+        return (long) ((d >= 0.0) ? d + 0.5 : d - 0.5);
+    }
+
     /**
      * Return the <code>Dimen</code>-value in bp
+     *
      * @return	the value in bp
      */
     public double toBP() {

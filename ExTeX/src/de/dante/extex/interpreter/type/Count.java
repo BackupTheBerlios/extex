@@ -33,18 +33,18 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:mgn@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class Count implements Serializable {
     /**
      * The constant <tt>ZERO</tt> contains the ...
      */
-    public static final Count ZERO = new Count(0);
+    public static final Count ZERO = new ImmutableCount(0);
 
     /**
      * The field <tt>ONE</tt> contains the ...
      */
-    public static final Count ONE = new Count(1);
+    public static final Count ONE = new ImmutableCount(1);
 
     /**
      * The field <tt>value</tt> contains the value of the count register.

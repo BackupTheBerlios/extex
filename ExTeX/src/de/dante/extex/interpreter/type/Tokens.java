@@ -32,15 +32,15 @@ import de.dante.util.GeneralException;
  * A Buffer for Tokens.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @author <a href="m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+ * @version $Revision: 1.7 $
  */
 public class Tokens implements Serializable {
 
      /**
-      * This constant is the empty toks register
+      * This constant is the empty toks register.
       */
-     public static final Tokens EMPTY = new Tokens();
+     public static final Tokens EMPTY = new ImmutableTokens();
 
      /**
       * The internal list of tokens
