@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -28,7 +28,7 @@ package de.dante.extex.scanner;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ControlSequenceToken extends AbstractToken implements Token {
     /**
@@ -54,6 +54,6 @@ public class ControlSequenceToken extends AbstractToken implements Token {
      * @return the string representation
      */
     public String toString() {
-        return "<control " + value + ">";
+        return "<control " + value + ">"; //TODO: use i18n
     }
 }

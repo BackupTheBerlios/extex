@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003  Gerd Neugebauer
+ * Copyright (C) 2003-2004  Gerd Neugebauer
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -18,6 +18,8 @@
  */
 package de.dante.extex.scanner;
 
+import de.dante.extex.i18n.Messages;
+
 
 /**
  * This class represents a right brace token.
@@ -28,7 +30,7 @@ package de.dante.extex.scanner;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class RightBraceToken extends AbstractToken implements Token {
     /**
@@ -51,8 +53,10 @@ public class RightBraceToken extends AbstractToken implements Token {
      * Get the string representation of this object for debugging purposes.
      *
      * @return the string representation
+     * 
+     * @see "TeX -- The Program [298]"
      */
     public String toString() {
-        return "<rightBrace " + value + ">";
+        return Messages.format("RightBraceToken.Text",value);
     }
 }
