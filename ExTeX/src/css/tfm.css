@@ -1,0 +1,20 @@
+/*
+   CSS-Datei für tfm-html-Ausgabe
+   
+   @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
+   @version $Revision: 1.1 $
+*/
+
+.td_char_lh {
+	font-weight: bold;
+	text-align:center;
+}
+
+.td_char_rh {
+	font-weight: bold;
+	text-align:left;
+}
+
+th {
+	text-align:left;
+}
