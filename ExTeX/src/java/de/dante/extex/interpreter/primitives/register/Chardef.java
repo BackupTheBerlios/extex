@@ -23,7 +23,7 @@ import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
@@ -60,7 +60,7 @@ import de.dante.util.UnicodeChar;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class Chardef extends AbstractAssignment {
 
@@ -85,7 +85,7 @@ public class Chardef extends AbstractAssignment {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getControlSequence();
+        CodeToken cs = source.getControlSequence();
         source.getOptionalEquals();
         UnicodeChar uc = source.scanCharacterCode();
         context.setCode(cs, new CharCode("", uc), prefix.isGlobal());

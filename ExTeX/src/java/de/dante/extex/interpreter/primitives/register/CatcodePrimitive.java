@@ -67,7 +67,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class CatcodePrimitive extends AbstractAssignment {
 
@@ -82,7 +82,8 @@ public class CatcodePrimitive extends AbstractAssignment {
     }
 
     /**
-     * @see de.dante.extex.interpreter.type.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.type.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -100,8 +101,8 @@ public class CatcodePrimitive extends AbstractAssignment {
                     prefix.isGlobal());
         } catch (CatcodeException e) {
             throw new HelpingException(getLocalizer(), "TTP.CodeOutOfRange",
-                    Long.toString(ccNumber), Integer.toString(Catcode
-                            .getCatcodeMax()));
+                    Long.toString(ccNumber), //
+                    Integer.toString(Catcode.getCatcodeMax()));
         }
 
     }

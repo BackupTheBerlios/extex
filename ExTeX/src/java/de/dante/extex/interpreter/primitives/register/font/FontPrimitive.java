@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
 import de.dante.extex.interpreter.type.glue.Glue;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.scanner.ControlSequenceToken;
 import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
@@ -77,7 +78,7 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
@@ -110,7 +111,7 @@ public class FontPrimitive extends AbstractAssignment
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token fontId = source.getControlSequence();
+        CodeToken fontId = source.getControlSequence();
         source.getOptionalEquals();
         String fontname = scanFontName(context, source);
         int size = getFontSize(fontname);

@@ -27,7 +27,7 @@ import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.tokens.Tokens;
-import de.dante.extex.scanner.Token;
+import de.dante.extex.scanner.CodeToken;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -121,7 +121,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class JavaDef extends AbstractCode {
 
@@ -146,7 +146,7 @@ public class JavaDef extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
-        Token cs = source.getControlSequence();
+        CodeToken cs = source.getControlSequence();
         Tokens name = source.getTokens();
         String classname = name.toText();
         if ("".equals(classname)) {
