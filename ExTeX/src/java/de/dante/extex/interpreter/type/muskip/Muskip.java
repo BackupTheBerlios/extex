@@ -36,7 +36,7 @@ import de.dante.util.framework.i18n.LocalizerFactory;
  * The actual length is a multiple of math unints (mu).
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Muskip implements Serializable {
 
@@ -144,6 +144,33 @@ public class Muskip implements Serializable {
         this.stretch = theStretch;
         this.shrink = theShrink;
     }
+    /**
+     * Getter for length.
+     *
+     * @return the length
+     */
+    public GlueComponent getLength() {
+
+        return this.length;
+    }
+    /**
+     * Getter for shrink.
+     *
+     * @return the shrink
+     */
+    public GlueComponent getShrink() {
+
+        return this.shrink;
+    }
+    /**
+     * Getter for stretch.
+     *
+     * @return the stretch
+     */
+    public GlueComponent getStretch() {
+
+        return this.stretch;
+    }
 
     /**
      * Getter for the natural length of this muskip.
@@ -152,7 +179,7 @@ public class Muskip implements Serializable {
      *
      * @return the natural length
      */
-    public Dimen getLength() {
+    public Dimen getxxLength() {
 
         return new Dimen(length.getValue());
     }
