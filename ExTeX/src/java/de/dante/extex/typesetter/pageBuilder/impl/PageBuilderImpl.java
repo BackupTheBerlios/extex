@@ -22,7 +22,15 @@ package de.dante.extex.typesetter.pageBuilder.impl;
 import java.io.IOException;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.i18n.PanicException;
+import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.context.Context;
+import de.dante.extex.interpreter.exception.ErrorLimitException;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.scanner.Catcode;
+import de.dante.extex.scanner.CatcodeException;
+import de.dante.extex.scanner.CodeToken;
+import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.pageBuilder.PageBuilder;
 import de.dante.extex.typesetter.type.NodeList;
@@ -33,9 +41,14 @@ import de.dante.util.GeneralException;
  * This is a first reference implementation of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class PageBuilderImpl implements PageBuilder {
+
+    /**
+     * The field <tt>context</tt> contains the interpreter context.
+     */
+    private Context context = null;
 
     /**
      * The field <tt>documentWriter</tt> contains the document writer to receive
@@ -44,9 +57,21 @@ public class PageBuilderImpl implements PageBuilder {
     private DocumentWriter documentWriter = null;
 
     /**
+     * The field <tt>interpreter</tt> contains the interpreter to be used for
+     * running the output routine.
+     */
+    private Interpreter interpreter;
+
+    /**
      * The field <tt>options</tt> contains the options to control the behaviour.
      */
     private TypesetterOptions options = null;
+
+    /**
+     * The field <tt>outputToken</tt> contains the token for retrieving the
+     * output routine.
+     */
+    private CodeToken outputToken = null;
 
     /**
      * Creates a new object.
@@ -108,11 +133,34 @@ public class PageBuilderImpl implements PageBuilder {
         Dimen d = nodes.getVerticalSize();
         if (d.ge(options.getDimenOption("vsize"))) {
 
-            try {
-                this.documentWriter.shipout(nodes);
-            } catch (IOException e) {
-                throw new GeneralException(e);
-            }
+            flush(nodes);
+        }
+    }
+
+    /**
+     * TODO gene: missing JavaDoc
+     *
+     * @throws ErrorLimitException
+     * @throws GeneralException
+     */
+    private void invokeOutput() throws ErrorLimitException, GeneralException {
+
+        
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setContext(
+     *      de.dante.extex.interpreter.context.Context)
+     */
+    public void setContext(final Context context) {
+
+        this.context = context;
+        try {
+            this.outputToken = (CodeToken) context.getTokenFactory()
+                    .createToken(Catcode.ESCAPE, '\\', "");
+        } catch (CatcodeException e) {
+            //TODO gene: error unimplemented
+            throw new RuntimeException("unimplemented");
         }
     }
 
@@ -128,6 +176,16 @@ public class PageBuilderImpl implements PageBuilder {
     public void setDocumentWriter(final DocumentWriter docWriter) {
 
         this.documentWriter = docWriter;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.pageBuilder.PageBuilder#setInterpreter(
+     *      de.dante.extex.interpreter.Interpreter)
+     */
+    public void setInterpreter(final Interpreter interpreter) {
+
+        this.interpreter = interpreter;
+
     }
 
     /**

@@ -20,6 +20,8 @@
 package de.dante.extex.typesetter.pageBuilder;
 
 import de.dante.extex.documentWriter.DocumentWriter;
+import de.dante.extex.interpreter.Interpreter;
+import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.NodeList;
 import de.dante.extex.typesetter.type.node.VerticalListNode;
@@ -29,7 +31,7 @@ import de.dante.util.GeneralException;
  * This interface describes the capabilities of a page builder.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface PageBuilder {
 
@@ -68,6 +70,13 @@ public interface PageBuilder {
     void inspectAndBuild(VerticalListNode nodes) throws GeneralException;
 
     /**
+     * Setter for the interpreter context
+     *
+     * @param context the interpreter context
+     */
+    void setContext(Context context);
+
+    /**
      * Setter for the document writer.
      * This has to be provided before the page builder can be active.
      *
@@ -82,4 +91,11 @@ public interface PageBuilder {
      */
     void setOptions(TypesetterOptions options);
 
+    /**
+     * Setter for the interpreter.
+     *
+     * @param interpreter the interpreter to be used for running the
+     *  output routine in
+     */
+    void setInterpreter(Interpreter interpreter);
 }
