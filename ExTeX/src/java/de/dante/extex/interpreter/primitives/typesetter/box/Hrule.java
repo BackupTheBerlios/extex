@@ -19,12 +19,15 @@
 
 package de.dante.extex.interpreter.primitives.typesetter.box;
 
+import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractCode;
+import de.dante.extex.interpreter.type.box.RuleConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.node.RuleNode;
+import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
 
@@ -78,9 +81,9 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class Hrule extends AbstractCode {
+public class Hrule extends AbstractCode implements RuleConvertible {
 
     /**
      * The constant <tt>DEFAULT_RULE</tt> contains the equivalent to 0.4pt.
@@ -122,25 +125,42 @@ public class Hrule extends AbstractCode {
             final TokenSource source, final Typesetter typesetter)
             throws GeneralException {
 
+        typesetter.add(getRule(context, source, typesetter));
+        return true;
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.type.box.RuleConvertible#getRule(
+     *      de.dante.extex.interpreter.context.Context,
+     *      de.dante.extex.interpreter.TokenSource,
+     *      de.dante.extex.typesetter.Typesetter)
+     */
+    public RuleNode getRule(final Context context, final TokenSource source,
+            final Typesetter typesetter) throws GeneralException {
+
+        Mode mode = typesetter.getMode();
+        if (mode.isHmode()) {
+            throw new HelpingException(getLocalizer(), "TTP.CantUseHrule",
+                    printableControlSequence(context));
+        }
         Dimen width = new Dimen(0);
         Dimen height = new Dimen(DEFAULT_RULE);
         Dimen depth = new Dimen(0);
 
         for (;;) {
-            if (source.getKeyword("width")) {
+            if (source.getKeyword(context, "width")) {
                 width.set(context, source);
-            } else if (source.getKeyword("height")) {
+            } else if (source.getKeyword(context, "height")) {
                 height.set(context, source);
-            } else if (source.getKeyword("depth")) {
+            } else if (source.getKeyword(context, "depth")) {
                 depth.set(context, source);
             } else {
                 break;
             }
         }
 
-        typesetter.add(new RuleNode(width, height, depth, context
-                .getTypesettingContext()));
-        return true;
+        return new RuleNode(width, height, depth, context
+                .getTypesettingContext());
     }
 
 }
