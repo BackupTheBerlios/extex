@@ -39,7 +39,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\fi</tt>  </pre>
+ *    &lang;fi&rang;
+ *     := <tt>\fi</tt>  </pre>
  * </p>
  * <p>
  *  Examples:
@@ -49,7 +50,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class Fi extends AbstractCode implements ExpandableCode {
 
@@ -69,7 +70,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
      *  This primitive can only be seen when a conditional has been opened
      *  before for which the else branch is expanded. Thus only the conditional
      *  stack has to be updated. If the conditional stack is already empty then
-     *  an exception is raised. 
+     *  an exception is raised.
      * </p>
      *
      * @see de.dante.extex.interpreter.Code#execute(
@@ -95,7 +96,7 @@ public class Fi extends AbstractCode implements ExpandableCode {
      *  This primitive can only be seen when a conditional has been opened
      *  before for which the else branch is expanded. Thus only the conditional
      *  stack has to be updated. If the conditional stack is already empty then
-     *  an exception is raised. 
+     *  an exception is raised.
      * </p>
      *
      * @see de.dante.extex.interpreter.ExpandableCode#expand(

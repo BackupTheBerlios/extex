@@ -56,9 +56,11 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
-public class FontPrimitive extends AbstractAssignment implements FontConvertible	 {
+public class FontPrimitive extends AbstractAssignment
+        implements
+            FontConvertible {
 
     /**
      * The field <tt>DEFAULT_SCALE_FACTOR</tt> contains the default scale
@@ -105,7 +107,7 @@ public class FontPrimitive extends AbstractAssignment implements FontConvertible
             source.skipSpace();
             long scale = source.scanInteger();
             fontsize = new Dimen(Dimen.ONE * size * scale
-                                 / DEFAULT_SCALE_FACTOR);
+                    / DEFAULT_SCALE_FACTOR);
         } else {
             // use size from the fontname
             fontsize = new Dimen(Dimen.ONE * size);

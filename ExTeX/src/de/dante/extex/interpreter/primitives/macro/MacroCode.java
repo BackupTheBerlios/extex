@@ -49,7 +49,7 @@ import de.dante.util.GeneralException;
  *
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class MacroCode extends AbstractCode implements Code, ExpandableCode, Showable {
 
@@ -82,6 +82,11 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
     private boolean outerP;
 
     /**
+     * The field <tt>protectedP</tt> contains the ...
+     */
+    private boolean protectedP;
+
+    /**
      * Creates a new object.
      *
      * @param name the initial name of the macro
@@ -97,6 +102,7 @@ public class MacroCode extends AbstractCode implements Code, ExpandableCode, Sho
         this.pattern = thePattern;
         this.notLong = !flags.isLong();
         this.outerP = flags.isOuter();
+        this.protectedP = flags.isProtected();
     }
 
     /**

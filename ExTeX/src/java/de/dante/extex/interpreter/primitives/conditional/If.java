@@ -38,9 +38,10 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\fi</tt>
+ *    &lang;if&rang;
+ *     := <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\fi</tt>
  *
- *    <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
+ *      |  <tt>\if</tt> &lang;token<sub>1</sub>&rang; &lang;token<sub>2</sub>&rang; &lang;true text&rang; <tt>\else</tt> &lang;false text&rang; <tt>\fi</tt> </pre>
  * </p>
  * <p>
  *  Examples:
@@ -50,7 +51,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class If extends AbstractIf {
 

@@ -39,7 +39,7 @@ import de.dante.util.configuration.ConfigurationException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class Box implements Serializable {
 
@@ -260,5 +260,4 @@ public class Box implements Serializable {
             nodes.setWidth(width);
         }
     }
-
 }

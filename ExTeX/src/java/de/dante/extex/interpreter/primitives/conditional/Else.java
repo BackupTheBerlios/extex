@@ -37,7 +37,8 @@ import de.dante.util.GeneralException;
  * <p>
  *  The formal description of this primitive is the following:
  *  <pre class="syntax">
- *    <tt>\else</tt> &lang;...&rang; </pre>
+ *    &lang;else&rang;
+ *     := <tt>\else</tt> &lang;...&rang; </pre>
  * </p>
  * <p>
  *  Examples:
@@ -47,7 +48,7 @@ import de.dante.util.GeneralException;
  * </doc>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class Else extends AbstractIf {
 
@@ -68,10 +69,11 @@ public class Else extends AbstractIf {
      *  before for which the then branch is expanded. Thus the else branch
      *  has to be skipped. Additioonally the conditional stack has to be
      *  updated. If the conditional stack is already empty then an exception
-     *  is raised. 
+     *  is raised.
      * </p>
      *
-     * @see de.dante.extex.interpreter.Code#execute(de.dante.extex.interpreter.Flags,
+     * @see de.dante.extex.interpreter.Code#execute(
+     *      de.dante.extex.interpreter.Flags,
      *      de.dante.extex.interpreter.context.Context,
      *      de.dante.extex.interpreter.TokenSource,
      *      de.dante.extex.typesetter.Typesetter)
@@ -97,7 +99,7 @@ public class Else extends AbstractIf {
      *  before for which the then branch is expanded. Thus the else branch
      *  has to be skipped. Additioonally the conditional stack has to be
      *  updated. If the conditional stack is already empty then an exception
-     *  is raised. 
+     *  is raised.
      * </p>
      *
      * @see de.dante.extex.interpreter.ExpandableCode#expand(
