@@ -26,7 +26,6 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.documentWriter.NoOutputStreamException;
 import de.dante.extex.documentWriter.SingleDocumentStream;
-import de.dante.extex.i18n.PanicException;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.typesetter.Mode;
 import de.dante.extex.typesetter.type.InspectableNodeVisitor;
@@ -62,7 +61,7 @@ import de.dante.util.framework.i18n.Localizer;
  * This is a implementation of a dvi document writer.
  *
  * @author <a href="mailto:sebastian.waschik@gmx.de">Sebastian Waschik</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class DviDocumentWriter
         implements
@@ -207,7 +206,8 @@ public class DviDocumentWriter
                         node);
             }
 
-            return new PanicException(localizer, "TTP.Confusion", argument);
+            // TODO: return new PanicException(localizer, "TTP.Confusion", argument); (TE)
+            return new PanicException();
 
         }
 
@@ -246,6 +246,16 @@ public class DviDocumentWriter
             throw new GeneralException("unimplemented");
         }
 
+        /**
+         * Write an CharNode to dvi file.
+         *
+         * @param node the <code>CharNode</code> value
+         * @param value ignored
+         * @return null
+         * @exception GeneralException if an error occurs
+         * @see de.dante.extex.typesetter.type.NodeVisitor#visitChar(AfterMathNode,
+         *     java.lang.Object)
+         */
         public Object visitChar(final CharNode node, final Object value)
                 throws GeneralException {
 
