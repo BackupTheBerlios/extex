@@ -37,10 +37,10 @@ import de.dante.util.framework.i18n.LocalizerFactory;
 
 /**
  * This class provides a container for a delimiter consisting of a class, a
- * large and a small math glyph.
+ * large, and a small math glyph.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class MathDelimiter {
 
@@ -223,7 +223,7 @@ public class MathDelimiter {
     }
 
     /**
-     * Produce the nodes for s math delimiter.
+     * Produce the nodes for a math delimiter.
      *
      * @param list the hbox to add nodes to
      * @param mathContext the mathematical context
