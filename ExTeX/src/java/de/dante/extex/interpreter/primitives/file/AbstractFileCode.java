@@ -38,7 +38,7 @@ import de.dante.util.framework.configuration.Configurable;
  * files.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.20 $
+ * @version $Revision: 1.21 $
  */
 public abstract class AbstractFileCode extends AbstractCode
         implements
@@ -83,9 +83,7 @@ public abstract class AbstractFileCode extends AbstractCode
 
     /**
      * Scan the input source for some tokens making up the key for an outfile
-     * register. Currently only numbers in a certain range are allowed.
-     * Neagtive numbers are treated special. An empty string is returned
-     * in this case.
+     * register. Currently only numbers are allowed.
      *
      * @param context the interpreter context
      * @param source the token source to read from
@@ -98,17 +96,7 @@ public abstract class AbstractFileCode extends AbstractCode
             final TokenSource source) throws InterpreterException {
 
         long no = source.scanInteger(context);
-        if (no < 0) {
-            return "";
-        }
-        String key = Long.toString(no);
-
-        if (no < 0 || no > MAX_OUT_FILE_NO) {
-            throw new BadFileNumberException(key, //
-                    "0", Integer.toString(MAX_OUT_FILE_NO));
-        }
-
-        return key;
+        return Long.toString(no);
     }
 
     /**
