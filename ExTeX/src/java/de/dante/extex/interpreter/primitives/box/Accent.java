@@ -63,7 +63,7 @@ import de.dante.util.UnicodeChar;
  * @see "TTP [1123]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class Accent extends AbstractCode {
 
@@ -138,7 +138,7 @@ public class Accent extends AbstractCode {
                         node = n;
                     }
                     // compute delta TTP [1125]
-                    long delta = (w - a) / 2 + (h-x) * s / 65536;
+                    long delta = (w - a) / 2 + (h - x) * s / 65536;
                     d.set(delta);
                     typesetter.add(new AccentKernNode(d));
                     typesetter.add(node);
