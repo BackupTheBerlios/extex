@@ -1,19 +1,19 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
- * This library is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 2.1 of the License, or (at your option) any later version.
+ * This library is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU Lesser General Public License as published by the
+ * Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version.
  *
- * This library is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
+ * This library is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License
+ * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public
- * License along with this library; if not, write to the Free Software
- * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with this library; if not, write to the Free Software Foundation,
+ * Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
 
@@ -31,17 +31,19 @@ import de.dante.util.StringListIterator;
 import de.dante.util.configuration.Configuration;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationMissingAttributeException;
+import de.dante.util.framework.logger.LogEnabled;
 
 /**
  * This file finder search recuriv in a directory.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
+ * @version $Revision: 1.4 $
  */
 public class FileFinderRPathImpl
         implements
             ResourceFinder,
-            LoggerTaker,
+            LogEnabled,
             PropertyConfigurable {
 
     /**
@@ -198,9 +200,9 @@ public class FileFinderRPathImpl
     }
 
     /**
-     * @see de.dante.util.resource.ResourceFinder#enableTrace(boolean)
+     * @see de.dante.util.resource.ResourceFinder#enableTracing(boolean)
      */
-    public void enableTrace(final boolean flag) {
+    public void enableTracing(final boolean flag) {
 
         trace = flag;
     }
@@ -214,9 +216,9 @@ public class FileFinderRPathImpl
     }
 
     /**
-     * @see de.dante.util.resource.LoggerTaker#setLogger(java.util.logging.Logger)
+     * @see de.dante.util.framework.logger.LogEnabled#enableLogging(java.util.logging.Logger)
      */
-    public void setLogger(final Logger alogger) {
+    public void enableLogging(final Logger alogger) {
 
         logger = alogger;
     }
