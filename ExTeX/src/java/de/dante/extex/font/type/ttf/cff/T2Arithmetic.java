@@ -17,44 +17,23 @@
  *
  */
 
-package de.dante.extex.font.type.ttf;
+package de.dante.extex.font.type.ttf.cff;
 
 /**
- * Constants for TTF.
+ * Artithmetic.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class TTFConstants {
+public abstract class T2Arithmetic extends T2Operator {
 
     /**
-     * shhift 8
+     * Create a new object
      */
-    public static final int SHIFT8 = 8;
+    protected T2Arithmetic() {
 
-    /**
-     * shhift 16
-     */
-    public static final int SHIFT16 = 16;
+        super();
+    }
 
-    /**
-     * shhift 24
-     */
-    public static final int SHIFT24 = 24;
-
-    /**
-     * shhift 32
-     */
-    public static final int SHIFT32 = 32;
-
-    /**
-     * const 0xffff
-     */
-    public static final int CONSTXFFFF = 0xffff;
-
-    /**
-     * const 0xff
-     */
-    public static final int CONSTXFF = 0xff;
 }

@@ -37,7 +37,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * Convert a TTF-file to a EFM-file
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public final class TTF2EFM {
 
@@ -54,15 +54,20 @@ public final class TTF2EFM {
     }
 
     /**
+     * max paramters
+     */
+    private static final int MAXPARAMS = 2;
+
+    /**
      * main
      * @param args  the commandlinearguments
      * @throws Exception ...
      */
     public static void main(final String[] args) throws Exception {
 
-        if (args.length != 3) {
+        if (args.length != MAXPARAMS) {
             System.err
-                    .println("java de.dante.util.font.TTF2EFM <ttf-file> <efm-file> <texmf>");
+                    .println("java de.dante.util.font.TTF2EFM <ttf-file> <efm-file>");
             System.exit(1);
         }
 
@@ -87,7 +92,7 @@ public final class TTF2EFM {
 
         File efmfile = new File(args[1]);
 
-        TTFReader ttfr = null; //new TTFReader(ttfin, fontname);
+        TTFReader ttfr = new TTFReader(ttfin, fontname);
 
         // write to efm-file
         XMLOutputter xmlout = new XMLOutputter("   ", true);

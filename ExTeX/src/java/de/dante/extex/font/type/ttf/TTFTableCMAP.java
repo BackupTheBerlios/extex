@@ -21,6 +21,7 @@ package de.dante.extex.font.type.ttf;
 
 import java.io.IOException;
 
+import org.jdom.Comment;
 import org.jdom.Element;
 
 import de.dante.util.XMLConvertible;
@@ -38,7 +39,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFTableCMAP extends AbstractTTFTable
         implements
@@ -829,6 +830,8 @@ public class TTFTableCMAP extends AbstractTTFTable
                 .convertVersion(version)));
         table.setAttribute("numberoftables", String.valueOf(numTables));
         // TODO incomplete
+        Comment c = new Comment("incomplete");
+        table.addContent(c);
         return table;
     }
 
@@ -1150,9 +1153,8 @@ public class TTFTableCMAP extends AbstractTTFTable
 
             if (0 <= charCode && charCode < glyphIdArray.length) {
                 return glyphIdArray[charCode];
-            } else {
-                return 0;
             }
+            return 0;
         }
     }
 
@@ -1396,12 +1398,11 @@ public class TTFTableCMAP extends AbstractTTFTable
                                 return glyphIdArray[idRangeOffset[i] / 2
                                         + (charCode - startCode[i])
                                         - (segCount - i)];
-                            } else {
-                                return (idDelta[i] + charCode) % 65536;
                             }
-                        } else {
-                            break;
+                            return (idDelta[i] + charCode) % 65536;
+
                         }
+                        break;
                     }
                 }
             } catch (ArrayIndexOutOfBoundsException e) {

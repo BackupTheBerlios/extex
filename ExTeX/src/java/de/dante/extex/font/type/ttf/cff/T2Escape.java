@@ -17,44 +17,38 @@
  *
  */
 
-package de.dante.extex.font.type.ttf;
+package de.dante.extex.font.type.ttf.cff;
 
 /**
- * Constants for TTF.
+ * Escape.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class TTFConstants {
+public class T2Escape extends T2CharString {
 
     /**
-     * shhift 8
+     * Create a new object.
      */
-    public static final int SHIFT8 = 8;
+    T2Escape() {
+
+        super();
+    }
 
     /**
-     * shhift 16
+     * @see de.dante.extex.font.type.ttf.cff.T2CharString#isEscape()
      */
-    public static final int SHIFT16 = 16;
+    public boolean isEscape() {
+
+        return true;
+    }
 
     /**
-     * shhift 24
+     * @see de.dante.extex.font.type.ttf.cff.T2CharString#getBytes()
      */
-    public static final int SHIFT24 = 24;
+    public short[] getBytes() {
 
-    /**
-     * shhift 32
-     */
-    public static final int SHIFT32 = 32;
-
-    /**
-     * const 0xffff
-     */
-    public static final int CONSTXFFFF = 0xffff;
-
-    /**
-     * const 0xff
-     */
-    public static final int CONSTXFF = 0xff;
+        return new short[]{ESCAPE_BYTE};
+    }
 }

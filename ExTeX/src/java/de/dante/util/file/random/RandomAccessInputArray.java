@@ -19,19 +19,17 @@
 
 package de.dante.util.file.random;
 
-import java.io.BufferedInputStream;
 import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
- * RandomAccess for a InputStream
+ * RandomAccess for a Array
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
-public class RandomAccessInputStream implements RandomAccessR {
+public class RandomAccessInputArray implements RandomAccessR {
 
     /**
      * Buffer
@@ -42,11 +40,6 @@ public class RandomAccessInputStream implements RandomAccessR {
      * pointer
      */
     private int pointer = 0;
-
-    /**
-     * blocksize
-     */
-    private static final int BLOCKSIZE = 0x8000;
 
     /**
      * Shift 8
@@ -70,50 +63,14 @@ public class RandomAccessInputStream implements RandomAccessR {
 
     /**
      * Create a new object
-     * @param iostream  stream for reading
-     * @throws IOException if an IO-error occured
+     * @param array     the array
      */
-    public RandomAccessInputStream(final InputStream iostream)
-            throws IOException {
+    public RandomAccessInputArray(final short[] array) {
 
         super();
 
-        buffer = readStream(iostream);
+        buffer = array;
         pointer = 0;
-    }
-
-    /**
-     * Read a stream and store all byte in a short-array
-     *
-     * @param iostream the stream to read
-     * @return Return a short-array
-     * @throws IOException in case of an error
-     */
-    private short[] readStream(final InputStream iostream) throws IOException {
-
-        BufferedInputStream bufin = new BufferedInputStream(iostream, BLOCKSIZE);
-
-        int count = 0;
-        short[] buf = new short[BLOCKSIZE];
-
-        int read;
-        while ((read = bufin.read()) != -1) {
-
-            int newcount = count + 1;
-            if (newcount > buf.length) {
-                short[] newbuf = new short[buf.length + BLOCKSIZE];
-                System.arraycopy(buf, 0, newbuf, 0, count);
-                buf = newbuf;
-            }
-            buf[count] = (short) read;
-            count = newcount;
-        }
-        bufin.close();
-        iostream.close();
-
-        short[] newbuf = new short[count];
-        System.arraycopy(buf, 0, newbuf, 0, count);
-        return newbuf;
     }
 
     /**

@@ -17,44 +17,36 @@
  *
  */
 
-package de.dante.extex.font.type.ttf;
+package de.dante.extex.font.type.ttf.cff;
+
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Constants for TTF.
+ * CharStringType
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class TTFConstants {
+public class T2TDOCharStringType extends T2TDONumber {
 
     /**
-     * shhift 8
+     * Create a new object.
+     *
+     * @param stack the stack
+     * @throws IOException if an IO.error occurs.
      */
-    public static final int SHIFT8 = 8;
+    public T2TDOCharStringType(final List stack) throws IOException {
+
+        super(stack, new short[]{ESCAPE_BYTE, CHARSTRINGTYPE});
+    }
 
     /**
-     * shhift 16
+     * @see de.dante.extex.font.type.ttf.cff.T2Operator#getName()
      */
-    public static final int SHIFT16 = 16;
+    public String getName() {
 
-    /**
-     * shhift 24
-     */
-    public static final int SHIFT24 = 24;
-
-    /**
-     * shhift 32
-     */
-    public static final int SHIFT32 = 32;
-
-    /**
-     * const 0xffff
-     */
-    public static final int CONSTXFFFF = 0xffff;
-
-    /**
-     * const 0xff
-     */
-    public static final int CONSTXFF = 0xff;
+        return "charstringtype";
+    }
 }

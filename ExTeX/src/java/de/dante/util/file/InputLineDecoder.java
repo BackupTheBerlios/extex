@@ -17,44 +17,38 @@
  *
  */
 
-package de.dante.extex.font.type.ttf;
+package de.dante.util.file;
+
+import java.io.IOException;
+import java.nio.CharBuffer;
 
 /**
- * Constants for TTF.
+ * Interface for all InputLines.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.1 $
  */
 
-public class TTFConstants {
+public interface InputLineDecoder {
 
     /**
-     * shhift 8
+     * Read a line from a input.
+     *
+     * @param   encoding    the encoding for this line.
+     * @return  the line in a <code>CharBuffer</code>
+     * @throws  java.io.IOException if an IO-error occurs
      */
-    public static final int SHIFT8 = 8;
+    CharBuffer readLine(final String encoding) throws IOException;
 
     /**
-     * shhift 16
+     * Close the inputline.
+     * @throws IOException if an IO-error occurs
      */
-    public static final int SHIFT16 = 16;
+    void close() throws IOException;
 
     /**
-     * shhift 24
+     * Returns the linenumber.
+     * @return Returns the linenumber.
      */
-    public static final int SHIFT24 = 24;
-
-    /**
-     * shhift 32
-     */
-    public static final int SHIFT32 = 32;
-
-    /**
-     * const 0xffff
-     */
-    public static final int CONSTXFFFF = 0xffff;
-
-    /**
-     * const 0xff
-     */
-    public static final int CONSTXFF = 0xff;
+    int getLineNumber();
 }

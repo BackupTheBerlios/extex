@@ -83,7 +83,7 @@ import de.dante.util.file.random.RandomAccessR;
  * </table>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class TTFTablePOST extends AbstractTTFTable
         implements
@@ -474,6 +474,17 @@ public class TTFTablePOST extends AbstractTTFTable
                 // see FORMAT1NAME
                 break;
             case FORMAT2 :
+                // This TrueType-based font file contains glyphs
+                // not in the standard Macintosh set or the ordering
+                // of the glyphs in the TrueType font file is non-standard
+                // (again, for the Macintosh). The glyph name array maps
+                // the glyphs in this font to name index. If the name index
+                // is between 0 and 257, treat the name index as a glyph
+                // index in the Macintosh standard order. If the name index
+                // is between 258 and 32767, then subtract 258 and use that
+                // to index into the list of Pascal strings at the end of
+                // the table. Thus a given font may map some of its glyphs
+                // to the standard glyph names, and some to its own names.
                 numGlyphs = rar.readUnsignedShort();
                 glyphNameIndex = new int[numGlyphs];
                 for (int i = 0; i < numGlyphs; i++) {
@@ -481,7 +492,7 @@ public class TTFTablePOST extends AbstractTTFTable
                 }
                 int h = highestGlyphNameIndex();
                 if (h > FORMAT1NAME.length - 1) {
-                    h -= FORMAT1NAME.length - 1;
+                    h -= (FORMAT1NAME.length - 1);
                     psGlyphName = new String[h];
                     for (int i = 0; i < h; i++) {
                         int len = rar.readUnsignedByte();
@@ -530,7 +541,6 @@ public class TTFTablePOST extends AbstractTTFTable
                         ? ".notdef"
                         : FORMAT1NAME[i];
             case FORMAT2 :
-                // TODO wrong String -> error!
                 return (glyphNameIndex[i] > FORMAT1NAME.length - 1)
                         ? psGlyphName[glyphNameIndex[i] - FORMAT1NAME.length]
                         : FORMAT1NAME[glyphNameIndex[i]];
@@ -658,6 +668,20 @@ public class TTFTablePOST extends AbstractTTFTable
     }
 
     /**
+     * Returns the int-value for a glyph.
+     * @param id    the id for the glyph
+     * @return Returns the int-value for a glyph.
+     */
+    public int getGlyphValue(final int id) {
+
+        if (glyphNameIndex != null && id >= 0 && id < glyphNameIndex.length) {
+
+            return glyphNameIndex[id];
+        }
+        return -1;
+    }
+
+    /**
      * @see de.dante.util.XMLConvertible#toXML()
      */
     public Element toXML() {
@@ -676,12 +700,14 @@ public class TTFTablePOST extends AbstractTTFTable
         table.setAttribute("underlinethickness", String
                 .valueOf(underlineThickness));
 
-        for (int i = 0; i < glyphNameIndex.length; i++) {
-            Element name = new Element("glyphname");
-            name.setAttribute("id", String.valueOf(i));
-            name.setAttribute("value", String.valueOf(glyphNameIndex[i]));
-            name.setAttribute("name", getGlyphName(i));
-            table.addContent(name);
+        if (glyphNameIndex != null) {
+            for (int i = 0; i < glyphNameIndex.length; i++) {
+                Element name = new Element("glyphname");
+                name.setAttribute("id", String.valueOf(i));
+                name.setAttribute("value", String.valueOf(glyphNameIndex[i]));
+                name.setAttribute("name", getGlyphName(i));
+                table.addContent(name);
+            }
         }
         return table;
     }

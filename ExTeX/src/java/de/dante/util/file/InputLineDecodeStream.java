@@ -18,8 +18,8 @@
 
 package de.dante.util.file;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.charset.Charset;
@@ -27,22 +27,24 @@ import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
 
 /**
- * InputLineDecoderStream.
+ * InputLineDecoder for a stream.
+ *
  * <p>
  * Read a line from a <code>BufferedInputStream</code>
  * as a <code>ByteArray</code> and decode it to a
  * <code>CharArray</code>.
+ * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 
-public class InputLineDecodeStream {
+public class InputLineDecodeStream implements InputLineDecoder {
 
     /**
      * the inputstream
      */
-    private BufferedInputStream bin;
+    private InputStream in;
 
     /**
      * the linenumber
@@ -51,11 +53,11 @@ public class InputLineDecodeStream {
 
     /**
      * Create a new object
-     * @param   binput the inputstream for reading
+     * @param   input the inputstream for reading
      */
-    public InputLineDecodeStream(final BufferedInputStream binput) {
+    public InputLineDecodeStream(final InputStream input) {
 
-        bin = binput;
+        in = input;
     }
 
     /**
@@ -69,15 +71,11 @@ public class InputLineDecodeStream {
     private static final int MARK = 10;
 
     /**
-     * Read a line from the inputstream.
-     *
-     * @param   encoding    the encoding for this line.
-     * @return  the line in a <code>CharBuffer</code>
-     * @throws  java.io.IOException from BufferedInputStream
+     * @see de.dante.util.file.InputLineDecoder#readLine(java.lang.String)
      */
     public CharBuffer readLine(final String encoding) throws IOException {
 
-        if (bin == null) {
+        if (in == null) {
             return null;
         }
         if (encoding == null) {
@@ -93,19 +91,19 @@ public class InputLineDecodeStream {
 
         // read until '\r' or '\n'
         int ib;
-        while ((ib = bin.read()) != -1) {
+        while ((ib = in.read()) != -1) {
             char c = (char) ib;
             if (c == '\r' || c == '\n') {
-                bin.mark(MARK);
-                int c2 = bin.read();
+                in.mark(MARK);
+                int c2 = in.read();
                 if (c2 == -1) {
                     break;
                 }
                 if (c2 != '\n') {
-                    bin.reset();
+                    in.reset();
                 } else {
                     if (c != '\r') {
-                        bin.reset();
+                        in.reset();
                     }
                 }
 
@@ -138,20 +136,19 @@ public class InputLineDecodeStream {
     }
 
     /**
-     * Close the Stram
-     * @throws IOException ...
+     * @see de.dante.util.file.InputLineDecoder#close()
      */
     public void close() throws IOException {
 
-        if (bin == null) {
+        if (in == null) {
             return;
         }
-        bin.close();
-        bin = null;
+        in.close();
+        in = null;
     }
 
     /**
-     * @return Returns the linenumber.
+     * @see de.dante.util.file.InputLineDecoder#getLineNumber()
      */
     public int getLineNumber() {
 

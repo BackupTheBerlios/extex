@@ -41,7 +41,7 @@ import de.dante.util.file.random.RandomAccessR;
  * The TrueType font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class TTFFont implements XMLConvertible {
 
@@ -637,15 +637,6 @@ public class TTFFont implements XMLConvertible {
     }
 
     /**
-     * Returns the numbers of glyphs
-     * @return Returns the the numbers of glyphs
-     */
-    public int getNumGlyphs() {
-
-        return maxp.getNumGlyphs();
-    }
-
-    /**
      * Returns the glyph
      * @param   i   glyph number
      * @return Returns the glyph
@@ -695,12 +686,6 @@ public class TTFFont implements XMLConvertible {
         maxp = (TTFTableMAXP) getTable(MAXP);
         name = (TTFTableNAME) getTable(NAME);
         post = (TTFTablePOST) getTable(POST);
-
-        // Initialize the tables that require it
-        //        hmtx.init(hhea.getNumberOfHMetrics(), maxp.getNumGlyphs()
-        //                - hhea.getNumberOfHMetrics());
-        //        loca.init(maxp.getNumGlyphs(), head.getIndexToLocFormat() == 0);
-        //        glyf.init(maxp.getNumGlyphs(), loca);
 
         // sort tables for init
         TTFTable[] tabs = tablemap.getTables();
@@ -889,6 +874,9 @@ public class TTFFont implements XMLConvertible {
             case TRAK :
                 t = new TTFTableTRAK(tablemap, de, rar);
                 break;
+            case BASE :
+                t = new TTFTableBASE(tablemap, de, rar);
+                break;
             default :
                 t = null;
         }
@@ -930,7 +918,7 @@ public class TTFFont implements XMLConvertible {
     /**
      * seconds from 1904 to 1971
      */
-    private static final long SECONDS1904TO1971 = 60 * 60 * 24 * (365 * (1971 - 1904) + 17);
+    //private static final long SECONDS1904TO1971 = 60 * 60 * 24 * (365 * (1971 - 1904) + 17);
 
     /**
      * Convert a int value in a binary string
@@ -941,7 +929,7 @@ public class TTFFont implements XMLConvertible {
 
         StringBuffer buf = new StringBuffer("00000000000000000000000000000000");
         buf.append(Integer.toBinaryString(value));
-        return buf.substring(buf.length() - 32).toString();
+        return buf.substring(buf.length() - TTFConstants.SHIFT32).toString();
     }
 
     /**
@@ -953,7 +941,7 @@ public class TTFFont implements XMLConvertible {
 
         StringBuffer buf = new StringBuffer("00000000");
         buf.append(Integer.toHexString(value));
-        return "0x" + buf.substring(buf.length() - 8).toString();
+        return "0x" + buf.substring(buf.length() - TTFConstants.SHIFT8).toString();
 
     }
 
@@ -986,7 +974,9 @@ public class TTFFont implements XMLConvertible {
      */
     public static void main(final String[] args) throws IOException {
 
-        TTFFont f = new TTFFont("src/font/Gara.ttf");
+        // TTFFont f = new TTFFont("src/font/Gara.ttf");
+        TTFFont f = new TTFFont("src/font/Oregon LDO.otf");
+
         // write to xml-file
         XMLOutputter xmlout = new XMLOutputter();
         xmlout.setEncoding("ISO-8859-1");
@@ -1024,9 +1014,7 @@ public class TTFFont implements XMLConvertible {
         }
 
         // table directory
-        if (tableDirectory instanceof XMLConvertible) {
-            font.addContent(tableDirectory.toXML());
-        }
+        font.addContent(tableDirectory.toXML());
 
         // tables
         int[] keys = tablemap.getKeys();

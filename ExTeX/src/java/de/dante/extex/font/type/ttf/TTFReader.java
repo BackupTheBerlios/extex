@@ -23,7 +23,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.jdom.Element;
 
@@ -41,14 +40,9 @@ import de.dante.util.file.random.RandomAccessInputStream;
  * </p>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class TTFReader implements FontMetric {
-
-    /**
-     * max glyphs
-     */
-    private static final int MAXGLYPH = 0xffff;
 
     /**
      * Create a new object.
@@ -76,6 +70,11 @@ public class TTFReader implements FontMetric {
     private String fontid;
 
     /**
+     * max glyphs
+     */
+    private static final int MAXGLYPHS = 0xffff;
+
+    /**
      * Create the efm-element
      * @param  ttffont    the TTF-Font
      * @throws IOException ...
@@ -86,9 +85,9 @@ public class TTFReader implements FontMetric {
 
         String fontFamily = ttffont.getFontFamilyName();
         short unitsPerEm = ttffont.getHeadTable().getUnitsPerEm();
-        String panose = ttffont.getOS2Table().getPanose().toString();
-        int ascent = ttffont.getAscent();
-        int descent = ttffont.getDescent();
+        //        String panose = ttffont.getOS2Table().getPanose().toString();
+        //        int ascent = ttffont.getAscent();
+        //        int descent = ttffont.getDescent();
         //        //int baseline = 0; // bit 0 of head.flags will indicate if this is true
         //
         efmelement.setAttribute("name", fontFamily);
@@ -106,11 +105,11 @@ public class TTFReader implements FontMetric {
         font.setAttribute("font-family", fontFamily);
         font.setAttribute("type", "ttf");
 
-        // The default behaviour is to use the Unicode cmap encoding
+        // Use the Unicode cmap encoding
         TTFTableCMAP.Format cmapFmt = ttffont.getCmapTable().getFormat(
                 TTFTableCMAP.PLATFORM_MICROSOFT, TTFTableCMAP.ENCODING_UGL);
         if (cmapFmt == null) {
-            // This might be a symbol font, so we'll look for an "undefined" encoding
+            // Symbol font -> "undefined" encoding
             cmapFmt = ttffont.getCmapTable().getFormat(
                     TTFTableCMAP.PLATFORM_MICROSOFT,
                     TTFTableCMAP.ENCODING_UNDEFINED);
@@ -140,23 +139,10 @@ public class TTFReader implements FontMetric {
             }
         }
 
-        // hash   glyph-number <-> id
-        HashMap glyphnumber = new HashMap();
-        for (int i = 0; i <= MAXGLYPH; i++) {
-            int glyphIndex = cmapFmt.mapCharCode(i);
-            if (glyphIndex > 0) {
-                if (!glyphnumber.containsKey(String.valueOf(glyphIndex))) {
-                    glyphnumber.put(String.valueOf(glyphIndex), new Integer(i));
-                }
-            }
-        }
+        // get all glyphs
+        for (int i = 0; i <= MAXGLYPHS; i++) {
 
-        // Include our requested range
-        for (int i = 0; i <= MAXGLYPH; i++) {
             int glyphIndex = cmapFmt.mapCharCode(i);
-            //        ps.println(String.valueOf(i) + " -> " + String.valueOf(glyphIndex));
-            //      if (font.getGlyphs()[glyphIndex] != null)
-            //        sb.append(font.getGlyphs()[glyphIndex].toString() + "\n");
 
             if (glyphIndex > 0) {
 
@@ -165,15 +151,8 @@ public class TTFReader implements FontMetric {
 
                 glyph.setAttribute("ID", String.valueOf(i));
                 glyph.setAttribute("glyph-number", String.valueOf(glyphIndex));
-
-                String tmp = ttffont.getPostTable().getGlyphName(glyphIndex);
-                System.out.println(glyphIndex + "   xxx " + tmp + " "
-                        + ttffont.getPostTable().getNumGlyphs());
-                for (int ii = 0; ii < tmp.length(); ii++) {
-                    System.out.print((int) tmp.charAt(ii) + " ");
-                }
-                System.out.println();
-                glyph.setAttribute("glyph-name", tmp);
+                glyph.setAttribute("glyph-name", ttffont.getPostTable()
+                        .getGlyphName(glyphIndex));
 
                 TTFTableGLYF.Descript gd = ((TTFTableGLYF) ttffont
                         .getTable(TTFFont.GLYF)).getDescription(glyphIndex);
@@ -202,9 +181,9 @@ public class TTFReader implements FontMetric {
                     if (idleft == glyphIndex) {
                         Element kerning = new Element("kerning");
                         glyph.addContent(kerning);
-                        int id = ((Integer) glyphnumber.get(kp.getId()))
-                                .intValue();
-                        kerning.setAttribute("glyph-id", String.valueOf(id));
+                        int val = ttffont.getPostTable().getGlyphValue(
+                                Integer.parseInt(kp.getId()));
+                        kerning.setAttribute("glyph-id", String.valueOf(val));
                         //kerning.setAttribute("glyph-number", String.valueOf(kp.idpost));
                         kerning.setAttribute("glyph-name", kp.getName());
                         kerning.setAttribute("size", String.valueOf(kp
