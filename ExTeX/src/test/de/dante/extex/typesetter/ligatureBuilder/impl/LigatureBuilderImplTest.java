@@ -28,6 +28,7 @@ import de.dante.extex.font.Glyph;
 import de.dante.extex.font.Kerning;
 import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.other.NullFont;
+import de.dante.extex.font.type.tfm.TFMFixWord;
 import de.dante.extex.interpreter.context.TypesettingContext;
 import de.dante.extex.interpreter.context.TypesettingContextImpl;
 import de.dante.extex.interpreter.type.dimen.Dimen;
@@ -47,7 +48,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -55,7 +56,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockFont extends NullFont {
 
@@ -106,10 +107,42 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.8 $
+     * @version $Revision: 1.9 $
      */
     private class MockGlyph implements Glyph {
 
+        /**
+         * @see de.dante.extex.font.Glyph#setDepth(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void setDepth(TFMFixWord size, Dimen em) {
+
+            // TODO gene: setDepth unimplemented
+
+        }
+        /**
+         * @see de.dante.extex.font.Glyph#setHeight(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void setHeight(TFMFixWord size, Dimen em) {
+
+            // TODO gene: setHeight unimplemented
+
+        }
+        /**
+         * @see de.dante.extex.font.Glyph#setItalicCorrection(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void setItalicCorrection(TFMFixWord size, Dimen em) {
+
+            // TODO gene: setItalicCorrection unimplemented
+
+        }
+        /**
+         * @see de.dante.extex.font.Glyph#setWidth(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
+         */
+        public void setWidth(TFMFixWord size, Dimen em) {
+
+            // TODO gene: setWidth unimplemented
+
+        }
         /**
          * The field <tt>c</tt> contains the ...
          */
