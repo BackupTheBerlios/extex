@@ -52,10 +52,15 @@ import de.dante.util.configuration.ConfigurationSyntaxException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.14 $
+ * @version $Revision: 1.15 $
  */
 public class TokenStreamImpl extends TokenStreamBaseImpl implements
         TokenStream, CatcodeVisitor {
+
+    /**
+     * The field <tt>CR</tt> contains the ...
+     */
+    private static final UnicodeChar CR = new UnicodeChar('\r');
 
     /**
      * The constant <tt>BUFFERSIZE_ATTRIBUTE</tt> contains the name of the
@@ -542,8 +547,11 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      */
     private UnicodeChar getRawChar() {
 
-        return (pointer >= line.length() ? null : new UnicodeChar(line,
-                pointer++));
+        if (pointer < line.length()) {
+            return new UnicodeChar(line, pointer++);
+        }
+
+        return (pointer++ > line.length() ? null : CR);
     }
 
     /**
@@ -552,9 +560,9 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      * @return <code>true</code> iff the next reading operation would try to
      * refill the line buffer
      */
-    private final boolean atEndOfLine() {
+    private boolean atEndOfLine() {
 
-        return (pointer >= line.length());
+        return (pointer > line.length());
     }
 
     /**
@@ -562,7 +570,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      */
     private void endLine() {
 
-        pointer = line.length();
+        pointer = line.length() + 1;
     }
 
     /**
@@ -610,7 +618,7 @@ public class TokenStreamImpl extends TokenStreamBaseImpl implements
      * This is a type-save class to represent state information.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.14 $
+     * @version $Revision: 1.15 $
      */
     private static final class State {
 
