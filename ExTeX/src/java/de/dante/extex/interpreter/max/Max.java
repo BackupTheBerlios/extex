@@ -85,7 +85,7 @@ import de.dante.util.resource.ResourceFinder;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.64 $
+ * @version $Revision: 1.65 $
  */
 public class Max extends Moritz
         implements
@@ -95,7 +95,14 @@ public class Max extends Moritz
             TokenVisitor {
 
     /**
-     * The field <tt>HYPHENATION_TAG</tt> contains the ...
+     * The field <tt>CONTEXT_TAG</tt> contains the name of the tag for the
+     * configuration of the context.
+     */
+    private static final String CONTEXT_TAG = "Context";
+
+    /**
+     * The field <tt>HYPHENATION_TAG</tt> contains the name of the tag for the
+     * configuration of the hyphenation manager.
      */
     private static final String HYPHENATION_TAG = "Hyphenation";
 
@@ -207,16 +214,57 @@ public class Max extends Moritz
 
         maxErrors = configuration.getValueAsInteger("maxErrors", maxErrors);
 
-        TokenFactoryFactory tokenFactory2 = new TokenFactoryFactory(
-                configuration.getConfiguration("TokenFactory"));
-        tokenFactory2.enableLogging(logger);
-        TokenFactory tokenFactory = tokenFactory2.createInstance();
+        TokenFactory tokenFactory = configureTokenFactory(configuration);
+        configureContext(configuration);
+        context.setTokenFactory(tokenFactory);
+        configureHyhenation(configuration);
 
-        ContextFactory contextFactory = new ContextFactory(configuration
-                .getConfiguration("Context"));
+        try {
+            context.setInteraction(Interaction.ERRORSTOPMODE, true);
+            configurePrimitives(configuration, tokenFactory);
+            initializeDate(context);
+        } catch (ConfigurationException e) {
+            throw e;
+        } catch (InterpreterException e) {
+            Throwable cause = e.getCause();
+            if (cause instanceof ConfigurationException) {
+                throw (ConfigurationException) cause;
+            }
+            throw new ConfigurationWrapperException(e);
+        }
+
+        everyRun = configuration.findConfiguration("everyjob");
+    }
+
+    /**
+     * Prepare the context according to its configuration.
+     *
+     * @param configuration the configuration
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    private void configureContext(final Configuration configuration)
+            throws ConfigurationException {
+
+        Configuration cfg = configuration.getConfiguration(CONTEXT_TAG);
+        if (cfg == null) {
+            throw new ConfigurationMissingException(CONTEXT_TAG, configuration
+                    .toString());
+        }
+        ContextFactory contextFactory = new ContextFactory(cfg);
         contextFactory.enableLogging(logger);
         context = contextFactory.newInstance(null);
-        context.setTokenFactory(tokenFactory);
+    }
+
+    /**
+     * Prepare the hyphenation manager according to its configuration.
+     *
+     * @param configuration the configuration
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    private void configureHyhenation(final Configuration configuration)
+            throws ConfigurationException {
 
         HyphenationManagerFactory factory = new HyphenationManagerFactory();
         factory.enableLogging(logger);
@@ -227,12 +275,18 @@ public class Max extends Moritz
         }
         factory.configure(cfg);
         context.setHyphenationManager(factory.newInstance(""));
+    }
 
-        try {
-            context.setInteraction(Interaction.ERRORSTOPMODE, true);
-        } catch (GeneralException e) {
-            throw new ConfigurationWrapperException(e);
-        }
+    /**
+     * Prepare the primitives according to their configuration.
+     *
+     * @param configuration the configuration
+     * @param tokenFactory the token factory
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    private void configurePrimitives(final Configuration configuration,
+            final TokenFactory tokenFactory) throws ConfigurationException {
 
         PrimitiveFactory primitiveFactory = new PrimitiveFactory();
         Iterator iterator = configuration.iterator("primitives");
@@ -245,22 +299,25 @@ public class Max extends Moritz
         } catch (GeneralException e) {
             throw new ConfigurationWrapperException(e);
         }
+    }
 
-        try {
-            context.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
-            context.setCount("month", calendar.get(Calendar.MONTH), true);
-            context.setCount("year", calendar.get(Calendar.YEAR), true);
-            context.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
-                    * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
-        } catch (InterpreterException e) {
-            Throwable cause = e.getCause();
-            if (cause instanceof ConfigurationException) {
-                throw (ConfigurationException) cause;
-            }
-            throw new ConfigurationWrapperException(e);
-        }
+    /**
+     * Prepare the token factory according to its configuration.
+     *
+     * @param configuration the configuration
+     *
+     * @return the token factory
+     *
+     * @throws ConfigurationException in case of a configuration error
+     */
+    private TokenFactory configureTokenFactory(final Configuration configuration)
+            throws ConfigurationException {
 
-        everyRun = configuration.findConfiguration("everyjob");
+        TokenFactoryFactory tokenFactory2 = new TokenFactoryFactory(
+                configuration.getConfiguration("TokenFactory"));
+        tokenFactory2.enableLogging(logger);
+        TokenFactory tokenFactory = tokenFactory2.createInstance();
+        return tokenFactory;
     }
 
     /**
@@ -281,13 +338,13 @@ public class Max extends Moritz
      *
      * @param onceMore switch to control the termination of the execution
      *
-     * @throws GeneralException in case of an error
-     * @throws ErrorLimitException in case that the number of errors exceeds
-     *  the configured error limit
+     * @throws InterpreterException in case of an error
+     * <ul>
+     *  <li> ErrorLimitException in case that the number of errors exceeds
+     *   the configured error limit</li>
+     * </ul>
      */
-    private void execute(final Switch onceMore)
-            throws InterpreterException,
-                ErrorLimitException {
+    private void execute(final Switch onceMore) throws InterpreterException {
 
         for (Token current = getToken(context); //
         current != null && onceMore.isOn(); //
@@ -323,9 +380,7 @@ public class Max extends Moritz
      *      de.dante.extex.scanner.Token, Context, Typesetter)
      */
     public void execute(final Token token, final Context theContext,
-            final Typesetter typesetter)
-            throws InterpreterException,
-                ErrorLimitException {
+            final Typesetter theTypesetter) throws InterpreterException {
 
         try {
 
@@ -349,7 +404,7 @@ public class Max extends Moritz
     /**
      * @see de.dante.extex.interpreter.TokenSource#executeGroup()
      */
-    public void executeGroup() throws InterpreterException, ErrorLimitException {
+    public void executeGroup() throws InterpreterException {
 
         Switch b = new Switch(true);
         context.afterGroup(new SwitchObserver(b, false));
@@ -423,6 +478,23 @@ public class Max extends Moritz
     }
 
     /**
+     * Initialize the date and time related primitives.
+     *
+     * @param theContext the context
+     *
+     * @throws InterpreterException in case of an error
+     */
+    private void initializeDate(final Context theContext)
+            throws InterpreterException {
+
+        theContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH), true);
+        theContext.setCount("month", calendar.get(Calendar.MONTH), true);
+        theContext.setCount("year", calendar.get(Calendar.YEAR), true);
+        theContext.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
+                * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+    }
+
+    /**
      * Load the format from an external source.
      *
      * @param stream the stream to read the format information from
@@ -449,12 +521,7 @@ public class Max extends Moritz
         }
 
         try {
-            newContext.setCount("day", calendar.get(Calendar.DAY_OF_MONTH),
-                    true);
-            newContext.setCount("month", calendar.get(Calendar.MONTH), true);
-            newContext.setCount("year", calendar.get(Calendar.YEAR), true);
-            newContext.setCount("time", calendar.get(Calendar.HOUR_OF_DAY)
-                    * MINUTES_PER_HOUR + calendar.get(Calendar.MINUTE), true);
+            initializeDate(newContext);
         } catch (InterpreterException e) {
             Throwable cause = e.getCause();
             if (cause instanceof ConfigurationException) {
@@ -464,7 +531,7 @@ public class Max extends Moritz
         }
         newContext.setFontFactory(context.getFontFactory());
         newContext.setTokenFactory(context.getTokenFactory());
-        // TODO gene: loadFormat() incomplete
+        // TODO gene: loadFormat() incomplete ???
         context = newContext;
     }
 
@@ -521,7 +588,6 @@ public class Max extends Moritz
      */
     public void run()
             throws ConfigurationException,
-                ErrorLimitException,
                 InterpreterException {
 
         if (typesetter == null) {
@@ -555,7 +621,6 @@ public class Max extends Moritz
      */
     public void run(final TokenStream stream)
             throws ConfigurationException,
-                ErrorLimitException,
                 InterpreterException {
 
         addStream(stream);
