@@ -26,7 +26,7 @@ import java.util.logging.LogRecord;
  * This implementation simply uses the messages as delivered.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class LogFormatter extends Formatter {
 
@@ -34,7 +34,7 @@ public class LogFormatter extends Formatter {
      * The constant <tt>LINE_LENGTH</tt> contains the target line length for
      * line breaking in the log file.
      */
-    private static int LINE_LENGTH = 80;
+    private static final int LINE_LENGTH = 80;
 
     /**
      * The field <tt>col</tt> contains the current column for the next
@@ -56,12 +56,19 @@ public class LogFormatter extends Formatter {
 
         StringBuffer msg = new StringBuffer(record.getMessage());
 
-        if (col == 0 && msg.charAt(0) == '\n') {
-            msg.deleteCharAt(0);
+        if (msg.length() == 0) {
+            return "";
+        }
+        if (col == 0) {
+            if (msg.charAt(0) == '\n') {
+                msg.deleteCharAt(0);
+            }
+        } else if (msg.charAt(0) != ' ') {
+            msg.insert(0, ' ');
         }
         int idx = msg.lastIndexOf("\n");
         if (idx >= 0) {
-            col = msg.length() - idx; //TODO off by one?
+            col = msg.length() - idx - 1;
         } else {
             col += msg.length();
         }
