@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2004-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,11 +20,11 @@
 package de.dante.extex.scanner.type;
 
 /**
- * The code token extends the {@link de.dante.extex.scanner.type.Token Token} with
- * the ability to retrieve a namespace.
+ * The code token extends the {@link de.dante.extex.scanner.type.Token Token}
+ * with the ability to retrieve a namespace.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface CodeToken extends Token {
 
@@ -54,6 +54,11 @@ public interface CodeToken extends Token {
     CodeToken cloneInNamespace(final String namespace);
 
     /**
+     * Getter for the name.
+     * The name is the string representation without the escape character
+     * in front.
+     *
+     * @return the name of the token
      */
     public String getName();
 

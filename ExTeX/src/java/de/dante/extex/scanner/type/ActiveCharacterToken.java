@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2003-2004 The ExTeX Group and individual authors listed below
+ * Copyright (C) 2003-2005 The ExTeX Group and individual authors listed below
  *
  * This library is free software; you can redistribute it and/or modify it
  * under the terms of the GNU Lesser General Public License as published by the
@@ -33,7 +33,7 @@ import de.dante.util.UnicodeChar;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ActiveCharacterToken extends AbstractToken implements CodeToken {
 
@@ -114,7 +114,7 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
      */
     public String getName() {
 
-        return getChar().toString();
+        return "";
     }
 
     /**
@@ -152,17 +152,17 @@ public class ActiveCharacterToken extends AbstractToken implements CodeToken {
      */
     public void toString(final StringBuffer sb) {
 
-        sb.append(getLocalizer().format("ActiveCharacterToken.Text", getName()));
+        sb.append(getLocalizer().format("ActiveCharacterToken.Text",
+                        getName()));
     }
 
     /**
      * @see de.dante.extex.scanner.type.Token#visit(
      *      de.dante.extex.scanner.TokenVisitor,
-     *      java.lang.Object,
      *      java.lang.Object)
      */
-    public Object visit(final TokenVisitor visitor, final Object arg1,
-            final Object arg2) throws Exception {
+    public Object visit(final TokenVisitor visitor, final Object arg1)
+            throws Exception {
 
         return visitor.visitActive(this, arg1);
     }
