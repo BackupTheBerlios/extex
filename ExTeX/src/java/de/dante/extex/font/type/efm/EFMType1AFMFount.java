@@ -26,6 +26,7 @@ import org.jdom.Document;
 import de.dante.extex.font.FontFile;
 import de.dante.extex.font.PfbFontFile;
 import de.dante.extex.font.type.ModifiableFount;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
@@ -39,7 +40,7 @@ import de.dante.util.resource.ResourceFinder;
  * TODO at the moment only one font per fontgroup
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EFMType1AFMFount extends EFMFount implements ModifiableFount {
 
@@ -47,7 +48,8 @@ public class EFMType1AFMFount extends EFMFount implements ModifiableFount {
      * Creates a new object.
      * @param   doc         the efm-document
      * @param   fontname    the fontname
-     * @param   size        the emsize of the font
+     * @param   size        the designsize of the font
+     * @param   sf          the scale factor in 1000
      * @param   ls          the letterspaced
      * @param   lig         ligature on/off
      * @param   kern        kerning on/off
@@ -56,11 +58,11 @@ public class EFMType1AFMFount extends EFMFount implements ModifiableFount {
      * @throws ConfigurationException ...
      */
     public EFMType1AFMFount(final Document doc, final String fontname,
-            final Dimen size, final Glue ls, final Boolean lig,
+            final Dimen size, final Count sf, final Glue ls, final Boolean lig,
             final Boolean kern, final ResourceFinder filefinder)
             throws GeneralException, ConfigurationException {
 
-        super(doc, fontname, size, ls, lig, kern, filefinder);
+        super(doc, fontname, size, sf, ls, lig, kern, filefinder);
     }
 
     /**

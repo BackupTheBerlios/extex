@@ -35,7 +35,7 @@ import de.dante.util.UnicodeChar;
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class NullFont implements Font, Serializable {
 
@@ -184,5 +184,21 @@ public class NullFont implements Font, Serializable {
     public BoundingBox getBoundingBox() {
 
         return null;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getActualSize()
+     */
+    public Dimen getActualSize() {
+
+        return Dimen.ZERO_PT;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getDesignSize()
+     */
+    public Dimen getDesignSize() {
+
+        return Dimen.ZERO_PT;
     }
 }

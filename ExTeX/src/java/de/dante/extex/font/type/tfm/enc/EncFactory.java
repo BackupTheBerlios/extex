@@ -19,13 +19,13 @@
 
 package de.dante.extex.font.type.tfm.enc;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import de.dante.extex.i18n.HelpingException;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.resource.ResourceFinder;
 
@@ -33,7 +33,7 @@ import de.dante.util.resource.ResourceFinder;
  * Factory for enc-files
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 
 public class EncFactory implements Serializable {
@@ -63,18 +63,17 @@ public class EncFactory implements Serializable {
      * @param filename  the filename
      * @return Returns the encodingtable
      * @throws IOException if an IO-erorr occured
-     * @throws HelpingException if an error occured
-     * @throws ConfigurationException if a config error occured
+     * @throws ConfigurationException ...
      */
     public String[] getEncodingTable(final String filename) throws IOException,
-            HelpingException, ConfigurationException {
+            ConfigurationException {
 
         String[] table = (String[]) data.get(filename);
 
         if (table == null) {
             InputStream in = finder.findResource(filename, "enc");
             if (in == null) {
-                throw new HelpingException("ENC.filenotfound", filename);
+                throw new FileNotFoundException(filename);
             }
             EncReader er = new EncReader(in);
             table = er.getTable();

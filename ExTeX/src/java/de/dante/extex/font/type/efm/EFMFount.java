@@ -38,6 +38,7 @@ import de.dante.extex.font.Ligature;
 import de.dante.extex.font.type.BoundingBox;
 import de.dante.extex.font.type.ModifiableFount;
 import de.dante.extex.i18n.HelpingException;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
@@ -49,7 +50,7 @@ import de.dante.util.resource.ResourceFinder;
  * Abstract class for a efm-font.
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public abstract class EFMFount implements ModifiableFount, Serializable {
 
@@ -79,15 +80,21 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     private boolean kerning;
 
     /**
-     * the em-size for the font
+     * the design-size for the font
      */
-    private Dimen emsize;
+    private Dimen designsize;
+
+    /**
+     * permille factor for scale factor
+     */
+    private static final int PERMILLE_FACTOR = 1000;
 
     /**
      * Creates a new object.
      * @param   doc         the efm-document
      * @param   fontname    the fontname
-     * @param   size        the emsize of the font
+     * @param   size        the size of the font
+     * @param   sf          the scale factor in 1000
      * @param   ls          the letterspaced
      * @param   lig         ligature on/off
      * @param   kern        kerning on/off
@@ -96,7 +103,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      * @throws ConfigurationException ...
      */
     public EFMFount(final Document doc, final String fontname,
-            final Dimen size, final Glue ls, final Boolean lig,
+            final Dimen size, final Count sf, final Glue ls, final Boolean lig,
             final Boolean kern, final ResourceFinder filefinder)
             throws GeneralException, ConfigurationException {
 
@@ -104,13 +111,16 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
         if (fontname != null) {
             name = fontname;
         }
-        emsize = new Dimen(size);
-        em = new Dimen(size);
+        Count scalefactor = sf;
+        // scale factor = 0 -> 1000
+        if (sf == null) {
+            scalefactor = new Count(PERMILLE_FACTOR);
+        }
         letterspaced = ls;
         ligatures = lig.booleanValue();
         kerning = kern.booleanValue();
 
-        loadFont(doc, filefinder);
+        loadFont(doc, filefinder, size, scalefactor);
     }
 
     /**
@@ -127,11 +137,14 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      * load the Font
      * @param   doc         the efm-document
      * @param   fileFinder  the fileFinder
+     * @param   size        the fontsize
+     * @param   sf          the scale factor
      * @throws GeneralException if a error is thrown.
      * @throws ConfigurationException ...
      */
-    private void loadFont(final Document doc, final ResourceFinder fileFinder)
-            throws GeneralException, ConfigurationException {
+    private void loadFont(final Document doc, final ResourceFinder fileFinder,
+            final Dimen size, final Count sf) throws GeneralException,
+            ConfigurationException {
 
         try {
 
@@ -152,15 +165,36 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                     empr = DEFAULTEMPR;
                 }
             }
-            getSize(fontgroup);
-
-            // calculate em
-            em = new Dimen((long) (emsize.getValue() * empr / PROZ100));
 
             // get unitsperem
             attr = fontgroup.getAttribute("units-per-em");
             if (attr != null) {
                 unitsperem = attr.getIntValue();
+            }
+
+            // default-size
+            attr = fontgroup.getAttribute(ATTRDEFAULTSIZE);
+
+            if (attr != null) {
+                try {
+                    float f = attr.getFloatValue();
+                    if (f <= 0) {
+                        designsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                    }
+                } catch (Exception e) {
+                    designsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+                }
+            } else {
+                designsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
+            }
+
+            // calculate em
+            if (size == null) {
+                actualsize = new Dimen((long) (designsize.getValue()
+                        * sf.getValue() / PERMILLE_FACTOR * empr / PROZ100));
+            } else {
+                actualsize = new Dimen((long) (size.getValue() * sf.getValue()
+                        / PERMILLE_FACTOR * empr / PROZ100));
             }
 
             // get ex
@@ -210,14 +244,14 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                         gv.setNumber(e.getAttributeValue("glyph-number"));
                         gv.setName(e.getAttributeValue("glyph-name"));
                         gv.setExternalFile(externalfile);
-                        gv.setWidth(e.getAttributeValue("width"), em,
+                        gv.setWidth(e.getAttributeValue("width"), actualsize,
                                 unitsperem);
-                        gv.setDepth(e.getAttributeValue("depth"), em,
+                        gv.setDepth(e.getAttributeValue("depth"), actualsize,
                                 unitsperem);
-                        gv.setHeight(e.getAttributeValue("height"), em,
+                        gv.setHeight(e.getAttributeValue("height"), actualsize,
                                 unitsperem);
                         gv.setItalicCorrection(e.getAttributeValue("italic"),
-                                em, unitsperem);
+                                actualsize, unitsperem);
 
                         // kerning
                         if (kerning) {
@@ -231,7 +265,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                                 kv.setName(ekerning
                                         .getAttributeValue("glyph-name"));
                                 kv.setSize(ekerning.getAttributeValue("size"),
-                                        em, unitsperem);
+                                        actualsize, unitsperem);
                                 gv.addKerning(kv);
                             }
                         }
@@ -287,33 +321,6 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     }
 
     /**
-     * Calculate the size for a font
-     * @param fontgroup the fontgroup element
-     */
-    private void getSize(final Element fontgroup) {
-
-        // use design-size if emsize equlas sero
-        if (emsize.getValue() == 0) {
-
-            // default-size
-            Attribute defaultsize = fontgroup.getAttribute(ATTRDEFAULTSIZE);
-
-            if (defaultsize != null) {
-                try {
-                    float f = defaultsize.getFloatValue();
-                    if (f > 0) {
-                        emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
-                    }
-                } catch (Exception e) {
-                    emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
-                }
-            } else {
-                emsize = new Dimen(DEFAULTSIZE_IN_PT * Dimen.ONE);
-            }
-        }
-    }
-
-    /**
      * Return the FontFile
      * @param file  the file
      * @return  the FontFile
@@ -342,8 +349,8 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      */
     public Glue getSpace() {
 
-        // use em-size for 'space'
-        Glue rt = new Glue(em);
+        // use actual-size for 'space'
+        Glue rt = new Glue(actualsize);
 
         // glyph 'space' exists?
         String key = (String) glyphname.get("space");
@@ -353,7 +360,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
                 rt = new Glue(rglyph.getWidth());
             } catch (Exception e) {
                 // do nothing, use default
-                rt = new Glue(em);
+                rt = new Glue(actualsize);
             }
         }
         // TODO use key 'SPACE' from getFontDimen()
@@ -365,7 +372,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      */
     public Dimen getEm() {
 
-        return em;
+        return actualsize;
     }
 
     /**
@@ -394,9 +401,9 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     private static final int PROZ100 = 100;
 
     /**
-     * em: the width
+     * actualsize (em)
      */
-    private Dimen em;
+    private Dimen actualsize;
 
     /**
      * Default unitsperem
@@ -413,7 +420,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      */
     public Dimen getEx() {
 
-        return new Dimen(ex * em.getValue() / unitsperem);
+        return new Dimen(ex * actualsize.getValue() / unitsperem);
     }
 
     /**
@@ -433,7 +440,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
         Dimen rt = new Dimen(0);
         try {
             float f = Float.parseFloat(val);
-            rt = new Dimen((long) (f * em.getValue() / unitsperem));
+            rt = new Dimen((long) (f * actualsize.getValue() / unitsperem));
         } catch (Exception e) {
             // do nothing, use default
             rt = new Dimen(0);
@@ -448,7 +455,8 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      */
     public void setFontDimen(final String key, final Dimen value) {
 
-        double d = value.getValue() / (double) em.getValue() * unitsperem;
+        double d = value.getValue() / (double) actualsize.getValue()
+                * unitsperem;
         fontdimen.put(key, String.valueOf(d));
     }
 
@@ -512,7 +520,7 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
      */
     protected Dimen getEmsize() {
 
-        return emsize;
+        return actualsize;
     }
 
     /**
@@ -595,6 +603,22 @@ public abstract class EFMFount implements ModifiableFount, Serializable {
     public BoundingBox getBoundingBox() {
 
         return boundingBox;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getActualSize()
+     */
+    public Dimen getActualSize() {
+
+        return actualsize;
+    }
+
+    /**
+     * @see de.dante.extex.font.type.Fount#getDesignSize()
+     */
+    public Dimen getDesignSize() {
+
+        return designsize;
     }
 
 }

@@ -42,7 +42,7 @@ import de.dante.util.file.random.RandomAccessR;
  * @see <a href="package-summary.html#TFMformat">TFM-Format</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class TFMFont
         implements
@@ -269,12 +269,10 @@ public class TFMFont
      * @param apsfontmap    the psfonts.map reader
      * @param encf          the encoding factory
      * @throws IOException if an IO-erorr occured
-     * @throws HelpingException if an error occured
-     * @throws ConfigurationException if a config error occured
+     * @throws ConfigurationException ...
      */
     public void setFontMapEncoding(final PSFontsMapReader apsfontmap,
-            final EncFactory encf) throws IOException, HelpingException,
-            ConfigurationException {
+            final EncFactory encf) throws IOException, ConfigurationException {
 
         psfontmap = apsfontmap;
         encfactory = encf;

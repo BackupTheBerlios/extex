@@ -20,12 +20,14 @@
 package de.dante.extex.interpreter.primitives.register.font;
 
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.context.Context;
 import de.dante.extex.interpreter.type.AbstractAssignment;
 import de.dante.extex.interpreter.type.Code;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.font.Font;
 import de.dante.extex.interpreter.type.font.FontConvertible;
@@ -36,7 +38,6 @@ import de.dante.extex.scanner.SpaceToken;
 import de.dante.extex.scanner.Token;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
-import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.ConfigurationException;
 import de.dante.util.configuration.ConfigurationIOException;
 
@@ -78,17 +79,11 @@ import de.dante.util.configuration.ConfigurationIOException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class FontPrimitive extends AbstractAssignment
         implements
             FontConvertible {
-
-    /**
-     * The field <tt>DEFAULT_SCALE_FACTOR</tt> contains the default scale
-     * factor.
-     */
-    private static final int DEFAULT_SCALE_FACTOR = 1000;
 
     /**
      * Creates a new object.
@@ -114,8 +109,8 @@ public class FontPrimitive extends AbstractAssignment
         CodeToken fontId = source.getControlSequence(context);
         source.getOptionalEquals(context);
         String fontname = scanFontName(context, source);
-        int size = getFontSize(fontname);
         Dimen fontSize = null;
+        Count scale = null;
 
         if (source.getKeyword(context, "at")) {
             fontSize = new Dimen(context, source);
@@ -125,15 +120,12 @@ public class FontPrimitive extends AbstractAssignment
             }
 
         } else if (source.getKeyword(context, "scaled")) {
-            long scale = source.scanInteger(context);
-            if (scale <= 0) {
+            long s = source.scanInteger(context);
+            if (s <= 0) {
                 throw new HelpingException(getLocalizer(), "TTP.IllegalMag",
-                        Long.toString(scale), "32768"); //TODO gene: max ok?
+                        Long.toString(s), "32768"); //TODO gene: max ok?
             }
-            fontSize = new Dimen(Dimen.ONE * size * scale
-                    / DEFAULT_SCALE_FACTOR);
-        } else {
-            fontSize = new Dimen(Dimen.ONE * size);
+            scale = new Count(s);
         }
 
         Glue letterspaced = new Glue(0);
@@ -156,8 +148,11 @@ public class FontPrimitive extends AbstractAssignment
         FontFactory factory = context.getFontFactory();
         Font font;
         try {
-            font = factory.getInstance(fontname, fontSize, letterspaced,
+            font = factory.getInstance(fontname, fontSize, scale, letterspaced,
                     ligatures, kerning);
+        } catch (FontException e) {
+            throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
+                    context.esc(fontId), fontname);
         } catch (ConfigurationIOException e) {
             throw new HelpingException(getLocalizer(), "TTP.TFMnotFound", //
                     context.esc(fontId), fontname);
@@ -178,32 +173,6 @@ public class FontPrimitive extends AbstractAssignment
             throws GeneralException {
 
         return context.getTypesettingContext().getFont();
-    }
-
-    /**
-     * Return the size of a font with a fontname. If no number in the
-     * filename exits, -1 is returned.
-     *
-     * @param filename the filename (e.g. <tt>cmr12</tt>)
-     * @return the fontsize or -1, if no digits are found
-     */
-    private int getFontSize(final String filename) {
-
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < filename.length(); i++) {
-            UnicodeChar uc = new UnicodeChar(filename, i);
-            if (uc.isDigit()) {
-                sb.append(uc.toString());
-            }
-        }
-        int rt = -1;
-        try {
-            rt = Integer.parseInt(sb.toString());
-        } catch (NumberFormatException e) {
-            // do nothing, use default
-            rt = -1;
-        }
-        return rt;
     }
 
     /**

@@ -51,6 +51,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.documentWriter.DocumentWriterFactory;
 import de.dante.extex.documentWriter.DocumentWriterOptions;
 import de.dante.extex.font.FontFactory;
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.interpreter.ErrorHandler;
 import de.dante.extex.interpreter.ErrorHandlerFactory;
@@ -610,7 +611,7 @@ import de.dante.util.resource.ResourceFinderFactory;
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
  *
- * @version $Revision: 1.80 $
+ * @version $Revision: 1.81 $
  */
 public class ExTeX {
 
@@ -1116,8 +1117,7 @@ public class ExTeX {
      */
 
     protected void initializeStreams(final Interpreter interpreter)
-            throws ConfigurationException,
-                MainIOException {
+            throws ConfigurationException, MainIOException {
 
         TokenStreamFactory factory = interpreter.getTokenStreamFactory();
         boolean notInitialized = true;
@@ -1203,9 +1203,7 @@ public class ExTeX {
      */
     protected void loadFormat(final Interpreter interpreter,
             final ResourceFinder finder, final String fmt, final String jobname)
-            throws IOException,
-                GeneralException,
-                ConfigurationException {
+            throws IOException, GeneralException, ConfigurationException {
 
         String format = fmt;
         String time = DateFormat.getDateTimeInstance(DateFormat.SHORT,
@@ -1289,24 +1287,31 @@ public class ExTeX {
      * @throws GeneralException in case of an error of some other kind
      */
     protected Font makeDefaultFont(final Configuration config,
-            final FontFactory fontFactory)
-            throws ConfigurationException,
-                GeneralException {
+            final FontFactory fontFactory) throws ConfigurationException,
+            GeneralException {
 
         final String attributeName = "name";
         final String attributeSize = "size";
         String defaultFont = config.getAttribute(attributeName);
 
         if (defaultFont == null || defaultFont.equals("")) {
-            return fontFactory.getInstance();
+            try {
+                return fontFactory.getInstance();
+            } catch (FontException e) {
+                // TODO gene: handle exception
+            }
         }
 
         String size = config.getAttribute(attributeSize);
         if (size == null) {
-            return fontFactory.getInstance(defaultFont);
+            try {
+                return fontFactory.getInstance(defaultFont);
+            } catch (FontException e) {
+                // TODO gene: handle exception
+            }
         }
 
-        Font font;
+        Font font = null;
         try {
             float f = Float.parseFloat(size);
             font = fontFactory.getInstance(defaultFont, new Dimen(
@@ -1314,6 +1319,8 @@ public class ExTeX {
         } catch (NumberFormatException e) {
             throw new ConfigurationSyntaxException(attributeSize, config
                     .toString());
+        } catch (FontException e) {
+            // TODO gene: handle exception
         }
 
         return font;
@@ -1336,9 +1343,8 @@ public class ExTeX {
      */
     protected DocumentWriter makeDocumentWriter(final Configuration config,
             final String jobname, final OutputFactory outFactory,
-            final DocumentWriterOptions options)
-            throws ConfigurationException,
-                FileNotFoundException {
+            final DocumentWriterOptions options) throws ConfigurationException,
+            FileNotFoundException {
 
         DocumentWriterFactory factory = new DocumentWriterFactory(config);
         factory.enableLogging(logger);
@@ -1424,9 +1430,8 @@ public class ExTeX {
      */
     protected Interpreter makeInterpreter(final Configuration config,
             final ResourceFinder finder, final TokenStreamFactory factory,
-            final FontFactory fontFactory)
-            throws GeneralException,
-                ConfigurationException {
+            final FontFactory fontFactory) throws GeneralException,
+            ConfigurationException {
 
         InterpreterFactory interpreterFactory = new InterpreterFactory();
         interpreterFactory.configure(config);
@@ -1516,8 +1521,7 @@ public class ExTeX {
      */
     protected TokenStreamFactory makeTokenStreamFactory(
             final Configuration config, final ResourceFinder finder)
-            throws ConfigurationException,
-                NotObservableException {
+            throws ConfigurationException, NotObservableException {
 
         TokenStreamFactory factory = new TokenStreamFactory(config, properties
                 .getProperty(PROP_TOKEN_STREAM));
@@ -1933,8 +1937,7 @@ public class ExTeX {
      *  letter has no assigned property to set
      */
     protected void useTrace(final String[] arguments, final int position)
-            throws MainUnknownOptionException,
-                MainMissingArgumentException {
+            throws MainUnknownOptionException, MainMissingArgumentException {
 
         logger.setLevel(Level.FINE);
         if (position >= arguments.length) {

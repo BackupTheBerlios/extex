@@ -21,7 +21,9 @@ package de.dante.extex.font.type.efm;
 
 import org.jdom.Document;
 
+import de.dante.extex.font.exception.FontException;
 import de.dante.extex.font.type.ModifiableFount;
+import de.dante.extex.interpreter.type.count.Count;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.util.GeneralException;
@@ -33,7 +35,7 @@ import de.dante.util.resource.ResourceFinder;
  * (create from a TFM-file).
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class EFMType1TFMMathextFount extends EFMType1TFMNOFount
         implements
@@ -52,19 +54,21 @@ public class EFMType1TFMMathextFount extends EFMType1TFMNOFount
      * @param   doc         the efm-document
      * @param   fontname    the fontname
      * @param   size        the emsize of the font
+     * @param   sf          the scale factor
      * @param   ls          the letterspaced
      * @param   lig         ligature on/off
      * @param   kern        kerning on/off
      * @param   filefinder  the ResourceFinder-object
      * @throws GeneralException ...
      * @throws ConfigurationException ...
+     * @throws FontException ...
      */
     public EFMType1TFMMathextFount(final Document doc, final String fontname,
-            final Dimen size, final Glue ls, final Boolean lig,
+            final Dimen size, final Count sf, final Glue ls, final Boolean lig,
             final Boolean kern, final ResourceFinder filefinder)
-            throws GeneralException, ConfigurationException {
+            throws GeneralException, ConfigurationException, FontException {
 
-        super(doc, fontname, size, ls, lig, kern, filefinder);
+        super(doc, fontname, size, sf, ls, lig, kern, filefinder);
     }
 
     /**

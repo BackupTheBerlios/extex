@@ -28,7 +28,7 @@ import de.dante.util.UnicodeChar;
  * Fount Interface (only getter)
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public interface Fount {
 
@@ -104,5 +104,17 @@ public interface Fount {
      * @return  the letterspacing
      */
     Glue getLetterSpacing();
+
+    /**
+     * Returns the design size.
+     * @return Returns the design size.
+     */
+    Dimen getDesignSize();
+
+    /**
+     * Returns the actual size.
+     * @return Returns the actual size.
+     */
+    Dimen getActualSize();
 
 }

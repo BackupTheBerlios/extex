@@ -25,15 +25,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Serializable;
 
-import de.dante.extex.i18n.HelpingException;
-
 /**
  * Reasder for encoding-files.
  *
  * @see <a href="package-summary.html#font-enc">font encoding file</a>
  *
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 
 public class EncReader implements Serializable {
@@ -43,9 +41,8 @@ public class EncReader implements Serializable {
      *
      * @param in    inputstream for reading
      * @throws IOException if an IO-error occured
-     * @throws HelpingException if an error occured
      */
-    public EncReader(final InputStream in) throws IOException, HelpingException {
+    public EncReader(final InputStream in) throws IOException {
 
         read(in);
         in.close();
@@ -56,10 +53,8 @@ public class EncReader implements Serializable {
      *
      * @param in        inputstream for reading
      * @throws IOException if an IO-error occured
-     * @throws HelpingException if an error occured
      */
-    private void read(final InputStream in) throws IOException,
-            HelpingException {
+    private void read(final InputStream in) throws IOException {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
@@ -76,7 +71,7 @@ public class EncReader implements Serializable {
         int first = buf.indexOf("[");
         int last = buf.lastIndexOf("]");
         if (first < 0 || last < 0) {
-            throw new HelpingException("ENC.wrongrange");
+            throw new IOException("ENC.wrongrange"); // TODO CHANGE
         }
         String tablestring = buf.substring(first + 1, last).trim();
         table = tablestring.split("\\s");
