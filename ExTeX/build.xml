@@ -3,7 +3,8 @@
     <description>ExTeX - build file</description>
 
     <target name="help" description="Displays usage information">
-        <echo>Usage:</echo>
+        <echo>Usage: ant &lt;target&gt;
+        </echo>
     </target>
 
     <!-- configure the directories -->
@@ -17,7 +18,8 @@
     <property name="dbdoclet" location="doc/javadocdb"/>
     <property name="tmp" location="tmp"/>
     <property name="tmp.tests" location="tmp/tests"/>
-    <property name="deploy" location="tmp/ExTeX"/>
+    <property name="deploy" location="deploy"/>
+    <property name="deploy.lib" location="deploy/lib"/>
     <!-- classpath for the application -->
     <path id="main.class.path">
         <fileset dir="lib">
@@ -46,8 +48,8 @@
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
         <javac srcdir="${src}" 
-           destdir="${classes}"
-           debug="on">
+               destdir="${classes}"
+               debug="on">
             <classpath refid="main.class.path"/>
         </javac>
         <copy todir="${classes}">
@@ -65,8 +67,8 @@
         <mkdir dir="${classes}"/>
         <!-- compile the application code -->
         <javac srcdir="${src.tests}" 
-           destdir="${classes}"
-           debug="on">
+               destdir="${classes}"
+               debug="on">
             <classpath refid="main.class.path"/>
             <classpath refid="main.class.path"/>
         </javac>
@@ -81,10 +83,10 @@
 
     <!-- make a jar from the classes not matching magic testcase identifiers-->
     <target name="jar"
-          depends="compile"
-          description="Create extex jar file">
-        <mkdir dir="${deploy}"/>
-        <jar jarfile="${deploy}/${extexjarfile}.jar">
+            depends="compile"
+            description="Create extex jar file">
+        <mkdir dir="${deploy.lib}"/>
+        <jar jarfile="${deploy.lib}/${extexjarfile}.jar">
             <fileset dir="${classes}">
                 <patternset>
                     <exclude name="**/*Test.class"/>
@@ -102,8 +104,8 @@
     <target name="jar.tests"
           depends="compile.tests"
           description="Create testsuite jar file">
-        <mkdir dir="${deploy}"/>
-        <jar jarfile="${deploy}/${testsuitejarfile}.jar">
+        <mkdir dir="${deploy.lib}"/>
+        <jar jarfile="${deploy.lib}/${testsuitejarfile}.jar">
             <fileset dir="${classes}">
                 <patternset>
                     <include name="**/*Test.class"/>
@@ -151,13 +153,10 @@
           depends="deploy"
           description="This is just an alias for old make freaks;-)" />
 
-
     <target name="deploy"
           depends="jar"
           description="Create jar file with the compiled classes">
-        <delete dir="${deploy}" />
-        <mkdir dir="${deploy}/lib" />
-        <copy todir="${deploy}/lib">
+        <copy todir="${deploy.lib}">
             <fileset dir="lib">
                 <include name="**/*.jar"/>
                 <exclude name="**/ant.jar"/>
@@ -175,18 +174,17 @@
         <delete file="${tmp}/ExTeX-${DSTAMP}.tar" />
     </target>
 
-
     <target name="clean"
-                  description="Remove unneccesary files and directories">
+            description="Remove unneccesary files and directories">
         <delete dir="${classes}"/>
         <delete dir="${deploy}"/>
         <delete dir="${tmp.tests}"/>
         <delete dir="${javadoc}"/>
         <delete>
         <fileset dir="testdata">   
-                <include name="*.log*" />  
-                <include name="*.out" />  
-                </fileset>
+            <include name="*.log*" />  
+            <include name="*.out" />  
+        </fileset>
         </delete>
         </target>
 
@@ -235,7 +233,8 @@
         </copy>
     </target>
 
-    <target name="dbdoclet" description="Create dbjavadoc">
+    <target name="dbdoclet"
+            description="Create dbjavadoc">
         <mkdir dir="${dbdoclet}" />
         <copy todir="${dbdoclet}">
             <fileset dir="src">
@@ -270,14 +269,14 @@
     </target>
 
     <target name="gcview"
-            description="Show the logfile from the GC in the gcviewer"
-     >
+            description="Show the logfile from the GC in the gcviewer">
         <java fork="true" jar="lib.develop/gcviewer.jar">
             <arg value="gc.log"/>
         </java>
     </target>
 
-    <target name="maketar" description="create a tar-file with all source-file, ...">
+    <target name="maketar"
+            description="create a tar file with all source files, ...">
         <tar destfile="${tmp}/extex.tar.bz2" compression="bzip2" basedir="./" >
             <include name="doc/**/*"/>
             <exclude name="doc/javadocdb/**/*"/>
@@ -307,12 +306,14 @@
                 </java>
     </target> -->
         
-    <target name="extex32" depends="compile" description="Create a extex32.xml config-file">
-                <java fork="true" classname="de.dante.tools.plugin.CreateConfig">
-                        <arg value="src/config/extex.xml"/>
-                        <arg value="src/config/extex-ext.xml"/>
-                        <arg value="src/config/extex32.xml"/>
-                </java>
+    <target name="extex32"
+            depends="compile"
+            description="Create a extex32.xml config file">
+        <java fork="true" classname="de.dante.tools.plugin.CreateConfig">
+             <arg value="src/config/extex.xml"/>
+             <arg value="src/config/extex-ext.xml"/>
+             <arg value="src/config/extex32.xml"/>
+        </java>
         <copy todir="target/classes/config">
             <fileset dir="src/config">
                 <include name="*"/>
