@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AccentNoad extends AbstractNoad {
 
@@ -41,6 +41,15 @@ public class AccentNoad extends AbstractNoad {
     }
 
     /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
+    }
+
+    /**
      * @see de.dante.extex.typesetter.type.noad.Noad#typeset(MathContext)
      */
     public NodeList typeset(final MathContext mathContext) {
@@ -48,5 +57,4 @@ public class AccentNoad extends AbstractNoad {
         // TODO unimplemented
         return null;
     }
-
 }

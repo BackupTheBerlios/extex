@@ -27,10 +27,9 @@ import de.dante.util.UnicodeChar;
  * This class provides a container for a mathamatical character.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class CharNoad extends AbstractNoad implements Noad {
-
     /**
      * The field <tt>family</tt> contains the font family for this character.
      */
@@ -55,6 +54,16 @@ public class CharNoad extends AbstractNoad implements Noad {
     }
 
     /**
+     * Getter for the character.
+     *
+     * @return the character.
+     */
+    public UnicodeChar getChar() {
+
+        return this.uc;
+    }
+
+    /**
      * Getter for family.
      *
      * @return the family.
@@ -65,13 +74,12 @@ public class CharNoad extends AbstractNoad implements Noad {
     }
 
     /**
-     * Getter for the character.
-     *
-     * @return the character.
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
      */
-    public UnicodeChar getChar() {
+    public void toString(final StringBuffer sb) {
 
-        return this.uc;
+        // TODO unimplemented
+
     }
 
 

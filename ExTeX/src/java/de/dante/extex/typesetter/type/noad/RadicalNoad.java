@@ -26,7 +26,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class RadicalNoad extends AbstractNoad {
 
@@ -37,6 +37,15 @@ public class RadicalNoad extends AbstractNoad {
     public RadicalNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
     }
 
     /**

@@ -23,29 +23,32 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 
 /**
- * ...
+ * This class provides a overlining for the nucleus.
  *
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
-public class OverlinedNoad implements Noad {
-
-    /**
-     * The field <tt>nucleus</tt> contains the nucleus to be underlined.
-     */
-    private Noad nucleus;
+public class OverlinedNoad extends AbstractNoad {
 
     /**
      * Creates a new object.
      *
-     * @param theNucleus the nucleus to be underlined
+     * @param nucleus the nucleus to be underlined
      */
-    public OverlinedNoad(final Noad theNucleus) {
+    public OverlinedNoad(final Noad nucleus) {
 
-        super();
-        nucleus = theNucleus;
+        super(nucleus);
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
     }
 
     /**

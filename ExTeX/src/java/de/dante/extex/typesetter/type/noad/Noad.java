@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * constructions.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface Noad extends Knot {
 
@@ -40,5 +40,12 @@ public interface Noad extends Knot {
      * @return the typeset instance
      */
     NodeList typeset(MathContext mathContext);
+
+    /**
+     * Produce a printable representation of the noad in a StringBuffer.
+     *
+     * @param sb the string buffer
+     */
+    void toString(StringBuffer sb);
 
 }

@@ -27,22 +27,22 @@ package de.dante.extex.typesetter.type.noad;
  * Noad will never arrive at the DocumentWriter.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public abstract class AbstractNoad implements Noad, NSSNoad {
 
     /**
-     * The field <tt>nucleus</tt> contains the nuclues noads.
+     * The field <tt>nucleus</tt> contains the nuclues noad.
      */
     private Noad nucleus = null;
 
     /**
-     * The field <tt>subscript</tt> contains the subscript noads.
+     * The field <tt>subscript</tt> contains the subscript noad.
      */
     private Noad subscript = null;
 
     /**
-     * The field <tt>superscript</tt> contains the sujperscript noads.
+     * The field <tt>superscript</tt> contains the superscript noad.
      */
     private Noad superscript = null;
 
@@ -53,6 +53,17 @@ public abstract class AbstractNoad implements Noad, NSSNoad {
     public AbstractNoad() {
 
         super();
+    }
+
+    /**
+     * Creates a new object.
+     *
+     * @param theNucleus the nucleus
+     */
+    public AbstractNoad(final Noad theNucleus) {
+
+        super();
+        nucleus = theNucleus;
     }
 
     /**
@@ -85,6 +96,19 @@ public abstract class AbstractNoad implements Noad, NSSNoad {
         return this.superscript;
     }
 
+    protected abstract String stringName();
+
+    /**
+     * @see "TTP [696]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append("\\");
+        sb.append(stringName());
+        // TODO unimplemented
+
+    }
     /**
      * Setter for the nucleus.
      *

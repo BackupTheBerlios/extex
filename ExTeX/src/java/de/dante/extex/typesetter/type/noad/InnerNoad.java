@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [682]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class InnerNoad extends AbstractNoad {
 
@@ -39,6 +39,15 @@ public class InnerNoad extends AbstractNoad {
     public InnerNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
     }
 
     /**

@@ -33,7 +33,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [???]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class MathList extends AbstractNoad implements Noad, NSSNoad {
 
@@ -116,4 +116,23 @@ public class MathList extends AbstractNoad implements Noad, NSSNoad {
         return null;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+
+        StringBuffer sb = new StringBuffer();
+        toString(sb);
+        return sb.toString();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        for (int i = 0; i < list.size(); i++) {
+            ((Noad) list.get(i)).toString(sb);
+        }
+    }
 }

@@ -29,7 +29,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [683]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class FractionNoad implements Noad {
 
@@ -46,7 +46,7 @@ public class FractionNoad implements Noad {
     /**
      * The field <tt>thickness</tt> contains the thickness of the fraction rule.
      * The value <code>null</code> indicates that the default rule thickness of
-     * the current size.
+     * the current size should be used.
      */
     private Dimen thickness = null;
 
@@ -55,10 +55,23 @@ public class FractionNoad implements Noad {
     /**
      * Creates a new object.
      *
+     * @param denom the denominator
+     * @param num the numerator
      */
-    public FractionNoad() {
+    public FractionNoad(final MathList denom, final MathList num) {
 
         super();
+        denominator = denom;
+        numerator = num;
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
     }
 
     /**

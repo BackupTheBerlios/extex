@@ -27,7 +27,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * processing.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public final class StyleNoad implements Noad {
 
@@ -64,6 +64,16 @@ public final class StyleNoad implements Noad {
     private StyleNoad() {
 
         super();
+    }
+
+    /**
+     * @see "TTP [694]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
     }
 
     /**

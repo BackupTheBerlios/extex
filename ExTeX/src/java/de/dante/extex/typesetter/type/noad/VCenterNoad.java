@@ -28,7 +28,7 @@ import de.dante.extex.typesetter.type.noad.util.MathContext;
  * @see "TTP [687]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class VCenterNoad extends AbstractNoad {
 
@@ -38,6 +38,15 @@ public class VCenterNoad extends AbstractNoad {
     public VCenterNoad() {
 
         super();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        // TODO unimplemented
+
     }
 
     /**

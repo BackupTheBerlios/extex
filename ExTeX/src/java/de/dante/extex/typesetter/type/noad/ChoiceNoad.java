@@ -23,12 +23,12 @@ import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.type.noad.util.MathContext;
 
 /**
- * ...
+ * This noad provides a switch construction depending on the current style.
  *
  * @see "TTP [689]"
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ChoiceNoad implements Noad {
 
@@ -36,11 +36,6 @@ public class ChoiceNoad implements Noad {
      * The field <tt>display</tt> contains the noads used in display style.
      */
     private MathList display;
-
-    /**
-     * The field <tt>text</tt> contains the noads used in text style.
-     */
-    private MathList text;
 
     /**
      * The field <tt>script</tt> contains the noads used in script style.
@@ -52,6 +47,11 @@ public class ChoiceNoad implements Noad {
      * style.
      */
     private MathList scriptScript;
+
+    /**
+     * The field <tt>text</tt> contains the noads used in text style.
+     */
+    private MathList text;
 
     /**
      * Creates a new object.
@@ -69,6 +69,25 @@ public class ChoiceNoad implements Noad {
         text = textMath;
         script = scriptMath;
         scriptScript = scriptscriptMath;
+    }
+
+    /**
+     * @see "TTP [695]"
+     * @see de.dante.extex.typesetter.type.noad.Noad#toString(java.lang.StringBuffer)
+     */
+    public void toString(final StringBuffer sb) {
+
+        sb.append("\\mathchoice");
+        sb.append(" D");
+        display.toString(sb);
+        sb.append(" T");
+        text.toString(sb);
+        sb.append(" S");
+        script.toString(sb);
+        sb.append(" s");
+        scriptScript.toString(sb);
+        // TODO Check
+
     }
 
     /**
