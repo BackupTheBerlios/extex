@@ -22,6 +22,7 @@ import de.dante.extex.documentWriter.DocumentWriter;
 import de.dante.extex.interpreter.type.node.CharNodeFactory;
 import de.dante.extex.typesetter.ListMaker;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
 import de.dante.util.GeneralException;
 
 /**
@@ -29,7 +30,7 @@ import de.dante.util.GeneralException;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public interface Manager {
 
@@ -77,4 +78,10 @@ public interface Manager {
      */
     TypesetterOptions getOptions();
 
+    /**
+     * Getter for the ligature builder.
+     *
+     * @return the current ligature builder
+     */
+    LigatureBuilder getLigatureBuilder();
 }

@@ -37,6 +37,8 @@ import de.dante.extex.typesetter.NodeIterator;
 import de.dante.extex.typesetter.NodeList;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.extex.typesetter.TypesetterOptions;
+import de.dante.extex.typesetter.ligatureBuilder.LigatureBuilder;
+import de.dante.extex.typesetter.ligatureBuilder.impl.LigatureBuilderImpl;
 import de.dante.util.GeneralException;
 import de.dante.util.UnicodeChar;
 import de.dante.util.configuration.Configuration;
@@ -47,7 +49,7 @@ import de.dante.util.configuration.Configuration;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.17 $
+ * @version $Revision: 1.18 $
  */
 public class TypesetterImpl implements Typesetter, Manager {
 
@@ -64,15 +66,12 @@ public class TypesetterImpl implements Typesetter, Manager {
     private CharNodeFactory charNodeFactory = new CharNodeFactory();
 
     /**
-     * The field <tt>options</tt> contains the context for accessing parameters.
-     */
-    private TypesetterOptions options;
-
-    /**
      * The field <tt>documentWriter</tt> contains the document writer for
      * producing the output.
      */
     private DocumentWriter documentWriter;
+
+    private LigatureBuilder ligatureBuilder;
 
     /**
      * The field <tt>listMaker</tt> contains the current list maker for
@@ -80,6 +79,11 @@ public class TypesetterImpl implements Typesetter, Manager {
      * maker is needed.
      */
     private ListMaker listMaker;
+
+    /**
+     * The field <tt>options</tt> contains the context for accessing parameters.
+     */
+    private TypesetterOptions options;
 
     /**
      * The field <tt>saveStack</tt> contains the stack of list makers.
@@ -98,6 +102,7 @@ public class TypesetterImpl implements Typesetter, Manager {
         super();
         this.options = theOptions;
         listMaker = new VerticalListMaker(this);
+        ligatureBuilder = new LigatureBuilderImpl(config);//TODO: IoC
     }
 
     /**
@@ -191,19 +196,18 @@ public class TypesetterImpl implements Typesetter, Manager {
     }
 
     /**
-     * @see de.dante.extex.typesetter.impl.Manager#getOptions()
-     */
-    public TypesetterOptions getOptions() {
-
-        return options;
-    }
-
-    /**
      * @see de.dante.extex.typesetter.impl.Manager#getDocumentWriter()
      */
     public DocumentWriter getDocumentWriter() {
 
         return documentWriter;
+    }
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getLigatureBuilder()
+     */
+    public LigatureBuilder getLigatureBuilder() {
+
+        return ligatureBuilder;
     }
 
     /**
@@ -212,6 +216,14 @@ public class TypesetterImpl implements Typesetter, Manager {
     public Mode getMode() {
 
         return listMaker.getMode();
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.impl.Manager#getOptions()
+     */
+    public TypesetterOptions getOptions() {
+
+        return options;
     }
 
     /**
@@ -264,9 +276,9 @@ public class TypesetterImpl implements Typesetter, Manager {
      * @see de.dante.extex.typesetter.Typesetter#setDocumentWriter(
      *     de.dante.extex.documentWriter.DocumentWriter)
      */
-    public void setDocumentWriter(final DocumentWriter doc) {
+    public void setDocumentWriter(final DocumentWriter writer) {
 
-        documentWriter = doc;
+        documentWriter = writer;
     }
 
     /**
