@@ -36,6 +36,7 @@ import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.language.Language;
 import de.dante.extex.language.hyphenation.base.BaseHyphenationTable;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.type.node.CharNode;
 import de.dante.extex.typesetter.type.node.DiscretionaryNode;
 import de.dante.extex.typesetter.type.node.HorizontalListNode;
@@ -45,7 +46,7 @@ import de.dante.util.UnicodeChar;
  * TODO gene: missing JavaDoc.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class BaseHyphenationTableTest extends TestCase {
 
@@ -53,7 +54,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * TODO gene: missing JavaDoc.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockFont implements Font {
 
@@ -209,7 +210,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This is a mock implementation of a glyph.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockGlyph implements Glyph {
 
@@ -355,7 +356,7 @@ public class BaseHyphenationTableTest extends TestCase {
      * This mock implementation is for test purposes only.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MyMockContext extends MockContext {
 
@@ -383,7 +384,7 @@ public class BaseHyphenationTableTest extends TestCase {
     /**
      * The field <tt>context</tt> contains the mock context for the tests.
      */
-    private Context context;
+    private TypesetterOptions context;
 
     /**
      * The field <tt>table</tt> contains the ...
@@ -412,9 +413,10 @@ public class BaseHyphenationTableTest extends TestCase {
     protected void setUp() throws Exception {
 
         context = new MyMockContext();
+        Context c = new MockContext();
         table = new BaseHyphenationTable();
-        table.addHyphenation(new Tokens(context, "abc-def"), context);
-        table.addHyphenation(new Tokens(context, "d-e-f"), context);
+        table.addHyphenation(new Tokens(c, "abc-def"), context);
+        table.addHyphenation(new Tokens(c, "d-e-f"), context);
     }
 
     /**

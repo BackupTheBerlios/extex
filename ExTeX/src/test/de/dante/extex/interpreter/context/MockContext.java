@@ -34,10 +34,13 @@ import de.dante.extex.interpreter.exception.helping.HelpingException;
 import de.dante.extex.interpreter.type.Code;
 import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.Count;
+import de.dante.extex.interpreter.type.count.FixedCount;
 import de.dante.extex.interpreter.type.dimen.Dimen;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.file.InFile;
 import de.dante.extex.interpreter.type.file.OutFile;
 import de.dante.extex.interpreter.type.font.Font;
+import de.dante.extex.interpreter.type.glue.FixedGlue;
 import de.dante.extex.interpreter.type.glue.Glue;
 import de.dante.extex.interpreter.type.muskip.Muskip;
 import de.dante.extex.interpreter.type.tokens.Tokens;
@@ -50,6 +53,7 @@ import de.dante.extex.scanner.type.Token;
 import de.dante.extex.scanner.type.TokenFactory;
 import de.dante.extex.scanner.type.TokenFactoryImpl;
 import de.dante.extex.typesetter.Typesetter;
+import de.dante.extex.typesetter.TypesetterOptions;
 import de.dante.extex.typesetter.paragraphBuilder.ParagraphShape;
 import de.dante.util.GeneralException;
 import de.dante.util.Locator;
@@ -63,12 +67,12 @@ import de.dante.util.observer.Observer;
  * classes.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
-public class MockContext implements Context {
+public class MockContext implements Context, TypesetterOptions {
 
     /**
-     * The field <tt>tokenFactory</tt> contains the ...
+     * The field <tt>tokenFactory</tt> contains the token factory.
      */
     private TokenFactory tokenFactory = new TokenFactoryImpl();
 
@@ -179,6 +183,14 @@ public class MockContext implements Context {
     }
 
     /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#getCountOption(java.lang.String)
+     */
+    public FixedCount getCountOption(final String name) {
+
+        return null;
+    }
+
+    /**
      * @see de.dante.extex.interpreter.context.Context#getDelcode(de.dante.util.UnicodeChar)
      */
     public Count getDelcode(final UnicodeChar c) {
@@ -192,6 +204,14 @@ public class MockContext implements Context {
     public Dimen getDimen(final String name) {
 
         throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.typesetter.TypesetterOptions#getDimenOption(java.lang.String)
+     */
+    public FixedDimen getDimenOption(final String name) {
+
+        return null;
     }
 
     /**
@@ -227,18 +247,17 @@ public class MockContext implements Context {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.ContextGroup#getGroupLevel()
+     * @see de.dante.extex.typesetter.TypesetterOptions#getGlueOption(java.lang.String)
      */
-    public long getGroupLevel() {
+    public FixedGlue getGlueOption(final String name) {
 
-        throw new RuntimeException("unimplemented");
+        return null;
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#getLanguage(java.lang.String)
+     * @see de.dante.extex.interpreter.context.ContextGroup#getGroupLevel()
      */
-    public Language getLanguage(final String language)
-            throws InterpreterException {
+    public long getGroupLevel() {
 
         throw new RuntimeException("unimplemented");
     }
@@ -263,6 +282,15 @@ public class MockContext implements Context {
      * @see de.dante.extex.interpreter.context.Context#getInteraction()
      */
     public Interaction getInteraction() {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#getLanguage(java.lang.String)
+     */
+    public Language getLanguage(final String language)
+            throws InterpreterException {
 
         throw new RuntimeException("unimplemented");
     }
@@ -559,14 +587,6 @@ public class MockContext implements Context {
     }
 
     /**
-     * @see de.dante.extex.interpreter.context.Context#setLanguageManager(de.dante.extex.hyphenation.HyphenationManager)
-     */
-    public void setLanguageManager(final LanguageManager manager) {
-
-        throw new RuntimeException("unimplemented");
-    }
-
-    /**
      * @see de.dante.extex.interpreter.context.Context#setId(java.lang.String)
      */
     public void setId(final String id) {
@@ -588,6 +608,14 @@ public class MockContext implements Context {
      */
     public void setInteraction(final Interaction interaction,
             final boolean global) throws InterpreterException {
+
+        throw new RuntimeException("unimplemented");
+    }
+
+    /**
+     * @see de.dante.extex.interpreter.context.Context#setLanguageManager(de.dante.extex.hyphenation.HyphenationManager)
+     */
+    public void setLanguageManager(final LanguageManager manager) {
 
         throw new RuntimeException("unimplemented");
     }

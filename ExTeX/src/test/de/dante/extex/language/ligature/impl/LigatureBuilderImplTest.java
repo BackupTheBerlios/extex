@@ -50,7 +50,7 @@ import de.dante.util.UnicodeChar;
  * ...
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class LigatureBuilderImplTest extends TestCase {
 
@@ -58,7 +58,7 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockFont extends NullFont {
 
@@ -109,49 +109,47 @@ public class LigatureBuilderImplTest extends TestCase {
      * ...
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.1 $
+     * @version $Revision: 1.2 $
      */
     private class MockGlyph implements Glyph {
 
         /**
          * @see de.dante.extex.font.Glyph#setDepth(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
          */
-        public void setDepth(TFMFixWord size, Dimen em) {
-
-            // TODO gene: setDepth unimplemented
+        public void setDepth(final TFMFixWord size, final Dimen em) {
 
         }
+
         /**
          * @see de.dante.extex.font.Glyph#setHeight(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
          */
-        public void setHeight(TFMFixWord size, Dimen em) {
-
-            // TODO gene: setHeight unimplemented
+        public void setHeight(final TFMFixWord size, final Dimen em) {
 
         }
+
         /**
          * @see de.dante.extex.font.Glyph#setItalicCorrection(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
          */
-        public void setItalicCorrection(TFMFixWord size, Dimen em) {
-
-            // TODO gene: setItalicCorrection unimplemented
+        public void setItalicCorrection(final TFMFixWord size, final Dimen em) {
 
         }
+
         /**
          * @see de.dante.extex.font.Glyph#setWidth(de.dante.extex.font.type.tfm.TFMFixWord, de.dante.extex.interpreter.type.dimen.Dimen)
          */
-        public void setWidth(TFMFixWord size, Dimen em) {
-
-            // TODO gene: setWidth unimplemented
+        public void setWidth(final TFMFixWord size, final Dimen em) {
 
         }
+
         /**
-         * The field <tt>c</tt> contains the ...
+         * The field <tt>c</tt> contains the encapsulatec character.
          */
         private int c;
 
         /**
          * Creates a new object.
+         *
+         * @param cp the character code point
          */
         public MockGlyph(final int cp) {
 
@@ -160,14 +158,16 @@ public class LigatureBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#addKerning(de.dante.extex.interpreter.type.font.Kerning)
+         * @see de.dante.extex.interpreter.type.font.Glyph#addKerning(
+         *      de.dante.extex.interpreter.type.font.Kerning)
          */
         public void addKerning(final Kerning kern) {
 
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#addLigature(de.dante.extex.interpreter.type.font.Ligature)
+         * @see de.dante.extex.interpreter.type.font.Glyph#addLigature(
+         *      de.dante.extex.interpreter.type.font.Ligature)
          */
         public void addLigature(final Ligature lig) {
 
@@ -206,7 +206,8 @@ public class LigatureBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#getKerning(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Glyph#getKerning(
+         *      de.dante.util.UnicodeChar)
          */
         public Dimen getKerning(final UnicodeChar uc) {
 
@@ -222,7 +223,8 @@ public class LigatureBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#getLigature(de.dante.util.UnicodeChar)
+         * @see de.dante.extex.interpreter.type.font.Glyph#getLigature(
+         *      de.dante.util.UnicodeChar)
          */
         public UnicodeChar getLigature(final UnicodeChar uc) {
 
@@ -341,30 +343,26 @@ public class LigatureBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#setNumber(java.lang.String)
+         * @see de.dante.extex.interpreter.type.font.Glyph#setNumber(
+         *      java.lang.String)
          */
         public void setNumber(final String nr) {
 
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#setRightSpace(de.dante.extex.interpreter.type.dimen.Dimen)
+         * @see de.dante.extex.interpreter.type.font.Glyph#setRightSpace(
+         *      de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setRightSpace(final Dimen rs) {
 
         }
 
         /**
-         * ...
-         *
-         * @param w ...
-         *
          * @see de.dante.extex.font.Glyph#setWidth(
          *      de.dante.extex.interpreter.type.dimen.Dimen)
          */
         public void setWidth(final Dimen w) {
-
-            // TODO unimplemented
 
         }
 
@@ -376,7 +374,9 @@ public class LigatureBuilderImplTest extends TestCase {
         }
 
         /**
-         * @see de.dante.extex.interpreter.type.font.Glyph#setWidth(java.lang.String, de.dante.extex.interpreter.type.dimen.Dimen, int)
+         * @see de.dante.extex.interpreter.type.font.Glyph#setWidth(
+         *      java.lang.String,
+         *      de.dante.extex.interpreter.type.dimen.Dimen, int)
          */
         public void setWidth(final String gsize, final Dimen em,
                 final int unitsperem) {
@@ -389,16 +389,34 @@ public class LigatureBuilderImplTest extends TestCase {
      */
     private static LigatureBuilder builder = new LigatureBuilderImpl();
 
+    /**
+     * The field <tt>CC_FF</tt> contains the ...
+     */
     private static final int CC_FF = '§';
 
+    /**
+     * The field <tt>CC_FFL</tt> contains the ...
+     */
     private static final int CC_FFL = '&';
 
+    /**
+     * The field <tt>CC_FL</tt> contains the ...
+     */
     private static final int CC_FL = '$';
 
+    /**
+     * The field <tt>FF</tt> contains the ...
+     */
     private static final UnicodeChar FF = new UnicodeChar(CC_FF);
 
+    /**
+     * The field <tt>FFL</tt> contains the ...
+     */
     private static final UnicodeChar FFL = new UnicodeChar(CC_FFL);
 
+    /**
+     * The field <tt>FL</tt> contains the ...
+     */
     private static final UnicodeChar FL = new UnicodeChar(CC_FL);
 
     /**
@@ -426,18 +444,18 @@ public class LigatureBuilderImplTest extends TestCase {
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testEmpty() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(0, nodes.size());
     }
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testFour1() throws HyphenationException {
 
@@ -446,46 +464,47 @@ public class LigatureBuilderImplTest extends TestCase {
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('l')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(3, nodes.size());
         assertTrue(nodes.get(0) instanceof CharNode);
         assertTrue(nodes.get(1) instanceof LigatureNode);
         LigatureNode lig = (LigatureNode) nodes.get(1);
         assertEquals(CC_FL, lig.getCharacter().getCodePoint());
-        assertEquals('f', ((CharNode) nodes.get(2)).getCharacter().getCodePoint());
+        assertEquals('f', ((CharNode) nodes.get(2)).getCharacter()
+                .getCodePoint());
     }
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testOne1() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
         Node n = new CharNode(tc1, new UnicodeChar('a'));
         nodes.add(n);
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
         assertEquals(n, nodes.get(0));
     }
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testOne2() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
         Node n = new GlueNode(new Glue(3));
         nodes.add(n);
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
         assertEquals(n, nodes.get(0));
     }
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testThree0() throws HyphenationException {
 
@@ -493,13 +512,13 @@ public class LigatureBuilderImplTest extends TestCase {
         nodes.add(new CharNode(tc1, new UnicodeChar('a')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('a')));
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(3, nodes.size());
     }
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testThree1() throws HyphenationException {
 
@@ -507,7 +526,7 @@ public class LigatureBuilderImplTest extends TestCase {
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('l')));
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
         assertTrue(nodes.get(0) instanceof LigatureNode);
         LigatureNode lig = (LigatureNode) nodes.get(0);
@@ -516,7 +535,7 @@ public class LigatureBuilderImplTest extends TestCase {
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testThree2() throws HyphenationException {
 
@@ -524,7 +543,7 @@ public class LigatureBuilderImplTest extends TestCase {
         nodes.add(new CharNode(tc1, new UnicodeChar('a')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('l')));
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(2, nodes.size());
         assertTrue(nodes.get(0) instanceof CharNode);
         assertTrue(nodes.get(1) instanceof LigatureNode);
@@ -534,14 +553,14 @@ public class LigatureBuilderImplTest extends TestCase {
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testTwo1() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(1, nodes.size());
         assertTrue(nodes.get(0) instanceof LigatureNode);
         LigatureNode lig = (LigatureNode) nodes.get(0);
@@ -550,14 +569,14 @@ public class LigatureBuilderImplTest extends TestCase {
 
     /**
      * ...
-     * @throws HyphenationException
+     * @throws HyphenationException in case of an error
      */
     public void testTwo2() throws HyphenationException {
 
         NodeList nodes = new HorizontalListNode();
         nodes.add(new CharNode(tc1, new UnicodeChar('f')));
         nodes.add(new CharNode(tc1, new UnicodeChar('a')));
-        builder.insertLigatures(nodes);
+        builder.insertLigatures(nodes, 0);
         assertEquals(2, nodes.size());
     }
 
