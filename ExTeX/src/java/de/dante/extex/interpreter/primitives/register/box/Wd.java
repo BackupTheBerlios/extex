@@ -30,6 +30,7 @@ import de.dante.extex.interpreter.type.box.Box;
 import de.dante.extex.interpreter.type.count.CountConvertible;
 import de.dante.extex.interpreter.type.dimen.Dimen;
 import de.dante.extex.interpreter.type.dimen.DimenConvertible;
+import de.dante.extex.interpreter.type.dimen.FixedDimen;
 import de.dante.extex.interpreter.type.tokens.Tokens;
 import de.dante.extex.typesetter.Typesetter;
 import de.dante.util.GeneralException;
@@ -68,7 +69,7 @@ import de.dante.util.GeneralException;
  * </pre>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1.16 $
  */
 public class Wd extends Setbox
         implements
@@ -133,7 +134,7 @@ public class Wd extends Setbox
             final Typesetter typesetter) throws GeneralException {
 
         Box box = context.getBox(getKey(source, context));
-        Dimen d = (box == null ? Dimen.ZERO_PT : box.getWidth());
+        FixedDimen d = (box == null ? Dimen.ZERO_PT : box.getWidth());
         return d.toToks(context.getTokenFactory());
     }
 
