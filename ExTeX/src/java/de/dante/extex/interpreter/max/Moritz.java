@@ -25,6 +25,7 @@ import de.dante.extex.i18n.EofHelpingException;
 import de.dante.extex.i18n.HelpingException;
 import de.dante.extex.i18n.MissingLeftBraceHelpingException;
 import de.dante.extex.i18n.PanicException;
+import de.dante.extex.i18n.UndefinedControlSequenceHelpingException;
 import de.dante.extex.interpreter.Flags;
 import de.dante.extex.interpreter.TokenSource;
 import de.dante.extex.interpreter.Tokenizer;
@@ -72,7 +73,7 @@ import de.dante.util.observer.ObserverList;
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
  * @author <a href="mailto:m.g.n@gmx.de">Michael Niedermair</a>
- * @version $Revision: 1.42 $
+ * @version $Revision: 1.43 $
  */
 public abstract class Moritz
         implements
@@ -324,11 +325,15 @@ public abstract class Moritz
         Token t = getToken();
         Context context = getContext();
 
-        if (t == null || !(t instanceof CodeToken)) {
+        if (t == null) {
+            throw new EofHelpingException(null);
+        } else if (!(t instanceof CodeToken)) {
             throw new HelpingException(localizer, "TTP.MissingFontIdent");
         }
         Code code = context.getCode((CodeToken) t);
-        if (code == null || !(code instanceof FontConvertible)) {
+        if (code == null) {
+            throw new UndefinedControlSequenceHelpingException(t.toString());
+        } else if (!(code instanceof FontConvertible)) {
             throw new HelpingException(localizer, "TTP.MissingFontIdent");
         }
 
@@ -1063,10 +1068,9 @@ public abstract class Moritz
         Token token = getNonSpace();
 
         if (token == null) {
-            //TODO: handle EOF
-            throw new RuntimeException("unimplemented");
+            throw new EofHelpingException(null);
         } else if (!token.isa(Catcode.LEFTBRACE)) {
-            throw new MissingLeftBraceHelpingException("???");
+            throw new MissingLeftBraceHelpingException(null);
         }
 
         int balance = 1;
