@@ -22,7 +22,6 @@ package de.dante.test;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Handler;
@@ -46,7 +45,7 @@ import de.dante.util.GeneralException;
  * running an instance of ExTeX.
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.21 $
+ * @version $Revision: 1.22 $
  */
 public class ExTeXLauncher extends TestCase {
 
@@ -54,7 +53,7 @@ public class ExTeXLauncher extends TestCase {
      * Inner class for the error handler.
      *
      * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
-     * @version $Revision: 1.21 $
+     * @version $Revision: 1.22 $
      */
     private class EHandler implements ErrorHandler {
 
@@ -100,7 +99,7 @@ public class ExTeXLauncher extends TestCase {
     /**
      * Set some properties to default values. The properties set are:
      * <dl>
-     * <dt><tt>extex.output</tt></dt><dd>Preset to <tt>text</tt></dd>
+     * <dt><tt>extex.output</tt></dt><dd>Preset to <tt>out</tt></dd>
      * <dt><tt>extex.interaction</tt></dt><dd>Preset to <tt>batchmode</tt></dd>
      * <dt><tt>extex.fonts</tt></dt><dd>Preset to <tt>src/fonts</tt></dd>
      * </dl>
@@ -161,7 +160,7 @@ public class ExTeXLauncher extends TestCase {
                     FileInputStream inputStream = new FileInputStream(file);
                     props.load(inputStream);
                     inputStream.close();
-                } catch (FileNotFoundException e) {
+                //} catch (FileNotFoundException e) {
                     // ignored on purpose
                 } catch (IOException e) {
                     // ignored on purpose
@@ -190,7 +189,7 @@ public class ExTeXLauncher extends TestCase {
         properties.setProperty("extex.code", code);
         properties.setProperty("extex.file", "");
 
-        ExTeX main = new ExTeX(properties);
+        ExTeX extex = new ExTeX(properties);
 
         Logger logger = Logger.getLogger("test");
         logger.setUseParentHandlers(false);
@@ -202,12 +201,12 @@ public class ExTeXLauncher extends TestCase {
         logger.addHandler(handler);
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        main.setOutStream(stream);
-        main.setErrorHandler(new EHandler(logger));
-        main.setLogger(logger);
+        extex.setOutStream(stream);
+        extex.setErrorHandler(new EHandler(logger));
+        extex.setLogger(logger);
 
         try {
-            main.run();
+            extex.run();
         } catch (MainException e) {
             errorP = true;
         } catch (Throwable e) {
@@ -260,7 +259,7 @@ public class ExTeXLauncher extends TestCase {
         properties.setProperty("extex.file", file);
         properties.setProperty("extex.jobname", file);
 
-        ExTeX main = new ExTeX(properties);
+        ExTeX extex = new ExTeX(properties);
 
         Logger logger = Logger.getLogger("test");
         logger.setUseParentHandlers(false);
@@ -270,13 +269,13 @@ public class ExTeXLauncher extends TestCase {
         Handler handler = new StreamHandler(bytes, new LogFormatter());
         handler.setLevel(Level.WARNING);
         logger.addHandler(handler);
-        main.setLogger(logger);
-        main.setErrorHandler(new EHandler(logger));
+        extex.setLogger(logger);
+        extex.setErrorHandler(new EHandler(logger));
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        main.setOutStream(stream);
+        extex.setOutStream(stream);
 
-        main.run();
+        extex.run();
 
         handler.close();
         logger.removeHandler(handler);
