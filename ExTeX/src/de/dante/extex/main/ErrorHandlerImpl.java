@@ -43,7 +43,7 @@ import de.dante.util.Locator;
  * </p>
  *
  * @author <a href="mailto:gene@gerd-neugebauer.de">Gerd Neugebauer</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ErrorHandlerImpl implements ErrorHandler {
     /** The logger to write a protocol of the interaction to.
@@ -120,7 +120,7 @@ public class ErrorHandlerImpl implements ErrorHandler {
                             count = count*10 + line.charAt(1)-'0';
                         }
                         while (count-->0) {
-                            source.getNextToken();
+                            source.getToken();
                         }
                         firstHelp = false;
                         e = new GeneralHelpingException("");
